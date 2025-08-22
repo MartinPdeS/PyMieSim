@@ -2,25 +2,25 @@
 Samples Properties
 ==================
 """
+from TypedUnit import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.units import degree, nanometer, AU, RIU, watt
 
 source = Gaussian(
-    wavelength=1000 * nanometer,
-    polarization=0 * degree,
-    optical_power=1 * watt,
-    NA=0.3 * AU
+    wavelength=1000 * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    optical_power=1 * ureg.watt,
+    NA=0.3 * ureg.AU
 )
 
 source.plot()
 
 scatterer = Sphere(
-    diameter=800 * nanometer,
+    diameter=800 * ureg.nanometer,
     source=source,
-    property=1.4 * RIU,
-    medium_property=1.0 * RIU
+    property=1.4 * ureg.RIU,
+    medium_property=1.0 * ureg.RIU
 )
 
 

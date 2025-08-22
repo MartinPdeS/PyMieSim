@@ -27,16 +27,17 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-17
+.. GENERATED FROM PYTHON SOURCE LINES 10-18
 
 .. code-block:: Python
 
     import numpy as np
+    from TypedUnit import ureg
+
     from PyMieSim.experiment.detector import Photodiode
     from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 
@@ -45,19 +46,19 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
+.. GENERATED FROM PYTHON SOURCE LINES 19-20
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-26
+.. GENERATED FROM PYTHON SOURCE LINES 20-27
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=[100, 1200] * nanometer,  # 1200 nm
-        polarization=90 * degree,  # Polarization angle in degrees
-        optical_power=1e-3 * watt,  # 1 milliwatt
-        NA=0.2 * AU  # Numerical Aperture
+        wavelength=[100, 1200] * ureg.nanometer,  # 1200 nm
+        polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
+        optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
+        NA=0.2 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -67,18 +68,18 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
+.. GENERATED FROM PYTHON SOURCE LINES 28-29
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-35
+.. GENERATED FROM PYTHON SOURCE LINES 29-36
 
 .. code-block:: Python
 
     scatterer = Sphere(
-        diameter=np.linspace(100, 300, 200) * nanometer,  # Diameters ranging from 100 nm to 3000 nm
-        property=[1.4] * RIU,  # Material of the cylinder
-        medium_property=1.0 * RIU,  # Refractive index of the surrounding medium
+        diameter=np.linspace(100, 300, 200) * ureg.nanometer,  # Diameters ranging from 100 nm to 3000 nm
+        property=[1.4] * ureg.RIU,  # Material of the cylinder
+        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
         source=source
     )
 
@@ -89,19 +90,19 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 Defining the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-45
+.. GENERATED FROM PYTHON SOURCE LINES 38-46
 
 .. code-block:: Python
 
     detector = Photodiode(
-        NA=[0.1] * AU,  # Numerical Apertures for the detector
-        phi_offset=[-180.0] * degree,  # Phi offset in degrees
-        gamma_offset=[0.0] * degree,  # Gamma offset in degrees
-        sampling=600 * AU,  # Number of sampling points
+        NA=[0.1] * ureg.AU,  # Numerical Apertures for the detector
+        phi_offset=[-180.0] * ureg.degree,  # Phi offset in ureg.degrees
+        gamma_offset=[0.0] * ureg.degree,  # Gamma offset in ureg.degrees
+        sampling=600 * ureg.AU,  # Number of sampling points
         polarization_filter=None  # No polarization filter
     )
 
@@ -112,11 +113,11 @@ Defining the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-47
+.. GENERATED FROM PYTHON SOURCE LINES 47-48
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 48-50
 
 .. code-block:: Python
 
@@ -129,11 +130,11 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-51
+.. GENERATED FROM PYTHON SOURCE LINES 51-52
 
 Measuring the coupling efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-53
+.. GENERATED FROM PYTHON SOURCE LINES 52-54
 
 .. code-block:: Python
 
@@ -146,12 +147,12 @@ Measuring the coupling efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 55-57
 
 Plotting the results
 Visualizing how the coupling efficiency varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-57
+.. GENERATED FROM PYTHON SOURCE LINES 57-58
 
 .. code-block:: Python
 
@@ -177,7 +178,7 @@ Visualizing how the coupling efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.351 seconds)
+   **Total running time of the script:** (0 minutes 0.350 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_diameter.py:

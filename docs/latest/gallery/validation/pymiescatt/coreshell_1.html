@@ -501,25 +501,25 @@ to download the full example code.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="c1"># PyMieSim imports</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreShell</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span><span class="p">,</span> <span class="n">nanometer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">mps</span>
 
 <span class="c1"># Define parameters</span>
-<span class="n">wavelength</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">nanometer</span>  <span class="c1"># Light source wavelength in meters</span>
-<span class="n">polarization</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span>
-<span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">watt</span>  <span class="c1"># Optical power in watts</span>
-<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span>  <span class="c1"># Numerical aperture</span>
-<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span>
-<span class="n">core_index</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">RIU</span>
-<span class="n">shell_index</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">RIU</span>
-<span class="n">shell_thickness</span> <span class="o">=</span> <span class="mi">1200</span> <span class="o">*</span> <span class="n">nanometer</span>  <span class="c1"># Shell width in meters</span>
-<span class="n">core_diameters</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span>  <span class="c1"># Core diameters in meters</span>
+<span class="n">wavelength</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Light source wavelength in meters</span>
+<span class="n">polarization</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
+<span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>  <span class="c1"># Optical power in watts</span>
+<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>  <span class="c1"># Numerical aperture</span>
+<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>
+<span class="n">core_index</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>
+<span class="n">shell_index</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>
+<span class="n">shell_thickness</span> <span class="o">=</span> <span class="mi">1200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Shell width in meters</span>
+<span class="n">core_diameters</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Core diameters in meters</span>
 
 <span class="c1"># Configure the Gaussian source</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
@@ -567,7 +567,7 @@ to download the full example code.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.582 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.578 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-coreshell-1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/40bca701fd2166628e6a95ebfaf8aa6a/coreshell_1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_1.ipynb</span></code></a></p>

@@ -27,12 +27,13 @@ This example demonstrates how to visualize the properties of a light source usin
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-13
+.. GENERATED FROM PYTHON SOURCE LINES 10-14
 
 .. code-block:: Python
 
+    from TypedUnit import ureg
+
     from PyMieSim.single.source import Gaussian
-    from PyMieSim.units import nanometer, degree, watt, AU
 
 
 
@@ -41,19 +42,19 @@ Importing the package: PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-15
+.. GENERATED FROM PYTHON SOURCE LINES 15-16
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-22
+.. GENERATED FROM PYTHON SOURCE LINES 16-23
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=1 * nanometer,  # 1000 nm
-        polarization=0 * degree,  # Linear polarization angle in radians
-        optical_power=1 * watt,  # Arbitrary units
-        NA=0.3 * AU  # Numerical Aperture
+        wavelength=1 * ureg.nanometer,  # 1000 nm
+        polarization=0 * ureg.degree,  # Linear polarization angle in radians
+        optical_power=1 * ureg.watt,  # Arbitrary units
+        NA=0.3 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -63,11 +64,11 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-24
+.. GENERATED FROM PYTHON SOURCE LINES 24-25
 
 Plotting the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 .. code-block:: Python
 
@@ -87,7 +88,7 @@ Plotting the source
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.239 seconds)
+   **Total running time of the script:** (0 minutes 0.244 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_source.py:

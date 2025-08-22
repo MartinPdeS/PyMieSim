@@ -7,26 +7,27 @@ This example demonstrates the process of computing and visualizing the far-field
 
 # %%
 # Importing the package: PyMieSim
+from TypedUnit import ureg
+
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=1000 * nanometer,  # 1000 nm
-    polarization=30 * degree,  # Right circular polarization
-    optical_power=1 * watt,  # Arbitrary units
-    NA=0.3 * AU  # Numerical Aperture
+    wavelength=1000 * ureg.nanometer,  # 1000 nm
+    polarization=30 * ureg.degree,  # Right circular polarization
+    optical_power=1 * ureg.watt,  # Arbitrary units
+    NA=0.3 * ureg.AU  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer
 scatterer = Sphere(
-    diameter=1500 * nanometer,  # 1500 nm
+    diameter=1500 * ureg.nanometer,  # 1500 nm
     source=source,
-    property=1.4 * RIU,  # Refractive index of the scatterer
-    medium_property=1.0 * RIU  # Refractive index of the surrounding medium
+    property=1.4 * ureg.RIU,  # Refractive index of the scatterer
+    medium_property=1.0 * ureg.RIU  # Refractive index of the surrounding medium
 )
 
 # %%

@@ -27,13 +27,14 @@ This example demonstrates the computation and visualization of the Stokes parame
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-14
+.. GENERATED FROM PYTHON SOURCE LINES 10-15
 
 .. code-block:: Python
 
+    from TypedUnit import ureg
+
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
-    from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 
@@ -42,19 +43,19 @@ Importing the package: PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-16
+.. GENERATED FROM PYTHON SOURCE LINES 16-17
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-23
+.. GENERATED FROM PYTHON SOURCE LINES 17-24
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=750 * nanometer,  # 750 nm
-        polarization=10 * degree,  # Right circular polarization
-        optical_power=1 * watt,  # Arbitrary units
-        NA=0.3 * AU  # Numerical Aperture
+        wavelength=750 * ureg.nanometer,  # 750 nm
+        polarization=10 * ureg.degree,  # Right circular polarization
+        optical_power=1 * ureg.watt,  # Arbitrary units
+        NA=0.3 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -64,19 +65,19 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Defining the scatterer
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-32
+.. GENERATED FROM PYTHON SOURCE LINES 26-33
 
 .. code-block:: Python
 
     scatterer = Sphere(
-        diameter=300 * nanometer,  # 300 nm
+        diameter=300 * ureg.nanometer,  # 300 nm
         source=source,
-        medium_property=1.0 * RIU,  # Refractive property of the surrounding medium
-        property=1.4 * RIU  # Refractive property of the scatterer
+        medium_property=1.0 * ureg.RIU,  # Refractive property of the surrounding medium
+        property=1.4 * ureg.RIU  # Refractive property of the scatterer
     )
 
 
@@ -86,11 +87,11 @@ Defining the scatterer
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-34
+.. GENERATED FROM PYTHON SOURCE LINES 34-35
 
 Computing the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-36
+.. GENERATED FROM PYTHON SOURCE LINES 35-37
 
 .. code-block:: Python
 
@@ -103,11 +104,11 @@ Computing the data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Plotting the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
+.. GENERATED FROM PYTHON SOURCE LINES 39-40
 
 .. code-block:: Python
 
@@ -127,7 +128,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.347 seconds)
+   **Total running time of the script:** (0 minutes 0.359 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_stokes.py:

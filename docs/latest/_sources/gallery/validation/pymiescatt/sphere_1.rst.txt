@@ -41,28 +41,28 @@ Sphere Particles: 1
     import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
+    from TypedUnit import ureg
 
     # PyMieSim imports
     from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyMieSim.units import degree, watt, AU, RIU, nanometer
     from PyMieSim.directories import validation_data_path
     from MPSPlots.styles import mps
 
 
     # Define parameters
-    wavelength = 632.8 * nanometer  # Wavelength of the source in meters
-    index = (1.4 + 0.2j) * RIU  # Refractive index of the sphere
-    medium_index = 1.2 * RIU  # Refractive index of the medium
-    optical_power = 1 * watt  # Power of the light source in watts
-    NA = 0.2 * AU  # Numerical aperture
-    diameters = np.geomspace(10, 6_000, 800) * nanometer  # Diameters from 10 nm to 6 μm
+    wavelength = 632.8 * ureg.nanometer  # Wavelength of the source in meters
+    index = (1.4 + 0.2j) * ureg.RIU  # Refractive index of the sphere
+    medium_index = 1.2 * ureg.RIU  # Refractive index of the medium
+    optical_power = 1 * ureg.watt  # Power of the light source in watts
+    NA = 0.2 * ureg.AU  # Numerical aperture
+    diameters = np.geomspace(10, 6_000, 800) * ureg.nanometer  # Diameters from 10 nm to 6 μm
 
     # Configure the Gaussian source
     source = Gaussian(
         wavelength=wavelength,
-        polarization=0 * degree,
+        polarization=0 * ureg.degree,
         optical_power=optical_power,
         NA=NA
     )
@@ -106,7 +106,7 @@ Sphere Particles: 1
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.686 seconds)
+   **Total running time of the script:** (0 minutes 0.671 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_sphere_1.py:

@@ -8,30 +8,30 @@ Cylinder Scatterer Bohren-Huffman figure 8.7
 # Importing the dependencies: numpy, matplotlib, PyMieSim
 import numpy
 import matplotlib.pyplot as plt
+from TypedUnit import ureg
 
 from PyMieSim.directories import validation_data_path
 
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 theoretical = numpy.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_87.csv", delimiter=',')
 
-diameter = numpy.geomspace(10, 6000, 800) * nanometer
+diameter = numpy.geomspace(10, 6000, 800) * ureg.nanometer
 volume = numpy.pi * (diameter.to_base_units().magnitude / 2)**2
 
 source = Gaussian(
-    wavelength=632.8 * nanometer,
-    polarization=[0, 90] * degree,
-    optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    wavelength=632.8 * ureg.nanometer,
+    polarization=[0, 90] * ureg.degree,
+    optical_power=1e-3 * ureg.watt,
+    NA=0.2 * ureg.AU
 )
 
 scatterer = Cylinder(
     diameter=diameter,
-    property=1.55 * RIU,
-    medium_property=1 * RIU,
+    property=1.55 * ureg.RIU,
+    medium_property=1 * ureg.RIU,
     source=source
 )
 

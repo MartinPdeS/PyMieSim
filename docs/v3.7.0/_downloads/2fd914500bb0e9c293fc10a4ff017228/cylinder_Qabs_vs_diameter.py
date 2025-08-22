@@ -8,27 +8,28 @@ This example demonstrates how to compute and visualize the scattering efficiency
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
+from TypedUnit import ureg
+
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=400 * nanometer,  # 400 nm
-    polarization=0 * degree,  # Linear polarization angle in radians
-    optical_power=1e-3 * watt,  # 1 milliwatt
-    NA=0.2 * AU  # Numerical Aperture
+    wavelength=400 * ureg.nanometer,  # 400 nm
+    polarization=0 * ureg.degree,  # Linear polarization angle in radians
+    optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
+    NA=0.2 * ureg.AU  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer distribution
 scatterer = Cylinder(
-    diameter=np.linspace(1, 800, 300) * nanometer,  # Diameters ranging from 1 nm to 800 nm
+    diameter=np.linspace(1, 800, 300) * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
     property=[Material.silver, Material.gold, Material.aluminium],  # Scatterer materials
-    medium_property=1 * RIU,  # Refractive index of the surrounding medium
+    medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
     source=source
 )
 

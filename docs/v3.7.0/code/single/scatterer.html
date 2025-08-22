@@ -489,16 +489,16 @@
 <h1>Scatterers<a class="headerlink" href="#scatterers" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SPHERE</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></p>
 <p>Class representing a homogeneous spherical scatterer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diameter</strong> (<em>units.Quantity</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
-<li><p><strong>property</strong> (<em>units.Quantity</em><em> or </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one can be provided.</p></li>
-<li><p><strong>medium_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>)</p></li>
-<li><p><strong>source</strong> (<em>BaseSource</em>)</p></li>
+<li><p><strong>diameter</strong> (<em>Length</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
+<li><p><strong>property</strong> (<em>RefractiveIndex</em><em> or </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one can be provided.</p></li>
+<li><p><strong>medium_property</strong> (<em>RefractiveIndex</em><em> or </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the surrounding medium. Only one can be provided.</p></li>
+<li><p><strong>source</strong> (<em>BaseSource</em>) – The source object associated with the scatterer.</p></li>
 </ul>
 </dd>
 </dl>
@@ -683,7 +683,7 @@ and the Python NearField representation class.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.diameter">
-<span class="sig-name descname"><span class="pre">diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.diameter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.diameter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -736,7 +736,7 @@ The computed far fields represent the scattered electric field components in the
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -769,7 +769,7 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
 <li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
-<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>ureg.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -868,14 +868,14 @@ using the multipole expansion with vector spherical harmonics. The internal fiel
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
-<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
-<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>] </em><em>| </em><em>units.Quantity</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
+<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
+<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>Length</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
 for 2D slice. Default is 0 (xy-plane slice).</p></li>
 <li><p><strong>resolution</strong> (<em>int</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Number of points along each axis. If int, same resolution for all axes.
 Default is 100.</p></li>
 <li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id5"><span class="problematic" id="id6">|E|</span></a>”, “<a href="#id7"><span class="problematic" id="id8">|H|</span></a>”].
-Default is [“Ex”, “Ey”, “Ez”, “<a href="#id9"><span class="problematic" id="id10">|E|</span></a>”].</p></li>
+Default is all the electric field components.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>)</p></li>
 </ul>
 </dd>
@@ -924,7 +924,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>distance</strong> (<em>ureg.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -985,7 +985,7 @@ amplitudes are computed.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1031,7 +1031,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1062,9 +1062,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
-<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
-<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+<li><p><strong>phi</strong> (<em>Angle</em>) – Azimuthal angles in radians.</p></li>
+<li><p><strong>theta</strong> (<em>Angle</em>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>Length</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1078,7 +1078,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.medium_property">
-<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.medium_property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.medium_property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1094,7 +1094,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.property">
-<span class="sig-name descname"><span class="pre">property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1104,7 +1104,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.radius">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.radius" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.radius" title="Link to this definition">#</a></dt>
 <dd><p>Return the radius of the sphere.</p>
 </dd></dl>
 
@@ -1121,7 +1121,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.volume">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.volume" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Volume</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.volume" title="Link to this definition">#</a></dt>
 <dd><p>Return the volume of the sphere.</p>
 </dd></dl>
 
@@ -1129,7 +1129,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/cylinder.html#Cylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/cylinder.html#Cylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CYLINDER</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></p>
 <p>Represents a cylindrical scatterer used for scattering simulations in optical systems.</p>
 <dl class="field-list simple">
@@ -1137,8 +1137,8 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diameter</strong> (<em>units.Quantity</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
 <li><p><strong>property</strong> (<em>units.Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.</p></li>
-<li><p><strong>medium_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>)</p></li>
-<li><p><strong>source</strong> (<em>BaseSource</em>)</p></li>
+<li><p><strong>medium_property</strong> (<em>RefractiveIndex</em><em> or </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the surrounding medium. Only one can be provided.</p></li>
+<li><p><strong>source</strong> (<em>BaseSource</em>) – The source object associated with the scatterer.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1327,7 +1327,7 @@ and the Python NearField representation class.</p>
 <li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
 <li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
 <li><p><strong>radius</strong> (<em>float</em>) – Scatterer radius for inside/outside determination.</p></li>
-<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id11"><span class="problematic" id="id12">|E|</span></a>”, “<a href="#id13"><span class="problematic" id="id14">|H|</span></a>”</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id9"><span class="problematic" id="id10">|E|</span></a>”, “<a href="#id11"><span class="problematic" id="id12">|H|</span></a>”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1347,7 +1347,7 @@ and the Python NearField representation class.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.diameter">
-<span class="sig-name descname"><span class="pre">diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.diameter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.diameter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1378,7 +1378,7 @@ The computed far fields represent the scattered electric field components in the
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1411,7 +1411,7 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
 <li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
-<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>ureg.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1510,14 +1510,14 @@ using the multipole expansion with vector spherical harmonics. The internal fiel
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
-<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
-<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>] </em><em>| </em><em>units.Quantity</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
+<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
+<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>Length</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
 for 2D slice. Default is 0 (xy-plane slice).</p></li>
 <li><p><strong>resolution</strong> (<em>int</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Number of points along each axis. If int, same resolution for all axes.
 Default is 100.</p></li>
-<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id15"><span class="problematic" id="id16">|E|</span></a>”, “<a href="#id17"><span class="problematic" id="id18">|H|</span></a>”].
-Default is [“Ex”, “Ey”, “Ez”, “<a href="#id19"><span class="problematic" id="id20">|E|</span></a>”].</p></li>
+<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id13"><span class="problematic" id="id14">|E|</span></a>”, “<a href="#id15"><span class="problematic" id="id16">|H|</span></a>”].
+Default is all the electric field components.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>)</p></li>
 </ul>
 </dd>
@@ -1566,7 +1566,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>distance</strong> (<em>ureg.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1627,7 +1627,7 @@ amplitudes are computed.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1673,7 +1673,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1704,9 +1704,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
-<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
-<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+<li><p><strong>phi</strong> (<em>Angle</em>) – Azimuthal angles in radians.</p></li>
+<li><p><strong>theta</strong> (<em>Angle</em>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>Length</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1720,7 +1720,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.medium_property">
-<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.medium_property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.medium_property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1736,7 +1736,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.property">
-<span class="sig-name descname"><span class="pre">property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1746,7 +1746,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.radius">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.radius" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.radius" title="Link to this definition">#</a></dt>
 <dd><p>Return the radius of the cylinder.</p>
 </dd></dl>
 
@@ -1765,18 +1765,18 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/core_shell.html#CoreShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/core_shell.html#CoreShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CORESHELL</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></p>
 <p>Class representing a core/shell spherical scatterer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>core_diameter</strong> (<em>units.Quantity</em>) – Diameter of the core of the scatterer.</p></li>
-<li><p><strong>shell_thickness</strong> (<em>units.Quantity</em>) – Thickness of the shell surrounding the core.</p></li>
-<li><p><strong>core_property</strong> (<em>units.Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s core. Only one can be provided.</p></li>
-<li><p><strong>shell_property</strong> (<em>units.Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s shell. Only one can be provided.</p></li>
-<li><p><strong>medium_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>)</p></li>
-<li><p><strong>source</strong> (<em>BaseSource</em>)</p></li>
+<li><p><strong>core_diameter</strong> (<em>Length</em>) – Diameter of the core of the scatterer.</p></li>
+<li><p><strong>shell_thickness</strong> (<em>Length</em>) – Thickness of the shell surrounding the core.</p></li>
+<li><p><strong>core_property</strong> (<em>RefractiveIndex</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s core. Only one can be provided.</p></li>
+<li><p><strong>shell_property</strong> (<em>RefractiveIndex</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s shell. Only one can be provided.</p></li>
+<li><p><strong>medium_property</strong> (<em>ureg.Quantity</em><em> or </em><em>BaseMaterial</em>) – Refractive index or material of the surrounding medium.</p></li>
+<li><p><strong>source</strong> (<em>BaseSource</em>) – Source object associated with the scatterer.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1982,7 +1982,7 @@ and the Python NearField representation class.</p>
 <li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
 <li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
 <li><p><strong>radius</strong> (<em>float</em>) – Scatterer radius for inside/outside determination.</p></li>
-<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id21"><span class="problematic" id="id22">|E|</span></a>”, “<a href="#id23"><span class="problematic" id="id24">|H|</span></a>”</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id17"><span class="problematic" id="id18">|E|</span></a>”, “<a href="#id19"><span class="problematic" id="id20">|H|</span></a>”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1996,12 +1996,12 @@ and the Python NearField representation class.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.core_diameter">
-<span class="sig-name descname"><span class="pre">core_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_diameter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">core_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_diameter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.core_property">
-<span class="sig-name descname"><span class="pre">core_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">core_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -2052,7 +2052,7 @@ The computed far fields represent the scattered electric field components in the
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2085,7 +2085,7 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
 <li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
-<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>ureg.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2184,14 +2184,14 @@ using the multipole expansion with vector spherical harmonics. The internal fiel
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
-<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
-<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>] </em><em>| </em><em>units.Quantity</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
+<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
+<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>Length</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
 for 2D slice. Default is 0 (xy-plane slice).</p></li>
 <li><p><strong>resolution</strong> (<em>int</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Number of points along each axis. If int, same resolution for all axes.
 Default is 100.</p></li>
-<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id25"><span class="problematic" id="id26">|E|</span></a>”, “<a href="#id27"><span class="problematic" id="id28">|H|</span></a>”].
-Default is [“Ex”, “Ey”, “Ez”, “<a href="#id29"><span class="problematic" id="id30">|E|</span></a>”].</p></li>
+<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id21"><span class="problematic" id="id22">|E|</span></a>”, “<a href="#id23"><span class="problematic" id="id24">|H|</span></a>”].
+Default is all the electric field components.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>)</p></li>
 </ul>
 </dd>
@@ -2240,7 +2240,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>distance</strong> (<em>ureg.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2301,7 +2301,7 @@ amplitudes are computed.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2347,7 +2347,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
+<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2378,9 +2378,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
-<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
-<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+<li><p><strong>phi</strong> (<em>Angle</em>) – Azimuthal angles in radians.</p></li>
+<li><p><strong>theta</strong> (<em>Angle</em>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>Length</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2394,7 +2394,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.medium_property">
-<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.medium_property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.medium_property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -2415,18 +2415,18 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.radius">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.radius" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.radius" title="Link to this definition">#</a></dt>
 <dd><p>Return the outer radius of the scatterer.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.shell_property">
-<span class="sig-name descname"><span class="pre">shell_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.shell_property" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">shell_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">RefractiveIndex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseMaterial</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.shell_property" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.shell_thickness">
-<span class="sig-name descname"><span class="pre">shell_thickness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.shell_thickness" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">shell_thickness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.shell_thickness" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -2442,7 +2442,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.volume">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.volume" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Volume</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.volume" title="Link to this definition">#</a></dt>
 <dd><p>Return the volume of the scatterer.</p>
 </dd></dl>
 

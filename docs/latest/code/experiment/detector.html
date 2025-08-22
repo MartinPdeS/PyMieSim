@@ -494,22 +494,22 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>NA</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>float</em><em>]</em>) – Numerical aperture(s) of the detector.</p></li>
-<li><p><strong>gamma_offset</strong> (<em>Quantity</em>) – Gamma angular offset (in degrees).</p></li>
-<li><p><strong>phi_offset</strong> (<em>Quantity</em>) – Phi angular offset (in degrees).</p></li>
-<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Quantity</em><em>]</em>) – Polarization filter angle (in degrees).</p></li>
-<li><p><strong>sampling</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>, </em><em>int</em><em>]</em>) – Sampling rate(s) for the detector.</p></li>
+<li><p><strong>NA</strong> (<em>Dimensionless</em>) – Numerical aperture(s) of the detector.</p></li>
+<li><p><strong>gamma_offset</strong> (<em>Angle</em>) – Gamma angular offset (in degrees).</p></li>
+<li><p><strong>phi_offset</strong> (<em>Angle</em>) – Phi angular offset (in degrees).</p></li>
+<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Angle</em><em>]</em>) – Polarization filter angle (in degrees).</p></li>
+<li><p><strong>sampling</strong> (<em>Dimensionless</em>) – Sampling rate(s) for the detector.</p></li>
 <li><p><strong>mean_coupling</strong> (<em>bool</em>) – Whether mean coupling is used. Defaults to True.</p></li>
 <li><p><strong>rotation</strong> (<em>Quantity</em>) – Rotation angle of the detector. Defaults to 0 degrees.</p></li>
 <li><p><strong>coherent</strong> (<em>bool</em>) – Indicates if the detection is coherent. Defaults to False.</p></li>
 <li><p><strong>mode_number</strong> (<em>str</em>) – Mode number of the detector. Defaults to ‘NC00’.</p></li>
-<li><p><strong>cache_NA</strong> (<em>Quantity</em>)</p></li>
+<li><p><strong>cache_NA</strong> (<em>Dimensionless</em>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.NA">
-<span class="sig-name descname"><span class="pre">NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.NA" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -550,7 +550,7 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.cache_NA">
-<span class="sig-name descname"><span class="pre">cache_NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.cache_NA" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cache_NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.cache_NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -560,7 +560,7 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.gamma_offset">
-<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -580,22 +580,22 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.phi_offset">
-<span class="sig-name descname"><span class="pre">phi_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.phi_offset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">phi_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.phi_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.polarization_filter">
-<span class="sig-name descname"><span class="pre">polarization_filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.polarization_filter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">polarization_filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.polarization_filter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.rotation">
-<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([0],</span> <span class="pre">'degree')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.rotation" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([0],</span> <span class="pre">'degree')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.rotation" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.sampling" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.sampling" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -663,21 +663,21 @@ in Mie scattering experiments.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode_number</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Mode number(s) involved in the detection.</p></li>
-<li><p><strong>NA</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>float</em><em>]</em>) – Numerical aperture(s) of the detector.</p></li>
-<li><p><strong>gamma_offset</strong> (<em>Quantity</em>) – Gamma angular offset (in degrees).</p></li>
-<li><p><strong>phi_offset</strong> (<em>Quantity</em>) – Phi angular offset (in degrees).</p></li>
-<li><p><strong>rotation</strong> (<em>Quantity</em>) – Rotation angle of the detector.</p></li>
-<li><p><strong>sampling</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>, </em><em>int</em><em>]</em>) – Sampling rate(s) for the detector.</p></li>
-<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Quantity</em><em>]</em>) – Polarization filter angle (in degrees).</p></li>
+<li><p><strong>NA</strong> (<em>Dimensionless</em>) – Numerical aperture(s) of the detector.</p></li>
+<li><p><strong>gamma_offset</strong> (<em>Angle</em>) – Gamma angular offset (in degrees).</p></li>
+<li><p><strong>phi_offset</strong> (<em>Angle</em>) – Phi angular offset (in degrees).</p></li>
+<li><p><strong>rotation</strong> (<em>Angle</em>) – Rotation angle of the detector.</p></li>
+<li><p><strong>sampling</strong> (<em>Dimensionless</em>) – Sampling rate(s) for the detector.</p></li>
+<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Angle</em><em>]</em>) – Polarization filter angle (in degrees).</p></li>
 <li><p><strong>mean_coupling</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – Whether mean coupling is used. Defaults to False.</p></li>
 <li><p><strong>coherent</strong> (<em>bool</em>) – Specifies if the detection is coherent. Defaults to True.</p></li>
-<li><p><strong>cache_NA</strong> (<em>Quantity</em>)</p></li>
+<li><p><strong>cache_NA</strong> (<em>Dimensionless</em>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.NA">
-<span class="sig-name descname"><span class="pre">NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.NA" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -718,7 +718,7 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.cache_NA">
-<span class="sig-name descname"><span class="pre">cache_NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.cache_NA" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cache_NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.cache_NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -728,7 +728,7 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.gamma_offset">
-<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.gamma_offset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.gamma_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -748,22 +748,22 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.phi_offset">
-<span class="sig-name descname"><span class="pre">phi_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.phi_offset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">phi_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.phi_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.polarization_filter">
-<span class="sig-name descname"><span class="pre">polarization_filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.polarization_filter" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">polarization_filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.polarization_filter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.rotation">
-<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.rotation" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.rotation" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.sampling" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.sampling" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

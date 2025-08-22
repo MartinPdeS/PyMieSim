@@ -30,12 +30,12 @@ Importing the package dependencies: numpy, PyMieSim
 .. code-block:: Python
 
     import numpy as np
+    from TypedUnit import ureg
 
     from PyMieSim.experiment.detector import Photodiode
     from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyMieSim.units import degree, nanometer, RIU, watt, AU
     from PyOptik import Material
 
 
@@ -54,10 +54,10 @@ Defining the source to be employed.
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=[950, 1050] * nanometer,
-        polarization=0 * degree,
-        optical_power=[1e-3] * watt,
-        NA=0.2 * AU
+        wavelength=[950, 1050] * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=[1e-3] * ureg.watt,
+        NA=0.2 * ureg.AU
     )
 
 
@@ -77,9 +77,9 @@ Defining the ranging parameters for the scatterer distribution
 .. code-block:: Python
 
     scatterer = Sphere(
-        diameter=np.linspace(100, 2000, 20) * nanometer,
+        diameter=np.linspace(100, 2000, 20) * ureg.nanometer,
         property=[Material.BK7, Material.water],
-        medium_property=1 * RIU,
+        medium_property=1 * ureg.RIU,
         source=source
     )
 
@@ -99,11 +99,11 @@ Defining the detector to be employed.
 .. code-block:: Python
 
     detector = Photodiode(
-        NA=[0.1] * AU,
-        phi_offset=-180 * degree,
-        gamma_offset=0 * degree,
-        polarization_filter=np.linspace(-180, 180, 100) * degree,
-        sampling=[500] * AU,
+        NA=[0.1] * ureg.AU,
+        phi_offset=-180 * ureg.degree,
+        gamma_offset=0 * ureg.degree,
+        polarization_filter=np.linspace(-180, 180, 100) * ureg.degree,
+        sampling=[500] * ureg.AU,
     )
 
 
@@ -162,7 +162,7 @@ Measuring the properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.595 seconds)
+   **Total running time of the script:** (0 minutes 1.601 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_filter.py:

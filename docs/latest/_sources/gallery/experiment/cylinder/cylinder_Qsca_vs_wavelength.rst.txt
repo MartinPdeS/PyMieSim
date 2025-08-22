@@ -27,15 +27,16 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-16
+.. GENERATED FROM PYTHON SOURCE LINES 10-17
 
 .. code-block:: Python
 
     import numpy as np
+    from TypedUnit import ureg
+
     from PyMieSim.experiment.scatterer import Cylinder
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 
@@ -44,20 +45,20 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-19
+.. GENERATED FROM PYTHON SOURCE LINES 18-20
 
 Defining the source
 Studying the scattering efficiency across a range of wavelengths.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-26
+.. GENERATED FROM PYTHON SOURCE LINES 20-27
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=np.linspace(400, 1000, 150) * nanometer,  # Wavelengths ranging from 400 nm to 1000 nm
-        polarization=0 * degree,  # Linear polarization angle in radians
-        optical_power=1e-3 * watt,  # 1 milliwatt
-        NA=0.2 * AU  # Numerical Aperture
+        wavelength=np.linspace(400, 1000, 150) * ureg.nanometer,  # Wavelengths ranging from 400 nm to 1000 nm
+        polarization=0 * ureg.degree,  # Linear polarization angle in radians
+        optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
+        NA=0.2 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -67,19 +68,19 @@ Studying the scattering efficiency across a range of wavelengths.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-29
+.. GENERATED FROM PYTHON SOURCE LINES 28-30
 
 Defining the scatterer distribution
 Considering cylinders with specific diameters and refractive indices.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 30-37
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=[200, 150] * nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
-        property=[2, 3, 4] * RIU,  # Array of refractive indices: 2, 3, 4
-        medium_property=[1] * RIU,  # Refractive index of the surrounding medium
+        diameter=[200, 150] * ureg.nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
+        property=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
+        medium_property=[1] * ureg.RIU,  # Refractive index of the surrounding medium
         source=source
     )
 
@@ -90,11 +91,11 @@ Considering cylinders with specific diameters and refractive indices.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
+.. GENERATED FROM PYTHON SOURCE LINES 39-41
 
 .. code-block:: Python
 
@@ -107,12 +108,12 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-43
+.. GENERATED FROM PYTHON SOURCE LINES 42-44
 
 Measuring the scattering efficiency (Qsca)
 Averaging the data across the different indices to simplify visualization.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 44-46
 
 .. code-block:: Python
 
@@ -125,12 +126,12 @@ Averaging the data across the different indices to simplify visualization.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-48
+.. GENERATED FROM PYTHON SOURCE LINES 47-49
 
 Plotting the results
 Visualizing how the Qsca varies with wavelength for the given cylinder configurations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
 
 .. code-block:: Python
 
@@ -156,7 +157,7 @@ Visualizing how the Qsca varies with wavelength for the given cylinder configura
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.351 seconds)
+   **Total running time of the script:** (0 minutes 0.353 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py:

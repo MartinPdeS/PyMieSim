@@ -11,33 +11,32 @@ of a sphere as a function of the permittivity and the size parameter.
 # %%
 # Importing the package: PyMieSim
 import numpy
+from TypedUnit import ureg
+import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, nanometer, RIU
-
-import matplotlib.pyplot as plt
 
 
 permitivity = numpy.linspace(-10, 50, 400)
 
-index = numpy.sqrt(permitivity.astype(complex)) * RIU
+index = numpy.sqrt(permitivity.astype(complex)) * ureg.RIU
 
-diameter = numpy.linspace(1, 200, 400) * nanometer
+diameter = numpy.linspace(1, 200, 400) * ureg.nanometer
 
 source = Gaussian(
-    wavelength=400 * nanometer,
-    polarization=90 * degree,
-    optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    wavelength=400 * ureg.nanometer,
+    polarization=90 * ureg.degree,
+    optical_power=1e-3 * ureg.watt,
+    NA=0.2 * ureg.AU
 )
 
 
 scatterer = Sphere(
     diameter=diameter,
     property=index,
-    medium_property=1 * RIU,
+    medium_property=1 * ureg.RIU,
     source=source
 )
 

@@ -560,12 +560,12 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-experiment-sphere-sphere-qsca-vs-diameter-py"></span><h1>Sphere: Qsca vs diameter<a class="headerlink" href="#sphere-qsca-vs-diameter" title="Link to this heading">#</a></h1>
 <p>Importing the package dependencies: numpy, PyMieSim</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">nanometer</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span>
 <span class="n">Material</span><span class="o">.</span><span class="n">print_available</span><span class="p">()</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">PyMieSim</span>
@@ -609,15 +609,15 @@ to download the full example code.</p>
 </div>
 <p>Defining the source to be employed.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">405</span><span class="p">,</span> <span class="mi">810</span><span class="p">]</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">405</span><span class="p">,</span> <span class="mi">810</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="p">[</span><span class="mf">1.33</span><span class="p">]</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
+    <span class="n">diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">medium_property</span><span class="o">=</span><span class="p">[</span><span class="mf">1.33</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
     <span class="nb">property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">polystyren</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span>
 <span class="p">)</span>
@@ -647,7 +647,7 @@ to download the full example code.</p>
 &lt;Axes: xlabel=&#39;scatterer:diameter&#39;, ylabel=&#39;dimensionless&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.253 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.250 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-sphere-qsca-vs-diameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/4557420e7a8d93eda2b5244580b533ea/sphere_Qsca_vs_diameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_Qsca_vs_diameter.ipynb</span></code></a></p>

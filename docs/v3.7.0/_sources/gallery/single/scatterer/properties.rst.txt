@@ -27,13 +27,14 @@ This example demonstrates the computation of scattering properties using PyMieSi
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-15
+.. GENERATED FROM PYTHON SOURCE LINES 10-16
 
 .. code-block:: Python
 
+    from TypedUnit import ureg
+
     from PyMieSim.single.scatterer import Cylinder
     from PyMieSim.single.source import Gaussian
-    from PyMieSim.units import nanometer, degree, watt, AU, RIU
     from PyOptik import Material
 
 
@@ -43,19 +44,19 @@ Importing the package: PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-17
+.. GENERATED FROM PYTHON SOURCE LINES 17-18
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-24
+.. GENERATED FROM PYTHON SOURCE LINES 18-25
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=750 * nanometer,  # 750 nm
-        polarization=30 * degree,  # Right circular polarization
-        optical_power=1 * watt,  # Power in watt
-        NA=0.3 * AU  # Numerical Aperture
+        wavelength=750 * ureg.nanometer,  # 750 nm
+        polarization=30 * ureg.degree,  # Right circular polarization
+        optical_power=1 * ureg.watt,  # Power in watt
+        NA=0.3 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -65,18 +66,18 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
+.. GENERATED FROM PYTHON SOURCE LINES 26-27
 
 Defining the scatterer
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-34
+.. GENERATED FROM PYTHON SOURCE LINES 27-35
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=300 * nanometer,  # 300 nm
+        diameter=300 * ureg.nanometer,  # 300 nm
         source=source,
-        property=(1.4 + 0.1j) * RIU,
+        property=(1.4 + 0.1j) * ureg.RIU,
         medium_property=Material.water
     )
 
@@ -90,17 +91,17 @@ Defining the scatterer
  .. code-block:: none
 
     Property        Value
-    --------------  ----------------------
-    size_parameter  1.2566370614359172
-    radius          150.0 nm
-    cross_section   300000.00000000006 µm²
-    g               0.3755740879948228
-    Qsca            0.023186330283701
-    Qext            0.25098397196276695
-    Qabs            0.22779764167906594
-    Csca            6955.899085110302 µm²
-    Cext            75295.1915888301 µm²
-    Cabs            68339.2925037198 µm²
+    --------------  ----------------------------------
+    size_parameter  1.2566370614359172 dimensionless
+    radius          150.0 nanometer
+    cross_section   300000.00000000006 micrometer ** 2
+    g               0.3755740879948228 dimensionless
+    Qsca            0.023186330283701 dimensionless
+    Qext            0.25098397196276695 dimensionless
+    Qabs            0.22779764167906594 dimensionless
+    Csca            6955.899085110302 micrometer ** 2
+    Cext            75295.1915888301 micrometer ** 2
+    Cabs            68339.2925037198 micrometer ** 2
 
 
 
@@ -108,7 +109,7 @@ Defining the scatterer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.057 seconds)
+   **Total running time of the script:** (0 minutes 0.056 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_properties.py:

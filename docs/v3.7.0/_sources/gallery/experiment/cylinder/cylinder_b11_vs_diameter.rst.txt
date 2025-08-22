@@ -27,15 +27,16 @@ This example demonstrates how to compute and visualize the B1 scattering coeffic
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-16
+.. GENERATED FROM PYTHON SOURCE LINES 10-17
 
 .. code-block:: Python
 
     import numpy as np
+    from TypedUnit import ureg
+
     from PyMieSim.experiment.scatterer import Cylinder
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 
@@ -44,19 +45,19 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-18
+.. GENERATED FROM PYTHON SOURCE LINES 18-19
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-25
+.. GENERATED FROM PYTHON SOURCE LINES 19-26
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=400 * nanometer,  # 400 nm
-        polarization=0 * degree,  # Linear polarization angle in radians
-        optical_power=1e-3 * watt,  # 1 milliwatt
-        NA=0.2 * AU  # Numerical Aperture
+        wavelength=400 * ureg.nanometer,  # 400 nm
+        polarization=0 * ureg.degree,  # Linear polarization angle in radians
+        optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
+        NA=0.2 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -66,18 +67,18 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
+.. GENERATED FROM PYTHON SOURCE LINES 27-28
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-34
+.. GENERATED FROM PYTHON SOURCE LINES 28-35
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=np.linspace(100, 10000, 800) * nanometer,  # Diameters ranging from 100 nm to 10000 nm
-        property=1.4 * RIU,  # Refractive index of the cylinder
-        medium_property=1 * RIU,  # Refractive index of the surrounding medium
+        diameter=np.linspace(100, 10000, 800) * ureg.nanometer,  # Diameters ranging from 100 nm to 10000 nm
+        property=1.4 * ureg.RIU,  # Refractive index of the cylinder
+        medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
         source=source
     )
 
@@ -88,11 +89,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 36-37
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+.. GENERATED FROM PYTHON SOURCE LINES 37-39
 
 .. code-block:: Python
 
@@ -105,11 +106,11 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
+.. GENERATED FROM PYTHON SOURCE LINES 40-41
 
 Measuring the B1 scattering coefficient
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 41-43
 
 .. code-block:: Python
 
@@ -122,12 +123,12 @@ Measuring the B1 scattering coefficient
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 44-46
 
 Plotting the results
 Visualizing how the B1 scattering coefficient varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-46
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 .. code-block:: Python
 
@@ -153,7 +154,7 @@ Visualizing how the B1 scattering coefficient varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.748 seconds)
+   **Total running time of the script:** (0 minutes 0.713 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_b11_vs_diameter.py:

@@ -48,24 +48,24 @@ Samples Properties
  .. code-block:: none
 
     Property        Value
-    --------------  ---------------------------
-    size_parameter  2.513274122871834
-    radius          400.0 nm
-    volume          2.6808257310632903×10⁻¹⁹ m³
-    cross_section   502654.8245743669 nm²
-    g               0.6960064419371798
-    Qsca            1.7376473038362097
-    Qext            1.7376473038362097
-    Qabs            0.0
-    Qback           0.35502029214192654
-    Qratio          0.2043109043809679
-    Qpr             0.5282335865514358
-    Csca            873436.8006819116 nm²
-    Cext            873436.8006819116 nm²
-    Cabs            0.0 m²
-    Cback           178452.66266694057 nm²
-    Cratio          102697.86180024568 nm²
-    Cpr             265519.16078230063 nm²
+    --------------  ---------------------------------
+    size_parameter  2.513274122871834 dimensionless
+    radius          400.0 nanometer
+    volume          2.6808257310632903e-19 meter ** 3
+    cross_section   502654.8245743669 nanometer ** 2
+    g               0.6960064419371798 dimensionless
+    Qsca            1.7376473038362097 dimensionless
+    Qext            1.7376473038362097 dimensionless
+    Qabs            0.0 dimensionless
+    Qback           0.35502029214192654 dimensionless
+    Qratio          0.2043109043809679 dimensionless
+    Qpr             0.5282335865514358 dimensionless
+    Csca            873436.8006819116 nanometer ** 2
+    Cext            873436.8006819116 nanometer ** 2
+    Cabs            0.0 meter ** 2
+    Cback           178452.66266694057 nanometer ** 2
+    Cratio          102697.86180024568 nanometer ** 2
+    Cpr             265519.16078230063 nanometer ** 2
 
 
 
@@ -76,25 +76,25 @@ Samples Properties
 
 .. code-block:: Python
 
+    from TypedUnit import ureg
 
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
-    from PyMieSim.units import degree, nanometer, AU, RIU, watt
 
     source = Gaussian(
-        wavelength=1000 * nanometer,
-        polarization=0 * degree,
-        optical_power=1 * watt,
-        NA=0.3 * AU
+        wavelength=1000 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU
     )
 
     source.plot()
 
     scatterer = Sphere(
-        diameter=800 * nanometer,
+        diameter=800 * ureg.nanometer,
         source=source,
-        property=1.4 * RIU,
-        medium_property=1.0 * RIU
+        property=1.4 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU
     )
 
 
@@ -125,7 +125,7 @@ Samples Properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.241 seconds)
+   **Total running time of the script:** (0 minutes 1.281 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_SphereProperties.py:

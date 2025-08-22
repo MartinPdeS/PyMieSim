@@ -7,26 +7,26 @@ Sphere: Qsca vs index
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
+from TypedUnit import ureg
 
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=[500., 1000., 1500.] * nanometer,
-    polarization=30. * degree,
-    optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    wavelength=[500., 1000., 1500.] * ureg.nanometer,
+    polarization=30. * ureg.degree,
+    optical_power=1e-3 * ureg.watt,
+    NA=0.2 * ureg.AU
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=800. * nanometer,
-    property=np.linspace(1.3, 1.9, 150) * RIU,
-    medium_property=1. * RIU,
+    diameter=800. * ureg.nanometer,
+    property=np.linspace(1.3, 1.9, 150) * ureg.RIU,
+    medium_property=1. * ureg.RIU,
     source=source
 )
 

@@ -460,10 +460,11 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MPSPlots</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.special_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">rotate_on_x</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">meter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.special_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">rotate_on_x</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
 
 
 <div class="viewcode-block" id="Footprint">
@@ -530,7 +531,7 @@
         <span class="n">far_field_para</span><span class="p">,</span> <span class="n">far_field_perp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_farfields_array</span><span class="p">(</span>
             <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
-            <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">meter</span><span class="p">,</span>
+            <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">detector_structured_farfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">get_structured_scalarfield</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
@@ -620,8 +621,8 @@
             <span class="p">)</span>
 
             <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">direct_y</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">direct_x</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_y</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_x</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">,</span>
                 <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span>
             <span class="p">)</span>

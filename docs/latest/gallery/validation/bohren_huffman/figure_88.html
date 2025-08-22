@@ -497,7 +497,9 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="cylinder-scatterer-bohren-huffman-figure-8-8">
 <span id="sphx-glr-gallery-validation-bohren-huffman-figure-88-py"></span><h1>Cylinder Scatterer Bohren-Huffman figure 8.8<a class="headerlink" href="#cylinder-scatterer-bohren-huffman-figure-8-8" title="Link to this heading">#</a></h1>
-<img src="../../../_images/sphx_glr_figure_88_001.png" srcset="../../../_images/sphx_glr_figure_88_001.png" alt="Comparison of Scattering Cross Sections for Cylinders" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:68: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
+<img src="../../../_images/sphx_glr_figure_88_001.png" srcset="../../../_images/sphx_glr_figure_88_001.png" alt="Comparison of Scattering Cross Sections for Cylinders" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+  return np.asarray(x, float)
+/home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:68: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
   plt.tight_layout()
 </pre></div>
 </div>
@@ -507,25 +509,25 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="c1"># PyMieSim imports</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cylinder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span><span class="p">,</span> <span class="n">nanometer</span>
 
 <span class="c1"># Load theoretical data</span>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">theoretical_data</span></a> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.genfromtxt.html#numpy.genfromtxt" title="numpy.genfromtxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">validation_data_path</span><span class="si">}</span><span class="s2">/bohren_huffman/figure_88.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 
 <span class="c1"># Define parameters</span>
-<span class="n">wavelength</span> <span class="o">=</span> <span class="mf">632.8</span> <span class="o">*</span> <span class="n">nanometer</span>  <span class="c1"># Wavelength of the source in meters</span>
-<span class="n">polarization_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span> <span class="o">*</span> <span class="n">degree</span>  <span class="c1"># Polarization values in degrees</span>
-<span class="n">optical_power</span> <span class="o">=</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">watt</span>  <span class="c1"># Optical power in watts</span>
-<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span>  <span class="c1"># Numerical aperture</span>
-<span class="n">diameters</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span>  <span class="c1"># Diameters from 10 nm to 6 μm</span>
-<span class="n">index</span> <span class="o">=</span> <span class="mf">1.55</span> <span class="o">*</span> <span class="n">RIU</span>  <span class="c1"># Refractive index of the cylinder</span>
-<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.335</span> <span class="o">*</span> <span class="n">RIU</span>  <span class="c1"># Refractive index of the medium</span>
+<span class="n">wavelength</span> <span class="o">=</span> <span class="mf">632.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Wavelength of the source in meters</span>
+<span class="n">polarization_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>  <span class="c1"># Polarization values in degrees</span>
+<span class="n">optical_power</span> <span class="o">=</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>  <span class="c1"># Optical power in watts</span>
+<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>  <span class="c1"># Numerical aperture</span>
+<span class="n">diameters</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Diameters from 10 nm to 6 μm</span>
+<span class="n">index</span> <span class="o">=</span> <span class="mf">1.55</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>  <span class="c1"># Refractive index of the cylinder</span>
+<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.335</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>  <span class="c1"># Refractive index of the medium</span>
 
 <span class="c1"># Calculate the volume of the cylinders</span>
 <span class="n">volumes</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <span class="p">(</span><span class="n">diameters</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -569,7 +571,7 @@ to download the full example code.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.469 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.526 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-bohren-huffman-figure-88-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/01ccb157b0e5993780c48420a764a11d/figure_88.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">figure_88.ipynb</span></code></a></p>

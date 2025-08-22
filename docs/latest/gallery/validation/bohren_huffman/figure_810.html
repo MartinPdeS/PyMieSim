@@ -500,12 +500,12 @@ to download the full example code.</p>
 <p>Importing the dependencies: numpy, matplotlib, PyMieSim</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">mps</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cylinder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span><span class="p">,</span> <span class="n">nanometer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">mps</span>
 
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">theoretical</span></a> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.genfromtxt.html#numpy.genfromtxt" title="numpy.genfromtxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">genfromtxt</span></a><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">validation_data_path</span><span class="si">}</span><span class="s2">/bohren_huffman/figure_810.csv&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 
@@ -513,17 +513,17 @@ to download the full example code.</p>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">theoretical</span></a><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">470</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">470</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">3000</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="mi">3000</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.07</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span>
+    <span class="nb">property</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.07</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>
 <span class="p">)</span>
 
 <span class="n">S1S2</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_s1s2</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
@@ -548,7 +548,11 @@ to download the full example code.</p>
 <span class="c1"># -</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_figure_810_001.png" srcset="../../../_images/sphx_glr_figure_810_001.png" alt="figure 810" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.304 seconds)</p>
+<img src="../../../_images/sphx_glr_figure_810_001.png" srcset="../../../_images/sphx_glr_figure_810_001.png" alt="figure 810" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+  return np.asarray(x, float)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.324 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-bohren-huffman-figure-810-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/c2e12904dea633c27fdcbe58c75ec671/figure_810.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">figure_810.ipynb</span></code></a></p>

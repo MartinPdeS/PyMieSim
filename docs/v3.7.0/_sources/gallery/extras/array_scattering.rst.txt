@@ -24,17 +24,17 @@ Array-based scattering calculations
 This example demonstrates how to compute far fields, S1/S2 amplitudes and
 Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-15
+.. GENERATED FROM PYTHON SOURCE LINES 8-16
 
 .. code-block:: Python
 
 
     import numpy as np
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.source import PlaneWave
-    from PyMieSim.units import nanometer, degree, RIU, volt, meter, radian
+    from TypedUnit import ureg
     import matplotlib.pyplot as plt
 
+    from PyMieSim.single.scatterer import Sphere
+    from PyMieSim.single.source import PlaneWave
 
 
 
@@ -42,18 +42,19 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-17
+
+.. GENERATED FROM PYTHON SOURCE LINES 17-18
 
 Create a simple plane wave source
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-23
+.. GENERATED FROM PYTHON SOURCE LINES 18-24
 
 .. code-block:: Python
 
     source = PlaneWave(
-        wavelength=632.8 * nanometer,
-        polarization=0 * degree,
-        amplitude=1 * volt / meter,
+        wavelength=632.8 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        amplitude=1 * ureg.volt / ureg.meter,
     )
 
 
@@ -63,24 +64,24 @@ Create a simple plane wave source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Define the scatterer
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-36
+.. GENERATED FROM PYTHON SOURCE LINES 26-37
 
 .. code-block:: Python
 
     scatterer = Sphere(
-        diameter=200 * nanometer,
-        property=1.5 * RIU,
-        medium_property=1.0 * RIU,
+        diameter=200 * ureg.nanometer,
+        property=1.5 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
         source=source,
     )
 
     # Define arbitrary angle arrays
-    phi = np.linspace(0, np.pi, 150) * radian
-    theta = np.linspace(0, np.pi / 2, 150) * radian
+    phi = np.linspace(0, np.pi, 150) * ureg.radian
+    theta = np.linspace(0, np.pi / 2, 150) * ureg.radian
 
 
 
@@ -89,11 +90,11 @@ Define the scatterer
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Far-field complex fields
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-56
+.. GENERATED FROM PYTHON SOURCE LINES 39-57
 
 .. code-block:: Python
 
@@ -124,14 +125,21 @@ Far-field complex fields
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+      return np.asarray(x, float)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
 
 S1 and S2 scattering amplitudes
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-76
+.. GENERATED FROM PYTHON SOURCE LINES 59-77
 
 .. code-block:: Python
 
@@ -165,11 +173,11 @@ S1 and S2 scattering amplitudes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-78
+.. GENERATED FROM PYTHON SOURCE LINES 78-79
 
 Stokes parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-106
+.. GENERATED FROM PYTHON SOURCE LINES 79-107
 
 .. code-block:: Python
 
@@ -216,7 +224,7 @@ Stokes parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.059 seconds)
+   **Total running time of the script:** (0 minutes 1.066 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_array_scattering.py:

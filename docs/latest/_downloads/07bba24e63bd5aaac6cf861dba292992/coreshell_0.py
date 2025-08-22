@@ -8,25 +8,25 @@ Core-Shell Particles: 0
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from TypedUnit import ureg
 
 # PyMieSim imports
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from PyMieSim.directories import validation_data_path
 from MPSPlots.styles import mps
 
 # Define parameters
-wavelength = 600 * nanometer  # Light source wavelength in meters
-polarization = 0 * degree
-optical_power = 1 * watt  # Power in watts
-NA = 0.2 * AU  # Numerical aperture
-medium_index = 1.0 * RIU
-core_index = 1.5 * RIU
-shell_index = 1.4 * RIU
-shell_thickness = 600 * nanometer  # Shell width in meters
-core_diameters = np.geomspace(10, 500, 40) * nanometer  # Core diameters in meters
+wavelength = 600 * ureg.nanometer  # Light source wavelength in meters
+polarization = 0 * ureg.degree
+optical_power = 1 * ureg.watt  # Power in watts
+NA = 0.2 * ureg.AU  # Numerical aperture
+medium_index = 1.0 * ureg.RIU
+core_index = 1.5 * ureg.RIU
+shell_index = 1.4 * ureg.RIU
+shell_thickness = 600 * ureg.nanometer  # Shell width in meters
+core_diameters = np.geomspace(10, 500, 40) * ureg.nanometer  # Core diameters in meters
 
 # Setup source
 source = Gaussian(

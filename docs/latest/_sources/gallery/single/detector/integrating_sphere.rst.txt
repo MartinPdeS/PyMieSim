@@ -27,12 +27,13 @@ This example demonstrates the initialization and visualization of an Integrating
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-14
+.. GENERATED FROM PYTHON SOURCE LINES 10-15
 
 .. code-block:: Python
 
+    from TypedUnit import ureg
+
     from PyMieSim.single.detector import IntegratingSphere
-    from PyMieSim.units import AU
     from PyMieSim.single import plot_system
 
 
@@ -42,17 +43,16 @@ Importing the package: PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-16
+.. GENERATED FROM PYTHON SOURCE LINES 16-17
 
 Initializing the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-21
+.. GENERATED FROM PYTHON SOURCE LINES 17-21
 
 .. code-block:: Python
 
     detector = IntegratingSphere(
-        sampling=500 * AU,  # Number of sampling points
-        polarization_filter=None  # No polarization filter applied
+        sampling=500 * ureg.AU,  # Number of sampling points
     )
 
 
@@ -86,7 +86,7 @@ Plotting the detector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.268 seconds)
+   **Total running time of the script:** (0 minutes 0.284 seconds)
 
 
 .. _sphx_glr_download_gallery_single_detector_integrating_sphere.py:

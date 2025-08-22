@@ -7,28 +7,29 @@ This example demonstrates the computation and visualization of the Scattering Ph
 
 # %%
 # Importing the package: PyMieSim
+from TypedUnit import ureg
+
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=1000 * nanometer,  # 1000 nm
-    polarization=0 * degree,  # Linear polarization angle in radians
-    optical_power=1 * watt,  # Arbitrary units
-    NA=0.3 * AU  # Numerical Aperture
+    wavelength=1000 * ureg.nanometer,  # 1000 nm
+    polarization=0 * ureg.degree,  # Linear polarization angle in radians
+    optical_power=1 * ureg.watt,  # Arbitrary units
+    NA=0.3 * ureg.AU  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer
 scatterer = CoreShell(
-    core_diameter=500 * nanometer,  # 500 nm
-    shell_thickness=100 * nanometer,  # 100 nm
+    core_diameter=500 * ureg.nanometer,  # 500 nm
+    shell_thickness=100 * ureg.nanometer,  # 100 nm
     source=source,
-    core_property=1.4 * RIU,  # Refractive property of the core
-    shell_property=1.8 * RIU,  # Refractive property of the shell
-    medium_property=1.0 * RIU,  # Refractive property of the surrounding medium
+    core_property=1.4 * ureg.RIU,  # Refractive property of the core
+    shell_property=1.8 * ureg.RIU,  # Refractive property of the shell
+    medium_property=1.0 * ureg.RIU,  # Refractive property of the surrounding medium
 )
 
 # %%

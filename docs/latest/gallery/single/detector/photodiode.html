@@ -560,19 +560,19 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-single-detector-photodiode-py"></span><h1>Photodiode Detector<a class="headerlink" href="#photodiode-detector" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the initialization and visualization of a Photodiode detector using PyMieSim.</p>
 <p>Importing the package: PyMieSim</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">AU</span><span class="p">,</span> <span class="n">degree</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_system</span>
 </pre></div>
 </div>
 <p>Initializing the detector</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
-    <span class="n">cache_NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
-    <span class="n">sampling</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>  <span class="c1"># Number of sampling points</span>
-    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Gamma offset in degrees</span>
-    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Phi offset in degrees</span>
-    <span class="n">polarization_filter</span><span class="o">=</span><span class="kc">None</span>  <span class="c1"># No polarization filter applied</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
+    <span class="n">cache_NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Number of sampling points</span>
+    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Gamma offset in degrees</span>
+    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Phi offset in degrees</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -580,7 +580,7 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_system</span><span class="p">(</span><span class="n">detector</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_photodiode_001.png" srcset="../../../_images/sphx_glr_photodiode_001.png" alt="photodiode" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.271 seconds)</p>
+<img src="../../../_images/sphx_glr_photodiode_001.png" srcset="../../../_images/sphx_glr_photodiode_001.png" alt="photodiode" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.288 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-detector-photodiode-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/6db5f1e3ed7f5ac09bc00fc9366e24c3/photodiode.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">photodiode.ipynb</span></code></a></p>

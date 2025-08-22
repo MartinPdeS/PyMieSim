@@ -27,16 +27,17 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-17
+.. GENERATED FROM PYTHON SOURCE LINES 10-18
 
 .. code-block:: Python
 
     import numpy as np
+    from TypedUnit import ureg
+
     from PyMieSim.experiment.scatterer import Cylinder
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
     from PyOptik import Material
-    from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 
@@ -45,19 +46,19 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
+.. GENERATED FROM PYTHON SOURCE LINES 19-20
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-26
+.. GENERATED FROM PYTHON SOURCE LINES 20-27
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=400 * nanometer,  # 400 nm
-        polarization=0 * degree,  # Linear polarization angle in radians
-        optical_power=1e-3 * watt,  # 1 milliwatt
-        NA=0.2 * AU  # Numerical Aperture
+        wavelength=400 * ureg.nanometer,  # 400 nm
+        polarization=0 * ureg.degree,  # Linear polarization angle in radians
+        optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
+        NA=0.2 * ureg.AU  # Numerical Aperture
     )
 
 
@@ -67,18 +68,18 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
+.. GENERATED FROM PYTHON SOURCE LINES 28-29
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-35
+.. GENERATED FROM PYTHON SOURCE LINES 29-36
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=np.linspace(1, 800, 300) * nanometer,  # Diameters ranging from 1 nm to 800 nm
+        diameter=np.linspace(1, 800, 300) * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
         property=[Material.silver, Material.gold, Material.aluminium],  # Scatterer materials
-        medium_property=1 * RIU,  # Refractive index of the surrounding medium
+        medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
         source=source
     )
 
@@ -97,11 +98,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-39
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 .. code-block:: Python
 
@@ -114,13 +115,13 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-43
+.. GENERATED FROM PYTHON SOURCE LINES 41-44
 
 Measuring the scattering efficiency (Qsca)
 Note: The original request mentioned Qsca, but the measurement code uses Qabs.
 If Qsca measurement is intended, ensure to use the correct measure object from PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 44-46
 
 .. code-block:: Python
 
@@ -133,12 +134,12 @@ If Qsca measurement is intended, ensure to use the correct measure object from P
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-48
+.. GENERATED FROM PYTHON SOURCE LINES 47-49
 
 Plotting the results
 Visualizing how the scattering efficiency varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
 
 .. code-block:: Python
 
