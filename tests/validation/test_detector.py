@@ -3,8 +3,9 @@
 
 import numpy as np
 import pytest
+from TypedUnit import ureg
+
 from PyMieSim import single, experiment
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 @pytest.fixture
@@ -16,10 +17,10 @@ def source_single():
         single.source.Gaussian: Gaussian light source for single scattering.
     """
     return single.source.Gaussian(
-        wavelength=1000 * nanometer,   # Wavelength in meters (e.g., 1 micron)
-        polarization=0 * degree,    # Polarization angle
-        optical_power=1 * watt,   # Optical power in watts
-        NA=0.3 * AU             # Numerical aperture
+        wavelength=1000 * ureg.nanometer,   # Wavelength in meters (e.g., 1 micron)
+        polarization=0 * ureg.degree,    # Polarization angle
+        optical_power=1 * ureg.watt,   # Optical power in ureg.watts
+        NA=0.3 * ureg.AU             # Numerical aperture
     )
 
 
@@ -32,10 +33,10 @@ def source_experiment():
         experiment.source.Gaussian: Gaussian light source for experiment-based scattering.
     """
     return experiment.source.Gaussian(
-        wavelength=1000 * nanometer,
-        polarization=0 * degree,
-        optical_power=1 * watt,
-        NA=0.3 * AU
+        wavelength=1000 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU
     )
 
 
@@ -51,10 +52,10 @@ def scatterer_single(source_single):
         single.scatterer.Sphere: Scatterer object for single scattering.
     """
     return single.scatterer.Sphere(
-        diameter=1000 * nanometer,         # Diameter of the sphere in meters
-        property=(1.5 + 0.5j) * RIU,      # Complex refractive index of the scatterer
+        diameter=1000 * ureg.nanometer,         # Diameter of the sphere in meters
+        property=(1.5 + 0.5j) * ureg.RIU,      # Complex refractive index of the scatterer
         source=source_single,  # Associated light source
-        medium_property=1 * RIU         # Refractive index of the medium (e.g., air)
+        medium_property=1 * ureg.RIU         # Refractive index of the medium (e.g., air)
     )
 
 
@@ -70,16 +71,16 @@ def scatterer_experiment(source_experiment):
         experiment.scatterer.Sphere: Scatterer object for experiment-based scattering.
     """
     return experiment.scatterer.Sphere(
-        diameter=1000 * nanometer,
-        property=(1.5 + 0.5j) * RIU,
+        diameter=1000 * ureg.nanometer,
+        property=(1.5 + 0.5j) * ureg.RIU,
         source=source_experiment,
-        medium_property=1 * RIU
+        medium_property=1 * ureg.RIU
     )
 
 
 def test_detector_single_polarization_filter(source_single, scatterer_single):
     """
-    Test the effect of a 0-degree and 180-degree polarization filter on a photodiode detector.
+    Test the effect of a 0-ureg.degree and 180-ureg.degree polarization filter on a photodiode detector.
 
     Parameters:
         source_single (single.source.Gaussian): Gaussian light source for single scattering.
@@ -87,17 +88,17 @@ def test_detector_single_polarization_filter(source_single, scatterer_single):
     """
     # Create two photodiode detectors with different polarization filters (0° and 180°)
     detector_0 = single.detector.Photodiode(
-        NA=0.1 * AU,
-        gamma_offset=0 * degree,
-        phi_offset=90 * degree,
-        polarization_filter=0 * degree
+        NA=0.1 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=90 * ureg.degree,
+        polarization_filter=0 * ureg.degree
     )
 
     detector_180 = single.detector.Photodiode(
-        NA=0.1 * AU,
-        gamma_offset=0 * degree,
-        phi_offset=90 * degree,
-        polarization_filter=180 * degree
+        NA=0.1 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=90 * ureg.degree,
+        polarization_filter=180 * ureg.degree
     )
 
     # Calculate the coupling for both detectors
@@ -112,7 +113,7 @@ def test_detector_single_polarization_filter(source_single, scatterer_single):
 
 def test_detector_single_rotation(source_single, scatterer_single):
     """
-    Test the effect of 0-degree and 180-degree rotation on a coherent mode detector.
+    Test the effect of 0-ureg.degree and 180-ureg.degree rotation on a coherent mode detector.
 
     Parameters:
         source_single (single.source.Gaussian): Gaussian light source for single scattering.
@@ -121,20 +122,18 @@ def test_detector_single_rotation(source_single, scatterer_single):
     # Create two coherent mode detectors with different rotation angles (0° and 180°)
     detector_0 = single.detector.CoherentMode(
         mode_number='LP11',
-        NA=0.1 * AU,
-        gamma_offset=0 * degree,
-        phi_offset=40 * degree,
-        polarization_filter=None,
-        rotation=0 * degree
+        NA=0.1 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=40 * ureg.degree,
+        rotation=0 * ureg.degree
     )
 
     detector_180 = single.detector.CoherentMode(
         mode_number='LP11',
-        NA=0.1 * AU,
-        gamma_offset=0 * degree,
-        phi_offset=40 * degree,
-        polarization_filter=None,
-        rotation=180 * degree
+        NA=0.1 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=40 * ureg.degree,
+        rotation=180 * ureg.degree
     )
 
     # Calculate the coupling for both detectors
@@ -157,11 +156,11 @@ def test_detector_experiment_polarization_filter(source_experiment, scatterer_ex
     """
     # Create a photodiode detector with two polarization filters (0° and 180°)
     detector = experiment.detector.Photodiode(
-        NA=0.1 * AU,
-        gamma_offset=0 * degree,
-        phi_offset=90 * degree,
-        polarization_filter=[0, 180] * degree,  # List of polarization filters
-        sampling=100 * AU  # Sampling points for the simulation
+        NA=0.1 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=90 * ureg.degree,
+        polarization_filter=[0, 180] * ureg.degree,  # List of polarization filters
+        sampling=100 * ureg.AU  # Sampling points for the simulation
     )
 
     # Setup the experiment with the scatterer, detector, and source

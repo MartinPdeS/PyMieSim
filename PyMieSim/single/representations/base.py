@@ -4,7 +4,8 @@
 import numpy
 from pydantic.dataclasses import dataclass
 import pyvista
-from PyMieSim.units import Quantity
+
+from TypedUnit import Length
 
 
 config_dict = dict(
@@ -34,7 +35,7 @@ class BaseRepresentation():
     """
     scatterer: object
     sampling: int
-    distance: Quantity
+    distance: Length
 
     def __post_init__(self):
         fields = self.scatterer._cpp_get_full_farfields(

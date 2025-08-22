@@ -3,12 +3,17 @@
 
 import pyvista
 from PyOptik.material.base_class import BaseMaterial
+from TypedUnit import Length, RefractiveIndex, ureg
+from TypedUnit import Length, RefractiveIndex, ureg
+from pydantic.dataclasses import dataclass
 
-from PyMieSim import units
+from PyMieSim.utils import config_dict
 from PyMieSim.single.scatterer.base import BaseScatterer
 from PyMieSim.binary.interface_scatterer import CYLINDER
 from PyMieSim.single.source.base import BaseSource
 
+
+@dataclass(config=config_dict, kw_only=True)
 class Cylinder(CYLINDER, BaseScatterer):
     """
     Represents a cylindrical scatterer used for scattering simulations in optical systems.
@@ -19,11 +24,14 @@ class Cylinder(CYLINDER, BaseScatterer):
         Diameter of the cylindrical scatterer, given in meters.
     property : units.Quantity | BaseMaterial
         Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.
-
+    medium_property : RefractiveIndex or BaseMaterial
+        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the surrounding medium. Only one can be provided.
+    source : BaseSource
+        The source object associated with the scatterer.
     """
-    diameter: units.Quantity
-    property: units.Quantity | BaseMaterial
-    medium_property: units.Quantity | BaseMaterial
+    diameter: Length
+    property: RefractiveIndex | BaseMaterial
+    medium_property: RefractiveIndex | BaseMaterial
     source: BaseSource
 
     property_names = [
@@ -32,38 +40,22 @@ class Cylinder(CYLINDER, BaseScatterer):
         "Csca", "Cext", "Cabs"
     ]
 
-    def __init__(self, diameter: units.Quantity, property: units.Quantity | BaseMaterial, medium_property: units.Quantity | BaseMaterial, source: BaseSource):
+    def __post_init__(self):
         """
-        Initialize the Cylinder scatterer with its diameter and material properties.
-
-        Parameters
-        ----------
-        diameter : units.Quantity
-            Diameter of the sphere in meters.
-        property : units.Quantity or BaseMaterial
-            Refractive index or material of the sphere.
-        medium_property : units.Quantity
-            Refractive index of the surrounding medium.
-        source : Source
-            Source object associated with the scatterer.
+        Initialize the Sphere scatterer with its diameter and material properties.
         """
-        self.diameter = self._validate_units(diameter, dimension='distance', units=units.meter)
-        self.property = self._validate_property(property)
-        self.medium_property = self._validate_property(medium_property)
-        self.source = source
-
         self.index, self.material = self._assign_index_or_material(self.property)
         self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_property)
 
         super().__init__(
-            diameter=diameter.to(units.meter).magnitude,
-            refractive_index=self.index.to(units.RIU).magnitude,
-            medium_refractive_index=self.medium_index.to(units.RIU).magnitude,
+            diameter=self.diameter.to(ureg.meter).magnitude,
+            refractive_index=self.index.to(ureg.RIU).magnitude,
+            medium_refractive_index=self.medium_index.to(ureg.RIU).magnitude,
             source=self.source
         )
 
     @property
-    def radius(self) -> units.Quantity:
+    def radius(self) -> Length:
         """Return the radius of the cylinder."""
         return self.diameter / 2
 

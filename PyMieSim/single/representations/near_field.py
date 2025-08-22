@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import Tuple
 import numpy
 import MPSPlots
 from pydantic.dataclasses import dataclass
 import matplotlib.pyplot as plt
-from PyMieSim.single.representations.base import config_dict
-from PyMieSim import units
+from TypedUnit import Length
+
+from PyMieSim.utils import config_dict
+
 
 @dataclass(config=config_dict, kw_only=True)
 class NearField():
@@ -32,11 +35,11 @@ class NearField():
     ----------
     scatterer : BaseScatterer
         The scatterer object with computed cn/dn coefficients.
-    x_range : tuple
+    x_range : Tuple[Length, Length]
         Range of x coordinates (x_min, x_max) in meters.
-    y_range : tuple
+    y_range : Tuple[Length, Length]
         Range of y coordinates (y_min, y_max) in meters.
-    z : tuple or float
+    z : Tuple[Length, Length]
         Range of z coordinates (z_min, z_max) in meters, or single z value for 2D slice.
     resolution : int or tuple
         Number of points along each axis. If int, same resolution for all axes.
@@ -51,9 +54,9 @@ class NearField():
         If coordinate ranges or field components are invalid.
     """
     scatterer: object
-    x_range: tuple[units.Quantity, units.Quantity]
-    y_range: tuple[units.Quantity, units.Quantity]
-    z: units.Quantity
+    x_range: Tuple[Length, Length]
+    y_range: Tuple[Length, Length]
+    z: Length
     sampling: int
     field_components: list[str]
 
@@ -132,12 +135,13 @@ class NearField():
             fig, axes = plt.subplots(figsize=figure_size, nrows=1, ncols=len(self.fields), squeeze=False)
 
         for component, ax in zip(self.fields.keys(), axes.flatten()):
-            field_data = numpy.abs(self.fields[component])
+            field_data = numpy.abs(self.fields[component]).astype(float)
 
+            print(self.x, self.x.__class__)
             # Plot field
             im = ax.pcolormesh(
-                self.x,
-                self.y,
+                self.x.magnitude,
+                self.y.magnitude,
                 field_data,
                 cmap=colormap,
             )
@@ -147,7 +151,7 @@ class NearField():
             cbar.set_label(f'{component} field')
 
             # Show scatterer boundary
-            circle = plt.Circle((0, 0), self.radius, fill=False, color='white', linewidth=2)
+            circle = plt.Circle((0, 0), self.radius.magnitude, fill=False, color='white', linewidth=2)
             ax.add_patch(circle)
 
             ax.set_title(f'Near-field {component} distribution')

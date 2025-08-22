@@ -5,7 +5,8 @@ from pydantic import field_validator
 import pint_pandas
 from dataclasses import fields
 from PyMieSim.polarization import BasePolarization, Linear
-from PyMieSim.units import Quantity, meter, watt, AU, degree
+
+from TypedUnit import Length, Angle, Power, Dimensionless
 
 
 class BaseSource:
@@ -18,9 +19,7 @@ class BaseSource:
         """
         Ensures that diameter is Quantity objects with length units.
         """
-        if not isinstance(value, Quantity) or not value.check(meter):
-            raise ValueError(f"{value} must be a Quantity with meters units [meter].")
-
+        Length.check(value)
         return numpy.atleast_1d(value)
 
     @field_validator('optical_power', mode='plain')
@@ -28,40 +27,28 @@ class BaseSource:
         """
         Ensure that arrays are properly converted to numpy arrays.
         """
-        if not isinstance(value, Quantity) or not value.check(watt):
-            raise ValueError(f"{value} must be a Quantity with power units [watt].")
-
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
+        Power.check(value)
+        return numpy.atleast_1d(value)
 
     @field_validator('NA', mode='plain')
     def _validate_arbitrary_units(cls, value):
         """
         Ensure that arrays are properly converted to numpy arrays.
         """
-        if not isinstance(value, Quantity) or not value.check(AU):
-            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
-
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
+        Dimensionless.check(value)
+        return numpy.atleast_1d(value)
 
     @field_validator('polarization', mode='before')
     def _validate_polarization(cls, value):
         """
         Ensures that polarization is well defined.
         """
-        if (not isinstance(value, Quantity) or not value.check(degree)) and not isinstance(value, BasePolarization):
-            raise ValueError(f"{value} must be a Quantity with degree units [degree] or a Polarization instance.")
-
         if isinstance(value, BasePolarization):
             return value
 
-        if isinstance(value, Quantity):
-            return Linear(value)
+        Angle.check(value)
+
+        return Linear(value)
 
     def _generate_mapping(self) -> None:
         """

@@ -2,29 +2,28 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-
-# Standard library imports
 import numpy as np
+from TypedUnit import ureg
+
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, RIU, nanometer, meter
 
 
 def test_validation():
 
-    theoretical_data = np.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=',') / (meter * meter)
+    theoretical_data = np.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=',') / (ureg.meter * ureg.meter)
 
-    wavelength = 632.8 * nanometer
-    polarization_values = [0, 90] * degree
-    optical_power = 1e-3 * watt
-    NA = 0.2 * AU
-    diameters = np.geomspace(10, 6000, 800) * nanometer
-    index = 1.55 * RIU
-    medium_index = 1.335 * RIU
+    wavelength = 632.8 * ureg.nanometer
+    polarization_values = [0, 90] * ureg.degree
+    optical_power = 1e-3 * ureg.watt
+    NA = 0.2 * ureg.AU
+    diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
+    index = 1.55 * ureg.RIU
+    medium_index = 1.335 * ureg.RIU
 
     volumes = np.pi * (diameters / 2)**2
 

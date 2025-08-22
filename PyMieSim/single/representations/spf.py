@@ -3,10 +3,12 @@
 
 import numpy
 from pydantic.dataclasses import dataclass
-from PyMieSim.special_functions import spherical_to_cartesian
 from typing import List
 import pyvista
-from PyMieSim.single.representations.base import BaseRepresentation, config_dict
+
+from PyMieSim.special_functions import spherical_to_cartesian
+from PyMieSim.single.representations.base import BaseRepresentation
+from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)

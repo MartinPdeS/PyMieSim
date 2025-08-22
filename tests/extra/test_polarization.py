@@ -3,18 +3,19 @@
 
 import pytest
 import numpy as np
+from TypedUnit import ureg
+
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.polarization import Linear, JonesVector, RightCircular, LeftCircular
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 def test_init_linear():
     """
     Test initialization of Linear polarization.
     """
-    output = Linear(element=[50, 20] * degree)
+    output = Linear(element=[50, 20] * ureg.degree)
     assert output is not None, 'Initialization of Linear polarization failed!'
 
 
@@ -51,7 +52,7 @@ def test_init_jones_vector():
 
 
 polarizations = [
-    Linear(element=[50, 20] * degree),
+    Linear(element=[50, 20] * ureg.degree),
     RightCircular(),
     LeftCircular(),
     JonesVector(element=[(1, 0), (0, 1)])
@@ -80,20 +81,20 @@ def test_api(polarization_0, polarization_1):
     """
     Test the API integration with different polarizations.
     """
-    # polarization = Linear(element=[50] * degree)
+    # polarization = Linear(element=[50] * ureg.degree)
     source = Gaussian(
-        wavelength=np.linspace(600, 1000, 50) * nanometer,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU
+        wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1e-3 * ureg.watt,
+        NA=0.2 * ureg.AU
     )
 
     # Configure the spherical scatterer
     scatterer = Sphere(
-        diameter=np.linspace(400, 1400, 10) * nanometer,
+        diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
-        property=1.4 * RIU,
-        medium_property=1.0 * RIU
+        property=1.4 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU
     )
 
     # Set up and run the experiment

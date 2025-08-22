@@ -4,15 +4,13 @@
 import pytest
 import numpy as np
 from unittest.mock import patch
-
-import matplotlib.pyplot as plt
+from TypedUnit import ureg
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PlaneWave
+from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 TOTAL_SIZE = 5
 
@@ -25,29 +23,29 @@ def test_valid_experiment(mock_show):
     parameters, then runs the experiment. It is expected that no error is raised.
     """
     source = Gaussian.build_sequential(
-        wavelength=np.linspace(600, 1000, TOTAL_SIZE) * nanometer,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU,
+        wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1e-3 * ureg.watt,
+        NA=0.2 * ureg.AU,
         total_size=TOTAL_SIZE
     )
 
     scatterer = Sphere.build_sequential(
         source=source,
-        diameter=np.linspace(400, 1400, TOTAL_SIZE) * nanometer,
-        property=1.4 * RIU,
-        medium_property=1.0 * RIU,
+        diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
+        property=1.4 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
         total_size=TOTAL_SIZE
     )
 
     detector = CoherentMode.build_sequential(
         mode_number='LP01',
-        rotation=0 * degree,
-        NA=0.2 * AU,
-        polarization_filter=np.nan * degree,
-        gamma_offset=0 * degree,
-        phi_offset=0 * degree,
-        sampling=100 * AU,
+        rotation=0 * ureg.degree,
+        NA=0.2 * ureg.AU,
+        polarization_filter=np.nan * ureg.degree,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        sampling=100 * ureg.AU,
         total_size=TOTAL_SIZE
     )
 
@@ -64,18 +62,18 @@ def test_invalid_medium_property():
     When medium_property is defined using Material.water, the configuration should be rejected.
     """
     source = Gaussian.build_sequential(
-        wavelength=np.linspace(600, 1000, TOTAL_SIZE) * nanometer,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU,
+        wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1e-3 * ureg.watt,
+        NA=0.2 * ureg.AU,
         total_size=TOTAL_SIZE
     )
 
     with pytest.raises(AssertionError):
         Sphere.build_sequential(
             source=source,
-            diameter=np.linspace(400, 1400, TOTAL_SIZE) * nanometer,
-            property=1.4 * RIU,
+            diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
+            property=1.4 * ureg.RIU,
             medium_property=Material.water,  # This should trigger an error
             total_size=TOTAL_SIZE
         )
@@ -88,19 +86,19 @@ def test_invalid_property():
     When property is defined using Material.water, the configuration should be rejected.
     """
     source = Gaussian.build_sequential(
-        wavelength=np.linspace(600, 1000, TOTAL_SIZE) * nanometer,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU,
+        wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1e-3 * ureg.watt,
+        NA=0.2 * ureg.AU,
         total_size=TOTAL_SIZE
     )
 
     with pytest.raises(AssertionError):
         Sphere.build_sequential(
             source=source,
-            diameter=np.linspace(400, 1400, TOTAL_SIZE) * nanometer,
+            diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             property=Material.water,  # This should trigger an error
-            medium_property=1.0 * RIU,
+            medium_property=1.0 * ureg.RIU,
             total_size=TOTAL_SIZE
         )
 
@@ -113,18 +111,18 @@ def test_parameter_broadcasting():
     the resulting arrays all have a size equal to TOTAL_SIZE.
     """
     source = Gaussian.build_sequential(
-        wavelength=800 * nanometer,  # Scalar value
-        polarization=45 * degree,
-        optical_power=2e-3 * watt,
-        NA=0.3 * AU,
+        wavelength=800 * ureg.nanometer,  # Scalar value
+        polarization=45 * ureg.degree,
+        optical_power=2e-3 * ureg.watt,
+        NA=0.3 * ureg.AU,
         total_size=TOTAL_SIZE
     )
 
     scatterer = Sphere.build_sequential(
         source=source,
-        diameter=500 * nanometer,     # Scalar value
-        property=1.5 * RIU,           # Scalar value
-        medium_property=1.2 * RIU,    # Scalar value
+        diameter=500 * ureg.nanometer,     # Scalar value
+        property=1.5 * ureg.RIU,           # Scalar value
+        medium_property=1.2 * ureg.RIU,    # Scalar value
         total_size=TOTAL_SIZE
     )
 
@@ -141,19 +139,19 @@ def test_broadcasted_values():
     This test verifies that when scalar parameters are provided, the resulting broadcasted arrays
     consist entirely of the original scalar value.
     """
-    value = 700 * nanometer
+    value = 700 * ureg.nanometer
     source = Gaussian.build_sequential(
         wavelength=value,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU,
+        polarization=0 * ureg.degree,
+        optical_power=1e-3 * ureg.watt,
+        NA=0.2 * ureg.AU,
         total_size=TOTAL_SIZE
     )
     scatterer = Sphere.build_sequential(
         source=source,
         diameter=value,
-        property=1.6 * RIU,
-        medium_property=1.0 * RIU,
+        property=1.6 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
         total_size=TOTAL_SIZE
     )
 

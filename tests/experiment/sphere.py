@@ -3,32 +3,32 @@
 
 import pytest
 import numpy as np
+from TypedUnit import ureg
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment import Setup
 from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU, volt, meter
 
 # Configure the medium and core materials for the sphere
-properties = [Material.silver, Material.fused_silica, 1.4 * RIU]
-medium_properties = [Material.water, 1.1 * RIU]
+properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
+medium_properties = [Material.water, 1.1 * ureg.RIU]
 
 # List of measures to be tested
 measures = Sphere.available_measure_list
 
 gaussian_source = Gaussian(
-    wavelength=np.linspace(600, 1000, 150) * nanometer,
-    polarization=0 * degree,
-    optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    wavelength=np.linspace(600, 1000, 150) * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    optical_power=1e-3 * ureg.watt,
+    NA=0.2 * ureg.AU
 )
 
 planewave_source = PlaneWave(
-    wavelength=np.linspace(600, 1000, 150) * nanometer,
-    polarization=0 * degree,
-    amplitude=1 * volt / meter,
+    wavelength=np.linspace(600, 1000, 150) * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    amplitude=1 * ureg.volt / ureg.meter,
 )
 
 sources = [gaussian_source, planewave_source]
@@ -41,7 +41,7 @@ sources = [gaussian_source, planewave_source]
 def test_get_measure(source, measure, property, medium_property):
     # Configure the spherical scatterer
     scatterer = Sphere(
-        diameter=np.linspace(400, 1400, 10) * nanometer,
+        diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
         property=property,
         medium_property=medium_property
@@ -50,12 +50,12 @@ def test_get_measure(source, measure, property, medium_property):
     # Configure the detector
     detector = CoherentMode(
         mode_number='LP01',
-        rotation=0 * degree,
-        NA=[0.1] * AU,
+        rotation=0 * ureg.degree,
+        NA=[0.1] * ureg.AU,
         polarization_filter=None,
-        gamma_offset=[0, 1] * degree,
-        phi_offset=0 * degree,
-        sampling=100 * AU
+        gamma_offset=[0, 1] * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        sampling=100 * ureg.AU
     )
 
     # Set up and run the experiment

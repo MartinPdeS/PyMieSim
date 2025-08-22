@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+import matplotlib.pyplot as plt
+from unittest.mock import patch
+from TypedUnit import ureg
+
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from unittest.mock import patch
-import matplotlib.pyplot as plt
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 @patch('matplotlib.pyplot.show')
@@ -21,26 +22,26 @@ def test_sphere_plottings(mock_show_plt):
     """
     # Create a Gaussian light source
     source = Gaussian(
-        wavelength=750 * nanometer,   # Wavelength in meters (e.g., 750 nm)
-        polarization=0 * degree,      # Polarization angle
-        optical_power=1 * watt,     # Optical power in watts
-        NA=0.3 * AU               # Numerical aperture
+        wavelength=750 * ureg.nanometer,   # Wavelength in meters (e.g., 750 nm)
+        polarization=0 * ureg.degree,      # Polarization angle
+        optical_power=1 * ureg.watt,       # Optical power in ureg.watts
+        NA=0.3 * ureg.AU                   # Numerical aperture
     )
 
     # Create a spherical scatterer
     scatterer = Sphere(
-        diameter=100 * nanometer,     # Diameter in meters (e.g., 100 nm)
-        source=source,       # Associated light source
-        property=1.4 * RIU,           # Refractive index of the sphere
-        medium_property=1.1 * RIU     # Refractive index of the surrounding medium
+        diameter=100 * ureg.nanometer,     # Diameter in meters (e.g., 100 nm)
+        source=source,                     # Associated light source
+        property=1.4 * ureg.RIU,           # Refractive index of the sphere
+        medium_property=1.1 * ureg.RIU     # Refractive index of the surrounding medium
     )
 
     # Create a photodiode detector
     detector = Photodiode(
-        NA=0.1 * AU,                    # Numerical aperture
-        phi_offset=0 * degree,          # Azimuthal angle offset
-        gamma_offset=0 * degree,        # Polar angle offset
-        polarization_filter=0 * degree  # Polarization filter angle
+        NA=0.1 * ureg.AU,                    # Numerical aperture
+        phi_offset=0 * ureg.degree,          # Azimuthal angle offset
+        gamma_offset=0 * ureg.degree,        # Polar angle offset
+        polarization_filter=0 * ureg.degree  # Polarization filter angle
     )
 
     # Retrieve the footprint data for the scatterer

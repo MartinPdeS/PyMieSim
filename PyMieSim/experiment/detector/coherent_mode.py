@@ -4,9 +4,12 @@
 import numpy
 from pydantic.dataclasses import dataclass
 from typing import List, Union, Optional
+from TypedUnit import ureg, Angle, Dimensionless
+
 from PyMieSim.experiment.detector.base import BaseDetector
-from PyMieSim.units import Quantity, degree, AU
-from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.experiment.utils import Sequential
+from PyMieSim.utils import config_dict
+
 
 @dataclass(config=config_dict)
 class CoherentMode(BaseDetector, Sequential):
@@ -20,17 +23,17 @@ class CoherentMode(BaseDetector, Sequential):
     ----------
     mode_number : Union[List[str], str]
         Mode number(s) involved in the detection.
-    NA : Union[List[float], float]
+    NA : Dimensionless
         Numerical aperture(s) of the detector.
-    gamma_offset : Quantity
+    gamma_offset : Angle
         Gamma angular offset (in degrees).
-    phi_offset : Quantity
+    phi_offset : Angle
         Phi angular offset (in degrees).
-    rotation : Quantity
+    rotation : Angle
         Rotation angle of the detector.
-    sampling : Union[List[int], int]
+    sampling : Dimensionless
         Sampling rate(s) for the detector.
-    polarization_filter : Optional[Quantity]
+    polarization_filter : Optional[Angle]
         Polarization filter angle (in degrees).
     mean_coupling : Optional[bool]
         Whether mean coupling is used. Defaults to False.
@@ -38,13 +41,13 @@ class CoherentMode(BaseDetector, Sequential):
         Specifies if the detection is coherent. Defaults to True.
     """
     mode_number: Union[List[str], str]
-    NA: Quantity
-    gamma_offset: Quantity
-    phi_offset: Quantity
-    rotation: Quantity
+    NA: Dimensionless
+    gamma_offset: Angle
+    phi_offset: Angle
+    rotation: Angle
     mean_coupling: bool
     coherent: bool = True
     mean_coupling: Optional[bool] = False
-    cache_NA: Quantity = (0.,) * AU
-    sampling: Optional[Quantity] = (200,) * AU
-    polarization_filter: Optional[Quantity | None] = (numpy.nan, ) * degree
+    cache_NA: Dimensionless = (0.,) * ureg.AU
+    sampling: Optional[Dimensionless] = (200,) * ureg.AU
+    polarization_filter: Optional[Angle] = (numpy.nan, ) * ureg.degree

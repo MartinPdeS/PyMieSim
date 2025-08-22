@@ -1,7 +1,8 @@
 import numpy as np
 from pydantic.dataclasses import dataclass
-from PyMieSim.units import degree, Quantity
 from copy import copy
+from TypedUnit import Angle, ureg
+
 
 config_dict = dict(
     kw_only=False,
@@ -146,7 +147,7 @@ class Linear(JonesVector):
 
     Parameters
     ----------
-    element : Quantity
+    element : Angle
         A `Quantity` object representing the angle(s) of linear polarization. This is converted into
         a Jones vector based on the provided angle in degrees.
 
@@ -163,11 +164,11 @@ class Linear(JonesVector):
         Converts the input `element` (polarization angle) to a Jones vector representation
         and stores it in `element`. It also stores the polarization angle in degrees.
     """
-    element: Quantity
+    element: Angle
 
     def __post_init__(self):
         self.angle = np.atleast_1d(self.element.magnitude) * self.element.units
-        angle = self.element.to(degree).magnitude
+        angle = self.element.to(ureg.degree).magnitude
 
         self.element = np.empty([len(self.angle), 2]).astype(complex)
         self.element[:, 0] = np.cos(np.deg2rad(angle))

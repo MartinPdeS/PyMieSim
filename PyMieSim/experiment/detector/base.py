@@ -3,8 +3,9 @@
 import numpy
 from pint_pandas import PintArray
 from pydantic import field_validator
+from TypedUnit import ureg, Angle
+
 from PyMieSim.binary.interface_sets import CppDetectorSet
-from PyMieSim.units import Quantity, radian, degree
 
 
 class BaseDetector:
@@ -19,21 +20,21 @@ class BaseDetector:
     ----------
     mode_number : str
         The mode number used in the detection process, identifying the angular momentum mode involved.
-    NA : Quantity
+    NA : Dimensionless
         The numerical aperture of the detector, typically a float-like value wrapped in a physical unit (e.g., steradian).
-    gamma_offset : Quantity
+    gamma_offset : Angle
         The angular offset in the gamma direction (in degrees).
-    phi_offset : Quantity
+    phi_offset : Angle
         The angular offset in the phi direction (in degrees).
-    rotation : Quantity
+    rotation : Angle
         The rotational angle of the detector (in degrees).
     mean_coupling : bool
         Specifies whether the mean coupling of detected modes is to be considered (default is False).
     coherent : bool
         Specifies whether the detection process is coherent (default is True).
-    sampling : Optional[Quantity]
+    sampling : Optional[Dimensionless]
         The sampling rate of the detector. If not specified, defaults to 200.
-    polarization_filter : Optional[Quantity]
+    polarization_filter : Optional[Angle]
         The polarization filter angle (in degrees). Defaults to NaN if not provided.
 
     Methods
@@ -77,10 +78,9 @@ class BaseDetector:
             A NumPy array containing the validated and converted polarization filter value.
         """
         if value is None:
-            value = numpy.nan * degree
+            value = numpy.nan * ureg.degree
 
-        if not isinstance(value, Quantity) or not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
+        Angle.check(value)
 
         return numpy.atleast_1d(value).astype(float)
 
@@ -99,9 +99,7 @@ class BaseDetector:
         numpy.ndarray
             A NumPy array containing the validated and converted angle value.
         """
-        if not isinstance(value, Quantity) or not value.check(degree):
-            raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
-
+        Angle.check(value)
         return numpy.atleast_1d(value)
 
     @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
@@ -119,13 +117,8 @@ class BaseDetector:
         numpy.ndarray
             A NumPy array representing the validated input value.
         """
-        if not isinstance(value, Quantity) or not value.check(degree):
-            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
-
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
+        Angle.check(value)
+        return numpy.atleast_1d(value)
 
     def _generate_binding(self) -> None:
         """
@@ -139,10 +132,10 @@ class BaseDetector:
             "sampling": self.sampling,
             "NA": self.NA,
             "cache_NA": self.cache_NA,
-            "polarization_filter": self.polarization_filter.to(radian).magnitude if self.polarization_filter is not None else numpy.nan,
-            "phi_offset": self.phi_offset.to(radian).magnitude,
-            "gamma_offset": self.gamma_offset.to(radian).magnitude,
-            "rotation": self.rotation.to(radian).magnitude,
+            "polarization_filter": self.polarization_filter.to(ureg.radian).magnitude if self.polarization_filter is not None else numpy.nan,
+            "phi_offset": self.phi_offset.to(ureg.radian).magnitude,
+            "gamma_offset": self.gamma_offset.to(ureg.radian).magnitude,
+            "rotation": self.rotation.to(ureg.radian).magnitude,
             "is_sequential": self.is_sequential
         }
 

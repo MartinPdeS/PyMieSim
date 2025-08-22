@@ -1,20 +1,10 @@
 import numpy as np
 from typing import Union, List, Dict, Optional, TypeVar
-from PyMieSim.units import Quantity
 from PyOptik.material.base_class import BaseMaterial
+from TypedUnit import Quantity
 
 
 T = TypeVar('T')
-
-from pydantic import ConfigDict
-
-# Configuration dictionary for the Pydantic dataclass
-config_dict = ConfigDict(
-    kw_only=True,
-    slots=True,
-    extra='forbid',
-    arbitrary_types_allowed=True
-)
 
 
 def broadcast_params(total_size: Optional[int] = None, **kwargs: Union[T, List[T]]) -> Dict[str, np.ndarray]:

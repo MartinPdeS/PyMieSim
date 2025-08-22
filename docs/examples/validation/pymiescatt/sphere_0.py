@@ -9,24 +9,24 @@ Sphere Particles: 0
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from TypedUnit import ureg
 
 # PyMieSim imports
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from PyMieSim.directories import validation_data_path
 from MPSPlots.styles import mps
 
 
 # Define parameters
-wavelength = 632.8 * nanometer  # Wavelength of the light source in meters
-polarization_value = 0 * degree
-optical_power = 1e-3 * watt  # Power in watts
-NA = 0.2 * AU  # Numerical aperture
-medium_index = 1.21 * RIU
-index = 1.4 * RIU
-diameters = np.geomspace(10, 1_000, 50) * nanometer  # Geometric space for diameters
+wavelength = 632.8 * ureg.nanometer  # Wavelength of the light source in meters
+polarization_value = 0 * ureg.degree
+optical_power = 1e-3 * ureg.watt  # Power in watts
+NA = 0.2 * ureg.AU  # Numerical aperture
+medium_index = 1.21 * ureg.RIU
+index = 1.4 * ureg.RIU
+diameters = np.geomspace(10, 1_000, 50) * ureg.nanometer  # Geometric space for diameters
 
 # Setup source
 source = Gaussian(

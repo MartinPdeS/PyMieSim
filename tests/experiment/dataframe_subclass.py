@@ -4,12 +4,12 @@
 import pytest
 import numpy as np
 import matplotlib.pyplot as plt
+from TypedUnit import ureg
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 def get_experiment_dataframe():
     """
@@ -17,25 +17,25 @@ def get_experiment_dataframe():
     Returns a PyMieSimDataFrame instance.
     """
     source = Gaussian(
-        wavelength=np.linspace(600, 1000, 50) * nanometer,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU
+        wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1e-3 * ureg.watt,
+        NA=0.2 * ureg.AU
     )
     scatterer = Sphere(
-        diameter=100 * nanometer,
+        diameter=100 * ureg.nanometer,
         source=source,
-        property=1.4 * RIU,
-        medium_property=1.1 * RIU
+        property=1.4 * ureg.RIU,
+        medium_property=1.1 * ureg.RIU
     )
     detector = CoherentMode(
         mode_number='LP01',
-        rotation=0 * degree,
-        NA=[0.1, 0.2] * AU,
+        rotation=0 * ureg.degree,
+        NA=[0.1, 0.2] * ureg.AU,
         polarization_filter=None,
-        gamma_offset=0 * degree,
-        phi_offset=0 * degree,
-        sampling=100 * AU
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        sampling=100 * ureg.AU
     )
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
     # Get the measurement dataframe (assumed to be a PyMieSimDataFrame subclass)

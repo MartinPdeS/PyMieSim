@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from TypedUnit import ureg
+from PyOptik import Material
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian, PlaneWave
-from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU, volt, meter
 
 
 @pytest.mark.parametrize("wavelength, polarization, optical_power, NA", [
-    (100, 0 * degree, 1e-3 * watt, 0.2 * AU),
-    (100 * nanometer, 0 * degree, 1e-3, 0.2 * AU),
-    (100 * nanometer, 0 * degree, 1e-3 * watt, 0.2),
-    (100 * nanometer, 0, 1e-3 * watt, 0.2 * AU)
+    (100, 0 * ureg.degree, 1e-3 * ureg.watt, 0.2 * ureg.AU),
+    (100 * ureg.nanometer, 0 * ureg.degree, 1e-3, 0.2 * ureg.AU),
+    (100 * ureg.nanometer, 0 * ureg.degree, 1e-3 * ureg.watt, 0.2),
+    (100 * ureg.nanometer, 0, 1e-3 * ureg.watt, 0.2 * ureg.AU)
 ])
 def test_invalid_gaussian_initialization(wavelength, polarization, optical_power, NA):
     with pytest.raises(ValueError):
@@ -22,24 +22,24 @@ def test_invalid_gaussian_initialization(wavelength, polarization, optical_power
 
 
 @pytest.mark.parametrize("diameter, property, medium_property", [
-    (100, 1.5 * RIU, Material.water),
-    (100 * nanometer, 1.5, Material.water),
-    (100 * nanometer, 1.5 * RIU, 1.0)
+    (100, 1.5 * ureg.RIU, Material.water),
+    (100 * ureg.nanometer, 1.5, Material.water),
+    (100 * ureg.nanometer, 1.5 * ureg.RIU, 1.0)
 ])
 def test_invalid_sphere_initialization(diameter, property, medium_property):
-    source = PlaneWave(wavelength=1e3 * nanometer, polarization=0 * degree, amplitude=1 * volt / meter)
+    source = PlaneWave(wavelength=1e3 * ureg.nanometer, polarization=0 * ureg.degree, amplitude=1 * ureg.volt / ureg.meter)
     with pytest.raises(ValueError):
         Sphere(diameter=diameter, source=source, property=property, medium_property=medium_property)
 
 
 @pytest.mark.parametrize("mode_number, rotation, NA, polarization_filter, gamma_offset, phi_offset, sampling", [
-    ('invalid', 0 * degree, 0.2 * AU, None, 0 * degree, 0 * degree, 100 * AU),
-    ('LP01', 0, 0.2 * AU, None, 0 * degree, 0 * degree, 100 * AU),
-    ('LP01', 0 * degree, 0.2, None, 0 * degree, 0 * degree, 100 * AU),
-    ('LP01', 0 * degree, 0.2 * AU, 10, 0 * degree, 0 * degree, 100 * AU),
-    ('LP01', 0 * degree, 0.2 * AU, None, 0, 0 * degree, 100 * AU),
-    ('LP01', 0 * degree, 0.2 * AU, None, 0 * degree, 0, 100 * AU),
-    ('LP01', 0 * degree, 0.2 * AU, None, 0 * degree, 0 * degree, 100)
+    ('invalid', 0 * ureg.degree, 0.2 * ureg.AU, None, 0 * ureg.degree, 0 * ureg.degree, 100 * ureg.AU),
+    ('LP01', 0, 0.2 * ureg.AU, None, 0 * ureg.degree, 0 * ureg.degree, 100 * ureg.AU),
+    ('LP01', 0 * ureg.degree, 0.2, None, 0 * ureg.degree, 0 * ureg.degree, 100 * ureg.AU),
+    ('LP01', 0 * ureg.degree, 0.2 * ureg.AU, 10, 0 * ureg.degree, 0 * ureg.degree, 100 * ureg.AU),
+    ('LP01', 0 * ureg.degree, 0.2 * ureg.AU, None, 0, 0 * ureg.degree, 100 * ureg.AU),
+    ('LP01', 0 * ureg.degree, 0.2 * ureg.AU, None, 0 * ureg.degree, 0, 100 * ureg.AU),
+    ('LP01', 0 * ureg.degree, 0.2 * ureg.AU, None, 0 * ureg.degree, 0 * ureg.degree, 100)
 ])
 def test_invalid_coherent_mode_initialization(mode_number, rotation, NA, polarization_filter, gamma_offset, phi_offset, sampling):
     with pytest.raises(ValueError):

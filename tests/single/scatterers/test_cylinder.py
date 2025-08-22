@@ -2,19 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from TypedUnit import ureg
+from PyOptik import Material
+import matplotlib.pyplot as plt
+from unittest.mock import patch
+
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyOptik import Material
-from unittest.mock import patch
-import matplotlib.pyplot as plt
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 from PyMieSim.single import plot_system
 
 # Core configurations separated for clarity and functionality
 
-property = [Material.BK7, 1.6 * RIU]
-medium_property = [Material.water, 1.4 * RIU]
+property = [Material.BK7, 1.6 * ureg.RIU]
+medium_property = [Material.water, 1.4 * ureg.RIU]
 
 
 # Attributes to check
@@ -33,10 +34,10 @@ plotting_functions = [
 @pytest.fixture()
 def source():
     return Gaussian(
-        wavelength=750 * nanometer,
-        polarization=0 * degree,
-        optical_power=1 * watt,
-        NA=0.3 * AU
+        wavelength=750 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU
     )
 
 
@@ -44,13 +45,13 @@ def source():
 @pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
 def test_cylinder_coupling(property, medium_property, source):
     detector = Photodiode(
-        NA=0.2 * AU,
-        gamma_offset=0 * degree,
-        phi_offset=0 * degree,
+        NA=0.2 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
     )
 
     scatterer = Cylinder(
-        diameter=100 * nanometer,
+        diameter=100 * ureg.nanometer,
         source=source,
         medium_property=medium_property,
         property=property
@@ -65,7 +66,7 @@ def test_cylinder_coupling(property, medium_property, source):
 @pytest.mark.parametrize('attribute', attributes)
 def test_cylinder_attributes(attribute, property, medium_property, source):
     scatterer = Cylinder(
-        diameter=100 * nanometer,
+        diameter=100 * ureg.nanometer,
         source=source,
         medium_property=medium_property,
         property=property
@@ -84,7 +85,7 @@ def test_cylinder_attributes(attribute, property, medium_property, source):
 @patch('matplotlib.pyplot.show')
 def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, source):
     scatterer = Cylinder(
-        diameter=100 * nanometer,
+        diameter=100 * ureg.nanometer,
         source=source,
         medium_property=medium_property,
         property=property
@@ -103,10 +104,10 @@ def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function,
 @patch('pyvista.Plotter.show')
 def test_plot_system(mock_show, source):
     scatterer = Cylinder(
-        diameter=100 * nanometer,
+        diameter=100 * ureg.nanometer,
         source=source,
-        medium_property=1.0 * RIU,
-        property=1.5 * RIU
+        medium_property=1.0 * ureg.RIU,
+        property=1.5 * ureg.RIU
     )
 
     plot_system(scatterer)

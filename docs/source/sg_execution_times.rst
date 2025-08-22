@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.575** total execution time for 61 files **from all galleries**:
+**00:01.799** total execution time for 61 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,14 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_extras_array_scattering.py` (``../examples/extras/array_scattering.py``)
-     - 00:00.575
+   * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py` (``../examples/experiment/coreshell/coreshell_coupling_vs_corediameter.py``)
+     - 00:01.081
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py` (``../examples/experiment/coreshell/coreshell_coupling_vs_na_cache.py``)
+     - 00:00.455
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_plot_coupling_vs_NA.py` (``../examples/extras/plot_coupling_vs_NA.py``)
+     - 00:00.262
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_Qback_vs_corediameter.py` (``../examples/experiment/coreshell/coreshell_Qback_vs_corediameter.py``)
      - 00:00.000
@@ -42,12 +48,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py` (``../examples/experiment/coreshell/coreshell_b1_vs_corediameter.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py` (``../examples/experiment/coreshell/coreshell_coupling_vs_corediameter.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py` (``../examples/experiment/coreshell/coreshell_coupling_vs_na_cache.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py` (``../examples/experiment/cylinder/cylinder_Qabs_vs_diameter.py``)
@@ -128,13 +128,13 @@ Computation times
    * - :ref:`sphx_glr_gallery_extras_SphereProperties.py` (``../examples/extras/SphereProperties.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_gallery_extras_array_scattering.py` (``../examples/extras/array_scattering.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_Qsca_vs_permittivity_vs_size_parameter.py` (``../examples/extras/plot_Qsca_vs_permittivity_vs_size_parameter.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_coupling_heatmap.py` (``../examples/extras/plot_coupling_heatmap.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_plot_coupling_vs_NA.py` (``../examples/extras/plot_coupling_vs_NA.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``../examples/extras/plot_system.py``)

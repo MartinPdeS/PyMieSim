@@ -4,10 +4,12 @@ from typing import Optional
 import numpy
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from PyMieSim.units import Quantity, degree, AU
 from typing import Tuple
+from TypedUnit import ureg, Angle, Dimensionless
+
 from PyMieSim.experiment.detector.base import BaseDetector
-from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.experiment.utils import Sequential
+from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict)
@@ -17,15 +19,15 @@ class Photodiode(BaseDetector, Sequential):
 
     Parameters
     ----------
-    NA : Union[List[float], float]
+    NA : Dimensionless
         Numerical aperture(s) of the detector.
-    gamma_offset : Quantity
+    gamma_offset : Angle
         Gamma angular offset (in degrees).
-    phi_offset : Quantity
+    phi_offset : Angle
         Phi angular offset (in degrees).
-    polarization_filter : Optional[Quantity]
+    polarization_filter : Optional[Angle]
         Polarization filter angle (in degrees).
-    sampling : Union[List[int], int]
+    sampling : Dimensionless
         Sampling rate(s) for the detector.
     mean_coupling : bool
         Whether mean coupling is used. Defaults to True.
@@ -36,16 +38,16 @@ class Photodiode(BaseDetector, Sequential):
     mode_number : str
         Mode number of the detector. Defaults to 'NC00'.
     """
-    NA: Quantity
-    gamma_offset: Quantity
-    phi_offset: Quantity
+    NA: Dimensionless
+    gamma_offset: Angle
+    phi_offset: Angle
     mean_coupling: bool
     coherent: bool
-    cache_NA: Quantity = (0.,) * AU
-    sampling: Optional[Quantity] = (200,) * AU
-    polarization_filter: Optional[Quantity | None] = (numpy.nan, ) * degree
+    cache_NA: Dimensionless = (0.,) * ureg.AU
+    sampling: Optional[Dimensionless] = (200,) * ureg.AU
+    polarization_filter: Optional[Angle | None] = (numpy.nan, ) * ureg.degree
     mode_number: Tuple[str] = field(default_factory=lambda: ['NC00'], init=True)
-    rotation: Quantity = field(default=(0,) * degree, init=True)
+    rotation: Angle = field(default=(0,) * ureg.degree, init=True)
 
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)

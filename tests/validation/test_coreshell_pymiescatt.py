@@ -3,11 +3,12 @@
 
 import pytest
 import numpy as np
+import pandas as pd
+from TypedUnit import ureg
+
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
-import pandas as pd
 from PyMieSim.directories import validation_data_path
 
 
@@ -26,10 +27,10 @@ PYMIESCATT_MEASURES = {
 @pytest.fixture
 def gaussian_source():
     return Gaussian(
-        wavelength=1000 * nanometer,  # Wavelength in meters
-        polarization=0 * degree,   # Polarization angle
-        optical_power=1 * watt,  # Optical power in watts
-        NA=0.3 * AU           # Numerical aperture
+        wavelength=1000 * ureg.nanometer,  # Wavelength in meters
+        polarization=0 * ureg.degree,   # Polarization angle
+        optical_power=1 * ureg.watt,  # Optical power in ureg.watts
+        NA=0.3 * ureg.AU           # Numerical aperture
     )
 
 
@@ -49,12 +50,12 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     measure : str
         The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    core_index = 1.4 + 0.3j * RIU
-    core_index = 1.4 + 0.3j * RIU
-    shell_index = 1.3 * RIU
-    core_diameters = np.geomspace(10, 6000, 80) * nanometer
-    shell_thickness = 600 * nanometer
-    medium_indexes = [1.0] * RIU
+    core_index = 1.4 + 0.3j * ureg.RIU
+    core_index = 1.4 + 0.3j * ureg.RIU
+    shell_index = 1.3 * ureg.RIU
+    core_diameters = np.geomspace(10, 6000, 80) * ureg.nanometer
+    shell_thickness = 600 * ureg.nanometer
+    medium_indexes = [1.0] * ureg.RIU
 
     # Get data from PyMieSim
     scatterer = CoreShell(

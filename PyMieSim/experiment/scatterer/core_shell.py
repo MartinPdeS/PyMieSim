@@ -3,12 +3,14 @@
 
 from pydantic.dataclasses import dataclass
 from typing import List
-from PyMieSim.binary.interface_sets import CppCoreShellSet
 from PyOptik.material.base_class import BaseMaterial
-from PyMieSim.units import Quantity
+from TypedUnit import Length, RefractiveIndex
+
+from PyMieSim.binary.interface_sets import CppCoreShellSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.experiment.utils import Sequential
+from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -24,24 +26,24 @@ class CoreShell(BaseScatterer, Sequential):
     ----------
     source : PyMieSim.experiment.source.base.BaseSource
         Light source configuration for the simulation.
-    core_diameter : Quantity
+    core_diameter : Length
         Diameters of the core components.
-    shell_thickness : Quantity
+    shell_thickness : Length
         Thicknesses of the shell components.
-    core_property : List[BaseMaterial] | List[Quantity]
+    core_property : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the core.
-    shell_property : List[BaseMaterial] | List[Quantity]
+    shell_property : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the shell.
-    medium_property : List[BaseMaterial] | List[Quantity]
+    medium_property : List[BaseMaterial] | List[RefractiveIndex]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
     """
     source: BaseSource
-    core_diameter: Quantity
-    shell_thickness: Quantity
-    core_property: List[BaseMaterial] | List[Quantity]
-    shell_property: List[BaseMaterial] | List[Quantity]
-    medium_property: List[BaseMaterial] | List[Quantity]
+    core_diameter: Length
+    shell_thickness: Length
+    core_property: List[BaseMaterial] | List[RefractiveIndex]
+    shell_property: List[BaseMaterial] | List[RefractiveIndex]
+    medium_property: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
         'Qsca', 'Qext', 'Qabs', 'Qratio', 'Qforward', 'Qback', 'Qpr',

@@ -3,11 +3,14 @@
 from typing import Union
 from PyMieSim.single.source import Gaussian as _  # noqa:F401  # Necessary for pybind11 binding initialization
 from pydantic.dataclasses import dataclass
-from PyMieSim.units import Quantity
+from TypedUnit import Length, Dimensionless, Power, Angle
+
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.experiment.utils import Sequential
 from PyMieSim.polarization import BasePolarization, Linear
 from PyMieSim.binary.interface_sets import CppGaussianSourceSet
+from PyMieSim.utils import config_dict
+
 
 @dataclass(config=config_dict)
 class Gaussian(BaseSource, Sequential):
@@ -27,16 +30,15 @@ class Gaussian(BaseSource, Sequential):
     optical_power : Quantity
         The optical power of the source, in Watts.
     """
-    NA: Quantity
-    optical_power: Quantity
-    wavelength: Quantity
-    polarization: Union[BasePolarization, Quantity]
+    NA: Dimensionless
+    optical_power: Power
+    wavelength: Length
+    polarization: Union[BasePolarization, Angle]
 
     def _generate_binding(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
-
         """
         self.mapping = {}
 

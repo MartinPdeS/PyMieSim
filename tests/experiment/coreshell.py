@@ -3,33 +3,33 @@
 
 import pytest
 import numpy as np
+from PyOptik import Material
+from TypedUnit import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment import Setup
-from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU, volt, meter
 
 # Configure the medium, shell and core materials for the sphere
-core_properties = [Material.silver, Material.fused_silica, 1.4 * RIU]
-shell_properties = [Material.silver, Material.fused_silica, 1.4 * RIU]
-medium_properties = [Material.water, 1.1 * RIU]
+core_properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
+shell_properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
+medium_properties = [Material.water, 1.1 * ureg.RIU]
 
 # Define measures to test
 measures = CoreShell.available_measure_list
 
 gaussian_source = Gaussian(
-    wavelength=np.linspace(600, 1000, 50) * nanometer,
-    polarization=0 * degree,
-    optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    optical_power=1e-3 * ureg.watt,
+    NA=0.2 * ureg.AU
 )
 
 planewave_source = PlaneWave(
-    wavelength=np.linspace(600, 1000, 50) * nanometer,
-    polarization=0 * degree,
-    amplitude=1 * volt / meter,
+    wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    amplitude=1 * ureg.volt / ureg.meter,
 )
 
 sources = [gaussian_source, planewave_source]
@@ -43,8 +43,8 @@ sources = [gaussian_source, planewave_source]
 def test_measure(measure, source, core_property, shell_property, medium_property):
     # Setup core-shell scatterer
     scatterer = CoreShell(
-        core_diameter=np.linspace(800, 1000, 10) * nanometer,
-        shell_thickness=300 * nanometer,
+        core_diameter=np.linspace(800, 1000, 10) * ureg.nanometer,
+        shell_thickness=300 * ureg.nanometer,
         source=source,
         shell_property=shell_property,
         core_property=core_property,
@@ -53,11 +53,11 @@ def test_measure(measure, source, core_property, shell_property, medium_property
 
     # Setup detector
     detector = Photodiode(
-        NA=0.2 * AU,
+        NA=0.2 * ureg.AU,
         polarization_filter=None,
-        gamma_offset=0 * degree,
-        phi_offset=0 * degree,
-        sampling=100 * AU
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        sampling=100 * ureg.AU
     )
 
     # Configure and run the experiment

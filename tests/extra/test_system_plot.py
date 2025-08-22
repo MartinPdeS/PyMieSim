@@ -1,12 +1,14 @@
 import pytest
 from unittest.mock import patch
+from TypedUnit import ureg
+
+
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import plot_system
 from math import sqrt
 import matplotlib.pyplot as plt
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 @pytest.fixture
@@ -18,10 +20,10 @@ def source():
         Gaussian: A Gaussian light source object.
     """
     return Gaussian(
-        wavelength=1550 * nanometer,  # 1550 nm wavelength
-        polarization=0 * degree,      # Linear polarization angle in radians
-        optical_power=1 * watt,     # Optical power in arbitrary units
-        NA=0.3 * AU               # Numerical Aperture
+        wavelength=1550 * ureg.nanometer,  # 1550 nm wavelength
+        polarization=0 * ureg.degree,      # Linear polarization angle in radians
+        optical_power=1 * ureg.watt,     # Optical power in arbitrary units
+        NA=0.3 * ureg.AU               # Numerical Aperture
     )
 
 
@@ -37,10 +39,10 @@ def scatterer(source):
         Cylinder: A cylindrical scatterer object.
     """
     return Cylinder(
-        diameter=780 * nanometer,     # 7.8 micrometers diameter
+        diameter=780 * ureg.nanometer,     # 7.8 micrometers diameter
         source=source,
-        medium_property=1.0 * RIU,    # Refractive index of the surrounding medium
-        property=sqrt(1.5) * RIU      # Refractive index of the scatterer
+        medium_property=1.0 * ureg.RIU,    # Refractive index of the surrounding medium
+        property=sqrt(1.5) * ureg.RIU      # Refractive index of the scatterer
     )
 
 
@@ -53,10 +55,10 @@ def detector():
         Photodiode: A photodiode detector object.
     """
     return Photodiode(
-        NA=0.1 * AU,                     # Numerical Aperture
-        gamma_offset=90 * degree,        # Gamma offset in degrees
-        phi_offset=0 * degree,           # Phi offset in degrees
-        polarization_filter=0 * degree   # Polarization filter angle in degrees
+        NA=0.1 * ureg.AU,                     # Numerical Aperture
+        gamma_offset=90 * ureg.degree,        # Gamma offset in ureg.degrees
+        phi_offset=0 * ureg.degree,           # Phi offset in ureg.degrees
+        polarization_filter=0 * ureg.degree   # Polarization filter angle in ureg.degrees
     )
 
 

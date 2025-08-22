@@ -3,32 +3,32 @@
 
 import pytest
 import numpy
+from TypedUnit import ureg
 
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 SIZE = 10
 ONES = numpy.ones(SIZE)
 
-WAVELENGTH = numpy.linspace(600, 1000, SIZE) * nanometer
-POLARIZATION = 0 * degree
-OPTICAL_POWER = 1e-3 * watt
-NA = 0.2 * AU
+WAVELENGTH = numpy.linspace(600, 1000, SIZE) * ureg.nanometer
+POLARIZATION = 0 * ureg.degree
+OPTICAL_POWER = 1e-3 * ureg.watt
+NA = 0.2 * ureg.AU
 
-DIAMETER = 1400 * nanometer
-PROPERTY = 1.4 * RIU
-MEDIUM_PROPERTY = 1.1 * RIU
+DIAMETER = 1400 * ureg.nanometer
+PROPERTY = 1.4 * ureg.RIU
+MEDIUM_PROPERTY = 1.1 * ureg.RIU
 
 
 CACHE_NA = 0.2 * NA
-PHI_OFFSET = 0 * degree
-GAMMA_OFFSET = 0 * degree
-POLARIZATION_FILTER = 0 * degree
-SAMPLING = 100 * AU
-ROTATION = 0 * degree
+PHI_OFFSET = 0 * ureg.degree
+GAMMA_OFFSET = 0 * ureg.degree
+POLARIZATION_FILTER = 0 * ureg.degree
+SAMPLING = 100 * ureg.AU
+ROTATION = 0 * ureg.degree
 
 
 @pytest.fixture

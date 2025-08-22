@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from typing import List
-from PyMieSim.units import Quantity
 from pydantic.dataclasses import dataclass
-from PyMieSim.binary.interface_sets import CppCylinderSet
 from PyOptik.material.base_class import BaseMaterial
+from TypedUnit import Length, RefractiveIndex
+
+from PyMieSim.binary.interface_sets import CppCylinderSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.experiment.utils import Sequential
+from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -20,17 +22,17 @@ class Cylinder(BaseScatterer, Sequential):
     ----------
     source : PyMieSim.experiment.source.base.BaseSource
         Light source configuration for the simulation.
-    diameter : Quantity
+    diameter : Length
         Diameter(s) of the cylinder in meters.
-    property : List[BaseMaterial] | List[Quantity]
+    property : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the spherical scatterers themselves.
-    medium_property : List[BaseMaterial] | List[Quantity]
+    medium_property : List[BaseMaterial] | List[RefractiveIndex]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
     source: BaseSource
-    diameter: Quantity
-    property: List[BaseMaterial] | List[Quantity]
-    medium_property: List[BaseMaterial] | List[Quantity]
+    diameter: Length
+    property: List[BaseMaterial] | List[RefractiveIndex]
+    medium_property: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
         'Qsca', 'Qext', 'Qabs', 'Csca', 'Cext', 'Cabs', 'a11',

@@ -2,49 +2,35 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from typing import Optional
+import pyvista
+from TypedUnit import Power, Angle, Length, AnyUnit, ureg
+from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.single.representations import Footprint
-from MPSPlots.colormaps import blue_black_red
-from PyMieSim.units import Quantity, watt, meter, second, farad, volt
-from PyMieSim import units
 from PyMieSim.single.scatterer.base import BaseScatterer
-import pyvista
 
-c = 299792458.0 * meter / second  #: Speed of light in vacuum (m/s).
-epsilon0 = 8.854187817620389e-12 * farad / meter  #: Vacuum permittivity (F/m).
+c = 299792458.0 * ureg.meter / ureg.second  #: Speed of light in vacuum (m/s).
+epsilon0 = 8.854187817620389e-12 * ureg.farad / ureg.meter  #: Vacuum permittivity (F/m).
 
 
-class BaseDetector(units.UnitsValidation):
-    medium_refractive_index: Optional[Quantity] = 1.0 * units.RIU
-
+class BaseDetector():
     @property
-    def max_angle(self) -> Quantity:
+    def max_angle(self) -> Angle:
         """
         Returns the maximum angle of the detector in radians.
         This is used to determine the angular coverage of the detector.
         """
-        return self._cpp_max_angle * units.radian
+        return self._cpp_max_angle * ureg.radian
 
     @property
-    def min_angle(self) -> Quantity:
+    def min_angle(self) -> Angle:
         """
         Returns the minimum angle of the detector in radians.
         This is used to determine the angular coverage of the detector.
         """
-        return self._cpp_min_angle * units.radian
+        return self._cpp_min_angle * ureg.radian
 
-    def _validate_angle_units(cls, value):
-        """
-        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
-        """
-        if not isinstance(value, Quantity) or not value.check(units.degree):
-            raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
-
-        return value
-
-    def get_coupling(self, scatterer: BaseScatterer) -> Quantity:
+    def get_coupling(self, scatterer: BaseScatterer) -> Power:
         r"""
         Compute the light coupling between the detector and a scatterer.
 
@@ -82,7 +68,7 @@ class BaseDetector(units.UnitsValidation):
         A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.
 
         """
-        return self._cpp_get_coupling(scatterer) * units.watt
+        return self._cpp_get_coupling(scatterer) * ureg.watt
 
     def get_footprint(self, scatterer: BaseScatterer) -> Footprint:
         r"""
@@ -163,7 +149,7 @@ class BaseDetector(units.UnitsValidation):
         # Add a scalar bar to the scene for the real part of the field
         scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
 
-    def get_poynting_vector(self, scatterer: BaseScatterer, distance: Quantity = 1 * meter) -> float:
+    def get_poynting_vector(self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter) -> float:
         r"""
         Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
 
@@ -211,15 +197,15 @@ class BaseDetector(units.UnitsValidation):
             r=distance
         )
 
-        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2) * volt / meter
+        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2) * ureg.volt / ureg.meter
 
         B_norm = (E_norm / c).to('tesla')
 
         poynting = epsilon0 * c**2 * E_norm * B_norm
 
-        return poynting.to(watt/meter ** 2)
+        return poynting.to(ureg.watt / ureg.meter ** 2)
 
-    def get_energy_flow(self, scatterer: BaseScatterer, distance: Quantity = 1 * meter) -> Quantity:
+    def get_energy_flow(self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter) -> AnyUnit:
         r"""
         Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.
 

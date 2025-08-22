@@ -5,11 +5,13 @@ from PyMieSim.single.source import PlaneWave as _  # noqa:F401  # Necessary for 
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
-from PyMieSim.units import Quantity
+from TypedUnit import Length, Angle, ElectricField
+
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.polarization import BasePolarization, Linear
-from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.experiment.utils import Sequential
 from PyMieSim.binary.interface_sets import CppPlaneWaveSourceSet
+from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict)
@@ -28,9 +30,9 @@ class PlaneWave(BaseSource, Sequential):
     amplitude : Quantity
         The amplitude of the plane wave, in Volt/Meter.
     """
-    amplitude: Quantity
-    wavelength: Quantity
-    polarization: Union[BasePolarization, Quantity]
+    amplitude: ElectricField
+    wavelength: Length
+    polarization: Union[BasePolarization, Angle]
 
     @field_validator('amplitude', mode='before')
     def _validate_array(cls, value):

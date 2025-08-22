@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import Union, Optional, List
 import numpy
 import pandas as pd
 from pydantic.dataclasses import dataclass
+from TypedUnit import ureg
+
 from PyMieSim.binary.interface_experiment import EXPERIMENT
-from PyMieSim.units import AU, meter, watt
-from typing import Union, Optional, List
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-import PyMieSim
 from PyMieSim.binary.interface_sets import CppDetectorSet
+import PyMieSim
 
 
 class EmptyDetector:
@@ -246,12 +247,12 @@ class Setup:
         """
         match measure[0]:
             case 'C':
-                return meter**2  # Cross-section measure
+                return ureg.meter**2  # Cross-section measure
             case 'c':
                 assert self.detector is not None, "Detector needs to be defined in order to measure coupling"
-                return watt  # Power measure
+                return ureg.watt  # Power measure
             case _:
-                return AU  # Arbitrary units for other measures
+                return ureg.dimensionless  # Arbitrary units for other measures
 
     def _set_data(self, measure: str, dataframe: pd.DataFrame, array: numpy.ndarray, dtype: type, is_complex: bool, add_units: bool) -> None:
         """

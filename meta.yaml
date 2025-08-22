@@ -20,7 +20,6 @@ requirements:
     - setuptools_scm[toml] ~=8.0
   run:
     - python {{PY_VER}}*
-    # - flexparser <0.4  # This is due to a dataclass inheritance problem coming from the pint package
     - martinpdes::pyoptik ==v1.10.8
     - martinpdes::mpsplots ==v1.6.4
     - matplotlib ~=3.10.3
@@ -30,6 +29,7 @@ requirements:
     - pint-pandas ~=0.6
     - tabulate ~=0.9
     - pyvista ==0.44.2
+    - typedunit
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim

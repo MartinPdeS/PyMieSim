@@ -3,50 +3,52 @@
 
 import numpy
 import pyvista
-from PyMieSim import units
+from TypedUnit import Length, ElectricField, ureg, Angle, Power, Dimensionless
+from pydantic.dataclasses import dataclass
+
+from PyMieSim.utils import config_dict
 from PyMieSim.polarization import BasePolarization
 from PyMieSim.binary.interface_source import GAUSSIAN
 from PyMieSim.single.source.base import BaseSource
 
 
+@dataclass(config=config_dict, kw_only=True)
 class Gaussian(GAUSSIAN, BaseSource):
-    amplitude: units.Quantity
+    """
+    Represents a Gaussian light source for optical simulations.
 
-    def __init__(self,
-        wavelength: units.Quantity,
-        polarization: units.Quantity | BasePolarization,
-        optical_power: units.Quantity,
-        NA: units.Quantity) -> None:
+    wavelength: Length
+        Wavelength of the light field in meters.
+    polarization : Angle | BasePolarization
+        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+    optical_power: Power
+        Optical power of the source in Watts.
+    NA: Dimensionless
+        Numerical aperture of the source.
+    """
+    wavelength: Length
+    polarization: Angle | BasePolarization
+    optical_power: Power
+    NA: Dimensionless
+
+    amplitude: ElectricField = None
+
+    def __post_init__(self) -> None:
         """
         Initializes a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
 
-        Parameters
-        ----------
-
-        wavelength: units.Quantity
-            Wavelength of the light field in meters.
-        polarization : units.Quantity | BasePolarization
-            Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        optical_power: units.Quantity
-            Optical power of the source in Watts.
-        NA: units.Quantity
-            Numerical aperture of the source.
         """
-        self.wavelength = self._validate_units(wavelength, dimension="distance", units=units.meter)
-        self.optical_power = self._validate_units(optical_power, dimension="power", units=units.watt)
-        self.NA = self._validate_units(NA, dimension="arbitrary", units=units.AU)
-        self.polarization = self._validate_source_polarization(polarization)
-
         self.wavenumber = 2 * numpy.pi / self.wavelength
         self.waist = self.wavelength / (self.NA * numpy.pi)
         self.peak_intensity = 2 * self.optical_power / (numpy.pi * self.waist**2)
+        self.polarization = self._validate_source_polarization(self.polarization)
 
 
         super().__init__(
-            wavelength=self.wavelength.to(units.meter).magnitude,
+            wavelength=self.wavelength.to(ureg.meter).magnitude,
             jones_vector=self.polarization.element[0],
-            optical_power=self.optical_power.to(units.watt).magnitude,
-            NA=self.NA.to(units.AU).magnitude,
+            optical_power=self.optical_power.to(ureg.watt).magnitude,
+            NA=self.NA.to(ureg.AU).magnitude,
         )
 
     def numerical_aperture_to_angle(self, numerical_aperture: float) -> float:

@@ -3,19 +3,20 @@
 
 import numpy as np
 import pytest
+from TypedUnit import ureg
+
 from PyMieSim.single.scatterer import Sphere, CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
 @pytest.fixture
 def gaussian_source():
     return Gaussian(
-        wavelength=1000 * nanometer,  # Wavelength in meters
-        polarization=0 * degree,   # Polarization angle
-        optical_power=1 * watt,  # Optical power in watts
-        NA=0.3 * AU           # Numerical aperture
+        wavelength=1000 * ureg.nanometer,  # Wavelength in meters
+        polarization=0 * ureg.degree,   # Polarization angle
+        optical_power=1 * ureg.watt,  # Optical power in ureg.watts
+        NA=0.3 * ureg.AU           # Numerical aperture
     )
 
 
@@ -26,9 +27,9 @@ def test_Qsca_cross_section(gaussian_source):
     """
     # Define a spherical scatterer
     sphere = Sphere(
-        diameter=300 * nanometer,   # Diameter in meters (e.g., 300 nm)
-        property=1.4 * RIU,         # Refractive index of the sphere
-        medium_property=1.0 * RIU,  # Medium index (e.g., air)
+        diameter=300 * ureg.nanometer,   # Diameter in meters (e.g., 300 nm)
+        property=1.4 * ureg.RIU,         # Refractive index of the sphere
+        medium_property=1.0 * ureg.RIU,  # Medium index (e.g., air)
         source=gaussian_source      # Associated light source
     )
 
@@ -47,18 +48,18 @@ def test_energy_flow_coupling(gaussian_source):
     """
     # Define a spherical scatterer
     sphere = Sphere(
-        diameter=300 * nanometer,
-        property=1.4 * RIU,
-        medium_property=1.0 * RIU,
+        diameter=300 * ureg.nanometer,
+        property=1.4 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
         source=gaussian_source
     )
 
     # Define a photodiode detector
     detector = Photodiode(
         sampling=500,    # Sampling points for the detector
-        NA=2.0 * AU,          # Numerical aperture
-        gamma_offset=0 * degree,  # Offset in the gamma angle
-        phi_offset=0 * degree     # Offset in the phi angle
+        NA=2.0 * ureg.AU,          # Numerical aperture
+        gamma_offset=0 * ureg.degree,  # Offset in the gamma angle
+        phi_offset=0 * ureg.degree     # Offset in the phi angle
     )
 
     # Calculate energy flow and coupling values
@@ -78,19 +79,19 @@ def test_compare_sphere_coreshell_0(gaussian_source):
     """
     # Define a solid sphere
     sphere = Sphere(
-        diameter=1000 * nanometer,
-        property=1.5 * RIU,
+        diameter=1000 * ureg.nanometer,
+        property=1.5 * ureg.RIU,
         source=gaussian_source,
-        medium_property=1.0 * RIU
+        medium_property=1.0 * ureg.RIU
     )
 
     # Define a core-shell scatterer with zero shell thickness
     coreshell = CoreShell(
-        core_diameter=1000 * nanometer,
-        shell_thickness=0 * nanometer,  # Zero shell width
-        core_property=1.5 * RIU,
-        shell_property=1.8 * RIU,
-        medium_property=1.0 * RIU,
+        core_diameter=1000 * ureg.nanometer,
+        shell_thickness=0 * ureg.nanometer,  # Zero shell width
+        core_property=1.5 * ureg.RIU,
+        shell_property=1.8 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
         source=gaussian_source
     )
 

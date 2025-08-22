@@ -3,10 +3,14 @@
 
 from typing import Optional
 import numpy
+from pydantic.dataclasses import dataclass
 
 from PyMieSim.binary.interface_detector import FIBONACCIMESH
-from PyMieSim import units
+from TypedUnit import Angle, ureg
+from PyMieSim.utils import config_dict
 
+
+@dataclass(config=config_dict, kw_only=True)
 class FibonacciMesh(FIBONACCIMESH):
     """
     Represents an angular mesh using a Fibonacci sphere distribution, where each point
@@ -18,15 +22,15 @@ class FibonacciMesh(FIBONACCIMESH):
 
     Parameters
     ----------
-    max_angle : float
+    max_angle : Angle
         The maximum angle in radians, typically defined by the numerical aperture of the imaging system.
     sampling : int
         The number of points distributed across the mesh. Higher values result in finer resolution.
-    phi_offset : float
+    phi_offset : Angle
         Angle offset in the azimuthal (parallel to incident light polarization) direction in degrees.
-    gamma_offset : float
+    gamma_offset : Angle
         Angle offset in the polar (perpendicular to incident light polarization) direction in degrees.
-    rotation_angle : Optional[float], default=0.0
+    rotation_angle : Optional[Angle], default=0.0
         Rotation of the entire mesh around its principal axis, in degrees.
 
     Attributes
@@ -58,71 +62,32 @@ class FibonacciMesh(FIBONACCIMESH):
         Rotates the mesh around its principal axis by a specified angle.
 
     """
-
-    # ---------------------- Validation Methods ----------------------
-    def _validate_angle_units(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        if not isinstance(value, units.Quantity) or not value.check(units.degree):
-            raise ValueError(f"{value} must be a Quantity with angle units [degree/radian].")
-
-        return value
-
-    def _validate_AU_units(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        if not isinstance(value, units.Quantity) or not value.check(units.AU):
-            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
-
-        return value
+    max_angle: Angle
+    sampling: int
+    phi_offset: Angle
+    gamma_offset: Angle
+    min_angle: Angle = 0 * ureg.degree
+    rotation_angle: Optional[Angle] = 0.0 * ureg.degree
 
     # ---------------------- Initialization Methods ----------------------
-    def __init__(self,
-        max_angle: units.Quantity,
-        sampling: int,
-        phi_offset: units.Quantity,
-        gamma_offset: units.Quantity,
-        min_angle: units.Quantity = 0 * units.degree,
-        rotation_angle: Optional[units.Quantity] = 0.0):
+    def __post_init__(self):
         """
         Initializes the FibonacciMesh with the specified parameters.
-
-        Parameters
-        ----------
-        max_angle : units.Quantity
-            The maximum angle in radians, typically defined by the numerical aperture of the imaging system.
-        sampling : int
-            The number of points distributed across the mesh. Higher values result in finer resolution.
-        phi_offset : units.Quantity
-            Angle offset in the azimuthal (parallel to incident light polarization) direction in degrees.
-        gamma_offset : units.Quantity
-            Angle offset in the polar (perpendicular to incident light polarization) direction in degrees.
-        rotation_angle : Optional[units.Quantity], default=0.0
-            Rotation of the entire mesh around its principal axis, in degrees.
         """
-        self.sampling = sampling
-        self.max_angle = self._validate_angle_units(max_angle)
-        self.min_angle = self._validate_angle_units(min_angle)
-        phi_offset = self._validate_angle_units(phi_offset)
-        gamma_offset = self._validate_angle_units(gamma_offset)
-        rotation = self._validate_angle_units(rotation_angle)
-
         super().__init__(
             sampling=self.sampling,
             max_angle=self.max_angle,
             min_angle=self.min_angle,
-            rotation_angle=rotation,
-            phi_offset=numpy.deg2rad(phi_offset),
-            gamma_offset=numpy.deg2rad(gamma_offset),
+            rotation_angle=self.rotation,
+            phi_offset=self.phi_offset.to(ureg.radian).magnitude,
+            gamma_offset=self.gamma_offset.to(ureg.radian).magnitude,
         )
 
         self.compute_vector_field()
 
     # ---------------------- Property Methods ----------------------
     @property
-    def theta(self) -> units.Quantity:
+    def theta(self) -> Angle:
         """
         Returns the polar angles (theta) of the mesh in radians.
 
@@ -131,10 +96,10 @@ class FibonacciMesh(FIBONACCIMESH):
         units.Quantity
             The polar angles in radians.
         """
-        return self.spherical.theta * units.radian
+        return self.spherical.theta * ureg.radian
 
     @property
-    def phi(self) -> units.Quantity:
+    def phi(self) -> Angle:
         """
         Returns the azimuthal angles (phi) of the mesh in radians.
 
@@ -143,10 +108,10 @@ class FibonacciMesh(FIBONACCIMESH):
         units.Quantity
             The azimuthal angles in radians.
         """
-        return self.spherical.phi * units.radian
+        return self.spherical.phi * ureg.radian
 
     @property
-    def d_omega(self) -> units.Quantity:
+    def d_omega(self) -> Angle:
         """
         Returns the solid angle (d_omega) of the mesh in steradians.
 
@@ -155,10 +120,10 @@ class FibonacciMesh(FIBONACCIMESH):
         units.Quantity
             The solid angle in steradians.
         """
-        return self.spherical._cpp_d_omega * units.steradian
+        return self.spherical._cpp_d_omega * ureg.steradian
 
     @property
-    def omega(self) -> units.Quantity:
+    def omega(self) -> Angle:
         """
         Returns the solid angle (omega) of the mesh in steradians.
 
@@ -167,34 +132,10 @@ class FibonacciMesh(FIBONACCIMESH):
         units.Quantity
             The solid angle in steradians.
         """
-        return self.spherical._cpp_omega * units.steradian
+        return self.spherical._cpp_omega * ureg.steradian
 
     @property
-    def phi_offset(self) -> units.Quantity:
-        """
-        Returns the azimuthal angle offset (phi_offset) in radians.
-
-        Returns
-        -------
-        units.Quantity
-            The azimuthal angle offset in radians.
-        """
-        return self._cpp_phi_offset * units.radian
-
-    @property
-    def gamma_offset(self) -> units.Quantity:
-        """
-        Returns the polar angle offset (gamma_offset) in radians.
-
-        Returns
-        -------
-        units.Quantity
-            The polar angle offset in radians.
-        """
-        return self._cpp_gamma_offset * units.radian
-
-    @property
-    def rotation(self) -> units.Quantity:
+    def rotation(self) -> Angle:
         """
         Returns the rotation angle of the mesh around its principal axis in radians.
 
@@ -203,7 +144,7 @@ class FibonacciMesh(FIBONACCIMESH):
         units.Quantity
             The rotation angle in radians.
         """
-        return self._cpp_rotation * units.radian
+        return self._cpp_rotation * ureg.radian
 
     # ---------------------- Additional Methods ----------------------
     def get_axis_vector(self) -> numpy.ndarray:

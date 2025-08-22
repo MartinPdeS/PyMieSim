@@ -4,22 +4,24 @@
 import pytest
 import numpy as np
 from PyMieSim.mesh import FibonacciMesh
-from PyMieSim import units
+from TypedUnit import ureg
 
 @pytest.fixture
 def fibonacci_mesh():
     """
     Fixture to create a FibonacciMesh instance with predefined parameters.
 
-    Returns:
-        FibonacciMesh: Instance of FibonacciMesh with fixed test parameters.
+    Returns
+    -------
+    FibonacciMesh
+        Instance of FibonacciMesh with fixed test parameters.
     """
     return FibonacciMesh(
-        max_angle=np.pi / 4 * units.radian,   # Maximum angle (45 degrees in radians)
-        sampling=100 * units.AU,             # Number of sample points
-        phi_offset=30 * units.degree,         # Offset in the azimuthal angle (in degrees)
-        gamma_offset=45 * units.degree,       # Offset in the polar angle (in degrees)
-        rotation_angle=0 * units.degree       # Rotation angle (in degrees)
+        max_angle=np.pi / 4 * ureg.radian,   # Maximum angle (45 degrees in radians)
+        sampling=100 * ureg.AU,             # Number of sample points
+        phi_offset=30 * ureg.degree,         # Offset in the azimuthal angle (in degrees)
+        gamma_offset=45 * ureg.degree,       # Offset in the polar angle (in degrees)
+        rotation_angle=0 * ureg.degree       # Rotation angle (in degrees)
     )
 
 
@@ -27,11 +29,11 @@ def test_initialization(fibonacci_mesh):
     """
     Test that the FibonacciMesh object is initialized with the correct parameters.
     """
-    assert fibonacci_mesh.max_angle == np.pi / 4  * units.radian
-    assert fibonacci_mesh.sampling == 100 * units.AU
-    assert np.isclose(fibonacci_mesh.phi_offset.to('degree'), 30 * units.degree)
-    assert np.isclose(fibonacci_mesh.gamma_offset.to('degree'), 45 * units.degree)
-    assert np.isclose(fibonacci_mesh.rotation.to('degree'), 0 * units.degree)
+    assert fibonacci_mesh.max_angle == np.pi / 4  * ureg.radian
+    assert fibonacci_mesh.sampling == 100 * ureg.AU
+    assert fibonacci_mesh.phi_offset == 30 * ureg.degree
+    assert fibonacci_mesh.gamma_offset == 45 * ureg.degree
+    assert fibonacci_mesh.rotation_angle == 0 * ureg.degree
 
 def test_projection_HV_vector(fibonacci_mesh):
     """

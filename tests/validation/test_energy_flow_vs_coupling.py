@@ -1,34 +1,34 @@
 import pytest
 import numpy as np
+from TypedUnit import ureg
+from PyOptik import Material
+
 from PyMieSim.single.detector import IntegratingSphere
-from PyMieSim.units import AU, degree, nanometer, watt, RIU, meter
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyOptik import Material
 
 
 @pytest.fixture
 def setup_simulation():
     # Define the source
     source = Gaussian(
-        wavelength=750 * nanometer,  # 750 nm
-        polarization=30 * degree,  # Polarization in degrees
-        optical_power=1 * watt,  # Power in watts
-        NA=0.3 * AU  # Numerical Aperture
+        wavelength=750 * ureg.nanometer,  # 750 nm
+        polarization=30 * ureg.degree,  # Polarization in ureg.degrees
+        optical_power=1 * ureg.watt,  # Power in ureg.watts
+        NA=0.3 * ureg.AU  # Numerical Aperture
     )
 
     # Define the scatterer (sphere)
     scatterer = Sphere(
-        diameter=1500 * nanometer,  # 1500 nm diameter
+        diameter=1500 * ureg.nanometer,  # 1500 nm diameter
         source=source,
-        property=1.4 * RIU,  # Refractive index
+        property=1.4 * ureg.RIU,  # Refractive index
         medium_property=Material.water  # Medium is water
     )
 
     # Define the detector (integrating sphere)
     detector = IntegratingSphere(
         sampling=1000,
-        polarization_filter=None
     )
 
     return source, scatterer, detector
@@ -38,14 +38,14 @@ def test_simulation_results(setup_simulation):
     source, scatterer, detector = setup_simulation
 
     # Run simulation for Stokes parameters
-    scatterer.get_stokes(distance=2 * meter, sampling=100)
+    scatterer.get_stokes(distance=2 * ureg.meter, sampling=100)
 
     # Calculate coupling and scattering efficiency (Qsca)
     coupling = detector.get_coupling(scatterer=scatterer)
     Qsca = scatterer.Qsca
 
     # Calculate energy flow
-    energy_flow = detector.get_energy_flow(scatterer, distance=1 * meter)
+    energy_flow = detector.get_energy_flow(scatterer, distance=1 * ureg.meter)
 
     # Calculate scattered power
     scattered_power = Qsca * source.peak_intensity * scatterer.cross_section

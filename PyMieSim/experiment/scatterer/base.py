@@ -3,10 +3,11 @@
 
 from PyOptik.material.base_class import BaseMaterial
 from pydantic import field_validator
-from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
-from PyMieSim.binary.interface_sets import CppScattererProperties, CppMediumProperties
 import numpy
+
+from TypedUnit import Length, RefractiveIndex
+from PyMieSim.binary.interface_sets import CppScattererProperties, CppMediumProperties
 
 
 class BaseScatterer():
@@ -24,8 +25,8 @@ class BaseScatterer():
         """Ensure that arrays are properly converted to numpy arrays."""
         value = numpy.atleast_1d(value)
 
-        if isinstance(value, Quantity):
-            assert value.check(RIU), f"{value} must be a Quantity with refractive index units (RIU)."
+        if isinstance(value, RefractiveIndex):
+            RefractiveIndex.check(value)
             return value
 
         assert numpy.all([isinstance(p, BaseMaterial) for p in value]), f"{value} must be either a refractive index quantity (RIU) or BaseMaterial."
@@ -37,14 +38,10 @@ class BaseScatterer():
         """
         Ensures that diameter is Quantity objects with length units.
         """
-        value = numpy.atleast_1d(value)
+        Length.check(value)
+        return numpy.atleast_1d(value)
 
-        if not isinstance(value, Quantity) or not value.check(meter):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        return value
-
-    def _add_properties(self, name: str, properties: Quantity | BaseMaterial) -> None:
+    def _add_properties(self, name: str, properties: RefractiveIndex | BaseMaterial) -> None:
         """
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
@@ -61,7 +58,7 @@ class BaseScatterer():
         """
         CPPClass = CppMediumProperties if name == 'medium' else CppScattererProperties
 
-        if all(isinstance(item, Quantity) for item in properties):
+        if all(isinstance(item, RefractiveIndex) for item in properties):
             instance = CPPClass(index_properties=properties.magnitude)
             self.binding_kwargs[f'{name}_properties'] = instance
 

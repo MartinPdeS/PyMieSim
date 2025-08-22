@@ -4,10 +4,11 @@
 import numpy
 import MPSPlots
 from pydantic.dataclasses import dataclass
-from PyMieSim.special_functions import rotate_on_x
 import matplotlib.pyplot as plt
-from PyMieSim.units import meter
-from PyMieSim.single.representations.base import config_dict
+from TypedUnit import ureg
+
+from PyMieSim.special_functions import rotate_on_x
+from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -70,7 +71,7 @@ class Footprint():
         far_field_para, far_field_perp = self.scatterer.get_farfields_array(
             phi=phi.ravel() + numpy.pi / 2,
             theta=theta.ravel(),
-            r=1.0 * meter,
+            r=1.0 * ureg.meter,
         )
 
         detector_structured_farfield = self.detector.get_structured_scalarfield(sampling=self.sampling)
@@ -154,8 +155,8 @@ class Footprint():
             )
 
             ax.pcolormesh(
-                self.direct_y,
-                self.direct_x,
+                self.direct_y.magnitude,
+                self.direct_x.magnitude,
                 self.mapping,
                 cmap=colormap
             )
