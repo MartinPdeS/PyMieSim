@@ -19,7 +19,7 @@ from PyOptik import Material
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=1.2 * micrometer,  # 1200 nm
+    wavelength=1.2 * ureg.micrometer,  # 1200 nm
     polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
     optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
     NA=0.2 * ureg.AU  # Numerical Aperture

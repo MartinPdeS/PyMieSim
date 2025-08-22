@@ -53,16 +53,16 @@ dataframe = setup.get('coupling', drop_unique_level=True)
 dataframe.plot(x='detector:NA')
 
 single_source = single.Gaussian(
-    wavelength=950 * nanometer,
-    polarization=0 * degree,
-    optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    wavelength=950 * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    optical_power=1e-3 * ureg.watt,
+    NA=0.2 * ureg.AU
 )
 
 single_scatterer = single.scatterer.Sphere(
-    diameter=500 * nanometer,
+    diameter=500 * ureg.nanometer,
     property=Material.BK7,
-    medium_property=1 * RIU,
+    medium_property=1 * ureg.RIU,
     source=single_source
 )
 
