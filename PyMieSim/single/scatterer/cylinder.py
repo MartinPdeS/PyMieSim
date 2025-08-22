@@ -4,7 +4,6 @@
 import pyvista
 from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import Length, RefractiveIndex, ureg
-from TypedUnit import Length, RefractiveIndex, ureg
 from pydantic.dataclasses import dataclass
 
 from PyMieSim.utils import config_dict

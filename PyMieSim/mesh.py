@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Optional
 import numpy
+from typing import Optional
 from pydantic.dataclasses import dataclass
+from TypedUnit import Angle, ureg
 
 from PyMieSim.binary.interface_detector import FIBONACCIMESH
-from TypedUnit import Angle, ureg
 from PyMieSim.utils import config_dict
 
 

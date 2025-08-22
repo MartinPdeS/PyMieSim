@@ -12,6 +12,7 @@ from PyMieSim.utils import config_dict
 from PyMieSim.binary.interface_scatterer import SPHERE
 from PyMieSim.single.source.base import BaseSource
 
+
 @dataclass(config=config_dict, kw_only=True)
 class Sphere(SPHERE, BaseScatterer):
     """

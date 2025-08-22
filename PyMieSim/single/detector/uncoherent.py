@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import numpy
 from typing import Optional
 from pydantic.dataclasses import dataclass

@@ -1,15 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from pydantic.dataclasses import dataclass
 from copy import copy
 from TypedUnit import Angle, ureg
 
-
-config_dict = dict(
-    kw_only=False,
-    slots=True,
-    extra='forbid',
-    arbitrary_types_allowed=True
-)
+from PyMieSim.utils import config_dict
 
 
 class BasePolarization:

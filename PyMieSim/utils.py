@@ -1,5 +1,7 @@
-from pydantic import ConfigDict
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+from pydantic import ConfigDict
 
 # Configuration dictionary for the Pydantic dataclass
 config_dict = ConfigDict(

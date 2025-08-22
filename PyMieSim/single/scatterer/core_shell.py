@@ -7,7 +7,6 @@ from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import Length, Volume, RefractiveIndex, ureg
 from pydantic.dataclasses import dataclass
 
-
 from PyMieSim.utils import config_dict
 from PyMieSim.single.scatterer.base import BaseScatterer
 from PyMieSim.binary.interface_scatterer import CORESHELL

@@ -3,11 +3,12 @@
 
 from typing import Tuple
 import numpy
-from PyOptik.material.base_class import BaseMaterial
 from tabulate import tabulate
+from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import RefractiveIndex, Length, Angle, ureg
 
 from PyMieSim.single import representations
+
 
 class BaseScatterer():
     """
