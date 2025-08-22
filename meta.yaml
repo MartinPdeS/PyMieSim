@@ -22,6 +22,7 @@ requirements:
     - python {{PY_VER}}*
     - martinpdes::pyoptik ==v1.10.8
     - martinpdes::mpsplots ==v1.6.4
+    - martinpdes::typedunit
     - matplotlib ~=3.10.3
     - numpy ==2.2.6
     - pydantic ~=2.9.2
@@ -29,7 +30,6 @@ requirements:
     - pint-pandas ~=0.6
     - tabulate ~=0.9
     - pyvista ==0.44.2
-    - typedunit
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim
