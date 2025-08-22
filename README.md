@@ -18,7 +18,7 @@
 | PyMieSim/experiment/source/planewave.py        |       27 |        1 |        4 |        2 |     90% |40->43, 57 |
 | PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93% |42->46, 54 |
 | PyMieSim/mesh.py                               |       50 |        4 |        0 |        0 |     92% |99, 111, 123, 135 |
-| PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        88 |
+| PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        85 |
 | PyMieSim/single/detector/base.py               |       39 |        1 |        0 |        0 |     97% |        31 |
 | PyMieSim/single/detector/coherent.py           |       27 |        2 |        4 |        2 |     87% |    71, 76 |
 | PyMieSim/single/detector/uncoherent.py         |       22 |        0 |        0 |        0 |    100% |           |
@@ -29,16 +29,16 @@
 | PyMieSim/single/representations/s1s2.py        |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations/spf.py         |       28 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/representations/stokes.py      |       31 |        0 |        2 |        0 |    100% |           |
-| PyMieSim/single/scatterer/base.py              |      127 |        5 |       12 |        5 |     93% |487, 494, 501, 504->507, 544, 628 |
+| PyMieSim/single/scatterer/base.py              |      127 |        5 |       12 |        5 |     93% |488, 495, 502, 505->508, 545, 629 |
 | PyMieSim/single/scatterer/core\_shell.py       |       33 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/single/scatterer/cylinder.py          |       38 |        4 |        0 |        0 |     89% |64, 68, 72, 76 |
-| PyMieSim/single/scatterer/sphere.py            |       30 |        2 |        0 |        0 |     93% |     85-93 |
+| PyMieSim/single/scatterer/cylinder.py          |       37 |        4 |        0 |        0 |     89% |63, 67, 71, 75 |
+| PyMieSim/single/scatterer/sphere.py            |       30 |        2 |        0 |        0 |     93% |     86-94 |
 | PyMieSim/single/source/base.py                 |       10 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/source/gaussian.py             |       36 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/source/planewave.py            |       24 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/special\_functions.py                 |       18 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/utils.py                              |        2 |        0 |        0 |        0 |    100% |           |
-|                                      **TOTAL** | **1255** |   **67** |  **144** |   **24** | **93%** |           |
+|                                      **TOTAL** | **1254** |   **67** |  **144** |   **24** | **93%** |           |
 
 
 ## Setup coverage badge
