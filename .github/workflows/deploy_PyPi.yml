@@ -31,7 +31,3 @@ jobs:
         libosmesa6-dev
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-    env:
-      PYVISTA_OFF_SCREEN: "true"
-      LIBGL_ALWAYS_SOFTWARE: "1"
-      MESA_GL_VERSION_OVERRIDE: "3.3"
