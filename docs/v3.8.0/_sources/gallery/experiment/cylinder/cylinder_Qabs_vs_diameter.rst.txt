@@ -87,14 +87,6 @@ Defining the scatterer distribution
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    <_io.TextIOWrapper name='/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/data/tabulated/silver.yml' mode='r' encoding='UTF-8'>
-    <_io.TextIOWrapper name='/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/data/tabulated/gold.yml' mode='r' encoding='UTF-8'>
-    <_io.TextIOWrapper name='/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/data/tabulated/aluminium.yml' mode='r' encoding='UTF-8'>
-
 
 
 
@@ -165,7 +157,7 @@ Visualizing how the scattering efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.386 seconds)
+   **Total running time of the script:** (0 minutes 0.383 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:

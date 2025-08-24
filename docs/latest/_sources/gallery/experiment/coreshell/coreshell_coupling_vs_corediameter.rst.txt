@@ -90,12 +90,6 @@ Defining the scatterer distribution
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    <_io.TextIOWrapper name='/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/data/tabulated/silver.yml' mode='r' encoding='UTF-8'>
-
 
 
 

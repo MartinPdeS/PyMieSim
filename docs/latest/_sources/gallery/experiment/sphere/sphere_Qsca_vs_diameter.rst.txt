@@ -54,31 +54,65 @@ Importing the package dependencies: numpy, PyMieSim
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | fused_silica          | copper                |
+    | SF10                  | paladium              |
     +-----------------------+-----------------------+
-    | polystyren            | silver                |
+    | methane               | magnesium             |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | sodium                |
+    | methanol              | titanium              |
     +-----------------------+-----------------------+
-    | lithium_niobate       | polyetylene           |
+    | ethylene              | copper                |
     +-----------------------+-----------------------+
-    | air                   | aluminium             |
+    | fused_silica          | silver                |
     +-----------------------+-----------------------+
-    | BAK1                  | iron                  |
+    | ethane                | vanadium              |
     +-----------------------+-----------------------+
-    | argon                 | zinc                  |
+    | LASF9                 | sodium                |
     +-----------------------+-----------------------+
-    | water                 | nickel                |
+    | polystyren            | pva                   |
     +-----------------------+-----------------------+
-    | ZBLAN                 | silicon               |
+    | soda_lime_glass       | rhodium               |
     +-----------------------+-----------------------+
-    | acetone               | calcium               |
+    | lithium_niobate       | lead                  |
     +-----------------------+-----------------------+
-    | germanium             | gold                  |
+    | air                   | polyetylene           |
+    +-----------------------+-----------------------+
+    | glycerol              | bismuth               |
+    +-----------------------+-----------------------+
+    | BAK1                  | aluminium             |
+    +-----------------------+-----------------------+
+    | polycarbonate         | iron                  |
+    +-----------------------+-----------------------+
+    | acetylene             | zinc                  |
+    +-----------------------+-----------------------+
+    | FK51A                 | nickel                |
+    +-----------------------+-----------------------+
+    | cellulose             | silicon               |
+    +-----------------------+-----------------------+
+    | argon                 | tantalum              |
+    +-----------------------+-----------------------+
+    | SF11                  | calcium               |
+    +-----------------------+-----------------------+
+    | BAF10                 | tungsten              |
+    +-----------------------+-----------------------+
+    | polystyrene           | gold                  |
+    +-----------------------+-----------------------+
+    | water                 | chromium              |
+    +-----------------------+-----------------------+
+    | ZBLAN                 |                       |
+    +-----------------------+-----------------------+
+    | acetone               |                       |
+    +-----------------------+-----------------------+
+    | pvc                   |                       |
+    +-----------------------+-----------------------+
+    | ethanol               |                       |
+    +-----------------------+-----------------------+
+    | germanium             |                       |
     +-----------------------+-----------------------+
     | BK7                   |                       |
     +-----------------------+-----------------------+
     | SF5                   |                       |
+    +-----------------------+-----------------------+
+    | propanol              |                       |
     +-----------------------+-----------------------+
     | flint                 |                       |
     +-----------------------+-----------------------+
@@ -152,7 +186,7 @@ Defining the experiment setup
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405.0 nm to 810.0 nm which is outside the allowable range of 436.79999999999995 nm to 1.052 µm µm. [Material: polystyren]
+    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405.0 nanometer to 810.0 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
       warnings.warn(
 
     <Axes: xlabel='scatterer:diameter', ylabel='dimensionless'>
@@ -162,7 +196,7 @@ Defining the experiment setup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.258 seconds)
+   **Total running time of the script:** (0 minutes 0.257 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:
