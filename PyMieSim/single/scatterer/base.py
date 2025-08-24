@@ -5,7 +5,7 @@ from typing import Tuple
 import numpy
 from tabulate import tabulate
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import RefractiveIndex, Length, Angle, ureg
+from TypedUnit import RefractiveIndex, Length, Dimensionless, Area, Angle, ureg
 
 from PyMieSim.single import representations
 
@@ -24,91 +24,91 @@ class BaseScatterer():
         print(table)
 
     @property
-    def size_parameter(self) -> ureg.Quantity:
+    def size_parameter(self) -> Dimensionless:
         """Returns the size parameter of the scatterer."""
         return self._cpp_size_parameter * ureg.AU
 
     @property
-    def cross_section(self) -> ureg.Quantity:
+    def cross_section(self) -> Dimensionless:
         """Returns the cross-section of the scatterer."""
         return (self._cpp_cross_section * ureg.meter**2).to_compact()
 
     @property
-    def Qsca(self) -> ureg.Quantity:
+    def Qsca(self) -> Dimensionless:
         """Returns the scattering efficiency."""
         return self._cpp_Qsca * ureg.AU
 
     @property
-    def Qext(self) -> ureg.Quantity:
+    def Qext(self) -> Dimensionless:
         """Returns the extinction efficiency."""
         return self._cpp_Qext * ureg.AU
 
     @property
-    def Qabs(self) -> ureg.Quantity:
+    def Qabs(self) -> Dimensionless:
         """Returns the absorption efficiency."""
         return self._cpp_Qabs * ureg.AU
 
     @property
-    def Qback(self) -> ureg.Quantity:
+    def Qback(self) -> Dimensionless:
         """Returns the backscattering efficiency."""
         return self._cpp_Qback * ureg.AU
 
     @property
-    def Qforward(self) -> ureg.Quantity:
+    def Qforward(self) -> Dimensionless:
         """Returns the forward-scattering efficiency."""
         return self._cpp_Qforward * ureg.AU
 
     @property
-    def Qratio(self) -> ureg.Quantity:
+    def Qratio(self) -> Dimensionless:
         """Returns the efficiency ratio of backscattering over total scattering."""
         return self._cpp_Qratio * ureg.AU
 
     @property
-    def g(self) -> ureg.Quantity:
+    def g(self) -> Dimensionless:
         """Returns the anisotropy factor."""
         return self._cpp_g * ureg.AU
 
     @property
-    def Qpr(self) -> ureg.Quantity:
+    def Qpr(self) -> Dimensionless:
         """Returns the radiation pressure efficiency."""
         return self._cpp_Qpr * ureg.AU
 
     @property
-    def Csca(self) -> ureg.Quantity:
+    def Csca(self) -> Area:
         """Returns the scattering cross-section."""
         return (self._cpp_Csca * ureg.meter ** 2).to_compact()
 
     @property
-    def Cext(self) -> ureg.Quantity:
+    def Cext(self) -> Area:
         """Returns the extinction cross-section."""
         return (self._cpp_Cext * ureg.meter ** 2).to_compact()
 
     @property
-    def Cabs(self) -> ureg.Quantity:
+    def Cabs(self) -> Area:
         """Returns the absorption cross-section."""
         return (self._cpp_Cabs * ureg.meter ** 2).to_compact()
 
     @property
-    def Cpr(self) -> ureg.Quantity:
+    def Cpr(self) -> Area:
         """Returns the radiation pressure cross-section."""
         return (self._cpp_Cpr * ureg.meter ** 2).to_compact()
 
     @property
-    def Cback(self) -> ureg.Quantity:
+    def Cback(self) -> Area:
         """Returns the backscattering cross-section."""
         return (self._cpp_Cback * ureg.meter ** 2).to_compact()
 
     @property
-    def Cforward(self) -> ureg.Quantity:
+    def Cforward(self) -> Area:
         """Returns the forward-scattering cross-section."""
         return (self._cpp_Cforward * ureg.meter ** 2).to_compact()
 
     @property
-    def Cratio(self) -> ureg.Quantity:
+    def Cratio(self) -> Area:
         """Returns the ratio of backscattering cross-section over total scattering."""
         return (self._cpp_Cratio * ureg.meter ** 2).to_compact()
 
-    def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: ureg.Quantity) -> Tuple[numpy.ndarray, numpy.ndarray]:
+    def get_farfields_array(self, phi: Angle, theta: Angle, r: Length) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """
         Computes the scattering far field for unstructured coordinates.
 
@@ -189,7 +189,7 @@ class BaseScatterer():
             Azimuthal angles in radians.
         theta : numpy.ndarray
             Polar angles in radians. Must be broadcastable with ``phi``.
-        r : ureg.Quantity, optional
+        r : Length, optional
             Radial distance from the scatterer. Defaults to ``1 * meter``.
 
         Returns
@@ -229,7 +229,7 @@ class BaseScatterer():
         ----------
         sampling : int
             The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.
-        distance : ureg.Quantity, optional
+        distance : Length, optional
             The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.
 
         Returns
@@ -495,7 +495,7 @@ class BaseScatterer():
             raise ValueError("y_range must be a tuple of two Quantity values (y_min, y_max)")
 
         # Handle z posiiton
-        if isinstance(z_range, ureg.Quantity):
+        if isinstance(z_range, Length):
             z_val = Length.check(z_range)
             z_range = z_val
         else:
@@ -517,7 +517,12 @@ class BaseScatterer():
             field_components=field_components
         )
 
-    def compute_nearfield(self, x: ureg.Quantity, y: ureg.Quantity, z: ureg.Quantity, radius: ureg.Quantity, field_type: str = "|E|"):
+    def compute_nearfield(self,
+        x: Length,
+        y: Length,
+        z: Length,
+        radius: Length,
+        field_type: str = "|E|"):
         """
         Python wrapper for C++ near-field computation.
 
@@ -526,13 +531,13 @@ class BaseScatterer():
 
         Parameters
         ----------
-        x : numpy.ndarray
+        x : Length
             Array of x coordinates of observation points.
-        y : numpy.ndarray
+        y : Length
             Array of y coordinates of observation points.
-        z : numpy.ndarray
+        z : Length
             Array of z coordinates of observation points.
-        radius : float
+        radius : Length
             Scatterer radius for inside/outside determination.
         field_type : str
             Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"
@@ -600,19 +605,19 @@ class BaseScatterer():
         """
         return representations.Footprint(scatterer=self, detector=detector)
 
-    def _assign_index_or_material(self, property: ureg.Quantity | BaseMaterial) -> tuple[ureg.Quantity | None, BaseMaterial | None]:
+    def _assign_index_or_material(self, property: RefractiveIndex | BaseMaterial) -> tuple[RefractiveIndex | None, BaseMaterial | None]:
         """
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
 
         Parameters:
         ----------
-        property : ureg.Quantity or BaseMaterial
+        property : RefractiveIndex or BaseMaterial
             The core property to be assigned, which can either be a refractive index (Quantity) or a material (BaseMaterial).
 
         Returns:
         -------
-        tuple[ureg.Quantity | None, BaseMaterial | None]
+        tuple[RefractiveIndex | None, BaseMaterial | None]
             A tuple where the first element is the refractive index (Quantity) if provided, otherwise None.
             The second element is the material (BaseMaterial) if provided, otherwise None.
 
@@ -624,7 +629,7 @@ class BaseScatterer():
         if isinstance(property, RefractiveIndex):
             return property, None
         if isinstance(property, BaseMaterial):
-            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength.to_base_units().magnitude))[0] * ureg.RIU, property
+            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength))[0] * ureg.RIU, property
 
         raise ValueError(f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU).")
 

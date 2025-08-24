@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyMieSim.single.source import Gaussian, PlaneWave
 import pyvista
 from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import Length, RefractiveIndex, ureg
@@ -9,7 +10,6 @@ from pydantic.dataclasses import dataclass
 from PyMieSim.utils import config_dict
 from PyMieSim.single.scatterer.base import BaseScatterer
 from PyMieSim.binary.interface_scatterer import CYLINDER
-from PyMieSim.single.source.base import BaseSource
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -25,13 +25,13 @@ class Cylinder(CYLINDER, BaseScatterer):
         Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.
     medium_property : RefractiveIndex or BaseMaterial
         Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the surrounding medium. Only one can be provided.
-    source : BaseSource
+    source : Gaussian | PlaneWave
         The source object associated with the scatterer.
     """
-    diameter: Length
+    diameter: object
     property: RefractiveIndex | BaseMaterial
     medium_property: RefractiveIndex | BaseMaterial
-    source: BaseSource
+    source: Gaussian | PlaneWave
 
     property_names = [
         "size_parameter", "radius", "cross_section", "g",

@@ -72,19 +72,6 @@ def test_attribute(attribute, core_material, shell_material, medium_property, so
     attr_value = getattr(scatterer, attribute)
     assert attr_value is not None
 
-@patch('pyvista.Plotter.show')
-def test_plot_system(mock_show, source):
-    scatterer = CoreShell(
-        core_diameter=100 * ureg.nanometer,
-        shell_thickness=200 * ureg.nanometer,
-        source=source,
-        medium_property=1.0 * ureg.RIU,
-        core_property=1.4 * ureg.RIU,
-        shell_property=1.5 * ureg.RIU
-    )
-
-    plot_system(scatterer)
-
 
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

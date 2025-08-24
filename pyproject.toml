@@ -115,7 +115,7 @@ archs = ["x86_64"]
 build = ["cp310-manylinux*", "cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-before-all = "yum install -y xvfb jq libgl1-mesa-glx"
+before-all = "yum install -y libgl1-mesa-glx"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]

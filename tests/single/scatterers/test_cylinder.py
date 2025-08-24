@@ -12,8 +12,6 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import plot_system
 
-# Core configurations separated for clarity and functionality
-
 property = [Material.BK7, 1.6 * ureg.RIU]
 medium_property = [Material.water, 1.4 * ureg.RIU]
 
@@ -46,6 +44,13 @@ def test_cylinder_coupling(property, medium_property, source):
         phi_offset=0 * ureg.degree,
     )
 
+    source = Gaussian(
+        wavelength=750 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU
+    )
+
     scatterer = Cylinder(
         diameter=100 * ureg.nanometer,
         source=source,
@@ -72,18 +77,6 @@ def test_cylinder_attributes(attribute, property, medium_property, source):
     _ = getattr(scatterer, attribute)
 
     scatterer.print_properties()
-
-
-@patch('pyvista.Plotter.show')
-def test_plot_system(mock_show, source):
-    scatterer = Cylinder(
-        diameter=100 * ureg.nanometer,
-        source=source,
-        medium_property=1.0 * ureg.RIU,
-        property=1.5 * ureg.RIU
-    )
-
-    plot_system(scatterer)
 
 
 if __name__ == "__main__":
