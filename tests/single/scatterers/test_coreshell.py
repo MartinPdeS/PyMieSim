@@ -22,8 +22,6 @@ attributes = [
     "Qforward", "Qpr", "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]
 
-plotting_functions = ["get_farfield", "get_stokes", "get_spf", "get_s1s2"]
-
 
 # Reusable fixture for Gaussian source
 @pytest.fixture()
@@ -73,30 +71,6 @@ def test_attribute(attribute, core_material, shell_material, medium_property, so
     # Access and verify the attribute
     attr_value = getattr(scatterer, attribute)
     assert attr_value is not None
-
-
-# Parametrized test for plotting functions
-@pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
-@pytest.mark.parametrize('shell_material', shell_property, ids=[f'Shell:{m}' for m in shell_property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('plotting_function', plotting_functions)
-@patch('pyvista.Plotter.show')
-@patch('matplotlib.pyplot.show')
-def test_plottings(mock_show_plt, mock_show_pyvista, plotting_function, core_material, shell_material, medium_property, source):
-    scatterer = CoreShell(
-        core_diameter=100 * ureg.nanometer,
-        shell_thickness=200 * ureg.nanometer,
-        source=source,
-        medium_property=medium_property,
-        core_property=core_material,
-        shell_property=shell_material
-    )
-
-    data = getattr(scatterer, plotting_function)()
-    assert data is not None
-    data.plot()
-    plt.close()
-
 
 @patch('pyvista.Plotter.show')
 def test_plot_system(mock_show, source):

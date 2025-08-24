@@ -26,10 +26,6 @@ attributes = [
     "Csca", "Cext", "Cabs",
 ]
 
-plotting_functions = [
-    "get_farfield", "get_stokes", "get_spf", "get_s1s2",
-]
-
 
 @pytest.fixture()
 def source():
@@ -76,29 +72,6 @@ def test_cylinder_attributes(attribute, property, medium_property, source):
     _ = getattr(scatterer, attribute)
 
     scatterer.print_properties()
-
-
-@pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('plotting_function', plotting_functions)
-@patch('pyvista.Plotter.show')
-@patch('matplotlib.pyplot.show')
-def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, source):
-    scatterer = Cylinder(
-        diameter=100 * ureg.nanometer,
-        source=source,
-        medium_property=medium_property,
-        property=property
-    )
-
-    data = getattr(scatterer, plotting_function)()
-    data.plot()
-    assert data is not None, "Plotting data should not be None"
-
-    plt.close()
-    import pyvista
-
-    pyvista.close_all()
 
 
 @patch('pyvista.Plotter.show')

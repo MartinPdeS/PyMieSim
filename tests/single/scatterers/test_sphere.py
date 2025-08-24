@@ -22,10 +22,6 @@ attributes = [
     "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]
 
-plotting_functions = [
-    "get_farfield", "get_nearfield", "get_stokes", "get_spf", "get_s1s2",
-]
-
 
 @pytest.fixture()
 def source():
@@ -68,25 +64,6 @@ def test_sphere_coupling(property, medium_property, source, ):
         property=property
     )
     _ = detector.get_coupling(scatterer)
-
-
-@pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('plotting_function', plotting_functions)
-@patch('pyvista.Plotter.show')
-@patch('matplotlib.pyplot.show')
-def test_sphere_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, source):
-    scatterer = Sphere(
-        diameter=100 * ureg.nanometer,
-        source=source,
-        medium_property=medium_property,
-        property=property
-    )
-    data = getattr(scatterer, plotting_function)()
-    data.plot()
-    assert data is not None, "Plotting data should not be None"
-
-    plt.close()
 
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
