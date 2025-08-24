@@ -24,6 +24,6 @@ jobs:
         mingw-w64-x86_64-ninja
         mingw-w64-x86_64-gcc-fortran
         mingw-w64-x86_64-pkg-config
-      apt-package: xvfb jq libgl1-mesa-glx
+      apt-package: xvfb jq
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
