@@ -62,7 +62,7 @@ dependencies = [
     "pandas ~=2.3.0",
     "PyOptik",
     "tabulate ~=0.9",
-    "pyvista ==0.45.3",
+    "pyvista ==0.46.2",
     "TypedUnit"
 ]
 
