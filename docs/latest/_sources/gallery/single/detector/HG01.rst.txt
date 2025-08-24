@@ -67,7 +67,7 @@ Initializing the detector
 
  .. code-block:: none
 
-    2025-08-24 13:38:36,244 WARNING High values of NA: 0.5 dimensionless do not comply with the paraxial approximation. Values under 0.3 are preferred.
+    2025-08-24 13:46:19,925 WARNING High values of NA: 0.5 dimensionless do not comply with the paraxial approximation. Values under 0.3 are preferred.
 
 
 
@@ -96,7 +96,7 @@ Plotting the detector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.635 seconds)
+   **Total running time of the script:** (0 minutes 4.543 seconds)
 
 
 .. _sphx_glr_download_gallery_single_detector_HG01.py:
