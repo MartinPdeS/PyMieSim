@@ -27,5 +27,6 @@ jobs:
       apt-package: |
         xvfb
         jq
+        libosmesa6
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
