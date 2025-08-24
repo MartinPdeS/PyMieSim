@@ -26,10 +26,6 @@ jobs:
         mingw-w64-x86_64-pkg-config
       apt-package: |
         xvfb
-        mesa-utils
-        libxrandr2
-        libxrender1
-        libxext6
         libx11-6
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
