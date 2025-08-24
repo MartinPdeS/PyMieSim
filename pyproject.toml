@@ -115,7 +115,7 @@ archs = ["x86_64"]
 build = ["cp310-manylinux*", "cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-before-build = "python -c 'import pyvista; pyvista.start_xvfb()'"
+before-test = "python -c 'import pyvista; pyvista.start_xvfb()'"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
