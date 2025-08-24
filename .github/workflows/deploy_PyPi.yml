@@ -26,7 +26,6 @@ jobs:
         mingw-w64-x86_64-pkg-config
       apt-package: |
         xvfb
-        libglu1-mesa-dev
         mesa-utils
         libxrandr2
         libxrender1
