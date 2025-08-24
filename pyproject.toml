@@ -107,7 +107,7 @@ testpaths = [
 [tool.cibuildwheel]
 build-frontend = "build"
 before-test = ""
-test-command = "xvfb-run -a python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
+test-command = "python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]
@@ -115,6 +115,7 @@ archs = ["x86_64"]
 build = ["cp310-manylinux*", "cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+test-command = "xvfb -a python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
