@@ -107,7 +107,7 @@ testpaths = [
 [tool.cibuildwheel]
 build-frontend = "build"
 before-test = ""
-test-command = "import pyvista; pyvista.start_xvfb();python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
+test-command = "xvfb-run -a python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]
