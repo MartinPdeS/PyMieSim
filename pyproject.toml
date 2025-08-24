@@ -115,6 +115,7 @@ archs = ["x86_64"]
 build = ["cp310-manylinux*", "cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+before-test = "sudo apt-get install -y xvfb"
 test-command = "xvfb-run -a python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 
 [tool.cibuildwheel.macos]
