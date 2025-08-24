@@ -125,13 +125,6 @@ Far-field complex fields
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-      return np.asarray(x, float)
-
 
 
 
@@ -224,7 +217,7 @@ Stokes parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.074 seconds)
+   **Total running time of the script:** (0 minutes 1.108 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_array_scattering.py:

@@ -36,19 +36,8 @@ of a sphere as a function of the permittivity and the size parameter.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/matplotlib/cbook.py:684: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-      x = np.array(x, subok=True, copy=copy)
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
@@ -113,7 +102,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.008 seconds)
+   **Total running time of the script:** (0 minutes 1.964 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_coupling_heatmap.py:

@@ -35,8 +35,6 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-      return np.asarray(x, float)
     /home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:68: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
       plt.tight_layout()
 
@@ -117,7 +115,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.526 seconds)
+   **Total running time of the script:** (0 minutes 0.485 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_88.py:
