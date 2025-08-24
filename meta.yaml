@@ -20,7 +20,7 @@ requirements:
     - setuptools_scm[toml] ~=8.0
   run:
     - python {{PY_VER}}*
-    - martinpdes::pyoptik ==v1.10.8
+    - martinpdes::pyoptik
     - martinpdes::mpsplots ==v1.6.4
     - martinpdes::typedunit
     - matplotlib ~=3.10.3

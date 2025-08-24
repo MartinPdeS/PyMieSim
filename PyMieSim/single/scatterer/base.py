@@ -629,7 +629,7 @@ class BaseScatterer():
         if isinstance(property, RefractiveIndex):
             return property, None
         if isinstance(property, BaseMaterial):
-            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength))[0] * ureg.RIU, property
+            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength.to('meter').magnitude))[0] * ureg.RIU, property
 
         raise ValueError(f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU).")
 

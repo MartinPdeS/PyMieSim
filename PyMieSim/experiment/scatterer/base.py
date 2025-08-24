@@ -65,7 +65,7 @@ class BaseScatterer():
             return instance
 
         elif all(isinstance(item, BaseMaterial) for item in properties):
-            eval_index = numpy.asarray([m.compute_refractive_index(self.source.wavelength) for m in properties])
+            eval_index = numpy.asarray([m.compute_refractive_index(self.source.wavelength.to('meter').magnitude) for m in properties])
             instance = CPPClass(material_properties=eval_index)
             self.binding_kwargs[f'{name}_properties'] = instance
 
