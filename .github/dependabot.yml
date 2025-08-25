@@ -6,6 +6,6 @@ updates:
     directory: "/"
     target-branch: "master"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "sunday"
       time: "09:00"
