@@ -1,28 +1,29 @@
-# General patterns
-*.DS_store
-*.ipynb_checkpoints*
+
+# Ignore all
+/*
+
+# Except ...
+!.github
+!PyMieSim
+!development
+!docs
+!tests
+!.flake8
+!.gitignore
+!.pre-commit-config.yaml
+!LICENSE
+!meta.yaml
+!pyproject.toml
+!README.rst
+!notebook.ipynb
+!CMakeLists.txt
+
+# But ignore docs/build inside docs and code
+docs/build/
+docs/source/gallery/
+
+# Compiled files in the project
 *__pycache__*
-*.so
-*.a
-.coverage*
-*.pytest_cache
-htmlcov
-dist
-build
-*.egg*
-*.whl
-CMakeCache.txt
-CMakeFiles
-install_manifest.txt
-cmake_install.cmake
-wheelhouse
-
-# Docs-specific patterns
-docs/source/gallery/*
-!docs/source/gallery/index.rst
-PyOptik/data/**/test*
-PyOptik/data/**/example*
-
-# Override for documentation_build
-!documentation_build
-!documentation_build/**
+*.DS_Store*
+*.so*
+*.a*
