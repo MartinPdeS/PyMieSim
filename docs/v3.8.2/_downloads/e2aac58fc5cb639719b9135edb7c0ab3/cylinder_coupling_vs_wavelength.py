@@ -19,20 +19,22 @@ from PyOptik import Material
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=np.linspace(950, 1050, 300) * ureg.nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
+    wavelength=np.linspace(950, 1050, 300)
+    * ureg.nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
     polarization=0 * ureg.degree,  # Linear polarization angle in radians
     optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    NA=0.2 * ureg.AU  # Numerical Aperture
+    NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer distribution
 # Here we look at cylinders with a set diameter, refractive index, and medium.
 scatterer = Cylinder(
-    diameter=np.linspace(100, 8000, 5) * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
+    diameter=np.linspace(100, 8000, 5)
+    * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
     property=Material.BK7,  # Material of the cylinder
     medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
-    source=source
+    source=source,
 )
 
 # %%
@@ -53,9 +55,9 @@ experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the coupling efficiency
-dataframe = experiment.get('coupling', scale_unit=True)
+dataframe = experiment.get("coupling", scale_unit=True)
 
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the wavelength.
-dataframe.plot(x="source:wavelength", std='scatterer:diameter')
+dataframe.plot(x="source:wavelength", std="scatterer:diameter")

@@ -29,29 +29,27 @@ source = Gaussian(
     wavelength=400 * ureg.nanometer,
     polarization=90 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 
 
 scatterer = Sphere(
-    diameter=diameter,
-    property=index,
-    medium_property=1 * ureg.RIU,
-    source=source
+    diameter=diameter, property=index, medium_property=1 * ureg.RIU, source=source
 )
 
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
-data = experiment.get('Qsca', add_units=False).squeeze().values.reshape([permitivity.size, diameter.size])
+data = (
+    experiment.get("Qsca", add_units=False)
+    .squeeze()
+    .values.reshape([permitivity.size, diameter.size])
+)
 
 figure, ax = plt.subplots(1, 1)
 ax.set(
     xlabel="Permittivity",
-    ylabel=r'Diameter [$\mu$ m]',
-    title="Scattering efficiency of a sphere"
+    ylabel=r"Diameter [$\mu$ m]",
+    title="Scattering efficiency of a sphere",
 )
 
 image = ax.pcolormesh(permitivity, diameter, numpy.log(data))

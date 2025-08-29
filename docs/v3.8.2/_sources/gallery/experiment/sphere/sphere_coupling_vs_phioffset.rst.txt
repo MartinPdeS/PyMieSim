@@ -21,11 +21,11 @@
 Sphere: Goniometer
 ==================
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
+.. GENERATED FROM PYTHON SOURCE LINES 8-9
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-20
+.. GENERATED FROM PYTHON SOURCE LINES 9-19
 
 .. code-block:: Python
 
@@ -46,11 +46,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-22
+.. GENERATED FROM PYTHON SOURCE LINES 20-21
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-28
+.. GENERATED FROM PYTHON SOURCE LINES 21-27
 
 .. code-block:: Python
 
@@ -58,7 +58,7 @@ Defining the source to be employed.
         wavelength=1200 * ureg.nanometer,
         polarization=RightCircular(),
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU
+        NA=0.2 * ureg.AU,
     )
 
 
@@ -67,11 +67,11 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-30
+.. GENERATED FROM PYTHON SOURCE LINES 28-29
 
 Defining the ranging parameters for the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-37
+.. GENERATED FROM PYTHON SOURCE LINES 29-36
 
 .. code-block:: Python
 
@@ -79,7 +79,7 @@ Defining the ranging parameters for the scatterer distribution
         diameter=2000 * ureg.nanometer,
         property=Material.BK7,
         medium_property=1 * ureg.RIU,
-        source=source
+        source=source,
     )
 
 
@@ -89,11 +89,11 @@ Defining the ranging parameters for the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 Defining the detector to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-48
+.. GENERATED FROM PYTHON SOURCE LINES 38-47
 
 .. code-block:: Python
 
@@ -103,7 +103,7 @@ Defining the detector to be employed.
         cache_NA=0.05 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         sampling=400 * ureg.AU,
-        polarization_filter=None
+        polarization_filter=None,
     )
 
 
@@ -113,11 +113,11 @@ Defining the detector to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 49-51
 
 .. code-block:: Python
 
@@ -130,15 +130,15 @@ Defining the experiment setup
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 Measuring the properties
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 53-55
 
 .. code-block:: Python
 
-    dataframe = experiment.get('coupling')
+    dataframe = experiment.get("coupling")
 
 
 
@@ -147,11 +147,11 @@ Measuring the properties
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
+.. GENERATED FROM PYTHON SOURCE LINES 56-57
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-59
+.. GENERATED FROM PYTHON SOURCE LINES 57-58
 
 .. code-block:: Python
 
@@ -177,7 +177,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.252 seconds)
+   **Total running time of the script:** (0 minutes 0.255 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py:

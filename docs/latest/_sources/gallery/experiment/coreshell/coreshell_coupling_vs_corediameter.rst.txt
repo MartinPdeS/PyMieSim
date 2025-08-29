@@ -59,7 +59,7 @@ Defining the source
         wavelength=1.2 * ureg.micrometer,  # 1200 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -73,17 +73,18 @@ Defining the source
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-39
+.. GENERATED FROM PYTHON SOURCE LINES 30-40
 
 .. code-block:: Python
 
     scatterer = CoreShell(
-        core_diameter=numpy.geomspace(100, 600, 400) * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
+        core_diameter=numpy.geomspace(100, 600, 400)
+        * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
         shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
         core_property=Material.silver,  # Core material
         shell_property=Material.BK7,  # Shell material
         medium_property=1 * ureg.RIU,  # Surrounding medium's refractive index
-        source=source
+        source=source,
     )
 
 
@@ -93,11 +94,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
+.. GENERATED FROM PYTHON SOURCE LINES 41-42
 
 Defining the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-49
+.. GENERATED FROM PYTHON SOURCE LINES 42-50
 
 .. code-block:: Python
 
@@ -106,7 +107,7 @@ Defining the detector
         phi_offset=-180.0 * ureg.degree,  # Phi offset in ureg.degrees
         gamma_offset=0.0 * ureg.degree,  # Gamma offset in ureg.degrees
         sampling=600 * ureg.AU,  # Number of sampling points
-        polarization_filter=1 * ureg.degree
+        polarization_filter=1 * ureg.degree,
     )
 
 
@@ -116,11 +117,11 @@ Defining the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-51
+.. GENERATED FROM PYTHON SOURCE LINES 51-52
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-53
+.. GENERATED FROM PYTHON SOURCE LINES 52-54
 
 .. code-block:: Python
 
@@ -133,15 +134,15 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-55
+.. GENERATED FROM PYTHON SOURCE LINES 55-56
 
 Measuring the coupling efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-58
 
 .. code-block:: Python
 
-    dataframe = experiment.get('coupling')
+    dataframe = experiment.get("coupling")
 
 
 
@@ -150,12 +151,12 @@ Measuring the coupling efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-60
+.. GENERATED FROM PYTHON SOURCE LINES 59-61
 
 Plotting the results
 Visualizing how the coupling efficiency varies with the core diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-61
+.. GENERATED FROM PYTHON SOURCE LINES 61-62
 
 .. code-block:: Python
 
@@ -181,7 +182,7 @@ Visualizing how the coupling efficiency varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.324 seconds)
+   **Total running time of the script:** (0 minutes 0.325 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py:

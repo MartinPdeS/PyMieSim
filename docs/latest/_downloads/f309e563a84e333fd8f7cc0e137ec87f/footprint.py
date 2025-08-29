@@ -18,7 +18,7 @@ source = Gaussian(
     wavelength=1 * ureg.micrometer,  # 1000 nm
     polarization=0 * ureg.degree,
     optical_power=1 * ureg.watt,  # Arbitrary units
-    NA=0.3 * ureg.AU  # Numerical Aperture
+    NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
 # Create a spherical scatterer with a specified diameter and property
@@ -26,7 +26,7 @@ scatterer = Sphere(
     diameter=2 * ureg.micrometer,  # 2000 nm
     source=source,
     medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
-    property=Material.BK7  # Using BK7 glass property
+    property=Material.BK7,  # Using BK7 glass property
 )
 
 # Define the LPMode detector with specific parameters

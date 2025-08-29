@@ -54,7 +54,7 @@ Defining the source
         wavelength=1 * ureg.nanometer,  # 1000 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU  # Numerical Aperture
+        NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -88,7 +88,7 @@ Plotting the source
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.245 seconds)
+   **Total running time of the script:** (0 minutes 0.261 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_source.py:

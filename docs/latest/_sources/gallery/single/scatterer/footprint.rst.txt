@@ -52,7 +52,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
         wavelength=1 * ureg.micrometer,  # 1000 nm
         polarization=0 * ureg.degree,
         optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU  # Numerical Aperture
+        NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
     # Create a spherical scatterer with a specified diameter and property
@@ -60,7 +60,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
         diameter=2 * ureg.micrometer,  # 2000 nm
         source=source,
         medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
-        property=Material.BK7  # Using BK7 glass property
+        property=Material.BK7,  # Using BK7 glass property
     )
 
     # Define the LPMode detector with specific parameters
@@ -81,7 +81,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.134 seconds)
+   **Total running time of the script:** (0 minutes 1.119 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_footprint.py:

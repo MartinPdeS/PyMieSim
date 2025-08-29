@@ -21,11 +21,11 @@
 Sphere: Coupling vs numerical aperture
 ======================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-9
+.. GENERATED FROM PYTHON SOURCE LINES 7-8
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-16
+.. GENERATED FROM PYTHON SOURCE LINES 8-15
 
 .. code-block:: Python
 
@@ -43,11 +43,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-18
+.. GENERATED FROM PYTHON SOURCE LINES 16-17
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-25
+.. GENERATED FROM PYTHON SOURCE LINES 17-24
 
 .. code-block:: Python
 
@@ -55,7 +55,7 @@ Defining the source to be employed.
         wavelength=500 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU
+        NA=0.2 * ureg.AU,
     )
 
 
@@ -65,11 +65,11 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Defining the ranging parameters for the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-34
+.. GENERATED FROM PYTHON SOURCE LINES 26-33
 
 .. code-block:: Python
 
@@ -77,7 +77,7 @@ Defining the ranging parameters for the scatterer distribution
         diameter=500e-9 * ureg.meter,
         property=Material.BK7,
         medium_property=1 * ureg.RIU,
-        source=source
+        source=source,
     )
 
 
@@ -87,11 +87,11 @@ Defining the ranging parameters for the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 34-35
 
 Defining the detector to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-43
+.. GENERATED FROM PYTHON SOURCE LINES 35-42
 
 .. code-block:: Python
 
@@ -99,7 +99,7 @@ Defining the detector to be employed.
         NA=np.linspace(0.1, 1, 150) * ureg.AU,
         phi_offset=0 * ureg.degree,
         gamma_offset=[0, 10] * ureg.degree,
-        sampling=2000 * ureg.AU
+        sampling=2000 * ureg.AU,
     )
 
 
@@ -109,11 +109,11 @@ Defining the detector to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-45
+.. GENERATED FROM PYTHON SOURCE LINES 43-44
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 44-46
 
 .. code-block:: Python
 
@@ -126,15 +126,15 @@ Defining the experiment setup
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
+.. GENERATED FROM PYTHON SOURCE LINES 47-48
 
 Measuring the properties
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-51
+.. GENERATED FROM PYTHON SOURCE LINES 48-50
 
 .. code-block:: Python
 
-    dataframe = setup.get('coupling', drop_unique_level=True)
+    dataframe = setup.get("coupling", drop_unique_level=True)
 
 
 
@@ -143,28 +143,28 @@ Measuring the properties
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-53
+.. GENERATED FROM PYTHON SOURCE LINES 51-52
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-71
+.. GENERATED FROM PYTHON SOURCE LINES 52-70
 
 .. code-block:: Python
 
-    dataframe.plot(x='detector:NA')
+    dataframe.plot(x="detector:NA")
 
     single_source = single.Gaussian(
         wavelength=950 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU
+        NA=0.2 * ureg.AU,
     )
 
     single_scatterer = single.scatterer.Sphere(
         diameter=500 * ureg.nanometer,
         property=Material.BK7,
         medium_property=1 * ureg.RIU,
-        source=single_source
+        source=single_source,
     )
 
 
@@ -190,7 +190,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.412 seconds)
+   **Total running time of the script:** (0 minutes 0.414 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_coupling_vs_NA.py:

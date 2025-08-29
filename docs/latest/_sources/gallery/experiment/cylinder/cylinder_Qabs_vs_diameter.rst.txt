@@ -58,7 +58,7 @@ Defining the source
         wavelength=400 * ureg.nanometer,  # 400 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -72,15 +72,20 @@ Defining the source
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 29-41
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=np.linspace(1, 800, 300) * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
-        property=[Material.silver, Material.gold, Material.aluminium],  # Scatterer materials
+        diameter=np.linspace(1, 800, 300)
+        * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
+        property=[
+            Material.silver,
+            Material.gold,
+            Material.aluminium,
+        ],  # Scatterer materials
         medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source
+        source=source,
     )
 
 
@@ -90,11 +95,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 .. code-block:: Python
 
@@ -107,17 +112,19 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-44
+.. GENERATED FROM PYTHON SOURCE LINES 46-49
 
 Measuring the scattering efficiency (Qsca)
 Note: The original request mentioned Qsca, but the measurement code uses Qabs.
 If Qsca measurement is intended, ensure to use the correct measure object from PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-46
+.. GENERATED FROM PYTHON SOURCE LINES 49-53
 
 .. code-block:: Python
 
-    dataframe = experiment.get('Qabs')  # Assuming Qabs was intended, replace with measure.Qsca if needed
+    dataframe = experiment.get(
+        "Qabs"
+    )  # Assuming Qabs was intended, replace with measure.Qsca if needed
 
 
 
@@ -126,16 +133,16 @@ If Qsca measurement is intended, ensure to use the correct measure object from P
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 54-56
 
 Plotting the results
 Visualizing how the scattering efficiency varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 56-57
 
 .. code-block:: Python
 
-    dataframe.plot(x='scatterer:diameter')
+    dataframe.plot(x="scatterer:diameter")
 
 
 
@@ -157,7 +164,7 @@ Visualizing how the scattering efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.386 seconds)
+   **Total running time of the script:** (0 minutes 0.384 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:

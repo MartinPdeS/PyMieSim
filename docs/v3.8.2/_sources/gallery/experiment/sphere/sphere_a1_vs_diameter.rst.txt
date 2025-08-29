@@ -21,11 +21,11 @@
 Sphere: A1 scattering coefficient
 ===================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
+.. GENERATED FROM PYTHON SOURCE LINES 8-9
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-17
+.. GENERATED FROM PYTHON SOURCE LINES 9-16
 
 .. code-block:: Python
 
@@ -43,11 +43,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
+.. GENERATED FROM PYTHON SOURCE LINES 17-18
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-25
+.. GENERATED FROM PYTHON SOURCE LINES 18-24
 
 .. code-block:: Python
 
@@ -55,7 +55,7 @@ Defining the source to be employed.
         wavelength=400 * ureg.nanometer,
         polarization=[0] * ureg.degree,
         optical_power=1e-6 * ureg.watt,
-        NA=0.2 * ureg.AU
+        NA=0.2 * ureg.AU,
     )
 
 
@@ -64,11 +64,11 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Defining the ranging parameters for the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-34
+.. GENERATED FROM PYTHON SOURCE LINES 26-33
 
 .. code-block:: Python
 
@@ -76,7 +76,7 @@ Defining the ranging parameters for the scatterer distribution
         diameter=np.linspace(300, 1000, 100) * ureg.nanometer,
         property=[1.2, 1.25] * ureg.RIU,
         medium_property=[1.0] * ureg.RIU,
-        source=source
+        source=source,
     )
     #
 
@@ -86,11 +86,11 @@ Defining the ranging parameters for the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 34-35
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+.. GENERATED FROM PYTHON SOURCE LINES 35-37
 
 .. code-block:: Python
 
@@ -103,15 +103,15 @@ Defining the experiment setup
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Measuring the properties
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-43
+.. GENERATED FROM PYTHON SOURCE LINES 39-42
 
 .. code-block:: Python
 
-    dataframe = experiment.get('a1')
+    dataframe = experiment.get("a1")
 
     # print(dataframe)
 
@@ -121,15 +121,15 @@ Measuring the properties
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-45
+.. GENERATED FROM PYTHON SOURCE LINES 43-44
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-46
+.. GENERATED FROM PYTHON SOURCE LINES 44-45
 
 .. code-block:: Python
 
-    dataframe.plot(x='scatterer:diameter', std='scatterer:property')
+    dataframe.plot(x="scatterer:diameter", std="scatterer:property")
 
 
 
@@ -151,7 +151,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.285 seconds)
+   **Total running time of the script:** (0 minutes 0.280 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_a1_vs_diameter.py:

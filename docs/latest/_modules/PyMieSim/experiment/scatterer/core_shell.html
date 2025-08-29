@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -496,6 +496,7 @@
 <span class="sd">        BaseMaterial(s) defining the medium, used if `medium_index` is not provided.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span>
     <span class="n">core_diameter</span><span class="p">:</span> <span class="n">Length</span>
     <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">Length</span>
@@ -504,12 +505,37 @@
     <span class="n">medium_property</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
 
     <span class="n">available_measure_list</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;Qsca&#39;</span><span class="p">,</span> <span class="s1">&#39;Qext&#39;</span><span class="p">,</span> <span class="s1">&#39;Qabs&#39;</span><span class="p">,</span> <span class="s1">&#39;Qratio&#39;</span><span class="p">,</span> <span class="s1">&#39;Qforward&#39;</span><span class="p">,</span> <span class="s1">&#39;Qback&#39;</span><span class="p">,</span> <span class="s1">&#39;Qpr&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;Csca&#39;</span><span class="p">,</span> <span class="s1">&#39;Cext&#39;</span><span class="p">,</span> <span class="s1">&#39;Cabs&#39;</span><span class="p">,</span> <span class="s1">&#39;Cratio&#39;</span><span class="p">,</span> <span class="s1">&#39;Cforward&#39;</span><span class="p">,</span> <span class="s1">&#39;Cback&#39;</span><span class="p">,</span> <span class="s1">&#39;Cpr&#39;</span><span class="p">,</span> <span class="s1">&#39;a1&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;a2&#39;</span><span class="p">,</span> <span class="s1">&#39;a3&#39;</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="s1">&#39;b2&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;coupling&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;Qsca&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Qext&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Qabs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Qratio&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Qforward&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Qback&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Qpr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Csca&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cext&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cabs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cratio&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cforward&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cback&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Cpr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;a1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;a2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;a3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;b1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;b2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;b3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;g&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coupling&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
-    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core_diameter&#39;</span><span class="p">,</span> <span class="s1">&#39;shell_thickness&#39;</span><span class="p">,</span> <span class="s1">&#39;core_property&#39;</span><span class="p">,</span> <span class="s1">&#39;shell_property&#39;</span><span class="p">,</span> <span class="s1">&#39;medium_property&#39;</span><span class="p">]</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;core_diameter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shell_thickness&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;core_property&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shell_property&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;medium_property&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_generate_binding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -523,18 +549,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="p">,</span>
             <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="p">,</span>
-            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span>
+            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">mediun_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span><span class="p">)</span>
+        <span class="n">mediun_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span>
+        <span class="p">)</span>
 
-        <span class="n">core_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;core&#39;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_property</span><span class="p">)</span>
+        <span class="n">core_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;core&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_property</span>
+        <span class="p">)</span>
 
-        <span class="n">shell_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;shell&#39;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_property</span><span class="p">)</span>
+        <span class="n">shell_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_property</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">CppCoreShellSet</span><span class="p">(</span>
-            <span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">core_properties</span><span class="o">=</span><span class="n">core_properties</span><span class="p">,</span>
             <span class="n">shell_properties</span><span class="o">=</span><span class="n">shell_properties</span><span class="p">,</span>
             <span class="n">medium_properties</span><span class="o">=</span><span class="n">mediun_properties</span><span class="p">,</span>

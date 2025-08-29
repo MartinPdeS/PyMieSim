@@ -25,7 +25,7 @@ Sphere: Qsca vs diameter
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-23
+.. GENERATED FROM PYTHON SOURCE LINES 9-24
 
 .. code-block:: Python
 
@@ -37,10 +37,11 @@ Importing the package dependencies: numpy, PyMieSim
 
     from PyMieSim.experiment import Setup
     from PyOptik import Material
+
     Material.print_available()
     import PyMieSim
-    PyMieSim.debug_mode = True
 
+    PyMieSim.debug_mode = True
 
 
 
@@ -54,79 +55,79 @@ Importing the package dependencies: numpy, PyMieSim
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | SF10                  | paladium              |
+    | polycarbonate         | paladium              |
     +-----------------------+-----------------------+
-    | methane               | magnesium             |
+    | polystyrene           | polyetylene           |
     +-----------------------+-----------------------+
-    | methanol              | titanium              |
+    | propanol              | calcium               |
     +-----------------------+-----------------------+
-    | ethylene              | copper                |
+    | acetone               | aluminium             |
     +-----------------------+-----------------------+
-    | fused_silica          | silver                |
+    | flint                 | tantalum              |
     +-----------------------+-----------------------+
-    | ethane                | vanadium              |
+    | FK51A                 | pva                   |
     +-----------------------+-----------------------+
-    | LASF9                 | sodium                |
+    | argon                 | zinc                  |
     +-----------------------+-----------------------+
-    | polystyren            | pva                   |
+    | lithium_niobate       | iron                  |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | rhodium               |
+    | SF5                   | sodium                |
     +-----------------------+-----------------------+
-    | lithium_niobate       | lead                  |
+    | methanol              | silver                |
     +-----------------------+-----------------------+
-    | air                   | polyetylene           |
+    | BK7                   | tungsten              |
+    +-----------------------+-----------------------+
+    | crown                 | silicon               |
     +-----------------------+-----------------------+
     | glycerol              | bismuth               |
     +-----------------------+-----------------------+
-    | BAK1                  | aluminium             |
+    | cellulose             | chromium              |
     +-----------------------+-----------------------+
-    | polycarbonate         | iron                  |
+    | pvc                   | magnesium             |
     +-----------------------+-----------------------+
-    | acetylene             | zinc                  |
+    | air                   | lead                  |
     +-----------------------+-----------------------+
-    | FK51A                 | nickel                |
+    | SF11                  | titanium              |
     +-----------------------+-----------------------+
-    | cellulose             | silicon               |
+    | ZBLAN                 | vanadium              |
     +-----------------------+-----------------------+
-    | argon                 | tantalum              |
+    | BAF10                 | rhodium               |
     +-----------------------+-----------------------+
-    | SF11                  | calcium               |
+    | soda_lime_glass       | gold                  |
     +-----------------------+-----------------------+
-    | BAF10                 | tungsten              |
+    | LASF9                 | copper                |
     +-----------------------+-----------------------+
-    | polystyrene           | gold                  |
+    | BAK1                  | nickel                |
     +-----------------------+-----------------------+
-    | water                 | chromium              |
+    | methane               |                       |
     +-----------------------+-----------------------+
-    | ZBLAN                 |                       |
+    | ethane                |                       |
     +-----------------------+-----------------------+
-    | acetone               |                       |
-    +-----------------------+-----------------------+
-    | pvc                   |                       |
-    +-----------------------+-----------------------+
-    | ethanol               |                       |
+    | acetylene             |                       |
     +-----------------------+-----------------------+
     | germanium             |                       |
     +-----------------------+-----------------------+
-    | BK7                   |                       |
+    | ethanol               |                       |
     +-----------------------+-----------------------+
-    | SF5                   |                       |
+    | SF10                  |                       |
     +-----------------------+-----------------------+
-    | propanol              |                       |
+    | ethylene              |                       |
     +-----------------------+-----------------------+
-    | flint                 |                       |
+    | fused_silica          |                       |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | polystyren            |                       |
+    +-----------------------+-----------------------+
+    | water                 |                       |
     +-----------------------+-----------------------+
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-39
+.. GENERATED FROM PYTHON SOURCE LINES 26-40
 
 .. code-block:: Python
 
@@ -134,14 +135,14 @@ Defining the source to be employed.
         wavelength=[405, 810] * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU
+        NA=0.2 * ureg.AU,
     )
 
     scatterer = Sphere(
         diameter=np.linspace(10, 1000, 150) * ureg.nanometer,
         medium_property=[1.33] * ureg.RIU,
         property=Material.polystyren,
-        source=source
+        source=source,
     )
 
 
@@ -151,29 +152,23 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
+.. GENERATED FROM PYTHON SOURCE LINES 41-42
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-55
+.. GENERATED FROM PYTHON SOURCE LINES 42-50
 
 .. code-block:: Python
 
     experiment = Setup(scatterer=scatterer, source=source)
 
-    dataframe = experiment.get('Qsca', scale_unit=True)
+    dataframe = experiment.get("Qsca", scale_unit=True)
 
-    dataframe.plot(x='scatterer:diameter', show=True)
-
-
-
-
-
-
-
+    dataframe.plot(x="scatterer:diameter", show=True)
 
 
     # plt.show()
+
 
 
 .. image-sg:: /gallery/experiment/sphere/images/sphx_glr_sphere_Qsca_vs_diameter_001.png
@@ -196,7 +191,7 @@ Defining the experiment setup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.255 seconds)
+   **Total running time of the script:** (0 minutes 0.256 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:

@@ -35,4 +35,3 @@ Inheritance Structure
 
 Each class in PyMieSim inherits relevant attributes and methods from parent classes, allowing for a flexible and modular design.
 This structure ensures that users can easily extend the functionality of individual components without rewriting the core logic of the package.
-

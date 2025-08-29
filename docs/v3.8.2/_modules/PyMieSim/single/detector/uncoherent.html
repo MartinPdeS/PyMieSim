@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -497,6 +497,7 @@
 <span class="sd">        determining the acceptance cone of light.</span>
 <span class="sd">        Default is 1.0 (vacuum or air).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">NA</span><span class="p">:</span> <span class="n">Dimensionless</span>
     <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Angle</span>
     <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Angle</span>
@@ -521,13 +522,18 @@
             <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span><span class="p">,</span>
             <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">coherent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">IntegratingSphere</span><span class="p">(</span><span class="n">Photodiode</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Angle</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sampling</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Angle</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+        <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Detector class representing a photodiode with a non-coherent light coupling mechanism.</span>
 <span class="sd">        This implies independence from the phase of the impinging scattered light field.</span>

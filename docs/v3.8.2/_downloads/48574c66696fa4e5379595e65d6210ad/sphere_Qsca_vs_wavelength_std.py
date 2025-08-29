@@ -20,7 +20,7 @@ source = Gaussian(
     wavelength=np.linspace(200, 1800, 300) * ureg.nanometer,
     polarization=0 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
@@ -28,7 +28,7 @@ scatterer = Sphere(
     diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
     property=Material.silver,
     medium_property=1 * ureg.RIU,
-    source=source
+    source=source,
 )
 
 
@@ -38,8 +38,8 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('Qsca')
+dataframe = experiment.get("Qsca")
 
 # %%
 # Plotting the results
-dataframe.plot(x="source:wavelength", std='scatterer:diameter')
+dataframe.plot(x="source:wavelength", std="scatterer:diameter")

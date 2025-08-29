@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -496,20 +496,20 @@
 <span class="sd">    mode_number : str</span>
 <span class="sd">        Mode number of the detector. Defaults to &#39;NC00&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">NA</span><span class="p">:</span> <span class="n">Dimensionless</span>
     <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Angle</span>
     <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Angle</span>
     <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">coherent</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Dimensionless</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
+    <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Dimensionless</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
     <span class="n">sampling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dimensionless</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
-    <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Angle</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
-    <span class="n">mode_number</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;NC00&#39;</span><span class="p">],</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Angle</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
+    <span class="n">mode_number</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;NC00&quot;</span><span class="p">],</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">rotation</span><span class="p">:</span> <span class="n">Angle</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">coherent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
 
 </pre></div>
 

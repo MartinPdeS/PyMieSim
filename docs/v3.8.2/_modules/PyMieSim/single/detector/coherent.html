@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -509,6 +509,7 @@
 <span class="sd">        determining the acceptance cone of light.</span>
 <span class="sd">        Default is 1.0 (vacuum or air).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">mode_number</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">NA</span><span class="p">:</span> <span class="n">Dimensionless</span>
     <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Angle</span>
@@ -526,12 +527,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;High values of NA: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="si">}</span><span class="s2"> do not comply with the paraxial approximation. Values under 0.3 are preferred.&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;High values of NA: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="si">}</span><span class="s2"> do not comply with the paraxial approximation. Values under 0.3 are preferred.&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;lp&#39;</span><span class="p">,</span> <span class="s1">&#39;lg&#39;</span><span class="p">,</span> <span class="s1">&#39;hg&#39;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid mode family: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="si">}</span><span class="s1">. Options are [&quot;LP&quot;, &quot;LG&quot;, &quot;HG&quot;]&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;lp&quot;</span><span class="p">,</span> <span class="s2">&quot;lg&quot;</span><span class="p">,</span> <span class="s2">&quot;hg&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Invalid mode family: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="si">}</span><span class="s1">. Options are [&quot;LP&quot;, &quot;LG&quot;, &quot;HG&quot;]&#39;</span>
+            <span class="p">)</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">mode_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">,</span>
@@ -546,6 +551,7 @@
             <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span><span class="p">,</span>
             <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
         <span class="p">)</span></div>
+
 
 
 <span class="c1"># -</span>

@@ -15,4 +15,3 @@ Representation
 
 .. autoclass:: PyMieSim.single.representations.Footprint
     :inherited-members:
-

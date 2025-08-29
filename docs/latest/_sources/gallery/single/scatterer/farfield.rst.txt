@@ -55,7 +55,7 @@ Defining the source
         wavelength=1000 * ureg.nanometer,  # 1000 nm
         polarization=30 * ureg.degree,  # Right circular polarization
         optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU  # Numerical Aperture
+        NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -77,7 +77,7 @@ Defining the scatterer
         diameter=1500 * ureg.nanometer,  # 1500 nm
         source=source,
         property=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium_property=1.0 * ureg.RIU  # Refractive index of the surrounding medium
+        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
     )
 
 
@@ -128,7 +128,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.763 seconds)
+   **Total running time of the script:** (0 minutes 0.774 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_farfield.py:

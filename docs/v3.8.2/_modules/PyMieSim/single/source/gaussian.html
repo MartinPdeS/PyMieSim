@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -484,6 +484,7 @@
 <span class="sd">    NA: Dimensionless</span>
 <span class="sd">        Numerical aperture of the source.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">wavelength</span><span class="p">:</span> <span class="n">Length</span>
     <span class="n">polarization</span><span class="p">:</span> <span class="n">Angle</span> <span class="o">|</span> <span class="n">BasePolarization</span>
     <span class="n">optical_power</span><span class="p">:</span> <span class="n">Power</span>
@@ -500,7 +501,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">waist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">peak_intensity</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">waist</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_source_polarization</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="p">)</span>
-
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
@@ -525,12 +525,18 @@
 <span class="sd">        float</span>
 <span class="sd">            The angle in radians.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">numerical_aperture</span><span class="p">)</span> <span class="k">if</span> <span class="n">numerical_aperture</span> <span class="o">&lt;=</span> <span class="mf">1.0</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">numerical_aperture</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span></div>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">numerical_aperture</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">numerical_aperture</span> <span class="o">&lt;=</span> <span class="mf">1.0</span>
+            <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">numerical_aperture</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Gaussian.plot">
 <a class="viewcode-back" href="../../../../code/single/source.html#PyMieSim.single.source.Gaussian.plot">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plots the 3D structure of the Gaussian source.</span>
 
@@ -564,7 +570,9 @@
         <span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_3d_ax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_3d_ax</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a 3D cone representation to the given PyVista plotting scene.</span>
 
@@ -595,11 +603,13 @@
             <span class="n">direction</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
             <span class="n">height</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
             <span class="n">resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-            <span class="n">angle</span><span class="o">=</span><span class="n">max_angle</span>
+            <span class="n">angle</span><span class="o">=</span><span class="n">max_angle</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Add the cone mesh to the scene</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">cone_mesh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span></div>
+
+
 
 <span class="c1"># -</span>
 </pre></div>

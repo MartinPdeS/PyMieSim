@@ -57,7 +57,7 @@ Defining the source
         wavelength=400 * ureg.nanometer,  # 400 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -71,15 +71,16 @@ Defining the source
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-35
+.. GENERATED FROM PYTHON SOURCE LINES 28-36
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=np.linspace(100, 10000, 800) * ureg.nanometer,  # Diameters ranging from 100 nm to 10000 nm
+        diameter=np.linspace(100, 10000, 800)
+        * ureg.nanometer,  # Diameters ranging from 100 nm to 10000 nm
         property=1.4 * ureg.RIU,  # Refractive index of the cylinder
         medium_property=[1, 1.1] * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source
+        source=source,
     )
 
 
@@ -89,11 +90,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-39
+.. GENERATED FROM PYTHON SOURCE LINES 38-40
 
 .. code-block:: Python
 
@@ -106,16 +107,16 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 41-43
 
 Measuring the A1 scattering coefficient
 Note: The original request was for "a21"; assuming it meant A1, as "a21" might be a typo.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 .. code-block:: Python
 
-    dataframe = experiment.get('a21')
+    dataframe = experiment.get("a21")
 
 
 
@@ -124,16 +125,16 @@ Note: The original request was for "a21"; assuming it meant A1, as "a21" might b
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 46-48
 
 Plotting the results
 Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 .. code-block:: Python
 
-    dataframe.plot(x='scatterer:diameter')
+    dataframe.plot(x="scatterer:diameter")
 
 
 
@@ -155,7 +156,7 @@ Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.101 seconds)
+   **Total running time of the script:** (0 minutes 1.104 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py:

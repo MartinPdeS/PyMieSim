@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -575,18 +575,19 @@ to download the full example code.</p>
     <span class="n">wavelength</span><span class="o">=</span><span class="mf">1.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>  <span class="c1"># 1200 nm</span>
     <span class="n">polarization</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Polarization angle in ureg.degrees</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>  <span class="c1"># 1 milliureg.watt</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>  <span class="c1"># Numerical Aperture</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>Defining the scatterer distribution</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShell</span><span class="p">(</span>
-    <span class="n">core_diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Core diameters from 100 nm to 600 nm</span>
+    <span class="n">core_diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+    <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Core diameters from 100 nm to 600 nm</span>
     <span class="n">shell_thickness</span><span class="o">=</span><span class="mi">800</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Shell width of 800 nm</span>
     <span class="n">core_property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">silver</span><span class="p">,</span>  <span class="c1"># Core material</span>
     <span class="n">shell_property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>  <span class="c1"># Shell material</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Surrounding medium&#39;s refractive index</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -596,7 +597,7 @@ to download the full example code.</p>
     <span class="n">phi_offset</span><span class="o">=-</span><span class="mf">180.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Phi offset in ureg.degrees</span>
     <span class="n">gamma_offset</span><span class="o">=</span><span class="mf">0.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Gamma offset in ureg.degrees</span>
     <span class="n">sampling</span><span class="o">=</span><span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Number of sampling points</span>
-    <span class="n">polarization_filter</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
+    <span class="n">polarization_filter</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -605,7 +606,7 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <p>Measuring the coupling efficiency</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;coupling&#39;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Plotting the results
@@ -616,7 +617,7 @@ Visualizing how the coupling efficiency varies with the core diameter.</p>
 <img src="../../../_images/sphx_glr_coreshell_coupling_vs_corediameter_001.png" srcset="../../../_images/sphx_glr_coreshell_coupling_vs_corediameter_001.png" alt="coreshell coupling vs corediameter" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;scatterer:core_diameter&#39;, ylabel=&#39;watt&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.324 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.325 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-coupling-vs-corediameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/e1ac8016b596bf0d6f8bce9effd4fd01/coreshell_coupling_vs_corediameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_coupling_vs_corediameter.ipynb</span></code></a></p>

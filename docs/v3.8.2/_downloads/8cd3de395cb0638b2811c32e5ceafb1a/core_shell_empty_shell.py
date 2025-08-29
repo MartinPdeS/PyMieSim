@@ -24,7 +24,7 @@ source = Gaussian(
     wavelength=1.2 * ureg.micrometer,
     polarization=[0, 90] * ureg.degree,
     optical_power=1 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 
 scatterer = CoreShell(
@@ -33,7 +33,7 @@ scatterer = CoreShell(
     core_property=1.4 * ureg.RIU,
     shell_property=1.3 * ureg.RIU,
     medium_property=1.3 * ureg.RIU,
-    source=source
+    source=source,
 )
 
 
@@ -42,10 +42,10 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # Gather data
 # %%
-dataframe = experiment.get('Csca')
+dataframe = experiment.get("Csca")
 
 
-ax = dataframe.plot(x='scatterer:shell_thickness', show=False)
+ax = dataframe.plot(x="scatterer:shell_thickness", show=False)
 
 ax.set_ylim([0, 4.0e-16])
 
@@ -55,9 +55,9 @@ plt.show()
 # %%
 # As it is supposed the scattering Cross-section should not be affected by
 # the shell thickness as it's refractive index is same as the surrounding medium.
-dataframe = experiment.get('Qsca')
+dataframe = experiment.get("Qsca")
 
-ax = dataframe.plot(x='scatterer:shell_thickness', show=False)
+ax = dataframe.plot(x="scatterer:shell_thickness", show=False)
 
 plt.show()
 # Similarly the scattering decrease as the scatterer becomes technically larger but the effects of the shell is for no account.

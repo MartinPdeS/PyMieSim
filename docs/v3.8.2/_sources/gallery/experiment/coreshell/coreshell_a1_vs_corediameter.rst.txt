@@ -60,7 +60,7 @@ In the LMT framework, the source is always considered a plane wave with a defaul
         wavelength=800 * ureg.nanometer,  # 800 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -75,17 +75,18 @@ In the LMT framework, the source is always considered a plane wave with a defaul
 Defining the scatterer distribution
 Here, we explore core/shell scatterers with a constant shell diameter and variable core diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-41
+.. GENERATED FROM PYTHON SOURCE LINES 32-42
 
 .. code-block:: Python
 
     scatterer = CoreShell(
-        core_diameter=np.geomspace(100, 600, 10) * ureg.nanometer,  # Geometrically spaced core diameters
+        core_diameter=np.geomspace(100, 600, 10)
+        * ureg.nanometer,  # Geometrically spaced core diameters
         shell_thickness=150 * ureg.nanometer,  # Shell width of 800 nm
         core_property=[1.4] * ureg.RIU,  # Refractive index of the core
         shell_property=[Material.BK7],  # BK7 glass material for the shell
         medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source
+        source=source,
     )
 
 
@@ -95,12 +96,12 @@ Here, we explore core/shell scatterers with a constant shell diameter and variab
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 Defining the experiment setup
 Integrating the defined source and scatterers into a single experimental setup.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-46
+.. GENERATED FROM PYTHON SOURCE LINES 45-47
 
 .. code-block:: Python
 
@@ -113,16 +114,16 @@ Integrating the defined source and scatterers into a single experimental setup.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 48-50
 
 Measuring the B1 scattering parameter
 Here, we're interested in the a3 (first magnetic coefficient) parameter, which seems to be a typo for B1.
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-51
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 .. code-block:: Python
 
-    dataframe = experiment.get('a1', 'a2', 'a3',  'Qsca')
+    dataframe = experiment.get("a1", "a2", "a3", "Qsca")
 
 
 
@@ -131,12 +132,12 @@ Here, we're interested in the a3 (first magnetic coefficient) parameter, which s
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-54
+.. GENERATED FROM PYTHON SOURCE LINES 53-55
 
 Plotting the results
 Visualizing how the B1 (a3) parameter varies with the core diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-55
+.. GENERATED FROM PYTHON SOURCE LINES 55-56
 
 .. code-block:: Python
 
@@ -162,7 +163,7 @@ Visualizing how the B1 (a3) parameter varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.230 seconds)
+   **Total running time of the script:** (0 minutes 0.226 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_a1_vs_corediameter.py:

@@ -21,7 +21,7 @@
 Core-Shell Particles: 1
 =======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-76
+.. GENERATED FROM PYTHON SOURCE LINES 6-81
 
 
 
@@ -35,7 +35,6 @@ Core-Shell Particles: 1
 
 
 .. code-block:: Python
-
 
 
     # Standard library imports
@@ -64,10 +63,7 @@ Core-Shell Particles: 1
 
     # Configure the Gaussian source
     source = Gaussian(
-        wavelength=wavelength,
-        polarization=polarization,
-        optical_power=optical_power,
-        NA=NA
+        wavelength=wavelength, polarization=polarization, optical_power=optical_power, NA=NA
     )
 
     # Setup core-shell scatterer
@@ -77,32 +73,41 @@ Core-Shell Particles: 1
         core_property=core_index,
         shell_property=shell_index,
         medium_property=medium_index,
-        source=source
+        source=source,
     )
 
     # Create experimental setup
     experiment = Setup(scatterer=scatterer, source=source)
 
-    comparison_measures = ['Qsca', 'Qext', 'Qabs', 'g', 'Qpr', 'Qback']
+    comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 
     # Simulate using PyMieSim
     pymiesim_dataframe = experiment.get(*comparison_measures)
 
-    pymiescatt_dataframe = pd.read_csv(validation_data_path / 'pymiescatt/example_coreshell_1.csv')
+    pymiescatt_dataframe = pd.read_csv(
+        validation_data_path / "pymiescatt/example_coreshell_1.csv"
+    )
 
     # Plot results
     with plt.style.context(mps):
         figure, ax = plt.subplots(1, 1)
 
 
-    pymiescatt_dataframe.plot(x='core_diameter', y=comparison_measures, ax=ax, linewidth=3)
-    pymiesim_dataframe.plot(x='scatterer:core_diameter', ax=ax, color='black', linestyle='--', linewidth=1.5, show=False)
+    pymiescatt_dataframe.plot(x="core_diameter", y=comparison_measures, ax=ax, linewidth=3)
+    pymiesim_dataframe.plot(
+        x="scatterer:core_diameter",
+        ax=ax,
+        color="black",
+        linestyle="--",
+        linewidth=1.5,
+        show=False,
+    )
 
 
     ax.set(
-        xlabel='Core Diameter (μm)',
-        ylabel='Scattering Efficiency',
-        title='Comparison of Scattering Efficiency for Core-Shell Particles',
+        xlabel="Core Diameter (μm)",
+        ylabel="Scattering Efficiency",
+        title="Comparison of Scattering Efficiency for Core-Shell Particles",
     )
     plt.legend()
     plt.show()
@@ -110,7 +115,7 @@ Core-Shell Particles: 1
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.584 seconds)
+   **Total running time of the script:** (0 minutes 0.586 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_coreshell_1.py:

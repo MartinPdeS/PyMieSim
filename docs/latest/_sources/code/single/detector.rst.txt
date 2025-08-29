@@ -6,4 +6,3 @@ Detectors
 
 .. autoclass:: PyMieSim.single.detector.CoherentMode
     :inherited-members:
-

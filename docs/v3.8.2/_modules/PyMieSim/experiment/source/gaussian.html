@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -457,7 +457,9 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">_</span>  <span class="c1"># noqa:F401  # Necessary for pybind11 binding initialization</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">_</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># noqa:F401  # Necessary for pybind11 binding initialization</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Dimensionless</span><span class="p">,</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Angle</span>
 
@@ -488,6 +490,7 @@
 <span class="sd">    optical_power : Quantity</span>
 <span class="sd">        The optical power of the source, in Watts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">NA</span><span class="p">:</span> <span class="n">Dimensionless</span>
     <span class="n">optical_power</span><span class="p">:</span> <span class="n">Power</span>
     <span class="n">wavelength</span><span class="p">:</span> <span class="n">Length</span>
@@ -508,15 +511,15 @@
             <span class="n">jones_vector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="o">.</span><span class="n">element</span><span class="p">,</span>
             <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span>
             <span class="n">optical_power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span><span class="p">,</span>
-            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span>
+            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">CppGaussianSourceSet</span><span class="p">(</span>
-            <span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">jones_vector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="o">.</span><span class="n">element</span><span class="p">,</span>
-            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">optical_power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;watt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span>
+            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;dimensionless&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">optical_power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;watt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 </pre></div>

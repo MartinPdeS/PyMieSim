@@ -51,15 +51,16 @@ Importing the package dependencies: numpy, PyMieSim
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-28
+.. GENERATED FROM PYTHON SOURCE LINES 21-29
 
 .. code-block:: Python
 
     source = Gaussian(
-        wavelength=np.linspace(950, 1050, 300) * ureg.nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
+        wavelength=np.linspace(950, 1050, 300)
+        * ureg.nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -69,20 +70,21 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-31
+.. GENERATED FROM PYTHON SOURCE LINES 30-32
 
 Defining the scatterer distribution
 Here we look at cylinders with a set diameter, refractive index, and medium.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-38
+.. GENERATED FROM PYTHON SOURCE LINES 32-40
 
 .. code-block:: Python
 
     scatterer = Cylinder(
-        diameter=np.linspace(100, 8000, 5) * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
+        diameter=np.linspace(100, 8000, 5)
+        * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
         property=Material.BK7,  # Material of the cylinder
         medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source
+        source=source,
     )
 
 
@@ -92,11 +94,11 @@ Here we look at cylinders with a set diameter, refractive index, and medium.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
+.. GENERATED FROM PYTHON SOURCE LINES 41-42
 
 Defining the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-50
+.. GENERATED FROM PYTHON SOURCE LINES 42-52
 
 .. code-block:: Python
 
@@ -117,11 +119,11 @@ Defining the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 53-54
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-54
+.. GENERATED FROM PYTHON SOURCE LINES 54-56
 
 .. code-block:: Python
 
@@ -134,15 +136,15 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-56
+.. GENERATED FROM PYTHON SOURCE LINES 57-58
 
 Measuring the coupling efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
+.. GENERATED FROM PYTHON SOURCE LINES 58-60
 
 .. code-block:: Python
 
-    dataframe = experiment.get('coupling', scale_unit=True)
+    dataframe = experiment.get("coupling", scale_unit=True)
 
 
 
@@ -151,16 +153,16 @@ Measuring the coupling efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-61
+.. GENERATED FROM PYTHON SOURCE LINES 61-63
 
 Plotting the results
 Visualizing how the coupling efficiency varies with the wavelength.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-62
+.. GENERATED FROM PYTHON SOURCE LINES 63-64
 
 .. code-block:: Python
 
-    dataframe.plot(x="source:wavelength", std='scatterer:diameter')
+    dataframe.plot(x="source:wavelength", std="scatterer:diameter")
 
 
 
@@ -182,7 +184,7 @@ Visualizing how the coupling efficiency varies with the wavelength.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.327 seconds)
+   **Total running time of the script:** (0 minutes 1.332 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:

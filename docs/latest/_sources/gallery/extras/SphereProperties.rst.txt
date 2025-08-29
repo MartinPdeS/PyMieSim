@@ -21,7 +21,7 @@
 Samples Properties
 ==================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-50
+.. GENERATED FROM PYTHON SOURCE LINES 5-51
 
 
 
@@ -76,6 +76,7 @@ Samples Properties
 
 .. code-block:: Python
 
+
     from TypedUnit import ureg
 
     from PyMieSim.single.scatterer import Sphere
@@ -85,7 +86,7 @@ Samples Properties
         wavelength=1000 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU
+        NA=0.3 * ureg.AU,
     )
 
     source.plot()
@@ -94,7 +95,7 @@ Samples Properties
         diameter=800 * ureg.nanometer,
         source=source,
         property=1.4 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU
+        medium_property=1.0 * ureg.RIU,
     )
 
 
@@ -125,7 +126,7 @@ Samples Properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.265 seconds)
+   **Total running time of the script:** (0 minutes 1.258 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_SphereProperties.py:

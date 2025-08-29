@@ -18,7 +18,7 @@ source = Gaussian(
     wavelength=1000 * ureg.nanometer,  # 1000 nm
     polarization=30 * ureg.degree,  # Right circular polarization
     optical_power=1 * ureg.watt,  # Arbitrary units
-    NA=0.3 * ureg.AU  # Numerical Aperture
+    NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
 # %%
@@ -27,7 +27,7 @@ scatterer = Sphere(
     diameter=1500 * ureg.nanometer,  # 1500 nm
     source=source,
     property=1.4 * ureg.RIU,  # Refractive index of the scatterer
-    medium_property=1.0 * ureg.RIU  # Refractive index of the surrounding medium
+    medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
 )
 
 # %%

@@ -60,7 +60,7 @@ The amplitude is set to one per default.
         wavelength=800 * ureg.nanometer,  # 800 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -76,17 +76,18 @@ Defining the ranging parameters for the scatterer distribution
 Here we look at core/shell scatterers and use constant shell diameter
 with variable core diameter
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-42
+.. GENERATED FROM PYTHON SOURCE LINES 33-43
 
 .. code-block:: Python
 
     scatterer = CoreShell(
-        core_diameter=np.geomspace(100, 3000, 500) * ureg.nanometer,  # Geometrically spaced core diameters
+        core_diameter=np.geomspace(100, 3000, 500)
+        * ureg.nanometer,  # Geometrically spaced core diameters
         shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
         core_property=1.6 * ureg.RIU,  # Refractive index of the core
         shell_property=Material.BK7,  # BK7 glass material for the shell
         medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source
+        source=source,
     )
 
 
@@ -96,12 +97,12 @@ with variable core diameter
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 44-46
 
 Defining the experiment setup
 Integrating the defined source and scatterers into a single experimental setup.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 46-48
 
 .. code-block:: Python
 
@@ -114,15 +115,15 @@ Integrating the defined source and scatterers into a single experimental setup.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
 
 Measuring the B1 scattering parameter
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-51
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 .. code-block:: Python
 
-    dataframe = experiment.get('b1')
+    dataframe = experiment.get("b1")
 
 
 
@@ -131,12 +132,12 @@ Measuring the B1 scattering parameter
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-54
+.. GENERATED FROM PYTHON SOURCE LINES 53-55
 
 Plotting the results
 Visualizing how the B1 parameter varies with the core diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-55
+.. GENERATED FROM PYTHON SOURCE LINES 55-56
 
 .. code-block:: Python
 
@@ -162,7 +163,7 @@ Visualizing how the B1 parameter varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.305 seconds)
+   **Total running time of the script:** (0 minutes 0.303 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py:

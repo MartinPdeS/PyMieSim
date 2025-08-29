@@ -18,7 +18,7 @@ source = Gaussian(
     wavelength=1000 * ureg.nanometer,  # 1000 nm
     polarization=0 * ureg.degree,  # Linear polarization angle in radians
     optical_power=1 * ureg.watt,  # Arbitrary units
-    NA=0.3 * ureg.AU  # Numerical Aperture
+    NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
 # %%

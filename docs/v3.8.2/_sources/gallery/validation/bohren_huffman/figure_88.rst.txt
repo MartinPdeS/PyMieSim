@@ -21,7 +21,7 @@
 Cylinder Scatterer Bohren-Huffman figure 8.8
 ============================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-70
+.. GENERATED FROM PYTHON SOURCE LINES 6-99
 
 
 
@@ -35,7 +35,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
 
  .. code-block:: none
 
-    /home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:68: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
+    /home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:97: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
       plt.tight_layout()
 
 
@@ -60,7 +60,9 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
     from PyMieSim.experiment import Setup
 
     # Load theoretical data
-    theoretical_data = np.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=',')
+    theoretical_data = np.genfromtxt(
+        f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=","
+    )
 
     # Define parameters
     wavelength = 632.8 * ureg.nanometer  # Wavelength of the source in meters
@@ -72,41 +74,68 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
     medium_index = 1.335 * ureg.RIU  # Refractive index of the medium
 
     # Calculate the volume of the cylinders
-    volumes = np.pi * (diameters / 2)**2
+    volumes = np.pi * (diameters / 2) ** 2
 
     # Configure the Gaussian source
     source = Gaussian(
         wavelength=wavelength,
         polarization=polarization_values,
         optical_power=optical_power,
-        NA=NA
+        NA=NA,
     )
 
     # Setup cylindrical scatterers
     scatterer = Cylinder(
-        diameter=diameters,
-        property=index,
-        medium_property=medium_index,
-        source=source
+        diameter=diameters, property=index, medium_property=medium_index, source=source
     )
 
     # Create experimental setup
     experiment = Setup(scatterer=scatterer, source=source)
 
     # Compute PyMieSim scattering cross section data
-    csca_data = experiment.get('Csca', add_units=False).squeeze().values.reshape([-1, diameters.size])
-    normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100  # Normalize the data as per specific needs
+    csca_data = (
+        experiment.get("Csca", add_units=False)
+        .squeeze()
+        .values.reshape([-1, diameters.size])
+    )
+    normalized_csca = (
+        csca_data / volumes.to_base_units() * 1e-4 / 100
+    )  # Normalize the data as per specific needs
 
     # Plotting the results
     plt.figure(figsize=(8, 4))
-    plt.plot(diameters * 1e6, normalized_csca[0], 'C0-', linewidth=3, label='PyMieSim Polarization: 0')
-    plt.plot(diameters * 1e6, normalized_csca[1], 'C1-', linewidth=3, label='PyMieSim Polarization: 90')
-    plt.plot(diameters * 1e6, theoretical_data[0], 'k--', linewidth=1, label='Theoretical BH 8.8 Polarization: 0')
-    plt.plot(diameters * 1e6, theoretical_data[1], 'k--', linewidth=1, label='Theoretical BH 8.8 Polarization: 90')
+    plt.plot(
+        diameters * 1e6,
+        normalized_csca[0],
+        "C0-",
+        linewidth=3,
+        label="PyMieSim Polarization: 0",
+    )
+    plt.plot(
+        diameters * 1e6,
+        normalized_csca[1],
+        "C1-",
+        linewidth=3,
+        label="PyMieSim Polarization: 90",
+    )
+    plt.plot(
+        diameters * 1e6,
+        theoretical_data[0],
+        "k--",
+        linewidth=1,
+        label="Theoretical BH 8.8 Polarization: 0",
+    )
+    plt.plot(
+        diameters * 1e6,
+        theoretical_data[1],
+        "k--",
+        linewidth=1,
+        label="Theoretical BH 8.8 Polarization: 90",
+    )
 
-    plt.xlabel('Diameter (μm)')
-    plt.ylabel('Normalized Scattering Cross Section')
-    plt.title('Comparison of Scattering Cross Sections for Cylinders')
+    plt.xlabel("Diameter (μm)")
+    plt.ylabel("Normalized Scattering Cross Section")
+    plt.title("Comparison of Scattering Cross Sections for Cylinders")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -115,7 +144,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.472 seconds)
+   **Total running time of the script:** (0 minutes 0.477 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_88.py:

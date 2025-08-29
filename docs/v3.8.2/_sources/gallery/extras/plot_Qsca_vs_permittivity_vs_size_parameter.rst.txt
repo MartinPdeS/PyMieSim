@@ -30,7 +30,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-62
+.. GENERATED FROM PYTHON SOURCE LINES 13-60
 
 .. code-block:: Python
 
@@ -53,29 +53,27 @@ Importing the package: PyMieSim
         wavelength=400 * ureg.nanometer,
         polarization=90 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU
+        NA=0.2 * ureg.AU,
     )
 
 
     scatterer = Sphere(
-        diameter=diameter,
-        property=index,
-        medium_property=1 * ureg.RIU,
-        source=source
+        diameter=diameter, property=index, medium_property=1 * ureg.RIU, source=source
     )
 
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source
-    )
+    experiment = Setup(scatterer=scatterer, source=source)
 
-    data = experiment.get('Qsca', add_units=False).squeeze().values.reshape([permitivity.size, diameter.size])
+    data = (
+        experiment.get("Qsca", add_units=False)
+        .squeeze()
+        .values.reshape([permitivity.size, diameter.size])
+    )
 
     figure, ax = plt.subplots(1, 1)
     ax.set(
         xlabel="Permittivity",
-        ylabel=r'Diameter [$\mu$ m]',
-        title="Scattering efficiency of a sphere"
+        ylabel=r"Diameter [$\mu$ m]",
+        title="Scattering efficiency of a sphere",
     )
 
     image = ax.pcolormesh(permitivity, diameter, numpy.log(data))
@@ -98,7 +96,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.725 seconds)
+   **Total running time of the script:** (0 minutes 1.737 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_Qsca_vs_permittivity_vs_size_parameter.py:

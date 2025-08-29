@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=bf03407a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
   <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -517,33 +517,34 @@ to download the full example code.</p>
 <span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>  <span class="c1"># Refractive index of the medium</span>
 <span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>  <span class="c1"># Power of the light source in watts</span>
 <span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>  <span class="c1"># Numerical aperture</span>
-<span class="n">diameters</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6_000</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Diameters from 10 nm to 6 μm</span>
+<span class="n">diameters</span> <span class="o">=</span> <span class="p">(</span>
+    <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6_000</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
+<span class="p">)</span>  <span class="c1"># Diameters from 10 nm to 6 μm</span>
 
 <span class="c1"># Configure the Gaussian source</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
     <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="n">NA</span>
+    <span class="n">NA</span><span class="o">=</span><span class="n">NA</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Setup spherical scatterer</span>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="n">diameters</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="n">medium_index</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="n">diameters</span><span class="p">,</span> <span class="nb">property</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">medium_property</span><span class="o">=</span><span class="n">medium_index</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
 <span class="p">)</span>
 
 <span class="c1"># Create experimental setup</span>
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
-<span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Qsca&#39;</span><span class="p">,</span> <span class="s1">&#39;Qext&#39;</span><span class="p">,</span> <span class="s1">&#39;Qabs&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;Qpr&#39;</span><span class="p">,</span> <span class="s1">&#39;Qback&#39;</span><span class="p">]</span>
+<span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">,</span> <span class="s2">&quot;Qabs&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;Qpr&quot;</span><span class="p">,</span> <span class="s2">&quot;Qback&quot;</span><span class="p">]</span>
 
 <span class="c1"># Compute PyMieSim scattering efficiency data</span>
 <span class="n">pymiesim_dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span>
 
-<span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">validation_data_path</span> <span class="o">/</span> <span class="s1">&#39;pymiescatt/example_shpere_1.csv&#39;</span><span class="p">)</span>
+<span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">&quot;pymiescatt/example_shpere_1.csv&quot;</span>
+<span class="p">)</span>
 
 <span class="c1"># Plot results</span>
 <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">mps</span><span class="p">):</span>
@@ -552,19 +553,26 @@ to download the full example code.</p>
 
 <span class="n">pymiescatt_dataframe</span><span class="o">.</span><span class="n">diameter</span> <span class="o">*=</span> <span class="mf">1e9</span>
 
-<span class="n">pymiescatt_dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;diameter&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">comparison_measures</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">pymiesim_dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;scatterer:diameter&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">pymiescatt_dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;diameter&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">comparison_measures</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pymiesim_dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;scatterer:diameter&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Diameter [$\mu$m]&#39;</span><span class="p">,</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Scattering Efficiency&#39;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Scattering Efficiency Comparison for Sphere Particles&#39;</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Diameter [$\mu$m]&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Scattering Efficiency&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Scattering Efficiency Comparison for Sphere Particles&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.674 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.677 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-sphere-1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/dd2190af52ca72481cbdc76871e5dec1/sphere_1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_1.ipynb</span></code></a></p>

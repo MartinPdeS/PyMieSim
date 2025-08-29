@@ -18,7 +18,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
 
-
 index = numpy.linspace(1.3, 2.1, 100) * ureg.RIU
 
 diameter = numpy.linspace(1, 2000, 100) * ureg.nanometer
@@ -27,15 +26,12 @@ source = Gaussian(
     wavelength=400 * ureg.nanometer,
     polarization=90 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 
 
 scatterer = Sphere(
-    diameter=diameter,
-    property=index,
-    medium_property=1 * ureg.RIU,
-    source=source
+    diameter=diameter, property=index, medium_property=1 * ureg.RIU, source=source
 )
 
 
@@ -44,22 +40,20 @@ detector = Photodiode(
     NA=0.3 * ureg.RIU,
     phi_offset=0 * ureg.degree,
     gamma_offset=0 * ureg.degree,
-    sampling=400 * ureg.AU
+    sampling=400 * ureg.AU,
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-dataframe = experiment.get('coupling', add_units=False)
+dataframe = experiment.get("coupling", add_units=False)
 
 values = dataframe.values.reshape([diameter.size, index.size])
 
 figure, ax = plt.subplots(1, 1)
 
-image = ax.pcolormesh(index, diameter * 1e6, values, shading='auto')
+image = ax.pcolormesh(index, diameter * 1e6, values, shading="auto")
 ax.set(
-    xlabel="Permittivity",
-    ylabel=r'Diameter [$\mu$m]',
-    title="Coupling power [Watt]"
+    xlabel="Permittivity", ylabel=r"Diameter [$\mu$m]", title="Coupling power [Watt]"
 )
 plt.colorbar(mappable=image)
 

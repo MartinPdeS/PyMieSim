@@ -58,7 +58,7 @@ Defining the source
         wavelength=[100, 1200] * ureg.nanometer,  # 1200 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -72,15 +72,16 @@ Defining the source
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 29-37
 
 .. code-block:: Python
 
     scatterer = Sphere(
-        diameter=np.linspace(100, 300, 200) * ureg.nanometer,  # Diameters ranging from 100 nm to 3000 nm
+        diameter=np.linspace(100, 300, 200)
+        * ureg.nanometer,  # Diameters ranging from 100 nm to 3000 nm
         property=[1.4] * ureg.RIU,  # Material of the cylinder
         medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source
+        source=source,
     )
 
 
@@ -90,11 +91,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Defining the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-46
+.. GENERATED FROM PYTHON SOURCE LINES 39-47
 
 .. code-block:: Python
 
@@ -103,7 +104,7 @@ Defining the detector
         phi_offset=[-180.0] * ureg.degree,  # Phi offset in ureg.degrees
         gamma_offset=[0.0] * ureg.degree,  # Gamma offset in ureg.degrees
         sampling=600 * ureg.AU,  # Number of sampling points
-        polarization_filter=None  # No polarization filter
+        polarization_filter=None,  # No polarization filter
     )
 
 
@@ -113,11 +114,11 @@ Defining the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 49-51
 
 .. code-block:: Python
 
@@ -130,15 +131,15 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 Measuring the coupling efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-54
+.. GENERATED FROM PYTHON SOURCE LINES 53-55
 
 .. code-block:: Python
 
-    dataframe = experiment.get('coupling')
+    dataframe = experiment.get("coupling")
 
 
 
@@ -147,12 +148,12 @@ Measuring the coupling efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-58
 
 Plotting the results
 Visualizing how the coupling efficiency varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
+.. GENERATED FROM PYTHON SOURCE LINES 58-59
 
 .. code-block:: Python
 
@@ -178,7 +179,7 @@ Visualizing how the coupling efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.356 seconds)
+   **Total running time of the script:** (0 minutes 0.354 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_diameter.py:

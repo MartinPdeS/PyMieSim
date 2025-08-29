@@ -59,7 +59,7 @@ Defining the source
         wavelength=1.2 * ureg.micrometer,  # 1200 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        NA=0.2 * ureg.AU  # Numerical Aperture
+        NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -83,7 +83,7 @@ Defining the scatterer distribution
         core_property=Material.silver,  # Core material
         shell_property=Material.BK7,  # Shell material
         medium_property=1 * ureg.RIU,  # Surrounding medium's refractive index
-        source=source
+        source=source,
     )
 
 
@@ -107,7 +107,7 @@ Defining the detector
         phi_offset=-180.0 * ureg.degree,  # Phi offset in ureg.degrees
         gamma_offset=0.0 * ureg.degree,  # Gamma offset in ureg.degrees
         sampling=4000 * ureg.AU,  # Number of sampling points
-        polarization_filter=1 * ureg.degree
+        polarization_filter=1 * ureg.degree,
     )
 
 
@@ -142,7 +142,7 @@ Measuring the coupling efficiency
 
 .. code-block:: Python
 
-    dataframe = experiment.get('coupling')
+    dataframe = experiment.get("coupling")
 
 
 
@@ -182,7 +182,7 @@ Visualizing how the coupling efficiency varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.516 seconds)
+   **Total running time of the script:** (0 minutes 0.518 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py:
