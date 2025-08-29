@@ -98,4 +98,3 @@ class Gaussian: public BaseSource {
          */
         double compute_amplitude_from_power(double wavelength, double NA, double optical_power);
     };
-

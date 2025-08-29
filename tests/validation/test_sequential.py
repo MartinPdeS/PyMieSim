@@ -37,7 +37,7 @@ def sequential_source():
         wavelength=WAVELENGTH,
         polarization=ONES * POLARIZATION,
         optical_power=ONES * OPTICAL_POWER,
-        NA=ONES * NA
+        NA=ONES * NA,
     )
 
 
@@ -59,12 +59,12 @@ def sequential_detector():
         NA=ONES * NA,
         cache_NA=ONES * CACHE_NA,
         sampling=ONES * SAMPLING,
-        polarization_filter=ONES * POLARIZATION_FILTER
+        polarization_filter=ONES * POLARIZATION_FILTER,
     )
 
     detector.rotation = ONES * ROTATION
 
-    detector.mode_number = SIZE * ['NC00']
+    detector.mode_number = SIZE * ["NC00"]
 
     detector._generate_binding()
 
@@ -77,7 +77,7 @@ def standard_source():
         wavelength=WAVELENGTH,
         polarization=POLARIZATION,
         optical_power=OPTICAL_POWER,
-        NA=NA
+        NA=NA,
     )
 
 
@@ -88,7 +88,7 @@ def standard_scatterer(standard_source):
         diameter=DIAMETER,
         source=standard_source,
         property=PROPERTY,
-        medium_property=MEDIUM_PROPERTY
+        medium_property=MEDIUM_PROPERTY,
     )
 
 
@@ -101,54 +101,73 @@ def standard_detector():
         NA=NA,
         cache_NA=CACHE_NA,
         sampling=SAMPLING,
-        polarization_filter=POLARIZATION_FILTER
+        polarization_filter=POLARIZATION_FILTER,
     )
 
 
-def test_sequential_vs_standard_no_detector(sequential_source, sequential_scatterer, standard_source, standard_scatterer):
-    data_standard = Setup(
-        scatterer=standard_scatterer,
-        source=standard_source
-    ).get('Qsca', add_units=False)
+def test_sequential_vs_standard_no_detector(
+    sequential_source, sequential_scatterer, standard_source, standard_scatterer
+):
+    data_standard = Setup(scatterer=standard_scatterer, source=standard_source).get(
+        "Qsca", add_units=False
+    )
 
     data_standard = data_standard.values.squeeze()
 
     assert data_standard is not None, "Error while running the standard get function."
 
-    data_sequential = Setup(
-        scatterer=sequential_scatterer,
-        source=sequential_source
-    ).get_sequential('Qsca').squeeze()
+    data_sequential = (
+        Setup(scatterer=sequential_scatterer, source=sequential_source)
+        .get_sequential("Qsca")
+        .squeeze()
+    )
 
     assert data_sequential is not None, "Error while running the standard get function."
 
-    assert not numpy.any(data_sequential == 0), "Zeros value retrieved in sequential data means error."
+    assert not numpy.any(
+        data_sequential == 0
+    ), "Zeros value retrieved in sequential data means error."
 
-    assert numpy.all(data_sequential == data_standard), "Mismatch between sequential and standard computed data."
+    assert numpy.all(
+        data_sequential == data_standard
+    ), "Mismatch between sequential and standard computed data."
 
 
-def test_sequential_vs_standard_detector(sequential_source, sequential_scatterer, sequential_detector, standard_source, standard_scatterer, standard_detector):
+def test_sequential_vs_standard_detector(
+    sequential_source,
+    sequential_scatterer,
+    sequential_detector,
+    standard_source,
+    standard_scatterer,
+    standard_detector,
+):
     data_standard = Setup(
-        scatterer=standard_scatterer,
-        source=standard_source,
-        detector=standard_detector
-    ).get('coupling', add_units=False)
+        scatterer=standard_scatterer, source=standard_source, detector=standard_detector
+    ).get("coupling", add_units=False)
 
     data_standard = data_standard.values.squeeze()
 
     assert data_standard is not None, "Error while running the standard get function."
 
-    data_sequential = Setup(
-        scatterer=sequential_scatterer,
-        source=sequential_source,
-        detector=sequential_detector,
-    ).get_sequential('coupling').squeeze()
+    data_sequential = (
+        Setup(
+            scatterer=sequential_scatterer,
+            source=sequential_source,
+            detector=sequential_detector,
+        )
+        .get_sequential("coupling")
+        .squeeze()
+    )
 
     assert data_sequential is not None, "Error while running the standard get function."
 
-    assert not numpy.any(data_sequential == 0), "Zeros value retrieved in sequential data means error."
+    assert not numpy.any(
+        data_sequential == 0
+    ), "Zeros value retrieved in sequential data means error."
 
-    assert numpy.all(data_sequential == data_standard), "Mismatch between sequential and standard computed data."
+    assert numpy.all(
+        data_sequential == data_standard
+    ), "Mismatch between sequential and standard computed data."
 
 
 if __name__ == "__main__":

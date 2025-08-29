@@ -112,4 +112,3 @@ void register_cylinder(pybind11::module_& module) {
     ;
 
 }
-

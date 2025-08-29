@@ -18,6 +18,7 @@ class BasePolarization:
 
     It provides a foundation for shared functionality across all polarization types.
     """
+
     pass
 
 
@@ -57,13 +58,14 @@ class JonesVector(BasePolarization):
     __str__() -> str:
         Converts the polarization vector or angle to a string format for easy display.
     """
+
     element: list
 
     def __post_init__(self):
         self.element = np.atleast_2d(self.element).astype(complex)
 
     def __iter__(self):
-        if hasattr(self, 'angle'):
+        if hasattr(self, "angle"):
             return iter(self.angle)
         else:
             return iter(self.element)
@@ -71,12 +73,12 @@ class JonesVector(BasePolarization):
     def __add__(self, other: BasePolarization) -> BasePolarization:
         output = copy(self)
 
-        if hasattr(output, 'angle'):
+        if hasattr(output, "angle"):
             del output.angle
 
         output.element = np.vstack([self.element, other.element])
 
-        if hasattr(other, 'angle') and hasattr(self, 'angle'):
+        if hasattr(other, "angle") and hasattr(self, "angle"):
             output.angle = np.hstack([self.angle, other.angle])
 
         return output
@@ -85,7 +87,7 @@ class JonesVector(BasePolarization):
         return self.__str__()
 
     def __str__(self) -> str:
-        if hasattr(self, 'angle'):
+        if hasattr(self, "angle"):
             return self.angle.__str__()
 
         return self.element.__str__()
@@ -108,6 +110,7 @@ class RightCircular(JonesVector):
     __init__():
         Initializes the Jones vector for right circular polarization.
     """
+
     def __init__(self) -> None:
         super().__init__(element=[1, 1j])
 
@@ -129,6 +132,7 @@ class LeftCircular(JonesVector):
     __init__():
         Initializes the Jones vector for left circular polarization.
     """
+
     def __init__(self) -> None:
         super().__init__(element=[1, -1j])
 
@@ -161,6 +165,7 @@ class Linear(JonesVector):
         Converts the input `element` (polarization angle) to a Jones vector representation
         and stores it in `element`. It also stores the polarization angle in degrees.
     """
+
     element: Angle
 
     def __post_init__(self):

@@ -433,4 +433,3 @@ void register_base_scatterer(pybind11::module_& module) {
         )
         ;
 }
-

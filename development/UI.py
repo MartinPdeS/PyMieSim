@@ -18,12 +18,12 @@ def get_dataframe(diameter: float = 1):
         diameter=diameter * nanometer,
         property=1.5 * RIU,
         medium_property=1.0 * RIU,
-        source=source
+        source=source,
     )
 
     experiment = Setup(scatterer=scatterer, source=source)
 
-    dataframe = experiment.get('Qsca')
+    dataframe = experiment.get("Qsca")
 
     return dataframe
 
@@ -33,7 +33,9 @@ st.title("Basic Matplotlib UI with Streamlit")
 
 # # Sidebar inputs for customizing the plot
 st.sidebar.header("Plot Customization")
-num_points = st.sidebar.slider("Number of Points", min_value=10, max_value=1000, value=100)
+num_points = st.sidebar.slider(
+    "Number of Points", min_value=10, max_value=1000, value=100
+)
 x_label = st.sidebar.text_input("X-axis Label", "X")
 y_label = st.sidebar.text_input("Y-axis Label", "Y")
 plot_color = st.sidebar.color_picker("Plot Color", "#1f77b4")
@@ -45,7 +47,7 @@ diameter = st.sidebar.number_input("Scatterer diameter [nanometer]", 0)
 
 dataframe = get_dataframe(diameter=diameter)
 
-ax = dataframe.plot_data(x='source:wavelength', show=False)
+ax = dataframe.plot_data(x="source:wavelength", show=False)
 
 figure = ax.get_figure()
 
@@ -59,6 +61,6 @@ st.pyplot(figure)
 #     st.write({"X": x_data, "Y": y_data})
 
 # if __name__ == "__main__":
-    # from streamlit.web import cli
+# from streamlit.web import cli
 
-    # cli.main_run([f"{__file__}"])
+# cli.main_run([f"{__file__}"])

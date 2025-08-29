@@ -62,6 +62,7 @@ class FibonacciMesh(FIBONACCIMESH):
         Rotates the mesh around its principal axis by a specified angle.
 
     """
+
     max_angle: Angle
     sampling: int
     phi_offset: Angle
@@ -156,7 +157,9 @@ class FibonacciMesh(FIBONACCIMESH):
         numpy.ndarray
             The axis vector normalized to unit length.
         """
-        axis_vector = numpy.array([self.cartesian.x[0], self.cartesian.y[0], self.cartesian.z[0]])
+        axis_vector = numpy.array(
+            [self.cartesian.x[0], self.cartesian.y[0], self.cartesian.z[0]]
+        )
 
         norm = numpy.sqrt(numpy.square(axis_vector).sum())
 
@@ -181,17 +184,13 @@ class FibonacciMesh(FIBONACCIMESH):
                 - The second row corresponds to the projection onto the horizontal base vector.
         """
         parallel_projection = [
-            self.projection_on_base_vector(
-                vector=self.parallel,
-                base_vector=X
-            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
+            self.projection_on_base_vector(vector=self.parallel, base_vector=X)
+            for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         perpendicular_projection = [
-            self.projection_on_base_vector(
-                vector=self.perpendicular,
-                base_vector=X
-            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
+            self.projection_on_base_vector(vector=self.perpendicular, base_vector=X)
+            for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         return numpy.array(parallel_projection), numpy.array(perpendicular_projection)
@@ -216,22 +215,20 @@ class FibonacciMesh(FIBONACCIMESH):
 
         """
         parallel_projection = [
-            self.projection_on_base_scalar(
-                vector=self.parallel,
-                base_vector=X
-            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
+            self.projection_on_base_scalar(vector=self.parallel, base_vector=X)
+            for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         perpendicular_projection = [
-            self.projection_on_base_scalar(
-                vector=self.perpendicular,
-                base_vector=X
-            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
+            self.projection_on_base_scalar(vector=self.perpendicular, base_vector=X)
+            for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         return numpy.array(parallel_projection), numpy.array(perpendicular_projection)
 
-    def projection_on_base_scalar(self, vector: numpy.ndarray, base_vector: numpy.ndarray) -> numpy.ndarray:
+    def projection_on_base_scalar(
+        self, vector: numpy.ndarray, base_vector: numpy.ndarray
+    ) -> numpy.ndarray:
         r"""
         Computes the scalar projection (dot product) of a given vector onto a base vector.
 
@@ -266,7 +263,9 @@ class FibonacciMesh(FIBONACCIMESH):
         """
         return vector._cpp_get_scalar_product(base_vector)
 
-    def projection_on_base_vector(self, vector: numpy.ndarray, base_vector: numpy.ndarray) -> numpy.ndarray:
+    def projection_on_base_vector(
+        self, vector: numpy.ndarray, base_vector: numpy.ndarray
+    ) -> numpy.ndarray:
         r"""
         Computes the vector projection of a given vector onto a base vector.
 

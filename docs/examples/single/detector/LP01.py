@@ -20,7 +20,7 @@ detector = CoherentMode(
     NA=1.0 * ureg.AU,  # Numerical Aperture
     gamma_offset=90 * ureg.degree,  # Gamma offset
     phi_offset=0 * ureg.degree,  # Phi offset in degrees
-    medium_refractive_index=1.3 * ureg.RIU
+    medium_refractive_index=1.3 * ureg.RIU,
 )
 
 # %%

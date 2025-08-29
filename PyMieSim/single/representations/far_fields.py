@@ -39,14 +39,15 @@ class FarField(BaseRepresentation):
         return
 
     def plot(
-            self,
-            unit_size: List[float] = (400, 400),
-            background_color: str = 'white',
-            show_edges: bool = False,
-            colormap: str = blue_black_red,
-            opacity: float = 1.0,
-            symmetric_colormap: bool = False,
-            show_axis_label: bool = False) -> None:
+        self,
+        unit_size: List[float] = (400, 400),
+        background_color: str = "white",
+        show_edges: bool = False,
+        colormap: str = blue_black_red,
+        opacity: float = 1.0,
+        symmetric_colormap: bool = False,
+        show_axis_label: bool = False,
+    ) -> None:
         """
         Visualizes the Far field (in phi and theta vector projections) on a 3D plot.
 
@@ -68,24 +69,27 @@ class FarField(BaseRepresentation):
             If True, shows the axis labels. Default is False.
         """
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
-        x, y, z = spherical_to_cartesian(r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh)
+        x, y, z = spherical_to_cartesian(
+            r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh
+        )
 
         window_size = (unit_size[1] * 4, unit_size[0])  # Two subplots horizontally
 
-        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 4))
+        scene = pyvista.Plotter(
+            theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 4)
+        )
         scene.set_background(background_color)
 
         repr = [self.E_phi.real, self.E_phi.imag, self.E_theta.real, self.E_theta.imag]
-        repr_label = ['phi real', 'phi imag', 'theta real', 'theta imag']
+        repr_label = ["phi real", "phi imag", "theta real", "theta imag"]
 
         for idx, (label, field) in enumerate(zip(repr_label, repr)):
-            field = field.flatten(order='F')
+            field = field.flatten(order="F")
             mesh = pyvista.StructuredGrid(x, y, z)
             scene.subplot(0, idx)
 
             colormap_limits = self.get_colormap_limits(
-                scalar=field,
-                symmetric=symmetric_colormap
+                scalar=field, symmetric=symmetric_colormap
             )
 
             mapping = scene.add_mesh(
@@ -93,18 +97,18 @@ class FarField(BaseRepresentation):
                 cmap=colormap,
                 scalars=field,
                 opacity=opacity,
-                style='surface',
+                style="surface",
                 show_edges=show_edges,
                 clim=colormap_limits,
-                show_scalar_bar=False
+                show_scalar_bar=False,
             )
-            if 'theta' in label:
+            if "theta" in label:
                 self.add_theta_vector_to_3d_plot(scene=scene, radius=0.6)
 
-            if 'phi' in label:
+            if "phi" in label:
                 self.add_phi_vector_to_3d_plot(scene=scene, radius=0.6)
 
             scene.add_axes_at_origin(labels_off=not show_axis_label)
-            scene.add_scalar_bar(mapper=mapping.mapper, title=f'{label} field')
+            scene.add_scalar_bar(mapper=mapping.mapper, title=f"{label} field")
 
         scene.show()

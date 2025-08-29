@@ -18,7 +18,7 @@ source = Gaussian(
     wavelength=1400 * ureg.nanometer,  # 1000 nm
     polarization=30 * ureg.degree,  # Right circular polarization
     optical_power=1 * ureg.watt,  # Arbitrary units
-    NA=0.3 * ureg.AU  # Numerical Aperture
+    NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
 # %%
@@ -27,15 +27,12 @@ scatterer = Sphere(
     diameter=1000 * ureg.nanometer,  # 1000 nm
     source=source,
     property=1.8 * ureg.RIU,  # Refractive index of the scatterer
-    medium_property=1.0 * ureg.RIU  # Refractive index of the surrounding medium
+    medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
 )
 
 # %%
 # Computing the data
-data = scatterer.get_nearfield(
-    sampling=200,
-    field_components=['Ex']
-)
+data = scatterer.get_nearfield(sampling=200, field_components=["Ex"])
 
 # %%
 # Plotting the data

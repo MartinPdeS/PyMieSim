@@ -30,10 +30,7 @@ core_diameters = np.geomspace(10, 500, 40) * ureg.nanometer  # Core diameters in
 
 # Setup source
 source = Gaussian(
-    wavelength=wavelength,
-    polarization=polarization,
-    optical_power=optical_power,
-    NA=NA
+    wavelength=wavelength, polarization=polarization, optical_power=optical_power, NA=NA
 )
 
 # Setup scatterer
@@ -43,31 +40,40 @@ scatterer = CoreShell(
     core_property=core_index,
     shell_property=shell_index,
     medium_property=medium_index,
-    source=source
+    source=source,
 )
 
 # Define experiment setup
 experiment = Setup(scatterer=scatterer, source=source)
 
-comparison_measures = ['Qsca', 'Qext', 'Qabs', 'g', 'Qpr', 'Qback']
+comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 
 # Simulate using PyMieSim
 pymiesim_dataframe = experiment.get(*comparison_measures)
 
-pymiescatt_dataframe = pd.read_csv(validation_data_path / 'pymiescatt/example_coreshell_0.csv')
+pymiescatt_dataframe = pd.read_csv(
+    validation_data_path / "pymiescatt/example_coreshell_0.csv"
+)
 
 # Plot results
 with plt.style.context(mps):
     figure, ax = plt.subplots(1, 1)
 
 
-pymiescatt_dataframe.plot(x='core_diameter', y=comparison_measures, ax=ax, linewidth=3)
-pymiesim_dataframe.plot(x='scatterer:core_diameter', ax=ax, color='black', linestyle='--', linewidth=1.5, show=False)
+pymiescatt_dataframe.plot(x="core_diameter", y=comparison_measures, ax=ax, linewidth=3)
+pymiesim_dataframe.plot(
+    x="scatterer:core_diameter",
+    ax=ax,
+    color="black",
+    linestyle="--",
+    linewidth=1.5,
+    show=False,
+)
 
 ax.set(
-    xlabel=r'Core Diameter [$\mu$m]',
-    ylabel='Scattering Efficiency',
-    title='Scattering Efficiency Comparison for Core-Shell Particles'
+    xlabel=r"Core Diameter [$\mu$m]",
+    ylabel="Scattering Efficiency",
+    title="Scattering Efficiency Comparison for Core-Shell Particles",
 )
 plt.legend()
 plt.show()

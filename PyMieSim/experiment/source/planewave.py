@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Union
-from PyMieSim.single.source import PlaneWave as _  # noqa:F401  # Necessary for pybind11 binding initialization
+from PyMieSim.single.source import (
+    PlaneWave as _,
+)  # noqa:F401  # Necessary for pybind11 binding initialization
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
@@ -30,11 +32,12 @@ class PlaneWave(BaseSource, Sequential):
     amplitude : Quantity
         The amplitude of the plane wave, in Volt/Meter.
     """
+
     amplitude: ElectricField
     wavelength: Length
     polarization: Union[BasePolarization, Angle]
 
-    @field_validator('amplitude', mode='before')
+    @field_validator("amplitude", mode="before")
     def _validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):
@@ -60,12 +63,12 @@ class PlaneWave(BaseSource, Sequential):
             wavelength=self.wavelength,
             jones_vector=self.polarization.element,
             amplitude=self.amplitude,
-            is_sequential=self.is_sequential
+            is_sequential=self.is_sequential,
         )
 
         self.binding = CppPlaneWaveSourceSet(
-            wavelength=self.wavelength.to('meter').magnitude,
+            wavelength=self.wavelength.to("meter").magnitude,
             jones_vector=self.polarization.element,
-            amplitude=self.amplitude.to('volt/meter').magnitude,
-            is_sequential=self.is_sequential
+            amplitude=self.amplitude.to("volt/meter").magnitude,
+            is_sequential=self.is_sequential,
         )

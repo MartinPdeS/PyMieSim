@@ -164,4 +164,3 @@ void register_fibonacci(pybind11::module_& module) {
         )
     ;
 }
-

@@ -9,11 +9,7 @@ from PyMieSim.single import plot_system
 
 
 # Define a list of mode numbers and rotation angles to be tested
-mode_numbers = [
-    "LP01", "LP11", "LP21",
-    "LG01", "LG11", "LG21",
-    "HG01", "HG11", "HG21"
-]
+mode_numbers = ["LP01", "LP11", "LP21", "LG01", "LG11", "LG21", "HG01", "HG11", "HG21"]
 
 
 @pytest.fixture
@@ -23,7 +19,7 @@ def source():
         wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
         polarization=0 * ureg.degree,  # Polarization value
         optical_power=1 * ureg.watt,  # Optical power in watts
-        NA=0.3 * ureg.AU  # Numerical aperture
+        NA=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
@@ -34,11 +30,11 @@ def scatterer(source):
         diameter=100 * ureg.nanometer,  # Diameter in meters
         source=source,  # Source defined in the setup_source fixture
         property=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium_property=1.0 * ureg.RIU  # Refractive index of the medium
+        medium_property=1.0 * ureg.RIU,  # Refractive index of the medium
     )
 
 
-@pytest.mark.parametrize('mode_number', mode_numbers)
+@pytest.mark.parametrize("mode_number", mode_numbers)
 def test_lp_modes(mode_number, scatterer):
     """Test different LP, LG, and HG modes with varying rotations."""
     detector = CoherentMode(
@@ -47,7 +43,7 @@ def test_lp_modes(mode_number, scatterer):
         sampling=100,  # Field sampling
         gamma_offset=0 * ureg.degree,  # Gamma offset
         phi_offset=0 * ureg.degree,  # Phi offset
-        rotation=0 * ureg.degree  # Rotation angle
+        rotation=0 * ureg.degree,  # Rotation angle
     )
 
     footprint = detector.get_footprint(scatterer=scatterer)
@@ -55,7 +51,7 @@ def test_lp_modes(mode_number, scatterer):
     assert footprint is not None, "Expected a valid footprint but got None."
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plot_system(mock_show):
     detector = CoherentMode(
         mode_number="LP01",
@@ -63,9 +59,8 @@ def test_plot_system(mock_show):
         sampling=100,  # Field sampling
         gamma_offset=0 * ureg.degree,  # Gamma offset
         phi_offset=0 * ureg.degree,  # Phi offset
-        rotation=0 * ureg.degree  # Rotation angle
+        rotation=0 * ureg.degree,  # Rotation angle
     )
-
 
     plot_system(detector)
 

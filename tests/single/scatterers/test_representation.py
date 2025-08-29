@@ -13,14 +13,16 @@ from PyMieSim.single import plot_system
 
 representations = ["get_farfield", "get_stokes", "get_spf", "get_s1s2"]
 
+
 @pytest.fixture()
 def source():
     return Gaussian(
         wavelength=750 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU
+        NA=0.3 * ureg.AU,
     )
+
 
 @pytest.fixture()
 def scatterer(source):
@@ -33,9 +35,9 @@ def scatterer(source):
 
 
 # Parametrized test for plotting functions
-@pytest.mark.parametrize('representation', representations)
-@patch('pyvista.Plotter.show')
-@patch('matplotlib.pyplot.show')
+@pytest.mark.parametrize("representation", representations)
+@patch("pyvista.Plotter.show")
+@patch("matplotlib.pyplot.show")
 def test_plottings(mock_show_plt, mock_show_pyvista, representation, scatterer):
     data = getattr(scatterer, representation)()
     assert data is not None
@@ -43,7 +45,7 @@ def test_plottings(mock_show_plt, mock_show_pyvista, representation, scatterer):
     plt.close()
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plot_system(mock_show, scatterer, source):
     plot_system(scatterer, source)
 

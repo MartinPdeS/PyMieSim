@@ -12,7 +12,7 @@ from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)
-class Footprint():
+class Footprint:
     r"""
     Represents the footprint of the scatterer as detected by various detectors.
 
@@ -36,6 +36,7 @@ class Footprint():
         compute_footprint: Computes the footprint based on the far-field patterns and detector characteristics.
         plot: Visualizes the computed footprint.
     """
+
     detector: object
     scatterer: object
     sampling: int = 200
@@ -59,12 +60,23 @@ class Footprint():
         n_point = complex(self.sampling)
 
         phi, theta = numpy.mgrid[
-            -max_angle.to('radian').magnitude: max_angle.to('radian').magnitude: n_point, 0: numpy.pi: n_point
+            -max_angle.to("radian")
+            .magnitude : max_angle.to("radian")
+            .magnitude : n_point,
+            0 : numpy.pi : n_point,
         ]
 
-        max_distance_direct_space = 1 / (numpy.sin(max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi))
+        max_distance_direct_space = 1 / (
+            numpy.sin(max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi)
+        )
 
-        x = y = numpy.linspace(-1, 1, self.sampling) * self.sampling / 2 * max_distance_direct_space / self.padding_factor
+        x = y = (
+            numpy.linspace(-1, 1, self.sampling)
+            * self.sampling
+            / 2
+            * max_distance_direct_space
+            / self.padding_factor
+        )
 
         _, phi, theta = rotate_on_x(phi + numpy.pi / 2, theta, numpy.pi / 2)
 
@@ -74,16 +86,22 @@ class Footprint():
             r=1.0 * ureg.meter,
         )
 
-        detector_structured_farfield = self.detector.get_structured_scalarfield(sampling=self.sampling)
+        detector_structured_farfield = self.detector.get_structured_scalarfield(
+            sampling=self.sampling
+        )
 
-        perpendicular_projection = detector_structured_farfield * far_field_perp.reshape(theta.shape)
+        perpendicular_projection = (
+            detector_structured_farfield * far_field_perp.reshape(theta.shape)
+        )
 
-        parallel_projection = detector_structured_farfield * far_field_para.reshape(theta.shape)
+        parallel_projection = detector_structured_farfield * far_field_para.reshape(
+            theta.shape
+        )
 
         fourier_parallel = self.get_fourier_component(parallel_projection)
         fourier_perpendicular = self.get_fourier_component(perpendicular_projection)
 
-        self.mapping = (fourier_parallel + fourier_perpendicular)
+        self.mapping = fourier_parallel + fourier_perpendicular
         self.direct_x = x
         self.direct_y = y
 
@@ -119,20 +137,27 @@ class Footprint():
         offset = (total_size - self.sampling) // 2
 
         # Apply zero-padding to the scalar field to increase the resolution of the Fourier transform.
-        padded_scalar = numpy.pad(scalar, pad_width=((offset, offset), (offset, offset)), mode='constant', constant_values=0)
+        padded_scalar = numpy.pad(
+            scalar,
+            pad_width=((offset, offset), (offset, offset)),
+            mode="constant",
+            constant_values=0,
+        )
 
         # Perform the two-dimensional inverse Fourier transform on the padded scalar field.
         fourier_transformed = numpy.fft.ifft2(padded_scalar)
 
         # Compute the squared magnitude and center the zero-frequency component.
-        fourier_magnitude_squared = numpy.abs(numpy.fft.fftshift(fourier_transformed))**2
+        fourier_magnitude_squared = (
+            numpy.abs(numpy.fft.fftshift(fourier_transformed)) ** 2
+        )
 
         # Extract the central portion corresponding to the original sampling rate adjusted by the padding factor.
         central_portion = fourier_magnitude_squared[offset:-offset, offset:-offset]
 
         return central_portion
 
-    def plot(self, colormap: str = 'gray') -> None:
+    def plot(self, colormap: str = "gray") -> None:
         """
         Plots the scatterer footprint using a 2D colormap.
 
@@ -149,17 +174,16 @@ class Footprint():
             figure, ax = plt.subplots()
 
             ax.set(
-                title='Scatterer Footprint',
-                xlabel=r'Offset distance in X-axis [$\mu$m]',
-                ylabel=r'Offset distance in Y-axis [$\mu$m]',
+                title="Scatterer Footprint",
+                xlabel=r"Offset distance in X-axis [$\mu$m]",
+                ylabel=r"Offset distance in Y-axis [$\mu$m]",
             )
 
             ax.pcolormesh(
                 self.direct_y.magnitude,
                 self.direct_x.magnitude,
                 self.mapping,
-                cmap=colormap
+                cmap=colormap,
             )
 
             plt.show()
-

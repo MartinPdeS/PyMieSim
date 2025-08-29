@@ -14,9 +14,9 @@ from PyMieSim.single.detector import Photodiode
 def gaussian_source():
     return Gaussian(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=0 * ureg.degree,   # Polarization angle
+        polarization=0 * ureg.degree,  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU           # Numerical aperture
+        NA=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
@@ -27,10 +27,10 @@ def test_Qsca_cross_section(gaussian_source):
     """
     # Define a spherical scatterer
     sphere = Sphere(
-        diameter=300 * ureg.nanometer,   # Diameter in meters (e.g., 300 nm)
-        property=1.4 * ureg.RIU,         # Refractive index of the sphere
+        diameter=300 * ureg.nanometer,  # Diameter in meters (e.g., 300 nm)
+        property=1.4 * ureg.RIU,  # Refractive index of the sphere
         medium_property=1.0 * ureg.RIU,  # Medium index (e.g., air)
-        source=gaussian_source      # Associated light source
+        source=gaussian_source,  # Associated light source
     )
 
     # Calculate scattering cross-section using two different methods
@@ -38,7 +38,9 @@ def test_Qsca_cross_section(gaussian_source):
     val1 = sphere.Qsca * sphere.cross_section
 
     # Check if the results are consistent
-    assert np.isclose(val0, val1, atol=0, rtol=1e-5), 'Mismatch between cross-section values.'
+    assert np.isclose(
+        val0, val1, atol=0, rtol=1e-5
+    ), "Mismatch between cross-section values."
 
 
 def test_energy_flow_coupling(gaussian_source):
@@ -51,15 +53,15 @@ def test_energy_flow_coupling(gaussian_source):
         diameter=300 * ureg.nanometer,
         property=1.4 * ureg.RIU,
         medium_property=1.0 * ureg.RIU,
-        source=gaussian_source
+        source=gaussian_source,
     )
 
     # Define a photodiode detector
     detector = Photodiode(
-        sampling=500,    # Sampling points for the detector
-        NA=2.0 * ureg.AU,          # Numerical aperture
+        sampling=500,  # Sampling points for the detector
+        NA=2.0 * ureg.AU,  # Numerical aperture
         gamma_offset=0 * ureg.degree,  # Offset in the gamma angle
-        phi_offset=0 * ureg.degree     # Offset in the phi angle
+        phi_offset=0 * ureg.degree,  # Offset in the phi angle
     )
 
     # Calculate energy flow and coupling values
@@ -69,7 +71,9 @@ def test_energy_flow_coupling(gaussian_source):
     print(val0, val1)
 
     # Check if the results are consistent
-    assert np.isclose(val0, val1, atol=0, rtol=1e-2), 'Mismatch between energy flow and coupling values.'
+    assert np.isclose(
+        val0, val1, atol=0, rtol=1e-2
+    ), "Mismatch between energy flow and coupling values."
 
 
 def test_compare_sphere_coreshell_0(gaussian_source):
@@ -82,7 +86,7 @@ def test_compare_sphere_coreshell_0(gaussian_source):
         diameter=1000 * ureg.nanometer,
         property=1.5 * ureg.RIU,
         source=gaussian_source,
-        medium_property=1.0 * ureg.RIU
+        medium_property=1.0 * ureg.RIU,
     )
 
     # Define a core-shell scatterer with zero shell thickness
@@ -92,18 +96,18 @@ def test_compare_sphere_coreshell_0(gaussian_source):
         core_property=1.5 * ureg.RIU,
         shell_property=1.8 * ureg.RIU,
         medium_property=1.0 * ureg.RIU,
-        source=gaussian_source
+        source=gaussian_source,
     )
 
     # Compare the scattering parameters between the sphere and core-shell
-    for parameter in ['Qsca', 'Qext', 'Qabs']:
+    for parameter in ["Qsca", "Qext", "Qabs"]:
         value_sphere = getattr(sphere, parameter)
         value_coreshell = getattr(coreshell, parameter)
 
         # Check if the results are consistent
-        assert np.isclose(value_sphere, value_coreshell, atol=1e-12, rtol=1e-5), (
-            f'Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}'
-        )
+        assert np.isclose(
+            value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
+        ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
 
 
 if __name__ == "__main__":

@@ -10,11 +10,12 @@ from TypedUnit import RefractiveIndex, Length, Dimensionless, Area, Angle, ureg
 from PyMieSim.single import representations
 
 
-class BaseScatterer():
+class BaseScatterer:
     """
     A generic class for a scatterer, providing properties and methods to compute various scattering-related quantities.
 
     """
+
     def print_properties(self) -> None:
         """Prints a table of the scatterer's properties and their values."""
         data = [getattr(self, name) for name in self.property_names]
@@ -76,39 +77,41 @@ class BaseScatterer():
     @property
     def Csca(self) -> Area:
         """Returns the scattering cross-section."""
-        return (self._cpp_Csca * ureg.meter ** 2).to_compact()
+        return (self._cpp_Csca * ureg.meter**2).to_compact()
 
     @property
     def Cext(self) -> Area:
         """Returns the extinction cross-section."""
-        return (self._cpp_Cext * ureg.meter ** 2).to_compact()
+        return (self._cpp_Cext * ureg.meter**2).to_compact()
 
     @property
     def Cabs(self) -> Area:
         """Returns the absorption cross-section."""
-        return (self._cpp_Cabs * ureg.meter ** 2).to_compact()
+        return (self._cpp_Cabs * ureg.meter**2).to_compact()
 
     @property
     def Cpr(self) -> Area:
         """Returns the radiation pressure cross-section."""
-        return (self._cpp_Cpr * ureg.meter ** 2).to_compact()
+        return (self._cpp_Cpr * ureg.meter**2).to_compact()
 
     @property
     def Cback(self) -> Area:
         """Returns the backscattering cross-section."""
-        return (self._cpp_Cback * ureg.meter ** 2).to_compact()
+        return (self._cpp_Cback * ureg.meter**2).to_compact()
 
     @property
     def Cforward(self) -> Area:
         """Returns the forward-scattering cross-section."""
-        return (self._cpp_Cforward * ureg.meter ** 2).to_compact()
+        return (self._cpp_Cforward * ureg.meter**2).to_compact()
 
     @property
     def Cratio(self) -> Area:
         """Returns the ratio of backscattering cross-section over total scattering."""
-        return (self._cpp_Cratio * ureg.meter ** 2).to_compact()
+        return (self._cpp_Cratio * ureg.meter**2).to_compact()
 
-    def get_farfields_array(self, phi: Angle, theta: Angle, r: Length) -> Tuple[numpy.ndarray, numpy.ndarray]:
+    def get_farfields_array(
+        self, phi: Angle, theta: Angle, r: Length
+    ) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """
         Computes the scattering far field for unstructured coordinates.
 
@@ -126,7 +129,9 @@ class BaseScatterer():
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.
         """
-        return self._cpp_get_farfields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
+        return self._cpp_get_farfields(
+            phi=phi, theta=theta, r=r.to_base_units().magnitude
+        )
 
     def get_s1s2_array(self, phi: numpy.ndarray) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """Return the S1 and S2 scattering amplitudes for arbitrary ``phi`` angles.
@@ -146,7 +151,9 @@ class BaseScatterer():
 
         return self._cpp_get_s1s2(phi=phi + numpy.pi / 2)
 
-    def get_stokes_array(self, phi: Angle, theta: Angle, r: Length = 1 * ureg.meter) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]:
+    def get_stokes_array(
+        self, phi: Angle, theta: Angle, r: Length = 1 * ureg.meter
+    ) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]:
         """Return the Stokes parameters for arbitrary ``phi`` and ``theta`` angles.
 
         Parameters
@@ -179,8 +186,9 @@ class BaseScatterer():
 
         return I, Q, U, V
 
-
-    def get_farfield_array(self, phi: Angle, theta: Angle, r: Length = 1 * ureg.meter) -> Tuple[numpy.ndarray, numpy.ndarray]:
+    def get_farfield_array(
+        self, phi: Angle, theta: Angle, r: Length = 1 * ureg.meter
+    ) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """Return the far-field electric fields for arbitrary ``phi`` and ``theta``.
 
         Parameters
@@ -205,7 +213,9 @@ class BaseScatterer():
         E_phi, E_theta = self.get_farfields_array(phi=phi, theta=theta, r=r)
         return E_phi, E_theta
 
-    def get_s1s2(self, sampling: int = 200, distance: Length = 1 * ureg.meter) -> representations.S1S2:
+    def get_s1s2(
+        self, sampling: int = 200, distance: Length = 1 * ureg.meter
+    ) -> representations.S1S2:
         r"""
         Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.
 
@@ -252,9 +262,13 @@ class BaseScatterer():
         >>> print(s1s2.S1, s1s2.S2)
 
         """
-        return representations.S1S2(scatterer=self, sampling=sampling, distance=distance)
+        return representations.S1S2(
+            scatterer=self, sampling=sampling, distance=distance
+        )
 
-    def get_stokes(self, sampling: int = 200, distance: Length = 1 * ureg.meter) -> representations.Stokes:
+    def get_stokes(
+        self, sampling: int = 200, distance: Length = 1 * ureg.meter
+    ) -> representations.Stokes:
         r"""
         Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.
 
@@ -302,9 +316,13 @@ class BaseScatterer():
         >>> print(stokes_params.I, stokes_params.Q, stokes_params.U, stokes_params.V)
 
         """
-        return representations.Stokes(scatterer=self, sampling=sampling, distance=distance)
+        return representations.Stokes(
+            scatterer=self, sampling=sampling, distance=distance
+        )
 
-    def get_farfield(self, sampling: int = 200, distance: Length = 1 * ureg.meter) -> representations.FarField:
+    def get_farfield(
+        self, sampling: int = 200, distance: Length = 1 * ureg.meter
+    ) -> representations.FarField:
         r"""
         Compute the far-field scattering pattern for the scatterer.
 
@@ -355,9 +373,13 @@ class BaseScatterer():
         >>> print(farfield.E_phi, farfield.E_theta)
 
         """
-        return representations.FarField(scatterer=self, sampling=sampling, distance=distance)
+        return representations.FarField(
+            scatterer=self, sampling=sampling, distance=distance
+        )
 
-    def get_spf(self, sampling: int = 200, distance: Length = 1 * ureg.meter) -> representations.SPF:
+    def get_spf(
+        self, sampling: int = 200, distance: Length = 1 * ureg.meter
+    ) -> representations.SPF:
         r"""
         Compute the scattering phase function (SPF) for the scatterer.
 
@@ -407,11 +429,11 @@ class BaseScatterer():
 
     def get_nearfield(
         self,
-        x_range: tuple[Length, Length] | str = 'auto',
-        y_range: tuple[Length, Length] | str = 'auto',
-        z_range: Length | str = 'auto',
+        x_range: tuple[Length, Length] | str = "auto",
+        y_range: tuple[Length, Length] | str = "auto",
+        z_range: Length | str = "auto",
         sampling: int = 100,
-        field_components: list[str] = None
+        field_components: list[str] = None,
     ) -> representations.NearField:
         r"""
         Compute near-field electromagnetic fields using internal coefficients cn and dn.
@@ -475,9 +497,9 @@ class BaseScatterer():
         - The computation includes proper vector spherical harmonics and radial functions.
 
         """
-        x_range = [-self.diameter, +self.diameter] if x_range == 'auto' else x_range
-        y_range = [-self.diameter, +self.diameter] if y_range == 'auto' else y_range
-        z_range = 0 * ureg.meter if z_range == 'auto' else z_range
+        x_range = [-self.diameter, +self.diameter] if x_range == "auto" else x_range
+        y_range = [-self.diameter, +self.diameter] if y_range == "auto" else y_range
+        z_range = 0 * ureg.meter if z_range == "auto" else z_range
 
         # Validate and convert coordinate ranges to base units (meters)
         if isinstance(x_range, (list, tuple)) and len(x_range) == 2:
@@ -485,14 +507,18 @@ class BaseScatterer():
             x_max = Length.check(x_range[1])
             x_range = (x_min, x_max)
         else:
-            raise ValueError("x_range must be a tuple of two Quantity values (x_min, x_max)")
+            raise ValueError(
+                "x_range must be a tuple of two Quantity values (x_min, x_max)"
+            )
 
         if isinstance(y_range, (list, tuple)) and len(y_range) == 2:
             y_min = Length.check(y_range[0])
             y_max = Length.check(y_range[1])
             y_range = (y_min, y_max)
         else:
-            raise ValueError("y_range must be a tuple of two Quantity values (y_min, y_max)")
+            raise ValueError(
+                "y_range must be a tuple of two Quantity values (y_min, y_max)"
+            )
 
         # Handle z posiiton
         if isinstance(z_range, Length):
@@ -514,15 +540,12 @@ class BaseScatterer():
             y_range=y_range,
             z=z_range,
             sampling=sampling,
-            field_components=field_components
+            field_components=field_components,
         )
 
-    def compute_nearfield(self,
-        x: Length,
-        y: Length,
-        z: Length,
-        radius: Length,
-        field_type: str = "|E|"):
+    def compute_nearfield(
+        self, x: Length, y: Length, z: Length, radius: Length, field_type: str = "|E|"
+    ):
         """
         Python wrapper for C++ near-field computation.
 
@@ -547,13 +570,17 @@ class BaseScatterer():
         numpy.ndarray
             Complex array of field values at specified points.
         """
-        return self._cpp_compute_nearfields(
-            x=x.to('meter').magnitude,
-            y=y.to('meter').magnitude,
-            z=z.to('meter').magnitude,
-            field_type=field_type,
-            radius=radius.to('meter').magnitude
-        ) * ureg.volt / ureg.meter
+        return (
+            self._cpp_compute_nearfields(
+                x=x.to("meter").magnitude,
+                y=y.to("meter").magnitude,
+                z=z.to("meter").magnitude,
+                field_type=field_type,
+                radius=radius.to("meter").magnitude,
+            )
+            * ureg.volt
+            / ureg.meter
+        )
 
     def get_footprint(self, detector) -> representations.Footprint:
         r"""
@@ -605,7 +632,9 @@ class BaseScatterer():
         """
         return representations.Footprint(scatterer=self, detector=detector)
 
-    def _assign_index_or_material(self, property: RefractiveIndex | BaseMaterial) -> tuple[RefractiveIndex | None, BaseMaterial | None]:
+    def _assign_index_or_material(
+        self, property: RefractiveIndex | BaseMaterial
+    ) -> tuple[RefractiveIndex | None, BaseMaterial | None]:
         """
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
@@ -629,8 +658,16 @@ class BaseScatterer():
         if isinstance(property, RefractiveIndex):
             return property, None
         if isinstance(property, BaseMaterial):
-            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength.to('meter').magnitude))[0] * ureg.RIU, property
+            return (
+                numpy.atleast_1d(
+                    property.compute_refractive_index(
+                        self.source.wavelength.to("meter").magnitude
+                    )
+                )[0]
+                * ureg.RIU,
+                property,
+            )
 
-        raise ValueError(f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU).")
-
-
+        raise ValueError(
+            f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU)."
+        )

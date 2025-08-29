@@ -26,4 +26,3 @@ PYBIND11_MODULE(interface_scatterer, module) {
 
 
 }
-

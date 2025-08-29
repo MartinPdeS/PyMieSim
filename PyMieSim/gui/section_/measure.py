@@ -2,6 +2,7 @@ from dash import html, dcc, State, Input, Output
 from PyMieSim.gui.helper import parse_string_to_array_or_float
 import numpy
 
+
 class MeasureSection:
     """
     A class to manage the Measure section of the optical simulation interface.
@@ -44,19 +45,24 @@ class MeasureSection:
         return dcc.Dropdown(
             id=self.dropdown_id,
             options=[
-                {'label': 'Qsca', 'value': 'Qsca'},
-                {'label': 'Qext', 'value': 'Qext'},
-                {'label': 'Qabs', 'value': 'Qabs'},
-                {'label': 'Qpr', 'value': 'Qpr'},
-                {'label': 'Csca', 'value': 'Csca'},
-                {'label': 'Cext', 'value': 'Cext'},
-                {'label': 'Cabs', 'value': 'Cabs'},
-                {'label': 'Cpr', 'value': 'Cpr'},
-                {'label': 'g', 'value': 'g'},
-                {'label': 'Coupling', 'value': 'coupling'}
+                {"label": "Qsca", "value": "Qsca"},
+                {"label": "Qext", "value": "Qext"},
+                {"label": "Qabs", "value": "Qabs"},
+                {"label": "Qpr", "value": "Qpr"},
+                {"label": "Csca", "value": "Csca"},
+                {"label": "Cext", "value": "Cext"},
+                {"label": "Cabs", "value": "Cabs"},
+                {"label": "Cpr", "value": "Cpr"},
+                {"label": "g", "value": "g"},
+                {"label": "Coupling", "value": "coupling"},
             ],
-            value='Qsca',
-            style={'margin-right': '10px', 'margin-bottom': '0px', 'height': '36px', 'width': '200px'}
+            value="Qsca",
+            style={
+                "margin-right": "10px",
+                "margin-bottom": "0px",
+                "height": "36px",
+                "width": "200px",
+            },
         )
 
     def get_xaxis_dropdown(self) -> dcc.Dropdown:
@@ -72,7 +78,7 @@ class MeasureSection:
             id=self.xaxis_input_id,
             options=[],
             value=None,
-            style={'margin-right': '10px', 'height': '36px', 'width': '300px'}
+            style={"margin-right": "10px", "height": "36px", "width": "300px"},
         )
 
     def get_filename_input(self) -> dcc.Input:
@@ -81,14 +87,26 @@ class MeasureSection:
             type="text",
             placeholder="Enter filename",
             value="output.csv",
-            style={'margin-right': '10px', 'height': '36px', 'width': '200px'}
+            style={"margin-right": "10px", "height": "36px", "width": "200px"},
         )
 
     def get_plot_button(self) -> html.Button:
-        return html.Button("Generate Plot", id=self.plot_button_id, n_clicks=0, disabled=True, style={'height': '36px', 'background-color': 'grey', 'color': 'white'})
+        return html.Button(
+            "Generate Plot",
+            id=self.plot_button_id,
+            n_clicks=0,
+            disabled=True,
+            style={"height": "36px", "background-color": "grey", "color": "white"},
+        )
 
     def get_save_button(self) -> html.Button:
-        return html.Button("Save Data", id=self.save_button_id, n_clicks=0, disabled=True, style={'height': '36px', 'background-color': 'grey', 'color': 'white'})
+        return html.Button(
+            "Save Data",
+            id=self.save_button_id,
+            n_clicks=0,
+            disabled=True,
+            style={"height": "36px", "background-color": "grey", "color": "white"},
+        )
 
     def create(self) -> html.Div:
         """
@@ -99,18 +117,35 @@ class MeasureSection:
         html.Div
             A Dash HTML Div containing the Measure section components.
         """
-        return html.Div([
-            dcc.Store(id=self.plot_ready_store_id, data=False),  # Track if plot is ready
-            dcc.Download(id=self.download_id),
-            html.Div(
-                [self.get_measure_dropdown(), self.get_xaxis_dropdown(), self.get_plot_button()],
-                style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}
-            ),
-            html.Div(
-                [self.get_filename_input(), self.get_save_button()],
-                style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'margin-top': '20px'}
-            )
-        ])
+        return html.Div(
+            [
+                dcc.Store(
+                    id=self.plot_ready_store_id, data=False
+                ),  # Track if plot is ready
+                dcc.Download(id=self.download_id),
+                html.Div(
+                    [
+                        self.get_measure_dropdown(),
+                        self.get_xaxis_dropdown(),
+                        self.get_plot_button(),
+                    ],
+                    style={
+                        "display": "flex",
+                        "align-items": "center",
+                        "justify-content": "center",
+                    },
+                ),
+                html.Div(
+                    [self.get_filename_input(), self.get_save_button()],
+                    style={
+                        "display": "flex",
+                        "align-items": "center",
+                        "justify-content": "center",
+                        "margin-top": "20px",
+                    },
+                ),
+            ]
+        )
 
     def update_callbacks(self, callback_func, save_func):
         """
@@ -123,6 +158,7 @@ class MeasureSection:
         save_func : callable
             A function to save the data to a file when the "Save Data" button is clicked.
         """
+
         def button_style(enabled: bool) -> tuple:
             """
             Helper function to generate button styles and states.
@@ -138,14 +174,22 @@ class MeasureSection:
                 A tuple containing (disabled, style) for the button.
             """
             if enabled:
-                return False, {'height': '36px', 'background-color': '#28a745', 'color': 'white'}  # Green
-            return True, {'height': '36px', 'background-color': 'grey', 'color': 'white'}  # Grey
+                return False, {
+                    "height": "36px",
+                    "background-color": "#28a745",
+                    "color": "white",
+                }  # Green
+            return True, {
+                "height": "36px",
+                "background-color": "grey",
+                "color": "white",
+            }  # Grey
 
         @self.app.callback(
             [Output("plot-image", "src"), Output(self.plot_ready_store_id, "data")],
             Input(self.plot_button_id, "n_clicks"),
             State(self.dropdown_id, "value"),
-            State(self.xaxis_input_id, "value")
+            State(self.xaxis_input_id, "value"),
         )
         def trigger_callback(n_clicks: int, measure: str, xaxis: str) -> tuple:
             """
@@ -171,8 +215,11 @@ class MeasureSection:
             return None, False
 
         @self.app.callback(
-            [Output(self.save_button_id, "disabled"), Output(self.save_button_id, "style")],
-            Input(self.plot_ready_store_id, "data")
+            [
+                Output(self.save_button_id, "disabled"),
+                Output(self.save_button_id, "style"),
+            ],
+            Input(self.plot_ready_store_id, "data"),
         )
         def update_save_button_style(plot_ready: bool) -> tuple:
             """
@@ -191,8 +238,11 @@ class MeasureSection:
             return button_style(plot_ready)
 
         @self.app.callback(
-            [Output(self.plot_button_id, "disabled"), Output(self.plot_button_id, "style")],
-            Input(self.xaxis_input_id, "value")
+            [
+                Output(self.plot_button_id, "disabled"),
+                Output(self.plot_button_id, "style"),
+            ],
+            Input(self.xaxis_input_id, "value"),
         )
         def update_plot_button_style(xaxis_value: str) -> tuple:
             """
@@ -215,9 +265,11 @@ class MeasureSection:
             Input(self.save_button_id, "n_clicks"),
             State(self.plot_ready_store_id, "data"),
             State(self.filename_input_id, "value"),
-            State(self.dropdown_id, "value")
+            State(self.dropdown_id, "value"),
         )
-        def save_data(n_clicks: int, plot_ready: bool, filename: str, measure: str) -> dict:
+        def save_data(
+            n_clicks: int, plot_ready: bool, filename: str, measure: str
+        ) -> dict:
             """
             Trigger file download when the save button is clicked.
 
@@ -245,7 +297,6 @@ class MeasureSection:
                 return {"content": content, "filename": filename, "type": "text/csv"}
             return None
 
-
         @self.app.callback(
             Output(self.xaxis_input_id, "options"),
             Input(f"scatterer-sphere-data", "children"),
@@ -256,7 +307,15 @@ class MeasureSection:
             Input(f"detector-photodiode-data", "children"),
             Input(f"detector-coherentmode-data", "children"),
         )
-        def update_xaxis_options(sphere_data, coreshell_data, cylinder_data, planewave_data, gaussian_data, photodiode_data, coherent_mode_data):
+        def update_xaxis_options(
+            sphere_data,
+            coreshell_data,
+            cylinder_data,
+            planewave_data,
+            gaussian_data,
+            photodiode_data,
+            coherent_mode_data,
+        ):
             """
             Dynamically update x-axis options based on Scatterer, Source, and Detector sections.
 
@@ -279,7 +338,11 @@ class MeasureSection:
             options = []
 
             # Recompute _xaxis_options for all sections dynamically
-            for section in [self.scatterer_section, self.source_section, self.detector_section]:
+            for section in [
+                self.scatterer_section,
+                self.source_section,
+                self.detector_section,
+            ]:
                 section._xaxis_options = []  # Reset options
                 section._xaxis_options_length = []  # Reset lengths
 
@@ -287,7 +350,10 @@ class MeasureSection:
                 for key, value in section.data.items():
                     try:
                         parsed_value = parse_string_to_array_or_float(value)
-                        if isinstance(parsed_value, numpy.ndarray) and parsed_value.size > 1:
+                        if (
+                            isinstance(parsed_value, numpy.ndarray)
+                            and parsed_value.size > 1
+                        ):
                             section._xaxis_options.append(f"{section.name}:{key}")
                             section._xaxis_options_length.append(parsed_value.size)
                     except ValueError:
@@ -295,7 +361,12 @@ class MeasureSection:
 
                 # Add the recomputed options to the x-axis dropdown
                 options.extend(
-                    [{"label": f"{opt} ({size})", "value": opt} for opt, size in zip(section._xaxis_options, section._xaxis_options_length)]
+                    [
+                        {"label": f"{opt} ({size})", "value": opt}
+                        for opt, size in zip(
+                            section._xaxis_options, section._xaxis_options_length
+                        )
+                    ]
                 )
 
             return options

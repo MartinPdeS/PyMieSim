@@ -13,17 +13,21 @@ def test_planewave_initialization():
     planewave_1 = PlaneWave(
         amplitude=1 * ureg.volt / ureg.meter,
         polarization=Linear(element=0 * ureg.degree),
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
-    assert isinstance(planewave_1, PlaneWave), "Failed to initialize PlaneWave with Linear."
+    assert isinstance(
+        planewave_1, PlaneWave
+    ), "Failed to initialize PlaneWave with Linear."
 
     # Test with scalar polarization
     planewave_2 = PlaneWave(
         amplitude=1 * ureg.volt / ureg.meter,
         polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
-    assert isinstance(planewave_2, PlaneWave), "Failed to initialize PlaneWave with scalar polarization."
+    assert isinstance(
+        planewave_2, PlaneWave
+    ), "Failed to initialize PlaneWave with scalar polarization."
 
 
 @pytest.fixture
@@ -32,23 +36,23 @@ def source():
     return PlaneWave(
         amplitude=1 * ureg.volt / ureg.meter,
         polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plotting(mock_show, source):
     """Test the plot method of PlaneWave to ensure it calls the show method once."""
     source.plot()
     mock_show.assert_called_once()
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plot_system(mock_show):
     source = PlaneWave(
         amplitude=1 * ureg.volt / ureg.meter,
         polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
 
     plot_system(source)

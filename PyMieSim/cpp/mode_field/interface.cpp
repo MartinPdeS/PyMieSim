@@ -26,4 +26,3 @@ void register_mode_field(py::module_& module) {
         )
     ;
 }
-

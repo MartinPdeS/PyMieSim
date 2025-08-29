@@ -51,6 +51,7 @@ class CoherentMode(DETECTOR, BaseDetector):
         determining the acceptance cone of light.
         Default is 1.0 (vacuum or air).
     """
+
     mode_number: str
     NA: Dimensionless
     gamma_offset: Angle
@@ -68,12 +69,16 @@ class CoherentMode(DETECTOR, BaseDetector):
         """
 
         if self.NA > 0.3 * ureg.AU or self.NA < 0 * ureg.AU:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Values under 0.3 are preferred.")
+            logging.warning(
+                f"High values of NA: {self.NA} do not comply with the paraxial approximation. Values under 0.3 are preferred."
+            )
 
         self.mode_family = self.mode_number[:2]
 
-        if self.mode_family.lower() not in ['lp', 'lg', 'hg']:
-            raise ValueError(f'Invalid mode family: {self.mode_family}. Options are ["LP", "LG", "HG"]')
+        if self.mode_family.lower() not in ["lp", "lg", "hg"]:
+            raise ValueError(
+                f'Invalid mode family: {self.mode_family}. Options are ["LP", "LG", "HG"]'
+            )
 
         super().__init__(
             mode_number=self.mode_number,
@@ -88,5 +93,6 @@ class CoherentMode(DETECTOR, BaseDetector):
             mean_coupling=self.mean_coupling,
             medium_refractive_index=self.medium_refractive_index.to(ureg.RIU).magnitude,
         )
+
 
 # -

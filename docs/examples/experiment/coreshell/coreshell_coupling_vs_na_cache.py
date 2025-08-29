@@ -22,7 +22,7 @@ source = Gaussian(
     wavelength=1.2 * ureg.micrometer,  # 1200 nm
     polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
     optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    NA=0.2 * ureg.AU  # Numerical Aperture
+    NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
 # %%
@@ -33,7 +33,7 @@ scatterer = CoreShell(
     core_property=Material.silver,  # Core material
     shell_property=Material.BK7,  # Shell material
     medium_property=1 * ureg.RIU,  # Surrounding medium's refractive index
-    source=source
+    source=source,
 )
 
 # %%
@@ -44,7 +44,7 @@ detector = Photodiode(
     phi_offset=-180.0 * ureg.degree,  # Phi offset in ureg.degrees
     gamma_offset=0.0 * ureg.degree,  # Gamma offset in ureg.degrees
     sampling=4000 * ureg.AU,  # Number of sampling points
-    polarization_filter=1 * ureg.degree
+    polarization_filter=1 * ureg.degree,
 )
 
 # %%
@@ -53,7 +53,7 @@ experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the coupling efficiency
-dataframe = experiment.get('coupling')
+dataframe = experiment.get("coupling")
 
 # %%
 # Plotting the results

@@ -88,4 +88,3 @@ PYBIND11_MODULE(interface_experiment, module) {
         DEFINE_GETTERS(g)
         ;
 }
-

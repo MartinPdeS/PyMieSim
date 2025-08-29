@@ -6,19 +6,19 @@ from PyMieSim.single.source import PlaneWave
 source = PlaneWave(
     wavelength=400 * units.nanometer,  # 500 nm wavelength
     amplitude=10.0 * units.volt / units.meter,  # Relative intensity unit
-    polarization=0 * units.degree             # x-polarized
+    polarization=0 * units.degree,  # x-polarized
 )
 
 scatterer = Sphere(
     diameter=260 * units.nanometer,
     property=1.9 * units.RIU,
     medium_property=1.0 * units.RIU,
-    source=source
+    source=source,
 )
 
 E_field = scatterer.get_near_field(
     # resolution=1 * units.nanometer,
-    field_components=['|E|']
+    field_components=["|E|"]
 )
 
 

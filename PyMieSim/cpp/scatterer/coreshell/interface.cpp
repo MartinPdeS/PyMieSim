@@ -139,4 +139,3 @@ void register_coreshell(pybind11::module_& module) {
             )pbdoc")
         ;
 }
-

@@ -18,7 +18,7 @@ def source():
         wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
         polarization=0 * ureg.degree,  # Polarization value
         optical_power=1 * ureg.watt,  # Optical power in watts
-        NA=0.3 * ureg.AU  # Numerical aperture
+        NA=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
@@ -29,11 +29,11 @@ def setup_scatterer(source):
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
         source=source,  # Gaussian source from source fixture
         property=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium_property=1.0 * ureg.RIU  # Refractive index of the surrounding medium
+        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
     )
 
 
-@pytest.mark.parametrize('sampling', samplings)
+@pytest.mark.parametrize("sampling", samplings)
 def test_photodiode_with_sampling(sampling, setup_scatterer):
     """Test the Integrating Sphere detector with different sampling rates."""
 
@@ -45,11 +45,12 @@ def test_photodiode_with_sampling(sampling, setup_scatterer):
     assert footprint is not None, "Expected a valid footprint but got None."
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plot_system(mock_show):
     detector = IntegratingSphere(sampling=100)
 
     plot_system(detector)
+
 
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

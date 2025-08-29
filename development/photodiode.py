@@ -18,7 +18,7 @@ detector = Photodiode(
     sampling=400 * AU,  # Number of sampling points
     gamma_offset=0 * degree,  # Gamma offset in degrees
     phi_offset=0 * degree,  # Phi offset in degrees
-    polarization_filter=None  # No polarization filter applied
+    polarization_filter=None,  # No polarization filter applied
 )
 
 # %%

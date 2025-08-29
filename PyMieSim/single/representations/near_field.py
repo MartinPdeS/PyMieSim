@@ -12,7 +12,7 @@ from PyMieSim.utils import config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)
-class NearField():
+class NearField:
     r"""
     Represents electromagnetic near-field distributions around a scatterer.
 
@@ -53,6 +53,7 @@ class NearField():
     ValueError
         If coordinate ranges or field components are invalid.
     """
+
     scatterer: object
     x_range: Tuple[Length, Length]
     y_range: Tuple[Length, Length]
@@ -74,13 +75,12 @@ class NearField():
         self.nx = self.sampling
         self.ny = self.sampling
 
-
         # Create coordinate arrays
         self.x = numpy.linspace(self.x_range[0], self.x_range[1], self.nx)
         self.y = numpy.linspace(self.y_range[0], self.y_range[1], self.ny)
 
         # Create coordinate meshes
-        self.X, self.Y = numpy.meshgrid(self.x, self.y, indexing='ij')
+        self.X, self.Y = numpy.meshgrid(self.x, self.y, indexing="ij")
         self.Z = numpy.full_like(self.X, self.z)
 
     def _compute_fields(self):
@@ -89,9 +89,9 @@ class NearField():
         self.fields = {}
         for component in self.field_components:
             self.fields[component] = self.scatterer._cpp_compute_nearfields(
-                x=self.X.flatten().to('meter').magnitude,
-                y=self.Y.flatten().to('meter').magnitude,
-                z=self.Z.flatten().to('meter').magnitude,
+                x=self.X.flatten().to("meter").magnitude,
+                y=self.Y.flatten().to("meter").magnitude,
+                z=self.Z.flatten().to("meter").magnitude,
                 field_type=component,
             ).reshape(self.X.shape)
 
@@ -120,7 +120,7 @@ class NearField():
         else:
             raise ValueError("field_type must be 'electric' or 'magnetic'")
 
-    def plot(self, colormap: str = 'viridis', figure_size: tuple = (6, 6)) -> None:
+    def plot(self, colormap: str = "viridis", figure_size: tuple = (6, 6)) -> None:
         """
         Plot 2D near-field distribution.
 
@@ -132,7 +132,9 @@ class NearField():
             Figure size (width, height).
         """
         with plt.style.context(MPSPlots.styles.mps):
-            fig, axes = plt.subplots(figsize=figure_size, nrows=1, ncols=len(self.fields), squeeze=False)
+            fig, axes = plt.subplots(
+                figsize=figure_size, nrows=1, ncols=len(self.fields), squeeze=False
+            )
 
         for component, ax in zip(self.fields.keys(), axes.flatten()):
             field_data = numpy.abs(self.fields[component]).astype(float)
@@ -148,24 +150,28 @@ class NearField():
 
             # Add colorbar
             cbar = plt.colorbar(im, ax=ax)
-            cbar.set_label(f'{component} field')
+            cbar.set_label(f"{component} field")
 
             # Show scatterer boundary
-            circle = plt.Circle((0, 0), self.radius.magnitude, fill=False, color='white', linewidth=2)
+            circle = plt.Circle(
+                (0, 0), self.radius.magnitude, fill=False, color="white", linewidth=2
+            )
             ax.add_patch(circle)
 
-            ax.set_title(f'Near-field {component} distribution')
-            ax.set_aspect('equal')
+            ax.set_title(f"Near-field {component} distribution")
+            ax.set_aspect("equal")
 
         plt.grid(False)
         # plt.tight_layout()
         plt.show()
 
-    def plot_enhancement(self,
+    def plot_enhancement(
+        self,
         field_type: str = "electric",
         enhancement_threshold: float = 2.0,
-        colormap: str = 'plasma',
-        figsize: tuple = (10, 8)) -> None:
+        colormap: str = "plasma",
+        figsize: tuple = (10, 8),
+    ) -> None:
         """
         Plot field enhancement map with hot-spots highlighted.
 
@@ -186,15 +192,20 @@ class NearField():
             fig, ax = plt.subplots(figsize=figsize)
 
             enhancement_data = enhancement[:, :, 0]
-            extent = [self.x[0]*1e9, self.x[-1]*1e9, self.y[0]*1e9, self.y[-1]*1e9]
+            extent = [
+                self.x[0] * 1e9,
+                self.x[-1] * 1e9,
+                self.y[0] * 1e9,
+                self.y[-1] * 1e9,
+            ]
 
             # Plot enhancement
             im = ax.imshow(
                 enhancement_data.T,
                 extent=extent,
-                origin='lower',
+                origin="lower",
                 cmap=colormap,
-                aspect='equal'
+                aspect="equal",
             )
 
             # Highlight hot-spots
@@ -203,22 +214,24 @@ class NearField():
                 ax.contour(
                     enhancement_data.T,
                     levels=[enhancement_threshold],
-                    colors='red',
+                    colors="red",
                     linewidths=2,
-                    extent=extent
+                    extent=extent,
                 )
 
             # Show scatterer boundary
-            circle = plt.Circle((0, 0), self.radius, fill=False, color='black', linewidth=2)
+            circle = plt.Circle(
+                (0, 0), self.radius, fill=False, color="black", linewidth=2
+            )
             ax.add_patch(circle)
 
             # Colorbar and labels
             cbar = plt.colorbar(im, ax=ax)
-            cbar.set_label(f'{field_type.title()} field enhancement')
+            cbar.set_label(f"{field_type.title()} field enhancement")
 
-            ax.set_xlabel('x [nm]')
-            ax.set_ylabel('y [nm]')
-            ax.set_title(f'{field_type.title()} field enhancement')
+            ax.set_xlabel("x [nm]")
+            ax.set_ylabel("y [nm]")
+            ax.set_title(f"{field_type.title()} field enhancement")
 
             plt.tight_layout()
             plt.show()

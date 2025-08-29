@@ -38,6 +38,7 @@ class CoreShell(BaseScatterer, Sequential):
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
     """
+
     source: BaseSource
     core_diameter: Length
     shell_thickness: Length
@@ -46,12 +47,37 @@ class CoreShell(BaseScatterer, Sequential):
     medium_property: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
-        'Qsca', 'Qext', 'Qabs', 'Qratio', 'Qforward', 'Qback', 'Qpr',
-        'Csca', 'Cext', 'Cabs', 'Cratio', 'Cforward', 'Cback', 'Cpr', 'a1',
-        'a2', 'a3', 'b1', 'b2', 'b3', 'g', 'coupling',
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Qratio",
+        "Qforward",
+        "Qback",
+        "Qpr",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "Cratio",
+        "Cforward",
+        "Cback",
+        "Cpr",
+        "a1",
+        "a2",
+        "a3",
+        "b1",
+        "b2",
+        "b3",
+        "g",
+        "coupling",
     ]
 
-    attributes = ['core_diameter', 'shell_thickness', 'core_property', 'shell_property', 'medium_property']
+    attributes = [
+        "core_diameter",
+        "shell_thickness",
+        "core_property",
+        "shell_property",
+        "medium_property",
+    ]
 
     def _generate_binding(self) -> None:
         """
@@ -65,18 +91,24 @@ class CoreShell(BaseScatterer, Sequential):
         self.binding_kwargs = dict(
             core_diameter=self.core_diameter,
             shell_thickness=self.shell_thickness,
-            is_sequential=self.is_sequential
+            is_sequential=self.is_sequential,
         )
 
-        mediun_properties = self._add_properties(name='medium', properties=self.medium_property)
+        mediun_properties = self._add_properties(
+            name="medium", properties=self.medium_property
+        )
 
-        core_properties = self._add_properties(name='core', properties=self.core_property)
+        core_properties = self._add_properties(
+            name="core", properties=self.core_property
+        )
 
-        shell_properties = self._add_properties(name='shell', properties=self.shell_property)
+        shell_properties = self._add_properties(
+            name="shell", properties=self.shell_property
+        )
 
         self.binding = CppCoreShellSet(
-            core_diameter=self.core_diameter.to('meter').magnitude,
-            shell_thickness=self.shell_thickness.to('meter').magnitude,
+            core_diameter=self.core_diameter.to("meter").magnitude,
+            shell_thickness=self.shell_thickness.to("meter").magnitude,
             core_properties=core_properties,
             shell_properties=shell_properties,
             medium_properties=mediun_properties,

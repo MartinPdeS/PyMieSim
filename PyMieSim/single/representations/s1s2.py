@@ -28,6 +28,7 @@ class S1S2(BaseRepresentation):
         compute_components: Computes the S1 and S2 functions based on the scatterer's properties.
         plot: Visualizes the S1 and S2 functions on a polar plot.
     """
+
     def __post_init__(self):
         self.phi = numpy.linspace(-180, 180, self.sampling)
 
@@ -41,7 +42,9 @@ class S1S2(BaseRepresentation):
 
         The method calculates these parameters for a range of phi angles and stores them as the S1 and S2 attributes of the instance.
         """
-        self.S1, self.S2 = self.scatterer._cpp_get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
+        self.S1, self.S2 = self.scatterer._cpp_get_s1s2(
+            phi=numpy.deg2rad(self.phi) + numpy.pi / 2
+        )
 
     def plot(self) -> None:
         """
@@ -56,26 +59,26 @@ class S1S2(BaseRepresentation):
             This method does not return a value. It displays the polar plots.
         """
         with plt.style.context(MPSPlots.styles.mps):
-            figure, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={'polar': True})
+            figure, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={"polar": True})
 
             # Plot for S1 parameter
-            axes[0].set(title=r'S$_1$ parameter')
+            axes[0].set(title=r"S$_1$ parameter")
             axes[0].fill_between(
                 numpy.deg2rad(self.phi),
                 y1=0,
                 y2=numpy.abs(self.S1),
-                color='C0',
-                edgecolor='black'
+                color="C0",
+                edgecolor="black",
             )
 
             # Plot for S2 parameter
-            axes[1].set(title=r'S$_2$ parameter')
+            axes[1].set(title=r"S$_2$ parameter")
             axes[1].fill_between(
                 numpy.deg2rad(self.phi),
                 y1=0,
                 y2=numpy.abs(self.S2),
-                color='C1',
-                edgecolor='black'
+                color="C1",
+                edgecolor="black",
             )
 
             plt.show()

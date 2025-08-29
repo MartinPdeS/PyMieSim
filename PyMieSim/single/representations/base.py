@@ -9,15 +9,12 @@ from TypedUnit import Length
 
 
 config_dict = dict(
-    arbitrary_types_allowed=True,
-    kw_only=True,
-    slots=True,
-    extra='forbid'
+    arbitrary_types_allowed=True, kw_only=True, slots=True, extra="forbid"
 )
 
 
 @dataclass(config=config_dict, kw_only=True)
-class BaseRepresentation():
+class BaseRepresentation:
     """
     Base class for scattering representations.
 
@@ -33,14 +30,14 @@ class BaseRepresentation():
     Methods:
         compute_components: A placeholder method intended to be overridden by subclasses for computing specific scattering components.
     """
+
     scatterer: object
     sampling: int
     distance: Length
 
     def __post_init__(self):
         fields = self.scatterer._cpp_get_full_farfields(
-            sampling=self.sampling,
-            distance=self.distance.to_base_units().magnitude
+            sampling=self.sampling, distance=self.distance.to_base_units().magnitude
         )
 
         self.E_phi, self.E_theta, self.theta, self.phi = fields
@@ -61,12 +58,13 @@ class BaseRepresentation():
             return None
 
     def add_theta_vector_to_3d_plot(
-            self,
-            scene: pyvista.Plotter,
-            n_points: int = 20,
-            opacity: float = 1.0,
-            radius: float = 1.0,
-            color: str = 'black') -> None:
+        self,
+        scene: pyvista.Plotter,
+        n_points: int = 20,
+        opacity: float = 1.0,
+        radius: float = 1.0,
+        color: str = "black",
+    ) -> None:
         """
         Adds a vector field to the 3D plot, representing vectors in the theta direction.
 
@@ -100,7 +98,9 @@ class BaseRepresentation():
         spherical_grid.point_data["component"] = vector_field * 0.1
 
         # Generate glyphs (arrows) for the vectors
-        glyphs = spherical_grid.glyph(orient="component", scale="component", tolerance=0.005)
+        glyphs = spherical_grid.glyph(
+            orient="component", scale="component", tolerance=0.005
+        )
 
         # Add the vector glyphs to the scene
         scene.add_mesh(glyphs, color=color, opacity=opacity)
@@ -111,7 +111,8 @@ class BaseRepresentation():
         n_points: int = 20,
         opacity: float = 1.0,
         radius: float = 1.0,
-        color: str = 'black') -> None:
+        color: str = "black",
+    ) -> None:
         """
         Adds a vector field to the 3D plot, representing vectors in the phi direction.
 
@@ -145,7 +146,9 @@ class BaseRepresentation():
         spherical_grid.point_data["component"] = vector_field * 0.1
 
         # Generate glyphs (arrows) for the vectors
-        glyphs = spherical_grid.glyph(orient="component", scale="component", tolerance=0.005)
+        glyphs = spherical_grid.glyph(
+            orient="component", scale="component", tolerance=0.005
+        )
 
         # Add the vector glyphs to the scene
         scene.add_mesh(glyphs, color=color, opacity=opacity)

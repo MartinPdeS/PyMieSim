@@ -29,18 +29,35 @@ class Cylinder(BaseScatterer, Sequential):
     medium_property : List[BaseMaterial] | List[RefractiveIndex]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
+
     source: BaseSource
     diameter: Length
     property: List[BaseMaterial] | List[RefractiveIndex]
     medium_property: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
-        'Qsca', 'Qext', 'Qabs', 'Csca', 'Cext', 'Cabs', 'a11',
-        'a21', 'a12', 'a22', 'a13', 'a23', 'b11', 'b21', 'b12',
-        'b22', 'b13', 'b23', 'coupling',
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "a11",
+        "a21",
+        "a12",
+        "a22",
+        "a13",
+        "a23",
+        "b11",
+        "b21",
+        "b12",
+        "b22",
+        "b13",
+        "b23",
+        "coupling",
     ]
 
-    attributes = ['diameter', 'property', 'medium_property']
+    attributes = ["diameter", "property", "medium_property"]
 
     def _generate_binding(self) -> None:
         """
@@ -51,14 +68,20 @@ class Cylinder(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(diameter=self.diameter, is_sequential=self.is_sequential)
+        self.binding_kwargs = dict(
+            diameter=self.diameter, is_sequential=self.is_sequential
+        )
 
-        mediun_properties = self._add_properties(name='medium', properties=self.medium_property)
+        mediun_properties = self._add_properties(
+            name="medium", properties=self.medium_property
+        )
 
-        scatterer_properties = self._add_properties(name='scatterer', properties=self.property)
+        scatterer_properties = self._add_properties(
+            name="scatterer", properties=self.property
+        )
 
         self.binding = CppCylinderSet(
-            diameter=self.diameter.to('meter').magnitude,
+            diameter=self.diameter.to("meter").magnitude,
             scatterer_properties=scatterer_properties,
             medium_properties=mediun_properties,
             is_sequential=self.is_sequential,

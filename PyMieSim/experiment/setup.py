@@ -27,6 +27,7 @@ class EmptyDetector:
     def _generate_mapping(self, *args, **kwargs):
         pass
 
+
 @dataclass
 class Setup:
     """
@@ -43,6 +44,7 @@ class Setup:
     Methods provide functionality for initializing bindings, generating parameter tables for visualization,
     and executing the simulation to compute and retrieve specified measures.
     """
+
     scatterer: Union[Sphere, Cylinder, CoreShell]
     source: Union[Gaussian, PlaneWave]
     detector: Optional[Union[Photodiode, CoherentMode]] = EmptyDetector()
@@ -82,16 +84,23 @@ class Setup:
         numpy.ndarray
             An array containing the computed measures.
         """
-        method_name = f'get_{measure}_sequential'
+        method_name = f"get_{measure}_sequential"
 
         # Compute the values using the binding method
         return getattr(self.binding, method_name)(
             scatterer_set=self.scatterer.binding,
             source_set=self.source.binding,
-            detector_set=self.detector.binding
+            detector_set=self.detector.binding,
         )
 
-    def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True, as_numpy: bool = False) -> pd.DataFrame:
+    def get(
+        self,
+        *measures,
+        scale_unit: bool = False,
+        drop_unique_level: bool = True,
+        add_units: bool = True,
+        as_numpy: bool = False,
+    ) -> pd.DataFrame:
         """
         Run the simulation to compute specified measures and return the results.
 
@@ -115,8 +124,10 @@ class Setup:
         """
         measures = set(numpy.atleast_1d(measures))
 
-        if 'coupling' in measures:
-            assert self.detector is not None, "To compute the coupling power the detector has to be provided to Setup class"
+        if "coupling" in measures:
+            assert (
+                self.detector is not None
+            ), "To compute the coupling power the detector has to be provided to Setup class"
 
         if as_numpy:
             return self._get_measure_array(measures)
@@ -126,7 +137,7 @@ class Setup:
         df = self.generate_dataframe(
             measure=list(measures),
             is_complex=is_complex,
-            drop_unique_level=drop_unique_level
+            drop_unique_level=drop_unique_level,
         )
 
         df = self._get_measure_dataframe(df, measures, is_complex, add_units)
@@ -171,21 +182,23 @@ class Setup:
         output_array = []
 
         for measure in measures:
-            method_name = f'get_{measure}'
+            method_name = f"get_{measure}"
 
             method = getattr(self.binding, method_name)
 
             array = method(
                 scatterer_set=self.scatterer.binding,
                 source_set=self.source.binding,
-                detector_set=self.detector.binding
+                detector_set=self.detector.binding,
             )
 
             output_array.append(array)
 
         return numpy.asarray(output_array).squeeze()
 
-    def _get_measure_dataframe(self, df: pd.DataFrame, measures: List[str], is_complex: bool, add_units: bool) -> pd.DataFrame:
+    def _get_measure_dataframe(
+        self, df: pd.DataFrame, measures: List[str], is_complex: bool, add_units: bool
+    ) -> pd.DataFrame:
         """
         Populate a DataFrame with computed values for specified measures.
 
@@ -207,13 +220,13 @@ class Setup:
         """
         for measure in measures:
 
-            method_name = f'get_{measure}'
+            method_name = f"get_{measure}"
 
             # Compute the values using the binding method
             array = getattr(self.binding, method_name)(
                 scatterer_set=self.scatterer.binding,
                 source_set=self.source.binding,
-                detector_set=self.detector.binding
+                detector_set=self.detector.binding,
             )
 
             # Determine the unit based on the measure type
@@ -226,7 +239,7 @@ class Setup:
                 array=array,
                 dtype=dtype,
                 is_complex=is_complex,
-                add_units=add_units
+                add_units=add_units,
             )
 
         return df
@@ -246,15 +259,25 @@ class Setup:
             The appropriate unit for the measure.
         """
         match measure[0]:
-            case 'C':
+            case "C":
                 return ureg.meter**2  # Cross-section measure
-            case 'c':
-                assert self.detector is not None, "Detector needs to be defined in order to measure coupling"
+            case "c":
+                assert (
+                    self.detector is not None
+                ), "Detector needs to be defined in order to measure coupling"
                 return ureg.watt  # Power measure
             case _:
                 return ureg.dimensionless  # Arbitrary units for other measures
 
-    def _set_data(self, measure: str, dataframe: pd.DataFrame, array: numpy.ndarray, dtype: type, is_complex: bool, add_units: bool) -> None:
+    def _set_data(
+        self,
+        measure: str,
+        dataframe: pd.DataFrame,
+        array: numpy.ndarray,
+        dtype: type,
+        is_complex: bool,
+        add_units: bool,
+    ) -> None:
         """
         Sets the real and imaginary parts of a NumPy array as separate 'real' and 'imag' levels
         in the 'type' index of a pandas DataFrame.
@@ -270,14 +293,20 @@ class Setup:
         is_complex : bool
             A flag that indicates whether the input array is complex. If False, the 'type' level is not saved, and the array is treated as purely real.
         """
-        dtype = f'pint[{dtype}]' if add_units else float
+        dtype = f"pint[{dtype}]" if add_units else float
 
         if is_complex:
-            dataframe[(measure, 'real')] = pd.Series(array.ravel().real, dtype=dtype, index=dataframe.index)
-            dataframe[(measure, 'imag')] = pd.Series(array.ravel().imag, dtype=dtype, index=dataframe.index)
+            dataframe[(measure, "real")] = pd.Series(
+                array.ravel().real, dtype=dtype, index=dataframe.index
+            )
+            dataframe[(measure, "imag")] = pd.Series(
+                array.ravel().imag, dtype=dtype, index=dataframe.index
+            )
 
         else:
-            dataframe[measure] = pd.Series(array.ravel(), dtype=dtype, index=dataframe.index)
+            dataframe[measure] = pd.Series(
+                array.ravel(), dtype=dtype, index=dataframe.index
+            )
 
         return dataframe
 
@@ -306,7 +335,9 @@ class Setup:
 
         return dataframe
 
-    def generate_dataframe(self, measure, is_complex: bool = False, drop_unique_level: bool = True):
+    def generate_dataframe(
+        self, measure, is_complex: bool = False, drop_unique_level: bool = True
+    ):
         """
         Generates a pandas DataFrame with a MultiIndex based on the mapping
         of 'source' and 'scatterer' from an experiment object.
@@ -333,9 +364,7 @@ class Setup:
             iterables.update(self.detector.mapping)
 
         if drop_unique_level:
-            _iterables = {
-                k: v for k, v in iterables.items() if len(v) > 1
-            }
+            _iterables = {k: v for k, v in iterables.items() if len(v) > 1}
 
             if len(_iterables) != 0:
                 iterables = _iterables
@@ -347,11 +376,10 @@ class Setup:
 
         if is_complex:
             columns = pd.MultiIndex.from_product(
-                [measure, ['real', 'imag']],
-                names=['data', 'type']
+                [measure, ["real", "imag"]], names=["data", "type"]
             )
         else:
-            columns = pd.MultiIndex.from_product([measure], names=['data'])
+            columns = pd.MultiIndex.from_product([measure], names=["data"])
 
         # Return an empty DataFrame with the generated MultiIndex
         return PyMieSimDataFrame(columns=columns, index=row_index)

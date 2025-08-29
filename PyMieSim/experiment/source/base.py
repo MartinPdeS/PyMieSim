@@ -14,7 +14,7 @@ class BaseSource:
     Base class for light sources in PyMieSim experiments.
     """
 
-    @field_validator('wavelength', mode='plain')
+    @field_validator("wavelength", mode="plain")
     def _validate_length(cls, value):
         """
         Ensures that diameter is Quantity objects with length units.
@@ -22,7 +22,7 @@ class BaseSource:
         Length.check(value)
         return numpy.atleast_1d(value)
 
-    @field_validator('optical_power', mode='plain')
+    @field_validator("optical_power", mode="plain")
     def _validate_power(cls, value):
         """
         Ensure that arrays are properly converted to numpy arrays.
@@ -30,7 +30,7 @@ class BaseSource:
         Power.check(value)
         return numpy.atleast_1d(value)
 
-    @field_validator('NA', mode='plain')
+    @field_validator("NA", mode="plain")
     def _validate_arbitrary_units(cls, value):
         """
         Ensure that arrays are properly converted to numpy arrays.
@@ -38,7 +38,7 @@ class BaseSource:
         Dimensionless.check(value)
         return numpy.atleast_1d(value)
 
-    @field_validator('polarization', mode='before')
+    @field_validator("polarization", mode="before")
     def _validate_polarization(cls, value):
         """
         Ensures that polarization is well defined.
@@ -58,15 +58,17 @@ class BaseSource:
         Returns:
             list: A list of visual representations for each property in the `mapping` dictionary that has been populated.
         """
-        for attr in [f.name for f in fields(self) if f.name != 'source']:
+        for attr in [f.name for f in fields(self) if f.name != "source"]:
             values = getattr(self, attr)
 
             if values is None:
                 continue
 
-            if hasattr(values, 'magnitude'):
+            if hasattr(values, "magnitude"):
                 magnitude = values.magnitude
                 units = values.units
-                self.mapping["source:" + attr] = pint_pandas.PintArray(magnitude, dtype=units)
+                self.mapping["source:" + attr] = pint_pandas.PintArray(
+                    magnitude, dtype=units
+                )
             else:
                 self.mapping["source:" + attr] = [repr(m) for m in values]

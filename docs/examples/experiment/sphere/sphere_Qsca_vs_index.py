@@ -16,18 +16,18 @@ from PyMieSim.experiment import Setup
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=[500., 1000., 1500.] * ureg.nanometer,
-    polarization=30. * ureg.degree,
+    wavelength=[500.0, 1000.0, 1500.0] * ureg.nanometer,
+    polarization=30.0 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=800. * ureg.nanometer,
+    diameter=800.0 * ureg.nanometer,
     property=np.linspace(1.3, 1.9, 150) * ureg.RIU,
-    medium_property=1. * ureg.RIU,
-    source=source
+    medium_property=1.0 * ureg.RIU,
+    source=source,
 )
 
 # %%
@@ -36,7 +36,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('Qsca')
+dataframe = experiment.get("Qsca")
 
 # %%
 # Plotting the results

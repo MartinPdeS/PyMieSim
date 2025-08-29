@@ -39,6 +39,7 @@ class Photodiode(DETECTOR, BaseDetector):
         determining the acceptance cone of light.
         Default is 1.0 (vacuum or air).
     """
+
     NA: Dimensionless
     gamma_offset: Angle
     phi_offset: Angle
@@ -63,12 +64,17 @@ class Photodiode(DETECTOR, BaseDetector):
             mean_coupling=self.mean_coupling,
             rotation=0,
             coherent=False,
-            medium_refractive_index=self.medium_refractive_index.to(ureg.RIU).magnitude
+            medium_refractive_index=self.medium_refractive_index.to(ureg.RIU).magnitude,
         )
 
 
 class IntegratingSphere(Photodiode):
-    def __init__(self, sampling: ureg.Quantity, polarization_filter: Optional[Angle] = numpy.nan * ureg.degree, mean_coupling: bool = False):
+    def __init__(
+        self,
+        sampling: ureg.Quantity,
+        polarization_filter: Optional[Angle] = numpy.nan * ureg.degree,
+        mean_coupling: bool = False,
+    ):
         """
         Detector class representing a photodiode with a non-coherent light coupling mechanism.
         This implies independence from the phase of the impinging scattered light field.

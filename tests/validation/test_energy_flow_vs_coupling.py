@@ -15,7 +15,7 @@ def setup_simulation():
         wavelength=750 * ureg.nanometer,  # 750 nm
         polarization=30 * ureg.degree,  # Polarization in ureg.degrees
         optical_power=1 * ureg.watt,  # Power in ureg.watts
-        NA=0.3 * ureg.AU  # Numerical Aperture
+        NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
     # Define the scatterer (sphere)
@@ -23,7 +23,7 @@ def setup_simulation():
         diameter=1500 * ureg.nanometer,  # 1500 nm diameter
         source=source,
         property=1.4 * ureg.RIU,  # Refractive index
-        medium_property=Material.water  # Medium is water
+        medium_property=Material.water,  # Medium is water
     )
 
     # Define the detector (integrating sphere)
@@ -51,8 +51,12 @@ def test_simulation_results(setup_simulation):
     scattered_power = Qsca * source.peak_intensity * scatterer.cross_section
 
     # Check if the results are consistent
-    assert np.isclose(coupling, scattered_power, atol=0, rtol=1e-2), "Mismatch betweend scattered power: {scattered_power} and coupling calculation: {coupling}"
-    assert np.isclose(coupling, energy_flow, atol=0, rtol=1e-1), f"Mismatch betweend energy flow: {energy_flow} and coupling calculation: {coupling}"
+    assert np.isclose(
+        coupling, scattered_power, atol=0, rtol=1e-2
+    ), "Mismatch betweend scattered power: {scattered_power} and coupling calculation: {coupling}"
+    assert np.isclose(
+        coupling, energy_flow, atol=0, rtol=1e-1
+    ), f"Mismatch betweend energy flow: {energy_flow} and coupling calculation: {coupling}"
 
     # Assertions to validate the results
     assert coupling > 0, "Coupling should be a positive value."

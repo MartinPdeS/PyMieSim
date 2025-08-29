@@ -42,4 +42,3 @@ double Gaussian::compute_amplitude_from_power(double wavelength, double NA, doub
     double intensity = optical_power / area;
     return sqrt(2.0 * intensity / (C_ * EPSILON0));
 }
-

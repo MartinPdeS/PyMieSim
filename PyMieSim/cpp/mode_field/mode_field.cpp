@@ -278,4 +278,3 @@ std::vector<complex128> ModeField::get_NC_unstructured(std::vector<double> &x_co
 
    return output;
 }
-

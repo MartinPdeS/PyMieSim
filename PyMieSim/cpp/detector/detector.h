@@ -191,5 +191,3 @@ class Detector {
          */
         template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
 };
-
-

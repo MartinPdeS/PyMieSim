@@ -7,8 +7,12 @@ from typing import NoReturn, Any
 from MPSPlots.colormaps import blue_black_red
 
 
-
-def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red, show_axis_label: bool = True) -> NoReturn:
+def plot_system(
+    *objects: Any,
+    data: Any = None,
+    colormap: str = blue_black_red,
+    show_axis_label: bool = True,
+) -> NoReturn:
     """
     Plots a 3D visualization of a system of objects, each of which must have a `_add_to_3d_ax` method for adding itself to the scene.
 
@@ -29,13 +33,17 @@ def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red,
 
     # Add each object to the scene by calling its `_add_to_3d_ax` method
     for obj in objects:
-        if not hasattr(obj, '_add_to_3d_ax'):
-            raise AttributeError(f'Object {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method.')
+        if not hasattr(obj, "_add_to_3d_ax"):
+            raise AttributeError(
+                f"Object {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method."
+            )
         obj._add_to_3d_ax(scene=scene)
 
     if data is not None:
-        if not hasattr(data, '_add_to_3d_ax'):
-            raise AttributeError(f'Data {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method.')
+        if not hasattr(data, "_add_to_3d_ax"):
+            raise AttributeError(
+                f"Data {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method."
+            )
         data._add_to_3d_ax(scene=scene, colormap=colormap)
 
     # Add a translucent sphere to the scene to provide context or reference
@@ -43,11 +51,9 @@ def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red,
     scene.add_mesh(sphere, opacity=0.3)
 
     # Optionally add axis labels to the scene
-    scene.add_axes_at_origin(zlabel='', xlabel='', ylabel='', labels_off=not show_axis_label)
+    scene.add_axes_at_origin(
+        zlabel="", xlabel="", ylabel="", labels_off=not show_axis_label
+    )
 
     # Display the scene
     scene.show()
-
-
-
-

@@ -21,9 +21,9 @@ def source():
     """
     return Gaussian(
         wavelength=1550 * ureg.nanometer,  # 1550 nm wavelength
-        polarization=0 * ureg.degree,      # Linear polarization angle in radians
-        optical_power=1 * ureg.watt,     # Optical power in arbitrary units
-        NA=0.3 * ureg.AU               # Numerical Aperture
+        polarization=0 * ureg.degree,  # Linear polarization angle in radians
+        optical_power=1 * ureg.watt,  # Optical power in arbitrary units
+        NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
 
@@ -39,10 +39,10 @@ def scatterer(source):
         Cylinder: A cylindrical scatterer object.
     """
     return Cylinder(
-        diameter=780 * ureg.nanometer,     # 7.8 micrometers diameter
+        diameter=780 * ureg.nanometer,  # 7.8 micrometers diameter
         source=source,
-        medium_property=1.0 * ureg.RIU,    # Refractive index of the surrounding medium
-        property=sqrt(1.5) * ureg.RIU      # Refractive index of the scatterer
+        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        property=sqrt(1.5) * ureg.RIU,  # Refractive index of the scatterer
     )
 
 
@@ -55,14 +55,15 @@ def detector():
         Photodiode: A photodiode detector object.
     """
     return Photodiode(
-        NA=0.1 * ureg.AU,                     # Numerical Aperture
-        gamma_offset=90 * ureg.degree,        # Gamma offset in ureg.degrees
-        phi_offset=0 * ureg.degree,           # Phi offset in ureg.degrees
-        polarization_filter=0 * ureg.degree   # Polarization filter angle in ureg.degrees
+        NA=0.1 * ureg.AU,  # Numerical Aperture
+        gamma_offset=90 * ureg.degree,  # Gamma offset in ureg.degrees
+        phi_offset=0 * ureg.degree,  # Phi offset in ureg.degrees
+        polarization_filter=0
+        * ureg.degree,  # Polarization filter angle in ureg.degrees
     )
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plot_system(mock_show, source, scatterer, detector):
     """
     Test the plot_system function to ensure it can plot a source, scatterer, and detector

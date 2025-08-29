@@ -6,6 +6,7 @@ import numpy as np
 from PyMieSim.mesh import FibonacciMesh
 from TypedUnit import ureg
 
+
 @pytest.fixture
 def fibonacci_mesh():
     """
@@ -17,11 +18,11 @@ def fibonacci_mesh():
         Instance of FibonacciMesh with fixed test parameters.
     """
     return FibonacciMesh(
-        max_angle=np.pi / 4 * ureg.radian,   # Maximum angle (45 degrees in radians)
-        sampling=100 * ureg.AU,              # Number of sample points
-        phi_offset=30 * ureg.degree,         # Offset in the azimuthal angle (in degrees)
-        gamma_offset=45 * ureg.degree,       # Offset in the polar angle (in degrees)
-        rotation_angle=0 * ureg.degree       # Rotation angle (in degrees)
+        max_angle=np.pi / 4 * ureg.radian,  # Maximum angle (45 degrees in radians)
+        sampling=100 * ureg.AU,  # Number of sample points
+        phi_offset=30 * ureg.degree,  # Offset in the azimuthal angle (in degrees)
+        gamma_offset=45 * ureg.degree,  # Offset in the polar angle (in degrees)
+        rotation_angle=0 * ureg.degree,  # Rotation angle (in degrees)
     )
 
 
@@ -29,17 +30,20 @@ def test_initialization(fibonacci_mesh):
     """
     Test that the FibonacciMesh object is initialized with the correct parameters.
     """
-    assert fibonacci_mesh.max_angle == np.pi / 4  * ureg.radian
+    assert fibonacci_mesh.max_angle == np.pi / 4 * ureg.radian
     assert fibonacci_mesh.sampling == 100 * ureg.AU
     assert fibonacci_mesh.phi_offset == 30 * ureg.degree
     assert fibonacci_mesh.gamma_offset == 45 * ureg.degree
     assert fibonacci_mesh.rotation_angle == 0 * ureg.degree
 
+
 def test_projection_HV_vector(fibonacci_mesh):
     """
     Test the projection of vectors into parallel and perpendicular components.
     """
-    parallel_projection, perpendicular_projection = fibonacci_mesh.projection_HV_vector()
+    parallel_projection, perpendicular_projection = (
+        fibonacci_mesh.projection_HV_vector()
+    )
 
     # Ensure the shape of the projections is as expected
     assert parallel_projection.shape == (2, fibonacci_mesh.sampling, 3)
@@ -50,7 +54,9 @@ def test_projection_HV_scalar(fibonacci_mesh):
     """
     Test the scalar projection into parallel and perpendicular components.
     """
-    parallel_projection, perpendicular_projection = fibonacci_mesh.projection_HV_scalar()
+    parallel_projection, perpendicular_projection = (
+        fibonacci_mesh.projection_HV_scalar()
+    )
 
     # Ensure the shape of the scalar projections is as expected
     assert parallel_projection.shape == (2, fibonacci_mesh.sampling)
@@ -62,7 +68,11 @@ def test_get_cartesian_coordinates(fibonacci_mesh):
     Test that Cartesian coordinates are correctly computed and returned.
     """
     coordinates = np.vstack(
-        [fibonacci_mesh.cartesian.x, fibonacci_mesh.cartesian.y, fibonacci_mesh.cartesian.z]
+        [
+            fibonacci_mesh.cartesian.x,
+            fibonacci_mesh.cartesian.y,
+            fibonacci_mesh.cartesian.z,
+        ]
     )
 
     # Ensure the shape of the Cartesian coordinates is as expected
@@ -85,14 +95,22 @@ def test_rotate_around_axis(fibonacci_mesh):
     Test that the mesh is correctly rotated around its axis.
     """
     initial_coordinates = np.vstack(
-        [fibonacci_mesh.cartesian.x, fibonacci_mesh.cartesian.y, fibonacci_mesh.cartesian.z]
+        [
+            fibonacci_mesh.cartesian.x,
+            fibonacci_mesh.cartesian.y,
+            fibonacci_mesh.cartesian.z,
+        ]
     )
 
     # Rotate the mesh around its axis by 45 degrees
     fibonacci_mesh.rotate_around_axis(45)
 
     rotate_coordinates = np.vstack(
-        [fibonacci_mesh.cartesian.x, fibonacci_mesh.cartesian.y, fibonacci_mesh.cartesian.z]
+        [
+            fibonacci_mesh.cartesian.x,
+            fibonacci_mesh.cartesian.y,
+            fibonacci_mesh.cartesian.z,
+        ]
     )
 
     # Ensure the coordinates have changed after the rotation

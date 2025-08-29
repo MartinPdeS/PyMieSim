@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from typing import Optional
 
+
 class PyMieSimDataFrame(pd.DataFrame):
     """
     A subclass of pandas DataFrame with custom plot methods tailored for
@@ -21,20 +22,24 @@ class PyMieSimDataFrame(pd.DataFrame):
         # Validate that 'x' is a valid index level.
         if axis not in self.index.names:
             available = ", ".join(self.index.names)
-            raise ValueError(f"x parameter '{axis}' is not in the DataFrame index. Available index levels: {available}")
+            raise ValueError(
+                f"x parameter '{axis}' is not in the DataFrame index. Available index levels: {available}"
+            )
 
     def _get_complementary_axis(self, *axis) -> tuple:
         return [level for level in self.index.names if level not in axis]
 
-    def plot(self,
+    def plot(
+        self,
         x: str,
         std: Optional[str] = None,
         alpha: float = 0.4,
         ax: Optional[plt.Axes] = None,
         show: bool = True,
-        xscale: bool = 'linear',
-        yscale: bool = 'linear',
-        **kwargs) -> plt.Axes:
+        xscale: bool = "linear",
+        yscale: bool = "linear",
+        **kwargs,
+    ) -> plt.Axes:
         """
         Plots the DataFrame using a specified MultiIndex level for the x-axis.
         Optionally, if a standard deviation level is provided, it will also
@@ -65,7 +70,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         if std is not None:
             self._validate_axis(axis=std)
 
-
         with plt.style.context(mps):
             if ax is None:
                 _, ax = plt.subplots()
@@ -84,7 +88,9 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             return ax
 
-    def _plot_with_std(self, ax: plt.Axes, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
+    def _plot_with_std(
+        self, ax: plt.Axes, x: str, std: str, alpha: float = 0.5, **kwargs
+    ) -> None:
         """
         Plot the mean with standard deviation shading.
         Expects the DataFrame to have a MultiIndex and a 'pint' attribute.
@@ -137,14 +143,14 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             label = " : ".join(map(str, label))
 
-            ax.plot(group.index, group['mean'], linewidth=1, linestyle='--', **kwargs)
+            ax.plot(group.index, group["mean"], linewidth=1, linestyle="--", **kwargs)
             ax.fill_between(
                 x=group.index,
-                y1=group['mean'] + group['std'],
-                y2=group['mean'] - group['std'],
+                y1=group["mean"] + group["std"],
+                y2=group["mean"] - group["std"],
                 alpha=alpha,
                 edgecolor="black",
-                label=label
+                label=label,
             )
 
         ax.legend()
@@ -153,7 +159,9 @@ class PyMieSimDataFrame(pd.DataFrame):
         leg = ax.get_legend()  # Get the existing legend from the axes
         for text in leg.get_texts():
             original_label = text.get_text()
-            new_label = original_label.replace(')', '').replace('(', '').replace(', ', ' | ')
+            new_label = (
+                original_label.replace(")", "").replace("(", "").replace(", ", " | ")
+            )
             text.set_text(new_label)
 
     def _plot_without_std(self, ax: plt.Axes, x: str, **kwargs) -> None:
@@ -195,7 +203,7 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         legend = ax.legend()
 
-        legend.set_title(' | '.join(df.columns.names))
+        legend.set_title(" | ".join(df.columns.names))
 
     def add_weight(self, weight_index: str, weight: np.ndarray) -> "PyMieSimDataFrame":
 
@@ -204,9 +212,8 @@ class PyMieSimDataFrame(pd.DataFrame):
         stacking_index = self._get_complementary_axis(weight_index)
 
         return (
-            self
-            .unstack(stacking_index)
-            .multiply(weight.squeeze(), axis='index')
+            self.unstack(stacking_index)
+            .multiply(weight.squeeze(), axis="index")
             .stack(stacking_index)
         )
 
@@ -216,5 +223,4 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         stacking_index = [name for name in self.index.names if name != axis]
 
-        return self.groupby(stacking_index).sum()#.to_frame().T
-
+        return self.groupby(stacking_index).sum()  # .to_frame().T

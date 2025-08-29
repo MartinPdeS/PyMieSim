@@ -106,4 +106,3 @@ void register_sphere(pybind11::module_& module) {
             )pbdoc")
         ;
 }
-

@@ -148,5 +148,3 @@ void Cartesian::apply_matrix(const std::vector<std::vector<double>>& matrix) {
         z[i] = tempz;
     }
 }
-
-

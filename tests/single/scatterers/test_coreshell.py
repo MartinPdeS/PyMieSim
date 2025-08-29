@@ -18,8 +18,27 @@ shell_property = [Material.BK7, Material.iron, 1.7 * ureg.RIU]
 medium_property = [Material.water, 1.4 * ureg.RIU]
 
 attributes = [
-    "size_parameter", "radius", "volume", "cross_section", "g", "Qsca", "Qext", "Qabs", "Qback", "Qratio", "an", "bn",
-    "Qforward", "Qpr", "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
+    "size_parameter",
+    "radius",
+    "volume",
+    "cross_section",
+    "g",
+    "Qsca",
+    "Qext",
+    "Qabs",
+    "Qback",
+    "Qratio",
+    "an",
+    "bn",
+    "Qforward",
+    "Qpr",
+    "Csca",
+    "Cext",
+    "Cabs",
+    "Cback",
+    "Cratio",
+    "Cforward",
+    "Cpr",
 ]
 
 
@@ -30,22 +49,31 @@ def source():
         wavelength=750 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU
+        NA=0.3 * ureg.AU,
     )
 
+
 # Parametrized test for coupling
-@pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
-@pytest.mark.parametrize('shell_material', shell_property, ids=[f'Shell:{m}' for m in shell_property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
+@pytest.mark.parametrize(
+    "core_material", core_property, ids=[f"Core:{m}" for m in core_property]
+)
+@pytest.mark.parametrize(
+    "shell_material", shell_property, ids=[f"Shell:{m}" for m in shell_property]
+)
+@pytest.mark.parametrize(
+    "medium_property", medium_property, ids=[f"Medium:{m}" for m in medium_property]
+)
 def test_coupling(core_material, shell_material, medium_property, source):
-    detector = Photodiode(NA=0.2 * ureg.AU, gamma_offset=0 * ureg.degree, phi_offset=0 * ureg.degree)
+    detector = Photodiode(
+        NA=0.2 * ureg.AU, gamma_offset=0 * ureg.degree, phi_offset=0 * ureg.degree
+    )
     scatterer = CoreShell(
         core_diameter=100 * ureg.nanometer,
         shell_thickness=200 * ureg.nanometer,
         source=source,
         medium_property=medium_property,
         core_property=core_material,
-        shell_property=shell_material
+        shell_property=shell_material,
     )
 
     # Calculate optical coupling
@@ -54,10 +82,16 @@ def test_coupling(core_material, shell_material, medium_property, source):
 
 
 # Parametrized test for attributes
-@pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
-@pytest.mark.parametrize('shell_material', shell_property, ids=[f'Shell:{m}' for m in shell_property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('attribute', attributes)
+@pytest.mark.parametrize(
+    "core_material", core_property, ids=[f"Core:{m}" for m in core_property]
+)
+@pytest.mark.parametrize(
+    "shell_material", shell_property, ids=[f"Shell:{m}" for m in shell_property]
+)
+@pytest.mark.parametrize(
+    "medium_property", medium_property, ids=[f"Medium:{m}" for m in medium_property]
+)
+@pytest.mark.parametrize("attribute", attributes)
 def test_attribute(attribute, core_material, shell_material, medium_property, source):
     scatterer = CoreShell(
         core_diameter=100 * ureg.nanometer,
@@ -65,7 +99,7 @@ def test_attribute(attribute, core_material, shell_material, medium_property, so
         source=source,
         medium_property=medium_property,
         core_property=core_material,
-        shell_property=shell_material
+        shell_property=shell_material,
     )
 
     # Access and verify the attribute

@@ -28,15 +28,23 @@ class Cylinder(CYLINDER, BaseScatterer):
     source : Gaussian | PlaneWave
         The source object associated with the scatterer.
     """
+
     diameter: object
     property: RefractiveIndex | BaseMaterial
     medium_property: RefractiveIndex | BaseMaterial
     source: Gaussian | PlaneWave
 
     property_names = [
-        "size_parameter", "radius", "cross_section", "g",
-        "Qsca", "Qext", "Qabs",
-        "Csca", "Cext", "Cabs"
+        "size_parameter",
+        "radius",
+        "cross_section",
+        "g",
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Csca",
+        "Cext",
+        "Cabs",
     ]
 
     def __post_init__(self):
@@ -44,13 +52,15 @@ class Cylinder(CYLINDER, BaseScatterer):
         Initialize the Sphere scatterer with its diameter and material properties.
         """
         self.index, self.material = self._assign_index_or_material(self.property)
-        self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_property)
+        self.medium_index, self.medium_material = self._assign_index_or_material(
+            self.medium_property
+        )
 
         super().__init__(
             diameter=self.diameter.to(ureg.meter).magnitude,
             refractive_index=self.index.to(ureg.RIU).magnitude,
             medium_refractive_index=self.medium_index.to(ureg.RIU).magnitude,
-            source=self.source
+            source=self.source,
         )
 
     @property
@@ -74,7 +84,9 @@ class Cylinder(CYLINDER, BaseScatterer):
     def Qratio(self) -> None:
         raise NotImplementedError
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'black', opacity: float = 1.0) -> None:
+    def _add_to_3d_ax(
+        self, scene: pyvista.Plotter, color: str = "black", opacity: float = 1.0
+    ) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
 
@@ -97,7 +109,7 @@ class Cylinder(CYLINDER, BaseScatterer):
             radius=0.1,
             height=2.0,  # Height of the cylinder
             direction=(0, -1, 0),  # Pointing downwards along the z-axis
-            resolution=100  # Number of sides for the cylinder
+            resolution=100,  # Number of sides for the cylinder
         )
 
         # Add the cone mesh to the scene

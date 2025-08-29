@@ -36,17 +36,18 @@ class SPF(BaseRepresentation):
 
         The result is stored as the SPF attribute of the instance.
         """
-        self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
+        self.SPF = numpy.sqrt(numpy.abs(self.E_phi) ** 2 + numpy.abs(self.E_theta) ** 2)
 
     def plot(
-            self,
-            unit_size: List[float] = (400, 400),
-            background_color: str = 'white',
-            show_edges: bool = False,
-            colormap: str = 'viridis',
-            opacity: float = 1.0,
-            set_surface: bool = True,
-            show_axis_label: bool = False) -> None:
+        self,
+        unit_size: List[float] = (400, 400),
+        background_color: str = "white",
+        show_edges: bool = False,
+        colormap: str = "viridis",
+        opacity: float = 1.0,
+        set_surface: bool = True,
+        show_axis_label: bool = False,
+    ) -> None:
         """
         Visualizes the scattering phase function on a 3D plot.
 
@@ -75,7 +76,9 @@ class SPF(BaseRepresentation):
         window_size = (unit_size[1], unit_size[0])  # One subplot
 
         # Create a PyVista plotting scene with the specified theme and window size
-        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size)
+        scene = pyvista.Plotter(
+            theme=pyvista.themes.DocumentTheme(), window_size=window_size
+        )
 
         # Set the background color of the scene
         scene.set_background(background_color)
@@ -86,19 +89,26 @@ class SPF(BaseRepresentation):
             colormap=colormap,
             opacity=opacity,
             show_edges=show_edges,
-            set_surface=set_surface
+            set_surface=set_surface,
         )
 
         # Optionally add axis labels
         scene.add_axes_at_origin(labels_off=not show_axis_label)
 
         # Add a scalar bar to the scene to represent the scattering phase function
-        scene.add_scalar_bar(mapper=mapping.mapper, title='Scattering Phase Function')
+        scene.add_scalar_bar(mapper=mapping.mapper, title="Scattering Phase Function")
 
         # Display the scene
         scene.show()
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, set_surface: bool = False, show_edges: bool = False, colormap: str = 'viridis', opacity: float = 1.0) -> None:
+    def _add_to_3d_ax(
+        self,
+        scene: pyvista.Plotter,
+        set_surface: bool = False,
+        show_edges: bool = False,
+        colormap: str = "viridis",
+        opacity: float = 1.0,
+    ) -> None:
         """
         Adds a 3D surface plot to the provided PyVista scene based on the scattering phase function (SPF).
 
@@ -129,7 +139,9 @@ class SPF(BaseRepresentation):
         if set_surface:
             x, y, z = spherical_to_cartesian(r=scalar, phi=phi_mesh, theta=theta_mesh)
         else:
-            x, y, z = spherical_to_cartesian(r=numpy.ones(phi_mesh.shape) * 0.5, phi=phi_mesh, theta=theta_mesh)
+            x, y, z = spherical_to_cartesian(
+                r=numpy.ones(phi_mesh.shape) * 0.5, phi=phi_mesh, theta=theta_mesh
+            )
 
         # Create a structured grid from the calculated coordinates
         mesh = pyvista.StructuredGrid(x, y, z)
@@ -138,11 +150,11 @@ class SPF(BaseRepresentation):
         mapping = scene.add_mesh(
             mesh,
             cmap=colormap,
-            scalars=scalar.flatten(order='F'),
+            scalars=scalar.flatten(order="F"),
             opacity=opacity,
-            style='surface',
+            style="surface",
             show_edges=show_edges,
-            show_scalar_bar=False
+            show_scalar_bar=False,
         )
 
         return mapping

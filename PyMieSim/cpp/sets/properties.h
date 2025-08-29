@@ -69,22 +69,3 @@ class MediumProperties {
             throw std::runtime_error("Object not properly initialized with a valid vector.");
         }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

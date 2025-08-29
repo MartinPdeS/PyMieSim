@@ -29,15 +29,30 @@ class Sphere(SPHERE, BaseScatterer):
     source : BaseSource
         The source object associated with the scatterer.
     """
+
     diameter: Length
     property: RefractiveIndex | BaseMaterial
     medium_property: RefractiveIndex | BaseMaterial
     source: BaseSource
 
     property_names = [
-        "size_parameter", "radius", "volume", "cross_section", "g",
-        "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
-        "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
+        "size_parameter",
+        "radius",
+        "volume",
+        "cross_section",
+        "g",
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Qback",
+        "Qratio",
+        "Qpr",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "Cback",
+        "Cratio",
+        "Cpr",
     ]
 
     def __post_init__(self):
@@ -45,13 +60,15 @@ class Sphere(SPHERE, BaseScatterer):
         Initialize the Sphere scatterer with its diameter and material properties.
         """
         self.index, self.material = self._assign_index_or_material(self.property)
-        self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_property)
+        self.medium_index, self.medium_material = self._assign_index_or_material(
+            self.medium_property
+        )
 
         super().__init__(
             diameter=self.diameter.to(ureg.meter).magnitude,
             refractive_index=self.index.to(ureg.RIU).magnitude,
             medium_refractive_index=self.medium_index.to(ureg.RIU).magnitude,
-            source=self.source
+            source=self.source,
         )
 
     @property
@@ -62,10 +79,12 @@ class Sphere(SPHERE, BaseScatterer):
     @property
     def volume(self) -> Volume:
         """Return the volume of the sphere."""
-        vol = (4/3) * numpy.pi * (self.radius ** 3)
-        return vol.to(ureg.meter ** 3)
+        vol = (4 / 3) * numpy.pi * (self.radius**3)
+        return vol.to(ureg.meter**3)
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'black', opacity: float = 1.0) -> None:
+    def _add_to_3d_ax(
+        self, scene: pyvista.Plotter, color: str = "black", opacity: float = 1.0
+    ) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
 
@@ -84,12 +103,8 @@ class Sphere(SPHERE, BaseScatterer):
         """
         # Create the cone mesh
         shape = pyvista.Sphere(
-            center=(0.0, 0.0, 0.0),
-            radius=0.1,
-            theta_resolution=100,
-            phi_resolution=100
+            center=(0.0, 0.0, 0.0), radius=0.1, theta_resolution=100, phi_resolution=100
         )
 
         # Add the cone mesh to the scene
         scene.add_mesh(shape, color=color, opacity=opacity)
-

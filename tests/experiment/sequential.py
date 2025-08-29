@@ -14,7 +14,8 @@ from PyOptik import Material
 
 TOTAL_SIZE = 5
 
-@patch('matplotlib.pyplot.show')
+
+@patch("matplotlib.pyplot.show")
 def test_valid_experiment(mock_show):
     """
     Test a valid experiment configuration with proper broadcasting.
@@ -27,7 +28,7 @@ def test_valid_experiment(mock_show):
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     scatterer = Sphere.build_sequential(
@@ -35,18 +36,18 @@ def test_valid_experiment(mock_show):
         diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
         property=1.4 * ureg.RIU,
         medium_property=1.0 * ureg.RIU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     detector = CoherentMode.build_sequential(
-        mode_number='LP01',
+        mode_number="LP01",
         rotation=0 * ureg.degree,
         NA=0.2 * ureg.AU,
         polarization_filter=np.nan * ureg.degree,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100 * ureg.AU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
@@ -66,7 +67,7 @@ def test_invalid_medium_property():
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     with pytest.raises(AssertionError):
@@ -75,7 +76,7 @@ def test_invalid_medium_property():
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             property=1.4 * ureg.RIU,
             medium_property=Material.water,  # This should trigger an error
-            total_size=TOTAL_SIZE
+            total_size=TOTAL_SIZE,
         )
 
 
@@ -90,7 +91,7 @@ def test_invalid_property():
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     with pytest.raises(AssertionError):
@@ -99,7 +100,7 @@ def test_invalid_property():
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             property=Material.water,  # This should trigger an error
             medium_property=1.0 * ureg.RIU,
-            total_size=TOTAL_SIZE
+            total_size=TOTAL_SIZE,
         )
 
 
@@ -115,15 +116,15 @@ def test_parameter_broadcasting():
         polarization=45 * ureg.degree,
         optical_power=2e-3 * ureg.watt,
         NA=0.3 * ureg.AU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     scatterer = Sphere.build_sequential(
         source=source,
-        diameter=500 * ureg.nanometer,     # Scalar value
-        property=1.5 * ureg.RIU,           # Scalar value
-        medium_property=1.2 * ureg.RIU,    # Scalar value
-        total_size=TOTAL_SIZE
+        diameter=500 * ureg.nanometer,  # Scalar value
+        property=1.5 * ureg.RIU,  # Scalar value
+        medium_property=1.2 * ureg.RIU,  # Scalar value
+        total_size=TOTAL_SIZE,
     )
 
     # Check that each broadcasted attribute is an array with the proper length.
@@ -145,14 +146,14 @@ def test_broadcasted_values():
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
     scatterer = Sphere.build_sequential(
         source=source,
         diameter=value,
         property=1.6 * ureg.RIU,
         medium_property=1.0 * ureg.RIU,
-        total_size=TOTAL_SIZE
+        total_size=TOTAL_SIZE,
     )
 
     # Create an expected array filled with the broadcasted value.

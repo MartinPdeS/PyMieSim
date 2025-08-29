@@ -6,13 +6,13 @@ source:
   git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
   number: 0
 
 requirements:
   host:
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13

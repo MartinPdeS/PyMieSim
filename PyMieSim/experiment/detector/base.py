@@ -52,16 +52,19 @@ class BaseDetector:
     _generate_mapping()
         Generates a mapping of scatterer properties to be used for visualization purposes.
     """
-    @field_validator('mode_number', mode='plain')
+
+    @field_validator("mode_number", mode="plain")
     def _validate_mode_number(cls, mode_number):
         """Ensure mode numbers are valid and belong to supported families."""
         mode_number = numpy.atleast_1d(mode_number).astype(str)
         for mode in mode_number:
-            if mode[:2] not in ['LP', 'HG', 'LG', 'NC']:
-                raise ValueError(f'Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC')
+            if mode[:2] not in ["LP", "HG", "LG", "NC"]:
+                raise ValueError(
+                    f"Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC"
+                )
         return mode_number
 
-    @field_validator('polarization_filter', mode='plain')
+    @field_validator("polarization_filter", mode="plain")
     def validate_polarization(cls, value):
         """
         Validates the polarization filter. If not provided, defaults to NaN degrees.
@@ -84,7 +87,7 @@ class BaseDetector:
 
         return numpy.atleast_1d(value).astype(float)
 
-    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='plain')
+    @field_validator("gamma_offset", "phi_offset", "rotation", mode="plain")
     def validate_angle_quantity(cls, value):
         """
         Ensures that angular quantities (gamma_offset, phi_offset, rotation) are correctly formatted as Quantities with angle units.
@@ -102,7 +105,7 @@ class BaseDetector:
         Angle.check(value)
         return numpy.atleast_1d(value)
 
-    @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
+    @field_validator("NA", "cache_NA", "sampling", mode="plain")
     def validate_au_quantity(cls, value):
         """
         Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
@@ -132,15 +135,21 @@ class BaseDetector:
             "sampling": self.sampling,
             "NA": self.NA,
             "cache_NA": self.cache_NA,
-            "polarization_filter": self.polarization_filter.to(ureg.radian).magnitude if self.polarization_filter is not None else numpy.nan,
+            "polarization_filter": (
+                self.polarization_filter.to(ureg.radian).magnitude
+                if self.polarization_filter is not None
+                else numpy.nan
+            ),
             "phi_offset": self.phi_offset.to(ureg.radian).magnitude,
             "gamma_offset": self.gamma_offset.to(ureg.radian).magnitude,
             "rotation": self.rotation.to(ureg.radian).magnitude,
-            "is_sequential": self.is_sequential
+            "is_sequential": self.is_sequential,
         }
 
         # Ensure all values are at least 1D arrays for compatibility
-        self.binding_kwargs = {k: numpy.atleast_1d(v) for k, v in self.binding_kwargs.items()}
+        self.binding_kwargs = {
+            k: numpy.atleast_1d(v) for k, v in self.binding_kwargs.items()
+        }
 
         # Additional detector settings
         self.binding_kwargs["mean_coupling"] = self.mean_coupling
@@ -156,7 +165,17 @@ class BaseDetector:
         Attributes like mode number, NA, offsets, and sampling are included in this mapping.
         """
         self.mapping = {}
-        self.mapping.update({'detector:mode_number': self.mode_number})
+        self.mapping.update({"detector:mode_number": self.mode_number})
 
-        for attr in ['NA', 'sampling', 'cache_NA', 'phi_offset', 'gamma_offset', 'rotation', 'polarization_filter']:
-            self.mapping["detector:" + attr] = PintArray(getattr(self, attr), dtype=getattr(self, attr).units)
+        for attr in [
+            "NA",
+            "sampling",
+            "cache_NA",
+            "phi_offset",
+            "gamma_offset",
+            "rotation",
+            "polarization_filter",
+        ]:
+            self.mapping["detector:" + attr] = PintArray(
+                getattr(self, attr), dtype=getattr(self, attr).units
+            )

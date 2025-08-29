@@ -22,7 +22,7 @@ gaussian_source = Gaussian(
     wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
     polarization=0 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 
 planewave_source = PlaneWave(
@@ -34,17 +34,23 @@ planewave_source = PlaneWave(
 sources = [gaussian_source, planewave_source]
 
 
-@pytest.mark.parametrize('medium_property', medium_properties, ids=[f'Medium:{m}' for m in medium_properties])
-@pytest.mark.parametrize('source', sources, ids=[f'Source:{m.__class__.__name__}' for m in sources])
-@pytest.mark.parametrize('property', properties, ids=[f'Property:{m}' for m in properties])
-@pytest.mark.parametrize('measure', measures)
+@pytest.mark.parametrize(
+    "medium_property", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
+)
+@pytest.mark.parametrize(
+    "source", sources, ids=[f"Source:{m.__class__.__name__}" for m in sources]
+)
+@pytest.mark.parametrize(
+    "property", properties, ids=[f"Property:{m}" for m in properties]
+)
+@pytest.mark.parametrize("measure", measures)
 def test_measure(measure, source, medium_property, property):
     # Configure the cylindrical scatterer
     scatterer = Cylinder(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
         medium_property=medium_property,
-        property=property
+        property=property,
     )
 
     # Configure the detector
@@ -53,15 +59,11 @@ def test_measure(measure, source, medium_property, property):
         polarization_filter=None,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        sampling=100 * ureg.AU
+        sampling=100 * ureg.AU,
     )
 
     # Configure and run the experiment
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector
-    )
+    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
     # Execute measurement
     experiment.get(measure, drop_unique_level=False)

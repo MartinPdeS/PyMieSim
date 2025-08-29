@@ -4,7 +4,6 @@ Sphere: Coherent Goniometer
 
 """
 
-
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
@@ -21,7 +20,7 @@ source = Gaussian(
     wavelength=1200 * nanometer,
     polarization=90 * degree,
     optical_power=1e-3 * watt,
-    NA=0.2 * AU
+    NA=0.2 * AU,
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
@@ -29,7 +28,7 @@ scatterer = Sphere(
     diameter=numpy.linspace(100, 500, 100) * nanometer,
     property=Material.BK7,
     medium_property=1 * RIU,
-    source=source
+    source=source,
 )
 
 # # %%
@@ -50,7 +49,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('Qsca')
+dataframe = experiment.get("Qsca")
 
 # # %%
 # # Plotting the results

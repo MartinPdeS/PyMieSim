@@ -26,6 +26,7 @@ class Gaussian(GAUSSIAN, BaseSource):
     NA: Dimensionless
         Numerical aperture of the source.
     """
+
     wavelength: Length
     polarization: Angle | BasePolarization
     optical_power: Power
@@ -42,7 +43,6 @@ class Gaussian(GAUSSIAN, BaseSource):
         self.waist = self.wavelength / (self.NA * numpy.pi)
         self.peak_intensity = 2 * self.optical_power / (numpy.pi * self.waist**2)
         self.polarization = self._validate_source_polarization(self.polarization)
-
 
         super().__init__(
             wavelength=self.wavelength.to(ureg.meter).magnitude,
@@ -65,9 +65,15 @@ class Gaussian(GAUSSIAN, BaseSource):
         float
             The angle in radians.
         """
-        return numpy.arcsin(numerical_aperture) if numerical_aperture <= 1.0 else numpy.arcsin(numerical_aperture - 1) + numpy.pi / 2
+        return (
+            numpy.arcsin(numerical_aperture)
+            if numerical_aperture <= 1.0
+            else numpy.arcsin(numerical_aperture - 1) + numpy.pi / 2
+        )
 
-    def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:
+    def plot(
+        self, color: str = "red", opacity: float = 0.8, show_axis_label: bool = False
+    ) -> None:
         """
         Plots the 3D structure of the Gaussian source.
 
@@ -100,7 +106,9 @@ class Gaussian(GAUSSIAN, BaseSource):
         # Display the scene
         scene.show()
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> None:
+    def _add_to_3d_ax(
+        self, scene: pyvista.Plotter, color: str = "red", opacity: float = 0.8
+    ) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
 
@@ -131,9 +139,11 @@ class Gaussian(GAUSSIAN, BaseSource):
             direction=(0.0, 0.0, 1.0),
             height=0.9,
             resolution=100,
-            angle=max_angle
+            angle=max_angle,
         )
 
         # Add the cone mesh to the scene
         scene.add_mesh(cone_mesh, color=color, opacity=0.3)
+
+
 # -

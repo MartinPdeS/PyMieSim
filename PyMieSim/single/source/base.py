@@ -4,8 +4,9 @@
 from TypedUnit import Angle
 from pydantic import field_validator
 
-class BaseSource():
-    @field_validator('polarization', mode='plain')
+
+class BaseSource:
+    @field_validator("polarization", mode="plain")
     def _validate_source_polarization(cls, value):
         """
         Ensures that polarization is well defined.

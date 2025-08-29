@@ -30,11 +30,13 @@ from PyMieSim import units
 
 # Default unit definitions for consistent parameter handling
 length_units = units.nanometer  # Nanometers for all length measurements
-power_units = units.milliwatt   # Milliwatts for optical power measurements
-angle_units = units.degree      # Degrees for angular measurements
+power_units = units.milliwatt  # Milliwatts for optical power measurements
+angle_units = units.degree  # Degrees for angular measurements
 
 
-def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float, List[str], complex]:
+def parse_string_to_array_or_float(
+    input_str: str,
+) -> Union[numpy.ndarray, float, List[str], complex]:
     """
     Parse a string input to return either a numpy array, float value, string list, or complex number.
 
@@ -109,10 +111,10 @@ def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float
         value_str = value_str.strip()
 
         # Check if it's a complex number (contains 'j' or 'J')
-        if 'j' in value_str.lower():
+        if "j" in value_str.lower():
             try:
                 # Handle Python complex number format
-                return complex(value_str.replace('i', 'j').replace('I', 'j'))
+                return complex(value_str.replace("i", "j").replace("I", "j"))
             except ValueError:
                 raise ValueError(f"Invalid complex number format: '{value_str}'")
         else:
@@ -126,7 +128,7 @@ def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float
         value_str = value_str.strip()
 
         # Check for complex number pattern
-        complex_pattern = r'^[+-]?(\d+\.?\d*|\.\d+)([+-]\d+\.?\d*[ji])?$'
+        complex_pattern = r"^[+-]?(\d+\.?\d*|\.\d+)([+-]\d+\.?\d*[ji])?$"
         if re.match(complex_pattern, value_str.lower()):
             return True
 
@@ -144,7 +146,9 @@ def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float
             # Format: start:end:count → numpy.linspace(start, end, count)
             parts = input_str.split(":")
             if len(parts) != 3:
-                raise ValueError("Colon format requires exactly 3 values: 'start:end:count'")
+                raise ValueError(
+                    "Colon format requires exactly 3 values: 'start:end:count'"
+                )
             start, end, count = map(float, parts)
             if count <= 0:
                 raise ValueError("Count must be positive")
@@ -185,7 +189,7 @@ def get_data(
     scatterer_kwargs: Dict[str, str],
     detector_kwargs: Dict[str, str],
     measure: str,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> Any:
     """
     Execute a complete Mie scattering experiment and retrieve measurement data.
@@ -250,65 +254,119 @@ def get_data(
         If the computational setup fails or measurement cannot be completed.
 
     """
-    match source_kwargs['type']:
-        case 'planewave':
+    match source_kwargs["type"]:
+        case "planewave":
             source = PlaneWave(
-                wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
-                polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
-                amplitude=parse_string_to_array_or_float(source_kwargs['amplitude']) * units.volt / units.meter
+                wavelength=parse_string_to_array_or_float(source_kwargs["wavelength"])
+                * length_units,
+                polarization=parse_string_to_array_or_float(
+                    source_kwargs["polarization"]
+                )
+                * angle_units,
+                amplitude=parse_string_to_array_or_float(source_kwargs["amplitude"])
+                * units.volt
+                / units.meter,
             )
-        case 'gaussian':
+        case "gaussian":
             source = Gaussian(
-                wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
-                polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
-                NA=parse_string_to_array_or_float(source_kwargs['numerical_aperture']) * units.AU,
-                optical_power=parse_string_to_array_or_float(source_kwargs['optical_power']) * power_units
+                wavelength=parse_string_to_array_or_float(source_kwargs["wavelength"])
+                * length_units,
+                polarization=parse_string_to_array_or_float(
+                    source_kwargs["polarization"]
+                )
+                * angle_units,
+                NA=parse_string_to_array_or_float(source_kwargs["numerical_aperture"])
+                * units.AU,
+                optical_power=parse_string_to_array_or_float(
+                    source_kwargs["optical_power"]
+                )
+                * power_units,
             )
 
-    match scatterer_kwargs['type']:
-        case 'sphere':
+    match scatterer_kwargs["type"]:
+        case "sphere":
             scatterer = Sphere(
-                diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
-                property=parse_string_to_array_or_float(scatterer_kwargs['property']) * units.RIU,
-                medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * units.RIU,
-                source=source
+                diameter=parse_string_to_array_or_float(scatterer_kwargs["diameter"])
+                * length_units,
+                property=parse_string_to_array_or_float(scatterer_kwargs["property"])
+                * units.RIU,
+                medium_property=parse_string_to_array_or_float(
+                    scatterer_kwargs["medium_property"]
+                )
+                * units.RIU,
+                source=source,
             )
-        case 'coreshell':
+        case "coreshell":
             scatterer = CoreShell(
-                core_diameter=parse_string_to_array_or_float(scatterer_kwargs['core_diameter']) * length_units,
-                shell_thickness=parse_string_to_array_or_float(scatterer_kwargs['shell_thickness']) * length_units,
-                core_property=parse_string_to_array_or_float(scatterer_kwargs['core_property']) * units.RIU,
-                shell_property=parse_string_to_array_or_float(scatterer_kwargs['shell_property']) * units.RIU,
-                medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * units.RIU,
-                source=source
+                core_diameter=parse_string_to_array_or_float(
+                    scatterer_kwargs["core_diameter"]
+                )
+                * length_units,
+                shell_thickness=parse_string_to_array_or_float(
+                    scatterer_kwargs["shell_thickness"]
+                )
+                * length_units,
+                core_property=parse_string_to_array_or_float(
+                    scatterer_kwargs["core_property"]
+                )
+                * units.RIU,
+                shell_property=parse_string_to_array_or_float(
+                    scatterer_kwargs["shell_property"]
+                )
+                * units.RIU,
+                medium_property=parse_string_to_array_or_float(
+                    scatterer_kwargs["medium_property"]
+                )
+                * units.RIU,
+                source=source,
             )
-        case 'cylinder':
+        case "cylinder":
             scatterer = Cylinder(
-                diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
-                property=parse_string_to_array_or_float(scatterer_kwargs['property']) * units.RIU,
-                medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * units.RIU,
-                source=source
+                diameter=parse_string_to_array_or_float(scatterer_kwargs["diameter"])
+                * length_units,
+                property=parse_string_to_array_or_float(scatterer_kwargs["property"])
+                * units.RIU,
+                medium_property=parse_string_to_array_or_float(
+                    scatterer_kwargs["medium_property"]
+                )
+                * units.RIU,
+                source=source,
             )
 
-    match detector_kwargs['type']:
-        case 'photodiode':
+    match detector_kwargs["type"]:
+        case "photodiode":
             detector = Photodiode(
-                NA=parse_string_to_array_or_float(detector_kwargs['numerical_aperture']) * units.AU,
-                gamma_offset=parse_string_to_array_or_float(detector_kwargs['gamma_offset']) * angle_units,
-                phi_offset=parse_string_to_array_or_float(detector_kwargs['phi_offset']) * angle_units,
-                sampling=parse_string_to_array_or_float(detector_kwargs['sampling']) * units.AU,
+                NA=parse_string_to_array_or_float(detector_kwargs["numerical_aperture"])
+                * units.AU,
+                gamma_offset=parse_string_to_array_or_float(
+                    detector_kwargs["gamma_offset"]
+                )
+                * angle_units,
+                phi_offset=parse_string_to_array_or_float(detector_kwargs["phi_offset"])
+                * angle_units,
+                sampling=parse_string_to_array_or_float(detector_kwargs["sampling"])
+                * units.AU,
             )
-        case 'coherentmode':
+        case "coherentmode":
             detector = CoherentMode(
-                mode_number=parse_string_to_array_or_float(detector_kwargs['mode_number']),
-                NA=parse_string_to_array_or_float(detector_kwargs['numerical_aperture']) * units.AU,
-                gamma_offset=parse_string_to_array_or_float(detector_kwargs['gamma_offset']) * angle_units,
-                phi_offset=parse_string_to_array_or_float(detector_kwargs['phi_offset']) * angle_units,
-                sampling=parse_string_to_array_or_float(detector_kwargs['sampling']) * units.AU,
-                rotation=parse_string_to_array_or_float(detector_kwargs.get('rotation', 0)) * angle_units
-
+                mode_number=parse_string_to_array_or_float(
+                    detector_kwargs["mode_number"]
+                ),
+                NA=parse_string_to_array_or_float(detector_kwargs["numerical_aperture"])
+                * units.AU,
+                gamma_offset=parse_string_to_array_or_float(
+                    detector_kwargs["gamma_offset"]
+                )
+                * angle_units,
+                phi_offset=parse_string_to_array_or_float(detector_kwargs["phi_offset"])
+                * angle_units,
+                sampling=parse_string_to_array_or_float(detector_kwargs["sampling"])
+                * units.AU,
+                rotation=parse_string_to_array_or_float(
+                    detector_kwargs.get("rotation", 0)
+                )
+                * angle_units,
             )
-
 
     # Set up the complete experiment
     setup = Setup(source=source, scatterer=scatterer, detector=detector)

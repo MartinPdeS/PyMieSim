@@ -4,10 +4,12 @@ from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import Quantity
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
-def broadcast_params(total_size: Optional[int] = None, **kwargs: Union[T, List[T]]) -> Dict[str, np.ndarray]:
+def broadcast_params(
+    total_size: Optional[int] = None, **kwargs: Union[T, List[T]]
+) -> Dict[str, np.ndarray]:
     """
     Broadcast scalar or single-element parameters to NumPy arrays of a given target size.
 
@@ -40,18 +42,22 @@ def broadcast_params(total_size: Optional[int] = None, **kwargs: Union[T, List[T
         If total_size is provided and is not a positive integer.
     """
     if total_size is not None:
-        assert isinstance(total_size, int) and total_size > 0, "total_size must be a positive integer"
+        assert (
+            isinstance(total_size, int) and total_size > 0
+        ), "total_size must be a positive integer"
 
     # Convert each parameter to a 1D NumPy array.
     arrays = {name: np.atleast_1d(val) for name, val in kwargs.items()}
 
     # Determine the target size.
-    target_size = total_size or  max(arr.size for arr in arrays.values())
+    target_size = total_size or max(arr.size for arr in arrays.values())
 
     # Ensure no provided array of size > 1 mismatches the explicit target_size.
     for name, arr in arrays.items():
         if arr.size > 1 and arr.size != target_size:
-            raise ValueError(f"Inconsistent sizes: '{name}' has size {arr.size} but expected 1 or {target_size}.")
+            raise ValueError(
+                f"Inconsistent sizes: '{name}' has size {arr.size} but expected 1 or {target_size}."
+            )
 
     # Broadcast any array of size 1 to the target size.
     for name, arr in arrays.items():
@@ -103,11 +109,11 @@ class Sequential:
             If any parameter provided as a list/array has a length greater than one that does not
             match the target size.
         """
-        is_material = any([
-            isinstance(v, BaseMaterial) for v in kwargs.values()
-        ])
+        is_material = any([isinstance(v, BaseMaterial) for v in kwargs.values()])
 
-        assert not is_material, "For the moment no Material can be defined material property for sequential computing, one should use refractive index property. See documentation online."
+        assert (
+            not is_material
+        ), "For the moment no Material can be defined material property for sequential computing, one should use refractive index property. See documentation online."
         source = kwargs.pop("source", None)
         kwargs = broadcast_params(total_size=total_size, **kwargs)
 
@@ -119,4 +125,3 @@ class Sequential:
         instance.is_sequential = True
 
         return instance
-

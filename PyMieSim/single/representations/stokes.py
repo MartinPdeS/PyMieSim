@@ -62,22 +62,23 @@ class Stokes(BaseRepresentation):
         The results are stored as attributes of the instance: I, Q, U, and V.
 
         """
-        intensity = numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2
+        intensity = numpy.abs(self.E_phi) ** 2 + numpy.abs(self.E_theta) ** 2
 
         self.I = intensity / numpy.max(intensity)  # noqa: E741
-        self.Q = (numpy.abs(self.E_phi)**2 - numpy.abs(self.E_theta)**2) / intensity
+        self.Q = (numpy.abs(self.E_phi) ** 2 - numpy.abs(self.E_theta) ** 2) / intensity
         self.U = (+2 * numpy.real(self.E_phi * self.E_theta.conjugate())) / intensity
         self.V = (-2 * numpy.imag(self.E_phi * self.E_theta.conjugate())) / intensity
 
     def plot(
         self,
         unit_size: List[float] = (400, 400),
-        background_color: str = 'white',
+        background_color: str = "white",
         show_edges: bool = False,
         colormap: str = blue_black_red,
         opacity: float = 1.0,
         symmetric_colormap: bool = False,
-        show_axis_label: bool = False) -> None:
+        show_axis_label: bool = False,
+    ) -> None:
         """
         Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.
 
@@ -99,34 +100,40 @@ class Stokes(BaseRepresentation):
             If True, shows the axis labels. Default is False.
         """
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
-        x, y, z = spherical_to_cartesian(r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh)
+        x, y, z = spherical_to_cartesian(
+            r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh
+        )
 
         window_size = (unit_size[1] * 4, unit_size[0])  # Four subplots horizontally
 
-        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 4))
+        scene = pyvista.Plotter(
+            theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 4)
+        )
         scene.set_background(background_color)
 
-        for idx, (name, field) in enumerate(zip(['I', 'Q', 'U', 'V'], [self.I, self.Q, self.U, self.V])):
-            field = field.flatten(order='F')
+        for idx, (name, field) in enumerate(
+            zip(["I", "Q", "U", "V"], [self.I, self.Q, self.U, self.V])
+        ):
+            field = field.flatten(order="F")
             mesh = pyvista.StructuredGrid(x, y, z)
             scene.subplot(0, idx)
 
             colormap_limits = self.get_colormap_limits(
-                scalar=field,
-                symmetric=symmetric_colormap
+                scalar=field, symmetric=symmetric_colormap
             )
 
             mapping = scene.add_mesh(
                 mesh,
                 cmap=colormap,
-                scalars=field, opacity=opacity,
-                style='surface',
+                scalars=field,
+                opacity=opacity,
+                style="surface",
                 show_edges=show_edges,
                 clim=colormap_limits,
-                show_scalar_bar=False
+                show_scalar_bar=False,
             )
 
             scene.add_axes_at_origin(labels_off=not show_axis_label)
-            scene.add_scalar_bar(mapper=mapping.mapper, title=f'{name} field')
+            scene.add_scalar_bar(mapper=mapping.mapper, title=f"{name} field")
 
         scene.show()

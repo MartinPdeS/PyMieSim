@@ -32,18 +32,38 @@ class Sphere(BaseScatterer, Sequential):
     medium_property : List, optional
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
+
     source: BaseSource
     diameter: Length
     property: List[BaseMaterial] | List[RefractiveIndex]
     medium_property: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
-        'Qsca', 'Qext', 'Qabs', 'Qratio', 'Qforward', 'Qback', 'Qpr',
-        'Csca', 'Cext', 'Cabs', 'Cratio', 'Cforward', 'Cback', 'Cpr', 'a1',
-        'a2', 'a3', 'b1', 'b2', 'b3', 'g', 'coupling',
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Qratio",
+        "Qforward",
+        "Qback",
+        "Qpr",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "Cratio",
+        "Cforward",
+        "Cback",
+        "Cpr",
+        "a1",
+        "a2",
+        "a3",
+        "b1",
+        "b2",
+        "b3",
+        "g",
+        "coupling",
     ]
 
-    attributes = ['diameter', 'property', 'medium_property']
+    attributes = ["diameter", "property", "medium_property"]
 
     def _generate_binding(self):
         """
@@ -54,14 +74,20 @@ class Sphere(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(diameter=self.diameter, is_sequential=self.is_sequential)
+        self.binding_kwargs = dict(
+            diameter=self.diameter, is_sequential=self.is_sequential
+        )
 
-        mediun_properties = self._add_properties(name='medium', properties=self.medium_property)
+        mediun_properties = self._add_properties(
+            name="medium", properties=self.medium_property
+        )
 
-        scatterer_properties = self._add_properties(name='scatterer', properties=self.property)
+        scatterer_properties = self._add_properties(
+            name="scatterer", properties=self.property
+        )
 
         self.binding = CppSphereSet(
-            diameter=self.diameter.to('meter').magnitude,
+            diameter=self.diameter.to("meter").magnitude,
             scatterer_properties=scatterer_properties,
             medium_properties=mediun_properties,
             is_sequential=self.is_sequential,

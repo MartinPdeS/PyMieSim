@@ -26,6 +26,7 @@ class PlaneWave(PLANEWAVE, BaseSource):
     amplitude : units.Quantity
         Amplitude of the electric field.
     """
+
     wavelength: Length
     polarization: Angle | BasePolarization
     amplitude: ElectricField
@@ -42,7 +43,9 @@ class PlaneWave(PLANEWAVE, BaseSource):
             amplitude=self.amplitude.to(ureg.volt / ureg.meter).magnitude,
         )
 
-    def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:
+    def plot(
+        self, color: str = "red", opacity: float = 0.8, show_axis_label: bool = False
+    ) -> None:
         """
         Plots the 3D structure of the Gaussian source.
 
@@ -71,7 +74,9 @@ class PlaneWave(PLANEWAVE, BaseSource):
         # Display the scene
         scene.show()
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> None:
+    def _add_to_3d_ax(
+        self, scene: pyvista.Plotter, color: str = "red", opacity: float = 0.8
+    ) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
 
@@ -94,8 +99,8 @@ class PlaneWave(PLANEWAVE, BaseSource):
             direction=(0.0, 0.0, -1.0),
             radius=0.2,
             height=1.0,
-            resolution=100
+            resolution=100,
         )
 
         # Add the cone mesh to the scene
-        scene.add_mesh(cylinder_mesh, color='blue', opacity=0.3)
+        scene.add_mesh(cylinder_mesh, color="blue", opacity=0.3)

@@ -14,18 +14,22 @@ def test_gaussian_initialization():
         optical_power=1 * ureg.watt,
         NA=0.1 * ureg.AU,
         polarization=Linear(element=0 * ureg.degree),
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
-    assert isinstance(gaussian1, Gaussian), "Failed to initialize Gaussian with UnitPolarizationAngle."
+    assert isinstance(
+        gaussian1, Gaussian
+    ), "Failed to initialize Gaussian with UnitPolarizationAngle."
 
     # Test with scalar polarization
     gaussian2 = Gaussian(
         optical_power=1 * ureg.watt,
         NA=0.1 * ureg.AU,
         polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
-    assert isinstance(gaussian2, Gaussian), "Failed to initialize Gaussian with scalar polarization."
+    assert isinstance(
+        gaussian2, Gaussian
+    ), "Failed to initialize Gaussian with scalar polarization."
 
 
 @pytest.fixture
@@ -35,24 +39,24 @@ def gaussian_source():
         optical_power=1 * ureg.watt,
         NA=0.1 * ureg.AU,
         polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_gaussian_plotting(mock_show, gaussian_source):
     """Test the plot method of Gaussian to ensure it calls the show method once."""
     gaussian_source.plot()
     mock_show.assert_called_once()
 
 
-@patch('pyvista.Plotter.show')
+@patch("pyvista.Plotter.show")
 def test_plot_system(mock_show):
     source = Gaussian(
         optical_power=1 * ureg.watt,
         NA=0.1 * ureg.AU,
         polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer
+        wavelength=1550 * ureg.nanometer,
     )
 
     plot_system(source)

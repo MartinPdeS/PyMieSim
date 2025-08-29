@@ -7,6 +7,7 @@ length_units = units.nanometer
 power_units = units.milliwatt
 angle_units = units.degree
 
+
 class Section:
     """
     A base class to define shared functionality for different sections in the optical simulation interface.
@@ -14,17 +15,19 @@ class Section:
     This class provides methods for creating dropdown menus, input fields, and setting up callbacks for
     interaction with the Dash application.
     """
+
     @property
     def label(self):
-        return self.name.replace('_', '').replace('-', '').lower()
+        return self.name.replace("_", "").replace("-", "").lower()
 
     def __init__(self, app):
         self.app = app
 
         # Dropdown configuration
-        self.dropdown_id = f'{self.label}-dropdown'
+        self.dropdown_id = f"{self.label}-dropdown"
         self.dropdown_options = [
-            {'label': f'{sub_section.name}', 'value': f'{sub_section.label}'} for sub_section in self.sub_sections
+            {"label": f"{sub_section.name}", "value": f"{sub_section.label}"}
+            for sub_section in self.sub_sections
         ]
 
         # Current active section
@@ -43,30 +46,37 @@ class Section:
         """Initialize data with default values."""
         default_inputs = {}
         for key, input_def in self.current_section.inputs.items():
-            default_inputs[key] = input_def['default']
+            default_inputs[key] = input_def["default"]
 
-        self.data = {'type': self.default_value, **default_inputs}
+        self.data = {"type": self.default_value, **default_inputs}
         self.current_section.update_x_axis_options(default_inputs)
 
     def create(self):
         """Create the main layout with dropdown and dynamic input container."""
         # Title and dropdown
-        title = html.H2(self.name, style={'color': self.color})
-        dropdown = html.Div([
-            html.Label(f"Select {self.name} Type:"),
-            dcc.Dropdown(id=self.dropdown_id, options=self.dropdown_options, value=self.default_value)
-        ], style={'margin-bottom': '20px'})
+        title = html.H2(self.name, style={"color": self.color})
+        dropdown = html.Div(
+            [
+                html.Label(f"Select {self.name} Type:"),
+                dcc.Dropdown(
+                    id=self.dropdown_id,
+                    options=self.dropdown_options,
+                    value=self.default_value,
+                ),
+            ],
+            style={"margin-bottom": "20px"},
+        )
 
         # Dynamic input container
         input_container = html.Div(
             id=f"{self.label}-input-container",
-            children=self.current_section.create_layout()
+            children=self.current_section.create_layout(),
         )
 
         # Main container
         container = html.Div(
             [title, dropdown, input_container],
-            style={'padding': '10px', 'border': '1px solid black', 'margin': '10px'}
+            style={"padding": "10px", "border": "1px solid black", "margin": "10px"},
         )
 
         return container, *self._get_hidden_data_divs()
@@ -88,7 +98,10 @@ class Section:
     def _get_hidden_data_divs(self):
         """Get hidden data divs for all subsections."""
         hidden_subsections = [
-            html.Div(id=f"{self.label}-{sub_section.label}-data", style={"display": "none"}) for sub_section in self.sub_sections
+            html.Div(
+                id=f"{self.label}-{sub_section.label}-data", style={"display": "none"}
+            )
+            for sub_section in self.sub_sections
         ]
         return hidden_subsections
 
@@ -103,11 +116,12 @@ class Section:
         print(f"Switched to {object_type} subsection")
         return self.current_section.create_layout()
 
+
 class BaseSubSection:
 
     @property
     def label(self):
-        return self.name.replace('_', '').replace('-', '').lower()
+        return self.name.replace("_", "").replace("-", "").lower()
 
     def update_x_axis_options(self, input_values) -> list:
         """Update x-axis options for sphere subsection."""
@@ -117,22 +131,37 @@ class BaseSubSection:
             if value:  # Only process non-empty values
                 try:
                     parsed_value = parse_string_to_array_or_float(value)
-                    if isinstance(parsed_value, numpy.ndarray) and parsed_value.size > 1:
+                    if (
+                        isinstance(parsed_value, numpy.ndarray)
+                        and parsed_value.size > 1
+                    ):
                         self.parent_section._xaxis_options.append(f"{self.name}:{key}")
                 except ValueError:
                     pass  # Ignore invalid inputs
 
-        self.parent_section._xaxis_options_length = [len(x) for x in self.parent_section._xaxis_options]
-        self.parent_section.data = {'type': self.label, **input_values}
+        self.parent_section._xaxis_options_length = [
+            len(x) for x in self.parent_section._xaxis_options
+        ]
+        self.parent_section.data = {"type": self.label, **input_values}
 
     def create_layout(self):
         """Create the sphere input layout."""
         layout = []
         for input_def in self.inputs.values():
-            layout.append(html.Div([
-                html.Label(input_def['label'], style={'margin-right': '10px'}),
-                dcc.Input(id=input_def['id'], type='text', value=input_def['default'], style={'width': '200px'})
-            ], style={'margin-bottom': '10px'}))
+            layout.append(
+                html.Div(
+                    [
+                        html.Label(input_def["label"], style={"margin-right": "10px"}),
+                        dcc.Input(
+                            id=input_def["id"],
+                            type="text",
+                            value=input_def["default"],
+                            style={"width": "200px"},
+                        ),
+                    ],
+                    style={"margin-bottom": "10px"},
+                )
+            )
         return layout
 
     def _setup_data_callbacks(self) -> None:
@@ -142,7 +171,9 @@ class BaseSubSection:
             [Input(input_def["id"], "value") for input_def in self.inputs.values()]
         )
 
-        api_outputs = Output(f"{self.parent_section.label}-{self.label}-data", "children")
+        api_outputs = Output(
+            f"{self.parent_section.label}-{self.label}-data", "children"
+        )
 
         @self.app.callback(api_outputs, api_inputs, prevent_initial_call=False)
         def update_scatterer_data(scatterer_type, *input_values):

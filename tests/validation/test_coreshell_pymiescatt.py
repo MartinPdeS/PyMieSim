@@ -14,13 +14,13 @@ from PyMieSim.directories import validation_data_path
 
 # Mapping of measurement types to PyMieScatt indices
 PYMIESCATT_MEASURES = {
-    'Qext': 0,
-    'Qsca': 1,
-    'Qabs': 2,
-    'g': 3,
-    'Qpr': 4,
-    'Qback': 5,
-    'Qratio': 6
+    "Qext": 0,
+    "Qsca": 1,
+    "Qabs": 2,
+    "g": 3,
+    "Qpr": 4,
+    "Qback": 5,
+    "Qratio": 6,
 }
 
 
@@ -28,9 +28,9 @@ PYMIESCATT_MEASURES = {
 def gaussian_source():
     return Gaussian(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=0 * ureg.degree,   # Polarization angle
+        polarization=0 * ureg.degree,  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU           # Numerical aperture
+        NA=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
@@ -40,7 +40,7 @@ def pymiescatt_dataframe():
     return pd.read_csv(filename)
 
 
-@pytest.mark.parametrize('measure', ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
+@pytest.mark.parametrize("measure", ["Qext", "Qsca", "Qabs", "g", "Qpr"])
 def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     """
     Test comparison between PyMieSim and PyMieScatt data for various scattering parameters.
@@ -64,7 +64,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
         shell_thickness=shell_thickness,
         shell_property=shell_index,
         medium_property=medium_indexes,
-        source=gaussian_source
+        source=gaussian_source,
     )
 
     experiment = Setup(scatterer=scatterer, source=gaussian_source)
@@ -76,7 +76,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
         pymiesim_data[measure].squeeze().values.quantity,
         pymiescatt_dataframe[measure].squeeze().values,
         atol=1e-6,
-        rtol=1e-2
+        rtol=1e-2,
     )
 
     assert discrepency, f"Mismatch in PyMieSim vs PyMieScatt for {measure}"

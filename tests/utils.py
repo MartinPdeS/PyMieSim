@@ -7,11 +7,12 @@ from PyMieSim.directories import validation_data_path
 
 
 def get_pymiescatt_sphere_dataframe(
-        wavelength: Quantity,
-        diameter: Quantity,
-        index: Quantity,
-        medium_index: Quantity,
-        save_name: str = None) -> pd.DataFrame:
+    wavelength: Quantity,
+    diameter: Quantity,
+    index: Quantity,
+    medium_index: Quantity,
+    save_name: str = None,
+) -> pd.DataFrame:
     """
     Generate a DataFrame with Mie scattering data for spheres, based on the provided
     wavelengths, diameters, and refractive indices. Optionally saves the DataFrame to CSV.
@@ -45,28 +46,21 @@ def get_pymiescatt_sphere_dataframe(
     # Create a MultiIndex from the parameters
     indices = pd.MultiIndex.from_product(
         [index, diameter, wavelength, medium_index],
-        names=["index", "diameter", "wavelength", 'medium_index']
+        names=["index", "diameter", "wavelength", "medium_index"],
     )
 
     # Define the DataFrame structure
     dataframe = pd.DataFrame(
-        columns=['Qext', 'Qsca', 'Qabs', 'g', 'Qpr', 'Qback', 'Qratio'],
-        index=indices
+        columns=["Qext", "Qsca", "Qabs", "g", "Qpr", "Qback", "Qratio"], index=indices
     )
 
     # Calculate Mie scattering properties for each combination
     dataframe[:] = [
         pms.MieQ(
-            m=_index,
-            wavelength=wavelength,
-            diameter=diameter,
-            nMedium=medium_index
+            m=_index, wavelength=wavelength, diameter=diameter, nMedium=medium_index
         )
         for _index, diameter, wavelength, medium_index in product(
-            index,
-            diameter,
-            wavelength,
-            medium_index
+            index, diameter, wavelength, medium_index
         )
     ]
 
@@ -76,22 +70,23 @@ def get_pymiescatt_sphere_dataframe(
 
     # Save the DataFrame if a save_name is provided
     if save_name:
-        save_path = validation_data_path / 'pymiescatt' / f"{save_name}.csv"
+        save_path = validation_data_path / "pymiescatt" / f"{save_name}.csv"
         dataframe.to_csv(save_path)
 
-        print(f'Saving data: {save_path}')
+        print(f"Saving data: {save_path}")
 
     return dataframe
 
 
 def get_pymiescatt_coreshell_dataframe(
-        wavelength: Quantity,
-        core_diameter: Quantity,
-        shell_width: Quantity,
-        shell_index: Quantity,
-        core_index: Quantity,
-        medium_index: Quantity,
-        save_name: str = None) -> pd.DataFrame:
+    wavelength: Quantity,
+    core_diameter: Quantity,
+    shell_width: Quantity,
+    shell_index: Quantity,
+    core_index: Quantity,
+    medium_index: Quantity,
+    save_name: str = None,
+) -> pd.DataFrame:
     """
     Generate a DataFrame with Mie scattering data for spheres, based on the provided
     wavelengths, diameters, and refractive indices. Optionally saves the DataFrame to CSV.
@@ -131,13 +126,19 @@ def get_pymiescatt_coreshell_dataframe(
     # Create a MultiIndex from the parameters
     indices = pd.MultiIndex.from_product(
         [core_index, shell_index, core_diameter, shell_width, wavelength, medium_index],
-        names=["core_index", "shell_index", "core_diameter", "shell_width", "wavelength", 'medium_index']
+        names=[
+            "core_index",
+            "shell_index",
+            "core_diameter",
+            "shell_width",
+            "wavelength",
+            "medium_index",
+        ],
     )
 
     # Define the DataFrame structure
     dataframe = pd.DataFrame(
-        columns=['Qext', 'Qsca', 'Qabs', 'g', 'Qpr', 'Qback', 'Qratio'],
-        index=indices
+        columns=["Qext", "Qsca", "Qabs", "g", "Qpr", "Qback", "Qratio"], index=indices
     )
 
     # Calculate Mie scattering properties for each combination
@@ -148,7 +149,7 @@ def get_pymiescatt_coreshell_dataframe(
             wavelength=wavelength,
             dCore=core_diameter,
             dShell=core_diameter + shell_width,
-            nMedium=medium_index
+            nMedium=medium_index,
         )
         for core_index, shell_index, core_diameter, shell_width, wavelength, medium_index in product(
             core_index,
@@ -156,7 +157,7 @@ def get_pymiescatt_coreshell_dataframe(
             core_diameter,
             shell_width,
             wavelength,
-            medium_index
+            medium_index,
         )
     ]
 
@@ -165,10 +166,10 @@ def get_pymiescatt_coreshell_dataframe(
 
     # Save the DataFrame if a save_name is provided
     if save_name:
-        save_path = validation_data_path / 'pymiescatt' / f"{save_name}.csv"
+        save_path = validation_data_path / "pymiescatt" / f"{save_name}.csv"
         dataframe.to_csv(save_path)
 
-        print(f'Saving data: {save_path}')
+        print(f"Saving data: {save_path}")
 
     return dataframe
 
@@ -180,15 +181,15 @@ sphere_params = [
         medium_index=1.21 * RIU,
         index=1.4 * RIU,
         diameter=np.geomspace(10, 1_000, 50) * nanometer,
-        save_name='example_sphere_0'
+        save_name="example_sphere_0",
     ),
     dict(
         wavelength=632.8 * nanometer,
         medium_index=1.2 * RIU,
         index=(1.4 + 0.2j) * RIU,
         diameter=np.geomspace(10, 6_000, 800) * nanometer,
-        save_name='example_sphere_1'
-    )
+        save_name="example_sphere_1",
+    ),
 ]
 
 # Define core-shell parameters
@@ -200,7 +201,7 @@ coreshell_params = [
         shell_index=1.4 * RIU,
         shell_width=600 * nanometer,
         core_diameter=np.geomspace(10, 500, 40) * nanometer,
-        save_name='example_coreshell_0'
+        save_name="example_coreshell_0",
     ),
     dict(
         wavelength=600 * nanometer,
@@ -209,8 +210,8 @@ coreshell_params = [
         shell_index=1.4 * RIU,
         shell_width=1200 * nanometer,
         core_diameter=np.geomspace(10, 500, 400) * nanometer,
-        save_name='example_coreshell_1'
-    )
+        save_name="example_coreshell_1",
+    ),
 ]
 
 # Compute dataframes for spheres

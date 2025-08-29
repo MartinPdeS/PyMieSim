@@ -104,4 +104,3 @@ void register_coordinates(py::module_& module) {
         )
     ;
 }
-

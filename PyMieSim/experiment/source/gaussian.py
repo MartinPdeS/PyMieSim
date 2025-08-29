@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Union
-from PyMieSim.single.source import Gaussian as _  # noqa:F401  # Necessary for pybind11 binding initialization
+from PyMieSim.single.source import (
+    Gaussian as _,
+)  # noqa:F401  # Necessary for pybind11 binding initialization
 from pydantic.dataclasses import dataclass
 from TypedUnit import Length, Dimensionless, Power, Angle
 
@@ -30,6 +32,7 @@ class Gaussian(BaseSource, Sequential):
     optical_power : Quantity
         The optical power of the source, in Watts.
     """
+
     NA: Dimensionless
     optical_power: Power
     wavelength: Length
@@ -50,13 +53,13 @@ class Gaussian(BaseSource, Sequential):
             jones_vector=self.polarization.element,
             NA=self.NA,
             optical_power=self.optical_power,
-            is_sequential=self.is_sequential
+            is_sequential=self.is_sequential,
         )
 
         self.binding = CppGaussianSourceSet(
-            wavelength=self.wavelength.to('meter').magnitude,
+            wavelength=self.wavelength.to("meter").magnitude,
             jones_vector=self.polarization.element,
-            NA=self.NA.to('dimensionless').magnitude,
-            optical_power=self.optical_power.to('watt').magnitude,
-            is_sequential=self.is_sequential
+            NA=self.NA.to("dimensionless").magnitude,
+            optical_power=self.optical_power.to("watt").magnitude,
+            is_sequential=self.is_sequential,
         )

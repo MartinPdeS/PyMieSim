@@ -4,7 +4,9 @@
 import numpy
 
 
-def cartesian_to_spherical(x: numpy.ndarray, y: numpy.ndarray, z: numpy.ndarray) -> tuple:
+def cartesian_to_spherical(
+    x: numpy.ndarray, y: numpy.ndarray, z: numpy.ndarray
+) -> tuple:
     """
     Convert Cartesian coordinates to spherical coordinates.
 
@@ -28,7 +30,9 @@ def cartesian_to_spherical(x: numpy.ndarray, y: numpy.ndarray, z: numpy.ndarray)
     return r, phi, theta
 
 
-def spherical_to_cartesian(phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray = None) -> tuple:
+def spherical_to_cartesian(
+    phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray = None
+) -> tuple:
     """
     Convert spherical coordinates to Cartesian coordinates.
 

@@ -22,7 +22,7 @@ gaussian_source = Gaussian(
     wavelength=np.linspace(600, 1000, 150) * ureg.nanometer,
     polarization=0 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 
 planewave_source = PlaneWave(
@@ -34,28 +34,34 @@ planewave_source = PlaneWave(
 sources = [gaussian_source, planewave_source]
 
 
-@pytest.mark.parametrize('medium_property', medium_properties, ids=[f'Medium:{m}' for m in medium_properties])
-@pytest.mark.parametrize('source', sources, ids=[f'Source:{m.__class__.__name__}' for m in sources])
-@pytest.mark.parametrize('property', properties, ids=[f'Property:{m}' for m in properties])
-@pytest.mark.parametrize('measure', measures)
+@pytest.mark.parametrize(
+    "medium_property", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
+)
+@pytest.mark.parametrize(
+    "source", sources, ids=[f"Source:{m.__class__.__name__}" for m in sources]
+)
+@pytest.mark.parametrize(
+    "property", properties, ids=[f"Property:{m}" for m in properties]
+)
+@pytest.mark.parametrize("measure", measures)
 def test_get_measure(source, measure, property, medium_property):
     # Configure the spherical scatterer
     scatterer = Sphere(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
         property=property,
-        medium_property=medium_property
+        medium_property=medium_property,
     )
 
     # Configure the detector
     detector = CoherentMode(
-        mode_number='LP01',
+        mode_number="LP01",
         rotation=0 * ureg.degree,
         NA=[0.1] * ureg.AU,
         polarization_filter=None,
         gamma_offset=[0, 1] * ureg.degree,
         phi_offset=0 * ureg.degree,
-        sampling=100 * ureg.AU
+        sampling=100 * ureg.AU,
     )
 
     # Set up and run the experiment

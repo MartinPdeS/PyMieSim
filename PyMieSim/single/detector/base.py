@@ -10,10 +10,12 @@ from PyMieSim.single.representations import Footprint
 from PyMieSim.single.scatterer.base import BaseScatterer
 
 c = 299792458.0 * ureg.meter / ureg.second  #: Speed of light in vacuum (m/s).
-epsilon0 = 8.854187817620389e-12 * ureg.farad / ureg.meter  #: Vacuum permittivity (F/m).
+epsilon0 = (
+    8.854187817620389e-12 * ureg.farad / ureg.meter
+)  #: Vacuum permittivity (F/m).
 
 
-class BaseDetector():
+class BaseDetector:
     @property
     def max_angle(self) -> Angle:
         """
@@ -91,7 +93,9 @@ class BaseDetector():
         """
         return Footprint(scatterer=scatterer, detector=self)
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, colormap: str = blue_black_red) -> None:
+    def _add_to_3d_ax(
+        self, scene: pyvista.Plotter, colormap: str = blue_black_red
+    ) -> None:
         """
         Adds the scalar field and a directional cone to a 3D PyVista plotting scene.
 
@@ -110,11 +114,13 @@ class BaseDetector():
             None: This method does not return a value. It modifies the provided scene.
         """
         # Stack the mesh coordinates into a single array
-        coordinates = numpy.vstack((
-            self._cpp_mesh.cartesian.x,
-            self._cpp_mesh.cartesian.y,
-            self._cpp_mesh.cartesian.z
-        ))
+        coordinates = numpy.vstack(
+            (
+                self._cpp_mesh.cartesian.x,
+                self._cpp_mesh.cartesian.y,
+                self._cpp_mesh.cartesian.z,
+            )
+        )
 
         # Wrap the coordinates for PyVista visualization
         points = pyvista.wrap(coordinates.T)
@@ -131,7 +137,7 @@ class BaseDetector():
             render_points_as_spheres=True,
             cmap=colormap,
             show_scalar_bar=False,
-            clim=[-abs_max, abs_max]
+            clim=[-abs_max, abs_max],
         )
 
         # Create a cone mesh to indicate directional information
@@ -140,16 +146,18 @@ class BaseDetector():
             direction=-coordinates.mean(axis=1),
             height=numpy.cos(self.max_angle),
             resolution=100,
-            angle=self.max_angle.to('degree').magnitude,
+            angle=self.max_angle.to("degree").magnitude,
         )
 
         # Add the cone mesh to the scene with specified color and opacity
-        scene.add_mesh(cone_mesh, color='blue', opacity=0.6)
+        scene.add_mesh(cone_mesh, color="blue", opacity=0.6)
 
         # Add a scalar bar to the scene for the real part of the field
-        scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
+        scene.add_scalar_bar(mapper=mapping.mapper, title="Collecting Field Real Part")
 
-    def get_poynting_vector(self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter) -> float:
+    def get_poynting_vector(
+        self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter
+    ) -> float:
         r"""
         Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
 
@@ -194,18 +202,24 @@ class BaseDetector():
         Ephi, Etheta = scatterer.get_farfields_array(
             phi=self._cpp_mesh.spherical.phi,
             theta=self._cpp_mesh.spherical.theta,
-            r=distance
+            r=distance,
         )
 
-        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2) * ureg.volt / ureg.meter
+        E_norm = (
+            numpy.sqrt(numpy.abs(Ephi) ** 2 + numpy.abs(Etheta) ** 2)
+            * ureg.volt
+            / ureg.meter
+        )
 
-        B_norm = (E_norm / c).to('tesla')
+        B_norm = (E_norm / c).to("tesla")
 
         poynting = epsilon0 * c**2 * E_norm * B_norm
 
-        return poynting.to(ureg.watt / ureg.meter ** 2)
+        return poynting.to(ureg.watt / ureg.meter**2)
 
-    def get_energy_flow(self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter) -> AnyUnit:
+    def get_energy_flow(
+        self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter
+    ) -> AnyUnit:
         r"""
         Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.
 
@@ -247,11 +261,12 @@ class BaseDetector():
         This method computes the energy flow by calculating the Poynting vector (which represents the directional energy flux) and summing it over the surface mesh of the scatterer. The final result is the total radiated power.
 
         """
-        poynting_vector = self.get_poynting_vector(scatterer=scatterer, distance=distance)
+        poynting_vector = self.get_poynting_vector(
+            scatterer=scatterer, distance=distance
+        )
 
-        dA = self._cpp_mesh._cpp_d_omega * distance ** 2
+        dA = self._cpp_mesh._cpp_d_omega * distance**2
 
         total_power = 0.5 * numpy.trapezoid(y=poynting_vector, dx=dA)
 
         return total_power
-

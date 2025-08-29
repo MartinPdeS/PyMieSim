@@ -23,7 +23,7 @@ gaussian_source = Gaussian(
     wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
     polarization=0 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU
+    NA=0.2 * ureg.AU,
 )
 
 planewave_source = PlaneWave(
@@ -35,11 +35,19 @@ planewave_source = PlaneWave(
 sources = [gaussian_source, planewave_source]
 
 
-@pytest.mark.parametrize('medium_property', medium_properties, ids=[f'Medium:{m}' for m in medium_properties])
-@pytest.mark.parametrize('core_property', core_properties, ids=[f'Property:{m}' for m in core_properties])
-@pytest.mark.parametrize('source', sources, ids=[f'Source:{m.__class__.__name__}' for m in sources])
-@pytest.mark.parametrize('shell_property', shell_properties, ids=[f'Property:{m}' for m in shell_properties])
-@pytest.mark.parametrize('measure', measures)
+@pytest.mark.parametrize(
+    "medium_property", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
+)
+@pytest.mark.parametrize(
+    "core_property", core_properties, ids=[f"Property:{m}" for m in core_properties]
+)
+@pytest.mark.parametrize(
+    "source", sources, ids=[f"Source:{m.__class__.__name__}" for m in sources]
+)
+@pytest.mark.parametrize(
+    "shell_property", shell_properties, ids=[f"Property:{m}" for m in shell_properties]
+)
+@pytest.mark.parametrize("measure", measures)
 def test_measure(measure, source, core_property, shell_property, medium_property):
     # Setup core-shell scatterer
     scatterer = CoreShell(
@@ -48,7 +56,7 @@ def test_measure(measure, source, core_property, shell_property, medium_property
         source=source,
         shell_property=shell_property,
         core_property=core_property,
-        medium_property=medium_property
+        medium_property=medium_property,
     )
 
     # Setup detector
@@ -57,15 +65,11 @@ def test_measure(measure, source, core_property, shell_property, medium_property
         polarization_filter=None,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        sampling=100 * ureg.AU
+        sampling=100 * ureg.AU,
     )
 
     # Configure and run the experiment
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector
-    )
+    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
     experiment.get(measure, drop_unique_level=False)
 

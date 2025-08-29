@@ -40,6 +40,7 @@ class CoherentMode(BaseDetector, Sequential):
     coherent : bool
         Specifies if the detection is coherent. Defaults to True.
     """
+
     mode_number: Union[List[str], str]
     NA: Dimensionless
     gamma_offset: Angle
@@ -48,6 +49,6 @@ class CoherentMode(BaseDetector, Sequential):
     mean_coupling: bool
     coherent: bool = True
     mean_coupling: Optional[bool] = False
-    cache_NA: Dimensionless = (0.,) * ureg.AU
+    cache_NA: Dimensionless = (0.0,) * ureg.AU
     sampling: Optional[Dimensionless] = (200,) * ureg.AU
-    polarization_filter: Optional[Angle] = (numpy.nan, ) * ureg.degree
+    polarization_filter: Optional[Angle] = (numpy.nan,) * ureg.degree
