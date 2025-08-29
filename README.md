@@ -4,34 +4,34 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| PyMieSim/experiment/dataframe\_subclass.py     |       67 |        8 |       16 |        3 |     87% |70->73, 83, 192, 202-206, 215-219 |
+| PyMieSim/experiment/dataframe\_subclass.py     |       67 |        8 |       16 |        3 |     87% |74->77, 87, 200, 210-214, 222-226 |
 | PyMieSim/experiment/detector/base.py           |       38 |        0 |        8 |        0 |    100% |           |
 | PyMieSim/experiment/detector/coherent\_mode.py |       20 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       23 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/scatterer/base.py          |       42 |        2 |       12 |        2 |     93% |    75, 90 |
+| PyMieSim/experiment/scatterer/base.py          |       42 |        2 |       12 |        2 |     93% |   89, 106 |
 | PyMieSim/experiment/scatterer/core\_shell.py   |       26 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       23 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/sphere.py        |       23 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |      104 |        3 |       26 |        4 |     95% |276-277, 332->335, 340->344, 349 |
+| PyMieSim/experiment/setup.py                   |      104 |        3 |       26 |        4 |     95% |299-302, 363->366, 369->373, 378 |
 | PyMieSim/experiment/source/base.py             |       35 |        2 |        8 |        2 |     91% |    47, 65 |
-| PyMieSim/experiment/source/gaussian.py         |       21 |        1 |        2 |        1 |     91% |        46 |
-| PyMieSim/experiment/source/planewave.py        |       27 |        1 |        4 |        2 |     90% |40->43, 57 |
-| PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93% |42->46, 54 |
-| PyMieSim/mesh.py                               |       50 |        4 |        0 |        0 |     92% |99, 111, 123, 135 |
-| PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        85 |
-| PyMieSim/single/detector/base.py               |       39 |        1 |        0 |        0 |     97% |        31 |
-| PyMieSim/single/detector/coherent.py           |       27 |        2 |        4 |        2 |     87% |    71, 76 |
+| PyMieSim/experiment/source/gaussian.py         |       21 |        1 |        2 |        1 |     91% |        49 |
+| PyMieSim/experiment/source/planewave.py        |       27 |        1 |        4 |        2 |     90% |43->46, 60 |
+| PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93% |44->50, 58 |
+| PyMieSim/mesh.py                               |       50 |        4 |        0 |        0 |     92% |100, 112, 124, 136 |
+| PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        87 |
+| PyMieSim/single/detector/base.py               |       39 |        1 |        0 |        0 |     97% |        33 |
+| PyMieSim/single/detector/coherent.py           |       27 |        2 |        4 |        2 |     87% |    72, 79 |
 | PyMieSim/single/detector/uncoherent.py         |       22 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/single/representations/base.py        |       41 |        3 |        2 |        1 |     91% | 54, 58-59 |
+| PyMieSim/single/representations/base.py        |       41 |        3 |        2 |        1 |     91% | 51, 55-56 |
 | PyMieSim/single/representations/far\_fields.py |       33 |        0 |        6 |        0 |    100% |           |
 | PyMieSim/single/representations/footprint.py   |       45 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/single/representations/near\_field.py |       74 |       53 |       14 |        0 |     24% |65-69, 74-84, 89-91, 112-121, 134-162, 183-224 |
+| PyMieSim/single/representations/near\_field.py |       74 |       53 |       14 |        0 |     24% |66-70, 75-84, 89-91, 112-121, 134-166, 189-237 |
 | PyMieSim/single/representations/s1s2.py        |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations/spf.py         |       28 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/representations/stokes.py      |       31 |        0 |        2 |        0 |    100% |           |
-| PyMieSim/single/scatterer/base.py              |      127 |       23 |       12 |        1 |     77% |478-511, 550, 634 |
-| PyMieSim/single/scatterer/core\_shell.py       |       33 |        2 |        0 |        0 |     94% |    97-105 |
-| PyMieSim/single/scatterer/cylinder.py          |       37 |        6 |        0 |        0 |     84% |63, 67, 71, 75, 95-104 |
+| PyMieSim/single/scatterer/base.py              |      127 |       23 |       12 |        1 |     77% |500-537, 573, 671 |
+| PyMieSim/single/scatterer/core\_shell.py       |       33 |        2 |        0 |        0 |     94% |   119-124 |
+| PyMieSim/single/scatterer/cylinder.py          |       37 |        6 |        0 |        0 |     84% |73, 77, 81, 85, 107-116 |
 | PyMieSim/single/scatterer/sphere.py            |       30 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/source/base.py                 |       10 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/source/gaussian.py             |       36 |        0 |        0 |        0 |    100% |           |
