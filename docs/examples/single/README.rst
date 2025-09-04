@@ -9,9 +9,9 @@ interaction can be studied in detail.
 
 Key components
 --------------
-- **Sources** – plane waves and Gaussian beams.
-- **Scatterers** – spheres, cylinders and core--shell particles.
-- **Detectors** – photodiodes as well as coherent and incoherent detectors.
+- **Sources** - plane waves and Gaussian beams.
+- **Scatterers** - spheres, cylinders and core--shell particles.
+- **Detectors** - photodiodes as well as coherent and incoherent detectors.
 
 Example
 -------

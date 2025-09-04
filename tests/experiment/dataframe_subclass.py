@@ -52,7 +52,7 @@ def test_plot_valid_with_std():
     # We assume that the coupling dataframe has a MultiIndex with
     # levels including 'source:wavelength' and 'detector:NA'.
     ax = df.plot(x="source:wavelength", std="detector:NA", show=False)
-    assert isinstance(ax, plt.Axes)
+    assert isinstance(ax, plt.Figure)
 
     plt.close()
 
@@ -64,10 +64,10 @@ def test_plot_valid_without_std():
     df = get_experiment_dataframe()
     # We assume that the dataframe has a data column named 'coupling'
     # (or the first column should be the one to plot).
-    ax = df.plot(x="source:wavelength", show=False)
-    assert isinstance(ax, plt.Axes)
+    figure = df.plot(x="source:wavelength", show=False)
+    assert isinstance(figure, plt.Figure)
     # Check that at least one line was drawn
-    assert len(ax.get_lines()) > 0, "No line was plotted for coupling data."
+    assert len(figure.axes[0].get_lines()) > 0, "No line was plotted for coupling data."
     plt.close()
 
 

@@ -21,7 +21,7 @@ requirements:
   run:
     - python {{PY_VER}}*
     - martinpdes::pyoptik
-    - martinpdes::mpsplots ==v1.6.4
+    - martinpdes::mpsplots
     - martinpdes::typedunit
     - matplotlib ~=3.10.3
     - numpy ==2.2.6

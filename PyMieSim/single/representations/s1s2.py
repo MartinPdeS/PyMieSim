@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-import MPSPlots
 from pydantic.dataclasses import dataclass
-import matplotlib.pyplot as plt
+from MPSPlots import helper
 
 from PyMieSim.single.representations.base import BaseRepresentation
 from PyMieSim.utils import config_dict
@@ -46,7 +45,8 @@ class S1S2(BaseRepresentation):
             phi=numpy.deg2rad(self.phi) + numpy.pi / 2
         )
 
-    def plot(self) -> None:
+    @helper.pre_plot(nrows=1, ncols=2, subplot_kw={"polar": True})
+    def plot(self, axes) -> None:
         """
         Plots the S1 and S2 Stokes parameters on polar plots.
 
@@ -58,27 +58,24 @@ class S1S2(BaseRepresentation):
         None
             This method does not return a value. It displays the polar plots.
         """
-        with plt.style.context(MPSPlots.styles.mps):
-            figure, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={"polar": True})
+        # Plot for S1 parameter
+        axes[0].set(title=r"S$_1$ parameter")
+        axes[0].fill_between(
+            numpy.deg2rad(self.phi),
+            y1=0,
+            y2=numpy.abs(self.S1),
+            color="C0",
+            alpha=0.7,
+            # edgecolor="black",
+        )
 
-            # Plot for S1 parameter
-            axes[0].set(title=r"S$_1$ parameter")
-            axes[0].fill_between(
-                numpy.deg2rad(self.phi),
-                y1=0,
-                y2=numpy.abs(self.S1),
-                color="C0",
-                edgecolor="black",
-            )
-
-            # Plot for S2 parameter
-            axes[1].set(title=r"S$_2$ parameter")
-            axes[1].fill_between(
-                numpy.deg2rad(self.phi),
-                y1=0,
-                y2=numpy.abs(self.S2),
-                color="C1",
-                edgecolor="black",
-            )
-
-            plt.show()
+        # Plot for S2 parameter
+        axes[1].set(title=r"S$_2$ parameter")
+        axes[1].fill_between(
+            numpy.deg2rad(self.phi),
+            y1=0,
+            y2=numpy.abs(self.S2),
+            color="C1",
+            alpha=0.7,
+            # edgecolor="black",
+        )

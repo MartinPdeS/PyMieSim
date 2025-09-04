@@ -1,8 +1,7 @@
-from MPSPlots.styles import mps
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from typing import Optional
+from MPSPlots.helper import pre_plot
 
 
 class PyMieSimDataFrame(pd.DataFrame):
@@ -29,17 +28,7 @@ class PyMieSimDataFrame(pd.DataFrame):
     def _get_complementary_axis(self, *axis) -> tuple:
         return [level for level in self.index.names if level not in axis]
 
-    def plot(
-        self,
-        x: str,
-        std: Optional[str] = None,
-        alpha: float = 0.4,
-        ax: Optional[plt.Axes] = None,
-        show: bool = True,
-        xscale: bool = "linear",
-        yscale: bool = "linear",
-        **kwargs,
-    ) -> plt.Axes:
+    def plot(self, *args, **kwargs):
         """
         Plots the DataFrame using a specified MultiIndex level for the x-axis.
         Optionally, if a standard deviation level is provided, it will also
@@ -53,6 +42,15 @@ class PyMieSimDataFrame(pd.DataFrame):
             The transparency level for the shaded standard deviation region.
         std : Optional[str], optional
             The MultiIndex level used for standard deviation calculation.
+        Number of subplot columns.
+        figure_size : tuple
+            Figure size.
+        show : bool
+            Plot the figure.
+        save_as : str
+            if set, save the figure.
+        tight_layout : bool
+            If set, render the plot in tight layout.
         ax : Optional[plt.Axes], optional
             The matplotlib Axes on which to plot. If None, a new Axes is created.
         show : bool, optional
@@ -65,31 +63,14 @@ class PyMieSimDataFrame(pd.DataFrame):
         plt.Axes
             The matplotlib Axes with the plot.
         """
-        self._validate_axis(axis=x)
+        if kwargs.get("std", False):
+            return self.plot_with_std(*args, **kwargs)
+        else:
+            return self.plot_standard(*args, **kwargs)
 
-        if std is not None:
-            self._validate_axis(axis=std)
-
-        with plt.style.context(mps):
-            if ax is None:
-                _, ax = plt.subplots()
-
-            ax.set(xscale=xscale, yscale=yscale)
-
-            if std is not None:
-                self._plot_with_std(ax=ax, x=x, std=std, alpha=alpha, **kwargs)
-            else:
-                self._plot_without_std(ax=ax, x=x, **kwargs)
-
-            self._format_legend(ax)
-
-            if show:
-                plt.show()
-
-            return ax
-
-    def _plot_with_std(
-        self, ax: plt.Axes, x: str, std: str, alpha: float = 0.5, **kwargs
+    @pre_plot(nrows=1, ncols=1)
+    def plot_with_std(
+        self, axes: plt.Axes, x: str, std: str, alpha: float = 0.5, **kwargs
     ) -> None:
         """
         Plot the mean with standard deviation shading.
@@ -97,7 +78,7 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         Parameters
         ----------
-        ax : plt.Axes
+        axes : plt.Axes
             The matplotlib Axes to plot on.
         x : str
             The MultiIndex level to use for the x-axis.
@@ -110,6 +91,8 @@ class PyMieSimDataFrame(pd.DataFrame):
         **kwargs : dict
             Additional keyword arguments for line styling.
         """
+        self._validate_axis(axis=x)
+        self._validate_axis(axis=std)
 
         # Determine levels to unstack
         no_std_levels = self._get_complementary_axis(std)
@@ -143,8 +126,8 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             label = " : ".join(map(str, label))
 
-            ax.plot(group.index, group["mean"], linewidth=1, linestyle="--", **kwargs)
-            ax.fill_between(
+            axes.plot(group.index, group["mean"], linewidth=1, linestyle="--", **kwargs)
+            axes.fill_between(
                 x=group.index,
                 y1=group["mean"] + group["std"],
                 y2=group["mean"] - group["std"],
@@ -153,7 +136,7 @@ class PyMieSimDataFrame(pd.DataFrame):
                 label=label,
             )
 
-        ax.legend()
+        axes.legend()
 
     def _format_legend(self, ax: plt.Axes) -> None:
         leg = ax.get_legend()  # Get the existing legend from the axes
@@ -164,32 +147,36 @@ class PyMieSimDataFrame(pd.DataFrame):
             )
             text.set_text(new_label)
 
-    def _plot_without_std(self, ax: plt.Axes, x: str, **kwargs) -> None:
+    @pre_plot(nrows=1, ncols=1)
+    def plot_standard(self, x: str, axes: plt.Axes, **kwargs) -> None:
         """
-        Plots the data without standard deviation shading.
-        Handles both real and imaginary parts for complex data.
+        Generate a line plot of the data without standard deviation shading.
+
+        If the data is complex, both real and imaginary parts are plotted.
 
         Parameters
         ----------
-        ax : plt.Axes
-            The matplotlib Axes on which to plot.
         x : str
-            The index level to use for the x-axis.
-        y : Optional[str], optional
-            The column to use for the y-axis. If None, the first available column is used.
-        show : bool, optional
-            Whether to display the plot.
-        log_scale_x : bool, optional
-            If True, sets a logarithmic scale for the x-axis.
-        log_scale_y : bool, optional
-            If True, sets a logarithmic scale for the y-axis.
-        **kwargs : dict
-            Additional keyword arguments for the plot.
+            Name of the index level to use for the x-axis.
+        axes : plt.Axes
+            Matplotlib axes on which to draw the plot.
+        y : str, optional
+            Name of the column to plot on the y-axis. If None, the first available column is used.
+        show : bool, default=True
+            If True, display the plot immediately.
+        log_scale_x : bool, default=False
+            If True, set the x-axis to logarithmic scale.
+        log_scale_y : bool, default=False
+            If True, set the y-axis to logarithmic scale.
+        **kwargs
+            Additional keyword arguments passed to the underlying Matplotlib plot call.
 
         Returns
         -------
         None
         """
+        self._validate_axis(axis=x)
+
         df = self.copy()
 
         groupby_levels = df._get_complementary_axis(x)
@@ -199,9 +186,9 @@ class PyMieSimDataFrame(pd.DataFrame):
         if isinstance(df.index, pd.MultiIndex) and df.index.nlevels == 1:
             df.index = df.index.get_level_values(0)
 
-        super(PyMieSimDataFrame, df).plot(ax=ax, **kwargs)
+        super(PyMieSimDataFrame, df).plot(ax=axes, **kwargs)
 
-        legend = ax.legend()
+        legend = axes.legend()
 
         legend.set_title(" | ".join(df.columns.names))
 
@@ -218,7 +205,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         )
 
     def sum_over(self, axis: str) -> "PyMieSimDataFrame":
-
         self._validate_axis(axis=axis)
 
         stacking_index = [name for name in self.index.names if name != axis]
