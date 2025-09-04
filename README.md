@@ -4,7 +4,7 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| PyMieSim/experiment/dataframe\_subclass.py     |       67 |        8 |       16 |        3 |     87% |74->77, 87, 200, 210-214, 222-226 |
+| PyMieSim/experiment/dataframe\_subclass.py     |       60 |       12 |       10 |        1 |     79% |142-148, 187, 197-201, 208-212 |
 | PyMieSim/experiment/detector/base.py           |       38 |        0 |        8 |        0 |    100% |           |
 | PyMieSim/experiment/detector/coherent\_mode.py |       20 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       23 |        0 |        0 |        0 |    100% |           |
@@ -26,7 +26,7 @@
 | PyMieSim/single/representations/far\_fields.py |       33 |        0 |        6 |        0 |    100% |           |
 | PyMieSim/single/representations/footprint.py   |       45 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations/near\_field.py |       74 |       53 |       14 |        0 |     24% |66-70, 75-84, 89-91, 112-121, 134-166, 189-237 |
-| PyMieSim/single/representations/s1s2.py        |       21 |        0 |        0 |        0 |    100% |           |
+| PyMieSim/single/representations/s1s2.py        |       18 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations/spf.py         |       28 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/representations/stokes.py      |       31 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/scatterer/base.py              |      127 |       23 |       12 |        1 |     77% |500-537, 573, 671 |
@@ -38,7 +38,7 @@
 | PyMieSim/single/source/planewave.py            |       24 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/special\_functions.py                 |       18 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/utils.py                              |        2 |        0 |        0 |        0 |    100% |           |
-|                                      **TOTAL** | **1254** |  **113** |  **144** |   **20** | **89%** |           |
+|                                      **TOTAL** | **1244** |  **117** |  **138** |   **18** | **88%** |           |
 
 
 ## Setup coverage badge
