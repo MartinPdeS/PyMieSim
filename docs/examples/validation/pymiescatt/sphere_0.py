@@ -63,7 +63,7 @@ pymiescatt_dataframe.diameter *= 1e9
 pymiescatt_dataframe.plot(x="diameter", y=comparison_measures, ax=ax, linewidth=3)
 pymiesim_dataframe.plot(
     x="scatterer:diameter",
-    ax=ax,
+    axes=ax,
     color="black",
     linestyle="--",
     linewidth=1.5,

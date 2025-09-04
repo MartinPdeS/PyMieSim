@@ -45,9 +45,9 @@ experiment = Setup(scatterer=scatterer, source=source)
 dataframe = experiment.get("Csca")
 
 
-ax = dataframe.plot(x="scatterer:shell_thickness", show=False)
+figure = dataframe.plot(x="scatterer:shell_thickness", show=False)
 
-ax.set_ylim([0, 4.0e-16])
+figure.axes[0].set_ylim([0, 4.0e-16])
 
 plt.show()
 
@@ -57,7 +57,7 @@ plt.show()
 # the shell thickness as it's refractive index is same as the surrounding medium.
 dataframe = experiment.get("Qsca")
 
-ax = dataframe.plot(x="scatterer:shell_thickness", show=False)
+figure = dataframe.plot(x="scatterer:shell_thickness", show=False)
 
 plt.show()
 # Similarly the scattering decrease as the scatterer becomes technically larger but the effects of the shell is for no account.

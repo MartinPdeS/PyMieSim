@@ -63,7 +63,7 @@ with plt.style.context(mps):
 pymiescatt_dataframe.plot(x="core_diameter", y=comparison_measures, ax=ax, linewidth=3)
 pymiesim_dataframe.plot(
     x="scatterer:core_diameter",
-    ax=ax,
+    axes=ax,
     color="black",
     linestyle="--",
     linewidth=1.5,

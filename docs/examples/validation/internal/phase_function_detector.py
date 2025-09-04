@@ -91,7 +91,7 @@ df["detector:phi_offset"] /= 180 / np.pi
 df.plot(
     x="detector:phi_offset",
     y="coupling",
-    ax=ax0,
+    axes=ax0,
     linewidth=3,
     title="Polarization 90 degree",
 )
