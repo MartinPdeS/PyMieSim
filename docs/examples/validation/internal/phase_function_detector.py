@@ -86,7 +86,6 @@ df = (
     .reset_index()
     .pint.quantify()
 )
-df["detector:phi_offset"] /= 180 / np.pi
 
 df.plot(
     x="detector:phi_offset",
