@@ -58,7 +58,7 @@
     <link rel="icon" href="../../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Array-based scattering calculations" href="array_scattering.html" />
+    <link rel="next" title="Hermite-Gauss 01 Mode Detector" href="HG01.html" />
     <link rel="prev" title="Sphere: Coupling vs wavelength" href="../experiment/sphere/sphere_coupling_vs_wavelength.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -409,7 +409,16 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../single/index.html">Single Module</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../single/index.html">Single Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../single/farfield.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/s1s2.html">S1 S2 Function Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/source.html">Source Plottings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/spf.html">SPF Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/stokes.html">Stokes Parameters Computation</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../experiment/coreshell/index.html">Core-Shell</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_Qback_vs_corediameter.html">CoreShell: Qback vs Core Diameter</a></li>
@@ -453,8 +462,21 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Extra Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="HG01.html">Hermite-Gauss 01 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HG11.html">Hermite-Gauss 31 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LG11.html">Laguerre-Gauss 2-3 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LP01.html">LP01 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LP02.html">LP02 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LP11.html">LP11 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Qsca_vs_permittivity_vs_size_parameter.html">Scattering efficiency of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="array_scattering.html">Array-based scattering calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integrating_sphere.html">Integrating sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_system.html">Plot system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="properties_cylinder.html">Print properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="properties_sphere.html">Samples Properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -530,12 +552,51 @@ specialised setups such as coupling efficiency heatmaps or system visualisation.
 <li><p><code class="docutils literal notranslate"><span class="pre">plot_Qsca_vs_permittivity_vs_size_parameter.py</span></code> – inspect scattering as material and size vary.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">array_scattering.py</span></code> – compute fields and Stokes parameters for arbitrary angles.</p></li>
 </ul>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute far fields, S1/S2 amplitudes and Stokes parameters using arbitrary phi and theta arrays."><img alt="" src="../../_images/sphx_glr_array_scattering_thumb.png" />
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_HG01_thumb.png" />
+<p><a class="reference internal" href="HG01.html#sphx-glr-gallery-extras-hg01-py"><span class="std std-ref">Hermite-Gauss 01 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Hermite-Gauss 01 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG31 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_HG11_thumb.png" />
+<p><a class="reference internal" href="HG11.html#sphx-glr-gallery-extras-hg11-py"><span class="std std-ref">Hermite-Gauss 31 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Hermite-Gauss 31 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_LG11_thumb.png" />
+<p><a class="reference internal" href="LG11.html#sphx-glr-gallery-extras-lg11-py"><span class="std std-ref">Laguerre-Gauss 2-3 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Laguerre-Gauss 2-3 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP01 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_LP01_thumb.png" />
+<p><a class="reference internal" href="LP01.html#sphx-glr-gallery-extras-lp01-py"><span class="std std-ref">LP01 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">LP01 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP02 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_LP02_thumb.png" />
+<p><a class="reference internal" href="LP02.html#sphx-glr-gallery-extras-lp02-py"><span class="std std-ref">LP02 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">LP02 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP11 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_LP11_thumb.png" />
+<p><a class="reference internal" href="LP11.html#sphx-glr-gallery-extras-lp11-py"><span class="std std-ref">LP11 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">LP11 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim makes it easy to create a source and a scatterer. With these objects defined, it is possible to use PyMieSim to find the scattering efficiency of the scatterer. This feature can be used to plot a graph of the scattering efficiency of a sphere as a function of the permittivity and the size parameter."><img alt="" src="../../_images/sphx_glr_Qsca_vs_permittivity_vs_size_parameter_thumb.png" />
+<p><a class="reference internal" href="Qsca_vs_permittivity_vs_size_parameter.html#sphx-glr-gallery-extras-qsca-vs-permittivity-vs-size-parameter-py"><span class="std std-ref">Scattering efficiency of a sphere</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Scattering efficiency of a sphere</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute far fields, S1/S2 amplitudes and Stokes parameters using arbitrary phi and theta arrays."><img alt="" src="../../_images/sphx_glr_array_scattering_thumb.png" />
 <p><a class="reference internal" href="array_scattering.html#sphx-glr-gallery-extras-array-scattering-py"><span class="std std-ref">Array-based scattering calculations</span></a></p>
   <div class="sphx-glr-thumbnail-title">Array-based scattering calculations</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim makes it easy to create a source and a scatterer. With these objects defined, it is possible to use PyMieSim to find the scattering efficiency of the scatterer. This feature can be used to plot a graph of the scattering efficiency of a sphere as a function of the permittivity and the size parameter."><img alt="" src="../../_images/sphx_glr_coupling_heatmap_thumb.png" />
+<p><a class="reference internal" href="coupling_heatmap.html#sphx-glr-gallery-extras-coupling-heatmap-py"><span class="std std-ref">Coupling heatmap of a sphere</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Coupling heatmap of a sphere</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs numerical aperture"><img alt="" src="../../_images/sphx_glr_coupling_vs_NA_thumb.png" />
+<p><a class="reference internal" href="coupling_vs_NA.html#sphx-glr-gallery-extras-coupling-vs-na-py"><span class="std std-ref">Sphere: Coupling vs numerical aperture</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs numerical aperture</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_integrating_sphere_thumb.png" />
+<p><a class="reference internal" href="integrating_sphere.html#sphx-glr-gallery-extras-integrating-sphere-py"><span class="std std-ref">Integrating sphere</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Integrating sphere</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of a Photodiode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_photodiode_thumb.png" />
+<p><a class="reference internal" href="photodiode.html#sphx-glr-gallery-extras-photodiode-py"><span class="std std-ref">Photodiode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Example Script: Using the plot_system Function"><img alt="" src="../../_images/sphx_glr_plot_system_thumb.png" />
 <p><a class="reference internal" href="plot_system.html#sphx-glr-gallery-extras-plot-system-py"><span class="std std-ref">Plot system</span></a></p>
   <div class="sphx-glr-thumbnail-title">Plot system</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation of scattering properties using PyMieSim."><img alt="" src="../../_images/sphx_glr_properties_cylinder_thumb.png" />
+<p><a class="reference internal" href="properties_cylinder.html#sphx-glr-gallery-extras-properties-cylinder-py"><span class="std std-ref">Print properties</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Print properties</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Samples Properties"><img alt="" src="../../_images/sphx_glr_properties_sphere_thumb.png" />
+<p><a class="reference internal" href="properties_sphere.html#sphx-glr-gallery-extras-properties-sphere-py"><span class="std std-ref">Samples Properties</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Samples Properties</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

@@ -58,7 +58,7 @@
     <link rel="icon" href="../../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Experiment Module" href="../experiment/index.html" />
+    <link rel="next" title="Far-Fields Computation and Visualization" href="farfield.html" />
     <link rel="prev" title="Coding examples" href="../../examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -409,7 +409,16 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Single Module</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Single Module</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="farfield.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nearfield.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s1s2.html">S1 S2 Function Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Source Plottings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spf.html">SPF Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stokes.html">Stokes Parameters Computation</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../experiment/coreshell/index.html">Core-Shell</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_Qback_vs_corediameter.html">CoreShell: Qback vs Core Diameter</a></li>
@@ -453,8 +462,21 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../extras/index.html">Extra Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../extras/HG01.html">Hermite-Gauss 01 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/HG11.html">Hermite-Gauss 31 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/LG11.html">Laguerre-Gauss 2-3 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/LP01.html">LP01 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/LP02.html">LP02 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/LP11.html">LP11 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/Qsca_vs_permittivity_vs_size_parameter.html">Scattering efficiency of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/array_scattering.html">Array-based scattering calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/integrating_sphere.html">Integrating sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_system.html">Plot system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/properties_cylinder.html">Print properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/properties_sphere.html">Samples Properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -564,7 +586,30 @@ interaction can be studied in detail.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">coupling</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-thumbnails"></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim."><img alt="" src="../../_images/sphx_glr_farfield_thumb.png" />
+<p><a class="reference internal" href="farfield.html#sphx-glr-gallery-single-farfield-py"><span class="std std-ref">Far-Fields Computation and Visualization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim."><img alt="" src="../../_images/sphx_glr_footprint_thumb.png" />
+<p><a class="reference internal" href="footprint.html#sphx-glr-gallery-single-footprint-py"><span class="std std-ref">Scatterer Footprint Calculation and Visualization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Scatterer Footprint Calculation and Visualization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim."><img alt="" src="../../_images/sphx_glr_nearfield_thumb.png" />
+<p><a class="reference internal" href="nearfield.html#sphx-glr-gallery-single-nearfield-py"><span class="std std-ref">Near-Fields Computation and Visualization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Near-Fields Computation and Visualization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim."><img alt="" src="../../_images/sphx_glr_s1s2_thumb.png" />
+<p><a class="reference internal" href="s1s2.html#sphx-glr-gallery-single-s1s2-py"><span class="std std-ref">S1 S2 Function Computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">S1 S2 Function Computation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to visualize the properties of a light source using PyMieSim."><img alt="" src="../../_images/sphx_glr_source_thumb.png" />
+<p><a class="reference internal" href="source.html#sphx-glr-gallery-single-source-py"><span class="std std-ref">Source Plottings</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Source Plottings</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Scattering Phase Function (SPF) using PyMieSim."><img alt="" src="../../_images/sphx_glr_spf_thumb.png" />
+<p><a class="reference internal" href="spf.html#sphx-glr-gallery-single-spf-py"><span class="std std-ref">SPF Computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">SPF Computation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Stokes parameters using PyMieSim."><img alt="" src="../../_images/sphx_glr_stokes_thumb.png" />
+<p><a class="reference internal" href="stokes.html#sphx-glr-gallery-single-stokes-py"><span class="std std-ref">Stokes Parameters Computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Stokes Parameters Computation</div>
+</div></div><div class="toctree-wrapper compound">
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
 
