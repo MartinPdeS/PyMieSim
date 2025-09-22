@@ -96,7 +96,7 @@ Printing the scatterer properties
     --------------  ---------------------------------
     size_parameter  2.513274122871834 dimensionless
     radius          400.0 nanometer
-    volume          2.6808257310632903e-19 meter ** 3
+    volume          268082573.106329 nanometer ** 3
     cross_section   502654.8245743669 nanometer ** 2
     g               0.6960064419371798 dimensionless
     Qsca            1.7376473038362097 dimensionless
@@ -118,7 +118,7 @@ Printing the scatterer properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.018 seconds)
+   **Total running time of the script:** (0 minutes 1.032 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_properties_sphere.py:

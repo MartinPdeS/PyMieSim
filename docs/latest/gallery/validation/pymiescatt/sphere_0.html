@@ -541,7 +541,7 @@ to download the full example code.</p>
 <span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">,</span> <span class="s2">&quot;Qabs&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;Qpr&quot;</span><span class="p">,</span> <span class="s2">&quot;Qback&quot;</span><span class="p">]</span>
 
 <span class="c1"># Simulate using PyMieSim</span>
-<span class="n">pymiesim_dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span>
+<a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pymiesim</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">,</span> <span class="n">as_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
     <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">&quot;pymiescatt/example_shpere_0.csv&quot;</span>
@@ -553,27 +553,35 @@ to download the full example code.</p>
 
 <span class="n">pymiescatt_dataframe</span><span class="o">.</span><span class="n">diameter</span> <span class="o">*=</span> <span class="mf">1e9</span>
 
-<span class="n">pymiescatt_dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;diameter&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">comparison_measures</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">pymiesim_dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;scatterer:diameter&quot;</span><span class="p">,</span>
-    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
-    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
-    <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
     <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Diameter [nm]&quot;</span><span class="p">,</span>
     <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Scattering Efficiencies&quot;</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Scattering parameters Comparison for Sphere Particles&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">comparison_measures</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="s2">&quot;diameter&quot;</span><span class="p">],</span>
+        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="n">string</span><span class="p">],</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PyMieScatt: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="k">for</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">,</span> <span class="n">string</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pymiesim</span></a><span class="p">,</span> <span class="n">comparison_measures</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">diameters</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+        <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PyMieSim: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.283 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.286 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-sphere-0-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/77794443f3893357bbd77f490bdb1d3a/sphere_0.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_0.ipynb</span></code></a></p>

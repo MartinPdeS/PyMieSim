@@ -432,7 +432,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><strong>Date</strong>: Sep 05, 2025, <strong>Version</strong>: 3.8.4</p>
+  <p><strong>Date</strong>: Sep 22, 2025, <strong>Version</strong>: 3.8.4</p>
 <p><img alt="PyOptik logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -467,11 +467,9 @@
 </div>
 <section id="pymiesim">
 <h1>PyMieSim<a class="headerlink" href="#pymiesim" title="Link to this heading">#</a></h1>
-<p><strong>PyMieSim</strong> is an open-source Python package for fast and flexible Mie
-scattering simulations.  It supports spherical, cylindrical and core–shell
-particles and provides helper classes for custom sources and detectors.
-The project targets both quick single-scatterer studies and large parametric
-experiments.</p>
+<p><strong>PyMieSim</strong> is an open-source Python package for fast and flexible Mie scattering simulations.
+It supports spherical, cylindrical and core–shell particles and provides helper classes for custom sources and detectors.
+The project targets both quick single-scatterer studies and large parametric experiments.</p>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -485,11 +483,10 @@ experiments.</p>
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>PyMieSim is available on PyPI and Anaconda.  Install it with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim
-conda<span class="w"> </span>install<span class="w"> </span>PyMieSim
+conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w">  </span>--channels<span class="w"> </span>MartinPdeS
 </pre></div>
 </div>
-<p>See the <a class="reference external" href="https://pymiesim.readthedocs.io/">online documentation</a> for detailed
-usage and additional examples.</p>
+<p>See the <a class="reference external" href="https://martinpdes.github.io/PyMieSim/">online documentation</a> for detailed usage and additional examples.</p>
 </section>
 <section id="quick-example">
 <h2>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">#</a></h2>
@@ -509,7 +506,7 @@ usage and additional examples.</p>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="nb">property</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
@@ -517,9 +514,17 @@ usage and additional examples.</p>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png"><img alt="Scattering efficiency of a 200 nm sphere with refractive index 4.0." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png" style="width: 1000px;" />
+</a>
+</section>
+<section id="code-structure">
+<h2>Code structure<a class="headerlink" href="#code-structure" title="Link to this heading">#</a></h2>
+<p>Here is the architecture for a standard workflow using PyMieSim:</p>
+<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png"><img alt="Code structure of a standard workflow using PyMieSim." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png" style="width: 1000px;" />
+</a>
 </section>
 <section id="building-from-source">
 <h2>Building from source<a class="headerlink" href="#building-from-source" title="Link to this heading">#</a></h2>
@@ -591,6 +596,7 @@ pytest
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-example">Quick example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-structure">Code structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-from-source">Building from source</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-pymiesim">Citing PyMieSim</a></li>

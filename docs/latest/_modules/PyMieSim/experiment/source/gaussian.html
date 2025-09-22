@@ -461,11 +461,11 @@
     <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">_</span><span class="p">,</span>
 <span class="p">)</span>  <span class="c1"># noqa:F401  # Necessary for pybind11 binding initialization</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Dimensionless</span><span class="p">,</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Angle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Length</span><span class="p">,</span> <span class="n">Dimensionless</span><span class="p">,</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">AnyUnit</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePolarization</span><span class="p">,</span> <span class="n">Linear</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePolarization</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_sets</span><span class="w"> </span><span class="kn">import</span> <span class="n">CppGaussianSourceSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
 
@@ -503,9 +503,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="p">,</span> <span class="n">BasePolarization</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">polarization</span> <span class="o">=</span> <span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
             <span class="n">jones_vector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="o">.</span><span class="n">element</span><span class="p">,</span>
@@ -515,11 +512,10 @@
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">CppGaussianSourceSet</span><span class="p">(</span>
-            <span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">jones_vector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="o">.</span><span class="n">element</span><span class="p">,</span>
-            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;dimensionless&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">optical_power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;watt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">AnyUnit</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
         <span class="p">)</span></div>
 
 </pre></div>
