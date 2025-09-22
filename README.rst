@@ -78,7 +78,12 @@ Below is a short example computing the scattering efficiency of a sphere.
 
    experiment = Setup(scatterer=scatterer, source=source)
    df = experiment.get("Qsca")
-   df.plot_data(x="source:wavelength")
+   df.plot(x="source:wavelength")
+
+.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png
+    :width: 600
+    :align: center
+    :alt: Scattering efficiency of a 200 nm sphere with refractive index 4.0.
 
 Building from source
 --------------------
