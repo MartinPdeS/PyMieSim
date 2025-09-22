@@ -16,7 +16,7 @@ source = Gaussian(
 )
 
 scatterer = Sphere(
-    diameter=[200] * ureg.nanometer,
+    diameter=[200, 300] * ureg.nanometer,
     property=[4] * ureg.RIU,
     medium_property=1 * ureg.RIU,
     source=source,
@@ -25,5 +25,5 @@ scatterer = Sphere(
 experiment = Setup(scatterer=scatterer, source=source)
 df = experiment.get("Qsca")
 df.plot(
-    x="source:wavelength", show=False, save_as=f"{dir_path}/../images/resonances.png"
+    x="source:wavelength", show=True, save_as=f"{dir_path}/../images/resonances.png"
 )

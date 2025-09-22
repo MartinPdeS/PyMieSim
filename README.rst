@@ -67,7 +67,7 @@ Below is a short example computing the scattering efficiency of a sphere.
    )
 
    scatterer = Sphere(
-       diameter=[200] * ureg.nanometer,
+       diameter=[200, 300] * ureg.nanometer,
        property=[4] * ureg.RIU,
        medium_property=1 * ureg.RIU,
        source=source,
