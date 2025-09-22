@@ -24,11 +24,9 @@
 PyMieSim
 ========
 
-**PyMieSim** is an open-source Python package for fast and flexible Mie
-scattering simulations.  It supports spherical, cylindrical and core--shell
-particles and provides helper classes for custom sources and detectors.
-The project targets both quick single-scatterer studies and large parametric
-experiments.
+**PyMieSim** is an open-source Python package for fast and flexible Mie scattering simulations.
+It supports spherical, cylindrical and core--shell particles and provides helper classes for custom sources and detectors.
+The project targets both quick single-scatterer studies and large parametric experiments.
 
 Features
 --------
@@ -44,10 +42,9 @@ PyMieSim is available on PyPI and Anaconda.  Install it with:
 .. code-block:: bash
 
    pip install PyMieSim
-   conda install PyMieSim
+   conda install PyMieSim  --channels MartinPdeS
 
-See the `online documentation <https://pymiesim.readthedocs.io/>`_ for detailed
-usage and additional examples.
+See the `online documentation <https://martinpdes.github.io/PyMieSim/>`_ for detailed usage and additional examples.
 
 Quick example
 -------------
@@ -81,9 +78,20 @@ Below is a short example computing the scattering efficiency of a sphere.
    df.plot(x="source:wavelength")
 
 .. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png
-    :width: 600
+    :width: 1000
     :align: center
     :alt: Scattering efficiency of a 200 nm sphere with refractive index 4.0.
+
+
+
+Code structure
+---------------
+Here is the architecture for a standard workflow using PyMieSim:
+
+.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
+   :width: 1000
+   :align: center
+   :alt: Code structure of a standard workflow using PyMieSim.
 
 Building from source
 --------------------
@@ -153,9 +161,6 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
     :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
 .. |ci/cd| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg
     :alt: Unittest Status
-.. |code_structure| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
-    :width: 800
-    :alt: Structure of the library
 .. |example_gui| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png
     :width: 800
     :alt: Structure of the library
