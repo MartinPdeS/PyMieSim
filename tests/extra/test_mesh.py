@@ -3,7 +3,7 @@
 
 import pytest
 import numpy as np
-from PyMieSim.mesh import FibonacciMesh
+from PyMieSim.single.mesh import FibonacciMesh
 from TypedUnit import ureg
 
 

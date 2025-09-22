@@ -4,7 +4,7 @@ import numpy
 from pydantic import field_validator
 import pint_pandas
 from dataclasses import fields
-from PyMieSim.polarization import BasePolarization, Linear
+from PyMieSim.single.polarization import BasePolarization, Linear
 
 from TypedUnit import Length, Angle, Power, Dimensionless
 
@@ -49,6 +49,14 @@ class BaseSource:
         Angle.check(value)
 
         return Linear(value)
+
+    @field_validator("amplitude", mode="before")
+    def _validate_array(cls, value):
+        """Ensure that arrays are properly converted to numpy arrays."""
+        if not isinstance(value, numpy.ndarray):
+            value = numpy.atleast_1d(value)
+
+        return value
 
     def _generate_mapping(self) -> None:
         """

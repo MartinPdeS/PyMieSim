@@ -5,11 +5,11 @@ from PyMieSim.single.source import (
     Gaussian as _,
 )  # noqa:F401  # Necessary for pybind11 binding initialization
 from pydantic.dataclasses import dataclass
-from TypedUnit import Length, Dimensionless, Power, Angle
+from TypedUnit import Length, Dimensionless, Power, Angle, AnyUnit
 
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
-from PyMieSim.polarization import BasePolarization, Linear
+from PyMieSim.single.polarization import BasePolarization
 from PyMieSim.binary.interface_sets import CppGaussianSourceSet
 from PyMieSim.utils import config_dict
 
@@ -45,9 +45,6 @@ class Gaussian(BaseSource, Sequential):
         """
         self.mapping = {}
 
-        if not isinstance(self.polarization, BasePolarization):
-            self.polarization = Linear(self.polarization)
-
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
             jones_vector=self.polarization.element,
@@ -57,9 +54,8 @@ class Gaussian(BaseSource, Sequential):
         )
 
         self.binding = CppGaussianSourceSet(
-            wavelength=self.wavelength.to("meter").magnitude,
-            jones_vector=self.polarization.element,
-            NA=self.NA.to("dimensionless").magnitude,
-            optical_power=self.optical_power.to("watt").magnitude,
-            is_sequential=self.is_sequential,
+            **{
+                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
+                for k, v in self.binding_kwargs.items()
+            }
         )

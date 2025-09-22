@@ -3,7 +3,7 @@
 from typing import List
 from pydantic.dataclasses import dataclass
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import Length, RefractiveIndex
+from TypedUnit import Length, RefractiveIndex, AnyUnit
 
 from PyMieSim.binary.interface_sets import CppSphereSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
@@ -74,11 +74,7 @@ class Sphere(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(
-            diameter=self.diameter, is_sequential=self.is_sequential
-        )
-
-        mediun_properties = self._add_properties(
+        medium_properties = self._add_properties(
             name="medium", properties=self.medium_property
         )
 
@@ -86,9 +82,16 @@ class Sphere(BaseScatterer, Sequential):
             name="scatterer", properties=self.property
         )
 
-        self.binding = CppSphereSet(
-            diameter=self.diameter.to("meter").magnitude,
-            scatterer_properties=scatterer_properties,
-            medium_properties=mediun_properties,
+        self.binding_kwargs = dict(
+            diameter=self.diameter,
             is_sequential=self.is_sequential,
+            medium_properties=medium_properties,
+            scatterer_properties=scatterer_properties,
+        )
+
+        self.binding = CppSphereSet(
+            **{
+                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
+                for k, v in self.binding_kwargs.items()
+            }
         )

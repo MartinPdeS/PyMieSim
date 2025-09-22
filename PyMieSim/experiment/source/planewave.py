@@ -4,13 +4,11 @@ from typing import Union
 from PyMieSim.single.source import (
     PlaneWave as _,
 )  # noqa:F401  # Necessary for pybind11 binding initialization
-import numpy
 from pydantic.dataclasses import dataclass
-from pydantic import field_validator
-from TypedUnit import Length, Angle, ElectricField
+from TypedUnit import Length, Angle, ElectricField, AnyUnit
 
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.polarization import BasePolarization, Linear
+from PyMieSim.single.polarization import BasePolarization
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.binary.interface_sets import CppPlaneWaveSourceSet
 from PyMieSim.utils import config_dict
@@ -37,14 +35,6 @@ class PlaneWave(BaseSource, Sequential):
     wavelength: Length
     polarization: Union[BasePolarization, Angle]
 
-    @field_validator("amplitude", mode="before")
-    def _validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
-
     def _generate_binding(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
@@ -56,9 +46,6 @@ class PlaneWave(BaseSource, Sequential):
         """
         self.mapping = {}
 
-        if not isinstance(self.polarization, BasePolarization):
-            self.polarization = Linear(self.polarization)
-
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
             jones_vector=self.polarization.element,
@@ -67,8 +54,8 @@ class PlaneWave(BaseSource, Sequential):
         )
 
         self.binding = CppPlaneWaveSourceSet(
-            wavelength=self.wavelength.to("meter").magnitude,
-            jones_vector=self.polarization.element,
-            amplitude=self.amplitude.to("volt/meter").magnitude,
-            is_sequential=self.is_sequential,
+            **{
+                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
+                for k, v in self.binding_kwargs.items()
+            }
         )

@@ -79,8 +79,7 @@ class Sphere(SPHERE, BaseScatterer):
     @property
     def volume(self) -> Volume:
         """Return the volume of the sphere."""
-        vol = (4 / 3) * numpy.pi * (self.radius**3)
-        return vol.to(ureg.meter**3)
+        return (4 / 3) * numpy.pi * (self.radius**3)
 
     def _add_to_3d_ax(
         self, scene: pyvista.Plotter, color: str = "black", opacity: float = 1.0

@@ -7,8 +7,7 @@ from pydantic.dataclasses import dataclass
 import matplotlib.pyplot as plt
 from TypedUnit import ureg
 
-from PyMieSim.special_functions import rotate_on_x
-from PyMieSim.utils import config_dict
+from PyMieSim.utils import config_dict, rotate_on_x
 
 
 @dataclass(config=config_dict, kw_only=True)

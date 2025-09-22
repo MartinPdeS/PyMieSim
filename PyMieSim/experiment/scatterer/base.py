@@ -66,29 +66,17 @@ class BaseScatterer:
         CPPClass = CppMediumProperties if name == "medium" else CppScattererProperties
 
         if all(isinstance(item, RefractiveIndex) for item in properties):
-            instance = CPPClass(index_properties=properties.magnitude)
-            self.binding_kwargs[f"{name}_properties"] = instance
-
-            return instance
+            return CPPClass(index_properties=properties.magnitude)
 
         elif all(isinstance(item, BaseMaterial) for item in properties):
             eval_index = numpy.asarray(
-                [
-                    m.compute_refractive_index(
-                        self.source.wavelength.to("meter").magnitude
-                    )
-                    for m in properties
-                ]
+                [m.compute_refractive_index(self.source.wavelength) for m in properties]
             )
-            instance = CPPClass(material_properties=eval_index)
-            self.binding_kwargs[f"{name}_properties"] = instance
+            return CPPClass(material_properties=eval_index)
 
-            return instance
-
-        else:
-            raise TypeError(
-                "All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both."
-            )
+        raise TypeError(
+            "All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both."
+        )
 
     def _generate_mapping(self) -> None:
         """

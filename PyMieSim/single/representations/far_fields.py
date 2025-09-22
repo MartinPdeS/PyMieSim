@@ -6,10 +6,9 @@ import pyvista
 from pydantic.dataclasses import dataclass
 from typing import List
 
-from PyMieSim.special_functions import spherical_to_cartesian
 from MPSPlots.colormaps import blue_black_red
 from PyMieSim.single.representations.base import BaseRepresentation
-from PyMieSim.utils import config_dict
+from PyMieSim.utils import config_dict, spherical_to_cartesian
 
 
 @dataclass(config=config_dict, kw_only=True)

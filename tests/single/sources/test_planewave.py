@@ -3,7 +3,7 @@ from unittest.mock import patch
 from TypedUnit import ureg
 
 from PyMieSim.single.source import PlaneWave
-from PyMieSim.polarization import Linear
+from PyMieSim.single.polarization import Linear
 from PyMieSim.single import plot_system
 
 

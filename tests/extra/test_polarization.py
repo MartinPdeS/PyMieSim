@@ -8,7 +8,12 @@ from TypedUnit import ureg
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment.source import Gaussian
-from PyMieSim.polarization import Linear, JonesVector, RightCircular, LeftCircular
+from PyMieSim.single.polarization import (
+    Linear,
+    JonesVector,
+    RightCircular,
+    LeftCircular,
+)
 
 
 def test_init_linear():

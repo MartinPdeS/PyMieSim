@@ -1,7 +1,9 @@
+from typing import Self
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from MPSPlots.helper import pre_plot
+from MPSPlots import helper
 
 
 class PyMieSimDataFrame(pd.DataFrame):
@@ -42,7 +44,6 @@ class PyMieSimDataFrame(pd.DataFrame):
             The transparency level for the shaded standard deviation region.
         std : Optional[str], optional
             The MultiIndex level used for standard deviation calculation.
-        Number of subplot columns.
         figure_size : tuple
             Figure size.
         show : bool
@@ -51,8 +52,6 @@ class PyMieSimDataFrame(pd.DataFrame):
             if set, save the figure.
         tight_layout : bool
             If set, render the plot in tight layout.
-        ax : Optional[plt.Axes], optional
-            The matplotlib Axes on which to plot. If None, a new Axes is created.
         show : bool, optional
             If True, displays the plot.
         **kwargs : dict
@@ -68,18 +67,14 @@ class PyMieSimDataFrame(pd.DataFrame):
         else:
             return self.plot_standard(*args, **kwargs)
 
-    @pre_plot(nrows=1, ncols=1)
-    def plot_with_std(
-        self, axes: plt.Axes, x: str, std: str, alpha: float = 0.5, **kwargs
-    ) -> None:
+    @helper.post_mpl_plot
+    def plot_with_std(self, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
         """
         Plot the mean with standard deviation shading.
         Expects the DataFrame to have a MultiIndex and a 'pint' attribute.
 
         Parameters
         ----------
-        axes : plt.Axes
-            The matplotlib Axes to plot on.
         x : str
             The MultiIndex level to use for the x-axis.
         std : str
@@ -91,6 +86,8 @@ class PyMieSimDataFrame(pd.DataFrame):
         **kwargs : dict
             Additional keyword arguments for line styling.
         """
+        figure, ax = plt.subplots(1, 1)
+
         self._validate_axis(axis=x)
         self._validate_axis(axis=std)
 
@@ -126,8 +123,8 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             label = " : ".join(map(str, label))
 
-            axes.plot(group.index, group["mean"], linewidth=1, linestyle="--", **kwargs)
-            axes.fill_between(
+            ax.plot(group.index, group["mean"], linewidth=1, linestyle="--", **kwargs)
+            ax.fill_between(
                 x=group.index,
                 y1=group["mean"] + group["std"],
                 y2=group["mean"] - group["std"],
@@ -136,9 +133,20 @@ class PyMieSimDataFrame(pd.DataFrame):
                 label=label,
             )
 
-        axes.legend()
+        ax.legend()
+
+        return figure
 
     def _format_legend(self, ax: plt.Axes) -> None:
+        """
+        Formats the legend of a Matplotlib Axes by replacing parentheses and commas
+        in the legend labels with vertical bars for better readability.
+
+        Parameters
+        ----------
+        ax : plt.Axes
+            The Matplotlib Axes object whose legend will be formatted.
+        """
         leg = ax.get_legend()  # Get the existing legend from the axes
         for text in leg.get_texts():
             original_label = text.get_text()
@@ -147,8 +155,8 @@ class PyMieSimDataFrame(pd.DataFrame):
             )
             text.set_text(new_label)
 
-    @pre_plot(nrows=1, ncols=1)
-    def plot_standard(self, x: str, axes: plt.Axes, **kwargs) -> None:
+    @helper.post_mpl_plot
+    def plot_standard(self, x: str, **kwargs) -> None:
         """
         Generate a line plot of the data without standard deviation shading.
 
@@ -158,8 +166,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         ----------
         x : str
             Name of the index level to use for the x-axis.
-        axes : plt.Axes
-            Matplotlib axes on which to draw the plot.
         y : str, optional
             Name of the column to plot on the y-axis. If None, the first available column is used.
         show : bool, default=True
@@ -175,6 +181,8 @@ class PyMieSimDataFrame(pd.DataFrame):
         -------
         None
         """
+        figure, ax = plt.subplots(1, 1)
+
         self._validate_axis(axis=x)
 
         df = self.copy()
@@ -186,14 +194,30 @@ class PyMieSimDataFrame(pd.DataFrame):
         if isinstance(df.index, pd.MultiIndex) and df.index.nlevels == 1:
             df.index = df.index.get_level_values(0)
 
-        super(PyMieSimDataFrame, df).plot(ax=axes, **kwargs)
+        super(PyMieSimDataFrame, df).plot(ax=ax, **kwargs)
 
-        legend = axes.legend()
+        legend = ax.legend()
 
         legend.set_title(" | ".join(df.columns.names))
 
-    def add_weight(self, weight_index: str, weight: np.ndarray) -> "PyMieSimDataFrame":
+        return figure
 
+    def add_weight(self, weight_index: str, weight: np.ndarray) -> Self:
+        """
+        Multiply the DataFrame by a weight array along a specified MultiIndex level.
+
+        Parameters
+        ----------
+        weight_index : str
+            The MultiIndex level to apply the weights to.
+        weight : np.ndarray
+            The weight array to multiply with the DataFrame.
+
+        Returns
+        -------
+        Self
+            A new DataFrame with the weights applied.
+        """
         self._validate_axis(axis=weight_index)
 
         stacking_index = self._get_complementary_axis(weight_index)
@@ -204,7 +228,19 @@ class PyMieSimDataFrame(pd.DataFrame):
             .stack(stacking_index)
         )
 
-    def sum_over(self, axis: str) -> "PyMieSimDataFrame":
+    def sum_over(self, axis: str) -> Self:
+        """
+        Sum the DataFrame over a specified MultiIndex level.
+        Parameters
+        ----------
+        axis : str
+            The MultiIndex level to sum over.
+
+        Returns
+        -------
+        Self
+            A new DataFrame summed over the specified axis.
+        """
         self._validate_axis(axis=axis)
 
         stacking_index = [name for name in self.index.names if name != axis]

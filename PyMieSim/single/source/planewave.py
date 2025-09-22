@@ -7,7 +7,7 @@ from TypedUnit import Length, ElectricField, ureg, Angle
 from pydantic.dataclasses import dataclass
 
 from PyMieSim.utils import config_dict
-from PyMieSim.polarization import BasePolarization
+from PyMieSim.single.polarization import BasePolarization
 from PyMieSim.binary.interface_source import PLANEWAVE
 from PyMieSim.single.source.base import BaseSource
 

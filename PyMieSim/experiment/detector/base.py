@@ -3,7 +3,7 @@
 import numpy
 from pint_pandas import PintArray
 from pydantic import field_validator
-from TypedUnit import ureg, Angle
+from TypedUnit import ureg, Angle, AnyUnit, Dimensionless
 
 from PyMieSim.binary.interface_sets import CppDetectorSet
 
@@ -105,7 +105,7 @@ class BaseDetector:
         Angle.check(value)
         return numpy.atleast_1d(value)
 
-    @field_validator("NA", "cache_NA", "sampling", mode="plain")
+    @field_validator("NA", "cache_NA", mode="plain")
     def validate_au_quantity(cls, value):
         """
         Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
@@ -123,6 +123,24 @@ class BaseDetector:
         Angle.check(value)
         return numpy.atleast_1d(value)
 
+    @field_validator("sampling", mode="plain")
+    def validate_sampling(cls, value):
+        """
+        Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
+
+        Parameters
+        ----------
+        value : Any
+            The input value to be validated.
+
+        Returns
+        -------
+        numpy.ndarray
+            A NumPy array representing the validated input value.
+        """
+        Dimensionless.check(value)
+        return numpy.atleast_1d(value).astype(int)
+
     def _generate_binding(self) -> None:
         """
         Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the
@@ -135,27 +153,21 @@ class BaseDetector:
             "sampling": self.sampling,
             "NA": self.NA,
             "cache_NA": self.cache_NA,
-            "polarization_filter": (
-                self.polarization_filter.to(ureg.radian).magnitude
-                if self.polarization_filter is not None
-                else numpy.nan
-            ),
-            "phi_offset": self.phi_offset.to(ureg.radian).magnitude,
-            "gamma_offset": self.gamma_offset.to(ureg.radian).magnitude,
-            "rotation": self.rotation.to(ureg.radian).magnitude,
+            "polarization_filter": self.polarization_filter,
+            "phi_offset": self.phi_offset,
+            "gamma_offset": self.gamma_offset,
+            "rotation": self.rotation,
             "is_sequential": self.is_sequential,
+            "coherent": self.coherent,
+            "mean_coupling": self.mean_coupling,
         }
 
-        # Ensure all values are at least 1D arrays for compatibility
-        self.binding_kwargs = {
-            k: numpy.atleast_1d(v) for k, v in self.binding_kwargs.items()
-        }
-
-        # Additional detector settings
-        self.binding_kwargs["mean_coupling"] = self.mean_coupling
-        self.binding_kwargs["coherent"] = self.coherent
-
-        self.binding = CppDetectorSet(**self.binding_kwargs)
+        self.binding = CppDetectorSet(
+            **{
+                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
+                for k, v in self.binding_kwargs.items()
+            }
+        )
 
     def _generate_mapping(self) -> None:
         """

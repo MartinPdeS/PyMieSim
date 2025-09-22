@@ -11,7 +11,7 @@ class BaseSource:
         """
         Ensures that polarization is well defined.
         """
-        from PyMieSim.polarization import BasePolarization, Linear
+        from PyMieSim.single.polarization import BasePolarization, Linear
 
         if isinstance(value, BasePolarization):
             return value

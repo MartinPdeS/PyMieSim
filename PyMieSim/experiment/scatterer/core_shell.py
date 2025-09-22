@@ -4,7 +4,7 @@
 from pydantic.dataclasses import dataclass
 from typing import List
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import Length, RefractiveIndex
+from TypedUnit import Length, RefractiveIndex, AnyUnit
 
 from PyMieSim.binary.interface_sets import CppCoreShellSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
@@ -88,12 +88,6 @@ class CoreShell(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(
-            core_diameter=self.core_diameter,
-            shell_thickness=self.shell_thickness,
-            is_sequential=self.is_sequential,
-        )
-
         mediun_properties = self._add_properties(
             name="medium", properties=self.medium_property
         )
@@ -106,11 +100,18 @@ class CoreShell(BaseScatterer, Sequential):
             name="shell", properties=self.shell_property
         )
 
-        self.binding = CppCoreShellSet(
-            core_diameter=self.core_diameter.to("meter").magnitude,
-            shell_thickness=self.shell_thickness.to("meter").magnitude,
+        self.binding_kwargs = dict(
+            core_diameter=self.core_diameter,
+            shell_thickness=self.shell_thickness,
+            is_sequential=self.is_sequential,
+            medium_properties=mediun_properties,
             core_properties=core_properties,
             shell_properties=shell_properties,
-            medium_properties=mediun_properties,
-            is_sequential=self.is_sequential,
+        )
+
+        self.binding = CppCoreShellSet(
+            **{
+                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
+                for k, v in self.binding_kwargs.items()
+            }
         )
