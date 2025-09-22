@@ -49,7 +49,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 
 # Simulate using PyMieSim
-pymiesim_dataframe = experiment.get(*comparison_measures)
+pymiesim = experiment.get(*comparison_measures, as_numpy=True)
 
 pymiescatt_dataframe = pd.read_csv(
     validation_data_path / "pymiescatt/example_coreshell_0.csv"
@@ -60,15 +60,24 @@ with plt.style.context(mps):
     figure, ax = plt.subplots(1, 1)
 
 
-pymiescatt_dataframe.plot(x="core_diameter", y=comparison_measures, ax=ax, linewidth=3)
-pymiesim_dataframe.plot(
-    x="scatterer:core_diameter",
-    axes=ax,
-    color="black",
-    linestyle="--",
-    linewidth=1.5,
-    show=False,
-)
+for string in comparison_measures:
+    ax.plot(
+        pymiescatt_dataframe["core_diameter"],
+        pymiescatt_dataframe[string],
+        label="PyMieScatt: " + string,
+        linewidth=3,
+    )
+
+
+for data, string in zip(pymiesim, comparison_measures):
+    ax.plot(
+        core_diameters.to(ureg.nanometer).magnitude,
+        data,
+        label="PyMieSim: " + string,
+        linestyle="--",
+        color="black",
+        linewidth=1.5,
+    )
 
 ax.set(
     xlabel=r"Core Diameter [$\mu$m]",
