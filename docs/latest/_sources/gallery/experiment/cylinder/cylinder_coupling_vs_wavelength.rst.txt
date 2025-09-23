@@ -184,7 +184,7 @@ Visualizing how the coupling efficiency varies with the wavelength.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.310 seconds)
+   **Total running time of the script:** (0 minutes 1.316 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:
