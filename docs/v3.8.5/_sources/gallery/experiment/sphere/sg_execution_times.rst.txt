@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:07.786** total execution time for 15 files **from gallery/experiment/sphere**:
+**00:07.846** total execution time for 15 files **from gallery/experiment/sphere**:
 
 .. container::
 
@@ -33,47 +33,47 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_filter.py` (``sphere_coupling_vs_filter.py``)
-     - 00:01.608
+     - 00:01.657
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_wavelength.py` (``sphere_coupling_vs_wavelength.py``)
-     - 00:01.248
+     - 00:01.251
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_diameter.py` (``sphere_coupling_vs_diameter.py``)
-     - 00:00.606
+     - 00:00.624
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_sampling.py` (``sphere_coherent_coupling_vs_sampling.py``)
-     - 00:00.588
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_sampling.py` (``sphere_coupling_vs_sampling.py``)
-     - 00:00.527
+     - 00:00.582
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py` (``sphere_coherent_coupling_vs_phioffset.py``)
-     - 00:00.525
+     - 00:00.531
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_sampling.py` (``sphere_coupling_vs_sampling.py``)
+     - 00:00.528
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py` (``sphere_Qabs_vs_diameter.py``)
-     - 00:00.394
+     - 00:00.396
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_wavelength_std.py` (``sphere_Qsca_vs_wavelength_std.py``)
-     - 00:00.379
+     - 00:00.378
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_b1_vs_diameter.py` (``sphere_b1_vs_diameter.py``)
-     - 00:00.354
+     - 00:00.348
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py` (``sphere_Qsca_vs_diameter.py``)
-     - 00:00.298
+     - 00:00.299
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_rotation.py` (``sphere_coherent_coupling_vs_rotation.py``)
-     - 00:00.297
+     - 00:00.295
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py` (``sphere_coupling_vs_phioffset.py``)
-     - 00:00.294
+     - 00:00.292
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_a1_vs_diameter.py` (``sphere_a1_vs_diameter.py``)
-     - 00:00.253
+     - 00:00.254
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_index.py` (``sphere_Qsca_vs_index.py``)
-     - 00:00.219
+     - 00:00.217
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_wavelength.py` (``sphere_Qsca_vs_wavelength.py``)
-     - 00:00.196
+     - 00:00.193
      - 0.0
