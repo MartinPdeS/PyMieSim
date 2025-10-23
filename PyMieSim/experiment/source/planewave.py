@@ -53,7 +53,7 @@ class PlaneWave(BaseSource, Sequential):
             is_sequential=self.is_sequential,
         )
 
-        self.binding = CppPlaneWaveSourceSet(
+        self.set = CppPlaneWaveSourceSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

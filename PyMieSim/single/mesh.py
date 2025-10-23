@@ -77,9 +77,9 @@ class FibonacciMesh(FIBONACCIMESH):
         """
         super().__init__(
             sampling=self.sampling,
-            max_angle=self.max_angle,
-            min_angle=self.min_angle,
-            rotation_angle=self.rotation,
+            max_angle=self.max_angle.to(ureg.radian).magnitude,
+            min_angle=self.min_angle.to(ureg.radian).magnitude,
+            rotation_angle=self.rotation.to(ureg.radian).magnitude,
             phi_offset=self.phi_offset.to(ureg.radian).magnitude,
             gamma_offset=self.gamma_offset.to(ureg.radian).magnitude,
         )

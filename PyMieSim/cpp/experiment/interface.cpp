@@ -45,6 +45,7 @@ PYBIND11_MODULE(interface_experiment, module) {
 
         .def("get_coupling_sequential", &Experiment::get_coupling_sequential, py::arg("scatterer_set"), py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling power for a scatterer")
         .def("get_coupling", &Experiment::get_coupling, py::arg("scatterer_set"), py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling power for a scatterer")
+        .def("_get_farfields", &Experiment::get_farfields, py::arg("scatterer_set"), py::arg("source_set"), py::arg("mesh"), py::arg("distance") = 1, "Retrieves the farfields for a scatterer")
 
         DEFINE_GETTERS(a1)
         DEFINE_GETTERS(a2)

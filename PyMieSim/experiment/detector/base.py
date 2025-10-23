@@ -162,7 +162,7 @@ class BaseDetector:
             "mean_coupling": self.mean_coupling,
         }
 
-        self.binding = CppDetectorSet(
+        self.set = CppDetectorSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

@@ -83,7 +83,7 @@ class Cylinder(BaseScatterer, Sequential):
             scatterer_properties=scatterer_properties,
         )
 
-        self.binding = CppCylinderSet(
+        self.set = CppCylinderSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

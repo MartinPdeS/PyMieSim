@@ -206,10 +206,64 @@ class Experiment
                 detector.medium_refractive_index = scatterer_ptr->medium_refractive_index;
 
                 output_array[idx] = detector.get_coupling(*scatterer_ptr);
-
             }
 
             return _vector_to_numpy(output_array, {full_size});
         }
+
+
+    pybind11::array_t<complex128>
+    get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance = 1) const
+    {
+        // Head shape for indexing the source and scatterer grid only
+        std::vector<size_t> head_shape = concatenate_vector(source_set.shape, scatterer_set.shape);
+
+        // Full output shape: [..., 2, sampling]
+        std::vector<size_t> array_shape = head_shape;
+        array_shape.push_back(2);                       // channel: 0 -> theta, 1 -> phi
+        array_shape.push_back(mesh.sampling);       // samples along the mesh
+
+        const size_t total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
+        const size_t stride_channel   = mesh.sampling;      // size of one trace
+        const size_t stride_block     = 2 * stride_channel;     // theta + phi per combo
+
+        // Allocate the full array
+        size_t total_size = 1;
+        for (size_t d : array_shape) total_size *= d;
+        std::vector<complex128> output_array(total_size, 0.0);
+
+        debug_printf("get_scatterer_farfields: total_iterations = %zu\n", total_iterations);
+
+        #pragma omp parallel for
+        for (size_t idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
+            size_t i = idx_flat / scatterer_set.total_combinations;  // source index
+            size_t j = idx_flat % scatterer_set.total_combinations;  // scatterer index
+
+            BaseSource source = source_set.get_source_by_index(i);
+            std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
+
+            // Linear index over the head shape only
+            size_t idx_head = flatten_multi_index(head_shape, source.indices, scatterer_ptr->indices);
+
+            // Compute fields
+            auto [phi_field, theta_field] = scatterer_ptr->compute_unstructured_farfields(mesh, distance);
+
+            // Sanity check in debug builds
+            if (phi_field.size() != stride_channel || theta_field.size() != stride_channel) {
+                // handle error as you prefer
+                continue;
+            }
+
+            // Write into the last two axes
+            size_t base = idx_head * stride_block;
+
+            std::copy(theta_field.begin(), theta_field.end(), output_array.begin() + base + 0 * stride_channel);
+
+            std::copy(phi_field.begin(),   phi_field.end(), output_array.begin() + base + 1 * stride_channel);
+        }
+
+        debug_printf("get_scatterer_farfields: finished computation\n");
+        return _vector_to_numpy(output_array, array_shape);
+    }
 
 };

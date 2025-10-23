@@ -33,13 +33,14 @@ class Setup:
     """
     Orchestrates the setup and execution of light scattering experiments using PyMieSim.
 
-    Attributes:
-        scatterer (Union[Sphere, Cylinder, CoreShell]): Configuration for the scatterer in the experiment.
-            Defines the physical properties of the particle being studied.
-        source (Union[Gaussian, PlaneWave]): Configuration for the light source. Specifies the characteristics
-            of the light (e.g., wavelength, polarization) illuminating the scatterer.
-        detector (Union[Photodiode, CoherentMode, None], optional): Configuration for the detector, if any. Details the
-            method of detection for scattered light, including positional and analytical parameters. Defaults to None.
+    Attributes
+    ----------
+    scatterer : Union[Sphere, Cylinder, CoreShell]
+        Configuration for the scatterer in the experiment. Defines the physical properties of the particle being studied.
+    source : Union[Gaussian, PlaneWave]
+        Configuration for the light source. Specifies the characteristics of the light (e.g., wavelength, polarization) illuminating the scatterer.
+    detector : Union[Photodiode, CoherentMode, None], optional
+        Configuration for the detector, if any. Details the method of detection for scattered light, including positional and analytical parameters. Defaults to None.
 
     Methods provide functionality for initializing bindings, generating parameter tables for visualization,
     and executing the simulation to compute and retrieve specified measures.
@@ -88,9 +89,9 @@ class Setup:
 
         # Compute the values using the binding method
         return getattr(self.binding, method_name)(
-            scatterer_set=self.scatterer.binding,
-            source_set=self.source.binding,
-            detector_set=self.detector.binding,
+            scatterer_set=self.scatterer.set,
+            source_set=self.source.set,
+            detector_set=self.detector.set,
         )
 
     def get(
@@ -187,9 +188,9 @@ class Setup:
             method = getattr(self.binding, method_name)
 
             array = method(
-                scatterer_set=self.scatterer.binding,
-                source_set=self.source.binding,
-                detector_set=self.detector.binding,
+                scatterer_set=self.scatterer.set,
+                source_set=self.source.set,
+                detector_set=self.detector.set,
             )
 
             output_array.append(array)
@@ -224,9 +225,9 @@ class Setup:
 
             # Compute the values using the binding method
             array = getattr(self.binding, method_name)(
-                scatterer_set=self.scatterer.binding,
-                source_set=self.source.binding,
-                detector_set=self.detector.binding,
+                scatterer_set=self.scatterer.set,
+                source_set=self.source.set,
+                detector_set=self.detector.set,
             )
 
             # Determine the unit based on the measure type

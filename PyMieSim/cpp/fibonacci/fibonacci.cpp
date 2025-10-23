@@ -1,5 +1,5 @@
 #include "fibonacci/fibonacci.h"
-
+#include <iostream>
 
 // ------------------ Constructors ------------------
 FibonacciMesh::FibonacciMesh(size_t sampling, double max_angle, double min_angle, double phi_offset, double gamma_offset, double rotation, double radius):
@@ -88,8 +88,11 @@ void FibonacciMesh::compute_mesh() {
         double
             z = 1 - (2. * i) / (true_number_of_sample - 1),
             theta = golden_angle * i,
-            radius = sqrt(1 - z * z),
-            angle = atan(radius / z);
+            radius = sqrt(1 - z * z);
+
+        double x = cos(theta) * radius;
+        double y = sin(theta) * radius;
+        double angle = - (asin(z) - PI / 2.0);
 
         if (angle < this->min_angle)
             continue;
@@ -98,8 +101,8 @@ void FibonacciMesh::compute_mesh() {
             break;
 
         this->cartesian.z.push_back(z);
-        this->cartesian.x.push_back(cos(theta) * radius);
-        this->cartesian.y.push_back(sin(theta) * radius);
+        this->cartesian.x.push_back(x);
+        this->cartesian.y.push_back(y);
     }
 }
 

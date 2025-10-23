@@ -89,7 +89,7 @@ class Sphere(BaseScatterer, Sequential):
             scatterer_properties=scatterer_properties,
         )
 
-        self.binding = CppSphereSet(
+        self.set = CppSphereSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()
