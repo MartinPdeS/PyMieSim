@@ -1,26 +1,24 @@
-"""
-Photodiode Detector
-===================
+from TypedUnit import ureg
 
-This example demonstrates the initialization and visualization of a Photodiode detector using PyMieSim.
-"""
+from PyMieSim.single.detector import CoherentMode
+from PyMieSim.single import plot_system
 
-# %%
-# Importing the package: PyMieSim
-from PyMieSim.single.detector import Photodiode
-from PyMieSim.units import AU, degree
-
-# %%
-# Initializing the detector
-detector = Photodiode(
-    NA=0.2 * AU,  # Numerical Aperture
-    cache_NA=0.1 * AU,  # Numerical Aperture
-    sampling=400 * AU,  # Number of sampling points
-    gamma_offset=0 * degree,  # Gamma offset in degrees
-    phi_offset=0 * degree,  # Phi offset in degrees
-    polarization_filter=None,  # No polarization filter applied
+detector = CoherentMode(
+    mode_number="LG23",  # Specifying LP23 mode
+    sampling=400 * ureg.AU,  # Number of sampling points
+    NA=0.4 * ureg.AU,  # Numerical Aperture
+    gamma_offset=0 * ureg.degree,  # Gamma offset
+    phi_offset=40 * ureg.degree,  # Phi offset in degrees
 )
 
-# %%
-# Plotting the detector
-detector.plot()
+# print(detector._cpp_mesh.spherical.phi.shape)
+
+
+detector._cpp_scalar_field[:200] *= 0
+
+
+field = detector.get_structured_scalarfield(sampling=10)
+print(field)
+
+plot_system(detector)
+print("done")

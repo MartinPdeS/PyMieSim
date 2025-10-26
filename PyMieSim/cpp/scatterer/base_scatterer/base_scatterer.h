@@ -11,10 +11,8 @@ typedef std::complex<double> complex128;
 namespace py = pybind11;
 
 
-
 #define DEFINE_COEFFICIENTS_GETTERS(name) \
     std::vector<complex128> name##n; \
-    pybind11::array_t<complex128> get_##name##n_list_py() {return _vector_to_numpy(this->name##n); } \
     double get_##name##1() const { return abs(this->name##n[0]); } \
     double get_##name##2() const { return abs(this->name##n[1]); } \
     double get_##name##3() const { return abs(this->name##n[2]); } \
@@ -340,45 +338,20 @@ public:
         const std::string& field_type
     );
 
+    /**
+     * @brief Python interface for coefficient retrieval.
+     *
+     * @param type The type of coefficient to retrieve (e.g., "a", "b", "c", "d").
+     * @param order The order of the coefficient.
+     *
+     * @return The coefficient as a complex128 value.
+     */
+    complex128 get_coefficient(
+        const std::string &type,
+        const size_t order
+    );
+
     //- PYTHON INTERFACE --------------------------------------------------------------------------
-    /**
-     * @brief Python interface for S1 and S2 coefficients.
-     *
-     * @param phi The azimuthal angles in radians.
-     *
-     * @return Tuple of NumPy arrays: (S1, S2).
-     */
-    std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_unstructured_farfields_py(
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double radius
-    ) const;
-
-    /**
-     * @brief Python interface for S1 and S2 coefficients.
-     *
-     * @param phi The azimuthal angles in radians.
-     *
-     * @return Tuple of NumPy arrays: (S1, S2).
-     */
-    std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_s1s2_py(const std::vector<double> &phi) const;
-
-    /**
-     * @brief Python interface for full structured fields computation.
-     *
-     * @param sampling Number of samples.
-     * @param distance Distance parameter.
-     *
-     * @return Tuple of NumPy arrays: (S1, S2, theta, radius).
-     */
-    std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
-    get_full_structured_farfields_py(
-        size_t &sampling,
-        double& distance
-    ) const;
-
     /**
      * @brief Computes the full structured farfields for a given sampling and radius.
      *
@@ -392,19 +365,6 @@ public:
         const size_t sampling,
         const double radius = 1.0
     ) const;
-
-    /**
-     * @brief Python interface for coefficient retrieval.
-     *
-     * @param type The type of coefficient to retrieve (e.g., "a", "b", "c", "d").
-     * @param order The order of the coefficient.
-     *
-     * @return The coefficient as a complex128 value.
-     */
-    complex128 get_coefficient_py(
-        const std::string &type,
-        const size_t order
-    );
 
     /**
      * @brief Python interface for near-field computation.

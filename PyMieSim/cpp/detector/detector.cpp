@@ -136,7 +136,7 @@ void Detector::apply_polarization_filter(T &coupling_theta, T &coupling_phi, dou
 }
 
 
-pybind11::array_t<complex128> Detector::get_structured_scalarfield(const size_t sampling) const {
+std::vector<complex128> Detector::get_structured_scalarfield(const size_t sampling) const {
     // Define the spatial extent (adjust as needed)
     const double xmin = -1.0;
     const double xmax = 1.0;
@@ -168,14 +168,13 @@ pybind11::array_t<complex128> Detector::get_structured_scalarfield(const size_t 
     // Compute unstructured field
     std::vector<complex128> output = this->mode_field.get_unstructured(X_flat, Y_flat);
 
-    // Reshape to 2D numpy array
-    return _vector_to_numpy(output, {sampling, sampling});
+    return output;
 }
 
 
 // ------------------------- Coupling Function -------------------------
 double Detector::get_coupling(const BaseScatterer& scatterer) const {
-    if (this->coherent)
+    if (this->is_coherent)
         return this->mean_coupling ? get_coupling_mean_coherent(scatterer) : get_coupling_point_coherent(scatterer);
     else
         return this->mean_coupling ? get_coupling_mean_no_coherent(scatterer) : get_coupling_point_no_coherent(scatterer);

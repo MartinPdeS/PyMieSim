@@ -29,7 +29,12 @@ void register_cylinder(pybind11::module_& module) {
                     The source of the incident light.
             )pbdoc"
         )
-        .def("a1n", &Cylinder::get_a1n_list_py,
+        .def_property("a1n",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.a1n);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.a1n, arr);
+            },
             R"pbdoc(
                 Returns :math:`a_{1n}` coefficient as defined in ref[5]:
 
@@ -49,7 +54,12 @@ void register_cylinder(pybind11::module_& module) {
                     A list of a1n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the first mode of the spherical wave expansion.
             )pbdoc"
         )
-        .def("b1n", &Cylinder::get_b1n_list_py,
+        .def_property("b1n",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.b1n);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.b1n, arr);
+            },
             R"pbdoc(
                 Returns :math:`b_{1n}` coefficient as defined in ref[5]:
 
@@ -69,7 +79,12 @@ void register_cylinder(pybind11::module_& module) {
                     A list of b1n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the first mode of the spherical wave expansion.
             )pbdoc"
         )
-        .def("a2n", &Cylinder::get_a2n_list_py,
+        .def_property("a2n",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.a2n);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.a2n, arr);
+            },
             R"pbdoc(
                 Returns :math:`a_{2n}` coefficient as defined in ref[5]:
 
@@ -89,7 +104,12 @@ void register_cylinder(pybind11::module_& module) {
                     A list of a2n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the second mode of the spherical wave expansion.
             )pbdoc"
         )
-        .def("b2n", &Cylinder::get_b2n_list_py,
+        .def_property("b2n",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.b2n);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.b2n, arr);
+            },
             R"pbdoc(
                 Returns :math:`b_{2n}` coefficient as defined in ref[5]:
 

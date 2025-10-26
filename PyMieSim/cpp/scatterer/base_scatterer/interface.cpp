@@ -5,7 +5,8 @@
 void register_base_scatterer(pybind11::module_& module) {
 
     pybind11::class_<BaseScatterer>(module, "BASESCATTERER")
-        .def_readonly("_cpp_cross_section", &BaseScatterer::cross_section,
+        .def_readonly("_cpp_cross_section",
+            &BaseScatterer::cross_section,
             R"pbdoc(
                 Cross-sectional area of the scatterer.
 
@@ -38,7 +39,15 @@ void register_base_scatterer(pybind11::module_& module) {
                     The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).
             )pbdoc"
         )
-        .def("_cpp_get_s1s2", &BaseScatterer::get_s1s2_py, pybind11::arg("phi"),
+        .def("_cpp_get_s1s2",
+            [](BaseScatterer& self, const std::vector<double> &phi){
+                auto [S1, S2] = self.compute_s1s2(phi);
+                return std::make_tuple(
+                    vector_move_from_numpy(S1, {S1.size()}),
+                    vector_move_from_numpy(S2, {S2.size()})
+                );
+            },
+            pybind11::arg("phi"),
             R"pbdoc(
                 Calculates and returns the S1 and S2 scattering parameters.
 
@@ -53,8 +62,19 @@ void register_base_scatterer(pybind11::module_& module) {
                     A tuple containing the S1 and S2 scattering parameters, which represent the scattering amplitudes for the incident and scattered waves.
             )pbdoc"
         )
-        .def("_cpp_get_farfields", &BaseScatterer::get_unstructured_farfields_py,
-            pybind11::arg("phi"), pybind11::arg("theta"), pybind11::arg("r"), pybind11::return_value_policy::move,
+        .def("_cpp_get_farfields",
+            [](BaseScatterer& self, const std::vector<double>& phi, const std::vector<double>& theta, const double& distance) {
+                auto [theta_field, phi_field] = self.compute_unstructured_farfields(phi, theta, distance);
+
+                return std::make_tuple(
+                    vector_move_from_numpy(std::move(phi_field), {phi_field.size()}),
+                    vector_move_from_numpy(std::move(theta_field), {theta_field.size()})
+                );
+            },
+            pybind11::arg("phi"),
+            pybind11::arg("theta"),
+            pybind11::arg("distance"),
+            pybind11::return_value_policy::move,
             R"pbdoc(
                 Returns the unstructured electromagnetic fields around the scatterer.
 
@@ -64,7 +84,7 @@ void register_base_scatterer(pybind11::module_& module) {
                     The azimuthal angle (in radians).
                 theta : float
                     The polar angle (in radians).
-                r : float
+                distance : float
                     The radial distance from the scatterer.
 
                 Returns
@@ -73,8 +93,19 @@ void register_base_scatterer(pybind11::module_& module) {
                     A NumPy array containing the unstructured electromagnetic fields (E and H) around the scatterer.
             )pbdoc"
         )
-        .def("_cpp_get_full_farfields", &BaseScatterer::get_full_structured_farfields_py,
-            pybind11::arg("sampling"), pybind11::arg("distance"),
+        .def("_cpp_get_full_farfields",
+            [](BaseScatterer& self, const size_t sampling, const double& distance) {
+
+                auto [phi_field_mesh, theta_field_mesh, theta_mesh, phi_mesh] = self.compute_full_structured_farfields(sampling, distance);
+                return std::make_tuple(
+                    vector_move_from_numpy(std::move(phi_field_mesh), {sampling, sampling}).attr("transpose")(),
+                    vector_move_from_numpy(std::move(theta_field_mesh), {sampling, sampling}).attr("transpose")(),
+                    vector_move_from_numpy(std::move(phi_mesh), {sampling}),
+                    vector_move_from_numpy(std::move(theta_mesh), {sampling})
+                );
+            },
+            pybind11::arg("sampling"),
+            pybind11::arg("distance"),
             R"pbdoc(
                 Returns the full structured electromagnetic fields around the scatterer.
 
@@ -91,8 +122,10 @@ void register_base_scatterer(pybind11::module_& module) {
                     A NumPy array with the full structured electromagnetic fields around the scatterer.
             )pbdoc"
         )
-        .def("_cpp_get_coefficient", &BaseScatterer::get_coefficient_py,
-            pybind11::arg("type"), pybind11::arg("order"),
+        .def("_cpp_get_coefficient",
+            &BaseScatterer::get_coefficient,
+            pybind11::arg("type"),
+            pybind11::arg("order"),
             R"pbdoc(
                 Returns a specific scattering coefficient for a given type and order.
 
@@ -109,7 +142,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The value of the specified scattering coefficient.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qsca", &BaseScatterer::get_Qsca,
+        .def_property_readonly("_cpp_Qsca",
+            &BaseScatterer::get_Qsca,
             R"pbdoc(
                 Scattering efficiency of the scatterer.
 
@@ -122,7 +156,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The scattering efficiency (Qsca) value, which characterizes the effectiveness of the scatterer in scattering incident light.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qext", &BaseScatterer::get_Qext,
+        .def_property_readonly("_cpp_Qext",
+            &BaseScatterer::get_Qext,
             R"pbdoc(
                 Extinction efficiency of the scatterer.
 
@@ -135,7 +170,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The extinction efficiency (Qext) value, representing the combined effect of scattering and absorption.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qabs", &BaseScatterer::get_Qabs,
+        .def_property_readonly("_cpp_Qabs",
+            &BaseScatterer::get_Qabs,
             R"pbdoc(
                 Absorption efficiency of the scatterer.
 
@@ -148,7 +184,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The absorption efficiency (Qabs) value, which characterizes the absorption of incident light by the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qback", &BaseScatterer::get_Qback,
+        .def_property_readonly("_cpp_Qback",
+            &BaseScatterer::get_Qback,
             R"pbdoc(
                 Backscattering efficiency of the scatterer.
 
@@ -161,7 +198,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The backscattering efficiency (Qback) value, which characterizes the amount of light scattered in the backward direction.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qforward", &BaseScatterer::get_Qforward,
+        .def_property_readonly("_cpp_Qforward",
+            &BaseScatterer::get_Qforward,
             R"pbdoc(
                 Forward-scattering efficiency of the scatterer.
 
@@ -171,7 +209,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The forward-scattering efficiency (Qforward) value, which characterizes the amount of light scattered in the forward direction.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qratio", &BaseScatterer::get_Qratio,
+        .def_property_readonly("_cpp_Qratio",
+            &BaseScatterer::get_Qratio,
             R"pbdoc(
                 The ratio of forward to backward scattering efficiency (Qforward/Qback) of the scatterer.
 
@@ -184,7 +223,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The ratio of forward to backward scattering efficiency (Qratio), giving insight into the asymmetry of scattering.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Qpr", &BaseScatterer::get_Qpr,
+        .def_property_readonly("_cpp_Qpr",
+            &BaseScatterer::get_Qpr,
             R"pbdoc(
                 Radiation pressure efficiency of the scatterer.
 
@@ -197,7 +237,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The radiation pressure efficiency (Qpr) value, associated with the pressure exerted by the scattered light on the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Csca", &BaseScatterer::get_Csca,
+        .def_property_readonly("_cpp_Csca",
+            &BaseScatterer::get_Csca,
             R"pbdoc(
                 Scattering cross-section of the scatterer.
 
@@ -212,7 +253,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The scattering cross-section (Csca) value, which represents the total scattering area of the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Cext", &BaseScatterer::get_Cext,
+        .def_property_readonly("_cpp_Cext",
+            &BaseScatterer::get_Cext,
             R"pbdoc(
                 Extinction cross-section of the scatterer.
 
@@ -227,7 +269,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The extinction cross-section (Cext) value, representing the total extinction, including scattering and absorption.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Cabs", &BaseScatterer::get_Cabs,
+        .def_property_readonly("_cpp_Cabs",
+            &BaseScatterer::get_Cabs,
             R"pbdoc(
                 Absorption cross-section of the scatterer.
 
@@ -242,7 +285,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The absorption cross-section (Cabs) value, representing the area over which the scatterer absorbs light.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Cback", &BaseScatterer::get_Cback,
+        .def_property_readonly("_cpp_Cback",
+            &BaseScatterer::get_Cback,
             R"pbdoc(
                 Backscattering cross-section of the scatterer.
 
@@ -257,7 +301,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The backscattering cross-section (Cback) value, representing the total scattering area for backward-scattered light.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Cforward", &BaseScatterer::get_Cforward,
+        .def_property_readonly("_cpp_Cforward",
+            &BaseScatterer::get_Cforward,
             R"pbdoc(
                 Forward-scattering cross-section of the scatterer.
 
@@ -272,7 +317,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The forward-scattering cross-section (Cforward) value, representing the total scattering area for forward-scattered light.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Cratio", &BaseScatterer::get_Cratio,
+        .def_property_readonly("_cpp_Cratio",
+            &BaseScatterer::get_Cratio,
             R"pbdoc(
                 The ratio of forward to backward scattering cross-section (Cforward/Cback) of the scatterer.
 
@@ -287,7 +333,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The ratio of forward to backward scattering cross-section (Cratio), which gives an indication of scattering asymmetry.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_Cpr", &BaseScatterer::get_Cpr,
+        .def_property_readonly("_cpp_Cpr",
+            &BaseScatterer::get_Cpr,
             R"pbdoc(
                 Radiation pressure cross-section of the scatterer.
 
@@ -302,7 +349,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The radiation pressure cross-section (Cpr) value, associated with the cross-sectional area for radiation pressure exerted on the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("_cpp_g", &BaseScatterer::get_g,
+        .def_property_readonly("_cpp_g",
+            &BaseScatterer::get_g,
             R"pbdoc(
                 Asymmetry parameter of the scatterer.
 
@@ -316,7 +364,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The asymmetry parameter (g) value, where g = 0 represents isotropic scattering.
             )pbdoc"
         )
-        .def_readwrite("_cpp_cross_section", &BaseScatterer::cross_section,
+        .def_readwrite("_cpp_cross_section",
+            &BaseScatterer::cross_section,
             R"pbdoc(
                 Physical cross-sectional area of the scatterer.
 
@@ -326,7 +375,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The physical cross-sectional area (area) used in scattering calculations.
             )pbdoc"
         )
-        .def_readwrite("_cpp_size_parameter", &BaseScatterer::size_parameter,
+        .def_readwrite("_cpp_size_parameter",
+            &BaseScatterer::size_parameter,
             R"pbdoc(
                 Size parameter of the scatterer.
 
@@ -410,10 +460,10 @@ void register_base_scatterer(pybind11::module_& module) {
                 -------
                 tuple
                     Tuple containing:
-                    - Requested field component values (nx × ny × nz) as numpy.ndarray
-                    - Ex field component (nx × ny × nz) as numpy.ndarray
-                    - Ey field component (nx × ny × nz) as numpy.ndarray
-                    - Ez field component (nx × ny × nz) as numpy.ndarray
+                    - Requested field component values (nx . ny . nz) as numpy.ndarray
+                    - Ex field component (nx . ny . nz) as numpy.ndarray
+                    - Ey field component (nx . ny . nz) as numpy.ndarray
+                    - Ez field component (nx . ny . nz) as numpy.ndarray
                     - x coordinates (flattened) as numpy.ndarray
                     - y coordinates (flattened) as numpy.ndarray
                     - z coordinates (flattened) as numpy.ndarray

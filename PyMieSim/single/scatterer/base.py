@@ -130,7 +130,9 @@ class BaseScatterer:
             Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.
         """
         return self._cpp_get_farfields(
-            phi=phi, theta=theta, r=r.to_base_units().magnitude
+            phi=phi.to("radian").magnitude,
+            theta=theta.to("radian").magnitude,
+            distance=r.to_base_units().magnitude,
         )
 
     def get_s1s2_array(self, phi: numpy.ndarray) -> Tuple[numpy.ndarray, numpy.ndarray]:

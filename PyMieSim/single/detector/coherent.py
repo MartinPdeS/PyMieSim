@@ -89,7 +89,7 @@ class CoherentMode(DETECTOR, BaseDetector):
             gamma_offset=self.gamma_offset.to(ureg.radian).magnitude,
             polarization_filter=self.polarization_filter.to(ureg.radian).magnitude,
             rotation=self.rotation.to(ureg.radian).magnitude,
-            coherent=False,
+            is_coherent=True,
             mean_coupling=self.mean_coupling,
             medium_refractive_index=self.medium_refractive_index.to(ureg.RIU).magnitude,
         )

@@ -6,6 +6,7 @@
 
 namespace py = pybind11;
 
+
 PYBIND11_MODULE(interface_detector, module) {
     module.doc() = R"pbdoc(
         Detector binding for PyMieSim.
@@ -48,7 +49,7 @@ PYBIND11_MODULE(interface_detector, module) {
             Degree or type of polarization filtering applied.
         rotation : float
             Rotation angle (radians) of the detector's field-of-view.
-        coherent : bool
+        is_coherent : bool
             Whether to compute coherent coupling (true) or incoherent (false).
         mean_coupling : bool
             If true, uses mean coupling; if false, uses point coupling.
@@ -59,7 +60,7 @@ PYBIND11_MODULE(interface_detector, module) {
         ----------
         scalar_field : numpy.ndarray
             The detected scalar field (intensity) sampled on the angular mesh.
-        coherent : bool
+        is_coherent : bool
             Flag indicating coherent detection mode.
         NA : float
             Numerical aperture exposed as a read-only property.
@@ -90,13 +91,36 @@ PYBIND11_MODULE(interface_detector, module) {
             py::arg("gamma_offset"),
             py::arg("polarization_filter"),
             py::arg("rotation"),
-            py::arg("coherent"),
+            py::arg("is_coherent"),
             py::arg("mean_coupling"),
             py::arg("medium_refractive_index") = 1.0,
             R"pbdoc(
                 Initialize a BindedDetector.
 
                 See class docstring for parameter descriptions.
+            )pbdoc"
+        )
+        .def_property(
+            "_cpp_scalar_field",
+            [](Detector& self) {return vector_as_numpy_view(self, self.scalar_field);},
+            [](Detector& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.scalar_field, arr);
+            },
+            R"pbdoc(
+                Complex far field samples as numpy.complex128, shape (N,)
+                Getter returns a zero copy view tied to the detector lifetime
+                Setter accepts any 1D array castable to complex128
+            )pbdoc"
+        )
+        .def("get_structured_scalarfield",
+            [](Detector& self, size_t sampling) {
+                std::vector<complex128> vector = self.get_structured_scalarfield(sampling);  // returns vector<double>
+                return vector_move_from_numpy(std::move(vector), {sampling, sampling});
+            },
+            py::arg("sampling"),
+            R"pbdoc(
+                NumPy array of shape (sampling, 2) with columns [gamma, phi].
             )pbdoc"
         )
         .def_readonly(
@@ -113,17 +137,6 @@ PYBIND11_MODULE(interface_detector, module) {
             R"pbdoc(
                 ModeID instance representing the detector's mode identifier.
                 Contains family and number information for the mode.
-            )pbdoc"
-        )
-        .def("get_structured_scalarfield",
-            &Detector::get_structured_scalarfield,
-            py::arg("sampling"),
-            py::return_value_policy::move,
-            R"pbdoc(
-                Get structured mode field data.
-
-                Returns a NumPy array of shape (sampling, 2) containing
-                (gamma, phi) pairs for the mode field.
             )pbdoc"
         )
         .def("_cpp_get_coupling",
@@ -143,16 +156,7 @@ PYBIND11_MODULE(interface_detector, module) {
                     The coupling coefficient (overlap integral) value.
             )pbdoc"
         )
-        .def_readwrite("_cpp_scalar_field",
-            &Detector::scalar_field,
-            R"pbdoc(
-                Scalar field intensity sampled on the detector mesh.
-
-                This NumPy array holds the detected intensity values at each
-                angular sample point.
-            )pbdoc"
-        )
-        .def_readwrite("coherent", &Detector::coherent,
+        .def_readwrite("is_coherent", &Detector::is_coherent,
             R"pbdoc(
                 Coherent detection mode flag.
 

@@ -29,7 +29,12 @@ void register_sphere(pybind11::module_& module) {
                     The maximum order of spherical harmonics to use in the scattering calculation. Default is 0.
             )pbdoc"
         )
-        .def("an", &BaseScatterer::get_an_list_py,
+        .def_property("an",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.an);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.an, arr);
+            },
             R"pbdoc(
                 Returns :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
@@ -47,8 +52,14 @@ void register_sphere(pybind11::module_& module) {
                 -------
                 list
                     A list of 'an' scattering coefficients used in the spherical wave expansion.
-            )pbdoc")
-        .def("bn", &BaseScatterer::get_bn_list_py,
+            )pbdoc"
+        )
+        .def_property("bn",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.bn);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.bn, arr);
+            },
             R"pbdoc(
                 Returns :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
@@ -65,8 +76,14 @@ void register_sphere(pybind11::module_& module) {
                 -------
                 list
                     A list of 'bn' scattering coefficients used in the spherical wave expansion.
-            )pbdoc")
-        .def("cn", &BaseScatterer::get_cn_list_py,
+            )pbdoc"
+        )
+        .def_property("cn",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.cn);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.cn, arr);
+            },
             R"pbdoc(
                 For future purpose only!
                 Returns :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
@@ -84,8 +101,14 @@ void register_sphere(pybind11::module_& module) {
                 -------
                 list
                     A list of 'cn' scattering coefficients used in the spherical wave expansion.
-            )pbdoc")
-        .def("dn", &BaseScatterer::get_dn_list_py,
+            )pbdoc"
+        )
+        .def_property("dn",
+            [](Sphere& self) {return vector_as_numpy_view(self, self.dn);},
+            [](Sphere& self,
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                vector_assign_from_numpy(self.dn, arr);
+            },
             R"pbdoc(
                 For future purpose only!
                 Returns :math:`d_n` coefficient as defined in Eq:III.91 of B&B:

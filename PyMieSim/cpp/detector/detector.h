@@ -5,7 +5,6 @@
 #include <cmath> // For std::isnan and std::pow
 #include <stdexcept>
 #include "fibonacci/fibonacci.h"
-#include "utils/numpy_interface.h"
 #include <scatterer/base_scatterer/base_scatterer.h>
 #include "../mode_field/mode_field.h"
 
@@ -24,7 +23,7 @@ class Detector {
         double gamma_offset = 0.0;
         double polarization_filter = 0.0;
         double rotation = 0.0;
-        bool coherent = true;
+        bool is_coherent = true;
         bool mean_coupling = true;
         double medium_refractive_index;
         double max_angle = 0;
@@ -47,7 +46,7 @@ class Detector {
             const double gamma_offset,
             const double polarization_filter,
             const double rotation,
-            const bool coherent,
+            const bool is_coherent,
             const bool mean_coupling,
             const double medium_refractive_index = 1.0)
         :   mode_number(mode_number),
@@ -58,7 +57,7 @@ class Detector {
             gamma_offset(gamma_offset),
             polarization_filter(polarization_filter),
             rotation(rotation),
-            coherent(coherent),
+            is_coherent(is_coherent),
             mean_coupling(mean_coupling),
             medium_refractive_index(medium_refractive_index)
         {
@@ -79,7 +78,7 @@ class Detector {
          * @return A numpy array containing the structured scalar field.
          * @note This function computes the scalar field based on the mode field and the Fibonacci mesh.
          */
-        [[nodiscard]] pybind11::array_t<complex128> get_structured_scalarfield(const size_t sampling) const;
+        [[nodiscard]] std::vector<complex128> get_structured_scalarfield(const size_t sampling) const;
 
     private:
         /**

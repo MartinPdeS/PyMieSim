@@ -39,7 +39,6 @@ class BaseRepresentation:
         fields = self.scatterer._cpp_get_full_farfields(
             sampling=self.sampling, distance=self.distance.to_base_units().magnitude
         )
-
         self.E_phi, self.E_theta, self.theta, self.phi = fields
 
         self.compute_components()

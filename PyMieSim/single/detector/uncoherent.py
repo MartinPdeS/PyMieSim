@@ -63,7 +63,7 @@ class Photodiode(DETECTOR, BaseDetector):
             polarization_filter=self.polarization_filter.to(ureg.radian).magnitude,
             mean_coupling=self.mean_coupling,
             rotation=0,
-            coherent=False,
+            is_coherent=False,
             medium_refractive_index=self.medium_refractive_index.to(ureg.RIU).magnitude,
         )
 

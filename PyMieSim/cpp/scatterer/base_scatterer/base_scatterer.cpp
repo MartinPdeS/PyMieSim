@@ -123,46 +123,64 @@ BaseScatterer::get_g_with_farfields(size_t sampling) const {
     return expected_cos/norm;
 }
 
-//- PYTHON INTERFACE --------------------------------------------------------------------------
+complex128
+BaseScatterer::get_coefficient(const std::string &type, const size_t order) {
+    if (order > max_order)
+        throw std::invalid_argument("Coefficient number is higher than computed max value: " + std::to_string(max_order));
 
-std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-BaseScatterer::get_unstructured_farfields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
-{
-    auto [theta_field, phi_field] = this->compute_unstructured_farfields(phi, theta, radius);
+    if (type == "a")
+        return this->an[order];
+    else if (type == "b")
+        return this->bn[order];
+    else if (type == "c")
+        return this->cn[order];
+    else if (type == "d")
+        return this->dn[order];
 
-    return std::make_tuple(
-        _vector_to_numpy(phi_field, {phi_field.size()}),
-        _vector_to_numpy(theta_field, {theta_field.size()})
-    );
+    throw std::invalid_argument("Invalid type provided.");
+
+    return 0.;
 }
 
-std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-BaseScatterer::get_s1s2_py(const std::vector<double> &phi) const
-{
-    auto [S1, S2] = this->compute_s1s2(phi);
-
-    return std::make_tuple(
-        _vector_to_numpy(S1, {S1.size()}),
-        _vector_to_numpy(S2, {S2.size()})
-    );
+complex128
+BaseScatterer::get_propagator(const double &radius) const {
+    return source.amplitude / (source.wavenumber * radius) * exp(-complex128(0, 1) * source.wavenumber * radius);
 }
 
-std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
-BaseScatterer::get_full_structured_farfields_py(size_t &sampling, double& distance) const {
-    auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_farfields(sampling, distance);
+void
+BaseScatterer::get_pi_tau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {
+    pin[0] = 1.;
+    pin[1] = 3. * mu;
 
-    py::array_t<complex128>
-        phi_field_py = _vector_to_numpy(phi_field, {sampling, sampling}),
-        theta_field_py = _vector_to_numpy(theta_field, {sampling, sampling});
+    taun[0] = mu;
+    taun[1] = 3.0 * cos(2. * acos(mu) );
 
-    py::array_t<double>
-        theta_py = _vector_to_numpy(theta, {theta.size()}),
-        phi_py = _vector_to_numpy(phi, {phi.size()});
+    for (size_t order = 2; order < max_order; order++) {
+        pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
 
-    phi_field_py = phi_field_py.attr("transpose")();
-    theta_field_py = theta_field_py.attr("transpose")();
+        taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
+    }
+}
 
-    return std::make_tuple(phi_field_py, theta_field_py, phi_py, theta_py);
+std::tuple<std::vector<complex128>, std::vector<complex128>>
+BaseScatterer::get_pi_tau(const double& mu, const size_t& max_order) const {
+    std::vector<complex128> pin, taun;
+    pin.reserve(max_order);
+    taun.reserve(max_order);
+
+    pin.push_back( 1. );
+    pin.push_back( 3. * mu );
+
+    taun.push_back( mu );
+    taun.push_back( 3.0 * cos(2. * acos(mu) ) );
+
+    for (size_t order = 2; order < max_order; order++) {
+        pin.push_back( ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order );
+
+        taun.push_back( ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1] );
+    }
+
+    return std::make_tuple(pin, taun);
 }
 
 std::tuple<std::vector<double>, FullSteradian>
@@ -188,66 +206,8 @@ BaseScatterer::compute_full_structured_spf(const size_t sampling, const double r
     return std::make_tuple(std::move(spf), std::move(full_mesh));
 }
 
-complex128
-BaseScatterer::get_coefficient_py(const std::string &type, const size_t order) {
-    if (order > max_order)
-        throw std::invalid_argument("Coefficient number is higher than computed max value: " + std::to_string(max_order));
 
-    if (type == "a")
-        return this->an[order];
-    else if (type == "b")
-        return this->bn[order];
-    else if (type == "c")
-        return this->cn[order];
-    else if (type == "d")
-        return this->dn[order];
-
-    throw std::invalid_argument("Invalid type provided.");
-
-    return 0.;
-}
-
-complex128
-BaseScatterer::get_propagator(const double &radius) const {
-    return source.amplitude / (source.wavenumber * radius) * exp(-complex128(0, 1) * source.wavenumber * radius);
-}
-
-std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::get_pi_tau(const double& mu, const size_t& max_order) const {
-    std::vector<complex128> pin, taun;
-    pin.reserve(max_order);
-    taun.reserve(max_order);
-
-    pin.push_back( 1. );
-    pin.push_back( 3. * mu );
-
-    taun.push_back( mu );
-    taun.push_back( 3.0 * cos(2. * acos(mu) ) );
-
-    for (size_t order = 2; order < max_order; order++) {
-        pin.push_back( ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order );
-
-        taun.push_back( ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1] );
-    }
-
-    return std::make_tuple(pin, taun);
-}
-
-void
-BaseScatterer::get_pi_tau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {
-    pin[0] = 1.;
-    pin[1] = 3. * mu;
-
-    taun[0] = mu;
-    taun[1] = 3.0 * cos(2. * acos(mu) );
-
-    for (size_t order = 2; order < max_order; order++) {
-        pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
-
-        taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
-    }
-}
-
+//- PYTHON INTERFACE --------------------------------------------------------------------------
 py::array_t<complex128>
 BaseScatterer::compute_nearfields_py(const py::array_t<double>& x_py, const py::array_t<double>& y_py, const py::array_t<double>& z_py, const std::string& field_type) {
     // Convert NumPy arrays to std::vectors
