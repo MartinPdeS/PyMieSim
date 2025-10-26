@@ -1,8 +1,9 @@
 #include <pybind11/pybind11.h>
 #include "mode_field.h"
+#include "utils/numpy_interface.h"
 
 
-void register_mode_field(py::module_& module) {
+void register_mode_field(pybind11::module_& module) {
     // ------------------ Bindings for ModeField ------------------
     pybind11::class_<ModeField>(module, "MODEFIELD")
         .def("_cpp_get_unstructured",

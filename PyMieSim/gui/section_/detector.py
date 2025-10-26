@@ -1,4 +1,4 @@
-from PyMieSim.gui.section_.base import Section, angle_units, BaseSubSection
+from PyMieSim.gui.section_.base import Section, BaseSubSection
 
 
 class PhotodiodeSection(BaseSubSection):

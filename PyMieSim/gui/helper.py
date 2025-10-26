@@ -26,12 +26,12 @@ from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment import Setup
-from PyMieSim import units
+from TypedUnit import ureg
 
 # Default unit definitions for consistent parameter handling
-length_units = units.nanometer  # Nanometers for all length measurements
-power_units = units.milliwatt  # Milliwatts for optical power measurements
-angle_units = units.degree  # Degrees for angular measurements
+length_units = ureg.nanometer  # Nanometers for all length measurements
+power_units = ureg.milliwatt  # Milliwatts for optical power measurements
+angle_units = ureg.degree  # Degrees for angular measurements
 
 
 def parse_string_to_array_or_float(

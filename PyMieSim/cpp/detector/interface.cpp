@@ -3,8 +3,7 @@
 #include "../fibonacci/interface.cpp"
 #include "../coordinates/interface.cpp"
 #include "../mode_field/interface.cpp"
-
-namespace py = pybind11;
+#include "utils/numpy_interface.h"
 
 
 PYBIND11_MODULE(interface_detector, module) {
@@ -24,76 +23,78 @@ PYBIND11_MODULE(interface_detector, module) {
 
 
     // ------------------ Bindings for Detector ------------------
-    py::class_<Detector>(module, "DETECTOR", R"pbdoc(
-        Detector for Lorenz-Mie scattering simulations.
+    pybind11::class_<Detector>(module,
+        "DETECTOR",
+            R"pbdoc(
+                Detector for Lorenz-Mie scattering simulations.
 
-        This class wraps a C++ Detector that samples the scattered field
-        according to numerical aperture, orientation offsets, polarization
-        filtering, and optional coherent or mean coupling strategies.
+                This class wraps a C++ Detector that samples the scattered field
+                according to numerical aperture, orientation offsets, polarization
+                filtering, and optional coherent or mean coupling strategies.
 
-        Parameters
-        ----------
-        mode_number : str
-            Identifier for the detector mode (e.g. '0', '1', ...).
-        sampling : int
-            Number of sample points on the detector's angular mesh.
-        NA : float
-            Numerical aperture of the detector; controls the angular acceptance.
-        cache_NA : float
-            Cached NA threshold for fast lookup (set equal to `NA` to disable).
-        phi_offset : float
-            Azimuthal angle offset (radians) for detector orientation.
-        gamma_offset : float
-            Polar angle offset (radians) for detector orientation.
-        polarization_filter : float
-            Degree or type of polarization filtering applied.
-        rotation : float
-            Rotation angle (radians) of the detector's field-of-view.
-        is_coherent : bool
-            Whether to compute coherent coupling (true) or incoherent (false).
-        mean_coupling : bool
-            If true, uses mean coupling; if false, uses point coupling.
-        medium_refractive_index : float, optional
-            Refractive index of the surrounding medium. Default is 1.0.
+                Parameters
+                ----------
+                mode_number : str
+                    Identifier for the detector mode (e.g. '0', '1', ...).
+                sampling : int
+                    Number of sample points on the detector's angular mesh.
+                NA : float
+                    Numerical aperture of the detector; controls the angular acceptance.
+                cache_NA : float
+                    Cached NA threshold for fast lookup (set equal to `NA` to disable).
+                phi_offset : float
+                    Azimuthal angle offset (radians) for detector orientation.
+                gamma_offset : float
+                    Polar angle offset (radians) for detector orientation.
+                polarization_filter : float
+                    Degree or type of polarization filtering applied.
+                rotation : float
+                    Rotation angle (radians) of the detector's field-of-view.
+                is_coherent : bool
+                    Whether to compute coherent coupling (true) or incoherent (false).
+                mean_coupling : bool
+                    If true, uses mean coupling; if false, uses point coupling.
+                medium_refractive_index : float, optional
+                    Refractive index of the surrounding medium. Default is 1.0.
 
-        Attributes
-        ----------
-        scalar_field : numpy.ndarray
-            The detected scalar field (intensity) sampled on the angular mesh.
-        is_coherent : bool
-            Flag indicating coherent detection mode.
-        NA : float
-            Numerical aperture exposed as a read-only property.
-        sampling : int
-            Sampling count exposed as a read-only property.
-        phi_offset : float
-            Azimuthal offset exposed as a read-only property.
-        gamma_offset : float
-            Polar offset exposed as a read-only property.
-        polarization_filter : float
-            Polarization filter setting exposed as a read-only property.
-        rotation : float
-            Rotation angle exposed as a read-only property.
-        mesh : numpy.ndarray
-            Underlying Fibonacci mesh of angles used by the detector.
-        max_angle : float
-            Maximum polar angle in the mesh (radians).
-        min_angle : float
-            Minimum polar angle in the mesh (radians); zero if no cache.
-
-    )pbdoc")
-        .def(py::init<std::string, size_t, double, double, double, double, double, double, bool, bool, double>(),
-            py::arg("mode_number"),
-            py::arg("sampling"),
-            py::arg("NA"),
-            py::arg("cache_NA"),
-            py::arg("phi_offset"),
-            py::arg("gamma_offset"),
-            py::arg("polarization_filter"),
-            py::arg("rotation"),
-            py::arg("is_coherent"),
-            py::arg("mean_coupling"),
-            py::arg("medium_refractive_index") = 1.0,
+                Attributes
+                ----------
+                scalar_field : numpy.ndarray
+                    The detected scalar field (intensity) sampled on the angular mesh.
+                is_coherent : bool
+                    Flag indicating coherent detection mode.
+                NA : float
+                    Numerical aperture exposed as a read-only property.
+                sampling : int
+                    Sampling count exposed as a read-only property.
+                phi_offset : float
+                    Azimuthal offset exposed as a read-only property.
+                gamma_offset : float
+                    Polar offset exposed as a read-only property.
+                polarization_filter : float
+                    Polarization filter setting exposed as a read-only property.
+                rotation : float
+                    Rotation angle exposed as a read-only property.
+                mesh : numpy.ndarray
+                    Underlying Fibonacci mesh of angles used by the detector.
+                max_angle : float
+                    Maximum polar angle in the mesh (radians).
+                min_angle : float
+                    Minimum polar angle in the mesh (radians); zero if no cache.
+            )pbdoc"
+        )
+        .def(pybind11::init<std::string, size_t, double, double, double, double, double, double, bool, bool, double>(),
+            pybind11::arg("mode_number"),
+            pybind11::arg("sampling"),
+            pybind11::arg("NA"),
+            pybind11::arg("cache_NA"),
+            pybind11::arg("phi_offset"),
+            pybind11::arg("gamma_offset"),
+            pybind11::arg("polarization_filter"),
+            pybind11::arg("rotation"),
+            pybind11::arg("is_coherent"),
+            pybind11::arg("mean_coupling"),
+            pybind11::arg("medium_refractive_index") = 1.0,
             R"pbdoc(
                 Initialize a BindedDetector.
 
@@ -104,7 +105,7 @@ PYBIND11_MODULE(interface_detector, module) {
             "_cpp_scalar_field",
             [](Detector& self) {return vector_as_numpy_view(self, self.scalar_field);},
             [](Detector& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.scalar_field, arr);
             },
             R"pbdoc(
@@ -118,7 +119,7 @@ PYBIND11_MODULE(interface_detector, module) {
                 std::vector<complex128> vector = self.get_structured_scalarfield(sampling);  // returns vector<double>
                 return vector_move_from_numpy(std::move(vector), {sampling, sampling});
             },
-            py::arg("sampling"),
+            pybind11::arg("sampling"),
             R"pbdoc(
                 NumPy array of shape (sampling, 2) with columns [gamma, phi].
             )pbdoc"
@@ -141,7 +142,7 @@ PYBIND11_MODULE(interface_detector, module) {
         )
         .def("_cpp_get_coupling",
             &Detector::get_coupling,
-            py::arg("scatterer"),
+            pybind11::arg("scatterer"),
             R"pbdoc(
                 Compute coupling between this detector and a scatterer.
 

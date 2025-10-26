@@ -2,13 +2,11 @@
 
 #include <vector>
 #include "source/source.h"
-#include "utils/numpy_interface.h"
 #include "fibonacci/fibonacci.h"
 #include "full_mesh/full_mesh.h"
 #include "../../bessel_subroutine/bessel_subroutine.h"
 
 typedef std::complex<double> complex128;
-namespace py = pybind11;
 
 
 #define DEFINE_COEFFICIENTS_GETTERS(name) \
@@ -91,13 +89,6 @@ public:
      * @note This method computes the scattering efficiency based on the coefficients an and bn.
      */
     double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
-
-    // /**
-    //  * @brief Computes the scattering efficiency Qforward.
-    //  * @return The scattering efficiency Qforward.
-    //  * @note This method computes the scattering efficiency based on the coefficients an and bn.
-    //  */
-    // double get_Qforward() const {return get_Qsca() - get_Qback();};
 
     /**
      * @brief Computes the backscattering efficiency Qback.
@@ -351,7 +342,6 @@ public:
         const size_t order
     );
 
-    //- PYTHON INTERFACE --------------------------------------------------------------------------
     /**
      * @brief Computes the full structured farfields for a given sampling and radius.
      *
@@ -366,38 +356,4 @@ public:
         const double radius = 1.0
     ) const;
 
-    /**
-     * @brief Python interface for near-field computation.
-     *
-     * @param x_py Python array of x coordinates.
-     * @param y_py Python array of y coordinates.
-     * @param z_py Python array of z coordinates.
-     * @param field_type Field component type.
-     *
-     * @return NumPy array of computed field values.
-     */
-    py::array_t<complex128> compute_nearfields_py(
-        const py::array_t<double>& x_py,
-        const py::array_t<double>& y_py,
-        const py::array_t<double>& z_py,
-        const std::string& field_type
-    );
-
-    /**
-     * @brief Python interface for structured near-field computation.
-     *
-     * @param x_range_py Python array of x coordinates.
-     * @param y_range_py Python array of y coordinates.
-     * @param z_range_py Python array of z coordinates.
-     * @param field_type Field component type.
-     *
-     * @return Tuple of NumPy arrays: (field_values, Ex, Ey, Ez, x_coords, y_coords, z_coords).
-     */
-    std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>, py::array_t<double>>
-    compute_nearfields_structured_py(
-        const py::array_t<double>& x_range_py,
-        const py::array_t<double>& y_range_py,
-        const py::array_t<double>& z_range_py,
-        const std::string& field_type
-    );
 };

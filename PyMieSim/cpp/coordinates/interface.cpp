@@ -1,13 +1,13 @@
 #include <pybind11/pybind11.h>
 #include "coordinates.h"
+#include "utils/numpy_interface.h"
 
-namespace py = pybind11;
 
-void register_coordinates(py::module_& module) {
-    py::class_<Cartesian>(module, "CARTESIANCOORDINATE")
+void register_coordinates(pybind11::module_& module) {
+    pybind11::class_<Cartesian>(module, "CARTESIANCOORDINATE")
         .def_property_readonly("x",
             [](const Cartesian& self) {
-                return pybind11::array_t<double>(self.x.size(), self.x.data(), py::cast(self));
+                return pybind11::array_t<double>(self.x.size(), self.x.data(), pybind11::cast(self));
             },
             R"pbdoc(
                 Returns x coordinates of points on the Cartesian mesh as a NumPy array.
@@ -16,7 +16,7 @@ void register_coordinates(py::module_& module) {
         )
         .def_property_readonly("y",
             [](const Cartesian& self) {
-                return pybind11::array_t<double>(self.y.size(), self.y.data(), py::cast(self));
+                return pybind11::array_t<double>(self.y.size(), self.y.data(), pybind11::cast(self));
             },
             R"pbdoc(
                 Returns y coordinates of points on the Cartesian mesh as a NumPy array.
@@ -25,7 +25,7 @@ void register_coordinates(py::module_& module) {
         )
         .def_property_readonly("z",
             [](const Cartesian& self) {
-                return pybind11::array_t<double>(self.z.size(), self.z.data(), py::cast(self));
+                return pybind11::array_t<double>(self.z.size(), self.z.data(), pybind11::cast(self));
             },
             R"pbdoc(
                 Returns z coordinates of points on the Cartesian mesh as a NumPy array.
@@ -35,13 +35,13 @@ void register_coordinates(py::module_& module) {
     ;
 
     // ------------------ Bindings for SphericalCoordinate ------------------
-    py::class_<Spherical>(module, "SPHERICALCOORDINATE")
+    pybind11::class_<Spherical>(module, "SPHERICALCOORDINATE")
         .def_property_readonly("r",
             [](const Spherical& self) {
                 std::vector<size_t> shape = {self.r.size()};
                 std::vector<size_t> strides = get_stride<double>(shape);
 
-                return pybind11::array_t<double>(shape, strides, self.r.data(), py::cast(self));
+                return pybind11::array_t<double>(shape, strides, self.r.data(), pybind11::cast(self));
             },
             R"pbdoc(
                 Returns radial distances of points on the spherical mesh as a NumPy array.
@@ -53,7 +53,7 @@ void register_coordinates(py::module_& module) {
                 std::vector<size_t> shape = {self.phi.size()};
                 std::vector<size_t> strides = get_stride<double>(shape);
 
-                return pybind11::array_t<double>(shape, strides, self.phi.data(), py::cast(self));
+                return pybind11::array_t<double>(shape, strides, self.phi.data(), pybind11::cast(self));
             },
             R"pbdoc(
                 Returns azimuthal angles (phi) of points on the spherical mesh as a NumPy array.
@@ -65,7 +65,7 @@ void register_coordinates(py::module_& module) {
                 std::vector<size_t> shape = {self.theta.size()};
                 std::vector<size_t> strides = get_stride<double>(shape);
 
-                return pybind11::array_t<double>(shape, strides, self.theta.data(), py::cast(self));
+                return pybind11::array_t<double>(shape, strides, self.theta.data(), pybind11::cast(self));
             },
             R"pbdoc(
                 Returns polar angles (theta) of points on the spherical mesh as a NumPy array.
@@ -74,7 +74,7 @@ void register_coordinates(py::module_& module) {
         )
     ;
 
-    py::class_<VectorField>(module, "VECTORFIELD")
+    pybind11::class_<VectorField>(module, "VECTORFIELD")
         .def_property_readonly("data",
              [](const VectorField& self) {
                 std::vector<size_t> shape = {self.sampling, 3};
@@ -87,7 +87,7 @@ void register_coordinates(py::module_& module) {
         )
         .def("_cpp_get_scalar_product",
             &VectorField::get_scalar_product,
-            py::arg("base"),
+            pybind11::arg("base"),
             R"pbdoc(
                 Computes the scalar product with a base vector field.
 

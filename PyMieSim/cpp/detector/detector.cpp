@@ -199,7 +199,7 @@ double Detector::get_coupling_mean_coherent(const BaseScatterer &scatterer) cons
         this->polarization_filter
     );
 
-    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
+    return 0.5 * EPSILON0 * LIGHT_SPEED * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
 }
 
 
@@ -226,7 +226,7 @@ double Detector::get_coupling_point_coherent(const BaseScatterer &scatterer) con
         this->polarization_filter
     );
 
-    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
+    return 0.5 * EPSILON0 * LIGHT_SPEED * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
 }
 
 double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) const
@@ -243,5 +243,5 @@ double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) 
         this->polarization_filter
     );
 
-    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
+    return 0.5 * EPSILON0 * LIGHT_SPEED * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
 }

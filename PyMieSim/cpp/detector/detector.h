@@ -10,7 +10,7 @@
 
 using complex128 = std::complex<double>;
 #define EPSILON0 (double)8.854187817620389e-12
-#define C (double)299792458.0
+#define LIGHT_SPEED (double)299792458.0
 
 
 class Detector {

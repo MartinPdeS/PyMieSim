@@ -1,11 +1,11 @@
 from dash import html, dcc, Input, Output
-from PyMieSim import units
+from TypedUnit import ureg
 from PyMieSim.gui.helper import parse_string_to_array_or_float
 import numpy
 
-length_units = units.nanometer
-power_units = units.milliwatt
-angle_units = units.degree
+length_units = ureg.nanometer
+power_units = ureg.milliwatt
+angle_units = ureg.degree
 
 
 class Section:

@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "coreshell.h"
-
+#include "utils/numpy_interface.h"
 
 void register_coreshell(pybind11::module_& module) {
 
@@ -33,9 +33,9 @@ void register_coreshell(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("an",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.an);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](CoreShell& self) {return vector_as_numpy_view(self, self.an);},
+            [](CoreShell& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.an, arr);
             },
             R"pbdoc(
@@ -82,9 +82,9 @@ void register_coreshell(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("bn",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.bn);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](CoreShell& self) {return vector_as_numpy_view(self, self.bn);},
+            [](CoreShell& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.bn, arr);
             },
             R"pbdoc(
@@ -132,9 +132,9 @@ void register_coreshell(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("cn",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.cn);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](CoreShell& self) {return vector_as_numpy_view(self, self.cn);},
+            [](CoreShell& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.cn, arr);
             },
             R"pbdoc(
@@ -147,9 +147,9 @@ void register_coreshell(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("dn",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.dn);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](CoreShell& self) {return vector_as_numpy_view(self, self.dn);},
+            [](CoreShell& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.dn, arr);
             },
             R"pbdoc(

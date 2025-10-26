@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "base_scatterer.h"
-
+#include "utils/numpy_interface.h"
 
 void register_base_scatterer(pybind11::module_& module) {
 
@@ -388,8 +388,12 @@ void register_base_scatterer(pybind11::module_& module) {
                     The size parameter (size_parameter), typically the ratio of the scatterer's diameter to the wavelength of incident light.
             )pbdoc"
         )
-        .def("_cpp_compute_nearfields",
-            &BaseScatterer::compute_nearfields_py,
+        .def("_cpp_compute_nearfields",  // &BaseScatterer::compute_nearfields_py,
+            [](BaseScatterer& self, const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) {
+                std::vector<complex128> field = self.compute_nearfields(x, y, z, field_type);
+
+                return vector_move_from_numpy(field, {field.size()});
+            },
             pybind11::arg("x"),
             pybind11::arg("y"),
             pybind11::arg("z"),
@@ -433,10 +437,23 @@ void register_base_scatterer(pybind11::module_& module) {
             )pbdoc"
         )
         .def("_cpp_compute_nearfields_structured",
-            &BaseScatterer::compute_nearfields_structured_py,
-            pybind11::arg("x_range"),
-            pybind11::arg("y_range"),
-            pybind11::arg("z_range"),
+            [](BaseScatterer& self, const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type)
+            {
+                auto [field_values, field_x, field_y, field_z, x_coords, y_coords, z_coords] = self.compute_nearfields_structured(x, y, z, field_type);
+
+                return std::make_tuple(
+                    vector_move_from_numpy(field_values, {x.size(), y.size(), z.size()}),
+                    vector_move_from_numpy(field_x, {x.size(), y.size(), z.size()}),
+                    vector_move_from_numpy(field_y, {x.size(), y.size(), z.size()}),
+                    vector_move_from_numpy(field_z, {x.size(), y.size(), z.size()}),
+                    vector_move_from_numpy(x_coords, {x.size() * y.size() * z.size()}),
+                    vector_move_from_numpy(y_coords, {x.size() * y.size() * z.size()}),
+                    vector_move_from_numpy(z_coords, {x.size() * y.size() * z.size()})
+                );
+            },
+            pybind11::arg("x"),
+            pybind11::arg("y"),
+            pybind11::arg("z"),
             pybind11::arg("field_type"),
             R"pbdoc(
                 Computes near-field electromagnetic fields over a structured 3D grid.
@@ -447,11 +464,11 @@ void register_base_scatterer(pybind11::module_& module) {
 
                 Parameters
                 ----------
-                x_range : numpy.ndarray
+                x : numpy.ndarray
                     Array of x coordinates defining the grid.
-                y_range : numpy.ndarray
+                y : numpy.ndarray
                     Array of y coordinates defining the grid.
-                z_range : numpy.ndarray
+                z : numpy.ndarray
                     Array of z coordinates defining the grid.
                 field_type : str
                     Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"

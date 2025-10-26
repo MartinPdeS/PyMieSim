@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "cylinder.h"
-
+#include "utils/numpy_interface.h"
 
 
 
@@ -30,9 +30,9 @@ void register_cylinder(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("a1n",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.a1n);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](Cylinder& self) {return vector_as_numpy_view(self, self.a1n);},
+            [](Cylinder& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.a1n, arr);
             },
             R"pbdoc(
@@ -55,9 +55,9 @@ void register_cylinder(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("b1n",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.b1n);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](Cylinder& self) {return vector_as_numpy_view(self, self.b1n);},
+            [](Cylinder& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.b1n, arr);
             },
             R"pbdoc(
@@ -80,9 +80,9 @@ void register_cylinder(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("a2n",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.a2n);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](Cylinder& self) {return vector_as_numpy_view(self, self.a2n);},
+            [](Cylinder& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.a2n, arr);
             },
             R"pbdoc(
@@ -105,9 +105,9 @@ void register_cylinder(pybind11::module_& module) {
             )pbdoc"
         )
         .def_property("b2n",
-            [](Sphere& self) {return vector_as_numpy_view(self, self.b2n);},
-            [](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [](Cylinder& self) {return vector_as_numpy_view(self, self.b2n);},
+            [](Cylinder& self,
+               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
                 vector_assign_from_numpy(self.b2n, arr);
             },
             R"pbdoc(
