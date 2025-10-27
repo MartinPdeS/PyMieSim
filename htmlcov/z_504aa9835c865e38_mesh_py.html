@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for PyMieSim/single/mesh.py: 92%</title>
+    <title>Coverage for PyMieSim/single/mesh.py: 91%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_6b508a39.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>PyMieSim/single/mesh.py</b>:
-            <span class="pc_cov">92%</span>
+            <span class="pc_cov">91%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,8 +55,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">50 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">46<span class="text"> run</span></button>
+            <span class="text">46 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">42<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">4<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">0<span class="text"> partial</span></button>
@@ -66,8 +66,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_504aa9835c865e38_polarization_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.7">coverage.py v7.10.7</a>,
-            created at 2025-10-06 10:29 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.11.0">coverage.py v7.11.0</a>,
+            created at 2025-10-27 15:51 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -147,10 +147,10 @@
     <p class="pln"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">    <span class="nam">max_angle</span><span class="op">:</span> <span class="nam">Angle</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">    <span class="nam">sampling</span><span class="op">:</span> <span class="nam">int</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">    <span class="nam">phi_offset</span><span class="op">:</span> <span class="nam">Angle</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">    <span class="nam">gamma_offset</span><span class="op">:</span> <span class="nam">Angle</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">    <span class="nam">max_angle</span><span class="op">:</span> <span class="nam">Angle</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">    <span class="nam">sampling</span><span class="op">:</span> <span class="nam">int</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">    <span class="nam">phi_offset</span><span class="op">:</span> <span class="nam">Angle</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">    <span class="nam">gamma_offset</span><span class="op">:</span> <span class="nam">Angle</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">    <span class="nam">min_angle</span><span class="op">:</span> <span class="nam">Angle</span> <span class="op">=</span> <span class="num">0</span> <span class="op">*</span> <span class="nam">ureg</span><span class="op">.</span><span class="nam">degree</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">    <span class="nam">rotation_angle</span><span class="op">:</span> <span class="nam">Optional</span><span class="op">[</span><span class="nam">Angle</span><span class="op">]</span> <span class="op">=</span> <span class="num">0.0</span> <span class="op">*</span> <span class="nam">ureg</span><span class="op">.</span><span class="nam">degree</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -161,9 +161,9 @@
     <p class="pln"><span class="n"><a id="t77" href="#t77">77</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t78" href="#t78">78</a></span><span class="t">        <span class="nam">super</span><span class="op">(</span><span class="op">)</span><span class="op">.</span><span class="nam">__init__</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t79" href="#t79">79</a></span><span class="t">            <span class="nam">sampling</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">sampling</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">            <span class="nam">max_angle</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">max_angle</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t81" href="#t81">81</a></span><span class="t">            <span class="nam">min_angle</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">min_angle</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t">            <span class="nam">rotation_angle</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">rotation</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t80" href="#t80">80</a></span><span class="t">            <span class="nam">max_angle</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">max_angle</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="nam">ureg</span><span class="op">.</span><span class="nam">radian</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t81" href="#t81">81</a></span><span class="t">            <span class="nam">min_angle</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">min_angle</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="nam">ureg</span><span class="op">.</span><span class="nam">radian</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t">            <span class="nam">rotation_angle</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">rotation</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="nam">ureg</span><span class="op">.</span><span class="nam">radian</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t83" href="#t83">83</a></span><span class="t">            <span class="nam">phi_offset</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">phi_offset</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="nam">ureg</span><span class="op">.</span><span class="nam">radian</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t84" href="#t84">84</a></span><span class="t">            <span class="nam">gamma_offset</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">gamma_offset</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="nam">ureg</span><span class="op">.</span><span class="nam">radian</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t85" href="#t85">85</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -398,8 +398,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_504aa9835c865e38_polarization_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.7">coverage.py v7.10.7</a>,
-            created at 2025-10-06 10:29 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.11.0">coverage.py v7.11.0</a>,
+            created at 2025-10-27 15:51 +0000
         </p>
     </div>
 </footer>
