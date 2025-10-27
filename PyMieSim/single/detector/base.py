@@ -200,8 +200,8 @@ class BaseDetector:
 
         """
         Ephi, Etheta = scatterer.get_farfields_array(
-            phi=self._cpp_mesh.spherical.phi,
-            theta=self._cpp_mesh.spherical.theta,
+            phi=self._cpp_mesh.spherical.phi * ureg.radian,
+            theta=self._cpp_mesh.spherical.theta * ureg.radian,
             r=distance,
         )
 

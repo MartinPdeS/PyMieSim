@@ -18,7 +18,7 @@ import PyMieSim
 
 class EmptyDetector:
     def __init__(self):
-        self.binding = CppDetectorSet()
+        self.set = CppDetectorSet()
         self.mapping = {}
 
     def _generate_binding(self, *args, **kwargs):
