@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <cstdarg>    // For va_list, va_start, va_end
 #include <cstdio>     // For printf, vprintf
 #include "scatterer/sphere/sphere.h"

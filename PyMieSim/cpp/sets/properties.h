@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <complex>
+#include <optional>
 
 typedef std::complex<double> complex128;
 
