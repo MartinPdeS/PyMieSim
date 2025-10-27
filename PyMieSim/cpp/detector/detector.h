@@ -189,4 +189,31 @@ class Detector {
          * @param polarization_filter The polarization filter value.
          */
         template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
+
+        /**
+         * @brief Computes the Poynting vector value for a given scatterer at a specified distance.
+         * @param scatterer The scatterer for which the Poynting vector is computed.
+         * @param distance The distance at which to compute the Poynting vector (default is 1).
+         * @return The Poynting vector value.
+         */
+        std::vector<double> get_poynting_value(const BaseScatterer& scatterer, double distance = 1) const {
+            auto [Ephi, Etheta] = scatterer.get_farfields_array(
+                this->fibonacci_mesh.spherical.phi,
+                this->fibonacci_mesh.spherical.theta,
+                distance
+            );
+
+            double electric_field_total_norm = 0.0;
+            double magnetic_field_total_norm = 0.0;
+
+            std::vector<double> poynting(Ephi.size());
+
+            for (size_t i = 0; i < Ephi.size(); ++i) {
+                electric_field_norm = sqrt(std::pow(std::norm(Ephi[i]), 2) + std::pow(std::norm(Etheta[i]), 2));
+                magnetic_field_norm = (electric_field_norm[i] / LIGHT_SPEED);  // units of Tesla
+                poynting[i] = EPSILON0 * std::pow(LIGHT_SPEED, 2) * electric_field_norm[i] * electric_field_norm[i];  // units of W/m^2
+            }
+
+            return poynting;
+        }
 };

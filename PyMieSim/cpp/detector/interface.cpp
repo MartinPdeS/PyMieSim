@@ -124,6 +124,29 @@ PYBIND11_MODULE(interface_detector, module) {
                 NumPy array of shape (sampling, 2) with columns [gamma, phi].
             )pbdoc"
         )
+        .def("get_poynting_field",
+            [](Detector& self, const BaseScatterer& scatterer, double distance = 1) {
+                std::vector<double> vector = self.get_poynting_field(scatterer, distance);  // returns vector<double>
+                return vector_move_from_numpy(std::move(vector), {vector.size()});
+            },
+            pybind11::arg("scatterer"),
+            pybind11::arg("distance") = 1.0,
+            R"pbdoc(
+                Compute the Poynting vector field on the detector mesh.
+
+                Parameters
+                ----------
+                scatterer : BaseScatterer
+                    An instance of a PyMieSim scatterer (e.g., SPHERE or CYLINDER).
+                distance : float, optional
+                    Distance from the scatterer to the detector (default is 1).
+
+                Returns
+                -------
+                numpy.ndarray
+                    A 2D array of shape (sampling, sampling) containing the Poynting vector magnitudes.
+            )pbdoc"
+        )
         .def_readonly(
             "mode_field",
             &Detector::mode_field,
