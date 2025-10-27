@@ -519,13 +519,6 @@ Default is 1.0 (vacuum or air).</p></li>
 <span class="sig-name descname"><span class="pre">cache_NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity(0,</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.cache_NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.coherent">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coherent</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.coherent" title="Link to this definition">#</a></dt>
-<dd><p>Coherent detection mode flag.</p>
-<p>True if the detector is in coherent mode; false for incoherent.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.gamma_offset">
 <span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
@@ -677,9 +670,14 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_structured_scalarfield">
 <span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_detector.DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
-<dd><p>Get structured mode field data.</p>
-<p>Returns a NumPy array of shape (sampling, 2) containing
-(gamma, phi) pairs for the mode field.</p>
+<dd><p>NumPy array of shape (sampling, 2) with columns [gamma, phi].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.is_coherent">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_coherent</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.is_coherent" title="Link to this definition">#</a></dt>
+<dd><p>Coherent detection mode flag.</p>
+<p>True if the detector is in coherent mode; false for incoherent.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -777,13 +775,6 @@ Default is 1.0 (vacuum or air).</p></li>
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.cache_NA">
 <span class="sig-name descname"><span class="pre">cache_NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity(0,</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.cache_NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.coherent">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coherent</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.coherent" title="Link to this definition">#</a></dt>
-<dd><p>Coherent detection mode flag.</p>
-<p>True if the detector is in coherent mode; false for incoherent.</p>
-</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.gamma_offset">
@@ -936,9 +927,14 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_structured_scalarfield">
 <span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_detector.DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
-<dd><p>Get structured mode field data.</p>
-<p>Returns a NumPy array of shape (sampling, 2) containing
-(gamma, phi) pairs for the mode field.</p>
+<dd><p>NumPy array of shape (sampling, 2) with columns [gamma, phi].</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.is_coherent">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_coherent</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.is_coherent" title="Link to this definition">#</a></dt>
+<dd><p>Coherent detection mode flag.</p>
+<p>True if the detector is in coherent mode; false for incoherent.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1034,13 +1030,13 @@ Contains family and number information for the mode.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode"><code class="docutils literal notranslate"><span class="pre">Photodiode</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.cache_NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.cache_NA</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.coherent"><code class="docutils literal notranslate"><span class="pre">Photodiode.coherent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.gamma_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_coupling"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_energy_flow"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_energy_flow()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_footprint"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_poynting_vector"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_poynting_vector()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_structured_scalarfield()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.is_coherent"><code class="docutils literal notranslate"><span class="pre">Photodiode.is_coherent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.max_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.max_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mean_coupling"><code class="docutils literal notranslate"><span class="pre">Photodiode.mean_coupling</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">Photodiode.medium_refractive_index</span></code></a></li>
@@ -1055,13 +1051,13 @@ Contains family and number information for the mode.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode"><code class="docutils literal notranslate"><span class="pre">CoherentMode</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.cache_NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.cache_NA</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.coherent"><code class="docutils literal notranslate"><span class="pre">CoherentMode.coherent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.gamma_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_coupling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_energy_flow"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_energy_flow()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_footprint"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_poynting_vector"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_poynting_vector()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_structured_scalarfield()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.is_coherent"><code class="docutils literal notranslate"><span class="pre">CoherentMode.is_coherent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.max_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.max_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mean_coupling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mean_coupling</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoherentMode.medium_refractive_index</span></code></a></li>

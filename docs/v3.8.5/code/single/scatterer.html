@@ -586,10 +586,10 @@
 <dd><p>Returns the scattering efficiency.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.an">
-<span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.SPHERE</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.an" title="Link to this definition">#</a></dt>
-<dd><p>Returns <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq:III.88 of B&amp;B:</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">an</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.an" title="Link to this definition">#</a></dt>
+<dd><p>III.88 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[a_n = \frac{
     \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)
@@ -604,13 +604,16 @@
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq</p>
+</dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.bn">
-<span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.SPHERE</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.bn" title="Link to this definition">#</a></dt>
-<dd><p>Returns <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq:III.89 of B&amp;B:</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.bn" title="Link to this definition">#</a></dt>
+<dd><p>III.89 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[b_n = \frac{
     \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)
@@ -625,12 +628,15 @@
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq</p>
+</dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.cn">
-<span class="sig-name descname"><span class="pre">cn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.SPHERE</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cn" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cn" title="Link to this definition">#</a></dt>
 <dd><p>For future purpose only!
 Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as defined in Eq:III.90 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
@@ -686,9 +692,9 @@ and the Python NearField representation class.</p>
 <span class="sig-name descname"><span class="pre">diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.diameter" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.dn">
-<span class="sig-name descname"><span class="pre">dn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.SPHERE</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.dn" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.dn" title="Link to this definition">#</a></dt>
 <dd><p>For future purpose only!
 Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as defined in Eq:III.91 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
@@ -1226,9 +1232,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd><p>Returns the scattering efficiency.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.a1n">
-<span class="sig-name descname"><span class="pre">a1n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.a1n" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">a1n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.a1n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(a_{1n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
 \[a_{1n} = \frac{
@@ -1248,9 +1254,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.a2n">
-<span class="sig-name descname"><span class="pre">a2n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.a2n" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">a2n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.a2n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(a_{2n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
 \[a_{2n} = \frac{
@@ -1270,9 +1276,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.b1n">
-<span class="sig-name descname"><span class="pre">b1n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.b1n" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b1n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.b1n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(b_{1n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
 \[b_{1n} = \frac{
@@ -1292,9 +1298,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.b2n">
-<span class="sig-name descname"><span class="pre">b2n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.b2n" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b2n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.b2n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(b_{2n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
 \[b_{2n} = \frac{
@@ -1864,9 +1870,9 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd><p>Returns the scattering efficiency.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.an">
-<span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CORESHELL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.an" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">an</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.an" title="Link to this definition">#</a></dt>
 <dd><p>Returns the ‘an’ scattering coefficients.</p>
 <div class="math notranslate nohighlight">
 \[a_n = \frac{
@@ -1909,9 +1915,9 @@ B_n = \frac{
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.bn">
-<span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CORESHELL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.bn" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.bn" title="Link to this definition">#</a></dt>
 <dd><p>Returns the ‘bn’ scattering coefficients.</p>
 <div class="math notranslate nohighlight">
 \[b_n = \frac{
@@ -1955,9 +1961,9 @@ B_n = \frac{
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.cn">
-<span class="sig-name descname"><span class="pre">cn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CORESHELL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.cn" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.cn" title="Link to this definition">#</a></dt>
 <dd><p>Returns the ‘cn’ scattering coefficients.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -2010,9 +2016,9 @@ and the Python NearField representation class.</p>
 <dd><p>Returns the cross-section of the scatterer.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.dn">
-<span class="sig-name descname"><span class="pre">dn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CORESHELL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.dn" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.dn" title="Link to this definition">#</a></dt>
 <dd><p>Returns the ‘dn’ scattering coefficients.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -2488,13 +2494,13 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.Qpr"><code class="docutils literal notranslate"><span class="pre">Sphere.Qpr</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.Qratio"><code class="docutils literal notranslate"><span class="pre">Sphere.Qratio</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.Qsca"><code class="docutils literal notranslate"><span class="pre">Sphere.Qsca</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.an"><code class="docutils literal notranslate"><span class="pre">Sphere.an()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.bn"><code class="docutils literal notranslate"><span class="pre">Sphere.bn()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cn"><code class="docutils literal notranslate"><span class="pre">Sphere.cn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.an"><code class="docutils literal notranslate"><span class="pre">Sphere.an</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.bn"><code class="docutils literal notranslate"><span class="pre">Sphere.bn</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cn"><code class="docutils literal notranslate"><span class="pre">Sphere.cn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_nearfield"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_nearfield()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cross_section"><code class="docutils literal notranslate"><span class="pre">Sphere.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.diameter"><code class="docutils literal notranslate"><span class="pre">Sphere.diameter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.dn"><code class="docutils literal notranslate"><span class="pre">Sphere.dn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.dn"><code class="docutils literal notranslate"><span class="pre">Sphere.dn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.g"><code class="docutils literal notranslate"><span class="pre">Sphere.g</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_farfield"><code class="docutils literal notranslate"><span class="pre">Sphere.get_farfield()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_farfield_array"><code class="docutils literal notranslate"><span class="pre">Sphere.get_farfield_array()</span></code></a></li>
@@ -2531,10 +2537,10 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.Qpr"><code class="docutils literal notranslate"><span class="pre">Cylinder.Qpr</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.Qratio"><code class="docutils literal notranslate"><span class="pre">Cylinder.Qratio</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.Qsca"><code class="docutils literal notranslate"><span class="pre">Cylinder.Qsca</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.a1n"><code class="docutils literal notranslate"><span class="pre">Cylinder.a1n()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.a2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.a2n()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b1n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b1n()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b2n()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.a1n"><code class="docutils literal notranslate"><span class="pre">Cylinder.a1n</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.a2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.a2n</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b1n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b1n</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b2n</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_nearfield"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_nearfield()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.cross_section"><code class="docutils literal notranslate"><span class="pre">Cylinder.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.diameter"><code class="docutils literal notranslate"><span class="pre">Cylinder.diameter</span></code></a></li>
@@ -2573,14 +2579,14 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.Qpr"><code class="docutils literal notranslate"><span class="pre">CoreShell.Qpr</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.Qratio"><code class="docutils literal notranslate"><span class="pre">CoreShell.Qratio</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.Qsca"><code class="docutils literal notranslate"><span class="pre">CoreShell.Qsca</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.an"><code class="docutils literal notranslate"><span class="pre">CoreShell.an()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.bn"><code class="docutils literal notranslate"><span class="pre">CoreShell.bn()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cn"><code class="docutils literal notranslate"><span class="pre">CoreShell.cn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.an"><code class="docutils literal notranslate"><span class="pre">CoreShell.an</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.bn"><code class="docutils literal notranslate"><span class="pre">CoreShell.bn</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cn"><code class="docutils literal notranslate"><span class="pre">CoreShell.cn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_nearfield"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_nearfield()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.core_diameter"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.core_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_property</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cross_section"><code class="docutils literal notranslate"><span class="pre">CoreShell.cross_section</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.dn"><code class="docutils literal notranslate"><span class="pre">CoreShell.dn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.dn"><code class="docutils literal notranslate"><span class="pre">CoreShell.dn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.g"><code class="docutils literal notranslate"><span class="pre">CoreShell.g</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_farfield"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_farfield()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_farfield_array"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_farfield_array()</span></code></a></li>

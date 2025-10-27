@@ -196,6 +196,23 @@ Contents
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Far-field scattering simulation for bulk scatterers">
+
+.. only:: html
+
+  .. image:: /gallery/extras/images/thumb/sphx_glr_farfields_bulk_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_extras_farfields_bulk.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Far-field scattering simulation for bulk scatterers</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.">
 
 .. only:: html
@@ -299,6 +316,7 @@ Contents
    /gallery/extras/array_scattering
    /gallery/extras/coupling_heatmap
    /gallery/extras/coupling_vs_NA
+   /gallery/extras/farfields_bulk
    /gallery/extras/integrating_sphere
    /gallery/extras/photodiode
    /gallery/extras/plot_system
