@@ -20,8 +20,13 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-
 include_directories("${LOCAL_CXX_DIR}")
 
 # Find dependencies
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    include_directories("/opt/homebrew/opt/libomp/include")   # for if compiler was installed through brew
+if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "" FORCE)
+    set(OpenMP_CXX_LIB_NAMES "omp" CACHE STRING "" FORCE)
+    find_library(OpenMP_omp_LIBRARY omp HINTS $ENV{LIBOMP_PREFIX}/lib /opt/homebrew/opt/libomp/lib /usr/local/opt/libomp/lib)
+    if(OpenMP_omp_LIBRARY)
+        set(OpenMP_CXX_LIBRARIES "${OpenMP_omp_LIBRARY}" CACHE STRING "" FORCE)
+    endif()
 endif()
 
 find_package(OpenMP REQUIRED)
