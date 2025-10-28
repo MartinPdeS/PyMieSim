@@ -163,7 +163,7 @@ Visualizing how the B1 (a3) parameter varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.223 seconds)
+   **Total running time of the script:** (0 minutes 0.205 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_a1_vs_corediameter.py:
