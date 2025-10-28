@@ -17,7 +17,7 @@
 | PyMieSim/experiment/source/gaussian.py         |       15 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/source/planewave.py        |       15 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93% |44->50, 58 |
-| PyMieSim/single/detector/base.py               |       39 |        1 |        0 |        0 |     97% |        33 |
+| PyMieSim/single/detector/base.py               |       30 |        2 |        0 |        0 |     93% |   28, 197 |
 | PyMieSim/single/detector/coherent.py           |       23 |        2 |        4 |        2 |     85% |    72, 79 |
 | PyMieSim/single/detector/uncoherent.py         |       19 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/mesh.py                        |       46 |        4 |        0 |        0 |     91% |100, 112, 124, 136 |
@@ -37,7 +37,7 @@
 | PyMieSim/single/source/gaussian.py             |       32 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/source/planewave.py            |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/utils.py                              |       20 |        0 |        2 |        0 |    100% |           |
-|                                      **TOTAL** | **1156** |  **115** |  **134** |   **16** | **88%** |           |
+|                                      **TOTAL** | **1147** |  **116** |  **134** |   **16** | **88%** |           |
 
 
 ## Setup coverage badge
