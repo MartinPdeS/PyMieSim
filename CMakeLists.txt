@@ -19,6 +19,7 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-
 # Include directories
 include_directories("${LOCAL_CXX_DIR}")
 
+
 # Find dependencies
 if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "" FORCE)

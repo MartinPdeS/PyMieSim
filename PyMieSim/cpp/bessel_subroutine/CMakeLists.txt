@@ -10,6 +10,9 @@ add_library(bessel_subroutine STATIC
 )
 target_link_options(bessel_subroutine PUBLIC ${STATIC_LINK_OPTIONS})
 
+
+target_compile_options(bessel_subroutine PRIVATE -Wno-maybe-uninitialized)
+
 install(
     TARGETS bessel_subroutine
     LIBRARY DESTINATION ${LOCAL_BIN_DIR}
