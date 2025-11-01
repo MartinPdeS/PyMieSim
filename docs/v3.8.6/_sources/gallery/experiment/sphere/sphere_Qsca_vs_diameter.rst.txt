@@ -182,7 +182,7 @@ Defining the experiment setup
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405 nanometer to 810 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405 nanometer to 810 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
       warnings.warn(
 
     <Figure size 800x500 with 1 Axes>
@@ -192,7 +192,7 @@ Defining the experiment setup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.314 seconds)
+   **Total running time of the script:** (0 minutes 0.266 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:
