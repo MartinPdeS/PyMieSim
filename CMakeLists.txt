@@ -7,7 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
 
 # Set the output directory for libraries
 set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
@@ -22,11 +22,11 @@ include_directories("${LOCAL_CXX_DIR}")
 
 # Find dependencies
 if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "" FORCE)
-    set(OpenMP_CXX_LIB_NAMES "omp" CACHE STRING "" FORCE)
+    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "")
+    set(OpenMP_CXX_LIB_NAMES "omp" CACHE STRING "")
     find_library(OpenMP_omp_LIBRARY omp HINTS $ENV{LIBOMP_PREFIX}/lib /opt/homebrew/opt/libomp/lib /usr/local/opt/libomp/lib)
     if(OpenMP_omp_LIBRARY)
-        set(OpenMP_CXX_LIBRARIES "${OpenMP_omp_LIBRARY}" CACHE STRING "" FORCE)
+        set(OpenMP_CXX_LIBRARIES "${OpenMP_omp_LIBRARY}" CACHE STRING "")
     endif()
 endif()
 
