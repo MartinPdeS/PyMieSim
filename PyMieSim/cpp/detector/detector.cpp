@@ -1,4 +1,4 @@
-#include "detector/detector.h"
+#include "detector.h"
 
 
 // ------------------------- Initialization Function -------------------------

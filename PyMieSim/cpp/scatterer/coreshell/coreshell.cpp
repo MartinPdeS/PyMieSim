@@ -1,4 +1,4 @@
-#include "scatterer/coreshell/coreshell.h"
+#include "./coreshell.h"
 
 
 // ---------------------- Constructors ---------------------------------------

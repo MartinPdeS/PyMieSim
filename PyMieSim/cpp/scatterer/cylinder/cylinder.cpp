@@ -1,4 +1,4 @@
-#include "scatterer/cylinder/cylinder.h"
+#include "./cylinder.h"
 
 // ---------------------- Constructors ---------------------------------------
 Cylinder::Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order) :
