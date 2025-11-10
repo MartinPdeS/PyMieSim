@@ -100,15 +100,15 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-test-command = 'LD_DEBUG=libs python -m pytest {project}/tests'
+test-command = 'LD_DEBUG=libs python -m pytest {project}'
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
 repair-wheel-command = "delocate-wheel --exclude libomp.dylib -w {dest_dir} -v {wheel}"
-test-command = 'DYLD_PRINT_LIBRARIES=0 python -m pytest {project}/tests'
+test-command = 'DYLD_PRINT_LIBRARIES=0 python -m pytest {project}'
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
-test-command = 'python -m pytest {project}/tests'
+test-command = 'python -m pytest {project}'
