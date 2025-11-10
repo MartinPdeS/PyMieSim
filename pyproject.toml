@@ -99,8 +99,12 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-before-test = "yum install -y xorg-x11-server-Xvfb mesa-libGL"
-test-command = 'Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && python -m pytest --config-file={project}/pytest.ini {project}/tests'
+before-test = "yum install -y xorg-x11-server-Xvfb mesa-libGL mesa-libEGL"
+test-command = 'PYMIESIM_HEADLESS=1 Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && python -m pytest --config-file={project}/pytest.ini {project}/tests'
+
+
+# before-test = "yum install -y xorg-x11-server-Xvfb mesa-libGL"
+# test-command = 'Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && python -m pytest --config-file={project}/pytest.ini {project}/tests'
 # test-command = 'xvfb-run -s "-screen 0 1024x768x24" python -m pytest --config-file={project}/pytest.ini {project}/tests'
 
 [tool.cibuildwheel.macos]
