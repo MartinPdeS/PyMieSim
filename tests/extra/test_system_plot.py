@@ -10,8 +10,10 @@ from PyMieSim.single import plot_system
 from math import sqrt
 import matplotlib.pyplot as plt
 
+
 try:
     import pyvista
+    import sys
 
     if sys.platform in ["linux", "linux2"]:
         pyvista.start_xvfb()  # Works only on linux system!
