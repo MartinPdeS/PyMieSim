@@ -99,8 +99,8 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-test-command = 'python -m pytest --config-file={project}/pytest.ini {project}/experiment/sphere.py'
-# test-command = 'LD_DEBUG=libs python -m pytest --config-file={project}/pytest.ini'
+before-test = "yum install -y xorg-x11-server-Xvfb"
+test-command = 'xvfb-run -s "-screen 0 1024x768x24" python -m pytest --config-file={project}/pytest.ini {project}/experiment/sphere.py'
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
