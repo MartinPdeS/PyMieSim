@@ -10,6 +10,15 @@ from PyMieSim.single import plot_system
 from math import sqrt
 import matplotlib.pyplot as plt
 
+import pyvista as pv
+
+pv.OFF_SCREEN = True
+
+try:
+    pv.start_xvfb()
+except:
+    pass
+
 
 @pytest.fixture
 def source():
