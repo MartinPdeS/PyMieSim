@@ -2,15 +2,15 @@ import pandas as pd
 import numpy as np
 
 from itertools import product
-from PyMieSim.units import Quantity, nanometer, RIU
+from TypedUnit import ureg, AnyUnit
 from PyMieSim.directories import validation_data_path
 
 
 def get_pymiescatt_sphere_dataframe(
-    wavelength: Quantity,
-    diameter: Quantity,
-    index: Quantity,
-    medium_index: Quantity,
+    wavelength: AnyUnit,
+    diameter: AnyUnit,
+    index: AnyUnit,
+    medium_index: AnyUnit,
     save_name: str = None,
 ) -> pd.DataFrame:
     """
@@ -19,13 +19,13 @@ def get_pymiescatt_sphere_dataframe(
 
     Parameters
     ----------
-    wavelength : Quantity
+    wavelength : AnyUnit
         array of wavelengths
-    diameter : Quantity
+    diameter : AnyUnit
         array of sphere diameter
-    index : Quantity
+    index : AnyUnit
         array of refractive indices
-    medium_index : Quantity
+    medium_index : AnyUnit
         array of medium refractive indices
     save_name : Optional
         name for saving the DataFrame as a CSV file
@@ -79,12 +79,12 @@ def get_pymiescatt_sphere_dataframe(
 
 
 def get_pymiescatt_coreshell_dataframe(
-    wavelength: Quantity,
-    core_diameter: Quantity,
-    shell_width: Quantity,
-    shell_index: Quantity,
-    core_index: Quantity,
-    medium_index: Quantity,
+    wavelength: AnyUnit,
+    core_diameter: AnyUnit,
+    shell_width: AnyUnit,
+    shell_index: AnyUnit,
+    core_index: AnyUnit,
+    medium_index: AnyUnit,
     save_name: str = None,
 ) -> pd.DataFrame:
     """
@@ -93,17 +93,17 @@ def get_pymiescatt_coreshell_dataframe(
 
     Parameters
     ----------
-    wavelength : Quantity
+    wavelength : AnyUnit
         array of wavelength
-    core_diameter : Quantity
+    core_diameter : AnyUnit
         array of core diameters
-    shell_width : Quantity
+    shell_width : AnyUnit
         array of shell diameters
-    core_index : Quantity
+    core_index : AnyUnit
         array of core refractive indices
-    shell_index : Quantity
+    shell_index : AnyUnit
         array of shell refractive indices
-    medium_index : Quantity
+    medium_index : AnyUnit
         array of medium refractive indices
     save_name : Optional
         name for saving the DataFrame as a CSV file
@@ -177,17 +177,17 @@ def get_pymiescatt_coreshell_dataframe(
 # Define sphere parameters
 sphere_params = [
     dict(
-        wavelength=632.8 * nanometer,
-        medium_index=1.21 * RIU,
-        index=1.4 * RIU,
-        diameter=np.geomspace(10, 1_000, 50) * nanometer,
+        wavelength=632.8 * ureg.nanometer,
+        medium_index=1.21 * ureg.RIU,
+        index=1.4 * ureg.RIU,
+        diameter=np.geomspace(10, 1_000, 50) * ureg.nanometer,
         save_name="example_sphere_0",
     ),
     dict(
-        wavelength=632.8 * nanometer,
-        medium_index=1.2 * RIU,
-        index=(1.4 + 0.2j) * RIU,
-        diameter=np.geomspace(10, 6_000, 800) * nanometer,
+        wavelength=632.8 * ureg.nanometer,
+        medium_index=1.2 * ureg.RIU,
+        index=(1.4 + 0.2j) * ureg.RIU,
+        diameter=np.geomspace(10, 6_000, 800) * ureg.nanometer,
         save_name="example_sphere_1",
     ),
 ]
@@ -195,21 +195,21 @@ sphere_params = [
 # Define core-shell parameters
 coreshell_params = [
     dict(
-        wavelength=600 * nanometer,
-        medium_index=1.0 * RIU,
-        core_index=1.5 * RIU,
-        shell_index=1.4 * RIU,
-        shell_width=600 * nanometer,
-        core_diameter=np.geomspace(10, 500, 40) * nanometer,
+        wavelength=600 * ureg.nanometer,
+        medium_index=1.0 * ureg.RIU,
+        core_index=1.5 * ureg.RIU,
+        shell_index=1.4 * ureg.RIU,
+        shell_width=600 * ureg.nanometer,
+        core_diameter=np.geomspace(10, 500, 40) * ureg.nanometer,
         save_name="example_coreshell_0",
     ),
     dict(
-        wavelength=600 * nanometer,
-        medium_index=1.0 * RIU,
-        core_index=1.5 * RIU,
-        shell_index=1.4 * RIU,
-        shell_width=1200 * nanometer,
-        core_diameter=np.geomspace(10, 500, 400) * nanometer,
+        wavelength=600 * ureg.nanometer,
+        medium_index=1.0 * ureg.RIU,
+        core_index=1.5 * ureg.RIU,
+        shell_index=1.4 * ureg.RIU,
+        shell_width=1200 * ureg.nanometer,
+        core_diameter=np.geomspace(10, 500, 400) * ureg.nanometer,
         save_name="example_coreshell_1",
     ),
 ]
