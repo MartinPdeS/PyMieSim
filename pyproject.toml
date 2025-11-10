@@ -105,7 +105,7 @@ test-command = 'xvfb-run -s "-screen 0 1024x768x24" python -m pytest --config-fi
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
-repair-wheel-command = "delocate-wheel --exclude libomp.dylib -w {dest_dir} -v {wheel}"
+repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
 test-command = 'python -m pytest --config-file={project}/pytest.ini {project}/tests'
 # test-command = 'DYLD_PRINT_LIBRARIES=NO python -m pytest --config-file={project}/pytest.ini'
 
