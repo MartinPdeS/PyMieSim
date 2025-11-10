@@ -36,7 +36,7 @@ PYBIND11_MODULE(interface_experiment, module) {
     pybind11::class_<Experiment>(module, "EXPERIMENT")
         .def(
             pybind11::init<bool>(),
-            pybind11::arg("debug_mode") = true,
+            pybind11::arg("debug_mode") = false,
             R"pbdoc(
                 Experiment class for conducting Lorenz-Mie Theory (LMT) simulations.
 
