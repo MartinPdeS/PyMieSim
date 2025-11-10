@@ -77,7 +77,8 @@ testing = [
     "pytest>=0.6",
     "pytest-cov>=2.0",
     "pytest-json-report==1.5.0",
-    "coverage==7.11.0"
+    "coverage==7.11.0",
+    "PyMieScatt"
 ]
 documentation = [
     "numpydoc==1.9.0",
@@ -105,7 +106,7 @@ test-command = 'LD_DEBUG=libs python -m pytest {project}/tests'
 archs = ["arm64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
 repair-wheel-command = "delocate-wheel --exclude libomp.dylib -w {dest_dir} -v {wheel}"
-test-command = 'DYLD_PRINT_LIBRARIES=1 python -m pytest {project}/tests'
+test-command = 'DYLD_PRINT_LIBRARIES=0 python -m pytest {project}/tests'
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
