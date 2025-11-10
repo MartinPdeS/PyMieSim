@@ -123,7 +123,7 @@ Core-Shell Particles: 0
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.329 seconds)
+   **Total running time of the script:** (0 minutes 0.325 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_coreshell_0.py:
