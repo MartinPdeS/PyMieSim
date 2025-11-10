@@ -61,7 +61,7 @@ def test_sphere_attribute(attribute, property, medium_property, source):
     )
     _ = getattr(scatterer, attribute)
 
-    scatterer.print_properties()
+    # scatterer.print_properties()
 
 
 @pytest.mark.parametrize("property", property, ids=[f"property:{m}" for m in property])

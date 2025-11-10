@@ -86,7 +86,7 @@ def test_cylinder_attributes(attribute, property, medium_property, source):
     # Access and validate the specified attribute
     _ = getattr(scatterer, attribute)
 
-    scatterer.print_properties()
+    # scatterer.print_properties()
 
 
 if __name__ == "__main__":
