@@ -6,7 +6,7 @@
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
 | PyMieSim/experiment/dataframe\_subclass.py     |       65 |       12 |       10 |        1 |     80.00% |150-156, 195, 221-225, 244-248 |
 | PyMieSim/experiment/scatterer/base.py          |       38 |        2 |       12 |        2 |     92.00% |    77, 94 |
-| PyMieSim/experiment/setup.py                   |      102 |        3 |       26 |        4 |     94.53% |300-303, 364->367, 370->374, 379 |
+| PyMieSim/experiment/setup.py                   |      102 |        3 |       26 |        4 |     94.53% |302-305, 366->369, 372->376, 381 |
 | PyMieSim/experiment/source/base.py             |       40 |        2 |       10 |        3 |     90.00% |47, 56->59, 73 |
 | PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93.48% |44->50, 58 |
 | PyMieSim/single/detector/base.py               |       30 |        2 |        0 |        0 |     93.33% |   28, 197 |
