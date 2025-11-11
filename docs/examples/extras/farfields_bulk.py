@@ -51,7 +51,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-farfields = experiment.binding._get_farfields(
+farfields = experiment._get_farfields(
     scatterer_set=experiment.scatterer.set,
     source_set=experiment.source.set,
     mesh=mesh,
