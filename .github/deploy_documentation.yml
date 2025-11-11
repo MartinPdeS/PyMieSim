@@ -1,0 +1,50 @@
+name: Update version_switcher.json
+
+on:
+  push:
+    branches:
+      - documentation_page   # or gh-pages, or main, whatever branch holds docs
+    paths:
+      - "docs/**"
+      - ".github/scripts/update_version_switcher.py"
+
+permissions:
+  contents: write
+
+jobs:
+  update-version-switcher:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies for script
+        run: |
+          python -m pip install --upgrade pip
+          pip install packaging
+
+      - name: Regenerate version_switcher.json
+        run: python .github/scripts/update_version_switcher.py
+
+      - name: Commit and push changes
+        run: |
+          if git diff --quiet version_switcher.json; then
+            echo "version_switcher.json is up to date, nothing to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add version_switcher.json
+          git commit -m "Update version_switcher.json [skip ci]"
+          git push
