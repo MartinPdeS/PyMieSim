@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - documentation_page   # or gh-pages, or main, whatever branch holds docs
-    paths:
-      - "docs/**"
-      - ".github/scripts/update_version_switcher.py"
 
 permissions:
   contents: write
