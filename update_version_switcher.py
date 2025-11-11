@@ -4,8 +4,8 @@ from pathlib import Path
 from packaging.version import Version, InvalidVersion
 
 ROOT = Path(__file__).resolve().parents[2]  # repo root
-DOCS_DIR = ROOT / "PyMieSim/docs"
-OUT_FILE = ROOT / "PyMieSim/version_switcher.json"
+DOCS_DIR = ROOT / "PyMieSim/PyMieSim/docs"
+OUT_FILE = ROOT / "PyMieSim/PyMieSim/version_switcher.json"
 
 BASE_URL = "https://martinpdes.github.io/PyMieSim/docs"
 
