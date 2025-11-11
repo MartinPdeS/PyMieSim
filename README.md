@@ -4,7 +4,6 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
-| PyMieSim/\_utils.py                            |       45 |       45 |       12 |        0 |      0.00% |     1-223 |
 | PyMieSim/experiment/dataframe\_subclass.py     |       65 |       12 |       10 |        1 |     80.00% |150-156, 195, 221-225, 244-248 |
 | PyMieSim/experiment/scatterer/base.py          |       38 |        2 |       12 |        2 |     92.00% |    77, 94 |
 | PyMieSim/experiment/setup.py                   |      102 |        3 |       26 |        4 |     94.53% |300-303, 364->367, 370->374, 379 |
@@ -27,7 +26,7 @@
 | PyMieSim/single/scatterer/core\_shell.py       |       27 |        2 |        0 |        0 |     92.59% |   119-124 |
 | PyMieSim/single/scatterer/cylinder.py          |       33 |        7 |        0 |        0 |     78.79% |69, 73, 77, 81, 85, 107-116 |
 | PyMieSim/single/scatterer/sphere.py            |       25 |        2 |        0 |        0 |     92.00% |    77, 82 |
-|                                      **TOTAL** | **1534** |  **514** |  **212** |   **17** | **63.63%** |           |
+|                                      **TOTAL** | **1489** |  **469** |  **200** |   **17** | **65.78%** |           |
 
 18 files skipped due to complete coverage.
 
