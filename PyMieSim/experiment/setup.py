@@ -29,7 +29,7 @@ class EmptyDetector:
 
 
 @dataclass
-class Setup:
+class Setup(EXPERIMENT):
     """
     Orchestrates the setup and execution of light scattering experiments using PyMieSim.
 
@@ -63,7 +63,9 @@ class Setup:
 
         self.scatterer.source = self.source
 
-        self.binding = EXPERIMENT(debug_mode=PyMieSim.debug_mode)
+        super().__init__(
+            debug_mode=PyMieSim.debug_mode,
+        )
 
     def _generate_mapping(self) -> None:
         self.source._generate_mapping()
@@ -88,7 +90,7 @@ class Setup:
         method_name = f"get_{measure}_sequential"
 
         # Compute the values using the binding method
-        return getattr(self.binding, method_name)(
+        return getattr(self, method_name)(
             scatterer_set=self.scatterer.set,
             source_set=self.source.set,
             detector_set=self.detector.set,
@@ -185,7 +187,7 @@ class Setup:
         for measure in measures:
             method_name = f"get_{measure}"
 
-            method = getattr(self.binding, method_name)
+            method = getattr(self, method_name)
 
             array = method(
                 scatterer_set=self.scatterer.set,
@@ -224,7 +226,7 @@ class Setup:
             method_name = f"get_{measure}"
 
             # Compute the values using the binding method
-            array = getattr(self.binding, method_name)(
+            array = getattr(self, method_name)(
                 scatterer_set=self.scatterer.set,
                 source_set=self.source.set,
                 detector_set=self.detector.set,
