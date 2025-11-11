@@ -1,10 +1,10 @@
 #include <pybind11/pybind11.h>
 #include "experiment/experiment.cpp"
 #include "utils/numpy_interface.h"
+#include "utils/defines.h"
 
 
-// &Experiment::get_data<&BaseScatterer::get_##property>,
-#define DEFINE_GETTERS(property) \
+#define DEFINE_GETTER(property) \
     .def("get_"  #property, \
         [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) { \
             auto [output, shape] = self.get_data<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
@@ -26,13 +26,17 @@
         "Retrieves the scattering property for a scatterer" \
     )
 
+#define DEFINE_GETTERS(...)  FOR_EACH(DEFINE_GETTER, __VA_ARGS__)
+
+
+
 PYBIND11_MODULE(interface_experiment, module) {
     module.doc() = "Interface for conducting Lorenz-Mie Theory (LMT) experiments within the PyMieSim package.";
 
     pybind11::class_<Experiment>(module, "EXPERIMENT")
         .def(
             pybind11::init<bool>(),
-            pybind11::arg("debug_mode") = true,
+            pybind11::arg("debug_mode") = false,
             R"pbdoc(
                 Experiment class for conducting Lorenz-Mie Theory (LMT) simulations.
 
@@ -126,45 +130,13 @@ PYBIND11_MODULE(interface_experiment, module) {
             )pbdoc"
         )
 
-        DEFINE_GETTERS(a1)
-        DEFINE_GETTERS(a2)
-        DEFINE_GETTERS(a3)
-        DEFINE_GETTERS(b1)
-        DEFINE_GETTERS(b2)
-        DEFINE_GETTERS(b3)
+        DEFINE_GETTERS(a1, a2, a3, b1, b2, b3)
 
-        DEFINE_GETTERS(a11)
-        DEFINE_GETTERS(a12)
-        DEFINE_GETTERS(a13)
-        DEFINE_GETTERS(b11)
-        DEFINE_GETTERS(b12)
-        DEFINE_GETTERS(b13)
-        DEFINE_GETTERS(a21)
-        DEFINE_GETTERS(a22)
-        DEFINE_GETTERS(a23)
-        DEFINE_GETTERS(b21)
-        DEFINE_GETTERS(b22)
-        DEFINE_GETTERS(b23)
+        DEFINE_GETTERS(a11, a12, a13, b11, b12, b13)
+        DEFINE_GETTERS(a21, a22, a23, b21, b22, b23)
 
-
-        DEFINE_GETTERS(Qsca)
-        DEFINE_GETTERS(Qext)
-        DEFINE_GETTERS(Qext)
-        DEFINE_GETTERS(Qabs)
-        DEFINE_GETTERS(Qpr)
-        DEFINE_GETTERS(Qforward)
-        DEFINE_GETTERS(Qback)
-        DEFINE_GETTERS(Qratio)
-
-        DEFINE_GETTERS(Csca)
-        DEFINE_GETTERS(Cext)
-        DEFINE_GETTERS(Cext)
-        DEFINE_GETTERS(Cabs)
-        DEFINE_GETTERS(Cpr)
-        DEFINE_GETTERS(Cforward)
-        DEFINE_GETTERS(Cback)
-        DEFINE_GETTERS(Cratio)
-
+        DEFINE_GETTERS(Qsca, Qext, Qabs, Qpr, Qforward, Qback, Qratio)
+        DEFINE_GETTERS(Csca, Cext, Cabs, Cpr, Cforward, Cback, Cratio)
         DEFINE_GETTERS(g)
         ;
 }

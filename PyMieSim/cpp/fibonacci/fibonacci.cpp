@@ -1,4 +1,4 @@
-#include "fibonacci/fibonacci.h"
+#include "./fibonacci.h"
 
 
 // ------------------ Constructors ------------------

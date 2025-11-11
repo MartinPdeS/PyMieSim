@@ -1,4 +1,4 @@
-#include "scatterer/sphere/sphere.h"
+#include "./sphere.h"
 
 
 // ---------------------- Constructors ---------------------------------------

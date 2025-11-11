@@ -3,6 +3,7 @@ requires = ["scikit-build-core>=0.3.3", "pybind11", "setuptools_scm[toml]>=8.0"]
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
+build-dir = ".skbuild/{wheel_tag}"
 metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
 logging.level = "INFO"
 wheel.exclude = ["PyMieSim/cpp"]
@@ -23,7 +24,7 @@ local_scheme = "no-local-version"
 [project]
 name = "PyMieSim"
 dynamic = ["version"]
-description = "A package for light scattering computation."
+description = "A package for light scattering (Mie) computation."
 license = { file = "LICENSE" }
 readme = "README.rst"
 urls = {"Documentation" = "https://martinpdes.github.io/PyMieSim/", "Repository" = "https://github.com/MartinPdeS/PyMieSim"}
@@ -58,18 +59,25 @@ dependencies = [
     "PyOptik",
     "setuptools_scm[toml] >=8,<10",
     "numpy ==2.2.6",
-    "matplotlib ==3.10.6",
-    "pydantic >=2.9.2,<2.12.0",
+    "matplotlib ==3.10.7",
+    "pydantic >=2.9.2,<2.13.0",
     "pint-pandas ~=0.6",
     "pandas ~=2.3.0",
     "tabulate ~=0.9",
     "pyvista ==0.45.3",
 ]
 
-# Keywords for better discoverability
 keywords = [
-    "mie", "scattering", "backscatter", "sphere", "cylinder", "nanoparticle",
-    "phase function", "efficiency", "rayleigh", "backscattering"
+    "mie",
+    "scattering",
+    "backscatter",
+    "sphere",
+    "cylinder",
+    "nanoparticle",
+    "phase function",
+    "efficiency",
+    "rayleigh",
+    "backscattering"
 ]
 
 [project.optional-dependencies]
@@ -77,7 +85,7 @@ testing = [
     "pytest>=0.6",
     "pytest-cov>=2.0",
     "pytest-json-report==1.5.0",
-    "coverage==7.10.7"
+    "coverage==7.11.0",
 ]
 documentation = [
     "numpydoc==1.9.0",
@@ -90,24 +98,8 @@ dev = [
     "flake8==7.3.0"
 ]
 
-[tool.pytest.ini_options]
-minversion = "6.0"
-xfail_strict = true
-log_cli_level = "INFO"
-addopts = [
-    "-v", "-rA", "-rw", "--cov=PyMieSim", "--cov-report=html", "--cov-report=term"
-]
-testpaths = [
-    "tests/single/*",
-    "tests/experiment/*",
-    "tests/validation/*",
-    "tests/extra/*"
-]
-
 [tool.cibuildwheel]
 build-frontend = "build"
-before-test = ""
-test-command = "python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]
@@ -115,24 +107,16 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+before-test = "yum install -y mesa-libOSMesa mesa-libGLU"
+test-command = "export PYVISTA_OFF_SCREEN=true; cd {project}; python -m pytest --config-file=pytest.ini"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
-repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
+repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"  # --exclude=libomp.dylib
+test-command = 'cd {project}; python -m pytest --config-file=pytest.ini'  # DYLD_PRINT_LIBRARIES=NO
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
-
-[tool.coverage.run]
-source = ["PyMieSim"]
-omit = [
-    "PyMieSim/gui/*",
-    "*__init__.py",
-    "PyMieSim/__main__.py",
-    "PyMieSim/_version.py",
-    "PyMieSim/directories.py"
-]
-branch = true
-relative_files = true
+test-command = 'cd /d {project} && python -m pytest --config-file=pytest.ini'

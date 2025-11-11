@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "Minimum OS X deployment version")
+set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum OS X deployment version")
 project(PyMieSim LANGUAGES Fortran CXX)
 
 # CMake settings
@@ -7,7 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
 
 # Set the output directory for libraries
 set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
@@ -20,8 +20,13 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-
 include_directories("${LOCAL_CXX_DIR}")
 
 # Find dependencies
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    include_directories("/opt/homebrew/opt/libomp/include")   # for if compiler was installed through brew
+if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "")
+    set(OpenMP_CXX_LIB_NAMES "omp" CACHE STRING "")
+    find_library(OpenMP_omp_LIBRARY omp HINTS $ENV{LIBOMP_PREFIX}/lib /opt/homebrew/opt/libomp/lib /usr/local/opt/libomp/lib)
+    if(OpenMP_omp_LIBRARY)
+        set(OpenMP_CXX_LIBRARIES "${OpenMP_omp_LIBRARY}" CACHE STRING "")
+    endif()
 endif()
 
 find_package(OpenMP REQUIRED)

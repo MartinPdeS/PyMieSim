@@ -4,13 +4,10 @@
 import pytest
 from TypedUnit import ureg
 from PyOptik import Material
-import matplotlib.pyplot as plt
-from unittest.mock import patch
 
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import plot_system
 
 property = [Material.BK7, 1.6 * ureg.RIU]
 medium_property = [Material.water, 1.4 * ureg.RIU]
@@ -89,7 +86,7 @@ def test_cylinder_attributes(attribute, property, medium_property, source):
     # Access and validate the specified attribute
     _ = getattr(scatterer, attribute)
 
-    scatterer.print_properties()
+    # scatterer.print_properties()
 
 
 if __name__ == "__main__":

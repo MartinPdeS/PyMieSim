@@ -16,9 +16,9 @@
 class Experiment
 {
     public:
-        bool debug_mode = true;
+        bool debug_mode = false;
 
-        explicit Experiment(bool debug_mode = true) : debug_mode(debug_mode) {}
+        explicit Experiment(bool debug_mode = false) : debug_mode(debug_mode) {}
 
 
         // Helper method for debugging without iostream.

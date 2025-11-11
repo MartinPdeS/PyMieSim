@@ -164,10 +164,10 @@ class OpticalSetupGUI:
         """
         if open_browser:
             webbrowser.open(f"http://{host}:{port}/", new=2)
-            self.app.run_server(debug=debug)
+            self.app.run(debug=debug)
 
         else:
-            self.app.run_server(debug=debug, host=host, port=port)
+            self.app.run(debug=debug, host=host, port=port)
 
 
 if __name__ == "__main__":
