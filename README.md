@@ -9,13 +9,6 @@
 | PyMieSim/experiment/setup.py                   |      102 |        3 |       26 |        4 |     94.53% |300-303, 364->367, 370->374, 379 |
 | PyMieSim/experiment/source/base.py             |       40 |        2 |       10 |        3 |     90.00% |47, 56->59, 73 |
 | PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93.48% |44->50, 58 |
-| PyMieSim/gui/helper.py                         |       75 |       75 |       30 |        0 |      0.00% |    22-377 |
-| PyMieSim/gui/interface.py                      |       44 |       44 |        4 |        0 |      0.00% |     1-175 |
-| PyMieSim/gui/section\_/base.py                 |       84 |       84 |       20 |        0 |      0.00% |     1-191 |
-| PyMieSim/gui/section\_/detector.py             |       21 |       21 |        0 |        0 |      0.00% |     1-109 |
-| PyMieSim/gui/section\_/measure.py              |       69 |       69 |       12 |        0 |      0.00% |     1-372 |
-| PyMieSim/gui/section\_/scatterer.py            |       28 |       28 |        0 |        0 |      0.00% |     1-119 |
-| PyMieSim/gui/section\_/source.py               |       21 |       21 |        0 |        0 |      0.00% |      1-84 |
 | PyMieSim/single/detector/base.py               |       30 |        2 |        0 |        0 |     93.33% |   28, 197 |
 | PyMieSim/single/detector/coherent.py           |       23 |        2 |        4 |        2 |     85.19% |    72, 79 |
 | PyMieSim/single/mesh.py                        |       46 |        4 |        0 |        0 |     91.30% |100, 112, 124, 136 |
@@ -26,7 +19,7 @@
 | PyMieSim/single/scatterer/core\_shell.py       |       27 |        2 |        0 |        0 |     92.59% |   119-124 |
 | PyMieSim/single/scatterer/cylinder.py          |       33 |        7 |        0 |        0 |     78.79% |69, 73, 77, 81, 85, 107-116 |
 | PyMieSim/single/scatterer/sphere.py            |       25 |        2 |        0 |        0 |     92.00% |    77, 82 |
-|                                      **TOTAL** | **1489** |  **469** |  **200** |   **17** | **65.78%** |           |
+|                                      **TOTAL** | **1147** |  **127** |  **134** |   **17** | **86.73%** |           |
 
 18 files skipped due to complete coverage.
 
