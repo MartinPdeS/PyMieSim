@@ -102,15 +102,19 @@ repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 before-test = "yum install -y xorg-x11-server-Xvfb mesa-libGL mesa-libEGL"
 
 # test-command = 'Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && python -m pytest --config-file={project}/pytest.ini {project}/tests'
-test-command = """
-export DISPLAY=:99.0
-export PYVISTA_OFF_SCREEN=true
-export PYVISTA_USE_IPYVTK=true
-Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-sleep 3
-PYTHONFAULTHANDLER=1 python -m pytest --config-file={project}/pytest.ini {project}/tests
-"""
+# test-command = """
+# export DISPLAY=:99.0
+# export PYVISTA_OFF_SCREEN=true
+# export PYVISTA_USE_IPYVTK=true
+# Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+# sleep 3
+# PYTHONFAULTHANDLER=1 python -m pytest --config-file={project}/pytest.ini {project}/tests
+# """
 
+test-command = """
+yum install -y mesa-demos &&
+DISPLAY=:99 glxinfo
+"""
 
 # before-test = "yum install -y xorg-x11-server-Xvfb mesa-libGL"
 # test-command = 'Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && python -m pytest --config-file={project}/pytest.ini {project}/tests'
