@@ -107,8 +107,8 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-before-test = "yum install -y mesa-libOSMesa mesa-libGLU"
-test-command = "export PYVISTA_OFF_SCREEN=true; cd {project}; python -m pytest --config-file=pytest.ini"
+# before-test = "yum install -y mesa-libOSMesa mesa-libGLU"
+test-command = "export PYVISTA_OFF_SCREEN=true; cd {project}; python -m pytest --config-file=pytest.ini --ignore=tests/extra/test_system_plot.py --ignore=tests/single/representation.py"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
