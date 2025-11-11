@@ -16,10 +16,6 @@ from PyMieSim.experiment import Setup
 from PyOptik import Material
 
 Material.print_available()
-import PyMieSim
-
-PyMieSim.debug_mode = True
-
 
 # %%
 # Defining the source to be employed.
