@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_1.py` (``sphere_1.py``)
-     - 00:00.482
+     - 00:00.487
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_1.py` (``coreshell_1.py``)
-     - 00:00.472
+     - 00:00.471
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_0.py` (``coreshell_0.py``)
-     - 00:00.328
+     - 00:00.325
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_0.py` (``sphere_0.py``)
-     - 00:00.286
+     - 00:00.283
      - 0.0
