@@ -44,12 +44,54 @@ endif()
 # Compiler and linker options
 add_compile_options(-Wall -Wextra -pedantic-errors)
 
-# Print some messages
-message(STATUS "OPENMP flags: ${OpenMP_CXX_FLAGS}")
-message(STATUS "PyMieSim version is: ${PYMIESIM_VERSION}")
-message(STATUS "PyMieSim includes directory is: ${LOCAL_CXX_DIR}")
-message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION}")
-message(STATUS "Binary will be installed in location: ${LOCAL_BIN_DIR}")
+
+
+
+
+
+
+
+
+message(STATUS "")
+message(STATUS "==================== Build configuration ====================")
+
+message(STATUS "Compiler information")
+message(STATUS "  C compiler           : ${CMAKE_C_COMPILER}")
+message(STATUS "  C compiler ID        : ${CMAKE_C_COMPILER_ID}")
+message(STATUS "  C compiler version   : ${CMAKE_C_COMPILER_VERSION}")
+
+message(STATUS "  CXX compiler         : ${CMAKE_CXX_COMPILER}")
+message(STATUS "  CXX compiler ID      : ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "  CXX compiler version : ${CMAKE_CXX_COMPILER_VERSION}")
+
+message(STATUS "  Fortran compiler     : ${CMAKE_Fortran_COMPILER}")
+message(STATUS "  Fortran ID           : ${CMAKE_Fortran_COMPILER_ID}")
+message(STATUS "  Fortran version      : ${CMAKE_Fortran_COMPILER_VERSION}")
+
+message(STATUS "")
+message(STATUS "OpenMP configuration")
+message(STATUS "  OpenMP flags         : ${OpenMP_CXX_FLAGS}")
+message(STATUS "  OpenMP detected      : ${OpenMP_FOUND}")
+message(STATUS "  OpenMP version       : ${OpenMP_CXX_VERSION}")
+
+message(STATUS "")
+message(STATUS "Python configuration")
+message(STATUS "  Python executable    : ${Python_EXECUTABLE}")
+message(STATUS "  Python version       : ${PYBIND11_PYTHON_VERSION}")
+message(STATUS "  Python include dir   : ${Python_INCLUDE_DIRS}")
+message(STATUS "  Python site packages : ${Python_SITELIB}")
+
+message(STATUS "")
+message(STATUS "PyMieSim integration")
+message(STATUS "  PyMieSim version     : ${PYMIESIM_VERSION}")
+message(STATUS "  PyMieSim include dir : ${LOCAL_CXX_DIR}")
+
+message(STATUS "")
+message(STATUS "Install destination")
+message(STATUS "  Binary output path   : ${LOCAL_BIN_DIR}")
+
+message(STATUS "==============================================================")
+message(STATUS "")
 
 
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
