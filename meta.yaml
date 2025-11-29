@@ -10,9 +10,12 @@ build:
   number: 0
 
 requirements:
-  host:
+  build:
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
+    - ifx_win-64        # [win]
+    - ifx_impl_win-64   # [win]
+  host:
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
