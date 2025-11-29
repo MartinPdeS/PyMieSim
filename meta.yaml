@@ -12,7 +12,8 @@ build:
 requirements:
   build:
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - ninja
+    - "{{ compiler('fortran') }}"  #[not win]
     - ifx_win-64        # [win]
     - ifx_impl_win-64   # [win]
   host:
