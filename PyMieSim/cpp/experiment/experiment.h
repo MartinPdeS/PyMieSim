@@ -4,12 +4,12 @@
 #include <memory>
 #include <cstdarg>    // For va_list, va_start, va_end
 #include <cstdio>     // For printf, vprintf
-#include "scatterer/sphere/sphere.h"
-#include "scatterer/cylinder/cylinder.h"
-#include "scatterer/coreshell/coreshell.h"
-#include "source/source.h"
-#include "detector/detector.h"
-#include "sets/sets.cpp"
+#include "../scatterer/sphere/sphere.h"
+#include "../scatterer/cylinder/cylinder.h"
+#include "../scatterer/coreshell/coreshell.h"
+#include "../source/source.h"
+#include "../detector/detector.h"
+#include "../sets/sets.cpp"
 
 
 class Experiment

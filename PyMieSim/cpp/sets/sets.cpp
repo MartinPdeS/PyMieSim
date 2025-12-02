@@ -1,3 +1,3 @@
-#include "sets/source.h"
-#include "sets/scatterer.h"
-#include "sets/detector.h"
+#include "source.h"
+#include "scatterer.h"
+#include "detector.h"

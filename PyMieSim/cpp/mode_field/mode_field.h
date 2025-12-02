@@ -3,7 +3,7 @@
 #include <cmath>
 #include <vector>
 #include <complex>
-#include "../bessel_subroutine/bessel_subroutine.h"
+#include <bessel_subroutine/bessel_subroutine.h>
 
 
 

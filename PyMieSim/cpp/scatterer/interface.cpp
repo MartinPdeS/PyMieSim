@@ -1,9 +1,9 @@
 #include <pybind11/pybind11.h>
 
-#include "scatterer/base_scatterer/interface.cpp"
-#include "scatterer/sphere/interface.cpp"
-#include "scatterer/coreshell/interface.cpp"
-#include "scatterer/cylinder/interface.cpp"
+#include "base_scatterer/interface.cpp"
+#include "sphere/interface.cpp"
+#include "coreshell/interface.cpp"
+#include "cylinder/interface.cpp"
 
 
 

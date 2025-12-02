@@ -1,7 +1,7 @@
 #pragma once
 
-#include <complex>
-#include "scatterer/base_scatterer/base_scatterer.h"
+
+#include <scatterer/base_scatterer/base_scatterer.h>
 
 using complex128 = std::complex<double>;
 

@@ -1,3 +1,4 @@
+# --------------------- CMake configuration --------------------
 cmake_minimum_required(VERSION 3.20)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum OS X deployment version")
 project(PyMieSim LANGUAGES Fortran CXX)
@@ -8,18 +9,15 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
+# --------------------- CMake configuration --------------------
 
-# Set the output directory for libraries
+# --------------------- Set the output directory for libraries --------------------
 set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
 set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/binary")
+include_directories(${NAME} ${LOCAL_CXX_DIR})
+# --------------------- Set the output directory for libraries --------------------
 
-# Compiler and linker options
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
-
-# Include directories
-include_directories("${LOCAL_CXX_DIR}")
-
-# Find dependencies
+# --------------------- Platform-specific compiler and linker options --------------------
 if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "")
     set(OpenMP_CXX_LIB_NAMES "omp" CACHE STRING "")
@@ -29,10 +27,6 @@ if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     endif()
 endif()
 
-find_package(OpenMP REQUIRED)
-find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
-find_package(pybind11 CONFIG REQUIRED)
-
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("MinGW detected on Windows")
@@ -41,9 +35,29 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
-# Compiler and linker options
-add_compile_options(-Wall -Wextra -pedantic-errors)
+if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_options(/W4 /permissive-)
+else()
+    add_compile_options(-Wall -Wextra -pedantic-errors -Wno-unused-parameter)
+endif()
+# --------------------- Platform-specific compiler and linker options --------------------
 
+# --------------------- Find dependencies and compile options --------------------
+find_package(OpenMP REQUIRED)
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG REQUIRED)
+# Compiler and linker options
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
+# --------------------- Find dependencies and compile options --------------------
+
+# ----------------- Package specific settings--------------------
+# Include Boost Math
+include_directories(${NAME} PUBLIC
+    ${CMAKE_SOURCE_DIR}/external/boost/libs/math/include
+)
+# ----------------- Package specific settings--------------------
+
+# ----------------- logging build configuration --------------------
 message(STATUS "")
 message(STATUS "==================== Build configuration ====================")
 
@@ -84,8 +98,9 @@ message(STATUS "  Binary output path   : ${LOCAL_BIN_DIR}")
 
 message(STATUS "==============================================================")
 message(STATUS "")
+# ----------------- logging build configuration --------------------
 
-
+# ----------------- collect subdirectories --------------------
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
 add_subdirectory(PyMieSim/cpp/bessel_subroutine)            # bessel_subroutine
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
@@ -96,3 +111,4 @@ add_subdirectory(PyMieSim/cpp/scatterer)                    # cpp_scatterers
 add_subdirectory(PyMieSim/cpp/detector)                     # cpp_detector       - interface_detector
 add_subdirectory(PyMieSim/cpp/sets)                         # cpp_sets           - interface_sets
 add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
+# ----------------- collect subdirectories --------------------

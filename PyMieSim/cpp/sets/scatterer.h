@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
-#include "sets/properties.h"
-#include "sets/base_set.h"
-#include "scatterer/base_scatterer/base_scatterer.h"
+#include "properties.h"
+#include "base_set.h"
+#include "../scatterer/base_scatterer/base_scatterer.h"
 
 using ScattererPtr = std::unique_ptr<BaseScatterer>;   // const because callers must not mutate
 

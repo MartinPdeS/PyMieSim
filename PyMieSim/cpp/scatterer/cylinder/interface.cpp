@@ -1,7 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "cylinder.h"
-#include "utils/numpy_interface.h"
-
+#include <utils/numpy_interface.h>
 
 
 void register_cylinder(pybind11::module_& module) {

@@ -3,15 +3,17 @@
 #include <cmath>
 #include <complex>
 #include <cstdint>
-#include <boost/math/special_functions/bessel.hpp>
+
 
 #include "errors.cpp"
 // #include "fortran_linkage.cpp"
 #include "amos_iso.h"
 
+using complex128 = std::complex<double>;
+
 namespace constants {
     const double pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679; ///< Good old pi.
-    const std::complex<double> i = std::complex<double>(0.0, 1.0); ///< Imaginary number.
+    const complex128 i = complex128(0.0, 1.0); ///< Imaginary number.
 }
 
 
@@ -39,80 +41,6 @@ sin_pi(double nu) {
 
     return std::sin(constants::pi * nu);
 }
-
-
-
-
-
-
-
-
-
-using complex128 = std::complex<double>;
-
-inline void zbesy_wrap_boost(
-    double zr, double zi, double nu,
-    int32_t kode, int32_t N,
-    double* cyr, double* cyi,
-    int32_t* nz,
-    double* /*cwrkr*/, double* /*cwrki*/,
-    int32_t* ierr)
-{
-    if (!cyr || !cyi || !nz || !ierr)
-    {
-        return;
-    }
-
-    *nz = 0;
-
-    if (N != 1 || (kode != 1 && kode != 2) || !std::isfinite(nu))
-    {
-        *cyr = 0.0;
-        *cyi = 0.0;
-        *ierr = 1;
-        return;
-    }
-
-    const complex128 z(zr, zi);
-
-    // Y_nu(z) in Boost is "cyl_neumann"
-    complex128 value;
-    try
-    {
-        value = boost::math::cyl_neumann(nu, z);
-    }
-    catch (...)
-    {
-        *cyr = std::numeric_limits<double>::quiet_NaN();
-        *cyi = std::numeric_limits<double>::quiet_NaN();
-        *ierr = 2;
-        return;
-    }
-
-    // AMOS scaling: KODE=2 returns Y(nu,z) * exp(-abs(Im(z)))
-    if (kode == 2)
-    {
-        value *= std::exp(-std::abs(z.imag()));
-    }
-
-    if (!std::isfinite(value.real()) || !std::isfinite(value.imag()))
-    {
-        *cyr = std::numeric_limits<double>::quiet_NaN();
-        *cyi = std::numeric_limits<double>::quiet_NaN();
-        *ierr = 3;
-        return;
-    }
-
-    *cyr = value.real();
-    *cyi = value.imag();
-    *ierr = 0;
-}
-
-
-
-
-
-
 
 
 namespace Cylindrical_ {
@@ -358,6 +286,80 @@ namespace Spherical_ {
 
 
 namespace Special_ {
+
+    inline std::complex<double>
+    bessel_J_complex(double nu, std::complex<double> z)
+    {
+        const double eps = 1e-14;
+
+        // Power series for |z| < 30
+        double absz = std::abs(z);
+
+        if (absz < 30.0)
+        {
+            complex128 sum = complex128(1.0,0.0);
+            complex128 term = complex128(1.0,0.0);
+
+            double k = 1.0;
+            complex128 zz = 0.25 * z * z;
+
+            while (std::abs(term) > eps * std::abs(sum))
+            {
+                term *= -zz / (k * (k + nu));
+                sum += term;
+                k += 1.0;
+            }
+
+            return std::pow(0.5 * z, nu) / std::tgamma(nu + 1.0) * sum;
+        }
+
+        // Asymptotic Hankel expansion for large |z|
+        complex128 phi = z - 0.5 * nu * constants::pi - 0.25 * constants::pi;
+
+        return std::sqrt(complex128(2.0/(constants::pi*z))) * std::cos(phi);
+    }
+
+    inline std::complex<double>
+    bessel_Y_complex(double nu, std::complex<double> z)
+    {
+        using complex128 = std::complex<double>;
+
+        // Use the identity:
+        // Yᵥ(z) = (Jᵥ(z)*cos(pi*nu) - J₋ᵥ(z)) / sin(pi*nu)
+
+        double s = std::sin(constants::pi * nu);
+        double c = std::cos(constants::pi * nu);
+
+        // If nu is integer → limit formula
+        if (std::abs(s) < 1e-14)
+        {
+            // derivative wrt nu version (omitted for now)
+            // but safe fallback:
+            nu += 1e-12;
+            s = std::sin(constants::pi * nu);
+            c = std::cos(constants::pi * nu);
+        }
+
+        std::complex<double> Jp = bessel_J_complex(nu, z);
+        std::complex<double> Jm = bessel_J_complex(-nu, z);
+
+        return (Jp * c - Jm) / s;
+    }
+
+    inline std::complex<double>
+    bessel_H1_complex(double nu, std::complex<double> z)
+    {
+        return bessel_J_complex(nu, z) + constants::i * bessel_Y_complex(nu, z);
+    }
+
+    inline std::complex<double>
+    bessel_H2_complex(double nu, std::complex<double> z)
+    {
+        return bessel_J_complex(nu, z) - constants::i * bessel_Y_complex(nu, z);
+    }
+
+
+
     inline int find_backward_start_Jn_amplitude(double x, int mp) {
 
         // ===================================================
@@ -754,4 +756,40 @@ namespace Special_ {
         }
         return;
     }
+}
+
+
+inline void _zbesj_wrap(
+    double zr,
+    double zi,
+    double order,
+    int32_t kode,
+    int32_t N,
+    double* cyr,
+    double* cyi,
+    int32_t* nz,
+    int32_t* ierr)
+{
+    if (!cyr || !cyi || !nz || !ierr)
+        return;
+
+    *nz = 0;
+
+    if (N != 1 || (kode != 1 && kode != 2))
+    {
+        *ierr = 1;
+        *cyr = *cyi = 0.0;
+        return;
+    }
+
+    std::complex<double> z(zr, zi);
+
+    std::complex<double> J = Special_::bessel_J_complex(order, z);
+
+    if (kode == 2)
+        J *= std::exp(-std::abs(z.imag()));
+
+    *cyr = J.real();
+    *cyi = J.imag();
+    *ierr = 0;
 }

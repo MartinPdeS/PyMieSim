@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "sphere.h"
-#include "utils/numpy_interface.h"
+#include <utils/numpy_interface.h>
 
 void register_sphere(pybind11::module_& module) {
 

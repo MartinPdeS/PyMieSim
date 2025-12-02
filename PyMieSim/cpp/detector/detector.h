@@ -4,10 +4,10 @@
 #include <complex>
 #include <cmath> // For std::isnan and std::pow
 #include <stdexcept>
-#include "fibonacci/fibonacci.h"
+#include <fibonacci/fibonacci.h>
 #include <scatterer/base_scatterer/base_scatterer.h>
-#include "../mode_field/mode_field.h"
-#include "utils/math.h"
+#include <mode_field/mode_field.h>
+#include <utils/math.h>
 
 using complex128 = std::complex<double>;
 #define EPSILON0 (double)8.854187817620389e-12  // Farad/Meter

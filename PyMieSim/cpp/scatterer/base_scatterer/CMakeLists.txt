@@ -5,9 +5,6 @@ set(NAME "base_scatterer")
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")
 
-target_include_directories(${NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}/external/boost
-)
 
 target_link_libraries("${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX source full_mesh coordinates)
 

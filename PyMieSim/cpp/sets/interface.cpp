@@ -2,10 +2,10 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 #include <pybind11/complex.h> // For std::complex support
 
-#include "sets/properties.h"
-#include "sets/source.h"
-#include "sets/scatterer.h"
-#include "sets/detector.h"
+#include "properties.h"
+#include "source.h"
+#include "scatterer.h"
+#include "detector.h"
 
 namespace py = pybind11;
 typedef std::complex<double> complex128;

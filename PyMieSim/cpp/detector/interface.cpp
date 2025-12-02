@@ -1,10 +1,9 @@
 #include <pybind11/pybind11.h>
-#include "detector/detector.h"
-#include "../fibonacci/interface.cpp"
-#include "../coordinates/interface.cpp"
-#include "../mode_field/interface.cpp"
-#include "utils/numpy_interface.h"
-
+#include "detector.h"
+#include <fibonacci/interface.cpp>
+#include <coordinates/interface.cpp>
+#include <mode_field/interface.cpp>
+#include <utils/numpy_interface.h>
 
 PYBIND11_MODULE(interface_detector, module) {
     module.doc() = R"pbdoc(

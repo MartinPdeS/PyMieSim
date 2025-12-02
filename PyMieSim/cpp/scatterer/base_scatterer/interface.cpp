@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "base_scatterer.h"
-#include "utils/numpy_interface.h"
+#include "../../utils/numpy_interface.h"
 
 void register_base_scatterer(pybind11::module_& module) {
 
