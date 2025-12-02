@@ -2,6 +2,10 @@
 # Ignore all
 /*
 
+# Ignore submodules
+!external
+!external/*
+
 # Except ...
 !.github
 !PyMieSim

@@ -2,9 +2,12 @@
 
 #include <cmath>
 #include <complex>
+#include <cstdint>
+#include <boost/math/special_functions/bessel.hpp>
 
 #include "errors.cpp"
-#include "fortran_linkage.cpp"
+// #include "fortran_linkage.cpp"
+#include "amos_iso.h"
 
 namespace constants {
     const double pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679; ///< Good old pi.
@@ -21,7 +24,7 @@ cos_pi(double nu) {
     // integer and a real number.
     double nup5 = nu + 0.5;
     if (std::floor(nup5) == nup5 && std::abs(nu) < 1e14)
-    return 0.0;
+        return 0.0;
 
     return std::cos(constants::pi * nu);
 }
@@ -36,6 +39,79 @@ sin_pi(double nu) {
 
     return std::sin(constants::pi * nu);
 }
+
+
+
+
+
+
+
+
+
+using complex128 = std::complex<double>;
+
+inline void zbesy_wrap_boost(
+    double zr, double zi, double nu,
+    int32_t kode, int32_t N,
+    double* cyr, double* cyi,
+    int32_t* nz,
+    double* /*cwrkr*/, double* /*cwrki*/,
+    int32_t* ierr)
+{
+    if (!cyr || !cyi || !nz || !ierr)
+    {
+        return;
+    }
+
+    *nz = 0;
+
+    if (N != 1 || (kode != 1 && kode != 2) || !std::isfinite(nu))
+    {
+        *cyr = 0.0;
+        *cyi = 0.0;
+        *ierr = 1;
+        return;
+    }
+
+    const complex128 z(zr, zi);
+
+    // Y_nu(z) in Boost is "cyl_neumann"
+    complex128 value;
+    try
+    {
+        value = boost::math::cyl_neumann(nu, z);
+    }
+    catch (...)
+    {
+        *cyr = std::numeric_limits<double>::quiet_NaN();
+        *cyi = std::numeric_limits<double>::quiet_NaN();
+        *ierr = 2;
+        return;
+    }
+
+    // AMOS scaling: KODE=2 returns Y(nu,z) * exp(-abs(Im(z)))
+    if (kode == 2)
+    {
+        value *= std::exp(-std::abs(z.imag()));
+    }
+
+    if (!std::isfinite(value.real()) || !std::isfinite(value.imag()))
+    {
+        *cyr = std::numeric_limits<double>::quiet_NaN();
+        *cyi = std::numeric_limits<double>::quiet_NaN();
+        *ierr = 3;
+        return;
+    }
+
+    *cyr = value.real();
+    *cyi = value.imag();
+    *ierr = 0;
+}
+
+
+
+
+
 
 
 
@@ -119,7 +195,6 @@ namespace Cylindrical_ {
         if (error) {
             *error = errorMessages.at("besselJ").at(ierr);
         }
-
         return answer;
     }
 

@@ -44,8 +44,7 @@ void Sphere::compute_an_bn(size_t _max_order) {
     {
         // Calculate psi and chi (Riccati-Bessel functions)
         double nu = order + 1;
-        // psi_n = +size_parameter * compute_jn(nu, size_parameter);
-        // chi_n = -size_parameter * compute_yn(nu, size_parameter);
+
         psi_n = +size_parameter * Spherical_::jn(nu, size_parameter);
         chi_n = -size_parameter * Spherical_::yn(nu, size_parameter);
 
