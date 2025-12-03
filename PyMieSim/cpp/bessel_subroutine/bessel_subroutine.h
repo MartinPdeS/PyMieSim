@@ -2,17 +2,13 @@
 
 #include <cmath>
 #include <complex>
-#include <cstdint>
-
 
 #include "errors.cpp"
-#include <zbessel.hh>
-
-using complex128 = std::complex<double>;
+#include "fortran_linkage.cpp"
 
 namespace constants {
     const double pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679; ///< Good old pi.
-    const complex128 i = complex128(0.0, 1.0); ///< Imaginary number.
+    const std::complex<double> i = std::complex<double>(0.0, 1.0); ///< Imaginary number.
 }
 
 
@@ -25,7 +21,7 @@ cos_pi(double nu) {
     // integer and a real number.
     double nup5 = nu + 0.5;
     if (std::floor(nup5) == nup5 && std::abs(nu) < 1e14)
-        return 0.0;
+    return 0.0;
 
     return std::cos(constants::pi * nu);
 }
@@ -40,6 +36,7 @@ sin_pi(double nu) {
 
     return std::sin(constants::pi * nu);
 }
+
 
 
 namespace Cylindrical_ {
@@ -94,8 +91,7 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call
-        // zbesj_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &ierr); // Call Fortran subroutine.
-        zbessel::zbesj(zr, zi, nu, kode, N, &cyr, &cyi, &nz);
+        zbesj_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &ierr); // Call Fortran subroutine.
 
         // If the input is real, then the output should be real as well.
         if (zi == 0.0 && zr >= 0.0)
@@ -113,11 +109,15 @@ namespace Cylindrical_ {
             int nzY, ierrY, kodeY(1), NY(1);
 
             // External function call
-            // zbesy_wrap(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki, &ierrY);
-            zbessel::zbesy(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki);
+            zbesy_wrap(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki, &ierrY);
             std::complex<double> answerY(cyrY, cyiY);
 
             answer = c * answer - s * answerY;
+        }
+
+        // If an error struct is provided, set the error number and message.
+        if (error) {
+            *error = errorMessages.at("besselJ").at(ierr);
         }
 
         return answer;
@@ -140,8 +140,7 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call
-        // zbesy_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &cwrkr, &cwrki, &ierr); // Call Fortran subroutine.
-        zbessel::zbesy(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &cwrkr, &cwrki); // Call Fortran subroutine.
+        zbesy_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &cwrkr, &cwrki, &ierr); // Call Fortran subroutine.
 
         // In passing from C++ to FORTRAN, the exact zero becomes the numerical zero (10^(-14)).
         // The limiting form of Y_nu(z) for high order, -Gamma(nu)/pi*Re(z)^(-nu)*(1-i*nu*Im(z)/Re(z)),
@@ -162,10 +161,14 @@ namespace Cylindrical_ {
             double cyrJ, cyiJ;
             int    nzJ, ierrJ, kodeJ(1), NJ(1);
 
-            // zbesj_wrap(zr, zi, nu, kodeJ, NJ, &cyrJ, &cyiJ, &nzJ, &ierrJ);
-            zbessel::zbesj(zr, zi, nu, kodeJ, NJ, &cyrJ, &cyiJ, &nzJ);
+            zbesj_wrap(zr, zi, nu, kodeJ, NJ, &cyrJ, &cyiJ, &nzJ, &ierrJ);
             std::complex<double> answerJ(cyrJ, cyiJ);
             answer = s * answerJ + c * answer;
+        }
+
+        // If an error struct is provided, set the error number and message.
+        if (error) {
+            *error = errorMessages.at("besselY").at(ierr);
         }
 
         return answer;
@@ -190,13 +193,17 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call.
-        // zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
-        zbessel::zbesh(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz);
+        zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
         std::complex<double> answer(cyr, cyi);
 
         // Reflection formula if order is negative.
         if (order < 0.0)
             answer *= std::exp(constants::pi * nu * constants::i);
+
+        // If an error struct is provided, set the error number and message.
+        if (error) {
+            *error = errorMessages.at("hankelH").at(ierr);
+        }
 
         return answer;
     }
@@ -219,13 +226,17 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call.
-        // zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
-        zbessel::zbesh(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz);
+        zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
         std::complex<double> answer(cyr, cyi);
 
         // Reflection formula if order is negative.
         if (order < 0.0)
         answer *= std::exp(-constants::pi * nu * constants::i);
+
+        // If an error struct is provided, set the error number and message.
+        if (error) {
+            *error = errorMessages.at("hankelH").at(ierr);
+        }
 
         return answer;
     }
@@ -272,80 +283,6 @@ namespace Spherical_ {
 
 
 namespace Special_ {
-
-    inline std::complex<double>
-    bessel_J_complex(double nu, std::complex<double> z)
-    {
-        const double eps = 1e-14;
-
-        // Power series for |z| < 30
-        double absz = std::abs(z);
-
-        if (absz < 30.0)
-        {
-            complex128 sum = complex128(1.0,0.0);
-            complex128 term = complex128(1.0,0.0);
-
-            double k = 1.0;
-            complex128 zz = 0.25 * z * z;
-
-            while (std::abs(term) > eps * std::abs(sum))
-            {
-                term *= -zz / (k * (k + nu));
-                sum += term;
-                k += 1.0;
-            }
-
-            return std::pow(0.5 * z, nu) / std::tgamma(nu + 1.0) * sum;
-        }
-
-        // Asymptotic Hankel expansion for large |z|
-        complex128 phi = z - 0.5 * nu * constants::pi - 0.25 * constants::pi;
-
-        return std::sqrt(complex128(2.0/(constants::pi*z))) * std::cos(phi);
-    }
-
-    inline std::complex<double>
-    bessel_Y_complex(double nu, std::complex<double> z)
-    {
-        using complex128 = std::complex<double>;
-
-        // Use the identity:
-        // Yᵥ(z) = (Jᵥ(z)*cos(pi*nu) - J₋ᵥ(z)) / sin(pi*nu)
-
-        double s = std::sin(constants::pi * nu);
-        double c = std::cos(constants::pi * nu);
-
-        // If nu is integer → limit formula
-        if (std::abs(s) < 1e-14)
-        {
-            // derivative wrt nu version (omitted for now)
-            // but safe fallback:
-            nu += 1e-12;
-            s = std::sin(constants::pi * nu);
-            c = std::cos(constants::pi * nu);
-        }
-
-        std::complex<double> Jp = bessel_J_complex(nu, z);
-        std::complex<double> Jm = bessel_J_complex(-nu, z);
-
-        return (Jp * c - Jm) / s;
-    }
-
-    inline std::complex<double>
-    bessel_H1_complex(double nu, std::complex<double> z)
-    {
-        return bessel_J_complex(nu, z) + constants::i * bessel_Y_complex(nu, z);
-    }
-
-    inline std::complex<double>
-    bessel_H2_complex(double nu, std::complex<double> z)
-    {
-        return bessel_J_complex(nu, z) - constants::i * bessel_Y_complex(nu, z);
-    }
-
-
-
     inline int find_backward_start_Jn_amplitude(double x, int mp) {
 
         // ===================================================

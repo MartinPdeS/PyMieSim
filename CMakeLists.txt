@@ -99,18 +99,12 @@ message(STATUS "")
 # ----------------- logging build configuration --------------------
 
 
+# set(GLOBAL PYMIESIM_TARGETS "")
 
 # ----------------- collect subdirectories --------------------
 
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
-# add_subdirectory(external/bessel)                           # zbessel
-add_library(zbessel STATIC external/bessel/zbessel.cc)
-install(
-    TARGETS zbessel
-    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
-    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
-    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
-)
+add_subdirectory(PyMieSim/cpp/bessel_subroutine)            # bessel_subroutine
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
 add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
@@ -120,3 +114,12 @@ add_subdirectory(PyMieSim/cpp/detector)                     # cpp_detector      
 add_subdirectory(PyMieSim/cpp/sets)                         # cpp_sets           - interface_sets
 add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
 # ----------------- collect subdirectories --------------------
+
+get_property(PYMIESIM_TARGETS GLOBAL PROPERTY PYMIESIM_TARGETS)
+
+install(
+    TARGETS ${PYMIESIM_TARGETS}
+    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
+    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
+    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
+)

@@ -1,3 +1,0 @@
-[submodule "external/bessel"]
-	path = external/bessel
-	url = https://github.com/jpcima/zbessel.git

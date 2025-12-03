@@ -6,7 +6,7 @@ set(NAME "base_scatterer")
 add_library("${NAME}" STATIC "${NAME}.cpp")
 
 
-target_link_libraries("${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX source zbessel full_mesh coordinates)
+target_link_libraries("${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX source full_mesh coordinates bessel_subroutine)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
@@ -19,9 +19,4 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_options("${NAME}" PRIVATE -static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
-install(
-    TARGETS ${NAME}
-    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
-    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
-    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
-)
+set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS "${NAME}")
