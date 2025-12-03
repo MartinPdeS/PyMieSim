@@ -51,10 +51,8 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-
 # --------------------- Find dependencies and compile options --------------------
 
 # ----------------- Package specific settings--------------------
-# Include Boost Math
-include_directories(${NAME} PUBLIC
-    ${CMAKE_SOURCE_DIR}/external/boost/libs/math/include
-)
+# Include Bessel Math
+include_directories("${CMAKE_SOURCE_DIR}/external/bessel/")
 # ----------------- Package specific settings--------------------
 
 # ----------------- logging build configuration --------------------
@@ -100,9 +98,19 @@ message(STATUS "==============================================================")
 message(STATUS "")
 # ----------------- logging build configuration --------------------
 
+
+
 # ----------------- collect subdirectories --------------------
+
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
-add_subdirectory(PyMieSim/cpp/bessel_subroutine)            # bessel_subroutine
+# add_subdirectory(external/bessel)                           # zbessel
+add_library(zbessel STATIC external/bessel/zbessel.cc)
+install(
+    TARGETS zbessel
+    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
+    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
+    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
+)
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
 add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci

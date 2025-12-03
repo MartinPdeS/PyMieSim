@@ -6,8 +6,7 @@
 
 
 #include "errors.cpp"
-// #include "fortran_linkage.cpp"
-#include "amos_iso.h"
+#include <zbessel.hh>
 
 using complex128 = std::complex<double>;
 
@@ -95,7 +94,8 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call
-        zbesj_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &ierr); // Call Fortran subroutine.
+        // zbesj_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &ierr); // Call Fortran subroutine.
+        zbessel::zbesj(zr, zi, nu, kode, N, &cyr, &cyi, &nz);
 
         // If the input is real, then the output should be real as well.
         if (zi == 0.0 && zr >= 0.0)
@@ -113,16 +113,13 @@ namespace Cylindrical_ {
             int nzY, ierrY, kodeY(1), NY(1);
 
             // External function call
-            zbesy_wrap(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki, &ierrY);
+            // zbesy_wrap(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki, &ierrY);
+            zbessel::zbesy(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki);
             std::complex<double> answerY(cyrY, cyiY);
 
             answer = c * answer - s * answerY;
         }
 
-        // If an error struct is provided, set the error number and message.
-        if (error) {
-            *error = errorMessages.at("besselJ").at(ierr);
-        }
         return answer;
     }
 
@@ -143,7 +140,8 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call
-        zbesy_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &cwrkr, &cwrki, &ierr); // Call Fortran subroutine.
+        // zbesy_wrap(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &cwrkr, &cwrki, &ierr); // Call Fortran subroutine.
+        zbessel::zbesy(zr, zi, nu, kode, N, &cyr, &cyi, &nz, &cwrkr, &cwrki); // Call Fortran subroutine.
 
         // In passing from C++ to FORTRAN, the exact zero becomes the numerical zero (10^(-14)).
         // The limiting form of Y_nu(z) for high order, -Gamma(nu)/pi*Re(z)^(-nu)*(1-i*nu*Im(z)/Re(z)),
@@ -164,14 +162,10 @@ namespace Cylindrical_ {
             double cyrJ, cyiJ;
             int    nzJ, ierrJ, kodeJ(1), NJ(1);
 
-            zbesj_wrap(zr, zi, nu, kodeJ, NJ, &cyrJ, &cyiJ, &nzJ, &ierrJ);
+            // zbesj_wrap(zr, zi, nu, kodeJ, NJ, &cyrJ, &cyiJ, &nzJ, &ierrJ);
+            zbessel::zbesj(zr, zi, nu, kodeJ, NJ, &cyrJ, &cyiJ, &nzJ);
             std::complex<double> answerJ(cyrJ, cyiJ);
             answer = s * answerJ + c * answer;
-        }
-
-        // If an error struct is provided, set the error number and message.
-        if (error) {
-            *error = errorMessages.at("besselY").at(ierr);
         }
 
         return answer;
@@ -196,17 +190,13 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call.
-        zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
+        // zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
+        zbessel::zbesh(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz);
         std::complex<double> answer(cyr, cyi);
 
         // Reflection formula if order is negative.
         if (order < 0.0)
             answer *= std::exp(constants::pi * nu * constants::i);
-
-        // If an error struct is provided, set the error number and message.
-        if (error) {
-            *error = errorMessages.at("hankelH").at(ierr);
-        }
 
         return answer;
     }
@@ -229,17 +219,13 @@ namespace Cylindrical_ {
         int    nz, ierr;
 
         // External function call.
-        zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
+        // zbesh_wrap(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz, &ierr);
+        zbessel::zbesh(zr, zi, nu, kode, kind, N, &cyr, &cyi, &nz);
         std::complex<double> answer(cyr, cyi);
 
         // Reflection formula if order is negative.
         if (order < 0.0)
         answer *= std::exp(-constants::pi * nu * constants::i);
-
-        // If an error struct is provided, set the error number and message.
-        if (error) {
-            *error = errorMessages.at("hankelH").at(ierr);
-        }
 
         return answer;
     }
@@ -756,40 +742,4 @@ namespace Special_ {
         }
         return;
     }
-}
-
-
-inline void _zbesj_wrap(
-    double zr,
-    double zi,
-    double order,
-    int32_t kode,
-    int32_t N,
-    double* cyr,
-    double* cyi,
-    int32_t* nz,
-    int32_t* ierr)
-{
-    if (!cyr || !cyi || !nz || !ierr)
-        return;
-
-    *nz = 0;
-
-    if (N != 1 || (kode != 1 && kode != 2))
-    {
-        *ierr = 1;
-        *cyr = *cyi = 0.0;
-        return;
-    }
-
-    std::complex<double> z(zr, zi);
-
-    std::complex<double> J = Special_::bessel_J_complex(order, z);
-
-    if (kode == 2)
-        J *= std::exp(-std::abs(z.imag()));
-
-    *cyr = J.real();
-    *cyi = J.imag();
-    *ierr = 0;
 }

@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include "experiment.cpp"
-#include "../utils/numpy_interface.h"
-#include "../utils/defines.h"
+#include <utils/numpy_interface.h>
+#include <utils/defines.h>
 
 
 #define DEFINE_GETTER(property) \
