@@ -8,21 +8,36 @@ source:
 build:
   number: 0
   script_env:
-    - CMAKE_Fortran_COMPILER=ifx  # [win]
-    - FC=ifx                      # [win]
+    - CMAKE_GENERATOR=Ninja
   script: |
-    {% if win %}
-    call "%CONDA_PREFIX%\\Library\\bin\\ifxvars.bat"
-    {% endif %}
-    {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    # [win]
+    set "IFX_EXE=%BUILD_PREFIX%\Library\bin\ifx.exe"
+    if not exist "%IFX_EXE%" (
+      echo IFX not found at: "%IFX_EXE%"
+      dir /b "%BUILD_PREFIX%\Library\bin"
+      exit /b 1
+    )
+    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"
+    set "FC=%IFX_EXE%"
+    set "F90=%IFX_EXE%"
+    set "CMAKE_ARGS=-DCMAKE_Fortran_COMPILER=%IFX_EXE%"
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation
+
+    # [unix]
+    # Works for both Linux and macOS
+    export FC="${FC:-gfortran}"
+    export F90="${F90:-gfortran}"
+    "${FC}" --version
+    export CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_Fortran_COMPILER=${FC}"
+    "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
-    - "{{ compiler('cxx') }}"
     - ninja
-    - "{{ compiler('fortran') }}"  #[not win]
-    - ifx_win-64        # [win]
-    - ifx_impl_win-64   # [win]
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}   # [unix]
+    - ifx_win-64                  # [win]
+    - ifx_impl_win-64             # [win]
   host:
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
