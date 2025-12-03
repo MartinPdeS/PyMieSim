@@ -11,16 +11,18 @@ build:
     - CMAKE_GENERATOR=Ninja
   script: |
     # [win]
-    set "IFX_EXE=%BUILD_PREFIX%\Library\bin\ifx.exe"
-    if not exist "%IFX_EXE%" (
-      echo IFX not found at: "%IFX_EXE%"
-      dir /b "%BUILD_PREFIX%\Library\bin"
-      exit /b 1
-    )
+    :: ensure conda build tools are discoverable
     set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"
-    set "FC=%IFX_EXE%"
-    set "F90=%IFX_EXE%"
-    set "CMAKE_ARGS=-DCMAKE_Fortran_COMPILER=%IFX_EXE%"
+
+    where ifx
+    ifx --version
+
+    set "FC=ifx"
+    set "F90=ifx"
+
+    set "CMAKE_GENERATOR=Ninja"
+    set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_Fortran_COMPILER=ifx"
+
     "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation
 
     # [unix]
