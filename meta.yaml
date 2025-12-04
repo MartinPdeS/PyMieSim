@@ -12,26 +12,39 @@ build:
     - FC=ifx   # [win]
     - F90=ifx  # [win]
   script: |
-    :: Windows setup
-    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
-    where ifx  # [win]
-    ifx --version  # [win]
+    :: ---------------- Windows only ----------------  # [win]
+    @echo on  # [win]
 
-    for %%I in (ifx.exe) do set "IFX_EXE=%%~$PATH:I"  # [win]
-    if not defined IFX_EXE ( echo ifx.exe not found & exit /b 1 )  # [win]
+    :: Use conda-build's Library/bin on Windows  # [win]
+    set "PATH=%LIBRARY_BIN%;%PATH%"  # [win]
 
-    set "IFX_EXE_CMAKE=%IFX_EXE:\=/%"  # [win]
-    set "SKBUILD_CMAKE_ARGS=-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%"  # [win]
+    if not exist "%LIBRARY_BIN%\ifx.exe" (  # [win]
+      echo ifx.exe not found in %LIBRARY_BIN%  # [win]
+      dir /b "%LIBRARY_BIN%"  # [win]
+      exit /b 1  # [win]
+    )  # [win]
 
-    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation  # [win]
+    "%LIBRARY_BIN%\ifx.exe" --version || exit /b 1  # [win]
 
-    # Unix setup (Linux and macOS)
+    :: Smoke test: can ifx compile + link at all in this env?  # [win]
+    echo program hello> conda_ifx_smoketest.f90  # [win]
+    echo print *, "hello">> conda_ifx_smoketest.f90  # [win]
+    echo end program hello>> conda_ifx_smoketest.f90  # [win]
+    "%LIBRARY_BIN%\ifx.exe" conda_ifx_smoketest.f90 /Fe:conda_ifx_smoketest.exe || exit /b 1  # [win]
+
+    :: Pass compiler to CMake in a Windows safe way (forward slashes)  # [win]
+    set "IFX_EXE_CMAKE=%LIBRARY_BIN:\=/%/ifx.exe"  # [win]
+    set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%"  # [win]
+    set "SKBUILD_CMAKE_ARGS=%CMAKE_ARGS%"  # [win]
+
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation || exit /b 1  # [win]
+
+    # ---------------- Unix only (Linux + macOS) ----------------  # [unix]
     export CMAKE_GENERATOR=Ninja  # [unix]
     export FC="${FC:-gfortran}"  # [unix]
-    export F90="${F90:-gfortran}"  # [unix]
     "${FC}" --version  # [unix]
+    export CMAKE_ARGS="${CMAKE_ARGS:-} -DCMAKE_Fortran_COMPILER=${FC}"  # [unix]
     export SKBUILD_CMAKE_ARGS="${SKBUILD_CMAKE_ARGS:-} -DCMAKE_Fortran_COMPILER=${FC}"  # [unix]
-
     "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation  # [unix]
 
 requirements:
