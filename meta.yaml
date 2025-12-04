@@ -9,29 +9,30 @@ build:
   number: 0
   script_env:
     - CMAKE_GENERATOR=Ninja
+    - FC=ifx   # [win]
+    - F90=ifx  # [win]
   script: |
-    # [win]
-    :: ensure conda build tools are discoverable
-    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"
+    :: Windows setup
+    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
+    where ifx  # [win]
+    ifx --version  # [win]
 
-    where ifx
-    ifx --version
+    for %%I in (ifx.exe) do set "IFX_EXE=%%~$PATH:I"  # [win]
+    if not defined IFX_EXE ( echo ifx.exe not found & exit /b 1 )  # [win]
 
-    set "FC=ifx"
-    set "F90=ifx"
+    set "IFX_EXE_CMAKE=%IFX_EXE:\=/%"  # [win]
+    set "SKBUILD_CMAKE_ARGS=-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%"  # [win]
 
-    set "CMAKE_GENERATOR=Ninja"
-    set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_Fortran_COMPILER=ifx"
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation  # [win]
 
-    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation
+    # Unix setup (Linux and macOS)
+    export CMAKE_GENERATOR=Ninja  # [unix]
+    export FC="${FC:-gfortran}"  # [unix]
+    export F90="${F90:-gfortran}"  # [unix]
+    "${FC}" --version  # [unix]
+    export SKBUILD_CMAKE_ARGS="${SKBUILD_CMAKE_ARGS:-} -DCMAKE_Fortran_COMPILER=${FC}"  # [unix]
 
-    # [unix]
-    # Works for both Linux and macOS
-    export FC="${FC:-gfortran}"
-    export F90="${F90:-gfortran}"
-    "${FC}" --version
-    export CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_Fortran_COMPILER=${FC}"
-    "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation
+    "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation  # [unix]
 
 requirements:
   build:
