@@ -1,6 +1,6 @@
 """
 Near-Fields Computation and Visualization
-========================================
+=========================================
 
 This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
 """

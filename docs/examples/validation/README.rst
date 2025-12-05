@@ -10,6 +10,6 @@ specific parts of the library are also provided.
 
 Contents
 --------
-- ``bohren_huffman`` – examples based on figures from *Absorption and Scattering of Light by Small Particles*.
-- ``pymiescatt`` – comparisons with the ``PyMieScatt`` package.
-- ``internal`` – small utilities checking phase functions and energy flow.
+- ``bohren_huffman`` - examples based on figures from *Absorption and Scattering of Light by Small Particles*.
+- ``pymiescatt`` - comparisons with the ``PyMieScatt`` package.
+- ``internal`` - small utilities checking phase functions and energy flow.
