@@ -96,7 +96,7 @@ files:
 
 test:
   imports:
-    - FlowCyPy
+    - PyMieSim
   requires:
     - python {{ PY_VER }}*
     - python_abi 3.13.* *_cp313   # [py==313]
