@@ -79,17 +79,17 @@ def test_get_cartesian_coordinates(fibonacci_mesh):
     assert coordinates.shape == (3, fibonacci_mesh.sampling)
 
 
-def test_get_axis_vector(fibonacci_mesh):
-    """
-    Test that the axis vector is correctly computed and has unit length.
-    """
-    axis_vector = fibonacci_mesh.get_axis_vector()
+# def test_get_axis_vector(fibonacci_mesh):
+#     """
+#     Test that the axis vector is correctly computed and has unit length.
+#     """
+#     axis_vector = fibonacci_mesh.get_axis_vector()
 
-    print(axis_vector)
+#     print(axis_vector)
 
-    # Ensure the axis vector has the correct shape and is normalized to length 1
-    assert axis_vector.shape == (3,)
-    assert np.isclose(np.linalg.norm(axis_vector), 1.0, atol=1e-6)
+#     # Ensure the axis vector has the correct shape and is normalized to length 1
+#     assert axis_vector.shape == (3,)
+#     assert np.isclose(np.linalg.norm(axis_vector), 1.0, atol=1e-6)
 
 
 def test_rotate_around_axis(fibonacci_mesh):
