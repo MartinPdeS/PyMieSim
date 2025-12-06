@@ -96,15 +96,16 @@ files:
 
 test:
   imports:
-    - PyMieSim
+    - FlowCyPy
   requires:
-    - python {{PY_VER}}*
+    - python {{ PY_VER }}*
+    - python_abi 3.13.* *_cp313   # [py==313]
     - pytest >=0.6
     - pytest-cov >=2.0
-    - pytest-json-report ~=1.5.0
-    - coverage ~=7.6.1
+    - pytest-json-report ==1.5
+    - coverage ==7.6
   commands:
-    - python -m pytest --ignore=tests/gui
+    - python -m pytest
   source_files:
     - tests
 
