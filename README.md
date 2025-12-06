@@ -11,7 +11,7 @@
 | PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93.48% |44->50, 58 |
 | PyMieSim/single/detector/base.py               |       30 |        2 |        0 |        0 |     93.33% |   28, 197 |
 | PyMieSim/single/detector/coherent.py           |       23 |        2 |        4 |        2 |     85.19% |    72, 79 |
-| PyMieSim/single/mesh.py                        |       46 |        4 |        0 |        0 |     91.30% |100, 112, 124, 136 |
+| PyMieSim/single/mesh.py                        |       46 |        7 |        0 |        0 |     84.78% |100, 112, 124, 136, 160-166 |
 | PyMieSim/single/polarization.py                |       43 |        5 |        8 |        1 |     84.31% |71, 87, 90-93 |
 | PyMieSim/single/representations/base.py        |       38 |        3 |        2 |        1 |     90.00% | 50, 54-55 |
 | PyMieSim/single/representations/near\_field.py |       68 |       53 |       14 |        0 |     18.29% |66-70, 75-84, 89-91, 112-121, 134-166, 189-237 |
@@ -19,7 +19,7 @@
 | PyMieSim/single/scatterer/core\_shell.py       |       27 |        2 |        0 |        0 |     92.59% |   119-124 |
 | PyMieSim/single/scatterer/cylinder.py          |       33 |        7 |        0 |        0 |     78.79% |69, 73, 77, 81, 85, 107-116 |
 | PyMieSim/single/scatterer/sphere.py            |       25 |        2 |        0 |        0 |     92.00% |    77, 82 |
-|                                      **TOTAL** | **1147** |  **127** |  **134** |   **17** | **86.73%** |           |
+|                                      **TOTAL** | **1147** |  **130** |  **134** |   **17** | **86.49%** |           |
 
 18 files skipped due to complete coverage.
 
