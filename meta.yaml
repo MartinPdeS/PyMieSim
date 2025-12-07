@@ -14,34 +14,42 @@ build:
   script: |
     @echo on  # [win]
 
-    rem Put conda build tools first  # [win]
-    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
-
-    rem Locate Visual Studio with VC tools and activate MSVC environment  # [win]
-    for /f "usebackq delims=" %%I in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSINSTALL=%%I"  # [win]
-    if not defined VSINSTALL ( echo Could not locate Visual Studio via vswhere & exit /b 1 )  # [win]
-    call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat" -arch=amd64 -host_arch=amd64  # [win]
-
-    where cl.exe  # [win]
-    where link.exe  # [win]
-    cl.exe /Bv  # [win]
-
-    rem Intel Fortran and Ninja from conda build env  # [win]
+    rem Tools from conda build env  # [win]
     set "IFX_EXE=%BUILD_PREFIX%\Library\bin\ifx.exe"  # [win]
     set "NINJA_EXE=%BUILD_PREFIX%\Library\bin\ninja.exe"  # [win]
 
     if not exist "%IFX_EXE%" ( echo ifx not found & dir /b "%BUILD_PREFIX%\Library\bin" & exit /b 1 )  # [win]
     if not exist "%NINJA_EXE%" ( echo ninja not found & dir /b "%BUILD_PREFIX%\Library\bin" & exit /b 1 )  # [win]
 
+    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
     "%IFX_EXE%" --version || exit /b 1  # [win]
     "%NINJA_EXE%" --version || exit /b 1  # [win]
 
+    rem Locate MSVC cl.exe explicitly using vswhere  # [win]
+    set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"  # [win]
+    if not exist "%VSWHERE%" ( echo vswhere not found at "%VSWHERE%" & exit /b 1 )  # [win]
+
+    for /f "usebackq delims=" %%I in (`"%VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find VC\Tools\MSVC\**\bin\Hostx64\x64\cl.exe`) do set "CL_EXE=%%I"  # [win]
+    if not defined CL_EXE ( echo cl.exe not found via vswhere & "%VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 & exit /b 1 )  # [win]
+
+    rem Make sure link.exe is on PATH as well by adding the cl.exe directory  # [win]
+    for %%D in ("%CL_EXE%") do set "MSVC_BIN_DIR=%%~dpD"  # [win]
+    set "PATH=%MSVC_BIN_DIR%;%PATH%"  # [win]
+
+    where cl.exe  # [win]
+    where link.exe  # [win]
+    cl.exe /Bv  # [win]
+
+    rem Convert paths to CMake friendly forward slashes  # [win]
     set "IFX_EXE_CMAKE=%IFX_EXE:\=/%"  # [win]
     set "NINJA_EXE_CMAKE=%NINJA_EXE:\=/%"  # [win]
+    set "CL_EXE_CMAKE=%CL_EXE:\=/%"  # [win]
 
+    rem Force Ninja and pin all compilers explicitly  # [win]
     "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^  # [win]
-      --config-settings=cmake.args=-GNinja;-DCMAKE_MAKE_PROGRAM:FILEPATH=%NINJA_EXE_CMAKE%;-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE% ^  # [win]
+      --config-settings=cmake.args=-GNinja;-DCMAKE_MAKE_PROGRAM:FILEPATH=%NINJA_EXE_CMAKE%;-DCMAKE_C_COMPILER:FILEPATH=%CL_EXE_CMAKE%;-DCMAKE_CXX_COMPILER:FILEPATH=%CL_EXE_CMAKE%;-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE% ^  # [win]
       || exit /b 1  # [win]
+
 
 
 
