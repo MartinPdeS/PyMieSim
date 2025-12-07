@@ -14,19 +14,24 @@ build:
   script: |
     @echo on  # [win]
 
-    rem Put conda build tools first  # [win]
+    rem Ensure conda build tools are first  # [win]
     set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
 
-    rem Activate MSVC so cl.exe and link.exe are on PATH  # [win]
+    rem Find MSVC cl.exe using vswhere  # [win]
     set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"  # [win]
-    if not exist "%VSWHERE%" ( echo vswhere not found at "%VSWHERE%" & exit /b 1 )  # [win]
+    if not exist "%VSWHERE%" ( echo vswhere not found & exit /b 1 )  # [win]
 
-    for /f "usebackq delims=" %%I in (`"%VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSINSTALL=%%I"  # [win]
-    if not defined VSINSTALL ( echo Could not locate Visual Studio via vswhere & exit /b 1 )  # [win]
+    for /f "usebackq delims=" %%I in (`"%VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find VC\Tools\MSVC\**\bin\Hostx64\x64\cl.exe`) do set "CL_EXE_LONG=%%I"  # [win]
+    if not defined CL_EXE_LONG ( echo cl.exe not found via vswhere & exit /b 1 )  # [win]
 
-    call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat" -arch=amd64 -host_arch=amd64  # [win]
+    rem Convert to 8.3 short path to avoid spaces breaking pip arguments  # [win]
+    for %%F in ("%CL_EXE_LONG%") do set "CL_EXE_SHORT=%%~sF"  # [win]
+    if not defined CL_EXE_SHORT ( echo Failed to compute short path for cl.exe & exit /b 1 )  # [win]
 
-    where cl.exe  # [win]
+    rem Put MSVC bin directory on PATH so link.exe is found  # [win]
+    for %%D in ("%CL_EXE_LONG%") do set "MSVC_BIN_DIR=%%~dpD"  # [win]
+    set "PATH=%MSVC_BIN_DIR%;%PATH%"  # [win]
+
     where link.exe  # [win]
 
     rem Intel Fortran and Ninja from conda build env  # [win]
@@ -42,9 +47,13 @@ build:
     set "IFX_EXE_CMAKE=%IFX_EXE:\=/%"  # [win]
     set "NINJA_EXE_CMAKE=%NINJA_EXE:\=/%"  # [win]
 
-    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^
-      "--config-settings=cmake.args=-GNinja;-DCMAKE_MAKE_PROGRAM:FILEPATH=%NINJA_EXE_CMAKE%;-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%;-DCMAKE_C_COMPILER=cl;-DCMAKE_CXX_COMPILER=cl" ^
+    rem Convert CL short path to CMake friendly form  # [win]
+    set "CL_EXE_SHORT_CMAKE=%CL_EXE_SHORT:\=/%"  # [win]
+
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^  # [win]
+      "--config-settings=cmake.args=-GNinja;-DCMAKE_MAKE_PROGRAM:FILEPATH=%NINJA_EXE_CMAKE%;-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%;-DCMAKE_C_COMPILER:FILEPATH=%CL_EXE_SHORT_CMAKE%;-DCMAKE_CXX_COMPILER:FILEPATH=%CL_EXE_SHORT_CMAKE%" ^  # [win]
       || exit /b 1  # [win]
+
 
 
 
