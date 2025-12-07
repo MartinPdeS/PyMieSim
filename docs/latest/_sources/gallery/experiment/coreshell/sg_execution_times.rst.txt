@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.631** total execution time for 5 files **from gallery/experiment/coreshell**:
+**00:01.509** total execution time for 5 files **from gallery/experiment/coreshell**:
 
 .. container::
 
@@ -36,14 +36,14 @@ Computation times
      - 00:00.472
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_Qback_vs_corediameter.py` (``coreshell_Qback_vs_corediameter.py``)
-     - 00:00.355
+     - 00:00.316
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py` (``coreshell_coupling_vs_corediameter.py``)
-     - 00:00.304
+     - 00:00.282
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py` (``coreshell_b1_vs_corediameter.py``)
-     - 00:00.289
+     - 00:00.255
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_a1_vs_corediameter.py` (``coreshell_a1_vs_corediameter.py``)
-     - 00:00.211
+     - 00:00.184
      - 0.0
