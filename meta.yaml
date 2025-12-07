@@ -8,43 +8,30 @@ source:
 build:
   number: 0
   script_env:
-    - CMAKE_GENERATOR=Ninja
-    - FC=ifx   # [win]
-    - F90=ifx  # [win]
-build:
-  number: 0
-
-  script_env:
-    - CMAKE_GENERATOR=Ninja
     - FC=ifx   # [win]
     - F90=ifx  # [win]
 
   script: |
-    :: Windows  # [win]
     @echo on  # [win]
 
     set "IFX_EXE=%BUILD_PREFIX%\Library\bin\ifx.exe"  # [win]
-    if not exist "%IFX_EXE%" (  # [win]
-      echo ifx.exe not found at "%IFX_EXE%"  # [win]
-      dir /b "%BUILD_PREFIX%\Library\bin"  # [win]
-      exit /b 1  # [win]
-    )  # [win]
+    set "NINJA_EXE=%BUILD_PREFIX%\Library\bin\ninja.exe"  # [win]
+
+    if not exist "%IFX_EXE%" ( echo ifx not found & dir /b "%BUILD_PREFIX%\Library\bin" & exit /b 1 )  # [win]
+    if not exist "%NINJA_EXE%" ( echo ninja not found & dir /b "%BUILD_PREFIX%\Library\bin" & exit /b 1 )  # [win]
 
     set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
     "%IFX_EXE%" --version || exit /b 1  # [win]
+    "%NINJA_EXE%" --version || exit /b 1  # [win]
 
     set "IFX_EXE_CMAKE=%IFX_EXE:\=/%"  # [win]
-    set "SKBUILD_CMAKE_ARGS=-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%"  # [win]
+    set "NINJA_EXE_CMAKE=%NINJA_EXE:\=/%"  # [win]
 
-    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation || exit /b 1  # [win]
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^
+      --config-settings=cmake.args=-GNinja;-DCMAKE_MAKE_PROGRAM:FILEPATH=%NINJA_EXE_CMAKE%;-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE% ^
+      || exit /b 1  # [win]
 
-    # Unix (Linux and macOS)  # [unix]
-    export CMAKE_GENERATOR=Ninja  # [unix]
-    export FC="${FC:-gfortran}"  # [unix]
-    export F90="${F90:-gfortran}"  # [unix]
-    "${FC}" --version  # [unix]
-    export SKBUILD_CMAKE_ARGS="${SKBUILD_CMAKE_ARGS:-} -DCMAKE_Fortran_COMPILER=${FC}"  # [unix]
-    "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation  # [unix]
+
 
 requirements:
   build:
