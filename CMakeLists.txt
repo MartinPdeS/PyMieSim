@@ -36,7 +36,7 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/W4> $<$<COMPILE_LANGUAGE:CXX>:/permissive->)
+    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/W4> $<$<COMPILE_LANGUAGE:CXX>:/permissive->-)
 else()
     add_compile_options(-Wall -Wextra -pedantic-errors -Wno-unused-parameter)
 endif()
@@ -47,7 +47,7 @@ find_package(OpenMP REQUIRED COMPONENTS CXX)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 # Compiler and linker options
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
+# set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
 # --------------------- Find dependencies and compile options --------------------
 
 # ----------------- Package specific settings--------------------
