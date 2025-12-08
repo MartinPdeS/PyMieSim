@@ -4,7 +4,7 @@
 #include <utils/defines.h>
 
 
-#define DEFINE_GETTER(property) \
+#define DEFINE_GETTER_INTERFACE(property) \
     .def("get_"  #property, \
         [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) { \
             auto [output, shape] = self.get_data<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
@@ -26,40 +26,40 @@
         "Retrieves the scattering property for a scatterer" \
     )
 
-#define DEFINE_GETTERS_1(A) \
-    DEFINE_GETTER(A)
+#define DEFINE_GETTERS_INTERFACE_1(A) \
+    DEFINE_GETTER_INTERFACE(A)
 
-#define DEFINE_GETTERS_2(A, B) \
-    DEFINE_GETTER(A) \
-    DEFINE_GETTER(B)
+#define DEFINE_GETTERS_INTERFACE_2(A, B) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B)
 
-#define DEFINE_GETTERS_3(A, B, C) \
-    DEFINE_GETTER(A) \
-    DEFINE_GETTER(B) \
-    DEFINE_GETTER(C)
+#define DEFINE_GETTERS_INTERFACE_3(A, B, C) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C)
 
-#define DEFINE_GETTERS_4(A, B, C, D) \
-    DEFINE_GETTER(A) \
-    DEFINE_GETTER(B) \
-    DEFINE_GETTER(C) \
-    DEFINE_GETTER(D)
+#define DEFINE_GETTERS_INTERFACE_4(A, B, C, D) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C) \
+    DEFINE_GETTER_INTERFACE(D)
 
-#define DEFINE_GETTERS_6(A, B, C, D, E, F) \
-    DEFINE_GETTER(A) \
-    DEFINE_GETTER(B) \
-    DEFINE_GETTER(C) \
-    DEFINE_GETTER(D) \
-    DEFINE_GETTER(E) \
-    DEFINE_GETTER(F)
+#define DEFINE_GETTERS_INTERFACE_6(A, B, C, D, E, F) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C) \
+    DEFINE_GETTER_INTERFACE(D) \
+    DEFINE_GETTER_INTERFACE(E) \
+    DEFINE_GETTER_INTERFACE(F)
 
-#define DEFINE_GETTERS_7(A, B, C, D, E, F, G) \
-    DEFINE_GETTER(A) \
-    DEFINE_GETTER(B) \
-    DEFINE_GETTER(C) \
-    DEFINE_GETTER(D) \
-    DEFINE_GETTER(E) \
-    DEFINE_GETTER(F) \
-    DEFINE_GETTER(G)
+#define DEFINE_GETTERS_INTERFACE_7(A, B, C, D, E, F, G) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C) \
+    DEFINE_GETTER_INTERFACE(D) \
+    DEFINE_GETTER_INTERFACE(E) \
+    DEFINE_GETTER_INTERFACE(F) \
+    DEFINE_GETTER_INTERFACE(G)
 
 
 
@@ -164,13 +164,13 @@ PYBIND11_MODULE(interface_experiment, module) {
             )pbdoc"
         )
 
-        DEFINE_GETTERS_6(a1, a2, a3, b1, b2, b3)
+        DEFINE_GETTERS_INTERFACE_6(a1, a2, a3, b1, b2, b3)
 
-        DEFINE_GETTERS_6(a11, a12, a13, b11, b12, b13)
-        DEFINE_GETTERS_6(a21, a22, a23, b21, b22, b23)
+        DEFINE_GETTERS_INTERFACE_6(a11, a12, a13, b11, b12, b13)
+        DEFINE_GETTERS_INTERFACE_6(a21, a22, a23, b21, b22, b23)
 
-        DEFINE_GETTERS_7(Qsca, Qext, Qabs, Qpr, Qforward, Qback, Qratio)
-        DEFINE_GETTERS_7(Csca, Cext, Cabs, Cpr, Cforward, Cback, Cratio)
-        DEFINE_GETTERS_1(g)
+        DEFINE_GETTERS_INTERFACE_7(Qsca, Qext, Qabs, Qpr, Qforward, Qback, Qratio)
+        DEFINE_GETTERS_INTERFACE_7(Csca, Cext, Cabs, Cpr, Cforward, Cback, Cratio)
+        DEFINE_GETTERS_INTERFACE_1(g)
         ;
 }

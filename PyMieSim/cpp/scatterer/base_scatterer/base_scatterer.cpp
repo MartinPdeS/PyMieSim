@@ -213,10 +213,10 @@ BaseScatterer::compute_nearfields_structured(
     const std::vector<double>& z_range,
     const std::string& field_type
 ) {
-    const size_t nx = x_range.size();
-    const size_t ny = y_range.size();
-    const size_t nz = z_range.size();
-    const size_t total_points = nx * ny * nz;
+    const long long nx = x_range.size();
+    const long long ny = y_range.size();
+    const long long nz = z_range.size();
+    const long long total_points = nx * ny * nz;
 
     // Prepare coordinate vectors for the structured grid
     std::vector<double> x_coords, y_coords, z_coords;
@@ -225,9 +225,9 @@ BaseScatterer::compute_nearfields_structured(
     z_coords.reserve(total_points);
 
     #pragma omp parallel for collapse(3) // Enable OpenMP parallelization
-    for (size_t ix = 0; ix < nx; ++ix)
-        for (size_t iy = 0; iy < ny; ++iy)
-            for (size_t iz = 0; iz < nz; ++iz) {
+    for (long long ix = 0; ix < nx; ++ix)
+        for (long long iy = 0; iy < ny; ++iy)
+            for (long long iz = 0; iz < nz; ++iz) {
                 x_coords.push_back(x_range[ix]);
                 y_coords.push_back(y_range[iy]);
                 z_coords.push_back(z_range[iz]);
