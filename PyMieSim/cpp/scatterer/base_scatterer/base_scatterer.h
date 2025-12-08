@@ -10,6 +10,7 @@
 
 typedef std::complex<double> complex128;
 
+
 class BaseScatterer {
 public:
     size_t max_order;

@@ -40,6 +40,7 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         $<$<COMPILE_LANGUAGE:CXX>:/W4>
         $<$<COMPILE_LANGUAGE:CXX>:/permissive->
     )
+    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/Zc:preprocessor>)
 else()
     add_compile_options(
         $<$<COMPILE_LANGUAGE:CXX>:-Wall>

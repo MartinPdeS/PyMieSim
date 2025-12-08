@@ -1,3 +1,12 @@
+#define DEFINE_COEFFICIENTS_GETTER(name) \
+    std::vector<complex128> name##n; \
+    double get_##name##1() const { return abs(this->name##n[0]); }; \
+    double get_##name##2() const { return abs(this->name##n[1]); }; \
+    double get_##name##3() const { return abs(this->name##n[2]); }; \
+    complex128 get_##name##1_complex128() const { return this->name##n[0]; }; \
+    complex128 get_##name##2_complex128() const { return this->name##n[1]; }; \
+    complex128 get_##name##3_complex128() const { return this->name##n[2]; };
+
 #define DEFINE_COEFFICIENTS_GETTERS_1(A) \
     DEFINE_COEFFICIENTS_GETTER(A)
 
