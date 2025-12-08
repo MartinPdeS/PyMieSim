@@ -10,20 +10,6 @@
 
 typedef std::complex<double> complex128;
 
-
-#define DEFINE_COEFFICIENTS_GETTER(name) \
-    std::vector<complex128> name##n; \
-    double get_##name##1() const { return abs(this->name##n[0]); }; \
-    double get_##name##2() const { return abs(this->name##n[1]); }; \
-    double get_##name##3() const { return abs(this->name##n[2]); }; \
-    complex128 get_##name##1_complex128() const { return this->name##n[0]; }; \
-    complex128 get_##name##2_complex128() const { return this->name##n[1]; }; \
-    complex128 get_##name##3_complex128() const { return this->name##n[2]; };
-
-
-#define DEFINE_COEFFICIENTS_GETTERS(...)  FOR_EACH(DEFINE_COEFFICIENTS_GETTER, __VA_ARGS__)
-
-
 class BaseScatterer {
 public:
     size_t max_order;
@@ -54,10 +40,10 @@ public:
 
 
     // SPHERICAL SCATTERER GETTERS --------------------------------------------------------
-    DEFINE_COEFFICIENTS_GETTERS(a, b, c, d)
+    DEFINE_COEFFICIENTS_GETTERS_4(a, b, c, d)
 
     // CYLINDRICAL SCATTERER GETTERS --------------------------------------------------------
-    DEFINE_COEFFICIENTS_GETTERS(a1, b1, c1, d1, a2, b2, c2, d2)
+    DEFINE_COEFFICIENTS_GETTERS_8(a1, b1, c1, d1, a2, b2, c2, d2)
 
     // COEFFICIENT ----------------------------------------------------
 
