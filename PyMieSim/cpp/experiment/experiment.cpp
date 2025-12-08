@@ -23,17 +23,17 @@ Experiment::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet 
     if (debug_mode)
         this->debug_print_state(scatterer_set, source_set, detector_set);
 
-    std::vector<size_t> array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
-    size_t total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
+    std::vector<long long> array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
+    long long total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
     debug_printf("get_scatterer_coupling: total_iterations = %zu\n", total_iterations);
 
     std::vector<double> output_array(total_iterations);
 
     #pragma omp parallel for
-    for (size_t idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
-        size_t i = idx_flat / (scatterer_set.total_combinations * detector_set.total_combinations);
-        size_t j = (idx_flat / detector_set.total_combinations) % scatterer_set.total_combinations;
-        size_t k = idx_flat % detector_set.total_combinations;
+    for (long long idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
+        long long i = idx_flat / (scatterer_set.total_combinations * detector_set.total_combinations);
+        long long j = (idx_flat / detector_set.total_combinations) % scatterer_set.total_combinations;
+        long long k = idx_flat % detector_set.total_combinations;
 
         BaseSource source = source_set.get_source_by_index(i);
 
@@ -43,7 +43,7 @@ Experiment::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet 
 
         detector.medium_refractive_index = scatterer_ptr->medium_refractive_index;
 
-        size_t idx = flatten_multi_index(array_shape, source.indices, scatterer_ptr->indices, detector.indices);
+        long long idx = flatten_multi_index(array_shape, source.indices, scatterer_ptr->indices, detector.indices);
         output_array[idx] = detector.get_coupling(*scatterer_ptr);
     }
     debug_printf("get_scatterer_coupling: finished computation\n");
@@ -63,7 +63,7 @@ Experiment::get_coupling_sequential(const ScattererSet& scatterer_set, const Bas
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for
-    for (size_t idx = 0; idx < full_size; ++idx) {
+    for (long long idx = 0; idx < full_size; ++idx) {
 
         BaseSource source = source_set.get_source_by_index_sequential(idx);
 
@@ -105,15 +105,15 @@ Experiment::get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet
     debug_printf("get_scatterer_farfields: total_iterations = %zu\n", total_iterations);
 
     #pragma omp parallel for
-    for (size_t idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
-        size_t i = idx_flat / scatterer_set.total_combinations;  // source index
-        size_t j = idx_flat % scatterer_set.total_combinations;  // scatterer index
+    for (long long idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
+        long long i = idx_flat / scatterer_set.total_combinations;  // source index
+        long long j = idx_flat % scatterer_set.total_combinations;  // scatterer index
 
         BaseSource source = source_set.get_source_by_index(i);
         std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
 
         // Linear index over the head shape only
-        size_t idx_head = flatten_multi_index(head_shape, source.indices, scatterer_ptr->indices);
+        long long idx_head = flatten_multi_index(head_shape, source.indices, scatterer_ptr->indices);
 
         // Compute fields
         auto [phi_field, theta_field] = scatterer_ptr->compute_unstructured_farfields(mesh, distance);
@@ -125,7 +125,7 @@ Experiment::get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet
         }
 
         // Write into the last two axes
-        size_t base = idx_head * stride_block;
+        long long base = idx_head * stride_block;
 
         std::copy(theta_field.begin(), theta_field.end(), output_array.begin() + base + 0 * stride_channel);
 
