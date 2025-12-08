@@ -26,7 +26,41 @@
         "Retrieves the scattering property for a scatterer" \
     )
 
-#define DEFINE_GETTERS(...)  FOR_EACH(DEFINE_GETTER, __VA_ARGS__)
+#define DEFINE_GETTERS_1(A) \
+    DEFINE_GETTER(A)
+
+#define DEFINE_GETTERS_2(A, B) \
+    DEFINE_GETTER(A) \
+    DEFINE_GETTER(B)
+
+#define DEFINE_GETTERS_3(A, B, C) \
+    DEFINE_GETTER(A) \
+    DEFINE_GETTER(B) \
+    DEFINE_GETTER(C)
+
+#define DEFINE_GETTERS_4(A, B, C, D) \
+    DEFINE_GETTER(A) \
+    DEFINE_GETTER(B) \
+    DEFINE_GETTER(C) \
+    DEFINE_GETTER(D)
+
+#define DEFINE_GETTERS_6(A, B, C, D, E, F) \
+    DEFINE_GETTER(A) \
+    DEFINE_GETTER(B) \
+    DEFINE_GETTER(C) \
+    DEFINE_GETTER(D) \
+    DEFINE_GETTER(E) \
+    DEFINE_GETTER(F)
+
+#define DEFINE_GETTERS_7(A, B, C, D, E, F, G) \
+    DEFINE_GETTER(A) \
+    DEFINE_GETTER(B) \
+    DEFINE_GETTER(C) \
+    DEFINE_GETTER(D) \
+    DEFINE_GETTER(E) \
+    DEFINE_GETTER(F) \
+    DEFINE_GETTER(G)
+
 
 
 
@@ -130,13 +164,13 @@ PYBIND11_MODULE(interface_experiment, module) {
             )pbdoc"
         )
 
-        DEFINE_GETTERS(a1, a2, a3, b1, b2, b3)
+        DEFINE_GETTERS_6(a1, a2, a3, b1, b2, b3)
 
-        DEFINE_GETTERS(a11, a12, a13, b11, b12, b13)
-        DEFINE_GETTERS(a21, a22, a23, b21, b22, b23)
+        DEFINE_GETTERS_6(a11, a12, a13, b11, b12, b13)
+        DEFINE_GETTERS_6(a21, a22, a23, b21, b22, b23)
 
-        DEFINE_GETTERS(Qsca, Qext, Qabs, Qpr, Qforward, Qback, Qratio)
-        DEFINE_GETTERS(Csca, Cext, Cabs, Cpr, Cforward, Cback, Cratio)
-        DEFINE_GETTERS(g)
+        DEFINE_GETTERS_7(Qsca, Qext, Qabs, Qpr, Qforward, Qback, Qratio)
+        DEFINE_GETTERS_7(Csca, Cext, Cabs, Cpr, Cforward, Cback, Cratio)
+        DEFINE_GETTERS_1(g)
         ;
 }
