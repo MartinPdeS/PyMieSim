@@ -1,0 +1,256 @@
+:orphan:
+
+.. _validation_index:
+
+Validation Examples
+===================
+
+This section compares PyMieSim's results against reference implementations.  It
+contains scripts reproducing calculations from Bohren & Huffman as well as
+cross-checks with the ``PyMieScatt`` package.  Internal tests that exercise
+specific parts of the library are also provided.
+
+Contents
+--------
+- ``bohren_huffman`` - examples based on figures from *Absorption and Scattering of Light by Small Particles*.
+- ``pymiescatt`` - comparisons with the ``PyMieScatt`` package.
+- ``internal`` - small utilities checking phase functions and energy flow.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Bohren & Huffmann
+~~~~~~~~~~~~~~~~~
+Scripts reproducing figures from the classic text.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cylinder Scatterer Bohren-Huffman figure 8.10">
+
+.. only:: html
+
+  .. image:: /gallery/validation/bohren_huffman/images/thumb/sphx_glr_figure_810_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_810.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder Scatterer Bohren-Huffman figure 8.10</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cylinder Scatterer Bohren-Huffman figure 8.7">
+
+.. only:: html
+
+  .. image:: /gallery/validation/bohren_huffman/images/thumb/sphx_glr_figure_87_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_87.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder Scatterer Bohren-Huffman figure 8.7</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cylinder Scatterer Bohren-Huffman figure 8.8">
+
+.. only:: html
+
+  .. image:: /gallery/validation/bohren_huffman/images/thumb/sphx_glr_figure_88_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_88.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder Scatterer Bohren-Huffman figure 8.8</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Internal
+~~~~~~~~
+Tests checking phase functions and energy conservation.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Effect of Shell dimensions in equivalent medium">
+
+.. only:: html
+
+  .. image:: /gallery/validation/internal/images/thumb/sphx_glr_core_shell_empty_shell_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_internal_core_shell_empty_shell.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Effect of Shell dimensions in equivalent medium</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Goniometric Coupling vs S1 S2 Comparison">
+
+.. only:: html
+
+  .. image:: /gallery/validation/internal/images/thumb/sphx_glr_phase_function_detector_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_internal_phase_function_detector.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Goniometric Coupling vs S1 S2 Comparison</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+PyMieScatt
+~~~~~~~~~~
+Comparison scripts using the PyMieScatt package.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Core-Shell Particles: 0">
+
+.. only:: html
+
+  .. image:: /gallery/validation/pymiescatt/images/thumb/sphx_glr_coreshell_0_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_0.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Core-Shell Particles: 0</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Core-Shell Particles: 1">
+
+.. only:: html
+
+  .. image:: /gallery/validation/pymiescatt/images/thumb/sphx_glr_coreshell_1_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_1.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Core-Shell Particles: 1</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere Particles: 0">
+
+.. only:: html
+
+  .. image:: /gallery/validation/pymiescatt/images/thumb/sphx_glr_sphere_0_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_0.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere Particles: 0</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere Particles: 1">
+
+.. only:: html
+
+  .. image:: /gallery/validation/pymiescatt/images/thumb/sphx_glr_sphere_1_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_1.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere Particles: 1</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+   :includehidden:
+
+
+   /gallery/validation/bohren_huffman/index.rst
+   /gallery/validation/internal/index.rst
+   /gallery/validation/pymiescatt/index.rst
+
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
