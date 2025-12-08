@@ -9,7 +9,4 @@ add_library(${NAME} STATIC
 )
 target_link_options(${NAME} PUBLIC ${STATIC_LINK_OPTIONS})
 
-
-target_compile_options(${NAME} PRIVATE -Wno-maybe-uninitialized)
-
 set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS ${NAME})

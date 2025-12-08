@@ -47,12 +47,12 @@ find_package(OpenMP REQUIRED COMPONENTS CXX)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 # Compiler and linker options
-# set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
+endif()
 # --------------------- Find dependencies and compile options --------------------
 
 # ----------------- Package specific settings--------------------
-# Include Bessel Math
-include_directories("${CMAKE_SOURCE_DIR}/external/bessel/")
 # ----------------- Package specific settings--------------------
 
 # ----------------- logging build configuration --------------------
