@@ -104,7 +104,7 @@ class Experiment
             std::vector<double> output_array(total_iterations);
 
             #pragma omp parallel for
-            for (size_t flat_index = 0; flat_index < total_iterations; ++flat_index) {
+            for (long long flat_index = 0; flat_index < static_cast<long long>(total_iterations); ++flat_index) {
                 size_t idx; // Declare idx locally so each iteration has its own copy
 
                 if (detector_set.is_empty) {
@@ -120,9 +120,9 @@ class Experiment
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 } else {
                     // 3D case: source, scatterer, and detector
-                    size_t i = flat_index / (scatterer_set.total_combinations * detector_set.total_combinations);
-                    size_t j = (flat_index / detector_set.total_combinations) % scatterer_set.total_combinations;
-                    size_t k = flat_index % detector_set.total_combinations;
+                    long long i = flat_index / (scatterer_set.total_combinations * detector_set.total_combinations);
+                    long long j = (flat_index / detector_set.total_combinations) % scatterer_set.total_combinations;
+                    long long k = flat_index % detector_set.total_combinations;
                     BaseSource source = source_set.get_source_by_index(i);
 
                     std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
@@ -163,7 +163,7 @@ class Experiment
             std::vector<double> output_array(full_size);
 
             #pragma omp parallel for
-            for (size_t idx = 0; idx < full_size; ++idx) {
+            for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
                 BaseSource source = source_set.get_source_by_index_sequential(idx);
 
                 std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index_sequential(idx, source);
