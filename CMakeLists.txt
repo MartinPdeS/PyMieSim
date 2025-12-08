@@ -43,7 +43,7 @@ endif()
 # --------------------- Platform-specific compiler and linker options --------------------
 
 # --------------------- Find dependencies and compile options --------------------
-find_package(OpenMP REQUIRED)
+find_package(OpenMP REQUIRED COMPONENTS CXX)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 # Compiler and linker options
