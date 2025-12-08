@@ -36,9 +36,17 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:/W4> $<$<COMPILE_LANGUAGE:CXX>:/permissive->-)
+    add_compile_options(
+        $<$<COMPILE_LANGUAGE:CXX>:/W4>
+        $<$<COMPILE_LANGUAGE:CXX>:/permissive->
+    )
 else()
-    add_compile_options(-Wall -Wextra -pedantic-errors -Wno-unused-parameter)
+    add_compile_options(
+        $<$<COMPILE_LANGUAGE:CXX>:-Wall>
+        $<$<COMPILE_LANGUAGE:CXX>:-Wextra>
+        $<$<COMPILE_LANGUAGE:CXX>:-pedantic-errors>
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-unused-parameter>
+    )
 endif()
 # --------------------- Platform-specific compiler and linker options --------------------
 
