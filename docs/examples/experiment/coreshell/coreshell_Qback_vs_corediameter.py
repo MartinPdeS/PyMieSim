@@ -16,8 +16,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=[800, 900, 1000]
     * ureg.nanometer,  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
@@ -26,8 +24,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
 scatterer = CoreShell(
     core_diameter=numpy.geomspace(100, 600, 400)
     * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
@@ -38,16 +34,8 @@ scatterer = CoreShell(
     source=source,
 )
 
-# %%
-# Setting up the experiment
 experiment = Setup(scatterer=scatterer, source=source)
 
-# %%
-# Measuring the backscattering efficiency (Qback)
-# For demonstrating the measurement of Qsca, a separate call to `experiment.get()` with `measure.Qsca` is needed.
 dataframe = experiment.get("Qback")
 
-# %%
-# Plotting the results
-# Visualizing how the backscattering efficiency varies with the core diameter.
 dataframe.plot(x="scatterer:core_diameter")

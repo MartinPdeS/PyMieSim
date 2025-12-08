@@ -14,8 +14,6 @@ from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=[500, 1000, 1500]
     * ureg.nanometer,  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
@@ -24,8 +22,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
 scatterer = Cylinder(
     diameter=800 * ureg.nanometer,  # Fixed diameter of 800 nm
     property=np.linspace(1.3, 1.9, 1500)
@@ -34,15 +30,8 @@ scatterer = Cylinder(
     source=source,
 )
 
-# %%
-# Setting up the experiment
 experiment = Setup(scatterer=scatterer, source=source)
 
-# %%
-# Measuring the scattering efficiency (Qsca)
 dataframe = experiment.get("Qsca", "Qext")
 
-# %%
-# Plotting the results
-# Visualizing how the Qsca varies with the refractive index of the cylinder.
 dataframe.plot(x="scatterer:property")

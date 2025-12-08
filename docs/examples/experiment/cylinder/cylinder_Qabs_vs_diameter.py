@@ -15,8 +15,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=400 * ureg.nanometer,  # 400 nm
     polarization=0 * ureg.degree,  # Linear polarization angle in radians
@@ -24,8 +22,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
 scatterer = Cylinder(
     diameter=np.linspace(1, 800, 300)
     * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
@@ -38,19 +34,10 @@ scatterer = Cylinder(
     source=source,
 )
 
-# %%
-# Setting up the experiment
 experiment = Setup(scatterer=scatterer, source=source)
 
-# %%
-# Measuring the scattering efficiency (Qsca)
-# Note: The original request mentioned Qsca, but the measurement code uses Qabs.
-# If Qsca measurement is intended, ensure to use the correct measure object from PyMieSim.
 dataframe = experiment.get(
     "Qabs"
 )  # Assuming Qabs was intended, replace with measure.Qsca if needed
 
-# %%
-# Plotting the results
-# Visualizing how the scattering efficiency varies with the cylinder diameter.
 dataframe.plot(x="scatterer:diameter")

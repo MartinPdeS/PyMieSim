@@ -12,8 +12,6 @@ from TypedUnit import ureg
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=1000 * ureg.nanometer,  # 1000 nm
     polarization=0 * ureg.degree,  # Linear polarization angle in radians
@@ -21,8 +19,6 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer
 scatterer = CoreShell(
     core_diameter=500 * ureg.nanometer,  # 500 nm
     shell_thickness=100 * ureg.nanometer,  # 100 nm
@@ -32,10 +28,6 @@ scatterer = CoreShell(
     medium_property=1.0 * ureg.RIU,  # Refractive property of the surrounding medium
 )
 
-# %%
-# Computing the data
 data = scatterer.get_spf(sampling=300)  # Specify the number of sampling points
 
-# %%
-# Plotting the data
 figure = data.plot()

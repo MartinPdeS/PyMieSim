@@ -14,8 +14,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-# %%
-# Defining the source to be employed.
 source = Gaussian(
     wavelength=np.linspace(950, 1050, 200) * ureg.nanometer,
     polarization=0 * ureg.degree,
@@ -23,8 +21,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,
 )
 
-# %%
-# Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=np.linspace(100, 8000, 5) * ureg.nanometer,
     property=Material.BK7,
@@ -32,8 +28,6 @@ scatterer = Sphere(
     source=source,
 )
 
-# %%
-# Defining the detector to be employed.
 detector = CoherentMode(
     mode_number="LP11",
     NA=[0.05, 0.01] * ureg.AU,
@@ -44,14 +38,8 @@ detector = CoherentMode(
     sampling=300 * ureg.AU,
 )
 
-# %%
-# Defining the experiment setup
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the properties
 dataframe = experiment.get("coupling", scale_unit=True)
 
-# %%
-# Plotting the results
 dataframe.plot(x="source:wavelength", std="scatterer:diameter")

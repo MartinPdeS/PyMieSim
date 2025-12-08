@@ -11,8 +11,6 @@ from TypedUnit import ureg
 
 from PyMieSim.single.source import Gaussian
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=1 * ureg.nanometer,  # 1000 nm
     polarization=0 * ureg.degree,  # Linear polarization angle in radians
@@ -20,6 +18,4 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Plotting the source
 source.plot()
