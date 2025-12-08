@@ -10,7 +10,14 @@ build:
   script_env:
     - CMAKE_GENERATOR=Ninja
   script: |
-    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation  # [win]
+    @echo on  # [win]
+    set "FC=flang"  # [win]
+    set "F90=flang"  # [win]
+
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^  # [win]
+      --config-settings=cmake.args=-GNinja;-DCMAKE_Fortran_COMPILER=flang ^  # [win]
+      || exit /b 1  # [win]
+
     "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation  # [unix]
 
 requirements:
@@ -18,8 +25,9 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - "{{ compiler('fortran') }}"
-    - cmake
+    - vs2022_win-64      # [win]
     - ninja
+    - cmake
   host:
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
