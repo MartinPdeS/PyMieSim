@@ -8,64 +8,18 @@ source:
 build:
   number: 0
   script_env:
-    - FC=ifx   # [win]
-    - F90=ifx  # [win]
-
+    - CMAKE_GENERATOR=Ninja
   script: |
-    @echo on  # [win]
-
-    rem Always prefer build env tools first  # [win]
-    set "PATH=%BUILD_PREFIX%\Library\bin;%PATH%"  # [win]
-
-    rem Activate Visual Studio build environment (sets PATH, LIB, INCLUDE, SDK)  # [win]
-    set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"  # [win]
-    if not exist "%VSWHERE%" ( echo vswhere not found & exit /b 1 )  # [win]
-
-    for /f "usebackq delims=" %%I in (`"%VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSINSTALL=%%I"  # [win]
-    if not defined VSINSTALL ( echo Could not locate Visual Studio via vswhere & exit /b 1 )  # [win]
-
-    call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat" -arch=amd64 -host_arch=amd64  # [win]
-
-    where cl.exe  # [win]
-    where link.exe  # [win]
-    where mt.exe  # [win]
-
-    rem Resolve Intel Fortran and Ninja from conda build env  # [win]
-    set "IFX_EXE=%BUILD_PREFIX%\Library\bin\ifx.exe"  # [win]
-    set "NINJA_EXE=%BUILD_PREFIX%\Library\bin\ninja.exe"  # [win]
-
-    if not exist "%IFX_EXE%" ( echo ifx not found & dir /b "%BUILD_PREFIX%\Library\bin" & exit /b 1 )  # [win]
-    if not exist "%NINJA_EXE%" ( echo ninja not found & dir /b "%BUILD_PREFIX%\Library\bin" & exit /b 1 )  # [win]
-
-    "%IFX_EXE%" --version || exit /b 1  # [win]
-    "%NINJA_EXE%" --version || exit /b 1  # [win]
-
-    rem Convert paths for CMake  # [win]
-    set "IFX_EXE_CMAKE=%IFX_EXE:\=/%"  # [win]
-    set "NINJA_EXE_CMAKE=%NINJA_EXE:\=/%"  # [win]
-
-    rem Use short path for cl.exe to avoid spaces breaking pip parsing  # [win]
-    for /f "usebackq delims=" %%I in (`"%VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -find VC\Tools\MSVC\**\bin\Hostx64\x64\cl.exe`) do set "CL_EXE_LONG=%%I"  # [win]
-    if not defined CL_EXE_LONG ( echo cl.exe not found via vswhere & exit /b 1 )  # [win]
-    for %%F in ("%CL_EXE_LONG%") do set "CL_EXE_SHORT=%%~sF"  # [win]
-    set "CL_EXE_SHORT_CMAKE=%CL_EXE_SHORT:\=/%"  # [win]
-
-    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^  # [win]
-      "--config-settings=cmake.args=-GNinja;-DCMAKE_MAKE_PROGRAM:FILEPATH=%NINJA_EXE_CMAKE%;-DCMAKE_C_COMPILER:FILEPATH=%CL_EXE_SHORT_CMAKE%;-DCMAKE_CXX_COMPILER:FILEPATH=%CL_EXE_SHORT_CMAKE%;-DCMAKE_Fortran_COMPILER:FILEPATH=%IFX_EXE_CMAKE%" ^  # [win]
-      || exit /b 1  # [win]
-
-
-
-
-
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation  # [win]
+    "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation  # [unix]
 
 requirements:
   build:
+    - "{{ compiler('c') }}"
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
+    - cmake
     - ninja
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}   # [unix]
-    - ifx_win-64                  # [win]
-    - ifx_impl_win-64             # [win]
   host:
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
