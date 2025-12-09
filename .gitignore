@@ -2,6 +2,10 @@
 # Ignore all
 /*
 
+# Ignore submodules
+!external
+!external/*
+
 # Except ...
 !.github
 !PyMieSim
@@ -17,6 +21,8 @@
 !README.rst
 !notebook.ipynb
 !CMakeLists.txt
+!.coveragerc
+!pytest.ini
 
 # But ignore docs/build inside docs and code
 docs/build/

@@ -15,9 +15,4 @@ set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "interface_${NA
 target_link_libraries("interface_${NAME}" PUBLIC sphere cylinder coreshell base_scatterer)
 
 
-install(
-    TARGETS interface_${NAME}
-    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
-    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
-    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
-)
+set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS "interface_${NAME}")

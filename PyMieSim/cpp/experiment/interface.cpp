@@ -1,91 +1,176 @@
 #include <pybind11/pybind11.h>
-#include "experiment/experiment.cpp"
-
-#define EFFICIENCY_PROPERTY(scatterer, name) \
-    .def("get_" #scatterer "_Q" #name, &Experiment::get_##scatterer##_Q##name, py::arg("source_set"), py::arg("detector_set"), "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer) \
-    .def("get_" #scatterer "_C" #name, &Experiment::get_##scatterer##_C##name, py::arg("source_set"), py::arg("detector_set"), "Retrieves the scattering cross-section (C" #name ") for a" #scatterer) \
-    .def("get_" #scatterer "_Q" #name "_sequential", &Experiment::get_##scatterer##_Q##name##_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer " in a sequential manner.") \
-    .def("get_" #scatterer "_C" #name "_sequential", &Experiment::get_##scatterer##_C##name##_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the scattering cross-section (C" #name ") for a" #scatterer " in a sequential manner.")
-
-#define COEFFICIENT_PROPERTY(scatterer, number) \
-    .def("get_" #scatterer "_a" #number, &Experiment::get_##scatterer##_a##number, py::arg("source_set"), py::arg("detector_set"), "Retrieves the electric multipole coefficient (a" #number ") coefficient for a " #scatterer) \
-    .def("get_" #scatterer "_b" #number, &Experiment::get_##scatterer##_b##number, py::arg("source_set"), py::arg("detector_set"), "Retrieves the magnetic multipole coefficient (b" #number ") coefficient for a " #scatterer) \
-    .def("get_" #scatterer "_a" #number "_sequential", &Experiment::get_##scatterer##_a##number##_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the electric multipole coefficient (a" #number ") coefficient for a " #scatterer " in a sequential manner.") \
-    .def("get_" #scatterer "_b" #number "_sequential", &Experiment::get_##scatterer##_b##number##_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the magnetic multipole coefficient (b" #number ") coefficient for a " #scatterer " in a sequential manner.")
-
-#define COUPLING_AND_G(scatterer) \
-     .def("get_" #scatterer "_g", &Experiment::get_##scatterer##_g, py::arg("source_set"), py::arg("detector_set"), "Retrieves the asymmetry parameter (g) for a " #scatterer) \
-     .def("get_" #scatterer "_g_sequential", &Experiment::get_##scatterer##_g_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the asymmetry parameter (g) for a " #scatterer " in a sequential manner.")
+#include "experiment.cpp"
+#include <utils/numpy_interface.h>
+#include <utils/defines.h>
 
 
+#define DEFINE_GETTER_INTERFACE(property) \
+    .def("get_"  #property, \
+        [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) { \
+            auto [output, shape] = self.get_data<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
+            return vector_move_from_numpy(output, shape); \
+        }, \
+        pybind11::arg("scatterer_set"), \
+        pybind11::arg("source_set"), \
+        pybind11::arg("detector_set"), \
+        "Retrieves the scattering property for a scatterer" \
+    ) \
+    .def("get_" #property "_sequential", \
+        [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) { \
+            std::vector<double> output = self.get_data_sequential<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
+            return vector_move_from_numpy(output, {output.size()}); \
+        }, \
+        pybind11::arg("scatterer_set"), \
+        pybind11::arg("source_set"), \
+        pybind11::arg("detector_set"), \
+        "Retrieves the scattering property for a scatterer" \
+    )
 
-#define DEFINE_GETTERS(property) \
-    .def( \
-        "get_"  #property, \
-        &Experiment::get_data<&BaseScatterer::get_##property>, \
-        py::arg("scatterer_set"), \
-        py::arg("source_set"), \
-        py::arg("detector_set"), \
-        "Retrieves the scattering property for a scatterer") \
-    .def( \
-        "get_" #property "_sequential", \
-        &Experiment::get_data_sequential<&BaseScatterer::get_##property>, \
-        py::arg("scatterer_set"), \
-        py::arg("source_set"), \
-        py::arg("detector_set"), \
-        "Retrieves the scattering property for a scatterer")
+#define DEFINE_GETTERS_INTERFACE_1(A) \
+    DEFINE_GETTER_INTERFACE(A)
 
-namespace py = pybind11;
+#define DEFINE_GETTERS_INTERFACE_2(A, B) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B)
+
+#define DEFINE_GETTERS_INTERFACE_3(A, B, C) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C)
+
+#define DEFINE_GETTERS_INTERFACE_4(A, B, C, D) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C) \
+    DEFINE_GETTER_INTERFACE(D)
+
+#define DEFINE_GETTERS_INTERFACE_6(A, B, C, D, E, F) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C) \
+    DEFINE_GETTER_INTERFACE(D) \
+    DEFINE_GETTER_INTERFACE(E) \
+    DEFINE_GETTER_INTERFACE(F)
+
+#define DEFINE_GETTERS_INTERFACE_7(A, B, C, D, E, F, G) \
+    DEFINE_GETTER_INTERFACE(A) \
+    DEFINE_GETTER_INTERFACE(B) \
+    DEFINE_GETTER_INTERFACE(C) \
+    DEFINE_GETTER_INTERFACE(D) \
+    DEFINE_GETTER_INTERFACE(E) \
+    DEFINE_GETTER_INTERFACE(F) \
+    DEFINE_GETTER_INTERFACE(G)
+
+
+
 
 PYBIND11_MODULE(interface_experiment, module) {
     module.doc() = "Interface for conducting Lorenz-Mie Theory (LMT) experiments within the PyMieSim package.";
 
-    py::class_<Experiment>(module, "EXPERIMENT")
-        .def(py::init<bool>(), py::arg("debug_mode") = true, "Constructs an Experiment object.")
+    pybind11::class_<Experiment>(module, "EXPERIMENT")
+        .def(
+            pybind11::init<bool>(),
+            pybind11::arg("debug_mode") = false,
+            R"pbdoc(
+                Experiment class for conducting Lorenz-Mie Theory (LMT) simulations.
 
-        .def("get_coupling_sequential", &Experiment::get_coupling_sequential, py::arg("scatterer_set"), py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling power for a scatterer")
-        .def("get_coupling", &Experiment::get_coupling, py::arg("scatterer_set"), py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling power for a scatterer")
-        .def("_get_farfields", &Experiment::get_farfields, py::arg("scatterer_set"), py::arg("source_set"), py::arg("mesh"), py::arg("distance") = 1, "Retrieves the farfields for a scatterer")
+                This class manages the interaction between scatterers, sources, and detectors,
+                providing methods to compute scattering properties, coupling coefficients,
+                and far-field patterns.
 
-        DEFINE_GETTERS(a1)
-        DEFINE_GETTERS(a2)
-        DEFINE_GETTERS(a3)
-        DEFINE_GETTERS(b1)
-        DEFINE_GETTERS(b2)
-        DEFINE_GETTERS(b3)
+                Parameters
+                ----------
+                debug_mode : bool, optional
+                    If set to True, enables debug printing for tracing computations. Default is True.
+            )pbdoc"
+        )
+        .def("get_coupling_sequential",
+            [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) {
 
-        DEFINE_GETTERS(a11)
-        DEFINE_GETTERS(a12)
-        DEFINE_GETTERS(a13)
-        DEFINE_GETTERS(b11)
-        DEFINE_GETTERS(b12)
-        DEFINE_GETTERS(b13)
-        DEFINE_GETTERS(a21)
-        DEFINE_GETTERS(a22)
-        DEFINE_GETTERS(a23)
-        DEFINE_GETTERS(b21)
-        DEFINE_GETTERS(b22)
-        DEFINE_GETTERS(b23)
+                std::vector<double> coupling_array = self.get_coupling_sequential(scatterer_set, source_set, detector_set);
+                return vector_move_from_numpy(coupling_array, {coupling_array.size()});
+            },
+            pybind11::arg("scatterer_set"),
+            pybind11::arg("source_set"),
+            pybind11::arg("detector_set"),
+            R"pbdoc(
+                Retrieves the coupling power for a combination of scatterers, sources, and detectors in a sequential manner.
 
+                Parameters
+                ----------
+                scatterer_set : ScattererSet
+                    The set of scatterers.
+                source_set : BaseSourceSet
+                    The set of sources.
+                detector_set : DetectorSet
+                    The set of detectors.
 
-        DEFINE_GETTERS(Qsca)
-        DEFINE_GETTERS(Qext)
-        DEFINE_GETTERS(Qext)
-        DEFINE_GETTERS(Qabs)
-        DEFINE_GETTERS(Qpr)
-        DEFINE_GETTERS(Qforward)
-        DEFINE_GETTERS(Qback)
-        DEFINE_GETTERS(Qratio)
+                Returns
+                -------
+                numpy.ndarray
+                    A numpy array containing the coupling coefficients.
+            )pbdoc"
+        )
+        .def("get_coupling",
+            [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) {
 
-        DEFINE_GETTERS(Csca)
-        DEFINE_GETTERS(Cext)
-        DEFINE_GETTERS(Cext)
-        DEFINE_GETTERS(Cabs)
-        DEFINE_GETTERS(Cpr)
-        DEFINE_GETTERS(Cforward)
-        DEFINE_GETTERS(Cback)
-        DEFINE_GETTERS(Cratio)
+                auto [coupling_array, coupling_shape] = self.get_coupling(scatterer_set, source_set, detector_set);
+                return vector_move_from_numpy(coupling_array, coupling_shape);
+            },
+            pybind11::arg("scatterer_set"),
+            pybind11::arg("source_set"),
+            pybind11::arg("detector_set"),
+            R"pbdoc(
+                Retrieves the coupling power for a combination of scatterers, sources, and detectors.
 
-        DEFINE_GETTERS(g)
+                Parameters
+                ----------
+                scatterer_set : ScattererSet
+                    The set of scatterers.
+                source_set : BaseSourceSet
+                    The set of sources.
+                detector_set : DetectorSet
+                    The set of detectors.
+            )pbdoc"
+        )
+        .def("_get_farfields",
+            [](Experiment& self, const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance){
+
+                auto [farfield_array, farfield_shape] = self.get_farfields(scatterer_set, source_set, mesh, distance);
+                return vector_move_from_numpy(farfield_array, farfield_shape);
+            },
+            pybind11::arg("scatterer_set"),
+            pybind11::arg("source_set"),
+            pybind11::arg("mesh"),
+            pybind11::arg("distance") = 1,
+            R"pbdoc(
+                Retrieves the far-field patterns for a combination of scatterers and sources on a Fibonacci mesh.
+
+                Parameters
+                ----------
+                scatterer_set : ScattererSet
+                    The set of scatterers.
+                source_set : BaseSourceSet
+                    The set of sources.
+                mesh : FibonacciMesh
+                    The Fibonacci mesh for far-field sampling.
+                distance : float, optional
+                    The distance at which to compute the far-fields. Default is 1.
+
+                Returns
+                -------
+                numpy.ndarray
+                    A numpy array containing the far-field patterns.
+            )pbdoc"
+        )
+
+        DEFINE_GETTERS_INTERFACE_6(a1, a2, a3, b1, b2, b3)
+
+        DEFINE_GETTERS_INTERFACE_6(a11, a12, a13, b11, b12, b13)
+        DEFINE_GETTERS_INTERFACE_6(a21, a22, a23, b21, b22, b23)
+
+        DEFINE_GETTERS_INTERFACE_7(Qsca, Qext, Qabs, Qpr, Qforward, Qback, Qratio)
+        DEFINE_GETTERS_INTERFACE_7(Csca, Cext, Cabs, Cpr, Cforward, Cback, Cratio)
+        DEFINE_GETTERS_INTERFACE_1(g)
         ;
 }

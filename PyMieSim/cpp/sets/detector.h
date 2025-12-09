@@ -1,7 +1,7 @@
 #pragma once
 
-#include "sets/base_set.h"
-#include "detector/detector.h"
+#include "./base_set.h"
+#include "../detector/detector.h"
 
 
 class DetectorSet : public BaseSet
@@ -53,7 +53,7 @@ class DetectorSet : public BaseSet
             total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
         }
 
-        Detector get_detector_by_index(size_t flat_index) const {
+        Detector get_detector_by_index(long long flat_index) const {
             std::vector<size_t> indices = this->calculate_indices(flat_index);
 
             Detector detector(

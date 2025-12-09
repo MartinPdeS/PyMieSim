@@ -264,8 +264,8 @@ def get_data(
                 )
                 * angle_units,
                 amplitude=parse_string_to_array_or_float(source_kwargs["amplitude"])
-                * units.volt
-                / units.meter,
+                * ureg.volt
+                / ureg.meter,
             )
         case "gaussian":
             source = Gaussian(
@@ -276,7 +276,7 @@ def get_data(
                 )
                 * angle_units,
                 NA=parse_string_to_array_or_float(source_kwargs["numerical_aperture"])
-                * units.AU,
+                * ureg.AU,
                 optical_power=parse_string_to_array_or_float(
                     source_kwargs["optical_power"]
                 )
@@ -289,11 +289,11 @@ def get_data(
                 diameter=parse_string_to_array_or_float(scatterer_kwargs["diameter"])
                 * length_units,
                 property=parse_string_to_array_or_float(scatterer_kwargs["property"])
-                * units.RIU,
+                * ureg.RIU,
                 medium_property=parse_string_to_array_or_float(
                     scatterer_kwargs["medium_property"]
                 )
-                * units.RIU,
+                * ureg.RIU,
                 source=source,
             )
         case "coreshell":
@@ -309,15 +309,15 @@ def get_data(
                 core_property=parse_string_to_array_or_float(
                     scatterer_kwargs["core_property"]
                 )
-                * units.RIU,
+                * ureg.RIU,
                 shell_property=parse_string_to_array_or_float(
                     scatterer_kwargs["shell_property"]
                 )
-                * units.RIU,
+                * ureg.RIU,
                 medium_property=parse_string_to_array_or_float(
                     scatterer_kwargs["medium_property"]
                 )
-                * units.RIU,
+                * ureg.RIU,
                 source=source,
             )
         case "cylinder":
@@ -325,11 +325,11 @@ def get_data(
                 diameter=parse_string_to_array_or_float(scatterer_kwargs["diameter"])
                 * length_units,
                 property=parse_string_to_array_or_float(scatterer_kwargs["property"])
-                * units.RIU,
+                * ureg.RIU,
                 medium_property=parse_string_to_array_or_float(
                     scatterer_kwargs["medium_property"]
                 )
-                * units.RIU,
+                * ureg.RIU,
                 source=source,
             )
 
@@ -337,7 +337,7 @@ def get_data(
         case "photodiode":
             detector = Photodiode(
                 NA=parse_string_to_array_or_float(detector_kwargs["numerical_aperture"])
-                * units.AU,
+                * ureg.AU,
                 gamma_offset=parse_string_to_array_or_float(
                     detector_kwargs["gamma_offset"]
                 )
@@ -345,7 +345,7 @@ def get_data(
                 phi_offset=parse_string_to_array_or_float(detector_kwargs["phi_offset"])
                 * angle_units,
                 sampling=parse_string_to_array_or_float(detector_kwargs["sampling"])
-                * units.AU,
+                * ureg.AU,
             )
         case "coherentmode":
             detector = CoherentMode(
@@ -353,7 +353,7 @@ def get_data(
                     detector_kwargs["mode_number"]
                 ),
                 NA=parse_string_to_array_or_float(detector_kwargs["numerical_aperture"])
-                * units.AU,
+                * ureg.AU,
                 gamma_offset=parse_string_to_array_or_float(
                     detector_kwargs["gamma_offset"]
                 )
@@ -361,7 +361,7 @@ def get_data(
                 phi_offset=parse_string_to_array_or_float(detector_kwargs["phi_offset"])
                 * angle_units,
                 sampling=parse_string_to_array_or_float(detector_kwargs["sampling"])
-                * units.AU,
+                * ureg.AU,
                 rotation=parse_string_to_array_or_float(
                     detector_kwargs.get("rotation", 0)
                 )

@@ -50,6 +50,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.intersphinx",
+    "sphinx_design"
 ]
 
 autodoc_typehints = "description"

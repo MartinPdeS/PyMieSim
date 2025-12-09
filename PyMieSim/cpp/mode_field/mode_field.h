@@ -3,10 +3,14 @@
 #include <cmath>
 #include <vector>
 #include <complex>
-#include "../bessel_subroutine/bessel_subroutine.h"
+#include <bessel_subroutine/bessel_subroutine.h>
 
 
+
+#ifndef PI
 #define PI (double)3.14159265358979323846264338
+#endif
+
 typedef std::complex<double> complex128;
 
 

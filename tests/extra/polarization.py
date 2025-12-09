@@ -76,11 +76,6 @@ def test_addition_operator(polarization_0, polarization_1):
     """
     output = polarization_0 + polarization_1
 
-    print(output)
-
-    for rep in output:
-        print(rep)
-
     assert output is not None, "Addition of polarizations failed!"
 
 

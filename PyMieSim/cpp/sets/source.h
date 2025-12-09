@@ -1,7 +1,7 @@
 #pragma once
 
-#include "sets/base_set.h"
-#include "source/source.h"
+#include "base_set.h"
+#include "../source/source.h"
 
 using complex128 = std::complex<double>;
 

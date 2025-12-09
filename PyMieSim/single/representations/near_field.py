@@ -96,7 +96,7 @@ class NearField:
             ).reshape(self.X.shape)
 
     def get_field_enhancement(self, field_type="electric"):
-        """
+        r"""
         Compute field enhancement factor |E_total|/|E_incident|.
 
         Parameters

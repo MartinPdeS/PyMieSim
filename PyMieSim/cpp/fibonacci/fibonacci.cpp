@@ -1,5 +1,5 @@
-#include "fibonacci/fibonacci.h"
-#include <iostream>
+#include "./fibonacci.h"
+
 
 // ------------------ Constructors ------------------
 FibonacciMesh::FibonacciMesh(size_t sampling, double max_angle, double min_angle, double phi_offset, double gamma_offset, double rotation, double radius):

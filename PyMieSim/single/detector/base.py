@@ -9,11 +9,6 @@ from MPSPlots.colormaps import blue_black_red
 from PyMieSim.single.representations import Footprint
 from PyMieSim.single.scatterer.base import BaseScatterer
 
-c = 299792458.0 * ureg.meter / ureg.second  #: Speed of light in vacuum (m/s).
-epsilon0 = (
-    8.854187817620389e-12 * ureg.farad / ureg.meter
-)  #: Vacuum permittivity (F/m).
-
 
 class BaseDetector:
     @property
@@ -199,23 +194,10 @@ class BaseDetector:
         This method is used to assess the distribution of energy around a scatterer. The total energy flow can be obtained by integrating the Poynting vector over the surface enclosing the scatterer.
 
         """
-        Ephi, Etheta = scatterer.get_farfields_array(
-            phi=self._cpp_mesh.spherical.phi,
-            theta=self._cpp_mesh.spherical.theta,
-            r=distance,
-        )
-
-        E_norm = (
-            numpy.sqrt(numpy.abs(Ephi) ** 2 + numpy.abs(Etheta) ** 2)
-            * ureg.volt
-            / ureg.meter
-        )
-
-        B_norm = (E_norm / c).to("tesla")
-
-        poynting = epsilon0 * c**2 * E_norm * B_norm
-
-        return poynting.to(ureg.watt / ureg.meter**2)
+        return self._cpp_get_poynting_field(
+            scatterer=scatterer,
+            distance=distance.to("meter").magnitude,
+        ) * (ureg.watt / ureg.meter**2)
 
     def get_energy_flow(
         self, scatterer: BaseScatterer, distance: Length = 1 * ureg.meter
@@ -261,12 +243,9 @@ class BaseDetector:
         This method computes the energy flow by calculating the Poynting vector (which represents the directional energy flux) and summing it over the surface mesh of the scatterer. The final result is the total radiated power.
 
         """
-        poynting_vector = self.get_poynting_vector(
-            scatterer=scatterer, distance=distance
+        return (
+            self._cpp_get_energy_flow(
+                scatterer=scatterer, distance=distance.to("meter").magnitude
+            )
+            * ureg.watt
         )
-
-        dA = self._cpp_mesh._cpp_d_omega * distance**2
-
-        total_power = 0.5 * numpy.trapezoid(y=poynting_vector, dx=dA)
-
-        return total_power

@@ -15,8 +15,6 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=[100, 1200] * ureg.nanometer,  # 1200 nm
     polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
@@ -24,8 +22,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
 scatterer = Sphere(
     diameter=np.linspace(100, 300, 200)
     * ureg.nanometer,  # Diameters ranging from 100 nm to 3000 nm
@@ -34,8 +30,6 @@ scatterer = Sphere(
     source=source,
 )
 
-# %%
-# Defining the detector
 detector = Photodiode(
     NA=[0.1] * ureg.AU,  # Numerical Apertures for the detector
     phi_offset=[-180.0] * ureg.degree,  # Phi offset in ureg.degrees
@@ -44,15 +38,8 @@ detector = Photodiode(
     polarization_filter=None,  # No polarization filter
 )
 
-# %%
-# Setting up the experiment
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the coupling efficiency
 dataframe = experiment.get("coupling")
 
-# %%
-# Plotting the results
-# Visualizing how the coupling efficiency varies with the cylinder diameter.
 dataframe.plot(x="scatterer:diameter")

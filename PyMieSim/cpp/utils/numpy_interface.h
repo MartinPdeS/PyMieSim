@@ -14,7 +14,7 @@ std::vector<size_t> get_stride(const std::vector<size_t>& dimensions)
     std::vector<size_t> stride(dimensions.size());
     stride.back() = sizeof(T);  // Start from the innermost dimension
 
-    for (ssize_t i = dimensions.size() - 2; i >= 0; --i)
+    for (int64_t i = dimensions.size() - 2; i >= 0; --i)
         stride[i] = stride[i + 1] * dimensions[i + 1];
 
     return stride;
@@ -29,7 +29,7 @@ pybind11::array_t<T> _vector_to_numpy(const std::vector<T> input_vector, std::ve
 
     // Calculate strides
     std::vector<size_t> strides(shape.size(), sizeof(T));
-    for (ssize_t i = shape.size() - 2; i >= 0; --i)
+    for (int64_t i = shape.size() - 2; i >= 0; --i)
         strides[i] = strides[i + 1] * shape[i + 1];
 
     // Create numpy array directly from input_vector data, no copying
@@ -54,8 +54,8 @@ template <class Owner, class dtype> inline pybind11::array_t<dtype> vector_as_nu
     Owner& owner,
     std::vector<dtype>& vector
 ) {
-    const ssize_t n = static_cast<ssize_t>(vector.size());
-    const ssize_t stride = static_cast<ssize_t>(sizeof(dtype));
+    const int64_t n = static_cast<int64_t>(vector.size());
+    const int64_t stride = static_cast<int64_t>(sizeof(dtype));
     // tie lifetime to the owner
     return pybind11::array_t<dtype>({n}, {stride}, vector.data(), pybind11::cast(&owner));
 }
@@ -121,7 +121,7 @@ inline pybind11::array_t<T> vector_move_from_numpy(
         throw pybind11::value_error(os.str());
     }
 
-    // pybind11 wants ssize_t for the constructor, cast once here
+    // pybind11 wants int64_t for the constructor, cast once here
     std::vector<pybind11::ssize_t> shape_ss;
     shape_ss.reserve(shape.size());
     for (size_t d : shape) shape_ss.push_back(static_cast<pybind11::ssize_t>(d));

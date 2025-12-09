@@ -6,13 +6,26 @@ source:
   git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
-  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
   number: 0
+  script: |
+    @echo on  # [win]
+    "%PYTHON%" -m pip install . -vv --no-deps --no-build-isolation ^  # [win]
+      "--config-settings=cmake.args=-GNinja;-DCMAKE_Fortran_COMPILER=flang;-DCMAKE_LINKER=link;-DCMAKE_RC_COMPILER=rc;-DCMAKE_MT=mt" ^  # [win]
+      || exit /b 1  # [win]
+
+    "${PYTHON}" -m pip install . -vv --no-deps --no-build-isolation  # [unix]
+
 
 requirements:
-  host:
+  build:
+    - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+    - vs2022_win-64          # [win]
+    - flang_win-64           # [win]
+    - ninja
+    - cmake
+    - "{{ compiler('fortran') }}"  # [unix]
+  host:
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
@@ -56,13 +69,14 @@ test:
   imports:
     - PyMieSim
   requires:
-    - python {{PY_VER}}*
+    - python {{ PY_VER }}*
+    - python_abi 3.13.* *_cp313   # [py==313]
     - pytest >=0.6
     - pytest-cov >=2.0
-    - pytest-json-report ~=1.5.0
-    - coverage ~=7.6.1
+    - pytest-json-report ==1.5
+    - coverage ==7.6
   commands:
-    - python -m pytest --ignore=tests/gui
+    - python -m pytest
   source_files:
     - tests
 

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <complex>
-#include "../coordinates/coordinates.h"
+#include <coordinates/coordinates.h>
 
 #define PI (double)3.14159265358979323846264338
 

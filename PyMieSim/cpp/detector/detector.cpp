@@ -1,4 +1,4 @@
-#include "detector/detector.h"
+#include "detector.h"
 
 
 // ------------------------- Initialization Function -------------------------
@@ -171,6 +171,31 @@ std::vector<complex128> Detector::get_structured_scalarfield(const size_t sampli
     return output;
 }
 
+std::vector<double> Detector::get_poynting_field(const BaseScatterer& scatterer, double distance) const {
+    auto [Ephi, Etheta] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, distance);
+
+    double electric_field_norm = 0.0;
+    double magnetic_field_norm = 0.0;
+
+    std::vector<double> poynting(Ephi.size());
+
+    for (size_t i = 0; i < Ephi.size(); ++i) {
+        electric_field_norm = std::sqrt(std::pow(std::abs(Ephi[i]), 2) + std::pow(std::abs(Etheta[i]), 2));
+        magnetic_field_norm = (electric_field_norm / LIGHT_SPEED);  // units of Tesla
+        poynting[i] = EPSILON0 * std::pow(LIGHT_SPEED, 2) * electric_field_norm * magnetic_field_norm;  // units of W/m^2
+    }
+
+    return poynting;
+}
+
+
+double Detector::get_energy_flow(const BaseScatterer& scatterer, double distance) const {
+    std::vector<double> poynting_vector = this->get_poynting_field(scatterer, distance);
+
+    double dA = distance * distance * this->fibonacci_mesh.dOmega;  // units of m^2
+
+    return 0.5 * trapz(poynting_vector, dA); // units of W
+}
 
 // ------------------------- Coupling Function -------------------------
 double Detector::get_coupling(const BaseScatterer& scatterer) const {

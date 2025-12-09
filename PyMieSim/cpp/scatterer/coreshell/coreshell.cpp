@@ -1,25 +1,25 @@
-#include "scatterer/coreshell/coreshell.h"
+#include "./coreshell.h"
 
 
 // ---------------------- Constructors ---------------------------------------
 CoreShell::CoreShell(
-    double core_diameter,
-    double shell_thickness,
-    complex128 core_refractive_index,
-    complex128 shell_refractive_index,
-    double medium_refractive_index,
-    const BaseSource &source,
-    size_t max_order)
-:   BaseScatterer(max_order, source, medium_refractive_index),
-    core_diameter(core_diameter),
-    shell_thickness(shell_thickness),
-    core_refractive_index(core_refractive_index),
-    shell_refractive_index(shell_refractive_index)
+    double _core_diameter,
+    double _shell_thickness,
+    complex128 _core_refractive_index,
+    complex128 _shell_refractive_index,
+    double _medium_refractive_index,
+    const BaseSource &_source,
+    size_t _max_order)
+:   BaseScatterer(_max_order, _source, _medium_refractive_index),
+    core_diameter(_core_diameter),
+    shell_thickness(_shell_thickness),
+    core_refractive_index(_core_refractive_index),
+    shell_refractive_index(_shell_refractive_index)
 {
     this->shell_diameter = this->core_diameter + this->shell_thickness;
     this->compute_cross_section();
     this->compute_size_parameter();
-    this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
+    this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->apply_medium();
     this->compute_an_bn(this->max_order);
 }

@@ -1,4 +1,4 @@
-#include "full_mesh/full_mesh.h"
+#include "full_mesh.h"
 
 
 FullSteradian::FullSteradian(const size_t sampling, const double radius)

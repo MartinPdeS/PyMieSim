@@ -4,13 +4,10 @@
 import pytest
 from TypedUnit import ureg
 from PyOptik import Material
-from unittest.mock import patch
-import matplotlib.pyplot as plt
 
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import plot_system
 
 # Core, shell, and medium parameters
 core_property = [Material.iron, Material.BK7, 1.0 * ureg.RIU]

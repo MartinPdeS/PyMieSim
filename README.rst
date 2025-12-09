@@ -7,7 +7,7 @@
    * - Meta
      - |python|
      - |docs|
-     - |zenodo|
+     - |article|
    * - Testing
      - |ci/cd|
      - |coverage|
@@ -141,9 +141,9 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
     :alt: Python
     :target: https://www.python.org/
-.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5593704.svg
+.. |article| image:: https://img.shields.io/badge/Optics%20Continuum-PyMieSim-green.svg
     :alt: Scientific article
-    :target: https://doi.org/10.5281/zenodo.4556074
+    :target: https://opg.optica.org/optcon/viewmedia.cfm?uri=optcon-2-3-520&html=true
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
     :alt: Google Colab
     :target: https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb

@@ -15,16 +15,12 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-# %%
-# Defining the source to be employed.
 source = Gaussian(
     wavelength=1200 * ureg.nanometer,
     polarization=90 * ureg.degree,
     optical_power=1e-3 * ureg.watt,
     NA=0.2 * ureg.AU,
 )
-# %%
-# Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=2000 * ureg.nanometer,
     property=Material.BK7,
@@ -32,8 +28,6 @@ scatterer = Sphere(
     source=source,
 )
 
-# %%
-# Defining the detector to be employed.
 detector = CoherentMode(
     mode_number="LP11",
     NA=[0.5, 0.3, 0.1, 0.05] * ureg.AU,
@@ -44,14 +38,8 @@ detector = CoherentMode(
     rotation=0 * ureg.degree,  # Rotation of the mode field
 )
 
-# %%
-# Defining the experiment setup
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the properties
 dataframe = experiment.get("coupling")
 
-# # %%
-# # Plotting the results
 dataframe.plot(x="detector:phi_offset")

@@ -1,10 +1,10 @@
-#include "source/source.h"
+#include "./source.h"
 
 
 // ---------------------- BaseSource Implementation ---------------------------------------
 
-BaseSource::BaseSource(double wavelength, std::vector<complex128> jones_vector, double amplitude)
-: wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
+BaseSource::BaseSource(double _wavelength, std::vector<complex128> _jones_vector, double _amplitude)
+: wavelength(_wavelength), jones_vector(_jones_vector), amplitude(_amplitude)
 {
     update_derived_quantities();
 }
@@ -24,15 +24,15 @@ void BaseSource::update_derived_quantities() {
 
 // ---------------------- Planewave Implementation ---------------------------------------
 
-Planewave::Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude)
-: BaseSource(wavelength, jones_vector, amplitude)
+Planewave::Planewave(double _wavelength, std::vector<complex128> _jones_vector, double _amplitude)
+: BaseSource(_wavelength, _jones_vector, _amplitude)
 {}
 
 // ---------------------- Gaussian Implementation ---------------------------------------
 
-Gaussian::Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
-: BaseSource(wavelength, jones_vector, compute_amplitude_from_power(wavelength, NA, optical_power)),
-  NA(NA), optical_power(optical_power)
+Gaussian::Gaussian(double _wavelength, std::vector<complex128> _jones_vector, double _NA, double _optical_power)
+: BaseSource(_wavelength, _jones_vector, compute_amplitude_from_power(_wavelength, _NA, _optical_power)),
+  NA(_NA), optical_power(_optical_power)
 {}
 
 double Gaussian::compute_amplitude_from_power(double wavelength, double NA, double optical_power)

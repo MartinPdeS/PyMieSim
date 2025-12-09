@@ -1,10 +1,9 @@
 #include <pybind11/pybind11.h>
-#include "detector/detector.h"
-#include "../fibonacci/interface.cpp"
-#include "../coordinates/interface.cpp"
-#include "../mode_field/interface.cpp"
-#include "utils/numpy_interface.h"
-
+#include "detector.h"
+#include <fibonacci/interface.cpp>
+#include <coordinates/interface.cpp>
+#include <mode_field/interface.cpp>
+#include <utils/numpy_interface.h>
 
 PYBIND11_MODULE(interface_detector, module) {
     module.doc() = R"pbdoc(
@@ -122,6 +121,82 @@ PYBIND11_MODULE(interface_detector, module) {
             pybind11::arg("sampling"),
             R"pbdoc(
                 NumPy array of shape (sampling, 2) with columns [gamma, phi].
+            )pbdoc"
+        )
+        .def("_cpp_get_poynting_field",
+            [](Detector& self, const BaseScatterer& scatterer, double distance = 1) {
+                std::vector<double> vector = self.get_poynting_field(scatterer, distance);  // returns vector<double>
+                return vector_move_from_numpy(std::move(vector), {vector.size()});
+            },
+            pybind11::arg("scatterer"),
+            pybind11::arg("distance") = 1.0,
+            R"pbdoc(
+                Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
+
+                The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:
+
+                .. math::
+                    \vec{S} = \epsilon_0 c^2 \, \vec{E} \times \vec{B}
+
+                Where:
+
+                - \( \vec{S} \): Poynting vector (W/m²)
+                - \( \epsilon_0 \): Permittivity of free space (F/m)
+                - \( c \): Speed of light in vacuum (m/s)
+                - \( \vec{E} \): Electric field vector (V/m)
+                - \( \vec{B} \): Magnetic field vector (T)
+
+                The cross product of the electric and magnetic field vectors results in the Poynting vector, which represents the flow of electromagnetic energy in space.
+
+                Parameters
+                ----------
+                scatterer : BaseScatterer
+                    An instance of a PyMieSim scatterer (e.g., SPHERE or CYLINDER).
+                distance : float, optional
+                    Distance from the scatterer to the detector (default is 1).
+
+                Returns
+                -------
+                numpy.ndarray
+                    A 2D array of shape (sampling, sampling) containing the Poynting vector magnitudes.
+
+                Notes
+                -----
+                The Poynting vector is computed over a 3D mesh of voxels that cover the entire solid angle of \( 4\pi \) steradians. This method calculates the local energy flux at each voxel and returns the norm, which represents the magnitude of energy flow at each point in space around the scatterer.
+
+                The Poynting vector is fundamental in understanding how energy is transmitted through space in the form of electromagnetic waves.
+
+                Example
+                -------
+                This method is used to assess the distribution of energy around a scatterer. The total energy flow can be obtained by integrating the Poynting vector over the surface enclosing the scatterer.
+            )pbdoc"
+        )
+        .def("_cpp_get_energy_flow",
+            &Detector::get_energy_flow,
+            pybind11::arg("scatterer"),
+            pybind11::arg("distance") = 1.0,
+            R"pbdoc(
+                Compute the total energy flow through the detector surface.
+
+                Parameters
+                ----------
+                scatterer : BaseScatterer
+                    An instance of a PyMieSim scatterer (e.g., SPHERE or CYLINDER).
+                distance : float, optional
+                    Distance from the scatterer to the detector (default is 1).
+
+                Returns
+                -------
+                float
+                    The total energy flow (power) through the detector surface in watts (W).
+
+                Notes
+                -----
+                The energy flow is calculated by integrating the Poynting vector over the detector's angular mesh. This provides a measure of the total electromagnetic power passing through the detector surface.
+
+                Example
+                -------
+                This method is useful for quantifying the amount of energy collected by the detector from scattered fields.
             )pbdoc"
         )
         .def_readonly(

@@ -4,13 +4,14 @@
 #include <complex>
 #include <cmath> // For std::isnan and std::pow
 #include <stdexcept>
-#include "fibonacci/fibonacci.h"
+#include <fibonacci/fibonacci.h>
 #include <scatterer/base_scatterer/base_scatterer.h>
-#include "../mode_field/mode_field.h"
+#include <mode_field/mode_field.h>
+#include <utils/math.h>
 
 using complex128 = std::complex<double>;
-#define EPSILON0 (double)8.854187817620389e-12
-#define LIGHT_SPEED (double)299792458.0
+#define EPSILON0 (double)8.854187817620389e-12  // Farad/Meter
+#define LIGHT_SPEED (double)299792458.0 // Meter/Second
 
 
 class Detector {
@@ -38,28 +39,28 @@ class Detector {
         Detector() = default;
 
         Detector(
-            const std::string &mode_number,
-            const size_t sampling,
-            const double numerical_aperture,
-            const double cache_numerical_aperture,
-            const double phi_offset,
-            const double gamma_offset,
-            const double polarization_filter,
-            const double rotation,
-            const bool is_coherent,
-            const bool mean_coupling,
-            const double medium_refractive_index = 1.0)
-        :   mode_number(mode_number),
-            sampling(sampling),
-            numerical_aperture(numerical_aperture),
-            cache_numerical_aperture(cache_numerical_aperture),
-            phi_offset(phi_offset),
-            gamma_offset(gamma_offset),
-            polarization_filter(polarization_filter),
-            rotation(rotation),
-            is_coherent(is_coherent),
-            mean_coupling(mean_coupling),
-            medium_refractive_index(medium_refractive_index)
+            const std::string &_mode_number,
+            const size_t _sampling,
+            const double _numerical_aperture,
+            const double _cache_numerical_aperture,
+            const double _phi_offset,
+            const double _gamma_offset,
+            const double _polarization_filter,
+            const double _rotation,
+            const bool _is_coherent,
+            const bool _mean_coupling,
+            const double _medium_refractive_index = 1.0)
+        :   mode_number(_mode_number),
+            sampling(_sampling),
+            numerical_aperture(_numerical_aperture),
+            cache_numerical_aperture(_cache_numerical_aperture),
+            phi_offset(_phi_offset),
+            gamma_offset(_gamma_offset),
+            polarization_filter(_polarization_filter),
+            rotation(_rotation),
+            is_coherent(_is_coherent),
+            mean_coupling(_mean_coupling),
+            medium_refractive_index(_medium_refractive_index)
         {
             this->initialize(medium_refractive_index);
         }
@@ -79,6 +80,22 @@ class Detector {
          * @note This function computes the scalar field based on the mode field and the Fibonacci mesh.
          */
         [[nodiscard]] std::vector<complex128> get_structured_scalarfield(const size_t sampling) const;
+
+        /**
+         * @brief Computes the Poynting vector value for a given scatterer at a specified distance.
+         * @param scatterer The scatterer for which the Poynting vector is computed.
+         * @param distance The distance at which to compute the Poynting vector (default is 1).
+         * @return The Poynting vector value.
+         */
+        std::vector<double> get_poynting_field(const BaseScatterer& scatterer, double distance = 1) const;
+
+        /**
+         * @brief Computes the energy flow for a given scatterer at a specified distance.
+         * @param scatterer The scatterer for which the energy flow is computed.
+         * @param distance The distance at which to compute the energy flow (default is 1).
+         * @return The total energy flow value.
+         */
+        double get_energy_flow(const BaseScatterer& scatterer, double distance = 1) const;
 
     private:
         /**
@@ -189,4 +206,5 @@ class Detector {
          * @param polarization_filter The polarization filter value.
          */
         template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
+
 };

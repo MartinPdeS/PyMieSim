@@ -1,3 +1,3 @@
-Validation with Bohren & Huffmann
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bohren & Huffmann
+~~~~~~~~~~~~~~~~~
 Scripts reproducing figures from the classic text.

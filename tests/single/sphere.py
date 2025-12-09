@@ -9,8 +9,6 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyOptik import Material
-from unittest.mock import patch
-import matplotlib.pyplot as plt
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 property = [Material.BK7, 1.6 * ureg.RIU]
@@ -63,7 +61,7 @@ def test_sphere_attribute(attribute, property, medium_property, source):
     )
     _ = getattr(scatterer, attribute)
 
-    scatterer.print_properties()
+    # scatterer.print_properties()
 
 
 @pytest.mark.parametrize("property", property, ids=[f"property:{m}" for m in property])

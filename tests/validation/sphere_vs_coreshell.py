@@ -5,9 +5,6 @@ from TypedUnit import ureg
 from PyMieSim.experiment.scatterer import Sphere, CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment.setup import Setup
-import PyMieSim
-
-PyMieSim.debug_mode = True
 
 
 @pytest.fixture

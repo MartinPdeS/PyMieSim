@@ -1,12 +1,12 @@
-#include "scatterer/cylinder/cylinder.h"
+#include "./cylinder.h"
 
 // ---------------------- Constructors ---------------------------------------
-Cylinder::Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order) :
-BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
+Cylinder::Cylinder(double _diameter, complex128 _refractive_index, double _medium_refractive_index, const BaseSource &_source, size_t _max_order) :
+BaseScatterer(_max_order, _source, _medium_refractive_index), diameter(_diameter), refractive_index(_refractive_index)
 {
     this->compute_cross_section();
     this->compute_size_parameter();
-    this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
+    this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->compute_an_bn(this->max_order);
 }
 

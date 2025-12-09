@@ -1,22 +1,14 @@
 #pragma once
 
+#include <complex>
 #include <vector>
-#include "source/source.h"
-#include "fibonacci/fibonacci.h"
-#include "full_mesh/full_mesh.h"
-#include "../../bessel_subroutine/bessel_subroutine.h"
+#include <source/source.h>
+#include <fibonacci/fibonacci.h>
+#include <full_mesh/full_mesh.h>
+#include <bessel_subroutine/bessel_subroutine.h>
+#include <utils/defines.h>
 
 typedef std::complex<double> complex128;
-
-
-#define DEFINE_COEFFICIENTS_GETTERS(name) \
-    std::vector<complex128> name##n; \
-    double get_##name##1() const { return abs(this->name##n[0]); } \
-    double get_##name##2() const { return abs(this->name##n[1]); } \
-    double get_##name##3() const { return abs(this->name##n[2]); } \
-    complex128 get_##name##1_complex128() const { return this->name##n[0]; } \
-    complex128 get_##name##2_complex128() const { return this->name##n[1]; } \
-    complex128 get_##name##3_complex128() const { return this->name##n[2]; }
 
 
 class BaseScatterer {
@@ -30,6 +22,8 @@ public:
     std::vector<size_t> indices;
 
     BaseScatterer() = default;
+    BaseScatterer(const size_t _max_order, const BaseSource &_source, const double _medium_refractive_index)
+    : max_order(_max_order), source(_source), medium_refractive_index(_medium_refractive_index){}
 
     // VIRTUAL INTERFACE ----------------------------------------------
     virtual ~BaseScatterer() = default;
@@ -49,20 +43,10 @@ public:
 
 
     // SPHERICAL SCATTERER GETTERS --------------------------------------------------------
-    DEFINE_COEFFICIENTS_GETTERS(a)
-    DEFINE_COEFFICIENTS_GETTERS(b)
-    DEFINE_COEFFICIENTS_GETTERS(c)
-    DEFINE_COEFFICIENTS_GETTERS(d)
+    DEFINE_COEFFICIENTS_GETTERS_4(a, b, c, d)
 
     // CYLINDRICAL SCATTERER GETTERS --------------------------------------------------------
-    DEFINE_COEFFICIENTS_GETTERS(a1)
-    DEFINE_COEFFICIENTS_GETTERS(b1)
-    DEFINE_COEFFICIENTS_GETTERS(c1)
-    DEFINE_COEFFICIENTS_GETTERS(d1)
-    DEFINE_COEFFICIENTS_GETTERS(a2)
-    DEFINE_COEFFICIENTS_GETTERS(b2)
-    DEFINE_COEFFICIENTS_GETTERS(c2)
-    DEFINE_COEFFICIENTS_GETTERS(d2)
+    DEFINE_COEFFICIENTS_GETTERS_8(a1, b1, c1, d1, a2, b2, c2, d2)
 
     // COEFFICIENT ----------------------------------------------------
 
@@ -147,9 +131,6 @@ public:
     double get_Cpr() const {return get_Qpr() * this->cross_section;};
 
     // GENERAL METHODS ----------------------------------------------------
-    BaseScatterer(const size_t max_order, const BaseSource &source, const double medium_refractive_index)
-    : max_order(max_order), source(source), medium_refractive_index(medium_refractive_index){}
-
     /**
      * @brief Computes the Wiscombe criterion.
      * @param size_parameter The size parameter.
