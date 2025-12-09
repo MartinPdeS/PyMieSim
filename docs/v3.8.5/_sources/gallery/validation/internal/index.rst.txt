@@ -2,8 +2,8 @@
 
 .. _sphx_glr_gallery_validation_internal:
 
-Internal validation
-~~~~~~~~~~~~~~~~~~~
+Internal
+~~~~~~~~
 Tests checking phase functions and energy conservation.
 
 

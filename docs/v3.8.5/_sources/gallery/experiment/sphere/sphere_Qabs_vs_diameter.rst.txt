@@ -25,7 +25,7 @@ Sphere: Qabs vs diameter
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-17
+.. GENERATED FROM PYTHON SOURCE LINES 9-35
 
 .. code-block:: Python
 
@@ -37,42 +37,12 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
-
-Defining the source to be employed.
-
-.. GENERATED FROM PYTHON SOURCE LINES 19-25
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=400 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
     )
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
-
-Defining the ranging parameters for the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 27-34
-
-.. code-block:: Python
-
     scatterer = Sphere(
         diameter=np.linspace(1, 800, 300) * ureg.nanometer,
         property=[Material.silver],
@@ -80,54 +50,9 @@ Defining the ranging parameters for the scatterer distribution
         source=source,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
-
-Defining the experiment setup
-
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
-
-Measuring the properties
-
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
-
-.. code-block:: Python
-
     dataframe = experiment.get("Qsca")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 43-44
-
-Plotting the results
-
-.. GENERATED FROM PYTHON SOURCE LINES 44-45
-
-.. code-block:: Python
 
     dataframe.plot(x="scatterer:diameter", yscale="log")
 
@@ -151,7 +76,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.422 seconds)
+   **Total running time of the script:** (0 minutes 0.353 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py:

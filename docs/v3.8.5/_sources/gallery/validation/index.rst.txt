@@ -12,9 +12,9 @@ specific parts of the library are also provided.
 
 Contents
 --------
-- ``bohren_huffman`` – examples based on figures from *Absorption and Scattering of Light by Small Particles*.
-- ``pymiescatt`` – comparisons with the ``PyMieScatt`` package.
-- ``internal`` – small utilities checking phase functions and energy flow.
+- ``bohren_huffman`` - examples based on figures from *Absorption and Scattering of Light by Small Particles*.
+- ``pymiescatt`` - comparisons with the ``PyMieScatt`` package.
+- ``internal`` - small utilities checking phase functions and energy flow.
 
 
 
@@ -30,8 +30,8 @@ Contents
 
     </div>
 
-Validation with Bohren & Huffmann
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bohren & Huffmann
+~~~~~~~~~~~~~~~~~
 Scripts reproducing figures from the classic text.
 
 
@@ -99,8 +99,8 @@ Scripts reproducing figures from the classic text.
 
     </div>
 
-Internal validation
-~~~~~~~~~~~~~~~~~~~
+Internal
+~~~~~~~~
 Tests checking phase functions and energy conservation.
 
 
@@ -151,8 +151,8 @@ Tests checking phase functions and energy conservation.
 
     </div>
 
-Validation with PyMieScatt
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+PyMieScatt
+~~~~~~~~~~
 Comparison scripts using the PyMieScatt package.
 
 

@@ -16,16 +16,12 @@ from PyMieSim.experiment import Setup
 from PyMieSim.single.polarization import RightCircular
 from PyOptik import Material
 
-# %%
-# Defining the source to be employed.
 source = Gaussian(
     wavelength=1200 * ureg.nanometer,
     polarization=RightCircular(),
     optical_power=1e-3 * ureg.watt,
     NA=0.2 * ureg.AU,
 )
-# %%
-# Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=2000 * ureg.nanometer,
     property=Material.BK7,
@@ -33,8 +29,6 @@ scatterer = Sphere(
     source=source,
 )
 
-# %%
-# Defining the detector to be employed.
 detector = Photodiode(
     NA=[0.1] * ureg.AU,
     phi_offset=numpy.linspace(-180, 180, 200) * ureg.degree,
@@ -44,14 +38,8 @@ detector = Photodiode(
     polarization_filter=[0, 30] * ureg.degree,
 )
 
-# %%
-# Defining the experiment setup
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the properties
 dataframe = experiment.get("coupling")
 
-# %%
-# Plotting the results
 dataframe.plot(x="detector:phi_offset")

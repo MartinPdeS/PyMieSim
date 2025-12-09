@@ -2,8 +2,8 @@
 
 .. _sphx_glr_gallery_validation_pymiescatt:
 
-Validation with PyMieScatt
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+PyMieScatt
+~~~~~~~~~~
 Comparison scripts using the PyMieScatt package.
 
 

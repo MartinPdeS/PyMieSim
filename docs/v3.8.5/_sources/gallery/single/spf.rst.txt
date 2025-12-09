@@ -27,7 +27,7 @@ This example demonstrates the computation and visualization of the Scattering Ph
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-15
+.. GENERATED FROM PYTHON SOURCE LINES 10-34
 
 .. code-block:: Python
 
@@ -36,42 +36,12 @@ Importing the package: PyMieSim
     from PyMieSim.single.scatterer import CoreShell
     from PyMieSim.single.source import Gaussian
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 16-17
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 17-24
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=1000 * ureg.nanometer,  # 1000 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1 * ureg.watt,  # Arbitrary units
         NA=0.3 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
-
-Defining the scatterer
-
-.. GENERATED FROM PYTHON SOURCE LINES 26-35
-
-.. code-block:: Python
 
     scatterer = CoreShell(
         core_diameter=500 * ureg.nanometer,  # 500 nm
@@ -82,37 +52,7 @@ Defining the scatterer
         medium_property=1.0 * ureg.RIU,  # Refractive property of the surrounding medium
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
-
-Computing the data
-
-.. GENERATED FROM PYTHON SOURCE LINES 37-39
-
-.. code-block:: Python
-
     data = scatterer.get_spf(sampling=300)  # Specify the number of sampling points
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
-
-Plotting the data
-
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
-
-.. code-block:: Python
 
     figure = data.plot()
 
@@ -130,7 +70,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.355 seconds)
+   **Total running time of the script:** (0 minutes 0.353 seconds)
 
 
 .. _sphx_glr_download_gallery_single_spf.py:

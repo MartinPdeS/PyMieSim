@@ -27,7 +27,7 @@ This example demonstrates how to visualize the properties of a light source usin
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-14
+.. GENERATED FROM PYTHON SOURCE LINES 10-22
 
 .. code-block:: Python
 
@@ -35,42 +35,12 @@ Importing the package: PyMieSim
 
     from PyMieSim.single.source import Gaussian
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 15-16
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 16-23
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=1 * ureg.nanometer,  # 1000 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1 * ureg.watt,  # Arbitrary units
         NA=0.3 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
-
-Plotting the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
-
-.. code-block:: Python
 
     source.plot()
 
@@ -88,7 +58,7 @@ Plotting the source
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.451 seconds)
+   **Total running time of the script:** (0 minutes 0.432 seconds)
 
 
 .. _sphx_glr_download_gallery_single_source.py:

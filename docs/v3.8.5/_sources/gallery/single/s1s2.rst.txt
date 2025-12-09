@@ -27,28 +27,13 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-14
+.. GENERATED FROM PYTHON SOURCE LINES 10-31
 
 .. code-block:: Python
 
     from TypedUnit import ureg
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 15-16
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 16-23
-
-.. code-block:: Python
 
     source = Gaussian(
         wavelength=450 * ureg.nanometer,  # 450 nm
@@ -57,21 +42,6 @@ Defining the source
         NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
-
-Defining the scatterer
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-32
-
-.. code-block:: Python
-
     scatterer = Sphere(
         diameter=6 * ureg.nanometer,  # 6 nm
         source=source,
@@ -79,37 +49,7 @@ Defining the scatterer
         property=1.4 * ureg.RIU,  # Refractive property of the scatterer
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 33-34
-
-Computing the data
-
-.. GENERATED FROM PYTHON SOURCE LINES 34-36
-
-.. code-block:: Python
-
     data = scatterer.get_s1s2(sampling=200)  # Specify the number of sampling points
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
-
-Plotting the data
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
-
-.. code-block:: Python
 
     figure = data.plot()
 
@@ -127,7 +67,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.232 seconds)
+   **Total running time of the script:** (0 minutes 0.199 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:

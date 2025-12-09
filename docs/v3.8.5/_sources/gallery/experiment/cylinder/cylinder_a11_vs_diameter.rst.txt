@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the A1 scattering coeffic
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-17
+.. GENERATED FROM PYTHON SOURCE LINES 10-37
 
 .. code-block:: Python
 
@@ -38,42 +38,12 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 19-26
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=400 * ureg.nanometer,  # 400 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
         NA=0.2 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
-
-Defining the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 28-36
-
-.. code-block:: Python
 
     scatterer = Cylinder(
         diameter=np.linspace(100, 10000, 800)
@@ -83,56 +53,9 @@ Defining the scatterer distribution
         source=source,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
-
-Setting up the experiment
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 41-43
-
-Measuring the A1 scattering coefficient
-Note: The original request was for "a21"; assuming it meant A1, as "a21" might be a typo.
-
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
-
-.. code-block:: Python
-
-    dataframe = experiment.get("a21")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 46-48
-
-Plotting the results
-Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
-
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
-
-.. code-block:: Python
+    dataframe = experiment.get("a11")
 
     dataframe.plot(x="scatterer:diameter")
 
@@ -156,7 +79,7 @@ Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.140 seconds)
+   **Total running time of the script:** (0 minutes 1.157 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py:

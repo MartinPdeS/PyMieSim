@@ -15,10 +15,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-
-# %%
-# Defining the source
-# In the LMT framework, the source is always considered a plane wave with a default amplitude of one.
 source = Gaussian(
     wavelength=800 * ureg.nanometer,  # 800 nm
     polarization=0 * ureg.degree,  # Linear polarization angle in radians
@@ -26,9 +22,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
-# Here, we explore core/shell scatterers with a constant shell diameter and variable core diameter.
 scatterer = CoreShell(
     core_diameter=np.geomspace(100, 600, 10)
     * ureg.nanometer,  # Geometrically spaced core diameters
@@ -39,17 +32,8 @@ scatterer = CoreShell(
     source=source,
 )
 
-# %%
-# Defining the experiment setup
-# Integrating the defined source and scatterers into a single experimental setup.
 experiment = Setup(scatterer=scatterer, source=source)
 
-# %%
-# Measuring the B1 scattering parameter
-# Here, we're interested in the a3 (first magnetic coefficient) parameter, which seems to be a typo for B1.
 dataframe = experiment.get("a1", "a2", "a3", "Qsca")
 
-# %%
-# Plotting the results
-# Visualizing how the B1 (a3) parameter varies with the core diameter.
 dataframe.plot(x="scatterer:core_diameter")

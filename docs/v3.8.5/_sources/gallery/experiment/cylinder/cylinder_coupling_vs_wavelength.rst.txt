@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-19
+.. GENERATED FROM PYTHON SOURCE LINES 10-50
 
 .. code-block:: Python
 
@@ -40,21 +40,6 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 21-29
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=np.linspace(950, 1050, 300)
         * ureg.nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
@@ -63,22 +48,6 @@ Defining the source
         NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 30-32
-
-Defining the scatterer distribution
-Here we look at cylinders with a set diameter, refractive index, and medium.
-
-.. GENERATED FROM PYTHON SOURCE LINES 32-40
-
-.. code-block:: Python
-
     scatterer = Cylinder(
         diameter=np.linspace(100, 8000, 5)
         * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
@@ -86,21 +55,6 @@ Here we look at cylinders with a set diameter, refractive index, and medium.
         medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
         source=source,
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
-
-Defining the detector
-
-.. GENERATED FROM PYTHON SOURCE LINES 42-52
-
-.. code-block:: Python
 
     detector = CoherentMode(
         mode_number="LP11",  # Specifying the LP11 mode
@@ -112,55 +66,9 @@ Defining the detector
         rotation=0 * ureg.degree,  # Rotation of the mode field
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
-
-Setting up the experiment
-
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
-
-Measuring the coupling efficiency
-
-.. GENERATED FROM PYTHON SOURCE LINES 58-60
-
-.. code-block:: Python
-
     dataframe = experiment.get("coupling", scale_unit=True)
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 61-63
-
-Plotting the results
-Visualizing how the coupling efficiency varies with the wavelength.
-
-.. GENERATED FROM PYTHON SOURCE LINES 63-64
-
-.. code-block:: Python
 
     dataframe.plot(x="source:wavelength", std="scatterer:diameter")
 
@@ -184,7 +92,7 @@ Visualizing how the coupling efficiency varies with the wavelength.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.396 seconds)
+   **Total running time of the script:** (0 minutes 1.276 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:

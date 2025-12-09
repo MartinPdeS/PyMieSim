@@ -25,7 +25,7 @@ Sphere: Goniometer
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-19
+.. GENERATED FROM PYTHON SOURCE LINES 9-46
 
 .. code-block:: Python
 
@@ -39,63 +39,18 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.single.polarization import RightCircular
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
-
-Defining the source to be employed.
-
-.. GENERATED FROM PYTHON SOURCE LINES 21-27
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=1200 * ureg.nanometer,
         polarization=RightCircular(),
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
     )
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 28-29
-
-Defining the ranging parameters for the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
-
-.. code-block:: Python
-
     scatterer = Sphere(
         diameter=2000 * ureg.nanometer,
         property=Material.BK7,
         medium_property=1 * ureg.RIU,
         source=source,
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
-
-Defining the detector to be employed.
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-47
-
-.. code-block:: Python
 
     detector = Photodiode(
         NA=[0.1] * ureg.AU,
@@ -106,54 +61,9 @@ Defining the detector to be employed.
         polarization_filter=[0, 30] * ureg.degree,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
-
-Defining the experiment setup
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-51
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 52-53
-
-Measuring the properties
-
-.. GENERATED FROM PYTHON SOURCE LINES 53-55
-
-.. code-block:: Python
-
     dataframe = experiment.get("coupling")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 56-57
-
-Plotting the results
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
-
-.. code-block:: Python
 
     dataframe.plot(x="detector:phi_offset")
 
@@ -177,7 +87,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.310 seconds)
+   **Total running time of the script:** (0 minutes 0.276 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py:

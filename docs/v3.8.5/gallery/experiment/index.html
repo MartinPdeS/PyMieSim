@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
@@ -47,6 +48,7 @@
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/experiment/index';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -545,46 +547,8 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">experiment</span></code> package is used to build large parameter sweeps.  It lets you
 combine sources, scatterers and detectors to explore how scattering quantities
 change across many configurations.</p>
-<section id="key-components">
-<h2>Key components<a class="headerlink" href="#key-components" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Sources</strong> – plane waves and Gaussian beams with user-defined wavelength and
-polarization.</p></li>
-<li><p><strong>Scatterers</strong> – spherical, cylindrical and core–shell geometries.</p></li>
-<li><p><strong>Detectors</strong> – photodiodes, coherent modes and integrating spheres.</p></li>
-</ul>
-</section>
-<section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
-<p>The snippet below retrieves the scattering efficiency for a range of refractive
-indices.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">nanometer</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mf">500.</span><span class="p">,</span> <span class="mf">1000.</span><span class="p">,</span> <span class="mf">1500.</span><span class="p">]</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mf">30.</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mf">800.</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Qsca&#39;</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;scatterer:property&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="sphx-glr-thumbnails"></div><section id="core-shell">
-<h3>Core-Shell<a class="headerlink" href="#core-shell" title="Link to this heading">#</a></h3>
+<h2>Core-Shell<a class="headerlink" href="#core-shell" title="Link to this heading">#</a></h2>
 <p>Examples of particles composed of a core and shell.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the backscattering efficiency (Qback) as functions of core diameter for CoreShell scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_coreshell_Qback_vs_corediameter_thumb.png" />
 <p><a class="reference internal" href="coreshell/coreshell_Qback_vs_corediameter.html#sphx-glr-gallery-experiment-coreshell-coreshell-qback-vs-corediameter-py"><span class="std std-ref">CoreShell: Qback vs Core Diameter</span></a></p>
@@ -603,7 +567,7 @@ indices.</p>
   <div class="sphx-glr-thumbnail-title">CoreShell: Coupling vs Diameter</div>
 </div></div></section>
 <section id="cylinder">
-<h3>Cylinder<a class="headerlink" href="#cylinder" title="Link to this heading">#</a></h3>
+<h2>Cylinder<a class="headerlink" href="#cylinder" title="Link to this heading">#</a></h2>
 <p>Examples demonstrating infinite cylindrical scatterers.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_cylinder_Qabs_vs_diameter_thumb.png" />
 <p><a class="reference internal" href="cylinder/cylinder_Qabs_vs_diameter.html#sphx-glr-gallery-experiment-cylinder-cylinder-qabs-vs-diameter-py"><span class="std std-ref">Cylinder: Qabs vs Diameter</span></a></p>
@@ -637,7 +601,7 @@ indices.</p>
   <div class="sphx-glr-thumbnail-title">Cylinder: Coupling vs Wavelength</div>
 </div></div></section>
 <section id="sphere">
-<h3>Sphere<a class="headerlink" href="#sphere" title="Link to this heading">#</a></h3>
+<h2>Sphere<a class="headerlink" href="#sphere" title="Link to this heading">#</a></h2>
 <p>Examples focused on spherical scatterers.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qabs vs diameter"><img alt="" src="../../_images/sphx_glr_sphere_Qabs_vs_diameter_thumb.png" />
 <p><a class="reference internal" href="sphere/sphere_Qabs_vs_diameter.html#sphx-glr-gallery-experiment-sphere-sphere-qabs-vs-diameter-py"><span class="std std-ref">Sphere: Qabs vs diameter</span></a></p>
@@ -689,7 +653,6 @@ indices.</p>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
 </section>
-</section>
 
 
                 </article>
@@ -714,13 +677,9 @@ indices.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">Key components</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-shell">Core-Shell</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylinder">Cylinder</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sphere">Sphere</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-shell">Core-Shell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cylinder">Cylinder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sphere">Sphere</a></li>
 </ul>
   </nav></div>
 

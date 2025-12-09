@@ -16,13 +16,7 @@ from PyMieSim.experiment import Setup
 from PyOptik import Material
 
 Material.print_available()
-import PyMieSim
 
-PyMieSim.debug_mode = True
-
-
-# %%
-# Defining the source to be employed.
 source = Gaussian(
     wavelength=[405, 810] * ureg.nanometer,
     polarization=0 * ureg.degree,
@@ -37,8 +31,6 @@ scatterer = Sphere(
     source=source,
 )
 
-# %%
-# Defining the experiment setup
 experiment = Setup(scatterer=scatterer, source=source)
 
 dataframe = experiment.get("Qsca", scale_unit=True)

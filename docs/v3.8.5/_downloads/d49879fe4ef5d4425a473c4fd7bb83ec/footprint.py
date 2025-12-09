@@ -13,7 +13,6 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single.source import Gaussian
 
-# Define the Gaussian light source with specified properties
 source = Gaussian(
     wavelength=1 * ureg.micrometer,  # 1000 nm
     polarization=0 * ureg.degree,
@@ -21,7 +20,6 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-# Create a spherical scatterer with a specified diameter and property
 scatterer = Sphere(
     diameter=2 * ureg.micrometer,  # 2000 nm
     source=source,
@@ -29,7 +27,6 @@ scatterer = Sphere(
     property=Material.BK7,  # Using BK7 glass property
 )
 
-# Define the LPMode detector with specific parameters
 detector = CoherentMode(
     mode_number="HG02",
     NA=0.3 * ureg.AU,
@@ -38,8 +35,6 @@ detector = CoherentMode(
     phi_offset=0 * ureg.degree,
 )
 
-# Compute the footprint data using the defined scatterer and detector
 data = detector.get_footprint(scatterer)
 
-# Plot the computed footprint data
 figure = data.plot()

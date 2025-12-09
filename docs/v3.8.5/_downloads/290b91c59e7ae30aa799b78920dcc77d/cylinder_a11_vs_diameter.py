@@ -14,8 +14,6 @@ from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=400 * ureg.nanometer,  # 400 nm
     polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
@@ -23,8 +21,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
 scatterer = Cylinder(
     diameter=np.linspace(100, 10000, 800)
     * ureg.nanometer,  # Diameters ranging from 100 nm to 10000 nm
@@ -33,16 +29,8 @@ scatterer = Cylinder(
     source=source,
 )
 
-# %%
-# Setting up the experiment
 experiment = Setup(scatterer=scatterer, source=source)
 
-# %%
-# Measuring the A1 scattering coefficient
-# Note: The original request was for "a21"; assuming it meant A1, as "a21" might be a typo.
-dataframe = experiment.get("a21")
+dataframe = experiment.get("a11")
 
-# %%
-# Plotting the results
-# Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
 dataframe.plot(x="scatterer:diameter")

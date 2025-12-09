@@ -27,7 +27,7 @@ This example demonstrates the computation and visualization of the Stokes parame
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-15
+.. GENERATED FROM PYTHON SOURCE LINES 10-32
 
 .. code-block:: Python
 
@@ -36,42 +36,12 @@ Importing the package: PyMieSim
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 16-17
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 17-24
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=750 * ureg.nanometer,  # 750 nm
         polarization=10 * ureg.degree,  # Right circular polarization
         optical_power=1 * ureg.watt,  # Arbitrary units
         NA=0.3 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
-
-Defining the scatterer
-
-.. GENERATED FROM PYTHON SOURCE LINES 26-33
-
-.. code-block:: Python
 
     scatterer = Sphere(
         diameter=300 * ureg.nanometer,  # 300 nm
@@ -80,37 +50,7 @@ Defining the scatterer
         property=1.4 * ureg.RIU,  # Refractive property of the scatterer
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 34-35
-
-Computing the data
-
-.. GENERATED FROM PYTHON SOURCE LINES 35-37
-
-.. code-block:: Python
-
     data = scatterer.get_stokes(sampling=100)  # Specify the number of sampling points
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
-
-Plotting the data
-
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
-
-.. code-block:: Python
 
     figure = data.plot()
 
@@ -128,7 +68,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.367 seconds)
+   **Total running time of the script:** (0 minutes 0.368 seconds)
 
 
 .. _sphx_glr_download_gallery_single_stokes.py:

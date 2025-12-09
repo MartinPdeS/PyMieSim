@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-18
+.. GENERATED FROM PYTHON SOURCE LINES 10-44
 
 .. code-block:: Python
 
@@ -39,42 +39,12 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 19-20
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-27
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=400 * ureg.nanometer,  # 400 nm
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
         NA=0.2 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 28-29
-
-Defining the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-41
-
-.. code-block:: Python
 
     scatterer = Cylinder(
         diameter=np.linspace(1, 800, 300)
@@ -88,59 +58,11 @@ Defining the scatterer distribution
         source=source,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 42-43
-
-Setting up the experiment
-
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source)
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 46-49
-
-Measuring the scattering efficiency (Qsca)
-Note: The original request mentioned Qsca, but the measurement code uses Qabs.
-If Qsca measurement is intended, ensure to use the correct measure object from PyMieSim.
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-53
-
-.. code-block:: Python
 
     dataframe = experiment.get(
         "Qabs"
     )  # Assuming Qabs was intended, replace with measure.Qsca if needed
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
-
-Plotting the results
-Visualizing how the scattering efficiency varies with the cylinder diameter.
-
-.. GENERATED FROM PYTHON SOURCE LINES 56-57
-
-.. code-block:: Python
 
     dataframe.plot(x="scatterer:diameter")
 
@@ -164,7 +86,7 @@ Visualizing how the scattering efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.379 seconds)
+   **Total running time of the script:** (0 minutes 0.338 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:

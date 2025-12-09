@@ -16,8 +16,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=1.2 * ureg.micrometer,  # 1200 nm
     polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
@@ -25,8 +23,6 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer distribution
 scatterer = CoreShell(
     core_diameter=numpy.geomspace(100, 600, 400)
     * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
@@ -37,8 +33,6 @@ scatterer = CoreShell(
     source=source,
 )
 
-# %%
-# Defining the detector
 detector = Photodiode(
     NA=[0.1] * ureg.AU,  # Numerical Apertures for the detector
     phi_offset=-180.0 * ureg.degree,  # Phi offset in ureg.degrees
@@ -47,15 +41,8 @@ detector = Photodiode(
     polarization_filter=1 * ureg.degree,
 )
 
-# %%
-# Setting up the experiment
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the coupling efficiency
 dataframe = experiment.get("coupling")
 
-# %%
-# Plotting the results
-# Visualizing how the coupling efficiency varies with the core diameter.
 dataframe.plot(x="scatterer:core_diameter")

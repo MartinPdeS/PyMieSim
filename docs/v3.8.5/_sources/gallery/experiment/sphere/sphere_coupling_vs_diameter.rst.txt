@@ -25,7 +25,7 @@ Sphere: Coupling vs diameter
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-18
+.. GENERATED FROM PYTHON SOURCE LINES 9-47
 
 .. code-block:: Python
 
@@ -38,63 +38,18 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 19-20
-
-Defining the source to be employed.
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-26
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=1200 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=[0.1] * ureg.AU,
     )
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
-
-Defining the ranging parameters for the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 28-35
-
-.. code-block:: Python
-
     scatterer = Sphere(
         diameter=numpy.linspace(100, 10000, 600) * ureg.nanometer,
         property=Material.BK7,
         medium_property=1.0 * ureg.RIU,
         source=source,
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
-
-Defining the detector to be employed.
-
-.. GENERATED FROM PYTHON SOURCE LINES 37-48
-
-.. code-block:: Python
 
     detector = CoherentMode(
         mode_number=["LP01", "LP11", "LP02"],
@@ -107,54 +62,9 @@ Defining the detector to be employed.
         polarization_filter=None,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
-
-Defining the experiment setup
-
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
-
-Measuring the properties
-
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
-
-.. code-block:: Python
-
     dataframe = experiment.get("a1", drop_unique_level=True, scale_unit=True)
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-58
-
-Plotting the results
-
-.. GENERATED FROM PYTHON SOURCE LINES 58-59
-
-.. code-block:: Python
 
     dataframe.plot(x="scatterer:diameter")
 
@@ -178,7 +88,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.666 seconds)
+   **Total running time of the script:** (0 minutes 0.592 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:

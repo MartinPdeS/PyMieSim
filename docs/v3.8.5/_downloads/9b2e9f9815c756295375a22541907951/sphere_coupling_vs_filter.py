@@ -14,8 +14,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-# %%
-# Defining the source to be employed.
 source = Gaussian(
     wavelength=[950, 1050] * ureg.nanometer,
     polarization=0 * ureg.degree,
@@ -24,8 +22,6 @@ source = Gaussian(
 )
 
 
-# %%
-# Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=np.linspace(100, 2000, 20) * ureg.nanometer,
     property=[Material.BK7, Material.water],
@@ -33,8 +29,6 @@ scatterer = Sphere(
     source=source,
 )
 
-# %%
-# Defining the detector to be employed.
 detector = Photodiode(
     NA=[0.1] * ureg.AU,
     phi_offset=-180 * ureg.degree,
@@ -43,12 +37,8 @@ detector = Photodiode(
     sampling=[500] * ureg.AU,
 )
 
-# %%
-# Defining the experiment setup
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the properties
 dataframe = experiment.get("coupling")
 
 dataframe.plot(x="detector:polarization_filter", std="scatterer:diameter")

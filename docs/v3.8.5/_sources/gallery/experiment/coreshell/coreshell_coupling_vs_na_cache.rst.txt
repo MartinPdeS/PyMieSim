@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-19
+.. GENERATED FROM PYTHON SOURCE LINES 10-49
 
 .. code-block:: Python
 
@@ -40,42 +40,12 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 21-28
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=1.2 * ureg.micrometer,  # 1200 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
         NA=0.2 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-30
-
-Defining the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 30-39
-
-.. code-block:: Python
 
     scatterer = CoreShell(
         core_diameter=[1500] * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
@@ -86,21 +56,6 @@ Defining the scatterer distribution
         source=source,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
-
-Defining the detector
-
-.. GENERATED FROM PYTHON SOURCE LINES 41-50
-
-.. code-block:: Python
-
     detector = Photodiode(
         NA=[0.3] * ureg.AU,  # Numerical Apertures for the detector
         cache_NA=numpy.linspace(0.0, 0.2, 200) * ureg.AU,
@@ -110,55 +65,9 @@ Defining the detector
         polarization_filter=1 * ureg.degree,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
-
-Setting up the experiment
-
-.. GENERATED FROM PYTHON SOURCE LINES 52-54
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 55-56
-
-Measuring the coupling efficiency
-
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
-
-.. code-block:: Python
-
     dataframe = experiment.get("coupling")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 59-61
-
-Plotting the results
-Visualizing how the coupling efficiency varies with the core diameter.
-
-.. GENERATED FROM PYTHON SOURCE LINES 61-62
-
-.. code-block:: Python
 
     dataframe.plot(x="detector:cache_NA")
 
@@ -182,7 +91,7 @@ Visualizing how the coupling efficiency varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.482 seconds)
+   **Total running time of the script:** (0 minutes 0.492 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py:

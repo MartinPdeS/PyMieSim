@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-18
+.. GENERATED FROM PYTHON SOURCE LINES 10-46
 
 .. code-block:: Python
 
@@ -39,42 +39,12 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 19-20
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-27
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=[100, 1200] * ureg.nanometer,  # 1200 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
         optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
         NA=0.2 * ureg.AU,  # Numerical Aperture
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 28-29
-
-Defining the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-37
-
-.. code-block:: Python
 
     scatterer = Sphere(
         diameter=np.linspace(100, 300, 200)
@@ -84,21 +54,6 @@ Defining the scatterer distribution
         source=source,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
-
-Defining the detector
-
-.. GENERATED FROM PYTHON SOURCE LINES 39-47
-
-.. code-block:: Python
-
     detector = Photodiode(
         NA=[0.1] * ureg.AU,  # Numerical Apertures for the detector
         phi_offset=[-180.0] * ureg.degree,  # Phi offset in ureg.degrees
@@ -107,55 +62,9 @@ Defining the detector
         polarization_filter=None,  # No polarization filter
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
-
-Setting up the experiment
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-51
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 52-53
-
-Measuring the coupling efficiency
-
-.. GENERATED FROM PYTHON SOURCE LINES 53-55
-
-.. code-block:: Python
-
     dataframe = experiment.get("coupling")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
-
-Plotting the results
-Visualizing how the coupling efficiency varies with the cylinder diameter.
-
-.. GENERATED FROM PYTHON SOURCE LINES 58-59
-
-.. code-block:: Python
 
     dataframe.plot(x="scatterer:diameter")
 
@@ -179,7 +88,7 @@ Visualizing how the coupling efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.342 seconds)
+   **Total running time of the script:** (0 minutes 0.310 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_diameter.py:

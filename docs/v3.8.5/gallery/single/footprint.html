@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
@@ -47,6 +48,7 @@
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/single/footprint';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -559,7 +561,6 @@ to download the full example code.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherentMode</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 
-<span class="c1"># Define the Gaussian light source with specified properties</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>  <span class="c1"># 1000 nm</span>
     <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
@@ -567,7 +568,6 @@ to download the full example code.</p>
     <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
 <span class="p">)</span>
 
-<span class="c1"># Create a spherical scatterer with a specified diameter and property</span>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>  <span class="c1"># 2000 nm</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
@@ -575,7 +575,6 @@ to download the full example code.</p>
     <span class="nb">property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>  <span class="c1"># Using BK7 glass property</span>
 <span class="p">)</span>
 
-<span class="c1"># Define the LPMode detector with specific parameters</span>
 <span class="n">detector</span> <span class="o">=</span> <span class="n">CoherentMode</span><span class="p">(</span>
     <span class="n">mode_number</span><span class="o">=</span><span class="s2">&quot;HG02&quot;</span><span class="p">,</span>
     <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
@@ -584,14 +583,12 @@ to download the full example code.</p>
     <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># Compute the footprint data using the defined scatterer and detector</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">get_footprint</span><span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
 
-<span class="c1"># Plot the computed footprint data</span>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.160 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.963 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-footprint-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8261710664154b0c176fbee815c5b91d/footprint.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">footprint.ipynb</span></code></a></p>

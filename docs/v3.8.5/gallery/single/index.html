@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
@@ -47,6 +48,7 @@
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/single/index';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -545,48 +547,6 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> package focuses on scattering from a single particle.  It exposes
 simple classes for defining a source, a scatterer and a detector so that the
 interaction can be studied in detail.</p>
-<section id="key-components">
-<h2>Key components<a class="headerlink" href="#key-components" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Sources</strong> - plane waves and Gaussian beams.</p></li>
-<li><p><strong>Scatterers</strong> - spheres, cylinders and core–shell particles.</p></li>
-<li><p><strong>Detectors</strong> - photodiodes as well as coherent and incoherent detectors.</p></li>
-</ul>
-</section>
-<section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
-<p>This example computes the power coupled into a photodiode from a tiny sphere.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">nanometer</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
-    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-    <span class="n">sampling</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
-    <span class="n">polarization_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">coupling</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">coupling</span><span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">coupling</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim."><img alt="" src="../../_images/sphx_glr_farfield_thumb.png" />
 <p><a class="reference internal" href="farfield.html#sphx-glr-gallery-single-farfield-py"><span class="std std-ref">Far-Fields Computation and Visualization</span></a></p>
   <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
@@ -612,7 +572,6 @@ interaction can be studied in detail.</p>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </section>
-</section>
 
 
                 </article>
@@ -628,19 +587,6 @@ interaction can be studied in detail.</p>
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
-
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">Key components</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
-</ul>
-  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">

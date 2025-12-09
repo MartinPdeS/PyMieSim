@@ -2,8 +2,8 @@
 
 .. _sphx_glr_gallery_validation_bohren_huffman:
 
-Validation with Bohren & Huffmann
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bohren & Huffmann
+~~~~~~~~~~~~~~~~~
 Scripts reproducing figures from the classic text.
 
 

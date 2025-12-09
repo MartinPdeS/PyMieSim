@@ -25,7 +25,7 @@ Sphere: Qsca vs index
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-16
+.. GENERATED FROM PYTHON SOURCE LINES 9-35
 
 .. code-block:: Python
 
@@ -36,41 +36,12 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 17-18
-
-Defining the source to be employed.
-
-.. GENERATED FROM PYTHON SOURCE LINES 18-24
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=[500.0, 1000.0, 1500.0] * ureg.nanometer,
         polarization=30.0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
     )
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
-
-Defining the ranging parameters for the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 26-33
-
-.. code-block:: Python
 
     scatterer = Sphere(
         diameter=800.0 * ureg.nanometer,
@@ -79,54 +50,9 @@ Defining the ranging parameters for the scatterer distribution
         source=source,
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 34-35
-
-Defining the experiment setup
-
-.. GENERATED FROM PYTHON SOURCE LINES 35-37
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
-
-Measuring the properties
-
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
-
-.. code-block:: Python
-
     dataframe = experiment.get("Qsca")
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 42-43
-
-Plotting the results
-
-.. GENERATED FROM PYTHON SOURCE LINES 43-44
-
-.. code-block:: Python
 
     dataframe.plot(x="scatterer:property")
 
@@ -150,7 +76,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.232 seconds)
+   **Total running time of the script:** (0 minutes 0.202 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_index.py:

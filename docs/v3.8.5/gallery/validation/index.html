@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
   
   <!-- So that users can add custom icons -->
@@ -47,6 +48,7 @@
     <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/validation/index';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -58,7 +60,7 @@
     <link rel="icon" href="../../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Validation with Bohren &amp; Huffmann" href="bohren_huffman/index.html" />
+    <link rel="next" title="Bohren &amp; Huffmann" href="bohren_huffman/index.html" />
     <link rel="prev" title="Samples Properties" href="../extras/properties_sphere.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -409,18 +411,18 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="bohren_huffman/index.html">Validation with Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="bohren_huffman/figure_810.html">Cylinder Scatterer Bohren-Huffman figure 8.10</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bohren_huffman/figure_87.html">Cylinder Scatterer Bohren-Huffman figure 8.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bohren_huffman/figure_88.html">Cylinder Scatterer Bohren-Huffman figure 8.8</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="internal/index.html">Internal validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
 <li class="toctree-l2"><a class="reference internal" href="internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="pymiescatt/index.html">Validation with PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
@@ -493,12 +495,12 @@ specific parts of the library are also provided.</p>
 <section id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">bohren_huffman</span></code> – examples based on figures from <em>Absorption and Scattering of Light by Small Particles</em>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pymiescatt</span></code> – comparisons with the <code class="docutils literal notranslate"><span class="pre">PyMieScatt</span></code> package.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">internal</span></code> – small utilities checking phase functions and energy flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bohren_huffman</span></code> - examples based on figures from <em>Absorption and Scattering of Light by Small Particles</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pymiescatt</span></code> - comparisons with the <code class="docutils literal notranslate"><span class="pre">PyMieScatt</span></code> package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">internal</span></code> - small utilities checking phase functions and energy flow.</p></li>
 </ul>
-<div class="sphx-glr-thumbnails"></div><section id="validation-with-bohren-huffmann">
-<h3>Validation with Bohren &amp; Huffmann<a class="headerlink" href="#validation-with-bohren-huffmann" title="Link to this heading">#</a></h3>
+<div class="sphx-glr-thumbnails"></div><section id="bohren-huffmann">
+<h3>Bohren &amp; Huffmann<a class="headerlink" href="#bohren-huffmann" title="Link to this heading">#</a></h3>
 <p>Scripts reproducing figures from the classic text.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Cylinder Scatterer Bohren-Huffman figure 8.10"><img alt="" src="../../_images/sphx_glr_figure_810_thumb.png" />
 <p><a class="reference internal" href="bohren_huffman/figure_810.html#sphx-glr-gallery-validation-bohren-huffman-figure-810-py"><span class="std std-ref">Cylinder Scatterer Bohren-Huffman figure 8.10</span></a></p>
@@ -510,8 +512,8 @@ specific parts of the library are also provided.</p>
 <p><a class="reference internal" href="bohren_huffman/figure_88.html#sphx-glr-gallery-validation-bohren-huffman-figure-88-py"><span class="std std-ref">Cylinder Scatterer Bohren-Huffman figure 8.8</span></a></p>
   <div class="sphx-glr-thumbnail-title">Cylinder Scatterer Bohren-Huffman figure 8.8</div>
 </div></div></section>
-<section id="internal-validation">
-<h3>Internal validation<a class="headerlink" href="#internal-validation" title="Link to this heading">#</a></h3>
+<section id="internal">
+<h3>Internal<a class="headerlink" href="#internal" title="Link to this heading">#</a></h3>
 <p>Tests checking phase functions and energy conservation.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Effect of Shell dimensions in equivalent medium"><img alt="" src="../../_images/sphx_glr_core_shell_empty_shell_thumb.png" />
 <p><a class="reference internal" href="internal/core_shell_empty_shell.html#sphx-glr-gallery-validation-internal-core-shell-empty-shell-py"><span class="std std-ref">Effect of Shell dimensions in equivalent medium</span></a></p>
@@ -520,8 +522,8 @@ specific parts of the library are also provided.</p>
 <p><a class="reference internal" href="internal/phase_function_detector.html#sphx-glr-gallery-validation-internal-phase-function-detector-py"><span class="std std-ref">Goniometric Coupling vs S1 S2 Comparison</span></a></p>
   <div class="sphx-glr-thumbnail-title">Goniometric Coupling vs S1 S2 Comparison</div>
 </div></div></section>
-<section id="validation-with-pymiescatt">
-<h3>Validation with PyMieScatt<a class="headerlink" href="#validation-with-pymiescatt" title="Link to this heading">#</a></h3>
+<section id="pymiescatt">
+<h3>PyMieScatt<a class="headerlink" href="#pymiescatt" title="Link to this heading">#</a></h3>
 <p>Comparison scripts using the PyMieScatt package.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Core-Shell Particles: 0"><img alt="" src="../../_images/sphx_glr_coreshell_0_thumb.png" />
 <p><a class="reference internal" href="pymiescatt/coreshell_0.html#sphx-glr-gallery-validation-pymiescatt-coreshell-0-py"><span class="std std-ref">Core-Shell Particles: 0</span></a></p>
@@ -566,9 +568,9 @@ specific parts of the library are also provided.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contents">Contents</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-with-bohren-huffmann">Validation with Bohren &amp; Huffmann</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-validation">Internal validation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-with-pymiescatt">Validation with PyMieScatt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bohren-huffmann">Bohren &amp; Huffmann</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#internal">Internal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pymiescatt">PyMieScatt</a></li>
 </ul>
 </li>
 </ul>

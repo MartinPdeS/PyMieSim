@@ -27,7 +27,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-19
+.. GENERATED FROM PYTHON SOURCE LINES 10-47
 
 .. code-block:: Python
 
@@ -40,21 +40,6 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
-
-Defining the source
-
-.. GENERATED FROM PYTHON SOURCE LINES 21-28
-
-.. code-block:: Python
-
     source = Gaussian(
         wavelength=1200 * ureg.nanometer,  # 1200 nm
         polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
@@ -62,42 +47,12 @@ Defining the source
         NA=0.2 * ureg.AU,  # Numerical Aperture
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-30
-
-Defining the scatterer distribution
-
-.. GENERATED FROM PYTHON SOURCE LINES 30-37
-
-.. code-block:: Python
-
     scatterer = Cylinder(
         diameter=2000 * ureg.nanometer,  # 2000 nm
         property=Material.BK7,  # Material of the cylinder
         medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
         source=source,
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
-
-Defining the detector
-
-.. GENERATED FROM PYTHON SOURCE LINES 39-48
-
-.. code-block:: Python
 
     detector = Photodiode(
         NA=[0.5, 0.3, 0.1, 0.05] * ureg.AU,  # Array of Numerical Apertures for the detector
@@ -108,55 +63,9 @@ Defining the detector
         polarization_filter=None,  # No polarization filter
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
-
-Setting up the experiment
-
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
-
-.. code-block:: Python
-
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
-
-Measuring the coupling efficiency
-
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
-
-.. code-block:: Python
-
     dataframe = experiment.get("coupling", scale_unit=True)
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-59
-
-Plotting the results
-Visualizing how the coupling efficiency varies with angular displacement.
-
-.. GENERATED FROM PYTHON SOURCE LINES 59-60
-
-.. code-block:: Python
 
     dataframe.plot(x="detector:phi_offset")
 
@@ -180,7 +89,7 @@ Visualizing how the coupling efficiency varies with angular displacement.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.441 seconds)
+   **Total running time of the script:** (0 minutes 0.403 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:
