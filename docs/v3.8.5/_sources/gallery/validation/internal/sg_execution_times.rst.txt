@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.837** total execution time for 2 files **from gallery/validation/internal**:
+**00:00.831** total execution time for 2 files **from gallery/validation/internal**:
 
 .. container::
 
@@ -36,5 +36,5 @@ Computation times
      - 00:00.556
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_internal_phase_function_detector.py` (``phase_function_detector.py``)
-     - 00:00.281
+     - 00:00.275
      - 0.0
