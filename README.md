@@ -19,7 +19,7 @@
 | PyMieSim/single/scatterer/core\_shell.py       |       27 |        2 |        0 |        0 |     92.59% |   119-124 |
 | PyMieSim/single/scatterer/cylinder.py          |       33 |        7 |        0 |        0 |     78.79% |69, 73, 77, 81, 85, 107-116 |
 | PyMieSim/single/scatterer/sphere.py            |       25 |        2 |        0 |        0 |     92.00% |    77, 82 |
-|                                      **TOTAL** | **1147** |  **130** |  **134** |   **17** | **86.49%** |           |
+| **TOTAL**                                      | **1147** |  **130** |  **134** |   **17** | **86.49%** |           |
 
 18 files skipped due to complete coverage.
 
