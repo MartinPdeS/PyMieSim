@@ -33,7 +33,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_HG01_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_HG01.py`
+  :doc:`/gallery/extras/HG01`
 
 .. raw:: html
 
@@ -50,7 +50,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_HG11_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_HG11.py`
+  :doc:`/gallery/extras/HG11`
 
 .. raw:: html
 
@@ -67,7 +67,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_LG11_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_LG11.py`
+  :doc:`/gallery/extras/LG11`
 
 .. raw:: html
 
@@ -84,7 +84,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_LP01_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_LP01.py`
+  :doc:`/gallery/extras/LP01`
 
 .. raw:: html
 
@@ -101,7 +101,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_LP02_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_LP02.py`
+  :doc:`/gallery/extras/LP02`
 
 .. raw:: html
 
@@ -118,7 +118,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_LP11_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_LP11.py`
+  :doc:`/gallery/extras/LP11`
 
 .. raw:: html
 
@@ -135,7 +135,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_Qsca_vs_permittivity_vs_size_parameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_Qsca_vs_permittivity_vs_size_parameter.py`
+  :doc:`/gallery/extras/Qsca_vs_permittivity_vs_size_parameter`
 
 .. raw:: html
 
@@ -152,7 +152,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_array_scattering_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_array_scattering.py`
+  :doc:`/gallery/extras/array_scattering`
 
 .. raw:: html
 
@@ -169,7 +169,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_coupling_heatmap_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_coupling_heatmap.py`
+  :doc:`/gallery/extras/coupling_heatmap`
 
 .. raw:: html
 
@@ -186,7 +186,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_coupling_vs_NA_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py`
+  :doc:`/gallery/extras/coupling_vs_NA`
 
 .. raw:: html
 
@@ -203,7 +203,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_farfields_bulk_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_farfields_bulk.py`
+  :doc:`/gallery/extras/farfields_bulk`
 
 .. raw:: html
 
@@ -220,7 +220,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_integrating_sphere_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_integrating_sphere.py`
+  :doc:`/gallery/extras/integrating_sphere`
 
 .. raw:: html
 
@@ -237,7 +237,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_photodiode_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_photodiode.py`
+  :doc:`/gallery/extras/photodiode`
 
 .. raw:: html
 
@@ -254,7 +254,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_plot_system_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_plot_system.py`
+  :doc:`/gallery/extras/plot_system`
 
 .. raw:: html
 
@@ -271,7 +271,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_properties_cylinder_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_properties_cylinder.py`
+  :doc:`/gallery/extras/properties_cylinder`
 
 .. raw:: html
 
@@ -288,7 +288,7 @@ Contents
   .. image:: /gallery/extras/images/thumb/sphx_glr_properties_sphere_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_extras_properties_sphere.py`
+  :doc:`/gallery/extras/properties_sphere`
 
 .. raw:: html
 

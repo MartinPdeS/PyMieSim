@@ -23,7 +23,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qabs_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py`
+  :doc:`/gallery/experiment/sphere/sphere_Qabs_vs_diameter`
 
 .. raw:: html
 
@@ -40,7 +40,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py`
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_diameter`
 
 .. raw:: html
 
@@ -57,7 +57,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_index_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_index.py`
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_index`
 
 .. raw:: html
 
@@ -74,7 +74,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_wavelength_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_wavelength.py`
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_wavelength`
 
 .. raw:: html
 
@@ -91,7 +91,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_wavelength_std_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_wavelength_std.py`
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_wavelength_std`
 
 .. raw:: html
 
@@ -108,7 +108,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_a1_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_a1_vs_diameter.py`
+  :doc:`/gallery/experiment/sphere/sphere_a1_vs_diameter`
 
 .. raw:: html
 
@@ -125,7 +125,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_b1_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_b1_vs_diameter.py`
+  :doc:`/gallery/experiment/sphere/sphere_b1_vs_diameter`
 
 .. raw:: html
 
@@ -142,7 +142,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_phioffset_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py`
+  :doc:`/gallery/experiment/sphere/sphere_coherent_coupling_vs_phioffset`
 
 .. raw:: html
 
@@ -159,7 +159,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_rotation_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_rotation.py`
+  :doc:`/gallery/experiment/sphere/sphere_coherent_coupling_vs_rotation`
 
 .. raw:: html
 
@@ -176,7 +176,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_sampling_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_sampling.py`
+  :doc:`/gallery/experiment/sphere/sphere_coherent_coupling_vs_sampling`
 
 .. raw:: html
 
@@ -193,7 +193,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_diameter.py`
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_diameter`
 
 .. raw:: html
 
@@ -210,7 +210,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_filter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_filter.py`
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_filter`
 
 .. raw:: html
 
@@ -227,7 +227,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_phioffset_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py`
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_phioffset`
 
 .. raw:: html
 
@@ -244,7 +244,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_sampling_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_sampling.py`
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_sampling`
 
 .. raw:: html
 
@@ -261,7 +261,7 @@ Examples focused on spherical scatterers.
   .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_wavelength_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_wavelength.py`
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_wavelength`
 
 .. raw:: html
 
