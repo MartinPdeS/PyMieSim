@@ -7,6 +7,7 @@ import MPSPlots
 from pydantic.dataclasses import dataclass
 import matplotlib.pyplot as plt
 from TypedUnit import Length
+from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.utils import config_dict
 
@@ -120,7 +121,7 @@ class NearField:
         else:
             raise ValueError("field_type must be 'electric' or 'magnetic'")
 
-    def plot(self, colormap: str = "viridis", figure_size: tuple = (6, 6)) -> None:
+    def plot(self, colormap: str = blue_black_red, figure_size: tuple = (6, 6)) -> None:
         """
         Plot 2D near-field distribution.
 
@@ -137,9 +138,9 @@ class NearField:
             )
 
         for component, ax in zip(self.fields.keys(), axes.flatten()):
-            field_data = numpy.abs(self.fields[component]).astype(float)
+            # field_data = numpy.abs(self.fields[component]).astype(float)
+            field_data = (self.fields[component].real).astype(float)
 
-            print(self.x, self.x.__class__)
             # Plot field
             im = ax.pcolormesh(
                 self.x.magnitude,
