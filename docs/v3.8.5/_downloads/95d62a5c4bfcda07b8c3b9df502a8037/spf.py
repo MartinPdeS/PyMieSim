@@ -21,7 +21,7 @@ source = Gaussian(
 
 scatterer = CoreShell(
     core_diameter=500 * ureg.nanometer,  # 500 nm
-    shell_thickness=100 * ureg.nanometer,  # 100 nm
+    shell_thickness=400 * ureg.nanometer,  # 100 nm
     source=source,
     core_property=1.4 * ureg.RIU,  # Refractive property of the core
     shell_property=1.8 * ureg.RIU,  # Refractive property of the shell

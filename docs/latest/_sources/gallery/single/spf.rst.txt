@@ -45,7 +45,7 @@ Importing the package: PyMieSim
 
     scatterer = CoreShell(
         core_diameter=500 * ureg.nanometer,  # 500 nm
-        shell_thickness=100 * ureg.nanometer,  # 100 nm
+        shell_thickness=400 * ureg.nanometer,  # 100 nm
         source=source,
         core_property=1.4 * ureg.RIU,  # Refractive property of the core
         shell_property=1.8 * ureg.RIU,  # Refractive property of the shell
@@ -70,7 +70,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.350 seconds)
+   **Total running time of the script:** (0 minutes 0.338 seconds)
 
 
 .. _sphx_glr_download_gallery_single_spf.py:

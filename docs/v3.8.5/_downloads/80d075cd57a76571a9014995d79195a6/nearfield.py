@@ -20,12 +20,12 @@ source = Gaussian(
 )
 
 scatterer = Sphere(
-    diameter=1000 * ureg.nanometer,  # 1000 nm
+    diameter=500 * ureg.nanometer,  # 500 nm
     source=source,
     property=1.8 * ureg.RIU,  # Refractive index of the scatterer
     medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
 )
 
-data = scatterer.get_nearfield(sampling=200, field_components=["Ex"])
+data = scatterer.get_nearfield(sampling=200, field_components=["Hz"])
 
 figure = data.plot()
