@@ -15,13 +15,13 @@
 | PyMieSim/single/polarization.py                |       43 |        5 |        8 |        1 |     84.31% |71, 87, 90-93 |
 | PyMieSim/single/representations/base.py        |       38 |        3 |        2 |        1 |     90.00% | 50, 54-55 |
 | PyMieSim/single/representations/near\_field.py |       68 |       52 |       14 |        0 |     19.51% |67-71, 76-85, 90-92, 113-122, 135-167, 190-238 |
-| PyMieSim/single/scatterer/base.py              |      127 |       27 |       12 |        1 |     74.10% |21-25, 502-539, 575, 673 |
+| PyMieSim/single/scatterer/base.py              |       76 |       27 |       12 |        1 |     59.09% |21-25, 417-454, 490, 588 |
 | PyMieSim/single/scatterer/core\_shell.py       |       27 |        2 |        0 |        0 |     92.59% |   119-124 |
 | PyMieSim/single/scatterer/cylinder.py          |       33 |        7 |        0 |        0 |     78.79% |69, 73, 77, 81, 85, 107-116 |
 | PyMieSim/single/scatterer/sphere.py            |       25 |        2 |        0 |        0 |     92.00% |    77, 82 |
-| **TOTAL**                                      | **1147** |  **129** |  **134** |   **17** | **86.57%** |           |
+| **TOTAL**                                      | **1099** |  **129** |  **134** |   **17** | **86.05%** |           |
 
-18 files skipped due to complete coverage.
+19 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
