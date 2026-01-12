@@ -111,7 +111,7 @@ message(STATUS "")
 # set(GLOBAL PYMIESIM_TARGETS "")
 
 # ----------------- collect subdirectories --------------------
-
+add_subdirectory(PyMieSim/cpp/pint)                         # pint
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
 add_subdirectory(PyMieSim/cpp/bessel_subroutine)            # bessel_subroutine
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field

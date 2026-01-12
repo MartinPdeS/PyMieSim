@@ -5,7 +5,7 @@ from typing import Tuple
 import numpy
 from tabulate import tabulate
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import RefractiveIndex, Length, Dimensionless, Area, Angle, ureg
+from TypedUnit import RefractiveIndex, Length, Angle, ureg
 
 from PyMieSim.single import representations
 
@@ -23,91 +23,6 @@ class BaseScatterer:
 
         table = tabulate(property_dict, headers="keys")
         print(table)
-
-    @property
-    def size_parameter(self) -> Dimensionless:
-        """Returns the size parameter of the scatterer."""
-        return self._cpp_size_parameter * ureg.AU
-
-    @property
-    def cross_section(self) -> Dimensionless:
-        """Returns the cross-section of the scatterer."""
-        return (self._cpp_cross_section * ureg.meter**2).to_compact()
-
-    @property
-    def Qsca(self) -> Dimensionless:
-        """Returns the scattering efficiency."""
-        return self._cpp_Qsca * ureg.AU
-
-    @property
-    def Qext(self) -> Dimensionless:
-        """Returns the extinction efficiency."""
-        return self._cpp_Qext * ureg.AU
-
-    @property
-    def Qabs(self) -> Dimensionless:
-        """Returns the absorption efficiency."""
-        return self._cpp_Qabs * ureg.AU
-
-    @property
-    def Qback(self) -> Dimensionless:
-        """Returns the backscattering efficiency."""
-        return self._cpp_Qback * ureg.AU
-
-    @property
-    def Qforward(self) -> Dimensionless:
-        """Returns the forward-scattering efficiency."""
-        return self._cpp_Qforward * ureg.AU
-
-    @property
-    def Qratio(self) -> Dimensionless:
-        """Returns the efficiency ratio of backscattering over total scattering."""
-        return self._cpp_Qratio * ureg.AU
-
-    @property
-    def g(self) -> Dimensionless:
-        """Returns the anisotropy factor."""
-        return self._cpp_g * ureg.AU
-
-    @property
-    def Qpr(self) -> Dimensionless:
-        """Returns the radiation pressure efficiency."""
-        return self._cpp_Qpr * ureg.AU
-
-    @property
-    def Csca(self) -> Area:
-        """Returns the scattering cross-section."""
-        return (self._cpp_Csca * ureg.meter**2).to_compact()
-
-    @property
-    def Cext(self) -> Area:
-        """Returns the extinction cross-section."""
-        return (self._cpp_Cext * ureg.meter**2).to_compact()
-
-    @property
-    def Cabs(self) -> Area:
-        """Returns the absorption cross-section."""
-        return (self._cpp_Cabs * ureg.meter**2).to_compact()
-
-    @property
-    def Cpr(self) -> Area:
-        """Returns the radiation pressure cross-section."""
-        return (self._cpp_Cpr * ureg.meter**2).to_compact()
-
-    @property
-    def Cback(self) -> Area:
-        """Returns the backscattering cross-section."""
-        return (self._cpp_Cback * ureg.meter**2).to_compact()
-
-    @property
-    def Cforward(self) -> Area:
-        """Returns the forward-scattering cross-section."""
-        return (self._cpp_Cforward * ureg.meter**2).to_compact()
-
-    @property
-    def Cratio(self) -> Area:
-        """Returns the ratio of backscattering cross-section over total scattering."""
-        return (self._cpp_Cratio * ureg.meter**2).to_compact()
 
     def get_farfields_array(
         self, phi: Angle, theta: Angle, r: Length

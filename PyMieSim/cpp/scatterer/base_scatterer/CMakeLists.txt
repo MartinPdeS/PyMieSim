@@ -6,7 +6,7 @@ set(NAME "base_scatterer")
 add_library("${NAME}" STATIC "${NAME}.cpp")
 
 
-target_link_libraries("${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX source full_mesh coordinates bessel_subroutine)
+target_link_libraries("${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX source pint full_mesh coordinates bessel_subroutine)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
