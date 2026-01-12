@@ -31,23 +31,23 @@ Importing the package: PyMieSim
 
 .. code-block:: Python
 
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
 
     source = Gaussian(
-        wavelength=1400 * ureg.nanometer,  # 1000 nm
-        polarization=30 * ureg.degree,  # Right circular polarization
-        optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        wavelength=1400 * ureg.nanometer,
+        polarization=30 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
-        diameter=500 * ureg.nanometer,  # 500 nm
+        diameter=500 * ureg.nanometer,
         source=source,
-        property=1.8 * ureg.RIU,  # Refractive index of the scatterer
-        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        property=1.8 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
     )
 
     data = scatterer.get_nearfield(sampling=200, field_components=["Hz"])
@@ -68,7 +68,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.361 seconds)
+   **Total running time of the script:** (0 minutes 0.351 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfield.py:

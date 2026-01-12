@@ -7,7 +7,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 # %%
 # Importing the package: PyMieSim
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian

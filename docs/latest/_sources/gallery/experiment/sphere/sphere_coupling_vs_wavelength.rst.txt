@@ -30,7 +30,7 @@ Importing the package dependencies: numpy, PyMieSim
 .. code-block:: Python
 
     import numpy as np
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.experiment.detector import CoherentMode
     from PyMieSim.experiment.scatterer import Sphere
@@ -88,7 +88,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.270 seconds)
+   **Total running time of the script:** (0 minutes 1.236 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_wavelength.py:

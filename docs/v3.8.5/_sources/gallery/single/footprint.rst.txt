@@ -40,7 +40,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 
     # Import necessary components from PyMieSim
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
     from PyOptik import Material
 
     from PyMieSim.single.scatterer import Sphere
@@ -48,23 +48,23 @@ This example demonstrates how to compute and visualize the footprint of a scatte
     from PyMieSim.single.source import Gaussian
 
     source = Gaussian(
-        wavelength=1 * ureg.micrometer,  # 1000 nm
+        wavelength=1 * ureg.micrometer,
         polarization=0 * ureg.degree,
-        optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
-        diameter=2 * ureg.micrometer,  # 2000 nm
+        diameter=2 * ureg.micrometer,
         source=source,
-        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
-        property=Material.BK7,  # Using BK7 glass property
+        medium_property=1.0 * ureg.RIU,
+        property=Material.BK7,
     )
 
     detector = CoherentMode(
         mode_number="HG02",
         NA=0.3 * ureg.AU,
-        sampling=200 * ureg.AU,  # Number of sampling points
+        sampling=200 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
     )
@@ -76,7 +76,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.152 seconds)
+   **Total running time of the script:** (0 minutes 1.102 seconds)
 
 
 .. _sphx_glr_download_gallery_single_footprint.py:

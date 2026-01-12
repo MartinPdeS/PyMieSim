@@ -506,86 +506,231 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Cabs">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cabs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cabs" title="Link to this definition">#</a></dt>
-<dd><p>Returns the absorption cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cabs</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cabs" title="Link to this definition">#</a></dt>
+<dd><p>Absorption cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{abs}} &amp;= Q_{\text{abs}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The absorption cross-section (Cabs) value, representing the area over which the scatterer absorbs light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Cback">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cback" title="Link to this definition">#</a></dt>
-<dd><p>Returns the backscattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cback</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cback" title="Link to this definition">#</a></dt>
+<dd><p>Backscattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{back}} &amp;= Q_{\text{back}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The backscattering cross-section (Cback) value, representing the total scattering area for backward-scattered light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Cext">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cext</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cext" title="Link to this definition">#</a></dt>
-<dd><p>Returns the extinction cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cext</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cext" title="Link to this definition">#</a></dt>
+<dd><p>Extinction cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{ext}} &amp;= Q_{\text{ext}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extinction cross-section (Cext) value, representing the total extinction, including scattering and absorption.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Cforward">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cforward</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cforward" title="Link to this definition">#</a></dt>
-<dd><p>Returns the forward-scattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cforward</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cforward" title="Link to this definition">#</a></dt>
+<dd><p>Forward-scattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{forward}} &amp;= Q_{\text{forward}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forward-scattering cross-section (Cforward) value, representing the total scattering area for forward-scattered light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Cpr">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cpr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cpr" title="Link to this definition">#</a></dt>
-<dd><p>Returns the radiation pressure cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cpr</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cpr" title="Link to this definition">#</a></dt>
+<dd><p>Radiation pressure cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{pr}} &amp;= Q_{\text{pr}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radiation pressure cross-section (Cpr) value, associated with the cross-sectional area for radiation pressure exerted on the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Cratio">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cratio" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ratio of backscattering cross-section over total scattering.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cratio</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Cratio" title="Link to this definition">#</a></dt>
+<dd><p>The ratio of forward to backward scattering cross-section (Cforward/Cback) of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{ratio}} &amp;= \frac{C_{\text{forward}}}{C_{\text{back}}}\]</div>
+<p>where Cforward is the forward scattering cross-section and Cback is the backward scattering cross-section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of forward to backward scattering cross-section (Cratio), which gives an indication of scattering asymmetry.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Csca">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Csca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Csca" title="Link to this definition">#</a></dt>
-<dd><p>Returns the scattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Csca</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Csca" title="Link to this definition">#</a></dt>
+<dd><p>Scattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{sca}} &amp;= Q_{\text{sca}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scattering cross-section (Csca) value, which represents the total scattering area of the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qabs">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qabs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qabs" title="Link to this definition">#</a></dt>
-<dd><p>Returns the absorption efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qabs</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qabs" title="Link to this definition">#</a></dt>
+<dd><p>Absorption efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{abs}} &amp;= Q_{\text{ext}} - Q_{\text{sca}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The absorption efficiency (Qabs) value, which characterizes the absorption of incident light by the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qback">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qback" title="Link to this definition">#</a></dt>
-<dd><p>Returns the backscattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qback</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qback" title="Link to this definition">#</a></dt>
+<dd><p>Backscattering efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{back}} &amp;= \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The backscattering efficiency (Qback) value, which characterizes the amount of light scattered in the backward direction.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qext">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qext</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qext" title="Link to this definition">#</a></dt>
-<dd><p>Returns the extinction efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qext</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qext" title="Link to this definition">#</a></dt>
+<dd><p>Extinction efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{ext}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extinction efficiency (Qext) value, representing the combined effect of scattering and absorption.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qforward">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qforward</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qforward" title="Link to this definition">#</a></dt>
-<dd><p>Returns the forward-scattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qforward</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qforward" title="Link to this definition">#</a></dt>
+<dd><p>Forward-scattering efficiency of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forward-scattering efficiency (Qforward) value, which characterizes the amount of light scattered in the forward direction.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qpr">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qpr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qpr" title="Link to this definition">#</a></dt>
-<dd><p>Returns the radiation pressure efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qpr</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qpr" title="Link to this definition">#</a></dt>
+<dd><p>Radiation pressure efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{pr}} &amp;= Q_{\text{ext}} - g \cdot Q_{\text{sca}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radiation pressure efficiency (Qpr) value, associated with the pressure exerted by the scattered light on the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qratio">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qratio" title="Link to this definition">#</a></dt>
-<dd><p>Returns the efficiency ratio of backscattering over total scattering.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qratio</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qratio" title="Link to this definition">#</a></dt>
+<dd><p>The ratio of forward to backward scattering efficiency (Qforward/Qback) of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{ratio}} &amp;= \frac{Q_{\text{back}}}{Q_{\text{sca}}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of forward to backward scattering efficiency (Qratio), giving insight into the asymmetry of scattering.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.Qsca">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qsca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qsca" title="Link to this definition">#</a></dt>
-<dd><p>Returns the scattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qsca</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.Qsca" title="Link to this definition">#</a></dt>
+<dd><p>Scattering efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{sca}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scattering efficiency (Qsca) value, which characterizes the effectiveness of the scatterer in scattering incident light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -685,8 +830,16 @@ and the Python NearField representation class.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.cross_section">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cross_section" title="Link to this definition">#</a></dt>
-<dd><p>Returns the cross-section of the scatterer.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cross_section" title="Link to this definition">#</a></dt>
+<dd><p>Physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The physical cross-sectional area (area) used in scattering calculations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -718,8 +871,18 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.g">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">g</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.g" title="Link to this definition">#</a></dt>
-<dd><p>Returns the anisotropy factor.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">g</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.g" title="Link to this definition">#</a></dt>
+<dd><p>Asymmetry parameter of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The asymmetry parameter (g) value, where g = 0 represents isotropic scattering.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1118,8 +1281,17 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.size_parameter">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_parameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.size_parameter" title="Link to this definition">#</a></dt>
-<dd><p>Returns the size parameter of the scatterer.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_parameter</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.size_parameter" title="Link to this definition">#</a></dt>
+<dd><p>Size parameter of the scatterer.</p>
+<p>The size parameter is defined as the ratio of the scatterer’s physical cross-section to the wavelength of incident light, scaled by the refractive index of the medium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size parameter (size_parameter), typically the ratio of the scatterer’s diameter to the wavelength of incident light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1152,86 +1324,231 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Cabs">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cabs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cabs" title="Link to this definition">#</a></dt>
-<dd><p>Returns the absorption cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cabs</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cabs" title="Link to this definition">#</a></dt>
+<dd><p>Absorption cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{abs}} &amp;= Q_{\text{abs}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The absorption cross-section (Cabs) value, representing the area over which the scatterer absorbs light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Cback">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cback" title="Link to this definition">#</a></dt>
-<dd><p>Returns the backscattering cross-section.</p>
+<dd><p>Backscattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{back}} &amp;= Q_{\text{back}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The backscattering cross-section (Cback) value, representing the total scattering area for backward-scattered light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Cext">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cext</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cext" title="Link to this definition">#</a></dt>
-<dd><p>Returns the extinction cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cext</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cext" title="Link to this definition">#</a></dt>
+<dd><p>Extinction cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{ext}} &amp;= Q_{\text{ext}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extinction cross-section (Cext) value, representing the total extinction, including scattering and absorption.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Cforward">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cforward</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cforward" title="Link to this definition">#</a></dt>
-<dd><p>Returns the forward-scattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cforward</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cforward" title="Link to this definition">#</a></dt>
+<dd><p>Forward-scattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{forward}} &amp;= Q_{\text{forward}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forward-scattering cross-section (Cforward) value, representing the total scattering area for forward-scattered light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Cpr">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cpr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cpr" title="Link to this definition">#</a></dt>
-<dd><p>Returns the radiation pressure cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cpr</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cpr" title="Link to this definition">#</a></dt>
+<dd><p>Radiation pressure cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{pr}} &amp;= Q_{\text{pr}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radiation pressure cross-section (Cpr) value, associated with the cross-sectional area for radiation pressure exerted on the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Cratio">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Cratio" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ratio of backscattering cross-section over total scattering.</p>
+<dd><p>The ratio of forward to backward scattering cross-section (Cforward/Cback) of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{ratio}} &amp;= \frac{C_{\text{forward}}}{C_{\text{back}}}\]</div>
+<p>where Cforward is the forward scattering cross-section and Cback is the backward scattering cross-section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of forward to backward scattering cross-section (Cratio), which gives an indication of scattering asymmetry.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Csca">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Csca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Csca" title="Link to this definition">#</a></dt>
-<dd><p>Returns the scattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Csca</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Csca" title="Link to this definition">#</a></dt>
+<dd><p>Scattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{sca}} &amp;= Q_{\text{sca}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scattering cross-section (Csca) value, which represents the total scattering area of the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qabs">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qabs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qabs" title="Link to this definition">#</a></dt>
-<dd><p>Returns the absorption efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qabs</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qabs" title="Link to this definition">#</a></dt>
+<dd><p>Absorption efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{abs}} &amp;= Q_{\text{ext}} - Q_{\text{sca}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The absorption efficiency (Qabs) value, which characterizes the absorption of incident light by the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qback">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qback" title="Link to this definition">#</a></dt>
-<dd><p>Returns the backscattering efficiency.</p>
+<dd><p>Backscattering efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{back}} &amp;= \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The backscattering efficiency (Qback) value, which characterizes the amount of light scattered in the backward direction.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qext">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qext</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qext" title="Link to this definition">#</a></dt>
-<dd><p>Returns the extinction efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qext</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qext" title="Link to this definition">#</a></dt>
+<dd><p>Extinction efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{ext}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extinction efficiency (Qext) value, representing the combined effect of scattering and absorption.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qforward">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qforward</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qforward" title="Link to this definition">#</a></dt>
-<dd><p>Returns the forward-scattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qforward</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qforward" title="Link to this definition">#</a></dt>
+<dd><p>Forward-scattering efficiency of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forward-scattering efficiency (Qforward) value, which characterizes the amount of light scattered in the forward direction.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qpr">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qpr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qpr" title="Link to this definition">#</a></dt>
-<dd><p>Returns the radiation pressure efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qpr</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qpr" title="Link to this definition">#</a></dt>
+<dd><p>Radiation pressure efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{pr}} &amp;= Q_{\text{ext}} - g \cdot Q_{\text{sca}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radiation pressure efficiency (Qpr) value, associated with the pressure exerted by the scattered light on the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qratio">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qratio" title="Link to this definition">#</a></dt>
-<dd><p>Returns the efficiency ratio of backscattering over total scattering.</p>
+<dd><p>The ratio of forward to backward scattering efficiency (Qforward/Qback) of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{ratio}} &amp;= \frac{Q_{\text{back}}}{Q_{\text{sca}}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of forward to backward scattering efficiency (Qratio), giving insight into the asymmetry of scattering.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.Qsca">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qsca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qsca" title="Link to this definition">#</a></dt>
-<dd><p>Returns the scattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qsca</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.Qsca" title="Link to this definition">#</a></dt>
+<dd><p>Scattering efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{sca}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scattering efficiency (Qsca) value, which characterizes the effectiveness of the scatterer in scattering incident light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -1349,8 +1666,16 @@ and the Python NearField representation class.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.cross_section">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.cross_section" title="Link to this definition">#</a></dt>
-<dd><p>Returns the cross-section of the scatterer.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.cross_section" title="Link to this definition">#</a></dt>
+<dd><p>Physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The physical cross-sectional area (area) used in scattering calculations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1360,8 +1685,18 @@ and the Python NearField representation class.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.g">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">g</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.g" title="Link to this definition">#</a></dt>
-<dd><p>Returns the anisotropy factor.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">g</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.g" title="Link to this definition">#</a></dt>
+<dd><p>Asymmetry parameter of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The asymmetry parameter (g) value, where g = 0 represents isotropic scattering.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1760,8 +2095,17 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.size_parameter">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_parameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.size_parameter" title="Link to this definition">#</a></dt>
-<dd><p>Returns the size parameter of the scatterer.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_parameter</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.size_parameter" title="Link to this definition">#</a></dt>
+<dd><p>Size parameter of the scatterer.</p>
+<p>The size parameter is defined as the ratio of the scatterer’s physical cross-section to the wavelength of incident light, scaled by the refractive index of the medium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size parameter (size_parameter), typically the ratio of the scatterer’s diameter to the wavelength of incident light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1790,86 +2134,231 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Cabs">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cabs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cabs" title="Link to this definition">#</a></dt>
-<dd><p>Returns the absorption cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cabs</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cabs" title="Link to this definition">#</a></dt>
+<dd><p>Absorption cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{abs}} &amp;= Q_{\text{abs}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The absorption cross-section (Cabs) value, representing the area over which the scatterer absorbs light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Cback">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cback" title="Link to this definition">#</a></dt>
-<dd><p>Returns the backscattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cback</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cback" title="Link to this definition">#</a></dt>
+<dd><p>Backscattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{back}} &amp;= Q_{\text{back}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The backscattering cross-section (Cback) value, representing the total scattering area for backward-scattered light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Cext">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cext</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cext" title="Link to this definition">#</a></dt>
-<dd><p>Returns the extinction cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cext</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cext" title="Link to this definition">#</a></dt>
+<dd><p>Extinction cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{ext}} &amp;= Q_{\text{ext}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extinction cross-section (Cext) value, representing the total extinction, including scattering and absorption.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Cforward">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cforward</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cforward" title="Link to this definition">#</a></dt>
-<dd><p>Returns the forward-scattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cforward</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cforward" title="Link to this definition">#</a></dt>
+<dd><p>Forward-scattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{forward}} &amp;= Q_{\text{forward}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forward-scattering cross-section (Cforward) value, representing the total scattering area for forward-scattered light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Cpr">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cpr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cpr" title="Link to this definition">#</a></dt>
-<dd><p>Returns the radiation pressure cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cpr</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cpr" title="Link to this definition">#</a></dt>
+<dd><p>Radiation pressure cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{pr}} &amp;= Q_{\text{pr}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radiation pressure cross-section (Cpr) value, associated with the cross-sectional area for radiation pressure exerted on the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Cratio">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cratio" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ratio of backscattering cross-section over total scattering.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cratio</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Cratio" title="Link to this definition">#</a></dt>
+<dd><p>The ratio of forward to backward scattering cross-section (Cforward/Cback) of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{ratio}} &amp;= \frac{C_{\text{forward}}}{C_{\text{back}}}\]</div>
+<p>where Cforward is the forward scattering cross-section and Cback is the backward scattering cross-section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of forward to backward scattering cross-section (Cratio), which gives an indication of scattering asymmetry.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Csca">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Csca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Area</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Csca" title="Link to this definition">#</a></dt>
-<dd><p>Returns the scattering cross-section.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Csca</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Csca" title="Link to this definition">#</a></dt>
+<dd><p>Scattering cross-section of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[C_{\text{sca}} &amp;= Q_{\text{sca}} \cdot \text{area}\]</div>
+<p>where area is the physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scattering cross-section (Csca) value, which represents the total scattering area of the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qabs">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qabs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qabs" title="Link to this definition">#</a></dt>
-<dd><p>Returns the absorption efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qabs</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qabs" title="Link to this definition">#</a></dt>
+<dd><p>Absorption efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{abs}} &amp;= Q_{\text{ext}} - Q_{\text{sca}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The absorption efficiency (Qabs) value, which characterizes the absorption of incident light by the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qback">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qback</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qback" title="Link to this definition">#</a></dt>
-<dd><p>Returns the backscattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qback</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qback" title="Link to this definition">#</a></dt>
+<dd><p>Backscattering efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{back}} &amp;= \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The backscattering efficiency (Qback) value, which characterizes the amount of light scattered in the backward direction.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qext">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qext</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qext" title="Link to this definition">#</a></dt>
-<dd><p>Returns the extinction efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qext</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qext" title="Link to this definition">#</a></dt>
+<dd><p>Extinction efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{ext}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The extinction efficiency (Qext) value, representing the combined effect of scattering and absorption.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qforward">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qforward</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qforward" title="Link to this definition">#</a></dt>
-<dd><p>Returns the forward-scattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qforward</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qforward" title="Link to this definition">#</a></dt>
+<dd><p>Forward-scattering efficiency of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forward-scattering efficiency (Qforward) value, which characterizes the amount of light scattered in the forward direction.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qpr">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qpr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qpr" title="Link to this definition">#</a></dt>
-<dd><p>Returns the radiation pressure efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qpr</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qpr" title="Link to this definition">#</a></dt>
+<dd><p>Radiation pressure efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{pr}} &amp;= Q_{\text{ext}} - g \cdot Q_{\text{sca}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radiation pressure efficiency (Qpr) value, associated with the pressure exerted by the scattered light on the scatterer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qratio">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qratio" title="Link to this definition">#</a></dt>
-<dd><p>Returns the efficiency ratio of backscattering over total scattering.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qratio</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qratio" title="Link to this definition">#</a></dt>
+<dd><p>The ratio of forward to backward scattering efficiency (Qforward/Qback) of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{ratio}} &amp;= \frac{Q_{\text{back}}}{Q_{\text{sca}}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ratio of forward to backward scattering efficiency (Qratio), giving insight into the asymmetry of scattering.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.Qsca">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qsca</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qsca" title="Link to this definition">#</a></dt>
-<dd><p>Returns the scattering efficiency.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Qsca</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.Qsca" title="Link to this definition">#</a></dt>
+<dd><p>Scattering efficiency of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[Q_{\text{sca}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2)\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scattering efficiency (Qsca) value, which characterizes the effectiveness of the scatterer in scattering incident light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -2014,8 +2503,16 @@ and the Python NearField representation class.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.cross_section">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.cross_section" title="Link to this definition">#</a></dt>
-<dd><p>Returns the cross-section of the scatterer.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.cross_section" title="Link to this definition">#</a></dt>
+<dd><p>Physical cross-sectional area of the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The physical cross-sectional area (area) used in scattering calculations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -2034,8 +2531,18 @@ and the Python NearField representation class.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.g">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">g</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.g" title="Link to this definition">#</a></dt>
-<dd><p>Returns the anisotropy factor.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">g</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.g" title="Link to this definition">#</a></dt>
+<dd><p>Asymmetry parameter of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The asymmetry parameter (g) value, where g = 0 represents isotropic scattering.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2439,8 +2946,17 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.size_parameter">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_parameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.size_parameter" title="Link to this definition">#</a></dt>
-<dd><p>Returns the size parameter of the scatterer.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size_parameter</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.size_parameter" title="Link to this definition">#</a></dt>
+<dd><p>Size parameter of the scatterer.</p>
+<p>The size parameter is defined as the ratio of the scatterer’s physical cross-section to the wavelength of incident light, scaled by the refractive index of the medium.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The size parameter (size_parameter), typically the ratio of the scatterer’s diameter to the wavelength of incident light.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">

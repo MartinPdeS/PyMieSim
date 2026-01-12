@@ -9,7 +9,7 @@ of a sphere as a function of the permittivity and the size parameter.
 """
 
 import numpy
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.detector import Photodiode
@@ -29,11 +29,9 @@ source = Gaussian(
     NA=0.2 * ureg.AU,
 )
 
-
 scatterer = Sphere(
     diameter=diameter, property=index, medium_property=1 * ureg.RIU, source=source
 )
-
 
 detector = Photodiode(
     polarization_filter=0 * ureg.degree,

@@ -31,22 +31,22 @@ Importing the package: PyMieSim
 
 .. code-block:: Python
 
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
 
     source = Gaussian(
-        wavelength=450 * ureg.nanometer,  # 450 nm
-        polarization=0 * ureg.degree,  # Linear polarization angle in radians
-        optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        wavelength=450 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
-        diameter=6 * ureg.nanometer,  # 6 nm
+        diameter=6 * ureg.nanometer,
         source=source,
-        medium_property=1.0 * ureg.RIU,  # Refractive property of the surrounding medium
-        property=1.4 * ureg.RIU,  # Refractive property of the scatterer
+        medium_property=1.0 * ureg.RIU,
+        property=1.4 * ureg.RIU,
     )
 
     data = scatterer.get_s1s2(sampling=200)  # Specify the number of sampling points

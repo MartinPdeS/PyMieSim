@@ -554,22 +554,22 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-single-s1s2-py"></span><h1>S1 S2 Function Computation<a class="headerlink" href="#s1-s2-function-computation" title="Link to this heading">#</a></h1>
 <p>This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.</p>
 <p>Importing the package: PyMieSim</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 450 nm</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Linear polarization angle in radians</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>  <span class="c1"># Arbitrary units</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 6 nm</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive property of the surrounding medium</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive property of the scatterer</span>
+    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_s1s2</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>  <span class="c1"># Specify the number of sampling points</span>

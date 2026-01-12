@@ -554,24 +554,20 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-extras-properties-cylinder-py"></span><h1>Print properties<a class="headerlink" href="#print-properties" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the computation of scattering properties using PyMieSim.</p>
 <p>Importing the package: PyMieSim</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cylinder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span>
-</pre></div>
-</div>
-<p>Defining the source</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">750</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 750 nm</span>
     <span class="n">polarization</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Right circular polarization</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>  <span class="c1"># Power in watt</span>
     <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-<p>Defining the scatterer</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">(</span>
+
+<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 300 nm</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
     <span class="nb">property</span><span class="o">=</span><span class="p">(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
@@ -595,7 +591,7 @@ Cext            75295.1915888301 micrometer ** 2
 Cabs            68339.2925037198 micrometer ** 2
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.056 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.057 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-properties-cylinder-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/90833a58d96accdef394f160b9bc4d30/properties_cylinder.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">properties_cylinder.ipynb</span></code></a></p>

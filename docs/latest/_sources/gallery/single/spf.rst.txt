@@ -31,28 +31,28 @@ Importing the package: PyMieSim
 
 .. code-block:: Python
 
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.single.scatterer import CoreShell
     from PyMieSim.single.source import Gaussian
 
     source = Gaussian(
-        wavelength=1000 * ureg.nanometer,  # 1000 nm
-        polarization=0 * ureg.degree,  # Linear polarization angle in radians
-        optical_power=1 * ureg.watt,  # Arbitrary units
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        wavelength=1000 * ureg.nanometer,
+        polarization=0 * ureg.degree,
+        optical_power=1 * ureg.watt,
+        NA=0.3 * ureg.AU,
     )
 
     scatterer = CoreShell(
-        core_diameter=500 * ureg.nanometer,  # 500 nm
-        shell_thickness=400 * ureg.nanometer,  # 100 nm
+        core_diameter=500 * ureg.nanometer,
+        shell_thickness=400 * ureg.nanometer,
         source=source,
-        core_property=1.4 * ureg.RIU,  # Refractive property of the core
-        shell_property=1.8 * ureg.RIU,  # Refractive property of the shell
-        medium_property=1.0 * ureg.RIU,  # Refractive property of the surrounding medium
+        core_property=1.4 * ureg.RIU,
+        shell_property=1.8 * ureg.RIU,
+        medium_property=1.0 * ureg.RIU,
     )
 
-    data = scatterer.get_spf(sampling=300)  # Specify the number of sampling points
+    data = scatterer.get_spf(sampling=300)
 
     figure = data.plot()
 
@@ -70,7 +70,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.338 seconds)
+   **Total running time of the script:** (0 minutes 0.342 seconds)
 
 
 .. _sphx_glr_download_gallery_single_spf.py:

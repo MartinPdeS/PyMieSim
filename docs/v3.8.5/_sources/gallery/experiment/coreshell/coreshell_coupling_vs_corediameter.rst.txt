@@ -32,7 +32,7 @@ Importing the package dependencies: numpy, PyMieSim
 .. code-block:: Python
 
     import numpy
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.experiment.detector import Photodiode
     from PyMieSim.experiment.scatterer import CoreShell
@@ -91,7 +91,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.302 seconds)
+   **Total running time of the script:** (0 minutes 0.304 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py:

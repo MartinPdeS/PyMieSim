@@ -557,7 +557,7 @@ defined, it is possible to use PyMieSim to find the scattering efficiency of the
 scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.</p>
 <img src="../../_images/sphx_glr_coupling_heatmap_001.png" srcset="../../_images/sphx_glr_coupling_heatmap_001.png" alt="Coupling power [Watt]" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
@@ -577,11 +577,9 @@ of a sphere as a function of the permittivity and the size parameter.</p>
     <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
-
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span> <span class="nb">property</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
 <span class="p">)</span>
-
 
 <span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
     <span class="n">polarization_filter</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
@@ -608,7 +606,7 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.942 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.877 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-coupling-heatmap-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/983ddb3ebce117868a88c719e85b85e5/coupling_heatmap.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coupling_heatmap.ipynb</span></code></a></p>

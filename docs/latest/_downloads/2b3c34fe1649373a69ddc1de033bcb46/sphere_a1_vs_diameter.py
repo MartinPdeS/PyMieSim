@@ -7,7 +7,7 @@ Sphere: A1 scattering coefficient
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian

@@ -7,7 +7,7 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 """
 
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
 from PyMieSim.single.scatterer import Sphere
@@ -21,8 +21,6 @@ source = PlaneWave(
     amplitude=1 * ureg.volt / ureg.meter,
 )
 
-# %%
-# Define the scatterer
 scatterer = Sphere(
     diameter=200 * ureg.nanometer,
     property=1.5 * ureg.RIU,
@@ -30,12 +28,9 @@ scatterer = Sphere(
     source=source,
 )
 
-# Define arbitrary angle arrays
 phi = np.linspace(0, np.pi, 150) * ureg.radian
 theta = np.linspace(0, np.pi / 2, 150) * ureg.radian
 
-# %%
-# Far-field complex fields
 E_para, E_perp = scatterer.get_farfield_array(phi, theta)
 
 plt.figure(figsize=(10, 5))

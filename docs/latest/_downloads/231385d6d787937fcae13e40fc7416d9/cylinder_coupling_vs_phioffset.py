@@ -8,7 +8,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder

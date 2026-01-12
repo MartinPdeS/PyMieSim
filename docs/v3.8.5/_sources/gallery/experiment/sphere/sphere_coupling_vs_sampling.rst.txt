@@ -30,7 +30,7 @@ Importing the package dependencies: numpy, PyMieSim
 .. code-block:: Python
 
     import numpy
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.experiment.detector import Photodiode
     from PyMieSim.experiment.scatterer import Sphere
@@ -84,7 +84,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.530 seconds)
+   **Total running time of the script:** (0 minutes 0.537 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_sampling.py:

@@ -7,7 +7,7 @@ Sphere: Coherent mode field rotation
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere

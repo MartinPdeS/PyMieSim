@@ -6,14 +6,12 @@ Sphere: Coupling vs numerical aperture
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 from PyOptik import Material
 
 from PyMieSim import experiment
 from PyMieSim import single
 
-# %%
-# Defining the source to be employed.
 source = experiment.source.Gaussian(
     wavelength=500 * ureg.nanometer,
     polarization=0 * ureg.degree,
@@ -21,8 +19,6 @@ source = experiment.source.Gaussian(
     NA=0.2 * ureg.AU,
 )
 
-# %%
-# Defining the ranging parameters for the scatterer distribution
 scatterer = experiment.scatterer.Sphere(
     diameter=500e-9 * ureg.meter,
     property=Material.BK7,
@@ -30,8 +26,6 @@ scatterer = experiment.scatterer.Sphere(
     source=source,
 )
 
-# %%
-# Defining the detector to be employed.
 detector = experiment.detector.Photodiode(
     NA=np.linspace(0.1, 1, 150) * ureg.AU,
     phi_offset=0 * ureg.degree,
@@ -39,16 +33,10 @@ detector = experiment.detector.Photodiode(
     sampling=2000 * ureg.AU,
 )
 
-# %%
-# Defining the experiment setup
 setup = experiment.Setup(scatterer=scatterer, source=source, detector=detector)
 
-# %%
-# Measuring the properties
 dataframe = setup.get("coupling", drop_unique_level=True)
 
-# %%
-# Plotting the results
 dataframe.plot(x="detector:NA")
 
 single_source = single.Gaussian(

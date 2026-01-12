@@ -7,7 +7,7 @@ Sphere: Goniometer
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere

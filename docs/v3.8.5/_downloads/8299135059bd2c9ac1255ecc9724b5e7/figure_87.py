@@ -8,7 +8,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.7
 # Importing the dependencies: numpy, matplotlib, PyMieSim
 import numpy
 import matplotlib.pyplot as plt
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.directories import validation_data_path
 

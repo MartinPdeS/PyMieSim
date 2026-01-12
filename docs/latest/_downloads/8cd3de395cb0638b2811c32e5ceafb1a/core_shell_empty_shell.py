@@ -7,7 +7,7 @@ Effect of Shell dimensions in equivalent medium
 # Standard library imports
 import numpy as np
 import matplotlib.pyplot as plt
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.experiment.scatterer import CoreShell

@@ -6,7 +6,7 @@ Far-field scattering simulation for bulk scatterers
 
 # %%
 # Importing the package dependencies: numpy, PyMieSim
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 import numpy
 import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import Sphere

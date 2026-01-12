@@ -7,14 +7,12 @@ This example demonstrates the computation of scattering properties using PyMieSi
 
 # %%
 # Importing the package: PyMieSim
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyOptik import Material
 
-# %%
-# Defining the source
 source = Gaussian(
     wavelength=750 * ureg.nanometer,  # 750 nm
     polarization=30 * ureg.degree,  # Right circular polarization
@@ -22,8 +20,6 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-# %%
-# Defining the scatterer
 scatterer = Cylinder(
     diameter=300 * ureg.nanometer,  # 300 nm
     source=source,

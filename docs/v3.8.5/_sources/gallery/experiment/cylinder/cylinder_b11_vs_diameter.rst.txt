@@ -32,7 +32,7 @@ Importing the package dependencies: numpy, PyMieSim
 .. code-block:: Python
 
     import numpy as np
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.experiment.scatterer import Cylinder
     from PyMieSim.experiment.source import Gaussian
@@ -79,7 +79,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.777 seconds)
+   **Total running time of the script:** (0 minutes 0.704 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_b11_vs_diameter.py:

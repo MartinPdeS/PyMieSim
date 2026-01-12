@@ -7,13 +7,11 @@ This example demonstrates the initialization and visualization of an LP01 Mode d
 
 # %%
 # Importing the package: PyMieSim
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single import plot_system
 
-# %%
-# Initializing the detector
 detector = CoherentMode(
     mode_number="LP01",  # Specifying LP01 mode
     sampling=500 * ureg.AU,  # Number of sampling points
@@ -23,6 +21,4 @@ detector = CoherentMode(
     medium_refractive_index=1.3 * ureg.RIU,
 )
 
-# %%
-# Plotting the detector
 plot_system(detector)

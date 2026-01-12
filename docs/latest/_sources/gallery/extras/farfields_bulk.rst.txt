@@ -29,7 +29,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. code-block:: Python
 
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
     import numpy
     import matplotlib.pyplot as plt
     from PyMieSim.experiment.scatterer import Sphere
@@ -192,7 +192,7 @@ Measuring the properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.494 seconds)
+   **Total running time of the script:** (0 minutes 0.492 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_farfields_bulk.py:

@@ -27,29 +27,14 @@ This example demonstrates the initialization and visualization of an LP11 Mode d
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-15
+.. GENERATED FROM PYTHON SOURCE LINES 10-24
 
 .. code-block:: Python
 
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
 
     from PyMieSim.single.detector import CoherentMode
     from PyMieSim.single import plot_system
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 16-17
-
-Initializing the detector
-
-.. GENERATED FROM PYTHON SOURCE LINES 17-25
-
-.. code-block:: Python
 
     detector = CoherentMode(
         mode_number="LP11",  # Specifying LP11 mode
@@ -58,21 +43,6 @@ Initializing the detector
         gamma_offset=0 * ureg.degree,  # Gamma offset
         phi_offset=30 * ureg.degree,  # Phi offset in degrees
     )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
-
-Plotting the detector
-
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
-
-.. code-block:: Python
 
     plot_system(detector)
 
@@ -90,7 +60,7 @@ Plotting the detector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.282 seconds)
+   **Total running time of the script:** (0 minutes 0.278 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_LP11.py:

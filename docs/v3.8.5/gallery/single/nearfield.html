@@ -554,23 +554,23 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-single-nearfield-py"></span><h1>Near-Fields Computation and Visualization<a class="headerlink" href="#near-fields-computation-and-visualization" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.</p>
 <p>Importing the package: PyMieSim</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">1400</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 1000 nm</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Right circular polarization</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>  <span class="c1"># Arbitrary units</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">1400</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 500 nm</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive index of the scatterer</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive index of the surrounding medium</span>
+    <span class="nb">property</span><span class="o">=</span><span class="mf">1.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_nearfield</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">field_components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Hz&quot;</span><span class="p">])</span>
@@ -578,7 +578,7 @@ to download the full example code.</p>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_nearfield_001.png" srcset="../../_images/sphx_glr_nearfield_001.png" alt="Near-field Hz distribution" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.361 seconds)</p>
+<img src="../../_images/sphx_glr_nearfield_001.png" srcset="../../_images/sphx_glr_nearfield_001.png" alt="Near-field Hz distribution" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.351 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-nearfield-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/24bfd97b4ff8b3541b5c58028be16b8d/nearfield.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nearfield.ipynb</span></code></a></p>

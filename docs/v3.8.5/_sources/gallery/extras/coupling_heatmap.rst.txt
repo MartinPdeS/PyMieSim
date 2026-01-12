@@ -26,7 +26,7 @@ defined, it is possible to use PyMieSim to find the scattering efficiency of the
 scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-61
+.. GENERATED FROM PYTHON SOURCE LINES 10-59
 
 
 
@@ -43,7 +43,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 
     import numpy
-    from TypedUnit import ureg
+    from PyMieSim.units import ureg
     import matplotlib.pyplot as plt
 
     from PyMieSim.experiment.detector import Photodiode
@@ -63,11 +63,9 @@ of a sphere as a function of the permittivity and the size parameter.
         NA=0.2 * ureg.AU,
     )
 
-
     scatterer = Sphere(
         diameter=diameter, property=index, medium_property=1 * ureg.RIU, source=source
     )
-
 
     detector = Photodiode(
         polarization_filter=0 * ureg.degree,
@@ -96,7 +94,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.942 seconds)
+   **Total running time of the script:** (0 minutes 1.877 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_coupling_heatmap.py:
