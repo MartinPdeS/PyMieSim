@@ -7,21 +7,6 @@
 void register_base_scatterer(pybind11::module_& module) {
 
     pybind11::class_<BaseScatterer>(module, "BASESCATTERER")
-        .def_readonly(
-            "cross_section",
-            [](BaseScatterer& self) {
-                py::object ureg = get_shared_ureg();
-                return (py::float_(self.cross_section) * ureg.attr("meter**2")).attr("to_compact")();
-            },
-            R"pbdoc(
-                Cross-sectional area of the scatterer.
-
-                Returns
-                -------
-                float
-                    The cross-sectional area (cross_section) used in scattering calculations.
-            )pbdoc"
-        )
         .def(
             "_cpp_compute_cn_dn",
             &BaseScatterer::compute_cn_dn,
@@ -397,7 +382,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The ratio of forward to backward scattering cross-section (Cratio), which gives an indication of scattering asymmetry.
             )pbdoc"
         )
-        .def_property_readonly("Cpr",
+        .def_property_readonly(
+            "Cpr",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Cpr()) * ureg.attr("meter**2")).attr("to_compact")();;
@@ -416,7 +402,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The radiation pressure cross-section (Cpr) value, associated with the cross-sectional area for radiation pressure exerted on the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("g",
+        .def_property_readonly(
+            "g",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_g()) * ureg.attr("dimensionless");
@@ -434,7 +421,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The asymmetry parameter (g) value, where g = 0 represents isotropic scattering.
             )pbdoc"
         )
-        .def_property_readonly("cross_section",
+        .def_property_readonly(
+            "cross_section",
             [](const BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.cross_section) * ureg.attr("meter**2")).attr("to_compact")();
@@ -448,7 +436,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The physical cross-sectional area (area) used in scattering calculations.
             )pbdoc"
         )
-        .def_property_readonly("size_parameter",
+        .def_property_readonly(
+            "size_parameter",
             [](const BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.size_parameter) * ureg.attr("dimensionless");
@@ -464,7 +453,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The size parameter (size_parameter), typically the ratio of the scatterer's diameter to the wavelength of incident light.
             )pbdoc"
         )
-        .def("_cpp_compute_nearfields",  // &BaseScatterer::compute_nearfields_py,
+        .def(
+            "_cpp_compute_nearfields",  // &BaseScatterer::compute_nearfields_py,
             [](BaseScatterer& self, const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) {
                 std::vector<complex128> field = self.compute_nearfields(x, y, z, field_type);
 
@@ -512,7 +502,8 @@ void register_base_scatterer(pybind11::module_& module) {
                 implementation of cn/dn coefficients for infinite cylinders.
             )pbdoc"
         )
-        .def("_cpp_compute_nearfields_structured",
+        .def(
+            "_cpp_compute_nearfields_structured",
             [](BaseScatterer& self, const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type)
             {
                 auto [field_values, field_x, field_y, field_z, x_coords, y_coords, z_coords] = self.compute_nearfields_structured(x, y, z, field_type);
