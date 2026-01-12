@@ -7,8 +7,12 @@
 void register_base_scatterer(pybind11::module_& module) {
 
     pybind11::class_<BaseScatterer>(module, "BASESCATTERER")
-        .def_readonly("_cpp_cross_section",
-            &BaseScatterer::cross_section,
+        .def_readonly(
+            "cross_section",
+            [](BaseScatterer& self) {
+                py::object ureg = get_shared_ureg();
+                return (py::float_(self.cross_section) * ureg.attr("meter**2")).attr("to_compact")();
+            },
             R"pbdoc(
                 Cross-sectional area of the scatterer.
 
@@ -18,7 +22,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The cross-sectional area (cross_section) used in scattering calculations.
             )pbdoc"
         )
-        .def("_cpp_compute_cn_dn",
+        .def(
+            "_cpp_compute_cn_dn",
             &BaseScatterer::compute_cn_dn,
             pybind11::arg("max_order") = 0,
             R"pbdoc(
@@ -30,7 +35,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).
             )pbdoc"
         )
-        .def("_cpp_compute_an_bn",
+        .def(
+            "_cpp_compute_an_bn",
             &BaseScatterer::compute_an_bn,
             pybind11::arg("max_order") = 0,
             R"pbdoc(
@@ -41,7 +47,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).
             )pbdoc"
         )
-        .def("_cpp_get_s1s2",
+        .def(
+            "_cpp_get_s1s2",
             [](BaseScatterer& self, const std::vector<double> &phi){
                 auto [S1, S2] = self.compute_s1s2(phi);
                 return std::make_tuple(
@@ -64,7 +71,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     A tuple containing the S1 and S2 scattering parameters, which represent the scattering amplitudes for the incident and scattered waves.
             )pbdoc"
         )
-        .def("_cpp_get_farfields",
+        .def(
+            "_cpp_get_farfields",
             [](BaseScatterer& self, const std::vector<double>& phi, const std::vector<double>& theta, const double& distance) {
                 auto [theta_field, phi_field] = self.compute_unstructured_farfields(phi, theta, distance);
 
@@ -95,7 +103,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     A NumPy array containing the unstructured electromagnetic fields (E and H) around the scatterer.
             )pbdoc"
         )
-        .def("_cpp_get_full_farfields",
+        .def(
+            "_cpp_get_full_farfields",
             [](BaseScatterer& self, const size_t sampling, const double& distance) {
 
                 auto [phi_field_mesh, theta_field_mesh, theta_mesh, phi_mesh] = self.compute_full_structured_farfields(sampling, distance);
@@ -124,7 +133,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     A NumPy array with the full structured electromagnetic fields around the scatterer.
             )pbdoc"
         )
-        .def("_cpp_get_coefficient",
+        .def(
+            "_cpp_get_coefficient",
             &BaseScatterer::get_coefficient,
             pybind11::arg("type"),
             pybind11::arg("order"),
@@ -144,7 +154,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The value of the specified scattering coefficient.
             )pbdoc"
         )
-        .def_property_readonly("Qsca",
+        .def_property_readonly(
+            "Qsca",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qsca()) * ureg.attr("dimensionless");
@@ -161,7 +172,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The scattering efficiency (Qsca) value, which characterizes the effectiveness of the scatterer in scattering incident light.
             )pbdoc"
         )
-        .def_property_readonly("Qext",
+        .def_property_readonly(
+            "Qext",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qext()) * ureg.attr("dimensionless");
@@ -178,7 +190,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The extinction efficiency (Qext) value, representing the combined effect of scattering and absorption.
             )pbdoc"
         )
-        .def_property_readonly("Qabs",
+        .def_property_readonly(
+            "Qabs",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qabs()) * ureg.attr("dimensionless");
@@ -195,7 +208,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The absorption efficiency (Qabs) value, which characterizes the absorption of incident light by the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("Qback",
+        .def_property_readonly(
+            "Qback",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qback()) * ureg.attr("dimensionless");
@@ -212,7 +226,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The backscattering efficiency (Qback) value, which characterizes the amount of light scattered in the backward direction.
             )pbdoc"
         )
-        .def_property_readonly("Qforward",
+        .def_property_readonly(
+            "Qforward",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qforward()) * ureg.attr("dimensionless");
@@ -226,7 +241,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The forward-scattering efficiency (Qforward) value, which characterizes the amount of light scattered in the forward direction.
             )pbdoc"
         )
-        .def_property_readonly("Qratio",
+        .def_property_readonly(
+            "Qratio",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qratio()) * ureg.attr("dimensionless");
@@ -243,7 +259,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The ratio of forward to backward scattering efficiency (Qratio), giving insight into the asymmetry of scattering.
             )pbdoc"
         )
-        .def_property_readonly("Qpr",
+        .def_property_readonly(
+            "Qpr",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_Qpr()) * ureg.attr("dimensionless");
@@ -260,7 +277,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The radiation pressure efficiency (Qpr) value, associated with the pressure exerted by the scattered light on the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("Csca",
+        .def_property_readonly(
+            "Csca",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Csca()) * ureg.attr("meter**2")).attr("to_compact")();
@@ -279,7 +297,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The scattering cross-section (Csca) value, which represents the total scattering area of the scatterer.
             )pbdoc"
         )
-        .def_property_readonly("Cext",
+        .def_property_readonly(
+            "Cext",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Cext()) * ureg.attr("meter**2")).attr("to_compact")();
@@ -298,7 +317,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The extinction cross-section (Cext) value, representing the total extinction, including scattering and absorption.
             )pbdoc"
         )
-        .def_property_readonly("Cabs",
+        .def_property_readonly(
+            "Cabs",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Cabs()) * ureg.attr("meter**2")).attr("to_compact")();
@@ -317,7 +337,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The absorption cross-section (Cabs) value, representing the area over which the scatterer absorbs light.
             )pbdoc"
         )
-        .def_property_readonly("Cback",
+        .def_property_readonly(
+            "Cback",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Cback()) * ureg.attr("meter**2")).attr("to_compact")();
@@ -336,7 +357,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The backscattering cross-section (Cback) value, representing the total scattering area for backward-scattered light.
             )pbdoc"
         )
-        .def_property_readonly("Cforward",
+        .def_property_readonly(
+            "Cforward",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Cforward()) * ureg.attr("meter**2")).attr("to_compact")();
@@ -355,7 +377,8 @@ void register_base_scatterer(pybind11::module_& module) {
                     The forward-scattering cross-section (Cforward) value, representing the total scattering area for forward-scattered light.
             )pbdoc"
         )
-        .def_property_readonly("Cratio",
+        .def_property_readonly(
+            "Cratio",
             [](BaseScatterer& self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.get_Cratio()) * ureg.attr("meter**2")).attr("to_compact")();
