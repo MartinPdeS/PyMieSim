@@ -1,6 +1,6 @@
 import pytest
 import numpy
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import Sphere, CoreShell
 from PyMieSim.experiment.source import Gaussian

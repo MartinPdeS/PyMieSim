@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 from PyMieSim.single.mesh import FibonacciMesh
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 
 @pytest.fixture

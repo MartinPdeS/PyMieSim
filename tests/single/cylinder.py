@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 from PyOptik import Material
 
 from PyMieSim.single.scatterer import Cylinder

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 

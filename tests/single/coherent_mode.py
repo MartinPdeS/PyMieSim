@@ -1,5 +1,5 @@
 import pytest
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 from unittest.mock import patch
 
 from PyMieSim.single.scatterer import Sphere

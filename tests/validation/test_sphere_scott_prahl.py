@@ -3,7 +3,7 @@
 
 import pytest
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian

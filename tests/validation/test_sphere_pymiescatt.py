@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 import pandas as pd
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian

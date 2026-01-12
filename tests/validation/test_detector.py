@@ -3,7 +3,7 @@
 
 import numpy as np
 import pytest
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim import single, experiment
 

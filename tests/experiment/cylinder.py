@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 from PyOptik import Material
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder

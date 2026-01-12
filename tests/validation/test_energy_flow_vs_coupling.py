@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 from PyOptik import Material
 
 from PyMieSim.single.detector import IntegratingSphere

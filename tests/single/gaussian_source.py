@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import Linear

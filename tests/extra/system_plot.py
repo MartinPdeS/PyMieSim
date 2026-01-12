@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import patch
-from TypedUnit import ureg
-
+from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
