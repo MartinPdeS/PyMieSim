@@ -6,7 +6,7 @@ Sphere: Coupling vs polarization filter
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere

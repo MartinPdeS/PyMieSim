@@ -8,7 +8,7 @@ Sphere Particles: 1
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.experiment.scatterer import Sphere

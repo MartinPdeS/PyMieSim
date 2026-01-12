@@ -9,7 +9,7 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian

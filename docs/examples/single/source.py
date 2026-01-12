@@ -7,15 +7,15 @@ This example demonstrates how to visualize the properties of a light source usin
 
 # %%
 # Importing the package: PyMieSim
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.source import Gaussian
 
 source = Gaussian(
-    wavelength=1 * ureg.nanometer,  # 1000 nm
-    polarization=0 * ureg.degree,  # Linear polarization angle in radians
-    optical_power=1 * ureg.watt,  # Arbitrary units
-    NA=0.3 * ureg.AU,  # Numerical Aperture
+    wavelength=1 * ureg.nanometer,
+    polarization=0 * ureg.degree,
+    optical_power=1 * ureg.watt,
+    NA=0.3 * ureg.AU,
 )
 
 source.plot()

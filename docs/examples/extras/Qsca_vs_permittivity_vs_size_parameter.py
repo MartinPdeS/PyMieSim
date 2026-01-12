@@ -11,7 +11,7 @@ of a sphere as a function of the permittivity and the size parameter.
 # %%
 # Importing the package: PyMieSim
 import numpy
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.scatterer import Sphere

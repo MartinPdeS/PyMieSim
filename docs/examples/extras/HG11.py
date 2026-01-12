@@ -7,7 +7,7 @@ This example demonstrates the initialization and visualization of HG31 Mode dete
 
 # %%
 # Importing the package: PyMieSim
-from TypedUnit import ureg
+from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single import plot_system
