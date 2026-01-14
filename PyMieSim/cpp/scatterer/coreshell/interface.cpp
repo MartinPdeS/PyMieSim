@@ -1,18 +1,46 @@
 #include <pybind11/pybind11.h>
 #include "coreshell.h"
 #include "../../utils/numpy_interface.h"
+#include "pint/pint.h"
 
-void register_coreshell(pybind11::module_& module) {
+namespace py = pybind11;
+
+void register_coreshell(py::module_& module) {
 
     // Binding for CoreShell class
-    pybind11::class_<CoreShell, BaseScatterer>(module, "CORESHELL")
-        .def(pybind11::init<double, double, std::complex<double>, std::complex<double>, double, BaseSource&>(),
-            pybind11::arg("core_diameter"),
-            pybind11::arg("shell_thickness"),
-            pybind11::arg("core_refractive_index"),
-            pybind11::arg("shell_refractive_index"),
-            pybind11::arg("medium_refractive_index"),
-            pybind11::arg("source"),
+    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(module, "CORESHELL")
+        .def(
+            "__init__",
+            [](CoreShell &instance, py::object core_diameter,
+               py::object shell_thickness,
+               py::object core_refractive_index,
+               py::object shell_refractive_index,
+               py::object medium_refractive_index,
+               const BaseSource& source) {
+
+                py::object ureg = get_shared_ureg();
+
+                double core_diameter_meter = (core_diameter.attr("to")(ureg.attr("meter"))).attr("magnitude").cast<double>();
+                double shell_thickness_meter = (shell_thickness.attr("to")(ureg.attr("meter"))).attr("magnitude").cast<double>();
+                std::complex<double> core_refractive_index_riu = core_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<std::complex<double>>();
+                std::complex<double> shell_refractive_index_riu = shell_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<std::complex<double>>();
+                double medium_refractive_index_value = (medium_refractive_index.attr("to")(ureg.attr("RIU"))).attr("magnitude").cast<double>();
+
+
+                new (&instance) CoreShell(
+                    core_diameter_meter,
+                    shell_thickness_meter,
+                    core_refractive_index_riu,
+                    shell_refractive_index_riu,
+                    medium_refractive_index_value,
+                    source);
+            },
+            py::arg("core_diameter"),
+            py::arg("shell_thickness"),
+            py::arg("core_refractive_index"),
+            py::arg("shell_refractive_index"),
+            py::arg("medium_refractive_index"),
+            py::arg("source"),
             R"pbdoc(
                 Constructor for CORESHELL, initializing it with physical and optical properties.
 
@@ -32,10 +60,71 @@ void register_coreshell(pybind11::module_& module) {
                     The source of the incident light.
             )pbdoc"
         )
+        .def_readonly(
+            "source",
+            &CoreShell::source,
+            "Source of the core-shell scatterer."
+        )
+        .def_property_readonly(
+            "core_diameter",
+            [&](const CoreShell &self) {
+                py::object ureg = get_shared_ureg();
+                return (py::float_(self.core_diameter) * ureg.attr("meter")).attr("to_compact")();
+            },
+            "Diameter of the core shell."
+        )
+        .def_property_readonly(
+            "shell_thickness",
+            [&](const CoreShell &self) {
+                py::object ureg = get_shared_ureg();
+                return (py::float_(self.shell_thickness) * ureg.attr("meter")).attr("to_compact")();
+            },
+            "Thickness of the shell."
+        )
+        .def_property_readonly(
+            "core_refractive_index",
+            [](const CoreShell &self) {
+                py::object ureg = get_shared_ureg();
+
+                py::object magnitude = py::cast(self.core_refractive_index);
+                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
+            },
+            "Refractive index of the core shell."
+        )
+        .def_property_readonly(
+            "shell_refractive_index",
+            [](const CoreShell &self) {
+                py::object ureg = get_shared_ureg();
+
+                py::object magnitude = py::cast(self.shell_refractive_index);
+                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
+            },
+            "Refractive index of the shell."
+        )
+        .def_property_readonly(
+            "radius",
+            [&](const CoreShell &self) {
+                py::object ureg = get_shared_ureg();
+                double radius = self.core_diameter / 2.0 + self.shell_thickness;
+                return (py::float_(radius) * ureg.attr("meter")).attr("to_compact")();
+            },
+            "Overall radius of the core-shell scatterer."
+        )
+        .def_property_readonly(
+            "volume",
+            [&](const CoreShell &self) {
+                py::object ureg = get_shared_ureg();
+                double core_radius = self.core_diameter / 2.0;
+                double shell_outer_radius = core_radius + self.shell_thickness;
+                double volume = (4.0 / 3.0) * M_PI * (shell_outer_radius * shell_outer_radius * shell_outer_radius - core_radius * core_radius * core_radius);
+                return (py::float_(volume) * ureg.attr("meter")["**3"]).attr("to_compact")();
+            },
+            "Volume of the core-shell scatterer."
+        )
         .def_property("an",
             [](CoreShell& self) {return vector_as_numpy_view(self, self.an);},
             [](CoreShell& self,
-               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.an, arr);
             },
             R"pbdoc(
@@ -84,8 +173,8 @@ void register_coreshell(pybind11::module_& module) {
         .def_property("bn",
             [](CoreShell& self) {return vector_as_numpy_view(self, self.bn);},
             [](CoreShell& self,
-               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
-                vector_assign_from_numpy(self.bn, arr);
+                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                    vector_assign_from_numpy(self.bn, arr);
             },
             R"pbdoc(
                 Returns the 'bn' scattering coefficients.
@@ -134,8 +223,8 @@ void register_coreshell(pybind11::module_& module) {
         .def_property("cn",
             [](CoreShell& self) {return vector_as_numpy_view(self, self.cn);},
             [](CoreShell& self,
-               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
-                vector_assign_from_numpy(self.cn, arr);
+                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                    vector_assign_from_numpy(self.cn, arr);
             },
             R"pbdoc(
                 Returns the 'cn' scattering coefficients.
@@ -149,8 +238,8 @@ void register_coreshell(pybind11::module_& module) {
         .def_property("dn",
             [](CoreShell& self) {return vector_as_numpy_view(self, self.dn);},
             [](CoreShell& self,
-               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
-                vector_assign_from_numpy(self.dn, arr);
+                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+                    vector_assign_from_numpy(self.dn, arr);
             },
             R"pbdoc(
                 Returns the 'dn' scattering coefficients.

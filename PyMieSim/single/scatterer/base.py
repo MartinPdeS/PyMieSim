@@ -585,6 +585,6 @@ class BaseScatterer:
                 property,
             )
 
-        raise ValueError(
+        raise AssertionError(
             f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU)."
         )

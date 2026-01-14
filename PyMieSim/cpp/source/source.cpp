@@ -37,8 +37,9 @@ Gaussian::Gaussian(double _wavelength, std::vector<complex128> _jones_vector, do
 
 double Gaussian::compute_amplitude_from_power(double wavelength, double NA, double optical_power)
 {
-    double omega = 0.61 * wavelength / NA;
-    double area = PI * pow(omega / 2, 2);
-    double intensity = optical_power / area;
-    return sqrt(2.0 * intensity / (C_ * EPSILON0));
+    this->waist = 0.61 * wavelength / NA;
+    this->area = PI * pow(this->waist / 2, 2);
+    this->peak_intensity = optical_power / this->area;
+
+    return sqrt(2.0 * this->peak_intensity / (C_ * EPSILON0));
 }

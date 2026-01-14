@@ -1,17 +1,30 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/complex.h>
 #include "sphere.h"
 #include <utils/numpy_interface.h>
+#include "pint/pint.h"
 
-void register_sphere(pybind11::module_& module) {
+namespace py = pybind11;
 
-    pybind11::class_<Sphere, BaseScatterer>(module, "SPHERE")
+void register_sphere(py::module_& module) {
+
+    py::class_<Sphere, BaseScatterer, std::shared_ptr<Sphere>>(module, "SPHERE")
         .def(
-            pybind11::init<const double, const complex128, const double, const BaseSource&, size_t>(),
-            pybind11::arg("diameter"),
-            pybind11::arg("refractive_index"),
-            pybind11::arg("medium_refractive_index"),
-            pybind11::arg("source"),
-            pybind11::arg("max_order") = 0,
+            "__init__",
+            [](Sphere &instance, py::object diameter, py::object refractive_index, py::object medium_refractive_index, const BaseSource &source, size_t max_order) {
+                py::object ureg = get_shared_ureg();
+
+                double diameter_meter = (diameter.attr("to")(ureg.attr("meter"))).attr("magnitude").cast<double>();
+                complex128 refractive_index_value = refractive_index.cast<complex128>();
+                double medium_refractive_index_value = (medium_refractive_index.attr("to")(ureg.attr("RIU"))).attr("magnitude").cast<double>();
+
+                new (&instance) Sphere(diameter_meter, refractive_index_value, medium_refractive_index_value, source, max_order);
+            },
+            py::arg("diameter"),
+            py::arg("refractive_index"),
+            py::arg("medium_refractive_index"),
+            py::arg("source"),
+            py::arg("max_order") = 0,
             R"pbdoc(
                 Constructor for SPHERE, initializing it with physical and optical properties.
 
@@ -29,9 +42,60 @@ void register_sphere(pybind11::module_& module) {
                     The maximum order of spherical harmonics to use in the scattering calculation. Default is 0.
             )pbdoc"
         )
+        .def_readonly(
+            "source",
+            &Sphere::source,
+            "Source of the sphere."
+        )
+        .def_property_readonly(
+            "diameter",
+            [&](const Sphere &self) {
+                py::object ureg = get_shared_ureg();
+                return (py::float_(self.diameter) * ureg.attr("meter")).attr("to_compact")();
+            },
+            "Diameter of the sphere."
+        )
+        .def_property_readonly(
+            "refractive_index",
+            [](const Sphere &self) {
+                py::object ureg = get_shared_ureg();
+
+                py::object magnitude = py::cast(self.refractive_index);
+
+                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
+            },
+            "Refractive index of the sphere."
+        )
+        .def_property_readonly(
+            "medium_refractive_index",
+            [](const Sphere &self) {
+                py::object ureg = get_shared_ureg();
+                py::object magnitude = py::cast(self.medium_refractive_index);
+
+                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
+            },
+            "Refractive index of the surrounding medium."
+        )
+        .def_property_readonly(
+            "radius",
+            [&](const Sphere &self) {
+                py::object ureg = get_shared_ureg();
+                return (py::float_(self.diameter / 2.0) * ureg.attr("meter")).attr("to_compact")();
+            },
+            "Radius of the sphere."
+        )
+        .def_property_readonly(
+            "volume",
+            [&](const Sphere &self) {
+                py::object ureg = get_shared_ureg();
+                double volume = (4.0 / 3.0) * M_PI * std::pow(self.diameter / 2.0, 3);
+                return (py::float_(volume) * ureg.attr("meter**3")).attr("to_compact")();
+            },
+            "Volume of the sphere."
+        )
         .def_property("an",
             [](Sphere& self) {return vector_as_numpy_view(self, self.an);},
-            [](Sphere& self, pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr)
+            [](Sphere& self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr)
             {
                 vector_assign_from_numpy(self.an, arr);
             },
@@ -56,7 +120,7 @@ void register_sphere(pybind11::module_& module) {
         )
         .def_property("bn",
             [](Sphere& self) {return vector_as_numpy_view(self, self.bn);},
-            [](Sphere& self, pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr)
+            [](Sphere& self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr)
             {
                 vector_assign_from_numpy(self.bn, arr);
             },
@@ -81,7 +145,7 @@ void register_sphere(pybind11::module_& module) {
         .def_property("cn",
             [](Sphere& self) {return vector_as_numpy_view(self, self.cn);},
             [](Sphere& self,
-               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.cn, arr);
             },
             R"pbdoc(
@@ -106,7 +170,7 @@ void register_sphere(pybind11::module_& module) {
         .def_property("dn",
             [](Sphere& self) {return vector_as_numpy_view(self, self.dn);},
             [](Sphere& self,
-               pybind11::array_t<std::complex<double>, pybind11::array::c_style | pybind11::array::forcecast> arr) {
+               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.dn, arr);
             },
             R"pbdoc(

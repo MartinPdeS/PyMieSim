@@ -26,6 +26,9 @@ scatterer = Sphere(
     medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
 )
 
+print(scatterer.source)
+
 data = scatterer.get_farfield(sampling=100)  # Specify the number of sampling points
+
 
 figure = data.plot()

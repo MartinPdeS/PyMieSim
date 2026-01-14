@@ -1,40 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
 import pyvista
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import Length, Volume, RefractiveIndex, ureg
-from pydantic.dataclasses import dataclass
+from TypedUnit import Length, RefractiveIndex
 
 from PyMieSim.single.scatterer.base import BaseScatterer
-from PyMieSim.utils import config_dict
 from PyMieSim.binary.interface_scatterer import SPHERE
 from PyMieSim.single.source.base import BaseSource
 
 
-@dataclass(config=config_dict, kw_only=True)
 class Sphere(SPHERE, BaseScatterer):
     """
     Class representing a homogeneous spherical scatterer.
-
-    Parameters
-    ----------
-    diameter : Length
-        Diameter of the cylindrical scatterer, given in meters.
-    property : RefractiveIndex or BaseMaterial
-        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one can be provided.
-    medium_property : RefractiveIndex or BaseMaterial
-        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the surrounding medium. Only one can be provided.
-    source : BaseSource
-        The source object associated with the scatterer.
     """
-
-    diameter: Length
-    property: RefractiveIndex | BaseMaterial
-    medium_property: RefractiveIndex | BaseMaterial
-    source: BaseSource
-
     property_names = [
         "size_parameter",
         "radius",
@@ -55,31 +34,39 @@ class Sphere(SPHERE, BaseScatterer):
         "Cpr",
     ]
 
-    def __post_init__(self):
+    def __init__(
+        self,
+        diameter: Length,
+        property: RefractiveIndex | BaseMaterial,
+        medium_property: RefractiveIndex | BaseMaterial,
+        source: BaseSource,
+    ) -> None:
         """
-        Initialize the Sphere scatterer with its diameter and material properties.
+        Class representing a homogeneous spherical scatterer.
+
+        Parameters
+        ----------
+        diameter : Length
+            Diameter of the cylindrical scatterer, given in meters.
+        property : RefractiveIndex or BaseMaterial
+            Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one can be provided.
+        medium_property : RefractiveIndex or BaseMaterial
+            Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the surrounding medium. Only one can be provided.
+        source : BaseSource
+            The source object associated with the scatterer.
         """
-        self.index, self.material = self._assign_index_or_material(self.property)
-        self.medium_index, self.medium_material = self._assign_index_or_material(
-            self.medium_property
-        )
+        diameter = Length.check(diameter)
+        source = BaseSource.check(source)
+
+        index, self.material = self._assign_index_or_material(property)
+        medium_index, self.medium_material = self._assign_index_or_material(medium_property)
 
         super().__init__(
-            diameter=self.diameter.to(ureg.meter).magnitude,
-            refractive_index=self.index.to(ureg.RIU).magnitude,
-            medium_refractive_index=self.medium_index.to(ureg.RIU).magnitude,
-            source=self.source,
+            diameter=diameter,
+            refractive_index=index,
+            medium_refractive_index=medium_index,
+            source=source,
         )
-
-    @property
-    def radius(self) -> Length:
-        """Return the radius of the sphere."""
-        return self.diameter / 2
-
-    @property
-    def volume(self) -> Volume:
-        """Return the volume of the sphere."""
-        return (4 / 3) * numpy.pi * (self.radius**3)
 
     def _add_to_3d_ax(
         self, scene: pyvista.Plotter, color: str = "black", opacity: float = 1.0

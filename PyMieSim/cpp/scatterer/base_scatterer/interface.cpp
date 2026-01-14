@@ -6,7 +6,7 @@
 
 void register_base_scatterer(pybind11::module_& module) {
 
-    pybind11::class_<BaseScatterer>(module, "BASESCATTERER")
+    pybind11::class_<BaseScatterer, std::shared_ptr<BaseScatterer>>(module, "BASESCATTERER")
         .def(
             "_cpp_compute_cn_dn",
             &BaseScatterer::compute_cn_dn,

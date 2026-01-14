@@ -15,7 +15,7 @@ from PyMieSim.single.detector import Photodiode
     ],
 )
 def test_invalid_gaussian_initialization(optical_power, NA, polarization, wavelength):
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         Gaussian(
             optical_power=optical_power,
             NA=NA,
@@ -39,7 +39,7 @@ def test_invalid_sphere_initialization(medium_property, property, diameter):
         polarization=0 * ureg.degree,
         wavelength=1550 * ureg.nanometer,
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         Sphere(
             source=source,
             medium_property=medium_property,
@@ -58,7 +58,7 @@ def test_invalid_sphere_initialization(medium_property, property, diameter):
 def test_invalid_photodiode_initialization(
     NA, sampling, gamma_offset, phi_offset, polarization_filter
 ):
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         Photodiode(
             NA=NA,
             sampling=sampling,

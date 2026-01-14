@@ -28,6 +28,8 @@ scatterer = CoreShell(
     medium_property=1.0 * ureg.RIU,
 )
 
+
+print(dir(scatterer.source))
 data = scatterer.get_spf(sampling=300)
 
 figure = data.plot()

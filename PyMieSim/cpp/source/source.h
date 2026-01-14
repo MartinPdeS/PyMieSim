@@ -72,6 +72,9 @@ class Gaussian: public BaseSource {
     public:
         double NA;
         double optical_power;
+        double waist;
+        double peak_intensity;
+        double area;
 
         Gaussian() = default;
 

@@ -25,6 +25,7 @@ void Sphere::compute_an_bn(size_t _max_order) {
 
     _max_order = (_max_order == 0 ? this->max_order : _max_order);
 
+
     an.resize(_max_order);
     bn.resize(_max_order);
 
