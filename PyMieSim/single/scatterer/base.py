@@ -550,7 +550,7 @@ class BaseScatterer:
         return representations.Footprint(scatterer=self, detector=detector)
 
     def _assign_index_or_material(
-        self, property: RefractiveIndex | BaseMaterial
+        self, wavelength: Length, property: RefractiveIndex | BaseMaterial
     ) -> tuple[RefractiveIndex | None, BaseMaterial | None]:
         """
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
@@ -578,7 +578,7 @@ class BaseScatterer:
             return (
                 numpy.atleast_1d(
                     property.compute_refractive_index(
-                        self.source.wavelength.to("meter").magnitude
+                        wavelength.to("meter").magnitude
                     )
                 )[0]
                 * ureg.RIU,

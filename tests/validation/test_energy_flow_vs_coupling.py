@@ -8,9 +8,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 
 
-@pytest.fixture
-def setup_simulation():
-    # Define the source
+def test_simulation_results():
     source = Gaussian(
         wavelength=750 * ureg.nanometer,  # 750 nm
         polarization=30 * ureg.degree,  # Polarization in ureg.degrees
@@ -22,20 +20,14 @@ def setup_simulation():
     scatterer = Sphere(
         diameter=1500 * ureg.nanometer,  # 1500 nm diameter
         source=source,
-        property=1.4 * ureg.RIU,  # Refractive index
+        property=1.8 * ureg.RIU,  # Refractive index
         medium_property=Material.water,  # Medium is water
     )
 
     # Define the detector (integrating sphere)
     detector = IntegratingSphere(
-        sampling=1000,
+        sampling=500000,
     )
-
-    return source, scatterer, detector
-
-
-def test_simulation_results(setup_simulation):
-    source, scatterer, detector = setup_simulation
 
     # Run simulation for Stokes parameters
     scatterer.get_stokes(distance=2 * ureg.meter, sampling=100)
@@ -45,17 +37,19 @@ def test_simulation_results(setup_simulation):
     Qsca = scatterer.Qsca
 
     # Calculate energy flow
-    energy_flow = detector.get_energy_flow(scatterer, distance=1 * ureg.meter)
+    energy_flow = detector.get_energy_flow(scatterer)
+
 
     # Calculate scattered power
     scattered_power = Qsca * source.peak_intensity * scatterer.cross_section
+    print('0-------------', scattered_power.to_compact() / coupling.to_compact())
 
     # Check if the results are consistent
     assert np.isclose(
-        coupling, scattered_power, atol=0, rtol=1e-2
+        coupling.to_compact(), scattered_power.to_compact(), atol=0, rtol=1e-2
     ), "Mismatch betweend scattered power: {scattered_power} and coupling calculation: {coupling}"
     assert np.isclose(
-        coupling, energy_flow, atol=0, rtol=1e-1
+        coupling.to_compact(), energy_flow.to_compact(), atol=0, rtol=1e-1
     ), f"Mismatch betweend energy flow: {energy_flow} and coupling calculation: {coupling}"
 
     # Assertions to validate the results

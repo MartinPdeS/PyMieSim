@@ -10,10 +10,8 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
 from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import plot_system
+from PyMieSim.single import SystemPlotter
 
-# %%
-# Initializing the detector
 detector = CoherentMode(
     mode_number="HG01",  # Specifying LP01 mode
     sampling=500 * ureg.AU,  # Number of sampling points
@@ -22,6 +20,5 @@ detector = CoherentMode(
     phi_offset=40 * ureg.degree,  # Phi offset in degrees
 )
 
-# %%
-# Plotting the detector
-plot_system(detector)
+plotter = SystemPlotter()
+plotter.plot(detector)

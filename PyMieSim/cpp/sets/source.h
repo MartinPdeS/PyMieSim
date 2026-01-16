@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base_set.h"
-#include "../source/source.h"
+#include "single/source/source.h"
 
 using complex128 = std::complex<double>;
 
@@ -17,9 +17,9 @@ public:
     BaseSourceSet() = default;
     virtual ~BaseSourceSet() = default;
 
-    virtual BaseSource get_source_by_index(const size_t) const = 0;
+    virtual std::shared_ptr<BaseSource> get_source_by_index(const size_t) const = 0;
 
-    virtual BaseSource get_source_by_index_sequential(const size_t) const = 0;
+    virtual std::shared_ptr<BaseSource> get_source_by_index_sequential(const size_t) const = 0;
 
     virtual void validate_sequential_data(const size_t) const = 0;
 };
@@ -48,23 +48,24 @@ public:
     }
 
 
-    BaseSource get_source_by_index(const size_t flat_index) const override {
+    std::shared_ptr<BaseSource> get_source_by_index(const size_t flat_index) const override {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
-        BaseSource source = Gaussian(
+        std::shared_ptr<BaseSource> source = std::make_shared<Gaussian>(
             this->wavelength[indices[0]],
             this->jones_vector[indices[1]],
             this->numerical_aperture[indices[2]],
             this->optical_power[indices[3]]
         );
 
-        source.indices = indices;
-        source.wavelength_index = indices[0];
+        source->indices = indices;
+        source->wavelength_index = indices[0];
+
         return source;
     }
 
-    BaseSource get_source_by_index_sequential(const size_t index) const override {
-        BaseSource source = Gaussian(
+    std::shared_ptr<BaseSource> get_source_by_index_sequential(const size_t index) const override {
+        std::shared_ptr<BaseSource> source = std::make_shared<Gaussian>(
             this->wavelength[index],
             this->jones_vector[index],
             this->numerical_aperture[index],
@@ -104,23 +105,23 @@ public:
         this->total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
     }
 
-    BaseSource get_source_by_index(const size_t flat_index) const override {
+    std::shared_ptr<BaseSource> get_source_by_index(const size_t flat_index) const override {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
-        BaseSource source = Planewave(
+        std::shared_ptr<BaseSource> source = std::make_shared<Planewave>(
             this->wavelength[indices[0]],
             this->jones_vector[indices[1]],
             this->amplitude[indices[2]]
         );
 
-        source.indices = indices;
-        source.wavelength_index = indices[0];
+        source->indices = indices;
+        source->wavelength_index = indices[0];
         return source;
     }
 
-    BaseSource get_source_by_index_sequential(const size_t index) const override {
+    std::shared_ptr<BaseSource> get_source_by_index_sequential(const size_t index) const override {
 
-        BaseSource source = Planewave(
+        std::shared_ptr<BaseSource> source = std::make_shared<Planewave>(
             this->wavelength[index],
             this->jones_vector[index],
             this->amplitude[index]

@@ -6,7 +6,7 @@ from typing import Optional
 from pydantic.dataclasses import dataclass
 from TypedUnit import Angle, ureg
 
-from PyMieSim.binary.interface_detector import FIBONACCIMESH
+from PyMieSim.binary.interface_single import FIBONACCIMESH
 from PyMieSim.utils import config_dict
 
 

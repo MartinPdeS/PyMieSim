@@ -4,13 +4,12 @@
 #include <memory>
 #include <cstdarg>    // For va_list, va_start, va_end
 #include <cstdio>     // For printf, vprintf
-#include "../scatterer/sphere/sphere.h"
-#include "../scatterer/cylinder/cylinder.h"
-#include "../scatterer/coreshell/coreshell.h"
-#include "../source/source.h"
-#include "../detector/detector.h"
-#include "../sets/sets.cpp"
-
+#include "single/scatterer/sphere/sphere.h"
+#include "single/scatterer/cylinder/cylinder.h"
+#include "single/scatterer/coreshell/coreshell.h"
+#include "single/source/source.h"
+#include "single/detector/detector.h"
+#include "sets/sets.cpp"
 
 class Experiment
 {
@@ -39,39 +38,87 @@ class Experiment
         void debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const DetectorSet& detector_set) const;
 
         /**
-         * @brief Flattens a multi-dimensional index into a single index.
-         * @tparam MultiIndexVectors Variadic template for multiple index vectors.
-         * @param dimensions The dimensions of the multi-dimensional array.
-         * @param multi_indices The multi-dimensional indices to be flattened.
-         * @return The flattened single index.
+         * @brief Flattens a multi-dimensional index into a single index (one input vector).
          */
-        template <typename... MultiIndexVectors>
-        size_t flatten_multi_index(const std::vector<size_t>& dimensions, const MultiIndexVectors&... multi_indices) const {
-            std::vector<size_t> multi_index = concatenate_vector(multi_indices...);
-            size_t flatten_index = 0;
-            size_t stride = 1;
-            for (int i = static_cast<int>(dimensions.size()) - 1; i >= 0; --i) {
-                flatten_index += multi_index[i] * stride;
+        std::size_t flatten_multi_index(
+            const std::vector<std::size_t>& dimensions,
+            const std::vector<std::size_t>& multi_index
+        ) const
+        {
+            if (multi_index.size() != dimensions.size()) {
+                throw std::invalid_argument("flatten_multi_index: multi_index.size() must match dimensions.size().");
+            }
+
+            std::size_t flattened_index = 0;
+            std::size_t stride = 1;
+
+            for (std::size_t i = dimensions.size(); i-- > 0;) {
+                flattened_index += multi_index[i] * stride;
                 stride *= dimensions[i];
             }
-            return flatten_index;
+
+            return flattened_index;
         }
 
         /**
-         * @brief Concatenates multiple vectors into a single vector.
-         * @tparam T The type of the vectors.
-         * @tparam Ts Variadic template for multiple vector types.
-         * @param first_vector The first vector to concatenate.
-         * @param other_vectors The other vectors to concatenate.
-         * @return The concatenated vector.
+         * @brief Flattens a multi-dimensional index into a single index (two input vectors).
          */
-        template <typename T, typename... Ts>
-        T concatenate_vector(const T& first_vector, const Ts&... other_vectors) const
+        std::size_t flatten_multi_index(
+            const std::vector<std::size_t>& dimensions,
+            const std::vector<std::size_t>& first_multi_index,
+            const std::vector<std::size_t>& second_multi_index
+        ) const
         {
-            T output_vector = first_vector;
-            (output_vector.insert(output_vector.end(), other_vectors.begin(), other_vectors.end()), ...);
+            const std::vector<std::size_t> multi_index =
+                this->concatenate_vector(first_multi_index, second_multi_index);
+
+            return this->flatten_multi_index(dimensions, multi_index);
+        }
+
+        /**
+         * @brief Flattens a multi-dimensional index into a single index (three input vectors).
+         */
+        std::size_t flatten_multi_index(
+            const std::vector<std::size_t>& dimensions,
+            const std::vector<std::size_t>& first_multi_index,
+            const std::vector<std::size_t>& second_multi_index,
+            const std::vector<std::size_t>& third_multi_index
+        ) const
+        {
+            const std::vector<std::size_t> multi_index =
+                this->concatenate_vector(first_multi_index, second_multi_index, third_multi_index);
+            return this->flatten_multi_index(dimensions, multi_index);
+        }
+
+        /**
+         * @brief Concatenates two vectors into a single vector.
+         */
+        std::vector<std::size_t> concatenate_vector(const std::vector<std::size_t> first_vector, const std::vector<std::size_t>& second_vector) const
+        {
+            std::vector<std::size_t> output_vector;
+            output_vector.reserve(first_vector.size() + second_vector.size());
+
+            output_vector.insert(output_vector.end(), first_vector.begin(), first_vector.end());
+            output_vector.insert(output_vector.end(), second_vector.begin(), second_vector.end());
+
             return output_vector;
         }
+
+        /**
+         * @brief Concatenates three vectors into a single vector.
+         */
+        std::vector<std::size_t> concatenate_vector(const std::vector<std::size_t>& first_vector, const std::vector<std::size_t>& second_vector, const std::vector<std::size_t>& third_vector) const
+        {
+            std::vector<std::size_t> output_vector;
+            output_vector.reserve(first_vector.size() + second_vector.size() + third_vector.size());
+
+            output_vector.insert(output_vector.end(), first_vector.begin(), first_vector.end());
+            output_vector.insert(output_vector.end(), second_vector.begin(), second_vector.end());
+            output_vector.insert(output_vector.end(), third_vector.begin(), third_vector.end());
+
+            return output_vector;
+        }
+
 
         /**
          * @brief Generic method to get scatterer data by invoking a member function.
@@ -82,20 +129,21 @@ class Experiment
          * @return A tuple containing a numpy array of the requested data and the shape of the array.
          */
         template<double (BaseScatterer::*function)() const>
-        std::tuple<std::vector<double>, std::vector<size_t>> get_data(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
+        std::tuple<std::vector<double>, std::vector<std::size_t>>
+        get_data(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
 
             if (debug_mode)
                 this->debug_print_state(scatterer_set, source_set, detector_set);
 
-            std::vector<size_t> array_shape;
+            std::vector<std::size_t> array_shape;
             size_t total_iterations;
 
             if (detector_set.is_empty) {
-                array_shape = concatenate_vector(source_set.shape, scatterer_set.shape);
+                array_shape = this->concatenate_vector(source_set.shape, scatterer_set.shape);
                 total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
             }
             else {
-                array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
+                array_shape = this->concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
                 total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
             }
 
@@ -111,24 +159,26 @@ class Experiment
                     // 2D case: only source and scatterer
                     size_t i = flat_index / scatterer_set.total_combinations;
                     size_t j = flat_index % scatterer_set.total_combinations;
-                    BaseSource source = source_set.get_source_by_index(i);
+                    std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
 
-                    std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
+                    std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source_ptr);
 
-                    idx = flatten_multi_index(array_shape, source.indices, scatterer_ptr->indices);
+                    const std::vector<std::size_t> multi_index =
+                        this->concatenate_vector(source_ptr->indices, source_ptr->indices);
 
+                    idx = this->flatten_multi_index(array_shape, source_ptr->indices, scatterer_ptr->indices);
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 } else {
                     // 3D case: source, scatterer, and detector
                     long long i = flat_index / (scatterer_set.total_combinations * detector_set.total_combinations);
                     long long j = (flat_index / detector_set.total_combinations) % scatterer_set.total_combinations;
                     long long k = flat_index % detector_set.total_combinations;
-                    BaseSource source = source_set.get_source_by_index(i);
+                    std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
 
-                    std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
+                    std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source_ptr);
 
                     Detector detector = detector_set.get_detector_by_index(k);
-                    idx = flatten_multi_index(array_shape, source.indices, scatterer_ptr->indices, detector.indices);
+                    idx = this->flatten_multi_index(array_shape, source_ptr->indices, scatterer_ptr->indices, detector.indices);
 
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 }
@@ -154,7 +204,7 @@ class Experiment
             if (debug_mode)
                 this->debug_print_state(scatterer_set, source_set, detector_set);
 
-            std::vector<size_t> array_shape = {source_set.wavelength.size()};
+            std::vector<std::size_t> array_shape = {source_set.wavelength.size()};
             size_t full_size = source_set.wavelength.size();
             scatterer_set.validate_sequential_data(full_size);
             source_set.validate_sequential_data(full_size);
@@ -164,7 +214,7 @@ class Experiment
 
             #pragma omp parallel for
             for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
-                BaseSource source = source_set.get_source_by_index_sequential(idx);
+                std::shared_ptr<BaseSource> source = source_set.get_source_by_index_sequential(idx);
 
                 std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index_sequential(idx, source);
 
@@ -182,7 +232,7 @@ class Experiment
          * @param detector_set The set of detectors.
          * @return A tuple containing a numpy array of coupling coefficients and the shape of the array.
          */
-        std::tuple<std::vector<double>, std::vector<size_t>>
+        std::tuple<std::vector<double>, std::vector<std::size_t>>
         get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const;
 
         /**
@@ -203,7 +253,7 @@ class Experiment
          * @param distance The distance at which to compute the far-fields (default is 1).
          * @return A tuple containing a numpy array of far-field patterns and the shape of the array.
          */
-        std::tuple<std::vector<complex128>, std::vector<size_t>>
+        std::tuple<std::vector<complex128>, std::vector<std::size_t>>
         get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance = 1) const;
 
 };

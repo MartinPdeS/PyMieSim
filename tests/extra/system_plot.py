@@ -5,10 +5,13 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import plot_system
+from PyMieSim.single import SystemPlotter
 from math import sqrt
 import matplotlib.pyplot as plt
 
+# plotter = SystemPlotter(show_axis_label=False)
+
+# plotter.plot(source, scatterer, detector, data=spf)
 
 @pytest.fixture
 def source():
@@ -75,7 +78,10 @@ def test_plot_system(mock_show, source, scatterer, detector):
         detector (Photodiode): Fixture providing a Photodiode detector.
     """
     spf = scatterer.get_spf()
-    plot_system(source, detector, spf)
+
+    plotter = SystemPlotter(show_axis_label=False)
+
+    plotter.plot(source, detector, data=spf)
 
     plt.close()
 

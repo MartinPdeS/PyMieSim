@@ -17,7 +17,7 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import plot_system
+from PyMieSim.single import SystemPlotter
 
 source = Gaussian(
     wavelength=1550 * ureg.nanometer,  # Wavelength of 1550 nm
@@ -43,4 +43,7 @@ detector = CoherentMode(
 
 spf = scatterer.get_spf()
 
-plot_system(source, detector)
+plotter = SystemPlotter(show_axis_label=False)
+
+plotter.plot(source, scatterer, detector, data=spf)
+

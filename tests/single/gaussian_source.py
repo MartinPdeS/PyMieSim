@@ -4,7 +4,6 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import Linear
-from PyMieSim.single import plot_system
 
 
 def test_gaussian_initialization():
@@ -41,25 +40,6 @@ def gaussian_source():
         polarization=0 * ureg.degree,
         wavelength=1550 * ureg.nanometer,
     )
-
-
-@patch("pyvista.Plotter.show")
-def test_gaussian_plotting(mock_show, gaussian_source):
-    """Test the plot method of Gaussian to ensure it calls the show method once."""
-    gaussian_source.plot()
-    mock_show.assert_called_once()
-
-
-@patch("pyvista.Plotter.show")
-def test_plot_system(mock_show):
-    source = Gaussian(
-        optical_power=1 * ureg.watt,
-        NA=0.1 * ureg.AU,
-        polarization=0 * ureg.degree,
-        wavelength=1550 * ureg.nanometer,
-    )
-
-    plot_system(source)
 
 
 if __name__ == "__main__":

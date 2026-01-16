@@ -29,7 +29,14 @@ scatterer = CoreShell(
 )
 
 
-print(dir(scatterer.source))
+# print(type(scatterer.source))
+# print(type(source))
+# print(type(scatterer.source).__mro__)
+# print(type(source).__mro__)
+# print(type(scatterer.source).__module__, type(source).__module__)
+
+# print(dir(scatterer.source))
+print(scatterer.source)
 data = scatterer.get_spf(sampling=300)
 
 figure = data.plot()

@@ -78,7 +78,7 @@ def scatterer_experiment(source_experiment):
     )
 
 
-def test_detector_single_polarization_filter(source_single, scatterer_single):
+def test_detector_single_polarization_filter(scatterer_single):
     """
     Test the effect of a 0-ureg.degree and 180-ureg.degree polarization filter on a photodiode detector.
 
@@ -111,7 +111,7 @@ def test_detector_single_polarization_filter(source_single, scatterer_single):
     ), f"Mismatch in coupling values for 0° and 180° polarization: {coupling_0} vs {coupling_180}"
 
 
-def test_detector_single_rotation(source_single, scatterer_single):
+def test_detector_single_rotation(scatterer_single):
     """
     Test the effect of 0-ureg.degree and 180-ureg.degree rotation on a coherent mode detector.
 
@@ -126,7 +126,14 @@ def test_detector_single_rotation(source_single, scatterer_single):
         gamma_offset=0 * ureg.degree,
         phi_offset=40 * ureg.degree,
         rotation=0 * ureg.degree,
+        sampling=300
     )
+
+    # from PyMieSim.single import SystemPlotter
+
+    # plotter = SystemPlotter()
+
+    # plotter.plot(detector_0)
 
     detector_180 = single.detector.CoherentMode(
         mode_number="LP11",
@@ -134,7 +141,10 @@ def test_detector_single_rotation(source_single, scatterer_single):
         gamma_offset=0 * ureg.degree,
         phi_offset=40 * ureg.degree,
         rotation=180 * ureg.degree,
+        sampling=300
     )
+
+    # plotter.plot(detector_180)
 
     # Calculate the coupling for both detectors
     coupling_0 = detector_0.get_coupling(scatterer_single)

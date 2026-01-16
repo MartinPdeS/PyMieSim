@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../scatterer/sphere/sphere.h"
-#include "../scatterer/cylinder/cylinder.h"
-#include "../scatterer/coreshell/coreshell.h"
-#include "../detector/detector.h"
-#include "../source/source.h"
+#include "single/scatterer/sphere/sphere.h"
+#include "single/scatterer/cylinder/cylinder.h"
+#include "single/scatterer/coreshell/coreshell.h"
+#include "single/detector/detector.h"
+#include "single/source/source.h"
 
 // Base class to reduce redundancy
 class BaseSet{

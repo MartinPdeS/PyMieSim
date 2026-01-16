@@ -4,16 +4,12 @@
 import numpy
 import logging
 from typing import Optional
-from pydantic.dataclasses import dataclass
-from TypedUnit import Dimensionless, RefractiveIndex, Angle, ureg
+from PyMieSim.units import Dimensionless, RefractiveIndex, Angle, ureg
 
-from PyMieSim.utils import config_dict
-from PyMieSim.binary.interface_detector import DETECTOR
-from PyMieSim.single.detector.base import BaseDetector
+from PyMieSim.binary.interface_single import DETECTOR
 
 
-@dataclass(config=config_dict, kw_only=True)
-class CoherentMode(DETECTOR, BaseDetector):
+class CoherentMode(DETECTOR):
     """
     Detector class representing a coherent mode detector.
 
@@ -52,28 +48,45 @@ class CoherentMode(DETECTOR, BaseDetector):
         Default is 1.0 (vacuum or air).
     """
 
-    mode_number: str
-    NA: Dimensionless
-    gamma_offset: Angle
-    phi_offset: Angle
-    sampling: int = 200
-    polarization_filter: Optional[Angle] = numpy.nan * ureg.degree
-    cache_NA: Optional[Dimensionless] = 0 * ureg.AU
-    mean_coupling: bool = False
-    rotation: Angle = 90 * ureg.degree
-    medium_refractive_index: RefractiveIndex = 1.0 * ureg.RIU
-
-    def __post_init__(self):
+    def __init__(
+        self,
+        mode_number: str,
+        NA: Dimensionless,
+        gamma_offset: Angle,
+        phi_offset: Angle,
+        sampling: int = 200,
+        polarization_filter: Optional[Angle] = numpy.nan * ureg.degree,
+        cache_NA: Optional[Dimensionless] = 0 * ureg.AU,
+        mean_coupling: bool = False,
+        rotation: Angle = 90 * ureg.degree,
+        medium_refractive_index: RefractiveIndex = 1.0 * ureg.RIU,
+    ):
         """
         Initialize the CoherentMode detector with its parameters.
         """
+        NA = Dimensionless.check(NA)
+        gamma_offset = Angle.check(gamma_offset)
+        phi_offset = Angle.check(phi_offset)
+        sampling = int(sampling)
 
-        if self.NA > 0.3 * ureg.AU or self.NA < 0 * ureg.AU:
+        if polarization_filter is not None:
+            polarization_filter = Angle.check(polarization_filter)
+        else:
+            polarization_filter = numpy.nan * ureg.degree
+
+        if cache_NA is not None:
+            cache_NA = Dimensionless.check(cache_NA)
+        else:
+            cache_NA = 0 * ureg.AU
+
+        medium_refractive_index = RefractiveIndex.check(medium_refractive_index)
+
+        if NA > 0.3 * ureg.AU or NA < 0 * ureg.AU:
             logging.warning(
-                f"High values of NA: {self.NA} do not comply with the paraxial approximation. Values under 0.3 are preferred."
+                f"High values of NA: {NA} do not comply with the paraxial approximation. Values under 0.3 are preferred."
             )
 
-        self.mode_family = self.mode_number[:2]
+        self.mode_family = mode_number[:2]
 
         if self.mode_family.lower() not in ["lp", "lg", "hg"]:
             raise ValueError(
@@ -81,18 +94,15 @@ class CoherentMode(DETECTOR, BaseDetector):
             )
 
         super().__init__(
-            mode_number=self.mode_number,
-            sampling=self.sampling,
-            NA=self.NA.to(ureg.AU).magnitude,
-            cache_NA=self.cache_NA.to(ureg.AU).magnitude,
-            phi_offset=self.phi_offset.to(ureg.radian).magnitude,
-            gamma_offset=self.gamma_offset.to(ureg.radian).magnitude,
-            polarization_filter=self.polarization_filter.to(ureg.radian).magnitude,
-            rotation=self.rotation.to(ureg.radian).magnitude,
+            mode_number=mode_number,
+            sampling=sampling,
+            NA=NA,
+            cache_NA=cache_NA,
+            phi_offset=phi_offset,
+            gamma_offset=gamma_offset,
+            polarization_filter=polarization_filter,
+            rotation=rotation,
             is_coherent=True,
-            mean_coupling=self.mean_coupling,
-            medium_refractive_index=self.medium_refractive_index.to(ureg.RIU).magnitude,
+            mean_coupling=mean_coupling,
+            medium_refractive_index=medium_refractive_index,
         )
-
-
-# -

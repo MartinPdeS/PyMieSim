@@ -5,7 +5,6 @@ from unittest.mock import patch
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import plot_system
 
 
 # Define a list of mode numbers and rotation angles to be tested
@@ -46,23 +45,9 @@ def test_lp_modes(mode_number, scatterer):
         rotation=0 * ureg.degree,  # Rotation angle
     )
 
-    footprint = detector.get_footprint(scatterer=scatterer)
+    footprint = scatterer.get_footprint(detector=detector)
 
     assert footprint is not None, "Expected a valid footprint but got None."
-
-
-@patch("pyvista.Plotter.show")
-def test_plot_system(mock_show):
-    detector = CoherentMode(
-        mode_number="LP01",
-        NA=0.2 * ureg.AU,  # Numerical aperture for the detector
-        sampling=100,  # Field sampling
-        gamma_offset=0 * ureg.degree,  # Gamma offset
-        phi_offset=0 * ureg.degree,  # Phi offset
-        rotation=0 * ureg.degree,  # Rotation angle
-    )
-
-    plot_system(detector)
 
 
 if __name__ == "__main__":

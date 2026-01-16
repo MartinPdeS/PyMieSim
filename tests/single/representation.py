@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single import plot_system
 
 representations = ["get_farfield", "get_stokes", "get_spf", "get_s1s2"]
 
@@ -43,11 +42,6 @@ def test_plottings(mock_show_plt, mock_show_pyvista, representation, scatterer):
     assert data is not None
     data.plot()
     plt.close()
-
-
-@patch("pyvista.Plotter.show")
-def test_plot_system(mock_show, scatterer, source):
-    plot_system(scatterer, source)
 
 
 if __name__ == "__main__":

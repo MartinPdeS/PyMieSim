@@ -1,11 +1,9 @@
 import pytest
 from PyMieSim.units import ureg
-from unittest.mock import patch
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import plot_system
 
 
 @pytest.fixture
@@ -45,7 +43,7 @@ def test_photodiode_sampling(photodiode, setup_scatterer):
     """Test the Photodiode detector with various sampling rates."""
 
     # Perform the operation to be tested
-    footprint = photodiode.get_footprint(scatterer=setup_scatterer)
+    footprint = setup_scatterer.get_footprint(detector=photodiode)
 
     # Example verification step (not operational as we're not evaluating the output here)
     assert footprint is not None, "Expected a valid footprint but got None."
@@ -59,18 +57,6 @@ def test_fails_initialization():
             gamma_offset=0 * ureg.degree,
             phi_offset=0 * ureg.degree,
         )
-
-
-@patch("pyvista.Plotter.show")
-def test_plot_system(mock_show):
-    detector = Photodiode(
-        NA=0.2 * ureg.AU,  # Numerical aperture of the detector
-        sampling=30,  # Field sampling
-        gamma_offset=0 * ureg.degree,  # Gamma offset
-        phi_offset=0 * ureg.degree,  # Phi offset
-    )
-
-    plot_system(detector)
 
 
 if __name__ == "__main__":

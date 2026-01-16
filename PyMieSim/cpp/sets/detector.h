@@ -1,7 +1,7 @@
 #pragma once
 
 #include "./base_set.h"
-#include "../detector/detector.h"
+#include "single/detector/detector.h"
 
 
 class DetectorSet : public BaseSet
