@@ -1,56 +1,45 @@
-"""
-Sphere: Coupling vs diameter
-============================
-
-"""
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
-import numpy
-from TypedUnit import ureg
-
-from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
-from PyMieSim.experiment import Setup
+import pytest
+import numpy as np
+from PyMieSim.units import ureg
 from PyOptik import Material
-from PyMieSim.single.mesh import FibonacciMesh
 
-# %%
-# Defining the source to be employed.
+from PyMieSim.single.detector import IntegratingSphere, Photodiode
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single import SystemPlotter
+
+plotter = SystemPlotter()
+
+
 source = Gaussian(
-    wavelength=1200 * ureg.nanometer,
-    polarization=0 * ureg.degree,
-    optical_power=1e-3 * ureg.watt,
-    NA=[0.1] * ureg.AU,
+    wavelength=750 * ureg.nanometer,  # 750 nm
+    polarization=30 * ureg.degree,  # Polarization in ureg.degrees
+    optical_power=1 * ureg.watt,  # Power in ureg.watts
+    NA=0.3 * ureg.AU,  # Numerical Aperture
 )
-# %%
-# Defining the ranging parameters for the scatterer distribution
+
+# Define the scatterer (sphere)
 scatterer = Sphere(
-    diameter=numpy.linspace(100, 10000, 600) * ureg.nanometer,
-    property=Material.BK7,
-    medium_property=1.0 * ureg.RIU,
+    diameter=1 * ureg.nanometer,  # 1500 nm diameter
     source=source,
+    property=1.8 * ureg.RIU,
+    medium_property=1. * ureg.RIU
+)
+
+detector = IntegratingSphere(
+    sampling=5000,
 )
 
 
-mesh = FibonacciMesh(
-    sampling=1000,
-    phi_offset=0 * ureg.degree,
-    max_angle=10 * ureg.degree,
-    gamma_offset=0 * ureg.degree,
-)
+# 50.18021588708274 attowat
 
-# %%
-# Defining the experiment setup
-experiment = Setup(scatterer=scatterer, source=source)
+# plotter.plot(detector)
+
+coupling = detector.get_coupling(scatterer=scatterer)
+print("coupling", coupling)
 
 
-res = experiment.binding._get_farfields(
-    scatterer_set=experiment.scatterer.binding,
-    source_set=experiment.source.binding,
-    mesh=mesh,
-)
+# coupling 21.23395750875811 attowatt
 
 
-print(res.shape)
+# coupling 21.23395750875811 attowatt

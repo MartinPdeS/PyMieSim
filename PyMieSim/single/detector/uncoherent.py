@@ -110,5 +110,5 @@ class IntegratingSphere(Photodiode):
             gamma_offset=0 * ureg.degree,  # Fixed gamma offset for IntegratingSphere
             phi_offset=0 * ureg.degree,  # Fixed phi offset for IntegratingSphere
             cache_NA=0 * ureg.AU,  # Fixed cache NA for IntegratingSphere
-            medium_refractive_index=1.8 * ureg.RIU
+            medium_refractive_index=1.0 * ureg.RIU
         )

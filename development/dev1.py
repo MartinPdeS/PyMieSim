@@ -16,45 +16,28 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-# Define the scatterer (sphere)
 scatterer = Sphere(
-    diameter=1500 * ureg.nanometer,  # 1500 nm diameter
+    diameter=1500 * ureg.nanometer,
     source=source,
-    property=1.8 * ureg.RIU,  # Refractive index
-    medium_property=1.32 * ureg.RIU
-    # medium_property=Material.water,  # Medium is water
+    property=1.8 * ureg.RIU,
+    medium_property=1.01 * ureg.RIU
 )
 
 # Define the detector (integrating sphere)
 detector = IntegratingSphere(
-    sampling=500000,
+    sampling=5000,
 )
-
-print(detector.NA)
 
 from PyMieSim.single import SystemPlotter
 plotter = SystemPlotter()
 
-detector = Photodiode(
-    NA=2.000 * ureg.AU,
-    gamma_offset=0 * ureg.degree,
-    phi_offset=0 * ureg.degree,
-    # medium_refractive_index=1.32 * ureg.RIU,
-    medium_refractive_index=1 * ureg.RIU,
-    sampling=4000
-)
 
-plotter.plot(detector)
+# plotter.plot(detector)
 
-# Run simulation for Stokes parameters
-scatterer.get_stokes(distance=2 * ureg.meter, sampling=100)
-
-# Calculate coupling and scattering efficiency (Qsca)
 coupling = detector.get_coupling(scatterer=scatterer)
 print("coupling", coupling)
 Qsca = scatterer.Qsca
 
-# Calculate energy flow
 energy_flow = detector.get_energy_flow(scatterer)
 
 

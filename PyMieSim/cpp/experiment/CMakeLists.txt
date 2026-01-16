@@ -1,15 +1,15 @@
-# cpp/sets/CMakeLists.txt
+# cpp/experiment/CMakeLists.txt
 
 set(NAME "experiment")
 
-# Create a shared library for functionality.
-add_library("${NAME}" STATIC "${NAME}.cpp")
+add_subdirectory(setup)
 
-target_link_libraries("${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX cylinder sphere coreshell detector source full_mesh)
+add_subdirectory(sets)
 
-# Create a Python module, if needed.
+# Create a Python module.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "interface_${NAME}")
-target_link_libraries("interface_${NAME}" PRIVATE "${NAME}" )
+target_link_libraries("interface_${NAME}" PUBLIC sets setup)
 
-set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS "${NAME}" "interface_${NAME}")
+
+set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS "interface_${NAME}")
