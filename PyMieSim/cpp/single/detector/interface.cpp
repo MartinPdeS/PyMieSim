@@ -470,6 +470,7 @@ void register_detector(py::module_& module) {
             const double medium_refractive_index_value =
                 medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
 
+
             return std::make_shared<Photodiode>(
                 "NC00",
                 sampling,
@@ -479,7 +480,7 @@ void register_detector(py::module_& module) {
                 0.0,
                 polarization_filter_value,
                 false,
-                medium_refractive_index_value
+                1.0
             );
         },
         py::arg("medium_refractive_index") = py::float_(1.0) * get_shared_ureg().attr("RIU"),

@@ -28,8 +28,8 @@ def test_Qsca_cross_section(gaussian_source):
     # Define a spherical scatterer
     sphere = Sphere(
         diameter=300 * ureg.nanometer,  # Diameter in meters (e.g., 300 nm)
-        property=1.4 * ureg.RIU,  # Refractive index of the sphere
-        medium_property=1.0 * ureg.RIU,  # Medium index (e.g., air)
+        refractive_index=1.4 * ureg.RIU,  # Refractive index of the sphere
+        medium_refractive_index=1.0 * ureg.RIU,  # Medium index (e.g., air)
         source=gaussian_source,  # Associated light source
     )
 
@@ -51,8 +51,8 @@ def test_energy_flow_coupling(gaussian_source):
     # Define a spherical scatterer
     sphere = Sphere(
         diameter=300 * ureg.nanometer,
-        property=1.4 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU,
+        refractive_index=1.4 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
         source=gaussian_source,
     )
 
@@ -85,18 +85,18 @@ def test_compare_sphere_coreshell_0(gaussian_source):
     # Define a solid sphere
     sphere = Sphere(
         diameter=1000 * ureg.nanometer,
-        property=1.5 * ureg.RIU,
+        refractive_index=1.5 * ureg.RIU,
         source=gaussian_source,
-        medium_property=1.0 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
     )
 
     # Define a core-shell scatterer with zero shell thickness
     coreshell = CoreShell(
         core_diameter=1000 * ureg.nanometer,
         shell_thickness=0 * ureg.nanometer,  # Zero shell width
-        core_property=1.5 * ureg.RIU,
-        shell_property=1.8 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU,
+        core_refractive_index=1.5 * ureg.RIU,
+        shell_refractive_index=1.8 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
         source=gaussian_source,
     )
 

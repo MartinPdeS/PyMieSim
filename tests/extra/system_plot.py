@@ -6,6 +6,7 @@ from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import SystemPlotter
+from PyMieSim.single.representations import SPF
 from math import sqrt
 import matplotlib.pyplot as plt
 
@@ -38,7 +39,7 @@ def test_plot_system(mock_show):
         polarization_filter=0* ureg.degree,  # Polarization filter angle in ureg.degrees
         medium_refractive_index=1.0 * ureg.RIU
     )
-    spf = scatterer.get_spf()
+    spf = SPF(scatterer=scatterer)
 
     plotter = SystemPlotter(show_axis_label=False)
 
