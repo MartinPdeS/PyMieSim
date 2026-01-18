@@ -57,7 +57,7 @@ class SPF():
 
     """
     scatterer: object
-    sampling: int
+    sampling: int = 200
 
     def __post_init__(self):
         fields = self.scatterer.get_full_farfields(

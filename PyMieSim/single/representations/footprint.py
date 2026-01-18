@@ -103,10 +103,10 @@ class Footprint():
 
         _, phi, theta = rotate_on_x(phi + numpy.pi / 2, theta, numpy.pi / 2)
 
-        far_field_para, far_field_perp = self.scatterer.get_farfields_array(
+        far_field_para, far_field_perp = self.scatterer.get_farfields(
             phi=(phi.ravel() + numpy.pi / 2) * ureg.radian,
             theta=theta.ravel() * ureg.radian,
-            r=1.0 * ureg.meter,
+            distance=1.0 * ureg.meter,
         )
 
         detector_structured_farfield = self.detector.get_structured_scalarfield(

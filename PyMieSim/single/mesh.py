@@ -2,15 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from typing import Optional
-from pydantic.dataclasses import dataclass
 from TypedUnit import Angle, ureg
 
 from PyMieSim.binary.interface_single import FIBONACCIMESH
-from PyMieSim.utils import config_dict
 
-
-@dataclass(config=config_dict, kw_only=True)
 class FibonacciMesh(FIBONACCIMESH):
     """
     Represents an angular mesh using a Fibonacci sphere distribution, where each point
@@ -63,29 +58,6 @@ class FibonacciMesh(FIBONACCIMESH):
 
     """
 
-    max_angle: Angle
-    sampling: int
-    phi_offset: Angle
-    gamma_offset: Angle
-    min_angle: Angle = 0 * ureg.degree
-    rotation_angle: Optional[Angle] = 0.0 * ureg.degree
-
-    # ---------------------- Initialization Methods ----------------------
-    def __post_init__(self):
-        """
-        Initializes the FibonacciMesh with the specified parameters.
-        """
-        super().__init__(
-            sampling=self.sampling,
-            max_angle=self.max_angle.to(ureg.radian).magnitude,
-            min_angle=self.min_angle.to(ureg.radian).magnitude,
-            rotation_angle=self.rotation.to(ureg.radian).magnitude,
-            phi_offset=self.phi_offset.to(ureg.radian).magnitude,
-            gamma_offset=self.gamma_offset.to(ureg.radian).magnitude,
-        )
-
-        self.compute_vector_field()
-
     # ---------------------- Property Methods ----------------------
     @property
     def theta(self) -> Angle:
@@ -111,41 +83,6 @@ class FibonacciMesh(FIBONACCIMESH):
         """
         return self.spherical.phi * ureg.radian
 
-    @property
-    def d_omega(self) -> Angle:
-        """
-        Returns the solid angle (d_omega) of the mesh in steradians.
-
-        Returns
-        -------
-        units.Quantity
-            The solid angle in steradians.
-        """
-        return self.spherical._cpp_d_omega * ureg.steradian
-
-    @property
-    def omega(self) -> Angle:
-        """
-        Returns the solid angle (omega) of the mesh in steradians.
-
-        Returns
-        -------
-        units.Quantity
-            The solid angle in steradians.
-        """
-        return self.spherical._cpp_omega * ureg.steradian
-
-    @property
-    def rotation(self) -> Angle:
-        """
-        Returns the rotation angle of the mesh around its principal axis in radians.
-
-        Returns
-        -------
-        units.Quantity
-            The rotation angle in radians.
-        """
-        return self._cpp_rotation * ureg.radian
 
     # ---------------------- Additional Methods ----------------------
     def get_axis_vector(self) -> numpy.ndarray:

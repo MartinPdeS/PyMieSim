@@ -7,6 +7,7 @@
 #include "single/source/interface.cpp"
 #include "single/setup_single/interface.cpp"
 #include "single/detector/interface.cpp"
+#include "single/polarization/interface.cpp"
 
 
 namespace py = pybind11;
@@ -17,6 +18,8 @@ PYBIND11_MODULE(interface_single, module) {
 
         This module provides C++ bindings for the PyMieSim Python package, which implements the Lorenz-Mie Theory (LMT) for light scattering by spherical particles and other scatterers.
     )pbdoc";
+
+    register_polarization(module);
 
     register_base_scatterer(module);
 

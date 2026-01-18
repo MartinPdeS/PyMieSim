@@ -9,7 +9,7 @@ namespace py = pybind11;
 void register_sphere(py::module_& module) {
     py::object ureg = get_shared_ureg();
 
-    py::class_<Sphere, BaseScatterer, std::shared_ptr<Sphere>>(module, "SPHERE")
+    py::class_<Sphere, BaseScatterer, std::shared_ptr<Sphere>>(module, "Sphere")
         .def(
             py::init([ureg](
                 py::object diameter,

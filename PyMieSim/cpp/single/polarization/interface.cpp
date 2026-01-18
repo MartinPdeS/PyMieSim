@@ -12,17 +12,11 @@
 
 namespace py = pybind11;
 
-namespace {
 
 using Complex = std::complex<double>;
 using Row = std::array<Complex, 2>;
 
-static py::object numpy()
-{
-    return py::module_::import("numpy");
-}
-
-static py::array_t<Complex> element_to_numpy(const PyMieSim::JonesVector::Element& element)
+static py::array_t<Complex> element_to_numpy(const JonesVector::Element& element)
 {
     const py::ssize_t n_rows = static_cast<py::ssize_t>(element.size());
     py::array_t<Complex> out({n_rows, static_cast<py::ssize_t>(2)});
@@ -36,7 +30,7 @@ static py::array_t<Complex> element_to_numpy(const PyMieSim::JonesVector::Elemen
     return out;
 }
 
-static PyMieSim::JonesVector::Element numpy_to_element(py::handle obj)
+static JonesVector::Element numpy_to_element(py::handle obj)
 {
     py::array arr_any = py::array::ensure(obj);
     if (!arr_any) {
@@ -51,7 +45,7 @@ static PyMieSim::JonesVector::Element numpy_to_element(py::handle obj)
         }
 
         auto r = arr.unchecked<1>();
-        PyMieSim::JonesVector::Element element;
+        JonesVector::Element element;
         element.push_back(Row{r(0), r(1)});
         return element;
     }
@@ -67,7 +61,7 @@ static PyMieSim::JonesVector::Element numpy_to_element(py::handle obj)
     const std::size_t n_rows = static_cast<std::size_t>(arr.shape(0));
     auto r = arr.unchecked<2>();
 
-    PyMieSim::JonesVector::Element element;
+    JonesVector::Element element;
     element.reserve(n_rows);
 
     for (std::size_t i = 0; i < n_rows; ++i) {
@@ -79,7 +73,7 @@ static PyMieSim::JonesVector::Element numpy_to_element(py::handle obj)
 
 static std::vector<double> quantity_to_magnitudes(py::object quantity)
 {
-    py::object np = numpy();
+    py::object np = py::module_::import("numpy");
     py::object atleast_1d = np.attr("atleast_1d");
 
     py::object mag = quantity.attr("magnitude");
@@ -103,39 +97,39 @@ static std::vector<double> quantity_to_magnitudes(py::object quantity)
     return out;
 }
 
-static PyMieSim::AngleUnit detect_angle_unit_from_quantity(py::object quantity)
+static AngleUnit detect_angle_unit_from_quantity(py::object quantity)
 {
     py::object ureg = get_shared_ureg();
     py::object units = quantity.attr("units");
 
     if (units.equal(ureg.attr("degree"))) {
-        return PyMieSim::AngleUnit::Degree;
+        return AngleUnit::Degree;
     }
     if (units.equal(ureg.attr("radian"))) {
-        return PyMieSim::AngleUnit::Radian;
+        return AngleUnit::Radian;
     }
 
     // Fallback heuristic: try converting to degree; if it works, treat as degree based input unit.
     try {
         (void)quantity.attr("to")(ureg.attr("degree"));
-        return PyMieSim::AngleUnit::Degree;
+        return AngleUnit::Degree;
     } catch (...) {
     }
 
     // Try converting to radian
     try {
         (void)quantity.attr("to")(ureg.attr("radian"));
-        return PyMieSim::AngleUnit::Radian;
+        return AngleUnit::Radian;
     } catch (...) {
     }
 
     throw std::invalid_argument("Angle must be convertible to degree or radian.");
 }
 
-static py::object build_angle_quantity(const std::vector<double>& magnitudes, PyMieSim::AngleUnit unit)
+static py::object build_angle_quantity(const std::vector<double>& magnitudes, AngleUnit unit)
 {
     py::object ureg = get_shared_ureg();
-    py::object np = numpy();
+    py::object np = py::module_::import("numpy");
 
     py::array_t<double> mag_arr(static_cast<py::ssize_t>(magnitudes.size()));
     auto w = mag_arr.mutable_unchecked<1>();
@@ -143,27 +137,11 @@ static py::object build_angle_quantity(const std::vector<double>& magnitudes, Py
         w(i) = magnitudes[static_cast<std::size_t>(i)];
     }
 
-    py::object unit_obj = (unit == PyMieSim::AngleUnit::Degree) ? ureg.attr("degree") : ureg.attr("radian");
+    py::object unit_obj = (unit == AngleUnit::Degree) ? ureg.attr("degree") : ureg.attr("radian");
     return mag_arr * unit_obj;
 }
 
-static py::object polarization_iter(const PyMieSim::JonesVector& self)
-{
-    if (self.has_angle()) {
-        return py::iter(build_angle_quantity(self.angles(), self.angle_unit()));
-    }
-    return py::iter(element_to_numpy(self.elements()));
-}
-
-static py::object polarization_str(const PyMieSim::JonesVector& self)
-{
-    return py::str(self.to_string());
-}
-
-// Mimic your Python __add__ behavior closely for Linear + Linear:
-// - If both have angles, concatenate angles and return Linear
-// - Otherwise, stack elements and return JonesVector
-static py::object polarization_add(const PyMieSim::JonesVector& self, const PyMieSim::JonesVector& other)
+static py::object polarization_add(const JonesVector& self, const JonesVector& other)
 {
     if (self.has_angle() && other.has_angle()) {
         if (self.angle_unit() != other.angle_unit()) {
@@ -174,19 +152,28 @@ static py::object polarization_add(const PyMieSim::JonesVector& self, const PyMi
         const auto& b = other.angles();
         merged.insert(merged.end(), b.begin(), b.end());
 
-        PyMieSim::Linear result(std::move(merged), self.angle_unit());
+        Linear result(std::move(merged), self.angle_unit());
         return py::cast(std::move(result));
     }
 
-    PyMieSim::JonesVector result = self + other;
+    JonesVector result = self + other;
     return py::cast(std::move(result));
 }
 
-} // namespace
+
+
+
+
+
+
+
+
+
+
 
 void register_polarization(py::module_& module)
 {
-    using namespace PyMieSim;
+    py::object ureg = get_shared_ureg();
 
     py::enum_<AngleUnit>(module, "AngleUnit")
         .value("Degree", AngleUnit::Degree)
@@ -196,21 +183,65 @@ void register_polarization(py::module_& module)
         .def(py::init<>());
 
     py::class_<JonesVector, BasePolarization>(module, "JonesVector")
-        .def(py::init([](py::object element) {
-            // Mirrors Python: np.atleast_2d(element).astype(complex)
-            // Accept either (2,) or (N, 2)
-            auto rows = numpy_to_element(element);
-            return JonesVector(std::move(rows));
-        }), py::arg("element"))
-        .def_property_readonly("element", [](const JonesVector& self) {
-            return element_to_numpy(self.elements());
-        })
-        .def("__iter__", &polarization_iter)
-        .def("__add__", [](const JonesVector& self, const JonesVector& other) {
-            return polarization_add(self, other);
-        })
-        .def("__repr__", &polarization_str)
-        .def("__str__", &polarization_str);
+        .def(
+            py::init(
+                [ureg](py::object element) {
+                    auto rows = numpy_to_element(element);
+                    return JonesVector(std::move(rows));
+                }
+        ),
+        py::arg("element"),
+        R"pbdoc(
+            Initialize a JonesVector polarization from its elements.
+
+            Parameters
+            ----------
+            element : array-like, shape (2,) or (N, 2)
+                The Jones vector elements as a 1D array of length 2 (single vector)
+                or a 2D array of shape (N, 2) (multiple vectors).
+        )pbdoc"
+        )
+        .def_property_readonly(
+            "element",
+            [ureg](const JonesVector& self) {
+                return element_to_numpy(self.elements());
+            },
+            "The Jones vector elements as a NumPy array."
+        )
+        .def(
+            "__iter__",
+            [ureg](const JonesVector& self) {
+                if (self.has_angle())
+                    return py::iter(build_angle_quantity(self.angles(), self.angle_unit()));
+
+                return py::iter(element_to_numpy(self.elements()));
+            },
+            "Iterator over the polarization data."
+        )
+        .def(
+            "__add__",
+            [ureg](const JonesVector& self, const JonesVector& other) {
+                return polarization_add(self, other);
+            },
+            "Add two JonesVector polarizations together."
+        )
+        .def(
+            "__repr__",
+            [ureg](const JonesVector& self) {
+                return py::str(self.to_string());
+            },
+            R"pbdoc(
+                Official string representation of the polarization.
+            )pbdoc"
+        )
+
+        .def(
+            "__str__",
+            [ureg](const JonesVector& self) {
+                return py::str(self.to_string());
+            },
+            "String representation of the polarization."
+        );
 
     py::class_<RightCircular, JonesVector>(module, "RightCircular")
         .def(py::init<>());
@@ -219,24 +250,59 @@ void register_polarization(py::module_& module)
         .def(py::init<>());
 
     py::class_<Linear, JonesVector>(module, "Linear")
-        .def(py::init([](py::object angle_quantity) {
-            const AngleUnit unit = detect_angle_unit_from_quantity(angle_quantity);
-            const std::vector<double> magnitudes = quantity_to_magnitudes(angle_quantity);
-            return Linear(magnitudes, unit);
-        }), py::arg("element"))
-        .def_property_readonly("angle", [](const JonesVector& self) -> py::object {
-            if (!self.has_angle()) {
-                throw py::attribute_error("This polarization has no attribute 'angle'.");
+        .def(py::init([ureg](py::object angle_quantity) {
+                const AngleUnit unit = detect_angle_unit_from_quantity(angle_quantity);
+                const std::vector<double> magnitudes = quantity_to_magnitudes(angle_quantity);
+                return Linear(magnitudes, unit);
             }
-            return build_angle_quantity(self.angles(), self.angle_unit());
-        })
-        .def_property_readonly("element", [](const JonesVector& self) {
-            return element_to_numpy(self.elements());
-        })
-        .def("__iter__", &polarization_iter)
-        .def("__add__", [](const JonesVector& self, const JonesVector& other) {
-            return polarization_add(self, other);
-        })
-        .def("__repr__", &polarization_str)
-        .def("__str__", &polarization_str);
+        ),
+        py::arg("element"))
+        .def_property_readonly(
+            "angle",
+            [ureg](const JonesVector& self) -> py::object {
+                if (!self.has_angle())
+                    throw py::attribute_error("This polarization has no attribute 'angle'.");
+
+                return build_angle_quantity(self.angles(), self.angle_unit());
+            },
+            "The polarization angles as a quantity array."
+        )
+        .def_property_readonly(
+            "element",
+            [ureg](const JonesVector& self) {
+                return element_to_numpy(self.elements());
+            },
+            "The Jones vector elements as a NumPy array."
+        )
+        .def(
+            "__iter__",
+            [ureg](const JonesVector& self) {
+                if (self.has_angle())
+                    return py::iter(build_angle_quantity(self.angles(), self.angle_unit()));
+
+                return py::iter(element_to_numpy(self.elements()));
+            },
+            "Iterator over the polarization data."
+        )
+        .def(
+            "__add__",
+            [ureg](const JonesVector& self, const JonesVector& other) {
+                return polarization_add(self, other);
+            },
+            "Add two JonesVector polarizations together."
+        )
+        .def(
+            "__repr__",
+            [ureg](const JonesVector& self) {
+                return py::str(self.to_string());
+            },
+            "Official string representation of the polarization."
+        )
+        .def(
+            "__str__",
+            [ureg](const JonesVector& self) {
+                return py::str(self.to_string());
+            },
+            "String representation of the polarization."
+        );
 }

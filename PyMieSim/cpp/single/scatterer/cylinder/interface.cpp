@@ -9,7 +9,7 @@ void register_cylinder(py::module_& module) {
     py::object ureg = get_shared_ureg();
 
     // Binding for Cylinder class
-    py::class_<Cylinder, BaseScatterer, std::shared_ptr<Cylinder>>(module, "CYLINDER")
+    py::class_<Cylinder, BaseScatterer, std::shared_ptr<Cylinder>>(module, "Cylinder")
         .def(
             py::init([ureg](
                 py::object diameter,

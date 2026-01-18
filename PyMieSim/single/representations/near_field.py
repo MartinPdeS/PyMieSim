@@ -59,7 +59,7 @@ class NearField():
     x_range: Tuple[Length, Length]
     y_range: Tuple[Length, Length]
     z: Length
-    sampling: int
+    sampling: int = 200
     field_components: list[str]
 
     def __post_init__(self):

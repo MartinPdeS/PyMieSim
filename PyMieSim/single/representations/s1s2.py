@@ -6,7 +6,7 @@ from pydantic.dataclasses import dataclass
 from MPSPlots import helper
 
 from PyMieSim.utils import config_dict
-
+from PyMieSim.units import ureg
 
 @dataclass(config=config_dict, kw_only=True)
 class S1S2():
@@ -57,12 +57,12 @@ class S1S2():
 
     """
     scatterer: object
-    sampling: int
+    sampling: int = 200
 
     def __post_init__(self):
-        self.phi = numpy.linspace(-180, 180, self.sampling)
+        self.phi = numpy.linspace(-180, 180, self.sampling) * ureg.degree
 
-        self.S1, self.S2 = self.scatterer._cpp_get_s1s2(
+        self.S1, self.S2 = self.scatterer.get_s1s2(
             phi=numpy.deg2rad(self.phi) + numpy.pi / 2
         )
 

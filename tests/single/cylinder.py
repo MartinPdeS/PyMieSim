@@ -3,7 +3,6 @@
 
 import pytest
 from PyMieSim.units import ureg
-from PyOptik import Material
 
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian

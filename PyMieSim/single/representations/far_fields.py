@@ -64,7 +64,7 @@ class FarField():
 
     """
     scatterer: object
-    sampling: int
+    sampling: int = 200
     distance: Length = 1.0 * ureg.meter
 
     def __post_init__(self):

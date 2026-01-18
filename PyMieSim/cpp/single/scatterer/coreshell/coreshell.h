@@ -131,6 +131,65 @@ class CoreShell: public BaseScatterer
          * @brief Applies the medium refractive index to the core and shell refractive indices and diameters.
          */
         void apply_medium();
+
+
+        void print_properties() const
+        {
+            // Table header
+            std::printf("\n");
+            std::printf("+-------------------+------------------------------+-----------+\n");
+            std::printf("| name              | value                        | unit      |\n");
+            std::printf("+-------------------+------------------------------+-----------+\n");
+
+            // Geometry and indices (these are CoreShell members)
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "core_diameter",    this->core_diameter,    "m");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "shell_thickness",  this->shell_thickness,  "m");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "shell_diameter",   this->shell_diameter,   "m");
+
+            std::printf("| %-17s | %14.6e + %14.6ei | %-9s |\n",
+                "core_n",
+                std::real(this->core_refractive_index),
+                std::imag(this->core_refractive_index),
+                "RIU"
+            );
+
+            std::printf("| %-17s | %14.6e + %14.6ei | %-9s |\n",
+                "shell_n",
+                std::real(this->shell_refractive_index),
+                std::imag(this->shell_refractive_index),
+                "RIU"
+            );
+
+            double radius = 0.5 * this->shell_diameter;
+            double volume = (4.0 / 3.0) * PI * std::pow(radius, 3);
+            double cross_section = PI * std::pow(radius, 2);
+
+            // BaseScatterer computed properties (assumed to exist as members)
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "size_parameter",   this->size_parameter,         "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "radius",           radius,                       "m");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "volume",           volume,                     "m^3");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "cross_section",    cross_section,              "m^2");
+
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "g",                this->get_g(),                "1");
+
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qsca",             this->get_Qsca(),             "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qext",             this->get_Qext(),             "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qabs",             this->get_Qabs(),             "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qback",            this->get_Qback(),            "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qratio",           this->get_Qratio(),           "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qpr",              this->get_Qpr(),              "1");
+
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Csca",             this->get_Csca(),             "m^2");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cext",             this->get_Cext(),             "m^2");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cabs",             this->get_Cabs(),             "m^2");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cback",            this->get_Cback(),            "m^2");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cratio",           this->get_Cratio(),           "1");
+            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cpr",              this->get_Cpr(),              "m^2");
+
+            std::printf("+-------------------+------------------------------+-----------+\n");
+            std::printf("\n");
+        }
+
 };
 
 

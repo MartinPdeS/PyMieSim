@@ -27,8 +27,8 @@ def test_plot_system(mock_show):
     scatterer = Cylinder(
         diameter=780 * ureg.nanometer,  # 7.8 micrometers diameter
         source=source,
-        medium_property=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
-        property=sqrt(1.5) * ureg.RIU,  # Refractive index of the scatterer
+        medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        refractive_index=sqrt(1.5) * ureg.RIU,  # Refractive index of the scatterer
     )
 
     detector = Photodiode(

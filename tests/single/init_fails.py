@@ -25,14 +25,14 @@ def test_invalid_gaussian_initialization(optical_power, NA, polarization, wavele
 
 
 @pytest.mark.parametrize(
-    "medium_property, property, diameter",
+    "medium_refractive_index, refractive_index, diameter",
     [
         (1, 1.5 * ureg.RIU, 100 * ureg.nanometer),
         (1 * ureg.RIU, 1.5, 100 * ureg.nanometer),
         (1 * ureg.RIU, 1.5 * ureg.RIU, 100),
     ],
 )
-def test_invalid_sphere_initialization(medium_property, property, diameter):
+def test_invalid_sphere_initialization(medium_refractive_index, refractive_index, diameter):
     source = Gaussian(
         optical_power=1 * ureg.watt,
         NA=0.1 * ureg.AU,
@@ -42,8 +42,8 @@ def test_invalid_sphere_initialization(medium_property, property, diameter):
     with pytest.raises(Exception):
         Sphere(
             source=source,
-            medium_property=medium_property,
-            property=property,
+            medium_refractive_index=medium_refractive_index,
+            refractive_index=refractive_index,
             diameter=diameter,
         )
 

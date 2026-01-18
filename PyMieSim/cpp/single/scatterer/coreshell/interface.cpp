@@ -10,7 +10,7 @@ void register_coreshell(py::module_& module) {
     py::object ureg = get_shared_ureg();
 
     // Binding for CoreShell class
-    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(module, "CORESHELL")
+    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(module, "CoreShell")
         .def(
             py::init([ureg](
                 py::object core_diameter,

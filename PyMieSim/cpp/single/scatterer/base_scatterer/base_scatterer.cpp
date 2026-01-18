@@ -264,3 +264,32 @@ BaseScatterer::compute_nearfields_structured(
         std::move(z_coords)
     );
 }
+
+std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>>
+BaseScatterer::get_unstructured_stokes_parameters(
+    const std::vector<double>& phi,
+    const std::vector<double>& theta,
+    const double r
+) const
+{
+    auto [E_phi, E_theta] = this->compute_unstructured_farfields(phi, theta, r);
+
+    std::vector<double> I(E_phi.size());
+    std::vector<double> Q(E_phi.size());
+    std::vector<double> U(E_phi.size());
+    std::vector<double> V(E_phi.size());
+
+    for (size_t i = 0; i < E_phi.size(); ++i) {
+        double intensity = std::norm(E_phi[i]) + std::norm(E_theta[i]);
+        I[i] = intensity / (*std::max_element(I.begin(), I.end()));
+        Q[i] = (std::norm(E_phi[i]) - std::norm(E_theta[i])) / intensity;
+        U[i] = (2.0 * std::real(E_phi[i] * std::conj(E_theta[i]))) / intensity;
+        V[i] = (-2.0 * std::imag(E_phi[i] * std::conj(E_theta[i]))) / intensity;
+    }
+    return std::make_tuple(
+        std::move(I),
+        std::move(Q),
+        std::move(U),
+        std::move(V)
+    );
+}
