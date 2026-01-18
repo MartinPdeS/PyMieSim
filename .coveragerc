@@ -1,0 +1,24 @@
+# .coveragerc
+[run]
+source = PyMieSim
+branch = True
+relative_files = True
+parallel = True
+omit =
+    **/__init__.py
+    PyMieSim/_version.py
+    PyMieSim/directories.py
+    PyMieSim/**/__main__.py
+    PyMieSim/gui/**
+    PyMieSim/_utils.py
+
+[report]
+skip_covered = True
+show_missing = True
+precision = 2
+
+[html]
+directory = htmlcov
+
+[xml]
+output = coverage.xml

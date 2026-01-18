@@ -1,0 +1,29 @@
+name: Deploy to PyPi
+
+on:
+  push:
+    branches: [ "master" ]
+    tags: '*'
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+    contents: write
+
+jobs:
+  PyPi:
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_PyPi.yml@master
+    with:
+      python-version: "3.11"
+      build-Linux: true
+      build-macOS: true
+      build-Windows: true
+      mingw-package: |
+        mingw-w64-x86_64-toolchain
+        mingw-w64-x86_64-openmp
+        mingw-w64-x86_64-ninja
+        mingw-w64-x86_64-gcc-fortran
+        mingw-w64-x86_64-pkg-config
+      apt-package: xvfb jq
+    secrets:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
