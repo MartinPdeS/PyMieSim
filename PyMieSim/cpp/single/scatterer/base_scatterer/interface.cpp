@@ -157,7 +157,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 std::vector<double> theta_values = theta.attr("to")(ureg.attr("radian")).attr("magnitude").cast<std::vector<double>>();
                 double distance_value = distance.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                auto [i, Q, U, V] = self.get_unstructured_stokes_parameters(phi_values, theta_values, distance_value);
+                auto [i, Q, U, V] = self.get_structured_stokes_parameters(phi_values, theta_values, distance_value);
 
                 return std::make_tuple(
                     vector_move_from_numpy(i, {i.size()}),

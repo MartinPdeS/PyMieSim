@@ -347,7 +347,7 @@ public:
      * @return A tuple containing vectors for Stokes parameters I, Q, U, and V.
      */
     std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>>
-    get_unstructured_stokes_parameters(
+    get_structured_stokes_parameters(
         const std::vector<double>& phi,
         const std::vector<double>& theta,
         const double r

@@ -102,18 +102,18 @@ def test_unstructured_array_functions(refractive_index, medium_refractive_index,
     )
 
     phi = numpy.linspace(0, numpy.pi, 5) * ureg.radian
-    s1, s2 = scatterer.get_s1s2_array(phi)
+    s1, s2 = scatterer.get_s1s2(phi)
     assert s1.shape == phi.shape
     assert s2.shape == phi.shape
 
     theta = numpy.linspace(0, numpy.pi / 2, 5) * ureg.radian
-    I, Q, U, V = scatterer.get_stokes_array(phi, theta)
+    I, Q, U, V = scatterer.get_stokes_parameters(phi, theta, 1 * ureg.meter)
     assert I.shape == phi.shape
     assert Q.shape == phi.shape
     assert U.shape == phi.shape
     assert V.shape == phi.shape
 
-    E_para, E_perp = scatterer.get_farfield_array(phi, theta)
+    E_para, E_perp = scatterer.get_farfields(phi, theta, 1 * ureg.meter)
     assert E_para.shape == phi.shape
     assert E_perp.shape == phi.shape
 
