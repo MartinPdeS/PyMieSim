@@ -43,8 +43,8 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     # Get data from PyMieSim
     scatterer = Sphere(
         diameter=diameters,
-        property=index,
-        medium_property=medium_indexes,
+        refractive_index=index,
+        medium_refractive_index=medium_indexes,
         source=gaussian_source,
     )
 

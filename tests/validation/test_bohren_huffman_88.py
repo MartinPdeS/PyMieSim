@@ -37,7 +37,7 @@ def test_validation():
     )
 
     scatterer = Cylinder(
-        diameter=diameters, property=index, medium_property=medium_index, source=source
+        diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
     )
 
     experiment = Setup(scatterer=scatterer, source=source)

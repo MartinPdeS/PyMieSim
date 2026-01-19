@@ -35,22 +35,22 @@ sources = [gaussian_source, planewave_source]
 
 
 @pytest.mark.parametrize(
-    "medium_property", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
+    "medium_refractive_index", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
 )
 @pytest.mark.parametrize(
     "source", sources, ids=[f"Source:{m.__class__.__name__}" for m in sources]
 )
 @pytest.mark.parametrize(
-    "property", properties, ids=[f"Property:{m}" for m in properties]
+    "refractive_index", properties, ids=[f"Property:{m}" for m in properties]
 )
 @pytest.mark.parametrize("measure", measures)
-def test_get_measure(source, measure, property, medium_property):
+def test_get_measure(source, measure, refractive_index, medium_refractive_index):
     # Configure the spherical scatterer
     scatterer = Sphere(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
-        property=property,
-        medium_property=medium_property,
+        refractive_index=refractive_index,
+        medium_refractive_index=medium_refractive_index,
     )
 
     # Configure the detector

@@ -23,18 +23,18 @@ def test_no_shell(metric, source):
 
     sphere = Sphere(
         diameter=diameter,
-        property=1.5 * ureg.RIU,
+        refractive_index=1.5 * ureg.RIU,
         source=source,
-        medium_property=1.33 * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
     coreshell = CoreShell(
         core_diameter=diameter,
         shell_thickness=0 * ureg.nanometer,
-        core_property=1.5 * ureg.RIU,
-        shell_property=1.6 * ureg.RIU,
+        core_refractive_index=1.5 * ureg.RIU,
+        shell_refractive_index=1.6 * ureg.RIU,
         source=source,
-        medium_property=1.33 * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
     experiment_sphere = Setup(scatterer=sphere, source=source)
@@ -57,18 +57,18 @@ def test_shell_equal_core(metric, source):
 
     sphere = Sphere(
         diameter=diameter_sphere,
-        property=1.5 * ureg.RIU,
+        refractive_index=1.5 * ureg.RIU,
         source=source,
-        medium_property=1.33 * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
     coreshell = CoreShell(
         core_diameter=diameter_core,
         shell_thickness=100 * ureg.nanometer,
-        core_property=1.5 * ureg.RIU,
-        shell_property=1.5 * ureg.RIU,
+        core_refractive_index=1.5 * ureg.RIU,
+        shell_refractive_index=1.5 * ureg.RIU,
         source=source,
-        medium_property=1.33 * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
     experiment_sphere = Setup(scatterer=sphere, source=source)
@@ -91,18 +91,18 @@ def test_only_shell(metric, source):
 
     sphere = Sphere(
         diameter=diameter_sphere,
-        property=1.5 * ureg.RIU,
+        refractive_index=1.5 * ureg.RIU,
         source=source,
-        medium_property=1.33 * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
     coreshell = CoreShell(
         core_diameter=100 * ureg.nanometer,
         shell_thickness=diameter_shell,
-        core_property=1.5 * ureg.RIU,
-        shell_property=1.5 * ureg.RIU,
+        core_refractive_index=1.5 * ureg.RIU,
+        shell_refractive_index=1.5 * ureg.RIU,
         source=source,
-        medium_property=1.33 * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
     experiment_sphere = Setup(scatterer=sphere, source=source)
@@ -124,18 +124,18 @@ def test_shell_is_medium(metric, source):
 
     sphere = Sphere(
         diameter=diameter,
-        property=1.5 * ureg.RIU,
+        refractive_index=1.5 * ureg.RIU,
         source=source,
-        medium_property=1.4 * ureg.RIU,
+        medium_refractive_index=1.4 * ureg.RIU,
     )
 
     coreshell = CoreShell(
         core_diameter=diameter,
         shell_thickness=500 * ureg.nanometer,
-        core_property=1.5 * ureg.RIU,
-        shell_property=1.4 * ureg.RIU,
+        core_refractive_index=1.5 * ureg.RIU,
+        shell_refractive_index=1.4 * ureg.RIU,
         source=source,
-        medium_property=1.4 * ureg.RIU,
+        medium_refractive_index=1.4 * ureg.RIU,
     )
 
     experiment_sphere = Setup(scatterer=sphere, source=source)

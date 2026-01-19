@@ -34,8 +34,8 @@ def test_valid_experiment(mock_show):
     scatterer = Sphere.build_sequential(
         source=source,
         diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-        property=1.4 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU,
+        refractive_index=1.4 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
         total_size=TOTAL_SIZE,
     )
 
@@ -56,11 +56,11 @@ def test_valid_experiment(mock_show):
     experiment.get_sequential(Sphere.available_measure_list[0])
 
 
-def test_invalid_medium_property():
+def test_invalid_medium_refractive_index():
     """
-    Test that using an invalid medium property (Material.water) raises a ValueError.
+    Test that using an invalid medium refractive_index (Material.water) raises a ValueError.
 
-    When medium_property is defined using Material.water, the configuration should be rejected.
+    When medium_refractive_index is defined using Material.water, the configuration should be rejected.
     """
     source = Gaussian.build_sequential(
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
@@ -74,17 +74,17 @@ def test_invalid_medium_property():
         Sphere.build_sequential(
             source=source,
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-            property=1.4 * ureg.RIU,
-            medium_property=Material.water,  # This should trigger an error
+            refractive_index=1.4 * ureg.RIU,
+            medium_refractive_index=Material.water,  # This should trigger an error
             total_size=TOTAL_SIZE,
         )
 
 
-def test_invalid_property():
+def test_invalid_refractive_index():
     """
-    Test that using an invalid property (Material.water) for the scatterer raises a ValueError.
+    Test that using an invalid refractive_index (Material.water) for the scatterer raises a ValueError.
 
-    When property is defined using Material.water, the configuration should be rejected.
+    When refractive_index is defined using Material.water, the configuration should be rejected.
     """
     source = Gaussian.build_sequential(
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
@@ -98,8 +98,8 @@ def test_invalid_property():
         Sphere.build_sequential(
             source=source,
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-            property=Material.water,  # This should trigger an error
-            medium_property=1.0 * ureg.RIU,
+            refractive_index=Material.water,  # This should trigger an error
+            medium_refractive_index=1.0 * ureg.RIU,
             total_size=TOTAL_SIZE,
         )
 
@@ -108,7 +108,7 @@ def test_parameter_broadcasting():
     """
     Test that scalar parameters are correctly broadcast to arrays of the specified total size.
 
-    This test uses scalar values for diameter, property, and medium_property, and verifies that
+    This test uses scalar values for diameter, refractive_index, and medium_refractive_index, and verifies that
     the resulting arrays all have a size equal to TOTAL_SIZE.
     """
     source = Gaussian.build_sequential(
@@ -122,15 +122,15 @@ def test_parameter_broadcasting():
     scatterer = Sphere.build_sequential(
         source=source,
         diameter=500 * ureg.nanometer,  # Scalar value
-        property=1.5 * ureg.RIU,  # Scalar value
-        medium_property=1.2 * ureg.RIU,  # Scalar value
+        refractive_index=1.5 * ureg.RIU,  # Scalar value
+        medium_refractive_index=1.2 * ureg.RIU,  # Scalar value
         total_size=TOTAL_SIZE,
     )
 
     # Check that each broadcasted attribute is an array with the proper length.
     assert scatterer.diameter.size == TOTAL_SIZE
-    assert scatterer.property.size == TOTAL_SIZE
-    assert scatterer.medium_property.size == TOTAL_SIZE
+    assert scatterer.refractive_index.size == TOTAL_SIZE
+    assert scatterer.medium_refractive_index.size == TOTAL_SIZE
 
 
 def test_broadcasted_values():
@@ -151,8 +151,8 @@ def test_broadcasted_values():
     scatterer = Sphere.build_sequential(
         source=source,
         diameter=value,
-        property=1.6 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU,
+        refractive_index=1.6 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
         total_size=TOTAL_SIZE,
     )
 

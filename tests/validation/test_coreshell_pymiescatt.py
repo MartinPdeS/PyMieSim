@@ -60,10 +60,10 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     # Get data from PyMieSim
     scatterer = CoreShell(
         core_diameter=core_diameters,
-        core_property=core_index,
+        core_refractive_index=core_index,
         shell_thickness=shell_thickness,
-        shell_property=shell_index,
-        medium_property=medium_indexes,
+        shell_refractive_index=shell_index,
+        medium_refractive_index=medium_indexes,
         source=gaussian_source,
     )
 

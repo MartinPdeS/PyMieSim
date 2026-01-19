@@ -101,8 +101,8 @@ def test_api(polarization_0, polarization_1):
     scatterer = Sphere(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
-        property=1.4 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU,
+        refractive_index=1.4 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
     )
 
     # Set up and run the experiment

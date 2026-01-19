@@ -200,7 +200,7 @@ void register_sets(py::module& module) {
                     std::vector<double> wavelength_value = wavelength.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
 
                     units_amplitude.attr("check")(amplitude);
-                    std::vector<double> amplitude_values = amplitude.attr("to")(ureg.attr("volt_per_meter")).attr("magnitude").cast<std::vector<double>>();
+                    std::vector<double> amplitude_values = amplitude.attr("to")(ureg.attr("volt/meter")).attr("magnitude").cast<std::vector<double>>();
 
                     return std::make_shared<PlaneWaveSourceSet>(
                         wavelength_value,

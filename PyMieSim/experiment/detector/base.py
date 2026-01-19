@@ -138,34 +138,6 @@ class BaseDetector:
         Dimensionless.check(value)
         return numpy.atleast_1d(value).astype(int)
 
-    # def _generate_binding(self) -> None:
-    #     """
-    #     Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the
-    #     detector is correctly linked to the backend, enabling high-performance Mie scattering calculations.
-
-    #     Sets up parameters such as mode number, sampling rate, NA, and various offsets for the simulation.
-    #     """
-    #     self.binding_kwargs = {
-    #         "mode_number": self.mode_number,
-    #         "sampling": self.sampling,
-    #         "NA": self.NA,
-    #         "cache_NA": self.cache_NA,
-    #         "polarization_filter": self.polarization_filter,
-    #         "phi_offset": self.phi_offset,
-    #         "gamma_offset": self.gamma_offset,
-    #         "rotation": self.rotation,
-    #         "is_sequential": self.is_sequential,
-    #         "coherent": self.coherent,
-    #         "mean_coupling": self.mean_coupling,
-    #     }
-
-    #     self.set = DetectorSet(
-    #         **{
-    #             k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-    #             for k, v in self.binding_kwargs.items()
-    #         }
-    #     )
-
     def _generate_mapping(self) -> None:
         """
         Updates the internal mapping of the detector with current parameter values, allowing for visual representation

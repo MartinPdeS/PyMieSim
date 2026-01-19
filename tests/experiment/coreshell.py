@@ -36,27 +36,27 @@ sources = [gaussian_source, planewave_source]
 
 
 @pytest.mark.parametrize(
-    "medium_property", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
+    "medium_refractive_index", medium_properties, ids=[f"Medium:{m}" for m in medium_properties]
 )
 @pytest.mark.parametrize(
-    "core_property", core_properties, ids=[f"Property:{m}" for m in core_properties]
+    "core_refractive_index", core_properties, ids=[f"Property:{m}" for m in core_properties]
 )
 @pytest.mark.parametrize(
     "source", sources, ids=[f"Source:{m.__class__.__name__}" for m in sources]
 )
 @pytest.mark.parametrize(
-    "shell_property", shell_properties, ids=[f"Property:{m}" for m in shell_properties]
+    "shell_refractive_index", shell_properties, ids=[f"Property:{m}" for m in shell_properties]
 )
 @pytest.mark.parametrize("measure", measures)
-def test_measure(measure, source, core_property, shell_property, medium_property):
+def test_measure(measure, source, core_refractive_index, shell_refractive_index, medium_refractive_index):
     # Setup core-shell scatterer
     scatterer = CoreShell(
         core_diameter=np.linspace(800, 1000, 10) * ureg.nanometer,
         shell_thickness=300 * ureg.nanometer,
         source=source,
-        shell_property=shell_property,
-        core_property=core_property,
-        medium_property=medium_property,
+        shell_refractive_index=shell_refractive_index,
+        core_refractive_index=core_refractive_index,
+        medium_refractive_index=medium_refractive_index,
     )
 
     # Setup detector

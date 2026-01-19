@@ -73,9 +73,9 @@ def scatterer_experiment(source_experiment):
     """
     return experiment.scatterer.Sphere(
         diameter=1000 * ureg.nanometer,
-        property=(1.5 + 0.5j) * ureg.RIU,
+        refractive_index=(1.5 + 0.5j) * ureg.RIU,
         source=source_experiment,
-        medium_property=1 * ureg.RIU,
+        medium_refractive_index=1 * ureg.RIU,
     )
 
 

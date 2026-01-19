@@ -30,14 +30,14 @@ def test_invalid_gaussian_initialization(wavelength, polarization, optical_power
 
 
 @pytest.mark.parametrize(
-    "diameter, property, medium_property",
+    "diameter, refractive_index, medium_refractive_index",
     [
         (100, 1.5 * ureg.RIU, Material.water),
         (100 * ureg.nanometer, 1.5, Material.water),
         (100 * ureg.nanometer, 1.5 * ureg.RIU, 1.0),
     ],
 )
-def test_invalid_sphere_initialization(diameter, property, medium_property):
+def test_invalid_sphere_initialization(diameter, refractive_index, medium_refractive_index):
     source = PlaneWave(
         wavelength=1e3 * ureg.nanometer,
         polarization=0 * ureg.degree,
@@ -47,8 +47,8 @@ def test_invalid_sphere_initialization(diameter, property, medium_property):
         Sphere(
             diameter=diameter,
             source=source,
-            property=property,
-            medium_property=medium_property,
+            refractive_index=refractive_index,
+            medium_refractive_index=medium_refractive_index,
         )
 
 
