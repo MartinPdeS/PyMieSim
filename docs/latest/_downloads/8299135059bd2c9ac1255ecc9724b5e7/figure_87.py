@@ -32,8 +32,8 @@ source = Gaussian(
 
 scatterer = Cylinder(
     diameter=diameter,
-    property=1.55 * ureg.RIU,
-    medium_property=1 * ureg.RIU,
+    refractive_index=1.55 * ureg.RIU,
+    medium_refractive_index=1 * ureg.RIU,
     source=source,
 )
 

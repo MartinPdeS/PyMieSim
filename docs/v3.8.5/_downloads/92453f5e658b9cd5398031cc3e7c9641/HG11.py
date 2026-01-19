@@ -10,10 +10,8 @@ This example demonstrates the initialization and visualization of HG31 Mode dete
 from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import plot_system
+from PyMieSim.single import SystemPlotter
 
-# %%
-# Initializing the detector
 detector = CoherentMode(
     mode_number="HG31",  # Specifying HG31 mode
     sampling=500 * ureg.AU,  # Number of sampling points
@@ -23,6 +21,5 @@ detector = CoherentMode(
     rotation=0 * ureg.degree,
 )
 
-# %%
-# Plotting the detector
-plot_system(detector)
+plotter = SystemPlotter()
+plotter.plot(detector)

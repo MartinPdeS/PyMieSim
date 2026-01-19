@@ -48,8 +48,8 @@ Importing the package dependencies: numpy, PyMieSim
 
     scatterer = Cylinder(
         diameter=[200, 150] * ureg.nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
-        property=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
-        medium_property=[1] * ureg.RIU,  # Refractive index of the surrounding medium
+        refractive_index=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
+        medium_refractive_index=[1] * ureg.RIU,  # Refractive index of the surrounding medium
         source=source,
     )
 
@@ -57,7 +57,7 @@ Importing the package dependencies: numpy, PyMieSim
 
     dataframe = experiment.get("Qsca")
 
-    dataframe.plot(x="source:wavelength", std="scatterer:property")
+    dataframe.plot(x="source:wavelength", std="scatterer:refractive_index")
 
 
 
@@ -79,7 +79,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.343 seconds)
+   **Total running time of the script:** (0 minutes 0.336 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py:

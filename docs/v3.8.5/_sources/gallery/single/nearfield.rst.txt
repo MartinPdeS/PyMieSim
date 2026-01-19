@@ -27,7 +27,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-32
+.. GENERATED FROM PYTHON SOURCE LINES 10-39
 
 .. code-block:: Python
 
@@ -35,6 +35,7 @@ Importing the package: PyMieSim
 
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
+    from PyMieSim.single.representations import NearField
 
     source = Gaussian(
         wavelength=1400 * ureg.nanometer,
@@ -46,14 +47,20 @@ Importing the package: PyMieSim
     scatterer = Sphere(
         diameter=500 * ureg.nanometer,
         source=source,
-        property=1.8 * ureg.RIU,
-        medium_property=1.0 * ureg.RIU,
+        refractive_index=1.8 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
     )
 
-    data = scatterer.get_nearfield(sampling=200, field_components=["Hz"])
+    near_field = NearField(
+        scatterer=scatterer,
+        sampling=200,
+        x_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
+        y_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
+        z=0 * ureg.micrometer,
+        field_components=["Hz"]
+    )
 
-    figure = data.plot()
-
+    figure = near_field.plot()
 
 
 .. image-sg:: /gallery/single/images/sphx_glr_nearfield_001.png
@@ -62,13 +69,20 @@ Importing the package: PyMieSim
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/matplotlib/axes/_axes.py:6024: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+      C = np.asanyarray(args[2])
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.351 seconds)
+   **Total running time of the script:** (0 minutes 0.401 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfield.py:

@@ -27,13 +27,14 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-31
+.. GENERATED FROM PYTHON SOURCE LINES 10-32
 
 .. code-block:: Python
 
     from PyMieSim.units import ureg
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import Gaussian
+    from PyMieSim.single.representations import S1S2
 
     source = Gaussian(
         wavelength=450 * ureg.nanometer,
@@ -45,13 +46,13 @@ Importing the package: PyMieSim
     scatterer = Sphere(
         diameter=6 * ureg.nanometer,
         source=source,
-        medium_property=1.0 * ureg.RIU,
-        property=1.4 * ureg.RIU,
+        medium_refractive_index=1.0 * ureg.RIU,
+        refractive_index=1.4 * ureg.RIU,
     )
 
-    data = scatterer.get_s1s2(sampling=200)  # Specify the number of sampling points
+    s1s2 = S1S2(scatterer=scatterer, sampling=200)  # Specify the number of sampling points
 
-    figure = data.plot()
+    figure = s1s2.plot()
 
 
 
@@ -67,7 +68,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.231 seconds)
+   **Total running time of the script:** (0 minutes 0.232 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:

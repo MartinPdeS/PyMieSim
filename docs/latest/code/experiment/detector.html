@@ -490,7 +490,7 @@
 <span id="experiment-detectors"></span><h1>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NA,</span> <span class="pre">gamma_offset,</span> <span class="pre">phi_offset,</span> <span class="pre">cache_NA=&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">sampling=&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">polarization_filter=&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;,</span> <span class="pre">mode_number=&lt;factory&gt;,</span> <span class="pre">rotation=&lt;Quantity([0],</span> <span class="pre">'degree')&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/detector/photodiode.html#Photodiode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">NA,</span> <span class="pre">gamma_offset,</span> <span class="pre">phi_offset,</span> <span class="pre">cache_NA=&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">sampling=&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">polarization_filter=&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;,</span> <span class="pre">mode_number=&lt;factory&gt;,</span> <span class="pre">rotation=&lt;Quantity([0],</span> <span class="pre">'degree')&gt;,</span> <span class="pre">medium_refractive_index=&lt;Quantity([1.],</span> <span class="pre">'dimensionless')&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/detector/photodiode.html#Photodiode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>Photodiode detector tailored for Mie scattering simulations, extending BaseDetector with specific features.</p>
 <dl class="field-list simple">
@@ -506,6 +506,7 @@
 <li><p><strong>coherent</strong> (<em>bool</em>) – Indicates if the detection is coherent. Defaults to False.</p></li>
 <li><p><strong>mode_number</strong> (<em>str</em>) – Mode number of the detector. Defaults to ‘NC00’.</p></li>
 <li><p><strong>cache_NA</strong> (<em>Dimensionless</em>)</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>Dimensionless</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -556,11 +557,6 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.coherent">
-<span class="sig-name descname"><span class="pre">coherent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.coherent" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.gamma_offset">
 <span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -573,6 +569,11 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.mean_coupling">
 <span class="sig-name descname"><span class="pre">mean_coupling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.mean_coupling" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.detector.Photodiode.medium_refractive_index">
+<span class="sig-name descname"><span class="pre">medium_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([1.],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.Photodiode.medium_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -673,7 +674,7 @@ Ensures the value has angular units (degree or radian).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode_number,</span> <span class="pre">NA,</span> <span class="pre">gamma_offset,</span> <span class="pre">phi_offset,</span> <span class="pre">rotation,</span> <span class="pre">mean_coupling=False,</span> <span class="pre">coherent=True,</span> <span class="pre">cache_NA=&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">sampling=&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">polarization_filter=&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/detector/coherent_mode.html#CoherentMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mode_number,</span> <span class="pre">NA,</span> <span class="pre">gamma_offset,</span> <span class="pre">phi_offset,</span> <span class="pre">rotation,</span> <span class="pre">mean_coupling=False,</span> <span class="pre">cache_NA=&lt;Quantity([0.],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">medium_refractive_index=&lt;Quantity([1.],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">sampling=&lt;Quantity([200],</span> <span class="pre">'dimensionless')&gt;,</span> <span class="pre">polarization_filter=&lt;Quantity([nan],</span> <span class="pre">'degree')&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/detector/coherent_mode.html#CoherentMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>Coherent mode detector for Mie scattering simulations, handling coherent detection modes.</p>
 <p>This detector is designed specifically for coherent modes, such as LP, HG, LG, and NC modes, which require specific handling
@@ -691,6 +692,7 @@ in Mie scattering experiments.</p>
 <li><p><strong>mean_coupling</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – Whether mean coupling is used. Defaults to False.</p></li>
 <li><p><strong>coherent</strong> (<em>bool</em>) – Specifies if the detection is coherent. Defaults to True.</p></li>
 <li><p><strong>cache_NA</strong> (<em>Dimensionless</em>)</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>Dimensionless</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -741,11 +743,6 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.coherent">
-<span class="sig-name descname"><span class="pre">coherent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.coherent" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.gamma_offset">
 <span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.gamma_offset" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -758,6 +755,11 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.mean_coupling">
 <span class="sig-name descname"><span class="pre">mean_coupling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.mean_coupling" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.detector.CoherentMode.medium_refractive_index">
+<span class="sig-name descname"><span class="pre">medium_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity([1.],</span> <span class="pre">'dimensionless')&gt;</span></em><a class="headerlink" href="#PyMieSim.experiment.detector.CoherentMode.medium_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -885,10 +887,10 @@ Ensures the value has angular units (degree or radian).</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.build_sequential"><code class="docutils literal notranslate"><span class="pre">Photodiode.build_sequential()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.cache_NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.cache_NA</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.coherent"><code class="docutils literal notranslate"><span class="pre">Photodiode.coherent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.gamma_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.is_sequential"><code class="docutils literal notranslate"><span class="pre">Photodiode.is_sequential</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.mean_coupling"><code class="docutils literal notranslate"><span class="pre">Photodiode.mean_coupling</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">Photodiode.medium_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.mode_number"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_number</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.phi_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.phi_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.Photodiode.polarization_filter"><code class="docutils literal notranslate"><span class="pre">Photodiode.polarization_filter</span></code></a></li>
@@ -904,10 +906,10 @@ Ensures the value has angular units (degree or radian).</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.build_sequential"><code class="docutils literal notranslate"><span class="pre">CoherentMode.build_sequential()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.cache_NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.cache_NA</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.coherent"><code class="docutils literal notranslate"><span class="pre">CoherentMode.coherent</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.gamma_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.is_sequential"><code class="docutils literal notranslate"><span class="pre">CoherentMode.is_sequential</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.mean_coupling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mean_coupling</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoherentMode.medium_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.mode_number"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_number</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.phi_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.phi_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.detector.CoherentMode.polarization_filter"><code class="docutils literal notranslate"><span class="pre">CoherentMode.polarization_filter</span></code></a></li>

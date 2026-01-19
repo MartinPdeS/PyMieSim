@@ -27,15 +27,13 @@ This example demonstrates the computation of scattering properties using PyMieSi
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-31
+.. GENERATED FROM PYTHON SOURCE LINES 10-29
 
 .. code-block:: Python
 
     from PyMieSim.units import ureg
-
     from PyMieSim.single.scatterer import Cylinder
     from PyMieSim.single.source import Gaussian
-    from PyOptik import Material
 
     source = Gaussian(
         wavelength=750 * ureg.nanometer,  # 750 nm
@@ -47,31 +45,14 @@ Importing the package: PyMieSim
     scatterer = Cylinder(
         diameter=300 * ureg.nanometer,  # 300 nm
         source=source,
-        property=(1.4 + 0.1j) * ureg.RIU,
-        medium_property=Material.water,
+        refractive_index=(1.4 + 0.1j) * ureg.RIU,
+        medium_refractive_index=1.33 * ureg.RIU,
     )
 
-    scatterer.print_properties()
+    scatterer.print_properties(4)
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Property        Value
-    --------------  ----------------------------------
-    size_parameter  1.2566370614359172 dimensionless
-    radius          150.0 nanometer
-    cross_section   300000.00000000006 micrometer ** 2
-    g               0.0 dimensionless
-    Qsca            0.023186330283701 dimensionless
-    Qext            0.25098397196276695 dimensionless
-    Qabs            0.22779764167906594 dimensionless
-    Csca            6955.899085110302 micrometer ** 2
-    Cext            75295.1915888301 micrometer ** 2
-    Cabs            68339.2925037198 micrometer ** 2
 
 
 
@@ -79,7 +60,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.057 seconds)
+   **Total running time of the script:** (0 minutes 0.047 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_properties_cylinder.py:

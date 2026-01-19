@@ -416,7 +416,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/s1s2.html">S1 S2 Function Computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../single/source.html">Source Plottings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/stokes.html">Stokes Parameters Computation</a></li>
 </ul>
@@ -474,7 +473,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../extras/array_scattering.html">Array-based scattering calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../extras/farfields_bulk.html">Far-field scattering simulation for bulk scatterers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/integrating_sphere.html">Integrating sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/plot_system.html">Plot system</a></li>
@@ -578,9 +576,9 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.</p>
     <span class="n">core_diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
     <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Core diameters from 100 nm to 600 nm</span>
     <span class="n">shell_thickness</span><span class="o">=</span><span class="mi">800</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Shell width of 800 nm</span>
-    <span class="n">core_property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">silver</span><span class="p">,</span>  <span class="c1"># Core material</span>
-    <span class="n">shell_property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>  <span class="c1"># Shell material</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Surrounding medium&#39;s refractive index</span>
+    <span class="n">core_refractive_index</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">silver</span><span class="p">,</span>  <span class="c1"># Core material</span>
+    <span class="n">shell_refractive_index</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>  <span class="c1"># Shell material</span>
+    <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Surrounding medium&#39;s refractive index</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -594,7 +592,7 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.</p>
 <img src="../../../_images/sphx_glr_coreshell_Qback_vs_corediameter_001.png" srcset="../../../_images/sphx_glr_coreshell_Qback_vs_corediameter_001.png" alt="coreshell Qback vs corediameter" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.353 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.350 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-qback-vs-corediameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/8df6241e7e5bb2e6d40f66083ba8365b/coreshell_Qback_vs_corediameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_Qback_vs_corediameter.ipynb</span></code></a></p>

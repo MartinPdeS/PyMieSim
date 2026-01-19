@@ -464,7 +464,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik.material.base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMaterial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Length</span><span class="p">,</span> <span class="n">RefractiveIndex</span><span class="p">,</span> <span class="n">AnyUnit</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_sets</span><span class="w"> </span><span class="kn">import</span> <span class="n">CppCoreShellSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreShellSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseScatterer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
@@ -490,11 +490,11 @@
 <span class="sd">        Diameters of the core components.</span>
 <span class="sd">    shell_thickness : Length</span>
 <span class="sd">        Thicknesses of the shell components.</span>
-<span class="sd">    core_property : List[BaseMaterial] | List[RefractiveIndex]</span>
+<span class="sd">    core_refractive_index : List[BaseMaterial] | List[RefractiveIndex]</span>
 <span class="sd">        Refractive index or indices of the core.</span>
-<span class="sd">    shell_property : List[BaseMaterial] | List[RefractiveIndex]</span>
+<span class="sd">    shell_refractive_index : List[BaseMaterial] | List[RefractiveIndex]</span>
 <span class="sd">        Refractive index or indices of the shell.</span>
-<span class="sd">    medium_property : List[BaseMaterial] | List[RefractiveIndex]</span>
+<span class="sd">    medium_refractive_index : List[BaseMaterial] | List[RefractiveIndex]</span>
 <span class="sd">        BaseMaterial(s) defining the medium, used if `medium_index` is not provided.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -502,9 +502,9 @@
     <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span>
     <span class="n">core_diameter</span><span class="p">:</span> <span class="n">Length</span>
     <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">Length</span>
-    <span class="n">core_property</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
-    <span class="n">shell_property</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
-    <span class="n">medium_property</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
+    <span class="n">core_refractive_index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
+    <span class="n">shell_refractive_index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
+    <span class="n">medium_refractive_index</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">RefractiveIndex</span><span class="p">]</span>
 
     <span class="n">available_measure_list</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;Qsca&quot;</span><span class="p">,</span>
@@ -534,47 +534,42 @@
     <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;core_diameter&quot;</span><span class="p">,</span>
         <span class="s2">&quot;shell_thickness&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;core_property&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;shell_property&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;medium_property&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;core_refractive_index&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;shell_refractive_index&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;medium_refractive_index&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_generate_binding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.</span>
-<span class="sd">        Prepares structured data from scatterer properties for efficient simulation integration.</span>
+<span class="sd">        Prepares structured data from scatterer refractive_index for efficient simulation integration.</span>
 
 <span class="sd">        This function populates `binding_kwargs` with values formatted appropriately for the C++ backend used in simulations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">mediun_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span>
+        <span class="n">mediun_refractive_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_refractive_index</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="n">refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span>
         <span class="p">)</span>
 
-        <span class="n">core_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;core&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_property</span>
+        <span class="n">core_refractive_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_refractive_index</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;core&quot;</span><span class="p">,</span> <span class="n">refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_refractive_index</span>
         <span class="p">)</span>
 
-        <span class="n">shell_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_property</span>
+        <span class="n">shell_refractive_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_refractive_index</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="n">refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_refractive_index</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="p">,</span>
             <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="p">,</span>
             <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span><span class="p">,</span>
-            <span class="n">medium_properties</span><span class="o">=</span><span class="n">mediun_properties</span><span class="p">,</span>
-            <span class="n">core_properties</span><span class="o">=</span><span class="n">core_properties</span><span class="p">,</span>
-            <span class="n">shell_properties</span><span class="o">=</span><span class="n">shell_properties</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="n">mediun_refractive_index</span><span class="p">,</span>
+            <span class="n">core_refractive_index</span><span class="o">=</span><span class="n">core_refractive_index</span><span class="p">,</span>
+            <span class="n">shell_refractive_index</span><span class="o">=</span><span class="n">shell_refractive_index</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set</span> <span class="o">=</span> <span class="n">CppCoreShellSet</span><span class="p">(</span>
-            <span class="o">**</span><span class="p">{</span>
-                <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">AnyUnit</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span> <span class="o">=</span> <span class="n">CoreShellSet</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span><span class="p">)</span></div>
 
 </pre></div>
 

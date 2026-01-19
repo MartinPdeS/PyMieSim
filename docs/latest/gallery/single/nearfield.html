@@ -416,7 +416,6 @@
 <li class="toctree-l2"><a class="reference internal" href="footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Near-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s1s2.html">S1 S2 Function Computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source.html">Source Plottings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stokes.html">Stokes Parameters Computation</a></li>
 </ul>
@@ -474,7 +473,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../extras/array_scattering.html">Array-based scattering calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extras/farfields_bulk.html">Far-field scattering simulation for bulk scatterers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/integrating_sphere.html">Integrating sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_system.html">Plot system</a></li>
@@ -558,6 +556,7 @@ to download the full example code.</p>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations</span><span class="w"> </span><span class="kn">import</span> <span class="n">NearField</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">1400</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
@@ -569,16 +568,27 @@ to download the full example code.</p>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_nearfield</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">field_components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Hz&quot;</span><span class="p">])</span>
+<span class="n">near_field</span> <span class="o">=</span> <span class="n">NearField</span><span class="p">(</span>
+    <span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">x_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">),</span>
+    <span class="n">y_range</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">),</span>
+    <span class="n">z</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
+    <span class="n">field_components</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Hz&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 
-<span class="n">figure</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">near_field</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_nearfield_001.png" srcset="../../_images/sphx_glr_nearfield_001.png" alt="Near-field Hz distribution" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.351 seconds)</p>
+<img src="../../_images/sphx_glr_nearfield_001.png" srcset="../../_images/sphx_glr_nearfield_001.png" alt="Near-field Hz distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/matplotlib/axes/_axes.py:6024: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+  C = np.asanyarray(args[2])
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.401 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-nearfield-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/24bfd97b4ff8b3541b5c58028be16b8d/nearfield.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nearfield.ipynb</span></code></a></p>

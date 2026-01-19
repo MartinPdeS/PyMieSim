@@ -416,7 +416,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/s1s2.html">S1 S2 Function Computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../single/source.html">Source Plottings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/stokes.html">Stokes Parameters Computation</a></li>
 </ul>
@@ -474,7 +473,6 @@
 <li class="toctree-l2"><a class="reference internal" href="array_scattering.html">Array-based scattering calculations</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Coupling heatmap of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="farfields_bulk.html">Far-field scattering simulation for bulk scatterers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="integrating_sphere.html">Integrating sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_system.html">Plot system</a></li>
@@ -578,7 +576,7 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span> <span class="nb">property</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span> <span class="n">refractive_index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
 <span class="p">)</span>
 
 <span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
@@ -606,7 +604,7 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.877 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.939 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-coupling-heatmap-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/983ddb3ebce117868a88c719e85b85e5/coupling_heatmap.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coupling_heatmap.ipynb</span></code></a></p>

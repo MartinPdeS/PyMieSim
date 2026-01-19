@@ -11,6 +11,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single.representations import NearField
 
 source = Gaussian(
     wavelength=1400 * ureg.nanometer,
@@ -22,10 +23,17 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=500 * ureg.nanometer,
     source=source,
-    property=1.8 * ureg.RIU,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=1.8 * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
 )
 
-data = scatterer.get_nearfield(sampling=200, field_components=["Hz"])
+near_field = NearField(
+    scatterer=scatterer,
+    sampling=200,
+    x_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
+    y_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
+    z=0 * ureg.micrometer,
+    field_components=["Hz"]
+)
 
-figure = data.plot()
+figure = near_field.plot()

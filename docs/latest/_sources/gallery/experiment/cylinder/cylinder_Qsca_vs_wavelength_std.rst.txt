@@ -25,7 +25,7 @@ Cylinder: Qsca vs wavelength std
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-36
+.. GENERATED FROM PYTHON SOURCE LINES 9-35
 
 .. code-block:: Python
 
@@ -45,11 +45,10 @@ Importing the package dependencies: numpy, PyMieSim
     )
     scatterer = Cylinder(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-        property=Material.silver,
-        medium_property=1 * ureg.RIU,
+        refractive_index=Material.silver,
+        medium_refractive_index=1 * ureg.RIU,
         source=source,
     )
-
 
     experiment = Setup(scatterer=scatterer, source=source)
 
@@ -77,7 +76,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.546 seconds)
+   **Total running time of the script:** (0 minutes 0.541 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py:

@@ -10,10 +10,11 @@ This example demonstrates the initialization and visualization of an Integrating
 from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import IntegratingSphere
-from PyMieSim.single import plot_system
+from PyMieSim.single import SystemPlotter
 
 detector = IntegratingSphere(
     sampling=500 * ureg.AU,  # Number of sampling points
 )
 
-plot_system(detector)
+plotter = SystemPlotter()
+plotter.plot(detector)

@@ -21,8 +21,8 @@ source = experiment.source.Gaussian(
 
 scatterer = experiment.scatterer.Sphere(
     diameter=500e-9 * ureg.meter,
-    property=Material.BK7,
-    medium_property=1 * ureg.RIU,
+    refractive_index=Material.BK7,
+    medium_refractive_index=1 * ureg.RIU,
     source=source,
 )
 
@@ -48,10 +48,9 @@ single_source = single.Gaussian(
 
 single_scatterer = single.scatterer.Sphere(
     diameter=500 * ureg.nanometer,
-    property=Material.BK7,
-    medium_property=1 * ureg.RIU,
+    refractive_index=1.5 * ureg.RIU,
+    medium_refractive_index=1 * ureg.RIU,
     source=single_source,
 )
 
-
-print(single_scatterer.Qsca * 1e-3)
+print(single_scatterer.Qsca)

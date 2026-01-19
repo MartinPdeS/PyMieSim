@@ -27,24 +27,26 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-24
+.. GENERATED FROM PYTHON SOURCE LINES 10-26
 
 .. code-block:: Python
 
     from PyMieSim.units import ureg
 
     from PyMieSim.single.detector import CoherentMode
-    from PyMieSim.single import plot_system
+    from PyMieSim.single import SystemPlotter
 
     detector = CoherentMode(
         mode_number="LG23",  # Specifying LP23 mode
         sampling=900 * ureg.AU,  # Number of sampling points
         NA=0.4 * ureg.AU,  # Numerical Aperture
         gamma_offset=0 * ureg.degree,  # Gamma offset
+        rotation=0 * ureg.degree,  # Rotation angle
         phi_offset=40 * ureg.degree,  # Phi offset in degrees
     )
 
-    plot_system(detector)
+    plotter = SystemPlotter()
+    plotter.plot(detector)
 
 
 
@@ -54,13 +56,19 @@ Importing the package: PyMieSim
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <pyvista.plotting.plotter.Plotter object at 0x7f966ab69390>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.299 seconds)
+   **Total running time of the script:** (0 minutes 0.276 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_LG11.py:

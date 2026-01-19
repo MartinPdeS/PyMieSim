@@ -23,12 +23,11 @@ source = Gaussian(
 )
 
 scatterer = CoreShell(
-    core_diameter=np.geomspace(100, 600, 10)
-    * ureg.nanometer,  # Geometrically spaced core diameters
+    core_diameter=np.geomspace(100, 600, 10) * ureg.nanometer,  # Geometrically spaced core diameters
     shell_thickness=150 * ureg.nanometer,  # Shell width of 800 nm
-    core_property=[1.4] * ureg.RIU,  # Refractive index of the core
-    shell_property=[Material.BK7],  # BK7 glass material for the shell
-    medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
+    core_refractive_index=[1.4] * ureg.RIU,  # Refractive index of the core
+    shell_refractive_index=[Material.BK7],  # BK7 glass material for the shell
+    medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
     source=source,
 )
 

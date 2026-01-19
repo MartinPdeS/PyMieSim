@@ -27,9 +27,9 @@ scatterer = CoreShell(
     core_diameter=numpy.geomspace(100, 600, 400)
     * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
     shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
-    core_property=Material.silver,  # Core material
-    shell_property=Material.BK7,  # Shell material
-    medium_property=1 * ureg.RIU,  # Surrounding medium's refractive index
+    core_refractive_index=Material.silver,  # Core material
+    shell_refractive_index=Material.BK7,  # Shell material
+    medium_refractive_index=1 * ureg.RIU,  # Surrounding medium's refractive index
     source=source,
 )
 

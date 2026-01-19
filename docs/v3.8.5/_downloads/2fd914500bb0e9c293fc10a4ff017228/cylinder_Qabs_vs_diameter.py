@@ -23,14 +23,13 @@ source = Gaussian(
 )
 
 scatterer = Cylinder(
-    diameter=np.linspace(1, 800, 300)
-    * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
-    property=[
+    diameter=np.linspace(1, 800, 300) * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
+    refractive_index=[
         Material.silver,
         Material.gold,
         Material.aluminium,
     ],  # Scatterer materials
-    medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
+    medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
     source=source,
 )
 

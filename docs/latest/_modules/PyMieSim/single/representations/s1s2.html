@@ -463,50 +463,68 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots</span><span class="w"> </span><span class="kn">import</span> <span class="n">helper</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <div class="viewcode-block" id="S1S2">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.S1S2">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">S1S2</span><span class="p">(</span><span class="n">BaseRepresentation</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents the S1 and S2 scattering functions, which are components of the scattering matrix.</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S1S2</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.</span>
+
+<span class="sd">    The S1 and S2 parameters represent the scattering amplitudes for perpendicular and parallel polarizations of light, respectively. These parameters are fundamental in Mie theory, which describes the scattering of electromagnetic waves by spherical particles.</span>
+
+<span class="sd">    The formulas for \( S_1 \) and \( S_2 \) are:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        S_1 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \pi_n + b_n \tau_n \right) \\</span>
+<span class="sd">        S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n + b_n \pi_n \right)</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`a_n` and :math:`b_n`: Mie coefficients, which depend on the size, shape, and refractive index of the scatterer.</span>
+<span class="sd">    - :math:`\pi_n` and :math:`\tau_n` \)`: Angular functions related to the angular components of the incident and scattered fields.</span>
+<span class="sd">    - :math:`n_{\text{max}}`: Maximum number of terms in the series, determined by the size parameter of the scatterer.</span>
+
+<span class="sd">    These scattering amplitude functions are essential for calculating properties such as scattering phase functions, efficiencies, and angular distribution of scattered light.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    scatterer : BaseScatterer</span>
-<span class="sd">        The scatterer object.</span>
 <span class="sd">    sampling : int</span>
-<span class="sd">        Number of points for evaluating the S1 and S2 functions.</span>
-<span class="sd">    distance : Quantity</span>
-<span class="sd">        Distance at which the fields are evaluated.</span>
+<span class="sd">        The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</span>
+<span class="sd">    distance : Length, optional</span>
+<span class="sd">        The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</span>
 
-<span class="sd">    Methods:</span>
-<span class="sd">        compute_components: Computes the S1 and S2 functions based on the scatterer&#39;s properties.</span>
-<span class="sd">        plot: Visualizes the S1 and S2 functions on a polar plot.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    representations.S1S2</span>
+<span class="sd">        An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The S1 and S2 parameters are central to Mie scattering theory and are used to derive many important scattering properties, such as intensity distributions and polarization effects.</span>
+<span class="sd">    - The `sampling` parameter controls how finely the angular distribution is resolved. A higher value of `sampling` provides more detailed scattering information, which can be critical for accurately modeling the far-field pattern.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    You can use this method to compute the scattering properties of spherical particles, particularly in experiments where the polarization and scattering pattern of the light are important.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; s1s2 = scatterer.get_s1s2(sampling=500)</span>
+<span class="sd">    &gt;&gt;&gt; print(s1s2.S1, s1s2.S2)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">compute_components</span><span class="p">()</span>
-
-<div class="viewcode-block" id="S1S2.compute_components">
-<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.S1S2.compute_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the S1 and S2 scattering parameters based on the scatterer&#39;s properties and the scattering angle phi.</span>
-
-<span class="sd">        S1 and S2 are integral parts of the scattering matrix describing the change in polarization state of light upon scattering.</span>
-
-<span class="sd">        The method calculates these parameters for a range of phi angles and stores them as the S1 and S2 attributes of the instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">S2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">_cpp_get_s1s2</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">S2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_s1s2</span><span class="p">(</span>
             <span class="n">phi</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
-        <span class="p">)</span></div>
-
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="S1S2.plot">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.S1S2.plot">[docs]</a>

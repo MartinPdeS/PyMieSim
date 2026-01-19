@@ -22,8 +22,8 @@ source = Gaussian(
 )
 scatterer = Sphere(
     diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-    property=Material.silver,
-    medium_property=1 * ureg.RIU,
+    refractive_index=Material.silver,
+    medium_refractive_index=1 * ureg.RIU,
     source=source,
 )
 

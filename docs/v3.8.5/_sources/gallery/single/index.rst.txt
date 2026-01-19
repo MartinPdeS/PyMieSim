@@ -87,23 +87,6 @@ interaction can be studied in detail.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to visualize the properties of a light source using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/single/images/thumb/sphx_glr_source_thumb.png
-    :alt:
-
-  :doc:`/gallery/single/source`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Source Plottings</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Scattering Phase Function (SPF) using PyMieSim.">
 
 .. only:: html
@@ -150,7 +133,6 @@ interaction can be studied in detail.
    /gallery/single/footprint
    /gallery/single/nearfield
    /gallery/single/s1s2
-   /gallery/single/source
    /gallery/single/spf
    /gallery/single/stokes
 

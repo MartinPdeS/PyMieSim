@@ -490,25 +490,25 @@
 <span id="experiment-scatterer"></span><h1>Scatterers<a class="headerlink" href="#scatterers" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Sphere">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/sphere.html#Sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/sphere.html#Sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>A data class that represents a spherical scatterer configuration used in PyMieSim simulations.</p>
 <p>This class provides specific implementations for setting up and binding spherical scatterers
-with their properties to a simulation environment. It extends the <cite>BaseScatterer</cite> class by
+with their refractive_index to a simulation environment. It extends the <cite>BaseScatterer</cite> class by
 adding spherical-specific attributes and methods for handling simulation setups.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<em>PyMieSim.experiment.source.base.BaseSource</em>) – Light source configuration for the simulation.</p></li>
 <li><p><strong>diameter</strong> (<em>Length</em>) – Diameter(s) of the spherical scatterers in meters.</p></li>
-<li><p><strong>property</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
-<li><p><strong>medium_property</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+<li><p><strong>refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Sphere.attributes">
-<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'property',</span> <span class="pre">'medium_property']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere.attributes" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'refractive_index',</span> <span class="pre">'medium_refractive_index']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -578,13 +578,13 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Sphere.medium_property">
-<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere.medium_property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Sphere.medium_refractive_index">
+<span class="sig-name descname"><span class="pre">medium_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere.medium_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Sphere.property">
-<span class="sig-name descname"><span class="pre">property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere.property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Sphere.refractive_index">
+<span class="sig-name descname"><span class="pre">refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Sphere.refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -596,7 +596,7 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Cylinder">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/cylinder.html#Cylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/cylinder.html#Cylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>Represents a cylindrical scatterer configuration for PyMieSim simulations.</p>
 <dl class="field-list simple">
@@ -604,14 +604,14 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source</strong> (<em>PyMieSim.experiment.source.base.BaseSource</em>) – Light source configuration for the simulation.</p></li>
 <li><p><strong>diameter</strong> (<em>Length</em>) – Diameter(s) of the cylinder in meters.</p></li>
-<li><p><strong>property</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
-<li><p><strong>medium_property</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+<li><p><strong>refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Cylinder.attributes">
-<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'property',</span> <span class="pre">'medium_property']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder.attributes" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'refractive_index',</span> <span class="pre">'medium_refractive_index']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -681,13 +681,13 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Cylinder.medium_property">
-<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder.medium_property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Cylinder.medium_refractive_index">
+<span class="sig-name descname"><span class="pre">medium_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder.medium_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Cylinder.property">
-<span class="sig-name descname"><span class="pre">property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder.property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.Cylinder.refractive_index">
+<span class="sig-name descname"><span class="pre">refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.Cylinder.refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -699,7 +699,7 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_property</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/core_shell.html#CoreShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/core_shell.html#CoreShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>A data class representing a core-shell scatterer configuration used in PyMieSim simulations.</p>
 <p>This class facilitates the setup and manipulation of core-shell scatterers by providing structured
@@ -711,15 +711,15 @@ It extends the BaseScatterer class, adding specific attributes and methods relev
 <li><p><strong>source</strong> (<em>PyMieSim.experiment.source.base.BaseSource</em>) – Light source configuration for the simulation.</p></li>
 <li><p><strong>core_diameter</strong> (<em>Length</em>) – Diameters of the core components.</p></li>
 <li><p><strong>shell_thickness</strong> (<em>Length</em>) – Thicknesses of the shell components.</p></li>
-<li><p><strong>core_property</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the core.</p></li>
-<li><p><strong>shell_property</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the shell.</p></li>
-<li><p><strong>medium_property</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+<li><p><strong>core_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the core.</p></li>
+<li><p><strong>shell_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the shell.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.attributes">
-<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['core_diameter',</span> <span class="pre">'shell_thickness',</span> <span class="pre">'core_property',</span> <span class="pre">'shell_property',</span> <span class="pre">'medium_property']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.attributes" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['core_diameter',</span> <span class="pre">'shell_thickness',</span> <span class="pre">'core_refractive_index',</span> <span class="pre">'shell_refractive_index',</span> <span class="pre">'medium_refractive_index']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -779,8 +779,8 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.core_property">
-<span class="sig-name descname"><span class="pre">core_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.core_property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.core_refractive_index">
+<span class="sig-name descname"><span class="pre">core_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.core_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -794,13 +794,13 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.medium_property">
-<span class="sig-name descname"><span class="pre">medium_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.medium_property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.medium_refractive_index">
+<span class="sig-name descname"><span class="pre">medium_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.medium_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.shell_property">
-<span class="sig-name descname"><span class="pre">shell_property</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.shell_property" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell.shell_refractive_index">
+<span class="sig-name descname"><span class="pre">shell_refractive_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseMaterial</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">RefractiveIndex</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell.shell_refractive_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -849,8 +849,8 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.diameter"><code class="docutils literal notranslate"><span class="pre">Sphere.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.is_sequential"><code class="docutils literal notranslate"><span class="pre">Sphere.is_sequential</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.mapping"><code class="docutils literal notranslate"><span class="pre">Sphere.mapping</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.medium_property"><code class="docutils literal notranslate"><span class="pre">Sphere.medium_property</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.property"><code class="docutils literal notranslate"><span class="pre">Sphere.property</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">Sphere.medium_refractive_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.refractive_index"><code class="docutils literal notranslate"><span class="pre">Sphere.refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.source"><code class="docutils literal notranslate"><span class="pre">Sphere.source</span></code></a></li>
 </ul>
 </li>
@@ -863,8 +863,8 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.diameter"><code class="docutils literal notranslate"><span class="pre">Cylinder.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.is_sequential"><code class="docutils literal notranslate"><span class="pre">Cylinder.is_sequential</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.mapping"><code class="docutils literal notranslate"><span class="pre">Cylinder.mapping</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.medium_property"><code class="docutils literal notranslate"><span class="pre">Cylinder.medium_property</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.property"><code class="docutils literal notranslate"><span class="pre">Cylinder.property</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">Cylinder.medium_refractive_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.refractive_index"><code class="docutils literal notranslate"><span class="pre">Cylinder.refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Cylinder.source"><code class="docutils literal notranslate"><span class="pre">Cylinder.source</span></code></a></li>
 </ul>
 </li>
@@ -875,11 +875,11 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.binding_kwargs"><code class="docutils literal notranslate"><span class="pre">CoreShell.binding_kwargs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.build_sequential"><code class="docutils literal notranslate"><span class="pre">CoreShell.build_sequential()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.core_diameter"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_diameter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.core_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_property</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.core_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.is_sequential"><code class="docutils literal notranslate"><span class="pre">CoreShell.is_sequential</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.mapping"><code class="docutils literal notranslate"><span class="pre">CoreShell.mapping</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.medium_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.medium_property</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.shell_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.shell_property</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoreShell.medium_refractive_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.shell_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoreShell.shell_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.shell_thickness"><code class="docutils literal notranslate"><span class="pre">CoreShell.shell_thickness</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell.source"><code class="docutils literal notranslate"><span class="pre">CoreShell.source</span></code></a></li>
 </ul>

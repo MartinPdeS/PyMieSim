@@ -462,29 +462,70 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span><span class="p">,</span> <span class="n">spherical_to_cartesian</span>
 
 
 <div class="viewcode-block" id="SPF">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">(</span><span class="n">BaseRepresentation</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">():</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents the Scattering Phase Function (SPF).</span>
+<span class="sd">    Compute the scattering phase function (SPF) for the scatterer.</span>
 
-<span class="sd">    Inherits from BaseRepresentation and computes the SPF, which is a measure of how light is scattered by a particle at different angles.</span>
+<span class="sd">    The scattering phase function describes how the intensity of scattered light varies as a function of the scattering angles \( \theta \) (polar) and \( \phi \) (azimuthal). It is a key quantity in light scattering, as it characterizes the angular distribution of scattered light.</span>
+
+<span class="sd">    The scattering phase function is computed as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2</span>
+<span class="sd">        \text{SPF} = \sqrt{ E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2 }</span>
 
-<span class="sd">    Methods:</span>
-<span class="sd">        compute_components: Computes the SPF based on the electric field components.</span>
-<span class="sd">        plot: Visualizes the SPF on a 3D plot.</span>
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`E_{\parallel}`: The parallel component of the scattered electric field.</span>
+<span class="sd">    - :math:`E_{\perp}`: The perpendicular component of the scattered electric field.</span>
+<span class="sd">    - :math:`\phi` and :math:`\theta`: The azimuthal and polar angles, respectively, which describe the angular position of the scattered light.</span>
+
+<span class="sd">    The SPF combines the intensity contributions from both polarization components to describe the total scattered intensity in different directions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sampling : int</span>
+<span class="sd">        The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</span>
+<span class="sd">    distance : Length, optional</span>
+<span class="sd">        The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    representations.SPF</span>
+<span class="sd">        An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The scattering phase function is a critical quantity in the study of light scattering, as it provides insight into the directionality of the scattered light. It is commonly used in fields like atmospheric optics, biomedical imaging, and remote sensing.</span>
+<span class="sd">    - The `sampling` parameter controls the angular resolution of the SPF. Higher sampling values yield more detailed scattering patterns, especially important when capturing small angular features.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    You can use this method to compute the scattering phase function of a spherical scatterer, helping to understand the angular distribution of light scattered by the particle.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; spf = scatterer.get_spf(sampling=500)</span>
+<span class="sd">    &gt;&gt;&gt; print(spf)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_full_farfields</span><span class="p">(</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">fields</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_components</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SPF.compute_components">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF.compute_components">[docs]</a>

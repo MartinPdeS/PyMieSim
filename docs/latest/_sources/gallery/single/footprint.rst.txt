@@ -23,7 +23,7 @@ Scatterer Footprint Calculation and Visualization
 
 This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-41
+.. GENERATED FROM PYTHON SOURCE LINES 7-48
 
 
 
@@ -33,8 +33,19 @@ This example demonstrates how to compute and visualize the footprint of a scatte
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    2026-01-19 23:09:02,595 INFO Substituting symbol \mu from STIXNonUnicode
+    2026-01-19 23:09:02,627 INFO Substituting symbol \mu from STIXNonUnicode
 
 
+
+
+
+
+|
 
 .. code-block:: Python
 
@@ -46,6 +57,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.detector import CoherentMode
     from PyMieSim.single.source import Gaussian
+    from PyMieSim.single.representations import Footprint
 
     source = Gaussian(
         wavelength=1 * ureg.micrometer,
@@ -57,26 +69,32 @@ This example demonstrates how to compute and visualize the footprint of a scatte
     scatterer = Sphere(
         diameter=2 * ureg.micrometer,
         source=source,
-        medium_property=1.0 * ureg.RIU,
-        property=Material.BK7,
+        medium_refractive_index=1.0 * ureg.RIU,
+        refractive_index=1.8 * ureg.RIU,
     )
 
     detector = CoherentMode(
         mode_number="HG02",
         NA=0.3 * ureg.AU,
-        sampling=200 * ureg.AU,
+        sampling=200,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
+        rotation=0 * ureg.degree,
+        medium_refractive_index=1.0 * ureg.RIU,
     )
 
-    data = detector.get_footprint(scatterer)
+    footprint = Footprint(
+        scatterer=scatterer,
+        detector=detector,
+        sampling=100,
+    )
 
-    figure = data.plot()
+    figure = footprint.plot()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.102 seconds)
+   **Total running time of the script:** (0 minutes 0.512 seconds)
 
 
 .. _sphx_glr_download_gallery_single_footprint.py:

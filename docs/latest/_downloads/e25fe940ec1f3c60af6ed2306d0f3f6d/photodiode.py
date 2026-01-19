@@ -10,7 +10,7 @@ This example demonstrates the initialization and visualization of a Photodiode d
 from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import plot_system
+from PyMieSim.single import SystemPlotter
 
 detector = Photodiode(
     NA=0.3 * ureg.AU,  # Numerical Aperture
@@ -20,4 +20,6 @@ detector = Photodiode(
     phi_offset=0 * ureg.degree,  # Phi offset in degrees
 )
 
-plot_system(detector)
+plotter = SystemPlotter()
+
+plotter.plot(detector)

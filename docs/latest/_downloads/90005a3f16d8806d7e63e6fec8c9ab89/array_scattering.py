@@ -23,15 +23,15 @@ source = PlaneWave(
 
 scatterer = Sphere(
     diameter=200 * ureg.nanometer,
-    property=1.5 * ureg.RIU,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=1.5 * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
     source=source,
 )
 
 phi = np.linspace(0, np.pi, 150) * ureg.radian
 theta = np.linspace(0, np.pi / 2, 150) * ureg.radian
 
-E_para, E_perp = scatterer.get_farfield_array(phi, theta)
+E_para, E_perp = scatterer.get_farfields(phi=phi, theta=theta, distance=1 * ureg.meter)
 
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
@@ -51,7 +51,7 @@ plt.show()
 
 # %%
 # S1 and S2 scattering amplitudes
-S1, S2 = scatterer.get_s1s2_array(phi)
+S1, S2 = scatterer.get_s1s2(phi=phi)
 
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
@@ -71,7 +71,7 @@ plt.show()
 
 # %%
 # Stokes parameters
-I, Q, U, V = scatterer.get_stokes_array(phi, theta)
+I, Q, U, V = scatterer.get_stokes_parameters(phi=phi, theta=theta, distance=1 * ureg.meter )
 
 plt.figure(figsize=(10, 5))
 plt.subplot(2, 2, 1)

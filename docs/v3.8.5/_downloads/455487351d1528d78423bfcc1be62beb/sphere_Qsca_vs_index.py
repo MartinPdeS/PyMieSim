@@ -22,8 +22,8 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=800.0 * ureg.nanometer,
-    property=np.linspace(1.3, 1.9, 150) * ureg.RIU,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=np.linspace(1.3, 1.9, 150) * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
     source=source,
 )
 
@@ -31,4 +31,4 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 dataframe = experiment.get("Qsca")
 
-dataframe.plot(x="scatterer:property")
+dataframe.plot(x="scatterer:refractive_index")

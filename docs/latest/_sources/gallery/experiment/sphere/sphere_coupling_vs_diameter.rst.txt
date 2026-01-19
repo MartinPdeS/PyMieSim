@@ -46,8 +46,8 @@ Importing the package dependencies: numpy, PyMieSim
     )
     scatterer = Sphere(
         diameter=numpy.linspace(100, 10000, 600) * ureg.nanometer,
-        property=Material.BK7,
-        medium_property=1.0 * ureg.RIU,
+        refractive_index=Material.BK7,
+        medium_refractive_index=1.0 * ureg.RIU,
         source=source,
     )
 
@@ -64,7 +64,7 @@ Importing the package dependencies: numpy, PyMieSim
 
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    dataframe = experiment.get("a1", drop_unique_level=True, scale_unit=True)
+    dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
 
     dataframe.plot(x="scatterer:diameter")
 
@@ -88,7 +88,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.640 seconds)
+   **Total running time of the script:** (0 minutes 0.936 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:

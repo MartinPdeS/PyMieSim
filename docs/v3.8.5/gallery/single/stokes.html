@@ -416,7 +416,6 @@
 <li class="toctree-l2"><a class="reference internal" href="footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nearfield.html">Near-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s1s2.html">S1 S2 Function Computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source.html">Source Plottings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spf.html">SPF Computation</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Stokes Parameters Computation</a></li>
 </ul>
@@ -474,7 +473,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../extras/array_scattering.html">Array-based scattering calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extras/farfields_bulk.html">Far-field scattering simulation for bulk scatterers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/integrating_sphere.html">Integrating sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_system.html">Plot system</a></li>
@@ -558,6 +556,7 @@ to download the full example code.</p>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations</span><span class="w"> </span><span class="kn">import</span> <span class="n">Stokes</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">750</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
@@ -569,16 +568,16 @@ to download the full example code.</p>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_stokes</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">stokes</span> <span class="o">=</span> <span class="n">Stokes</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">figure</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">stokes</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_stokes_001.png" srcset="../../_images/sphx_glr_stokes_001.png" alt="stokes" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.366 seconds)</p>
+<img src="../../_images/sphx_glr_stokes_001.png" srcset="../../_images/sphx_glr_stokes_001.png" alt="stokes" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.350 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-stokes-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/cd91c1041988bbdecc99bd6c85df00d2/stokes.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">stokes.ipynb</span></code></a></p>

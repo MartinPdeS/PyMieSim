@@ -471,29 +471,53 @@
 <div class="viewcode-block" id="Footprint">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Footprint">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Footprint</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Footprint</span><span class="p">():</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents the footprint of the scatterer as detected by various detectors.</span>
+<span class="sd">    Compute the footprint of the scattered light coupling with the detector.</span>
+
+<span class="sd">    The footprint represents the spatial distribution of the scattered light as it couples with the detector.</span>
+<span class="sd">    This is important for understanding how the scattered light interacts with the detector&#39;s field of view and is influenced by both the scatterer&#39;s properties and the detector configuration.</span>
+
+<span class="sd">    The footprint is computed using an inverse Fourier transform:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \text{Footprint} = \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi }\</span>
-<span class="sd">        (\xi, \nu), \tilde{ \phi}_{l,m}(\xi, \nu)  \big\} \</span>
-<span class="sd">        (\delta_x, \delta_y) \big|^2</span>
+<span class="sd">        \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\</span>
+<span class="sd">            \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}</span>
+<span class="sd">            (\delta_x, \delta_y) \big|^2</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`\tilde{ \psi } (\xi, \nu)`: The Fourier transform of the scattered field.</span>
+<span class="sd">    - :math:`\tilde{ \phi}_{l,m} (\xi, \nu)`: The Fourier transform of the detector&#39;s capturing field.</span>
+<span class="sd">    - :math:`\mathscr{F}^{-1}`: The inverse Fourier transform operator.</span>
+<span class="sd">    - :math:`(\delta_x, \delta_y)`: Spatial coordinates describing the footprint in the detector plane.</span>
+
+<span class="sd">    The inverse Fourier transform yields the spatial pattern of the scattered light&#39;s interaction with the detector, which is then squared to compute the intensity of the footprint.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    detector : BaseDetector</span>
-<span class="sd">        The detector object.</span>
-<span class="sd">    scatterer : BaseScatterer</span>
-<span class="sd">        The scatterer object.</span>
-<span class="sd">    sampling : int</span>
-<span class="sd">        Number of points to evaluate the Stokes parameters in spherical coordinates (default is 500).</span>
-<span class="sd">    padding_factor : int</span>
-<span class="sd">        Padding factor for the Fourier transform (default is 20).</span>
+<span class="sd">    detector : GenericDetector</span>
+<span class="sd">        The detector object that defines the capturing field and geometry. This object provides information about the detector&#39;s configuration, including its numerical aperture, position, and sensitivity.</span>
 
-<span class="sd">    Methods:</span>
-<span class="sd">        compute_footprint: Computes the footprint based on the far-field patterns and detector characteristics.</span>
-<span class="sd">        plot: Visualizes the computed footprint.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    representations.Footprint</span>
+<span class="sd">        An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The footprint provides valuable information about the coupling efficiency between the scattered light and the detector. This is useful in designing experiments where precise control of light detection is important, such as in microscopy, remote sensing, or optical measurements.</span>
+<span class="sd">    - The interaction between the scattered field and the detector is influenced by factors such as the size, shape, and refractive index of the scatterer, as well as the detector&#39;s aperture and positioning.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    You can use this method to compute the footprint of the scattered light on a detector, helping to visualize how light from the scatterer is spatially distributed on the detector.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; footprint = scatterer.get_footprint(detector=my_detector)</span>
+<span class="sd">    &gt;&gt;&gt; print(footprint)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">detector</span><span class="p">:</span> <span class="nb">object</span>
@@ -528,7 +552,7 @@
         <span class="p">]</span>
 
         <span class="n">max_distance_direct_space</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">max_angle</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavenumber</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">max_angle</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavenumber_vacuum</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span>
@@ -541,10 +565,10 @@
 
         <span class="n">_</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">rotate_on_x</span><span class="p">(</span><span class="n">phi</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">far_field_para</span><span class="p">,</span> <span class="n">far_field_perp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_farfields_array</span><span class="p">(</span>
+        <span class="n">far_field_para</span><span class="p">,</span> <span class="n">far_field_perp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_farfields</span><span class="p">(</span>
             <span class="n">phi</span><span class="o">=</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span>
             <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span>
-            <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
+            <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">detector_structured_farfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">get_structured_scalarfield</span><span class="p">(</span>

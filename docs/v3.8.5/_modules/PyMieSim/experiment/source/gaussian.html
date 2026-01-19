@@ -468,7 +468,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePolarization</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_sets</span><span class="w"> </span><span class="kn">import</span> <span class="n">CppGaussianSourceSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSourceSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
 
 
@@ -513,12 +513,7 @@
             <span class="n">is_sequential</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_sequential</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set</span> <span class="o">=</span> <span class="n">CppGaussianSourceSet</span><span class="p">(</span>
-            <span class="o">**</span><span class="p">{</span>
-                <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">AnyUnit</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span> <span class="o">=</span> <span class="n">GaussianSourceSet</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span><span class="p">)</span></div>
 
 </pre></div>
 

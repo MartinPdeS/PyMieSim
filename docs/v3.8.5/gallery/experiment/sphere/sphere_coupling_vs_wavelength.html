@@ -416,7 +416,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/s1s2.html">S1 S2 Function Computation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../single/source.html">Source Plottings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/stokes.html">Stokes Parameters Computation</a></li>
 </ul>
@@ -474,7 +473,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../extras/array_scattering.html">Array-based scattering calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/coupling_vs_NA.html">Sphere: Coupling vs numerical aperture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../extras/farfields_bulk.html">Far-field scattering simulation for bulk scatterers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/integrating_sphere.html">Integrating sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/plot_system.html">Plot system</a></li>
@@ -574,8 +572,8 @@ to download the full example code.</p>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>
-    <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">refractive_index</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>
+    <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -599,7 +597,7 @@ to download the full example code.</p>
 <img src="../../../_images/sphx_glr_sphere_coupling_vs_wavelength_001.png" srcset="../../../_images/sphx_glr_sphere_coupling_vs_wavelength_001.png" alt="sphere coupling vs wavelength" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.236 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.229 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-sphere-coupling-vs-wavelength-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/375672ab6e1073d0441c5329351615bb/sphere_coupling_vs_wavelength.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_coupling_vs_wavelength.ipynb</span></code></a></p>

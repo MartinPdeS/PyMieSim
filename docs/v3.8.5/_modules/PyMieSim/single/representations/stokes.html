@@ -465,6 +465,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span><span class="p">,</span> <span class="n">spherical_to_cartesian</span>
 
@@ -472,36 +473,74 @@
 <div class="viewcode-block" id="Stokes">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Stokes</span><span class="p">(</span><span class="n">BaseRepresentation</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Stokes</span><span class="p">():</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents the scattering far-field in the Stokes representation.</span>
+<span class="sd">    Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.</span>
 
-<span class="sd">    Inherits from BaseRepresentation and calculates the Stokes parameters which describe the polarization state of light.</span>
+<span class="sd">    The Stokes parameters provide a complete description of the polarization state of electromagnetic radiation, and are defined as follows:</span>
 
-<span class="sd">    The Stokes parameters (I, Q, U, V) are defined according to their conventional definitions, representing the total intensity,</span>
-<span class="sd">    difference in intensities between horizontal and vertical polarizations, difference in intensities between two diagonal polarizations,</span>
-<span class="sd">    and the right and left circular polarizations, respectively.</span>
+<span class="sd">    .. math::</span>
+<span class="sd">        I &amp;= \big| E_x \big|^2 + \big| E_y \big|^2 \quad &amp;\text{(total intensity)} \\</span>
+<span class="sd">        Q &amp;= \big| E_x \big|^2 - \big| E_y \big|^2 \quad &amp;\text{(linear polarization along x and y)} \\</span>
+<span class="sd">        U &amp;= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \quad &amp;\text{(linear polarization at +45° and -45°)} \\</span>
+<span class="sd">        V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polarization)}</span>
 
-<span class="sd">    | The stokes parameters are:</span>
-<span class="sd">    |     I : intensity of the fields</span>
-<span class="sd">    |     Q : linear polarization parallel to incident polarization</span>
-<span class="sd">    |     U : linear polarization 45 degree to incident polarization</span>
-<span class="sd">    |     V : Circular polarization</span>
+<span class="sd">    Where:</span>
 
-<span class="sd">    .. math:</span>
-<span class="sd">        I &amp;= \big| E_x \big|^2 + \big| E_y \big|^2 \\[10pt]</span>
+<span class="sd">    - :math:`I`: Total intensity of the scattered light.</span>
+<span class="sd">    - :math:`Q`: The degree of linear polarization along the x and y axes.</span>
+<span class="sd">    - :math:`U`: The degree of linear polarization at +45° and -45° to the axes.</span>
+<span class="sd">    - :math:`V`: The degree of circular polarization.</span>
 
-<span class="sd">        Q &amp;= \big| E_x \big|^2 - \big| E_y \big|^2 \\[10pt]</span>
+<span class="sd">    These parameters provide a powerful way to represent the full polarization state of the scattered light.</span>
 
-<span class="sd">        U &amp;= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \\[10pt]</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sampling : int</span>
+<span class="sd">        The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</span>
+<span class="sd">    distance : Length, optional</span>
+<span class="sd">        The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</span>
 
-<span class="sd">        V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \\[10pt]</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Stokes</span>
+<span class="sd">        An object containing the computed Stokes parameters (I, Q, U, V), which describe the polarization state of the scattered light.</span>
 
-<span class="sd">    Methods:</span>
-<span class="sd">        compute_components: Computes the Stokes parameters based on the electric field components.</span>
-<span class="sd">        plot: Visualizes the Stokes parameters on a 3D plot.</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The Stokes parameters are essential for understanding and characterizing the polarization of scattered light. They are used in a wide variety of applications, including atmospheric optics, remote sensing, and optical communication.</span>
+<span class="sd">    - The `sampling` parameter controls the angular resolution of the calculated Stokes parameters. Higher values provide finer detail, which can be important in accurately modeling polarization effects in scattering experiments.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    You can use this method to compute the Stokes parameters for a spherical scatterer, helping you analyze how the scatterer affects the polarization state of light.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; stokes_params = scatterer.get_stokes(sampling=500)</span>
+<span class="sd">    &gt;&gt;&gt; print(stokes_params.I, stokes_params.Q, stokes_params.U, stokes_params.V)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_full_farfields</span><span class="p">(</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">fields</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_components</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Stokes.get_colormap_limits">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes.get_colormap_limits">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_colormap_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">symmetric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">symmetric</span><span class="p">:</span>
+            <span class="n">max_abs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">scalar</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">max_abs</span><span class="p">,</span> <span class="n">max_abs</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
 
 <div class="viewcode-block" id="Stokes.compute_components">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes.compute_components">[docs]</a>

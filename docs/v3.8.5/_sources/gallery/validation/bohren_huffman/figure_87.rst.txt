@@ -55,8 +55,8 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
     scatterer = Cylinder(
         diameter=diameter,
-        property=1.55 * ureg.RIU,
-        medium_property=1 * ureg.RIU,
+        refractive_index=1.55 * ureg.RIU,
+        medium_refractive_index=1 * ureg.RIU,
         source=source,
     )
 
@@ -105,7 +105,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.415 seconds)
+   **Total running time of the script:** (0 minutes 0.410 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_87.py:

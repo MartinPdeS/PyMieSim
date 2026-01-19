@@ -10,6 +10,7 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single.representations import S1S2
 
 source = Gaussian(
     wavelength=450 * ureg.nanometer,
@@ -21,10 +22,10 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=6 * ureg.nanometer,
     source=source,
-    medium_property=1.0 * ureg.RIU,
-    property=1.4 * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
+    refractive_index=1.4 * ureg.RIU,
 )
 
-data = scatterer.get_s1s2(sampling=200)  # Specify the number of sampling points
+s1s2 = S1S2(scatterer=scatterer, sampling=200)  # Specify the number of sampling points
 
-figure = data.plot()
+figure = s1s2.plot()

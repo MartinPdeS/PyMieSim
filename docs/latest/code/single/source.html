@@ -490,144 +490,91 @@
 <h1>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/source/planewave.html#PlaneWave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.source.PlaneWave" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PLANEWAVE</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
-<p>Represents a plane wave light source for optical simulations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wavelength</strong> (<em>units.Quantity</em>) – Wavelength of the light field in meters.</p></li>
-<li><p><strong>polarization</strong> (<em>BasePolarization</em><em> | </em><em>units.Quantity</em>) – Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.</p></li>
-<li><p><strong>amplitude</strong> (<em>units.Quantity</em>) – Amplitude of the electric field.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.amplitude">
-<span class="sig-name descname"><span class="pre">amplitude</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ElectricField</span></em><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.amplitude" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.amplitude" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/source/planewave.html#PlaneWave.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plots the 3D structure of the Gaussian source.</p>
-<p>This method creates a 3D plot of the Gaussian source, adds the structure to the plot,
-and optionally displays axis labels.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str</em>) – The color of the structure in the plot. Default is ‘red’.</p></li>
-<li><p><strong>opacity</strong> (<em>float</em>) – The opacity of the structure. Default is 0.8.</p></li>
-<li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, axis labels will be shown. Default is False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.jones_vector">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jones_vector</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.jones_vector" title="Link to this definition">#</a></dt>
+<dd><p>First Jones vector row [Ex, Ey] as a complex array of shape (2,).</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.polarization">
-<span class="sig-name descname"><span class="pre">polarization</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BasePolarization</span></em><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.polarization" title="Link to this definition">#</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.polarization_element">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_element</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.polarization_element" title="Link to this definition">#</a></dt>
+<dd><p>Polarization Jones matrix as a complex array of shape (N, 2).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.wavelength">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.wavelength" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.wavelength">
-<span class="sig-name descname"><span class="pre">wavelength</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.wavelength" title="Link to this definition">#</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.wavenumber_vacuum">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavenumber_vacuum</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.wavenumber_vacuum" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/source/gaussian.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.source.Gaussian" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">GAUSSIAN</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
-<p>Represents a Gaussian light source for optical simulations.</p>
-<dl class="simple">
-<dt>wavelength: Length</dt><dd><p>Wavelength of the light field in meters.</p>
-</dd>
-<dt>polarization<span class="classifier">Angle | BasePolarization</span></dt><dd><p>Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.</p>
-</dd>
-<dt>optical_power: Power</dt><dd><p>Optical power of the source in Watts.</p>
-</dd>
-<dt>NA: Dimensionless</dt><dd><p>Numerical aperture of the source.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wavelength</strong> (<em>Length</em>)</p></li>
-<li><p><strong>polarization</strong> (<em>Angle</em><em> | </em><em>BasePolarization</em>)</p></li>
-<li><p><strong>optical_power</strong> (<em>Power</em>)</p></li>
-<li><p><strong>NA</strong> (<em>Dimensionless</em>)</p></li>
-<li><p><strong>amplitude</strong> (<em>ElectricField</em>)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.NA">
-<span class="sig-name descname"><span class="pre">NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.single.source.Gaussian.NA" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.NA" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.amplitude">
-<span class="sig-name descname"><span class="pre">amplitude</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ElectricField</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PyMieSim.single.source.Gaussian.amplitude" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.amplitude" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.numerical_aperture_to_angle">
-<span class="sig-name descname"><span class="pre">numerical_aperture_to_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numerical_aperture</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/source/gaussian.html#Gaussian.numerical_aperture_to_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.source.Gaussian.numerical_aperture_to_angle" title="Link to this definition">#</a></dt>
-<dd><p>Convert numerical aperture (NA) to angle in radians.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>NA</strong> (<em>float</em>) – The numerical aperture.</p></li>
-<li><p><strong>numerical_aperture</strong> (<em>float</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The angle in radians.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.area">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">area</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.area" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.jones_vector">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jones_vector</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.jones_vector" title="Link to this definition">#</a></dt>
+<dd><p>First Jones vector row [Ex, Ey] as a complex array of shape (2,).</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.optical_power">
-<span class="sig-name descname"><span class="pre">optical_power</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Power</span></em><a class="headerlink" href="#PyMieSim.single.source.Gaussian.optical_power" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">optical_power</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.optical_power" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/source/gaussian.html#Gaussian.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.source.Gaussian.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plots the 3D structure of the Gaussian source.</p>
-<p>This method creates a 3D plot of the Gaussian source, adds the structure to the plot,
-and optionally displays axis labels.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>str</em>) – The color of the structure in the plot. Default is ‘red’.</p></li>
-<li><p><strong>opacity</strong> (<em>float</em>) – The opacity of the structure. Default is 0.8.</p></li>
-<li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, axis labels will be shown. Default is False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.peak_intensity">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peak_intensity</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.peak_intensity" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.polarization_element">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_element</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.polarization_element" title="Link to this definition">#</a></dt>
+<dd><p>Polarization Jones matrix as a complex array of shape (N, 2).</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.polarization">
-<span class="sig-name descname"><span class="pre">polarization</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Angle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BasePolarization</span></em><a class="headerlink" href="#PyMieSim.single.source.Gaussian.polarization" title="Link to this definition">#</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.waist">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">waist</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.waist" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.wavelength">
-<span class="sig-name descname"><span class="pre">wavelength</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.single.source.Gaussian.wavelength" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.wavelength" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.wavenumber_vacuum">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavenumber_vacuum</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.wavenumber_vacuum" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -659,19 +606,23 @@ and optionally displays axis labels.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave"><code class="docutils literal notranslate"><span class="pre">PlaneWave</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.amplitude"><code class="docutils literal notranslate"><span class="pre">PlaneWave.amplitude</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.plot"><code class="docutils literal notranslate"><span class="pre">PlaneWave.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.polarization"><code class="docutils literal notranslate"><span class="pre">PlaneWave.polarization</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.jones_vector"><code class="docutils literal notranslate"><span class="pre">PlaneWave.jones_vector</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.polarization_element"><code class="docutils literal notranslate"><span class="pre">PlaneWave.polarization_element</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.wavelength"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavelength</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.wavenumber_vacuum"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavenumber_vacuum</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.NA"><code class="docutils literal notranslate"><span class="pre">Gaussian.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.amplitude"><code class="docutils literal notranslate"><span class="pre">Gaussian.amplitude</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.numerical_aperture_to_angle"><code class="docutils literal notranslate"><span class="pre">Gaussian.numerical_aperture_to_angle()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.area"><code class="docutils literal notranslate"><span class="pre">Gaussian.area</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.jones_vector"><code class="docutils literal notranslate"><span class="pre">Gaussian.jones_vector</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.optical_power"><code class="docutils literal notranslate"><span class="pre">Gaussian.optical_power</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.plot"><code class="docutils literal notranslate"><span class="pre">Gaussian.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.polarization"><code class="docutils literal notranslate"><span class="pre">Gaussian.polarization</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.peak_intensity"><code class="docutils literal notranslate"><span class="pre">Gaussian.peak_intensity</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.polarization_element"><code class="docutils literal notranslate"><span class="pre">Gaussian.polarization_element</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.waist"><code class="docutils literal notranslate"><span class="pre">Gaussian.waist</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.wavelength"><code class="docutils literal notranslate"><span class="pre">Gaussian.wavelength</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.wavenumber_vacuum"><code class="docutils literal notranslate"><span class="pre">Gaussian.wavenumber_vacuum</span></code></a></li>
 </ul>
 </li>
 </ul>

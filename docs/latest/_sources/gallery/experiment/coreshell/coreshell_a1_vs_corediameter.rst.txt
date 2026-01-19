@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the B1 scattering paramet
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-40
+.. GENERATED FROM PYTHON SOURCE LINES 10-39
 
 .. code-block:: Python
 
@@ -47,12 +47,11 @@ Importing the package dependencies: numpy, PyMieSim
     )
 
     scatterer = CoreShell(
-        core_diameter=np.geomspace(100, 600, 10)
-        * ureg.nanometer,  # Geometrically spaced core diameters
+        core_diameter=np.geomspace(100, 600, 10) * ureg.nanometer,  # Geometrically spaced core diameters
         shell_thickness=150 * ureg.nanometer,  # Shell width of 800 nm
-        core_property=[1.4] * ureg.RIU,  # Refractive index of the core
-        shell_property=[Material.BK7],  # BK7 glass material for the shell
-        medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
+        core_refractive_index=[1.4] * ureg.RIU,  # Refractive index of the core
+        shell_refractive_index=[Material.BK7],  # BK7 glass material for the shell
+        medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
         source=source,
     )
 
@@ -82,7 +81,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.215 seconds)
+   **Total running time of the script:** (0 minutes 0.212 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_a1_vs_corediameter.py:

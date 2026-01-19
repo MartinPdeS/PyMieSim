@@ -463,41 +463,84 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span><span class="p">,</span> <span class="n">Length</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span><span class="p">,</span> <span class="n">spherical_to_cartesian</span>
 
 
 <div class="viewcode-block" id="FarField">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.FarField">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">FarField</span><span class="p">(</span><span class="n">BaseRepresentation</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FarField</span><span class="p">():</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents the scattering far-field in spherical coordinates.</span>
+<span class="sd">    Compute the far-field scattering pattern for the scatterer.</span>
 
-<span class="sd">    Inherits from BaseRepresentation and visualizes the far-field pattern characterized by the perpendicular and parallel components</span>
-<span class="sd">    of the electric field in spherical coordinates.</span>
+<span class="sd">    The far fields describe the behavior of the scattered electromagnetic waves at a large distance from the scatterer, where the waves can be approximated as planar.</span>
+<span class="sd">    The computed far fields represent the scattered electric field components in the directions parallel and perpendicular to the plane of incidence.</span>
+
+<span class="sd">    The far fields are computed as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \text{Fields} = E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2</span>
+<span class="sd">        \text{Fields} = E_{||}(\phi, \theta)^2, \, E_{\perp}(\phi, \theta)^2</span>
 
-<span class="sd">    Methods:</span>
-<span class="sd">        compute_components: Calculates the field components. This implementation is a placeholder, as the components are precomputed.</span>
-<span class="sd">        plot: Visualizes the far-field pattern in a 3D plot.</span>
+<span class="sd">    These components represent the intensities of the scattered electric field in the parallel (\( E_{||} \)) and perpendicular (\( E_{\perp} \)) directions as functions of the spherical angles \( \phi \) (azimuthal) and \( \theta \) (polar).</span>
+
+<span class="sd">    The fields are expressed up to a constant phase factor:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \exp{\left(-i k r \right)}</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`k`: The wave number, related to the wavelength of the incident light.</span>
+<span class="sd">    - :math:`r`: The distance from the scatterer (assumed to be large in the far-field approximation).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sampling : int</span>
+<span class="sd">        The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</span>
+<span class="sd">    distance : Length, optional</span>
+<span class="sd">        The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    representations.FarField</span>
+<span class="sd">        An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The far-field approximation assumes that the distance from the scatterer is large enough that the curvature of the wavefronts can be neglected, and the fields can be treated as planar.</span>
+<span class="sd">    - This method is useful for determining the angular distribution of the scattered light, which is critical in applications such as radar cross-section analysis, optical scattering experiments, and remote sensing.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    You can use this method to compute the far-field scattering pattern of a spherical scatterer, which is essential in understanding how the scatterer redirects light in the far field.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; farfield = scatterer.get_farfield(sampling=500)</span>
+<span class="sd">    &gt;&gt;&gt; print(farfield.E_phi, farfield.E_theta)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">distance</span><span class="p">:</span> <span class="n">Length</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
 
-<div class="viewcode-block" id="FarField.compute_components">
-<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.FarField.compute_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Placeholder method in FarField class. Does not perform any computation as field components are precomputed.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_full_farfields</span><span class="p">(</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">fields</span>
 
-<span class="sd">        This method is intended to be consistent with the structure of BaseRepresentation but does not need to modify or compute</span>
-<span class="sd">        any attributes for FarField instances.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span></div>
+<div class="viewcode-block" id="FarField.get_colormap_limits">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.FarField.get_colormap_limits">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_colormap_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">symmetric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">symmetric</span><span class="p">:</span>
+            <span class="n">max_abs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">scalar</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">max_abs</span><span class="p">,</span> <span class="n">max_abs</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="FarField.plot">
@@ -576,6 +619,108 @@
             <span class="n">scene</span><span class="o">.</span><span class="n">add_scalar_bar</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapping</span><span class="o">.</span><span class="n">mapper</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> field&quot;</span><span class="p">)</span>
 
         <span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FarField.add_theta_vector_to_3d_plot">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.FarField.add_theta_vector_to_3d_plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_theta_vector_to_3d_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">scene</span><span class="p">:</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a vector field to the 3D plot, representing vectors in the theta direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scene : pyvista.Plotter</span>
+<span class="sd">            The 3D plotting scene to which the vectors will be added.</span>
+<span class="sd">        n_points : int</span>
+<span class="sd">            Number of points to generate along the theta and phi directions. Default is 100.</span>
+<span class="sd">        opacity : float</span>
+<span class="sd">            Opacity of the vectors. Default is 1.0.</span>
+<span class="sd">        radius : float</span>
+<span class="sd">            Radius at which to place the vectors. Default is 1.0.</span>
+<span class="sd">        color : str</span>
+<span class="sd">            Color of the vectors. Default is &#39;black&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+
+        <span class="c1"># Define the vector direction (unit vector along x-axis)</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Convert spherical coordinates to Cartesian coordinates</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">transform_vectors_sph_to_cart</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+
+        <span class="c1"># Combine the Cartesian coordinates into a vector array</span>
+        <span class="n">vector_field</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">z</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+        <span class="c1"># Create a structured grid from spherical coordinates</span>
+        <span class="n">spherical_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">grid_from_sph_coords</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">spherical_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_field</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+        <span class="c1"># Generate glyphs (arrows) for the vectors</span>
+        <span class="n">glyphs</span> <span class="o">=</span> <span class="n">spherical_grid</span><span class="o">.</span><span class="n">glyph</span><span class="p">(</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.005</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Add the vector glyphs to the scene</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">glyphs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FarField.add_phi_vector_to_3d_plot">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.FarField.add_phi_vector_to_3d_plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_phi_vector_to_3d_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">scene</span><span class="p">:</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">,</span>
+        <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a vector field to the 3D plot, representing vectors in the phi direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scene : pyvista.Plotter</span>
+<span class="sd">            The 3D plotting scene to which the vectors will be added.</span>
+<span class="sd">        n_points : int</span>
+<span class="sd">            Number of points to generate along the theta and phi directions. Default is 100.</span>
+<span class="sd">        opacity : float</span>
+<span class="sd">            Opacity of the vectors. Default is 1.0.</span>
+<span class="sd">        radius : float</span>
+<span class="sd">            Radius at which to place the vectors. Default is 1.0.</span>
+<span class="sd">        color : str</span>
+<span class="sd">            Color of the vectors. Default is &#39;black&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span>
+
+        <span class="c1"># Define the vector direction (unit vector along y-axis)</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Convert spherical coordinates to Cartesian coordinates</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">transform_vectors_sph_to_cart</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="o">*</span><span class="n">vector</span><span class="p">)</span>
+
+        <span class="c1"># Combine the Cartesian coordinates into a vector array</span>
+        <span class="n">vector_field</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">z</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+        <span class="c1"># Create a structured grid from spherical coordinates</span>
+        <span class="n">spherical_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">grid_from_sph_coords</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">spherical_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;component&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_field</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+        <span class="c1"># Generate glyphs (arrows) for the vectors</span>
+        <span class="n">glyphs</span> <span class="o">=</span> <span class="n">spherical_grid</span><span class="o">.</span><span class="n">glyph</span><span class="p">(</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.005</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Add the vector glyphs to the scene</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">glyphs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

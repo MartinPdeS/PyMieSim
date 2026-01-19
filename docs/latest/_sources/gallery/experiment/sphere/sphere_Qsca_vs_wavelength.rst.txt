@@ -46,8 +46,8 @@ Importing the package dependencies: numpy, PyMieSim
 
     scatterer = Sphere(
         diameter=[200] * ureg.nanometer,
-        property=MaterialBank.BK7,
-        medium_property=1 * ureg.RIU,
+        refractive_index=MaterialBank.BK7,
+        medium_refractive_index=1 * ureg.RIU,
         source=source,
     )
 
@@ -77,7 +77,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.199 seconds)
+   **Total running time of the script:** (0 minutes 0.197 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_wavelength.py:

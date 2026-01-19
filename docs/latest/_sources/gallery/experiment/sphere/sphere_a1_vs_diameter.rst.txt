@@ -44,8 +44,8 @@ Importing the package dependencies: numpy, PyMieSim
     )
     scatterer = Sphere(
         diameter=np.linspace(300, 1000, 100) * ureg.nanometer,
-        property=[1.2, 1.25] * ureg.RIU,
-        medium_property=[1.0] * ureg.RIU,
+        refractive_index=[1.2, 1.25] * ureg.RIU,
+        medium_refractive_index=[1.0] * ureg.RIU,
         source=source,
     )
     #
@@ -53,7 +53,7 @@ Importing the package dependencies: numpy, PyMieSim
 
     dataframe = experiment.get("a1")
 
-    dataframe.plot(x="scatterer:diameter", std="scatterer:property")
+    dataframe.plot(x="scatterer:diameter", std="scatterer:refractive_index")
 
 
 

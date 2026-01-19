@@ -25,10 +25,11 @@ Sphere: Qsca vs diameter
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-39
+.. GENERATED FROM PYTHON SOURCE LINES 9-43
 
 .. code-block:: Python
 
+    import PyMieSim
     import numpy as np
     from PyMieSim.units import ureg
 
@@ -38,10 +39,13 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment import Setup
     from PyOptik import Material
 
+    import PyMieSim
+    PyMieSim.debug_mode = True
+
     Material.print_available()
 
     source = Gaussian(
-        wavelength=[405, 810] * ureg.nanometer,
+        wavelength=[405] * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1e-3 * ureg.watt,
         NA=0.2 * ureg.AU,
@@ -49,8 +53,8 @@ Importing the package dependencies: numpy, PyMieSim
 
     scatterer = Sphere(
         diameter=np.linspace(10, 1000, 150) * ureg.nanometer,
-        medium_property=[1.33, 1.34, 1.5] * ureg.RIU,
-        property=Material.polystyren,
+        medium_refractive_index=[1.33, 1.34, 1.5] * ureg.RIU,
+        refractive_index=Material.polystyren,
         source=source,
     )
 
@@ -143,7 +147,7 @@ Importing the package dependencies: numpy, PyMieSim
     +-----------------------+-----------------------+
     | BAF10                 |                       |
     +-----------------------+-----------------------+
-    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405 nanometer to 810 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405 nanometer to 405 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
       warnings.warn(
 
     <Figure size 800x500 with 1 Axes>
@@ -153,7 +157,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.306 seconds)
+   **Total running time of the script:** (0 minutes 0.256 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:

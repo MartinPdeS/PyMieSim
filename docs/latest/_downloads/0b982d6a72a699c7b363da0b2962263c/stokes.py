@@ -11,6 +11,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single.representations import Stokes
 
 source = Gaussian(
     wavelength=750 * ureg.nanometer,
@@ -22,10 +23,10 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=300 * ureg.nanometer,
     source=source,
-    medium_property=1.0 * ureg.RIU,
-    property=1.4 * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
+    refractive_index=1.4 * ureg.RIU,
 )
 
-data = scatterer.get_stokes(sampling=100)
+stokes = Stokes(scatterer=scatterer, sampling=100)
 
-figure = data.plot()
+figure = stokes.plot()
