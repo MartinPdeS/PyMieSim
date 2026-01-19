@@ -74,9 +74,4 @@ class CoherentMode(BaseDetector, Sequential):
             "is_sequential": self.is_sequential,
         }
 
-        self.set = CoherentModeSet(
-            **{
-                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-                for k, v in self.binding_kwargs.items()
-            }
-        )
+        self.set = CoherentModeSet(**self.binding_kwargs)

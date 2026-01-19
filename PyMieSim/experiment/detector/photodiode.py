@@ -70,9 +70,4 @@ class Photodiode(BaseDetector, Sequential):
         }
 
 
-        self.set = PhotodiodeSet(
-            **{
-                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-                for k, v in self.binding_kwargs.items()
-            }
-        )
+        self.set = PhotodiodeSet(**self.binding_kwargs)

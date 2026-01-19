@@ -31,96 +31,52 @@ SAMPLING = 100 * ureg.AU
 ROTATION = 0 * ureg.degree
 
 
-@pytest.fixture
-def sequential_source():
-    return Gaussian(
-        wavelength=WAVELENGTH,
-        polarization=ONES * POLARIZATION,
-        optical_power=ONES * OPTICAL_POWER,
-        NA=ONES * NA,
-    )
 
 
-@pytest.fixture
-def sequential_scatterer(sequential_source):
-    return Sphere(
-        diameter=ONES * DIAMETER,
-        source=sequential_source,
-        property=ONES * PROPERTY,
-        medium_property=ONES * MEDIUM_PROPERTY,
-    )
-
-
-@pytest.fixture
-def sequential_detector():
-    detector = Photodiode(
-        phi_offset=ONES * PHI_OFFSET,
-        gamma_offset=ONES * GAMMA_OFFSET,
-        NA=ONES * NA,
-        cache_NA=ONES * CACHE_NA,
-        sampling=ONES * SAMPLING,
-        polarization_filter=ONES * POLARIZATION_FILTER,
-    )
-
-    detector.rotation = ONES * ROTATION
-
-    detector.mode_number = SIZE * ["NC00"]
-
-    detector._generate_binding()
-
-    return detector
-
-
-@pytest.fixture
-def standard_source():
-    return Gaussian(
+def test_sequential_vs_standard_no_detector():
+    source_standard = Gaussian(
         wavelength=WAVELENGTH,
         polarization=POLARIZATION,
         optical_power=OPTICAL_POWER,
         NA=NA,
     )
 
-
-@pytest.fixture
-def standard_scatterer(standard_source):
-    # Configure the spherical scatterer
-    return Sphere(
+    scatterer_standard = Sphere(
         diameter=DIAMETER,
-        source=standard_source,
-        property=PROPERTY,
-        medium_property=MEDIUM_PROPERTY,
+        source=source_standard,
+        refractive_index=PROPERTY,
+        medium_refractive_index=MEDIUM_PROPERTY,
     )
 
-
-@pytest.fixture
-def standard_detector():
-    # Configure the spherical scatterer
-    return Photodiode(
-        phi_offset=PHI_OFFSET,
-        gamma_offset=GAMMA_OFFSET,
-        NA=NA,
-        cache_NA=CACHE_NA,
-        sampling=SAMPLING,
-        polarization_filter=POLARIZATION_FILTER,
+    setup_standard = Setup(
+        scatterer=scatterer_standard,
+        source=source_standard
     )
 
+    data_standard = setup_standard.get("Qsca", add_units=False).values.squeeze()
 
-def test_sequential_vs_standard_no_detector(
-    sequential_source, sequential_scatterer, standard_source, standard_scatterer
-):
-    data_standard = Setup(scatterer=standard_scatterer, source=standard_source).get(
-        "Qsca", add_units=False
+    assert setup_standard is not None, "Error while running the standard get function."
+
+    source_sequential = Gaussian(
+        wavelength=WAVELENGTH,
+        polarization=ONES * POLARIZATION,
+        optical_power=ONES * OPTICAL_POWER,
+        NA=ONES * NA,
     )
 
-    data_standard = data_standard.values.squeeze()
-
-    assert data_standard is not None, "Error while running the standard get function."
-
-    data_sequential = (
-        Setup(scatterer=sequential_scatterer, source=sequential_source)
-        .get_sequential("Qsca")
-        .squeeze()
+    scatterer_sequential = Sphere(
+        diameter=ONES * DIAMETER,
+        source=source_sequential,
+        refractive_index=ONES * PROPERTY,
+        medium_refractive_index=ONES * MEDIUM_PROPERTY,
     )
+
+    setup_sequential = Setup(
+        scatterer=scatterer_sequential,
+        source=source_sequential
+    )
+
+    data_sequential = setup_sequential.get_sequential("Qsca").squeeze()
 
     assert data_sequential is not None, "Error while running the standard get function."
 
@@ -133,31 +89,72 @@ def test_sequential_vs_standard_no_detector(
     ), "Mismatch between sequential and standard computed data."
 
 
-def test_sequential_vs_standard_detector(
-    sequential_source,
-    sequential_scatterer,
-    sequential_detector,
-    standard_source,
-    standard_scatterer,
-    standard_detector,
-):
-    data_standard = Setup(
-        scatterer=standard_scatterer, source=standard_source, detector=standard_detector
-    ).get("coupling", add_units=False)
+def test_sequential_vs_standard_detector():
+    source_standard = Gaussian(
+        wavelength=WAVELENGTH,
+        polarization=POLARIZATION,
+        optical_power=OPTICAL_POWER,
+        NA=NA,
+    )
 
-    data_standard = data_standard.values.squeeze()
+    scatterer_standard = Sphere(
+        diameter=DIAMETER,
+        source=source_standard,
+        refractive_index=PROPERTY,
+        medium_refractive_index=MEDIUM_PROPERTY,
+    )
+
+    detector_standard = Photodiode(
+        phi_offset=PHI_OFFSET,
+        gamma_offset=GAMMA_OFFSET,
+        NA=NA,
+        cache_NA=CACHE_NA,
+        sampling=SAMPLING,
+        polarization_filter=POLARIZATION_FILTER,
+    )
+
+    setup_standard = Setup(
+        scatterer=scatterer_standard,
+        source=source_standard,
+        detector=detector_standard
+    )
+
+    data_standard = setup_standard.get("coupling", add_units=False).values.squeeze()
 
     assert data_standard is not None, "Error while running the standard get function."
 
-    data_sequential = (
-        Setup(
-            scatterer=sequential_scatterer,
-            source=sequential_source,
-            detector=sequential_detector,
-        )
-        .get_sequential("coupling")
-        .squeeze()
+
+    source_sequential = Gaussian(
+        wavelength=WAVELENGTH,
+        polarization=ONES * POLARIZATION,
+        optical_power=ONES * OPTICAL_POWER,
+        NA=ONES * NA,
     )
+
+    scatterer_sequential = Sphere(
+        diameter=ONES * DIAMETER,
+        source=source_sequential,
+        refractive_index=ONES * PROPERTY,
+        medium_refractive_index=ONES * MEDIUM_PROPERTY,
+    )
+
+    detector_sequential = Photodiode(
+        phi_offset=ONES * PHI_OFFSET,
+        gamma_offset=ONES * GAMMA_OFFSET,
+        NA=ONES * NA,
+        cache_NA=ONES * CACHE_NA,
+        sampling=ONES * SAMPLING,
+        polarization_filter=ONES * POLARIZATION_FILTER,
+        medium_refractive_index=ONES * MEDIUM_PROPERTY,
+    )
+
+    setup_sequential = Setup(
+        scatterer=scatterer_sequential,
+        source=source_sequential,
+        detector=detector_sequential,
+    )
+
+    data_sequential = setup_sequential.get_sequential("coupling").squeeze()
 
     assert data_sequential is not None, "Error while running the standard get function."
 

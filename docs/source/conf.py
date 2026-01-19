@@ -68,7 +68,12 @@ def reset_mpl(gallery_conf, fname):
     use_mpsplots_style()
 
 
-examples_files = ["single", "experiment", "validation", "extras"]
+examples_files = [
+    "single",
+    "experiment",
+    "validation",
+    "extras"
+]
 
 sphinx_gallery_conf = {
     "examples_dirs": ["../examples/" + f for f in examples_files],

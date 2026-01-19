@@ -30,11 +30,11 @@ class CoreShell(BaseScatterer, Sequential):
         Diameters of the core components.
     shell_thickness : Length
         Thicknesses of the shell components.
-    core_property : List[BaseMaterial] | List[RefractiveIndex]
+    core_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the core.
-    shell_property : List[BaseMaterial] | List[RefractiveIndex]
+    shell_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the shell.
-    medium_property : List[BaseMaterial] | List[RefractiveIndex]
+    medium_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
     """
@@ -42,9 +42,9 @@ class CoreShell(BaseScatterer, Sequential):
     source: BaseSource
     core_diameter: Length
     shell_thickness: Length
-    core_property: List[BaseMaterial] | List[RefractiveIndex]
-    shell_property: List[BaseMaterial] | List[RefractiveIndex]
-    medium_property: List[BaseMaterial] | List[RefractiveIndex]
+    core_refractive_index: List[BaseMaterial] | List[RefractiveIndex]
+    shell_refractive_index: List[BaseMaterial] | List[RefractiveIndex]
+    medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
         "Qsca",
@@ -74,44 +74,39 @@ class CoreShell(BaseScatterer, Sequential):
     attributes = [
         "core_diameter",
         "shell_thickness",
-        "core_property",
-        "shell_property",
-        "medium_property",
+        "core_refractive_index",
+        "shell_refractive_index",
+        "medium_refractive_index",
     ]
 
     def _generate_binding(self) -> None:
         """
         Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.
-        Prepares structured data from scatterer properties for efficient simulation integration.
+        Prepares structured data from scatterer refractive_index for efficient simulation integration.
 
         This function populates `binding_kwargs` with values formatted appropriately for the C++ backend used in simulations.
         """
         self.mapping = {}
 
-        mediun_properties = self._add_properties(
-            name="medium", properties=self.medium_property
+        mediun_refractive_index = self._add_refractive_index(
+            name="medium", refractive_index=self.medium_refractive_index
         )
 
-        core_properties = self._add_properties(
-            name="core", properties=self.core_property
+        core_refractive_index = self._add_refractive_index(
+            name="core", refractive_index=self.core_refractive_index
         )
 
-        shell_properties = self._add_properties(
-            name="shell", properties=self.shell_property
+        shell_refractive_index = self._add_refractive_index(
+            name="shell", refractive_index=self.shell_refractive_index
         )
 
         self.binding_kwargs = dict(
             core_diameter=self.core_diameter,
             shell_thickness=self.shell_thickness,
             is_sequential=self.is_sequential,
-            medium_properties=mediun_properties,
-            core_properties=core_properties,
-            shell_properties=shell_properties,
+            medium_refractive_index=mediun_refractive_index,
+            core_refractive_index=core_refractive_index,
+            shell_refractive_index=shell_refractive_index,
         )
 
-        self.set = CoreShellSet(
-            **{
-                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-                for k, v in self.binding_kwargs.items()
-            }
-        )
+        self.set = CoreShellSet(**self.binding_kwargs)

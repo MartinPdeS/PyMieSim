@@ -37,9 +37,9 @@ source = Gaussian(
 scatterer = CoreShell(
     core_diameter=core_diameters,
     shell_thickness=shell_thickness,
-    core_property=core_index,
-    shell_property=shell_index,
-    medium_property=medium_index,
+    core_refractive_index=core_index,
+    shell_refractive_index=shell_index,
+    medium_refractive_index=medium_index,
     source=source,
 )
 

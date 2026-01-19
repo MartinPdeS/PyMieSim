@@ -7,6 +7,7 @@
 #include <full_mesh/full_mesh.h>
 #include <bessel_subroutine/bessel_subroutine.h>
 #include <utils/defines.h>
+#include <memory>
 
 typedef std::complex<double> complex128;
 

@@ -368,7 +368,7 @@ void register_detector(py::module_& module) {
                     gamma_offset = units_angle.attr("check")(gamma_offset);
                     medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
 
-                    if (!medium_refractive_index.is(py::none())) {
+                    if (!polarization_filter.is(py::none())) {
                         polarization_filter.attr("check")(polarization_filter);
                     } else {
                         polarization_filter = py::float_(std::nan("")) * units_angle;

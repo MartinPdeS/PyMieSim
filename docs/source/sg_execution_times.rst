@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.667** total execution time for 62 files **from all galleries**:
+**00:01.124** total execution time for 60 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_single_nearfield.py` (``../examples/single/nearfield.py``)
-     - 00:02.667
+   * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``../examples/extras/plot_system.py``)
+     - 00:01.124
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_Qback_vs_corediameter.py` (``../examples/experiment/coreshell/coreshell_Qback_vs_corediameter.py``)
      - 00:00.000
@@ -155,16 +155,10 @@ Computation times
    * - :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py` (``../examples/extras/coupling_vs_NA.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_gallery_extras_farfields_bulk.py` (``../examples/extras/farfields_bulk.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_gallery_extras_integrating_sphere.py` (``../examples/extras/integrating_sphere.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_photodiode.py` (``../examples/extras/photodiode.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``../examples/extras/plot_system.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_properties_cylinder.py` (``../examples/extras/properties_cylinder.py``)
@@ -179,10 +173,10 @@ Computation times
    * - :ref:`sphx_glr_gallery_single_footprint.py` (``../examples/single/footprint.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_gallery_single_s1s2.py` (``../examples/single/s1s2.py``)
+   * - :ref:`sphx_glr_gallery_single_nearfield.py` (``../examples/single/nearfield.py``)
      - 00:00.000
      - 0.0
-   * - :ref:`sphx_glr_gallery_single_source.py` (``../examples/single/source.py``)
+   * - :ref:`sphx_glr_gallery_single_s1s2.py` (``../examples/single/s1s2.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_single_spf.py` (``../examples/single/spf.py``)

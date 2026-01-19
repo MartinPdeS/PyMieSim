@@ -23,8 +23,8 @@ source = Gaussian(
 )
 scatterer = Sphere(
     diameter=numpy.linspace(100, 10000, 600) * ureg.nanometer,
-    property=Material.BK7,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=Material.BK7,
+    medium_refractive_index=1.0 * ureg.RIU,
     source=source,
 )
 
@@ -41,6 +41,6 @@ detector = CoherentMode(
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-dataframe = experiment.get("a1", drop_unique_level=True, scale_unit=True)
+dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
 
 dataframe.plot(x="scatterer:diameter")

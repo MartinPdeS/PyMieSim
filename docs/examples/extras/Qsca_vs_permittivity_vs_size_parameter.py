@@ -34,7 +34,7 @@ source = Gaussian(
 
 
 scatterer = Sphere(
-    diameter=diameter, property=index, medium_property=1 * ureg.RIU, source=source
+    diameter=diameter, refractive_index=index, medium_refractive_index=1 * ureg.RIU, source=source
 )
 
 experiment = Setup(scatterer=scatterer, source=source)

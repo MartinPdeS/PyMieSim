@@ -22,7 +22,7 @@ class BaseScatterer:
     binding = None
 
     @field_validator(
-        "property", "core_property", "shell_property", "medium_property", mode="plain"
+        "refractive_index", "core_refractive_index", "shell_refractive_index", "medium_refractive_index", mode="plain"
     )
     def _validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
@@ -46,33 +46,33 @@ class BaseScatterer:
         Length.check(value)
         return numpy.atleast_1d(value)
 
-    def _add_properties(
-        self, name: str, properties: RefractiveIndex | BaseMaterial
+    def _add_refractive_index(
+        self, name: str, refractive_index: RefractiveIndex | BaseMaterial
     ) -> None:
         """
-        Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
+        Determines whether the provided refractive_index is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
 
         Parameters
         ----------
-        property : Quantity or BaseMaterial
-            The core property to be assigned, which can either be a refractive index (Quantity) or a material (BaseMaterial).
+        refractive_index : Quantity or BaseMaterial
+            The core refractive_index to be assigned, which can either be a refractive index (Quantity) or a material (BaseMaterial).
 
         Raises
         ------
         ValueError:
-            If the provided property is neither a Quantity (refractive index) nor a BaseMaterial.
+            If the provided refractive_index is neither a Quantity (refractive index) nor a BaseMaterial.
         """
         CPPClass = MediumProperties if name == "medium" else ScattererProperties
 
-        if all(isinstance(item, RefractiveIndex) for item in properties):
-            return CPPClass(index_properties=properties.magnitude)
+        if all(isinstance(item, RefractiveIndex) for item in refractive_index):
+            return CPPClass(properties=refractive_index.magnitude)
 
-        elif all(isinstance(item, BaseMaterial) for item in properties):
+        elif all(isinstance(item, BaseMaterial) for item in refractive_index):
             eval_index = numpy.asarray(
-                [m.compute_refractive_index(self.source.wavelength) for m in properties]
+                [m.compute_refractive_index(self.source.wavelength) for m in refractive_index]
             )
-            return CPPClass(material_properties=eval_index)
+            return CPPClass(properties=eval_index)
 
         raise TypeError(
             "All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both."
@@ -80,13 +80,13 @@ class BaseScatterer:
 
     def _generate_mapping(self) -> None:
         """
-        Constructs a table of the scatterer's properties formatted for data visualization.
-        This method populates the `mapping` dictionary with user-friendly descriptions and formats of the scatterer properties.
+        Constructs a table of the scatterer's refractive_index formatted for data visualization.
+        This method populates the `mapping` dictionary with user-friendly descriptions and formats of the scatterer refractive_index.
 
         Returns
         -------
         list
-            A list of visual representations for each property in the `mapping` dictionary that has been populated.
+            A list of visual representations for each refractive_index in the `mapping` dictionary that has been populated.
         """
         for attr in self.attributes:
             values = getattr(self, attr)

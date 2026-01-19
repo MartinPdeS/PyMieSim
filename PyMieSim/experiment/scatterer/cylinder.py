@@ -24,16 +24,16 @@ class Cylinder(BaseScatterer, Sequential):
         Light source configuration for the simulation.
     diameter : Length
         Diameter(s) of the cylinder in meters.
-    property : List[BaseMaterial] | List[RefractiveIndex]
+    refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the spherical scatterers themselves.
-    medium_property : List[BaseMaterial] | List[RefractiveIndex]
+    medium_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
 
     source: BaseSource
     diameter: Length
-    property: List[BaseMaterial] | List[RefractiveIndex]
-    medium_property: List[BaseMaterial] | List[RefractiveIndex]
+    refractive_index: List[BaseMaterial] | List[RefractiveIndex]
+    medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
         "Qsca",
@@ -57,7 +57,7 @@ class Cylinder(BaseScatterer, Sequential):
         "coupling",
     ]
 
-    attributes = ["diameter", "property", "medium_property"]
+    attributes = ["diameter", "refractive_index", "medium_refractive_index"]
 
     def _generate_binding(self) -> None:
         """
@@ -68,24 +68,19 @@ class Cylinder(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        mediun_properties = self._add_properties(
-            name="medium", properties=self.medium_property
+        mediun_refractive_index = self._add_refractive_index(
+            name="medium", refractive_index=self.medium_refractive_index
         )
 
-        scatterer_properties = self._add_properties(
-            name="scatterer", properties=self.property
+        refractive_index = self._add_refractive_index(
+            name="scatterer", refractive_index=self.refractive_index
         )
 
         self.binding_kwargs = dict(
             diameter=self.diameter,
             is_sequential=self.is_sequential,
-            medium_properties=mediun_properties,
-            scatterer_properties=scatterer_properties,
+            medium_refractive_index=mediun_refractive_index,
+            refractive_index=refractive_index,
         )
 
-        self.set = CylinderSet(
-            **{
-                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-                for k, v in self.binding_kwargs.items()
-            }
-        )
+        self.set = CylinderSet(**self.binding_kwargs)

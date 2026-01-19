@@ -18,7 +18,7 @@ class Sphere(BaseScatterer, Sequential):
     A data class that represents a spherical scatterer configuration used in PyMieSim simulations.
 
     This class provides specific implementations for setting up and binding spherical scatterers
-    with their properties to a simulation environment. It extends the `BaseScatterer` class by
+    with their refractive_index to a simulation environment. It extends the `BaseScatterer` class by
     adding spherical-specific attributes and methods for handling simulation setups.
 
     Parameters
@@ -27,16 +27,15 @@ class Sphere(BaseScatterer, Sequential):
         Light source configuration for the simulation.
     diameter : Length
         Diameter(s) of the spherical scatterers in meters.
-    property : List[BaseMaterial] | List[RefractiveIndex]
+    refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         Refractive index or indices of the spherical scatterers themselves.
-    medium_property : List, optional
+    medium_refractive_index : List, optional
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
-
     source: BaseSource
     diameter: Length
-    property: List[BaseMaterial] | List[RefractiveIndex]
-    medium_property: List[BaseMaterial] | List[RefractiveIndex]
+    refractive_index: List[BaseMaterial] | List[RefractiveIndex]
+    medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex]
 
     available_measure_list = [
         "Qsca",
@@ -63,7 +62,7 @@ class Sphere(BaseScatterer, Sequential):
         "coupling",
     ]
 
-    attributes = ["diameter", "property", "medium_property"]
+    attributes = ["diameter", "refractive_index", "medium_refractive_index"]
 
     def _generate_binding(self):
         """
@@ -74,24 +73,19 @@ class Sphere(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        medium_properties = self._add_properties(
-            name="medium", properties=self.medium_property
+        medium_refractive_index = self._add_refractive_index(
+            name="medium", refractive_index=self.medium_refractive_index
         )
 
-        scatterer_properties = self._add_properties(
-            name="scatterer", properties=self.property
+        refractive_index = self._add_refractive_index(
+            name="scatterer", refractive_index=self.refractive_index
         )
 
         self.binding_kwargs = dict(
             diameter=self.diameter,
             is_sequential=self.is_sequential,
-            medium_properties=medium_properties,
-            scatterer_properties=scatterer_properties,
+            medium_refractive_index=medium_refractive_index,
+            refractive_index=refractive_index,
         )
 
-        self.set = SphereSet(
-            **{
-                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-                for k, v in self.binding_kwargs.items()
-            }
-        )
+        self.set = SphereSet(**self.binding_kwargs)

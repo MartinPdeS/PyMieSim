@@ -53,9 +53,4 @@ class Gaussian(BaseSource, Sequential):
             is_sequential=self.is_sequential,
         )
 
-        self.set = GaussianSourceSet(
-            **{
-                k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
-                for k, v in self.binding_kwargs.items()
-            }
-        )
+        self.set = GaussianSourceSet(**self.binding_kwargs)

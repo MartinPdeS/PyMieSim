@@ -15,6 +15,7 @@ from PyMieSim.experiment.scatterer import Sphere as ExperimentSphere
 from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
 from PyMieSim.experiment import Setup
 
+from PyMieSim.single.representations import S1S2
 from PyMieSim.single.scatterer import Sphere as SingleSphere
 from PyMieSim.single.source import Gaussian as SingleGaussian
 from MPSPlots.styles import mps
@@ -34,8 +35,8 @@ source = ExperimentGaussian(
 
 scatterer = ExperimentSphere(
     diameter=scatterer_diameter,
-    property=scatterer_index,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=scatterer_index,
+    medium_refractive_index=1.0 * ureg.RIU,
     source=source,
 )
 
@@ -66,11 +67,11 @@ single_source = SingleGaussian(
 single_scatterer = SingleSphere(
     diameter=scatterer_diameter,
     source=single_source,
-    property=scatterer_index,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=scatterer_index,
+    medium_refractive_index=1.0 * ureg.RIU,
 )
 
-s1s2 = single_scatterer.get_s1s2()
+s1s2 = S1S2(scatterer=single_scatterer, sampling=800)
 phi, s1, s2 = s1s2.phi, np.abs(s1s2.S1) ** 2, np.abs(s1s2.S2) ** 2
 s1 /= s1.max()  # Normalize S1 data
 s2 /= s2.max()  # Normalize S2 data
@@ -95,12 +96,13 @@ df.plot(
     title="Polarization 90 degree",
 )
 
+phi += 90 * ureg.degree
 ax0.plot(
-    np.deg2rad(phi), s1, color="white", linestyle="--", linewidth=1, label="Computed S1"
+    phi.to('radian').magnitude, s1, color="black", linestyle="--", linewidth=1, label="Computed S1"
 )
 
 ax0.plot(
-    np.deg2rad(phi), s2, color="cyan", linestyle="--", linewidth=1, label="Computed S2"
+    phi.to('radian').magnitude, s2, color="black", linestyle="--", linewidth=1, label="Computed S2"
 )
 
 ax0.grid()

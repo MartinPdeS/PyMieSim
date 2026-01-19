@@ -27,8 +27,8 @@ source = Gaussian(
 scatterer = Cylinder(
     diameter=np.linspace(100, 8000, 5)
     * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
-    property=Material.BK7,  # Material of the cylinder
-    medium_property=1 * ureg.RIU,  # Refractive index of the surrounding medium
+    refractive_index=Material.BK7,  # Material of the cylinder
+    medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
     source=source,
 )
 

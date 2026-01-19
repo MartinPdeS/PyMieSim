@@ -30,9 +30,9 @@ source = Gaussian(
 scatterer = CoreShell(
     core_diameter=300 * ureg.nanometer,
     shell_thickness=np.linspace(100, 300, 100) * ureg.nanometer,
-    core_property=1.4 * ureg.RIU,
-    shell_property=1.3 * ureg.RIU,
-    medium_property=1.3 * ureg.RIU,
+    core_refractive_index=1.4 * ureg.RIU,
+    shell_refractive_index=1.3 * ureg.RIU,
+    medium_refractive_index=1.3 * ureg.RIU,
     source=source,
 )
 

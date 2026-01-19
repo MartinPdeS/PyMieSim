@@ -7,6 +7,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single.representations import FarField
 
 source = Gaussian(
     wavelength=1000 * ureg.nanometer,
@@ -18,15 +19,8 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=800 * ureg.nanometer,
     source=source,
-    property=1.4 * ureg.RIU,
-    medium_property=1.0 * ureg.RIU,
+    refractive_index=1.4 * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
 )
 
-# %%
-# Plotting the farfield pattern
-farfield = scatterer.get_farfield(sampling=300)
-farfield.plot()
-
-# %%
-# Printing the scatterer properties
-scatterer.print_properties()
+scatterer.print_properties(4)

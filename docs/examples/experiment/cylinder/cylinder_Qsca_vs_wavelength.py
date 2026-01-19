@@ -24,8 +24,8 @@ source = Gaussian(
 
 scatterer = Cylinder(
     diameter=[200, 150] * ureg.nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
-    property=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
-    medium_property=[1] * ureg.RIU,  # Refractive index of the surrounding medium
+    refractive_index=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
+    medium_refractive_index=[1] * ureg.RIU,  # Refractive index of the surrounding medium
     source=source,
 )
 
@@ -33,4 +33,4 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 dataframe = experiment.get("Qsca")
 
-dataframe.plot(x="source:wavelength", std="scatterer:property")
+dataframe.plot(x="source:wavelength", std="scatterer:refractive_index")
