@@ -54,9 +54,9 @@ def scatterer_single(source_single):
     """
     return single.scatterer.Sphere(
         diameter=1000 * ureg.nanometer,  # Diameter of the sphere in meters
-        property=(1.5 + 0.5j) * ureg.RIU,  # Complex refractive index of the scatterer
+        refractive_index=(1.5 + 0.5j) * ureg.RIU,  # Complex refractive index of the scatterer
         source=source_single,  # Associated light source
-        medium_property=1 * ureg.RIU,  # Refractive index of the medium (e.g., air)
+        medium_refractive_index=1 * ureg.RIU,  # Refractive index of the medium (e.g., air)
     )
 
 

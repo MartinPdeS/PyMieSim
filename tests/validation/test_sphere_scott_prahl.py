@@ -25,7 +25,7 @@ def test_validation_scott_prahl(measure_str):
     Validate PyMieSim results against known values from Scott Prahl's Mie scattering database.
 
     Parameters:
-        measure_str (str): The scattering property to validate (e.g., 'Qsca', 'Qext', 'g').
+        measure_str (str): The scattering refractive_index to validate (e.g., 'Qsca', 'Qext', 'g').
     """
     # Create a Gaussian light source
     source = Gaussian(
@@ -38,14 +38,14 @@ def test_validation_scott_prahl(measure_str):
     # Create a spherical scatterer
     scatterer = Sphere(
         diameter=1000 * ureg.nanometer,  # Diameter in meters (e.g., 1 micron)
-        property=1.5 + 0.5j * ureg.RIU,  # Complex refractive index
+        refractive_index=1.5 + 0.5j * ureg.RIU,  # Complex refractive index
         source=source,  # Associated light source
-        medium_property=1.0 * ureg.RIU,  # Refractive index of the medium (e.g., air)
+        medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the medium (e.g., air)
     )
 
     # Retrieve the reference value from Scott Prahl's data
     scott_prahl_value = scott_prahl_values[measure_str]
-    # Retrieve the corresponding PyMieSim value for the same scattering property
+    # Retrieve the corresponding PyMieSim value for the same scattering refractive_index
     pymiesim_value = getattr(scatterer, measure_str)
 
     # Compare the PyMieSim value to the reference value with a relative tolerance of 0.1%

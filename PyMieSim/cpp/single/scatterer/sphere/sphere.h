@@ -1,6 +1,7 @@
 #pragma once
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
+#include <utils/constants.h>
 
 using complex128 = std::complex<double>;
 
@@ -114,11 +115,12 @@ class Sphere: public BaseScatterer
         std::vector<complex128> compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) override;
 
 
+    public:
         void print_properties(int precision) const
         {
             const double radius_m = 0.5 * this->diameter;
-            const double volume_m3 = (4.0 / 3.0) * M_PI * std::pow(radius_m, 3);
-            const double cross_section_m2 = M_PI * std::pow(radius_m, 2);
+            const double volume_m3 = (4.0 / 3.0) * Constants::PI * std::pow(radius_m, 3);
+            const double cross_section_m2 = Constants::PI * std::pow(radius_m, 2);
 
             // Header
             std::printf("\n");

@@ -16,7 +16,7 @@ CoreShell::CoreShell(
     core_refractive_index(_core_refractive_index),
     shell_refractive_index(_shell_refractive_index)
 {
-    this->total_diameter = this->core_diameter + this->shell_thickness;
+    this->total_radius = this->core_diameter / 2 + this->shell_thickness;
     this->compute_cross_section();
     this->compute_size_parameter();
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
@@ -29,19 +29,28 @@ CoreShell::CoreShell(
 // ---------------------- Methods ---------------------------------------
 
 void CoreShell::compute_size_parameter() {
-    this->size_parameter = source->wavenumber_vacuum * this->total_diameter / 2 * this->medium_refractive_index;
+    this->size_parameter = source->wavenumber * this->total_radius * this->medium_refractive_index;
     this->size_parameter_squared = pow(this->size_parameter, 2);
-    this->x_shell = source->wavenumber_vacuum * this->total_diameter / 2.0 * this->medium_refractive_index;
-    this->x_core = source->wavenumber_vacuum * this->core_diameter / 2.0 * this->medium_refractive_index;
+    this->x_shell = source->wavenumber * this->total_radius * this->medium_refractive_index;
+    this->x_core = source->wavenumber * this->medium_refractive_index * (0.5 * this->core_diameter);
 }
+// void CoreShell::compute_size_parameter() {
+//     this->size_parameter = source->wavenumber * this->total_radius / 2;// * this->medium_refractive_index;
+//     this->size_parameter_squared = pow(this->size_parameter, 2);
+//     this->x_shell = source->wavenumber * this->total_radius / 2.0;// * this->medium_refractive_index;
+//     this->x_core = source->wavenumber * this->core_diameter / 2.0;// * this->medium_refractive_index;
+// }
 
 void CoreShell::compute_cross_section() {
-    this->cross_section = Constants::PI * pow(this->total_diameter / 2.0, 2);
+    this->cross_section = Constants::PI * pow(this->total_radius, 2);
 }
 
 void CoreShell::apply_medium() {
     this->core_refractive_index /= this->medium_refractive_index;
     this->shell_refractive_index /= this->medium_refractive_index;
+    // this->core_diameter *= this->medium_refractive_index;
+    // this->shell_thickness *= this->medium_refractive_index;
+    // this->total_radius *= this->medium_refractive_index;
 }
 
 void CoreShell::compute_an_bn(const size_t max_order)

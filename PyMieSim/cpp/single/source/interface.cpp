@@ -121,9 +121,9 @@ void register_sources(py::module_& module)
             }
         )
         .def_property_readonly(
-            "wavenumber",
+            "wavenumber_vacuum",
             [](const BaseSource& self) {
-                return (py::float_(self.wavenumber) * ureg.attr("1/meter")).attr("to_compact")();
+                return (py::float_(self.wavenumber_vacuum) * ureg.attr("1/meter")).attr("to_compact")();
             }
         )
         .def_property_readonly(

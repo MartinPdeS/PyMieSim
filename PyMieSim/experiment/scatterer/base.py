@@ -7,7 +7,7 @@ from pint_pandas import PintArray
 import numpy
 
 from TypedUnit import Length, RefractiveIndex
-from PyMieSim.binary.interface_experiment import CppScattererProperties, CppMediumProperties
+from PyMieSim.binary.interface_experiment import ScattererProperties, MediumProperties
 
 
 class BaseScatterer:
@@ -63,7 +63,7 @@ class BaseScatterer:
         ValueError:
             If the provided property is neither a Quantity (refractive index) nor a BaseMaterial.
         """
-        CPPClass = CppMediumProperties if name == "medium" else CppScattererProperties
+        CPPClass = MediumProperties if name == "medium" else ScattererProperties
 
         if all(isinstance(item, RefractiveIndex) for item in properties):
             return CPPClass(index_properties=properties.magnitude)

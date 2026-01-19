@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 
+#include "single/polarization/interface.cpp"
 #include "single/scatterer/base_scatterer/interface.cpp"
 #include "single/scatterer/sphere/interface.cpp"
 #include "single/scatterer/coreshell/interface.cpp"
@@ -7,7 +8,6 @@
 #include "single/source/interface.cpp"
 #include "single/setup_single/interface.cpp"
 #include "single/detector/interface.cpp"
-#include "single/polarization/interface.cpp"
 
 
 namespace py = pybind11;

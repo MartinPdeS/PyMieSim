@@ -8,11 +8,12 @@ size_t BaseScatterer::get_wiscombe_criterion(const double size_parameter) const 
 
 std::vector<double> BaseScatterer::get_prefactor() const {
     std::vector<double> output;
-
     output.reserve(max_order);
 
-    for (size_t m = 0; m < max_order ; ++m)
-        output[m] = (double) ( 2 * (m + 1) + 1 ) / ( (m + 1) * ( (m + 1) + 1 ) );
+    for (size_t m = 0; m < max_order; ++m) {
+        const double n = static_cast<double>(m + 1);
+        output.push_back((2.0 * n + 1.0) / (n * (n + 1.0)));
+    }
 
     return output;
 }
@@ -25,7 +26,6 @@ BaseScatterer::compute_structured_farfields(const std::vector<complex128>& S1, c
     complex128
         Ex = jones_vector[0],
         Ey = jones_vector[1];
-
 
     std::vector<complex128> phi_field, theta_field;
 
@@ -63,6 +63,7 @@ BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, co
     complex128
         Ex = jones_vector[0],
         Ey = jones_vector[1];
+
 
     auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -156,7 +157,11 @@ BaseScatterer::get_coefficient(const std::string &type, const size_t order) {
 
 complex128
 BaseScatterer::get_propagator(const double &radius) const {
-    return source->amplitude / (source->wavenumber * radius) * exp(-complex128(0, 1) * source->wavenumber * radius);
+    return (
+        source->amplitude /
+        (source->wavenumber_vacuum * this->medium_refractive_index * radius) *
+        exp(-complex128(0, 1) * source->wavenumber_vacuum * radius)
+    );
 }
 
 void
@@ -279,13 +284,22 @@ BaseScatterer::get_unstructured_stokes_parameters(
     std::vector<double> U(E_phi.size());
     std::vector<double> V(E_phi.size());
 
+    double I_max = 0.0;
+
     for (size_t i = 0; i < E_phi.size(); ++i) {
-        double intensity = std::norm(E_phi[i]) + std::norm(E_theta[i]);
-        I[i] = intensity / (*std::max_element(I.begin(), I.end()));
+        const double intensity = std::norm(E_phi[i]) + std::norm(E_theta[i]);
+        I[i] = intensity;
+        I_max = std::max(I_max, intensity);
+
         Q[i] = (std::norm(E_phi[i]) - std::norm(E_theta[i])) / intensity;
         U[i] = (2.0 * std::real(E_phi[i] * std::conj(E_theta[i]))) / intensity;
         V[i] = (-2.0 * std::imag(E_phi[i] * std::conj(E_theta[i]))) / intensity;
     }
+
+    if (I_max > 0.0) {
+        for (double& v : I) v /= I_max;
+    }
+
     return std::make_tuple(
         std::move(I),
         std::move(Q),

@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from TypedUnit import Angle, ureg
+from typing import Optional
+from PyMieSim.units import ureg, Angle
 
 from PyMieSim.binary.interface_single import FIBONACCIMESH
 
@@ -58,6 +59,27 @@ class FibonacciMesh(FIBONACCIMESH):
 
     """
 
+    def __init__(
+        self,
+        max_angle: Angle,
+        sampling: int,
+        phi_offset: Angle,
+        gamma_offset: Angle,
+        rotation: Optional[Angle] = 0.0 * ureg.degree,
+        min_angle: Angle = 0 * ureg.degree,
+    ):
+
+        super().__init__(
+            sampling=sampling,
+            max_angle=max_angle,
+            min_angle=min_angle,
+            rotation=rotation,
+            phi_offset=phi_offset,
+            gamma_offset=gamma_offset,
+        )
+
+        self.compute_vector_field()
+
     # ---------------------- Property Methods ----------------------
     @property
     def theta(self) -> Angle:
@@ -83,6 +105,29 @@ class FibonacciMesh(FIBONACCIMESH):
         """
         return self.spherical.phi * ureg.radian
 
+    @property
+    def d_omega(self) -> Angle:
+        """
+        Returns the solid angle (d_omega) of the mesh in steradians.
+
+        Returns
+        -------
+        units.Quantity
+            The solid angle in steradians.
+        """
+        return self.spherical._cpp_d_omega * ureg.steradian
+
+    @property
+    def omega(self) -> Angle:
+        """
+        Returns the solid angle (omega) of the mesh in steradians.
+
+        Returns
+        -------
+        units.Quantity
+            The solid angle in steradians.
+        """
+        return self.spherical._cpp_omega * ureg.steradian
 
     # ---------------------- Additional Methods ----------------------
     def get_axis_vector(self) -> numpy.ndarray:

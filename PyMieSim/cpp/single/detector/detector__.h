@@ -57,7 +57,7 @@ public:
         const double _polarization_filter,
         const double _medium_refractive_index,
         std::shared_ptr<BaseSource> _source,
-        const bool _mean_coupling)
+        const bool _mean_coupling = true)
     :   sampling(_sampling),
         numerical_aperture(_numerical_aperture),
         cache_numerical_aperture(_cache_numerical_aperture),
@@ -82,14 +82,6 @@ public:
      * @note This function computes the coupling coefficient based on the mode field and the scatterer's properties.
      */
     virtual double get_coupling(const BaseScatterer& scatterer) const = 0;
-
-    /**
-     * @brief Parses the mode number string to extract mode family and numbers.
-     * @param mode_number The mode number string in the format "LP01", "HG12", etc.
-     * @note This function sets the mode_id based on the parsed values.
-     * @throws std::invalid_argument if the mode number string is not in the expected format.
-     */
-    virtual void parse_mode(const std::string& mode_number);
 
     /**
      * @brief Computes the structured scalar field for the detector.
@@ -159,17 +151,20 @@ class Photodiode : public BaseDetector {
 public:
     std::string mode_number;
     bool is_coherent = true;
+    double rotation = 0.0;
 
 public:
     Photodiode() = default;
 
     Photodiode(
+        const std::string &_mode_number,
         const size_t _sampling,
         const double _numerical_aperture,
         const double _cache_numerical_aperture,
         const double _phi_offset,
         const double _gamma_offset,
         const double _polarization_filter,
+        const bool _mean_coupling,
         const double _medium_refractive_index = 1.0)
     :   BaseDetector(
             _sampling,
@@ -180,11 +175,10 @@ public:
             _polarization_filter,
             _medium_refractive_index,
             nullptr,
-            false
+            _mean_coupling
         ),
-        mode_number("NC00")
+        mode_number(_mode_number)
     {
-
         this->is_coherent = false;
         this->initialize();
     }
@@ -215,6 +209,14 @@ private:
      * @note This function sets up the mode field and Fibonacci mesh based on the provided parameters.
      */
     void initialize();
+
+    /**
+     * @brief Parses the mode number string to extract mode family and numbers.
+     * @param mode_number The mode number string in the format "LP01", "HG12", etc.
+     * @note This function sets the mode_id based on the parsed values.
+     * @throws std::invalid_argument if the mode number string is not in the expected format.
+     */
+    void parse_mode(const std::string& mode_number);
 
     /**
      * @brief Computes the projected fields based on the theta and phi fields.
@@ -257,6 +259,7 @@ public:
         printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
         printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
         printf("  Is Coherent: %s\n", this->is_coherent ? "True" : "False");
+        printf("  Mean Coupling: %s\n", this->mean_coupling ? "True" : "False");
     }
 
 };
@@ -282,8 +285,7 @@ public:
         const double _polarization_filter,
         const double _rotation,
         const bool _mean_coupling,
-        const double _medium_refractive_index
-    )
+        const double _medium_refractive_index = 1.0)
     :   BaseDetector(
             _sampling,
             _numerical_aperture,
@@ -330,6 +332,14 @@ private:
      * @note This function sets up the mode field and Fibonacci mesh based on the provided parameters.
      */
     void initialize();
+
+    /**
+     * @brief Parses the mode number string to extract mode family and numbers.
+     * @param mode_number The mode number string in the format "LP01", "HG12", etc.
+     * @note This function sets the mode_id based on the parsed values.
+     * @throws std::invalid_argument if the mode number string is not in the expected format.
+     */
+    void parse_mode(const std::string& mode_number);
 
     /**
      * @brief Computes the projected fields based on the theta and phi fields.

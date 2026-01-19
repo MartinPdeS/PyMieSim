@@ -9,7 +9,7 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-
+from PyMieSim.single.representations import Footprint
 
 @patch("matplotlib.pyplot.show")
 def test_sphere_plottings(mock_show_plt):
@@ -32,8 +32,8 @@ def test_sphere_plottings(mock_show_plt):
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,  # Diameter in meters (e.g., 100 nm)
         source=source,  # Associated light source
-        property=1.4 * ureg.RIU,  # Refractive index of the sphere
-        medium_property=1.1 * ureg.RIU,  # Refractive index of the surrounding medium
+        refractive_index=1.4 * ureg.RIU,  # Refractive index of the sphere
+        medium_refractive_index=1.1 * ureg.RIU,  # Refractive index of the surrounding medium
     )
 
     # Create a photodiode detector
@@ -46,7 +46,7 @@ def test_sphere_plottings(mock_show_plt):
     )
 
     # Retrieve the footprint data for the scatterer
-    data = scatterer.get_footprint(detector=detector)
+    data = Footprint(scatterer=scatterer, detector=detector)
 
     # Plot the data (mocked to avoid showing the plot during tests)
     data.plot()

@@ -6,7 +6,7 @@ from typing import List
 from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import Length, RefractiveIndex, AnyUnit
 
-from PyMieSim.binary.interface_experiment import CppCoreShellSet
+from PyMieSim.binary.interface_experiment import CoreShellSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
@@ -109,7 +109,7 @@ class CoreShell(BaseScatterer, Sequential):
             shell_properties=shell_properties,
         )
 
-        self.set = CppCoreShellSet(
+        self.set = CoreShellSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

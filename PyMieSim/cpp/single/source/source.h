@@ -9,10 +9,7 @@
 #include <vector>
 
 #include "single/polarization/polarization.h"
-
-#define PI (double)3.14159265358979323846264338
-#define EPSILON0 (double)8.854187817620389e-12
-#define C_ (double)299792458.0
+#include <utils/constants.h>
 
 using complex128 = std::complex<double>;
 
@@ -24,7 +21,7 @@ public:
     JonesVector polarization;
 
     double amplitude = 0.0;
-    double wavenumber = 0.0;
+    double wavenumber_vacuum = 0.0;
     double angular_frequency = 0.0;
 
     std::vector<std::size_t> indices;
@@ -52,7 +49,7 @@ public:
 protected:
     double compute_angular_frequency(double wavelength_meter) const;
 
-    double compute_wavenumber(double wavelength_meter) const;
+    double compute_wavenumber_vacuum(double wavelength_meter) const;
 
     void update_derived_quantities();
 

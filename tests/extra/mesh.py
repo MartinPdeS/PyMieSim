@@ -3,8 +3,8 @@
 
 import pytest
 import numpy as np
-from PyMieSim.single.mesh import FibonacciMesh
 from PyMieSim.units import ureg
+from PyMieSim.single.mesh import FibonacciMesh
 
 
 @pytest.fixture
@@ -19,10 +19,11 @@ def fibonacci_mesh():
     """
     return FibonacciMesh(
         max_angle=np.pi / 4 * ureg.radian,  # Maximum angle (45 degrees in radians)
-        sampling=100 * ureg.AU,  # Number of sample points
+        min_angle=0 * ureg.radian,  # Minimum angle (0 degrees in radians)
+        sampling=100,  # Number of sample points
         phi_offset=30 * ureg.degree,  # Offset in the azimuthal angle (in degrees)
         gamma_offset=45 * ureg.degree,  # Offset in the polar angle (in degrees)
-        rotation_angle=0 * ureg.degree,  # Rotation angle (in degrees)
+        rotation=0 * ureg.degree,  # Rotation angle (in degrees)
     )
 
 
@@ -30,11 +31,12 @@ def test_initialization(fibonacci_mesh):
     """
     Test that the FibonacciMesh object is initialized with the correct parameters.
     """
-    assert fibonacci_mesh.max_angle == np.pi / 4 * ureg.radian
-    assert fibonacci_mesh.sampling == 100 * ureg.AU
-    assert fibonacci_mesh.phi_offset == 30 * ureg.degree
-    assert fibonacci_mesh.gamma_offset == 45 * ureg.degree
-    assert fibonacci_mesh.rotation_angle == 0 * ureg.degree
+    value = np.pi / 4 * ureg.radian
+    assert fibonacci_mesh.max_angle == value
+    assert fibonacci_mesh.sampling == 100
+    assert np.isclose(fibonacci_mesh.phi_offset.to('degree').magnitude, 30)
+    assert np.isclose(fibonacci_mesh.gamma_offset.to('degree').magnitude, 45)
+    assert np.isclose(fibonacci_mesh.rotation.to('degree').magnitude, 0)
 
 
 def test_projection_HV_vector(fibonacci_mesh):
@@ -77,20 +79,6 @@ def test_get_cartesian_coordinates(fibonacci_mesh):
 
     # Ensure the shape of the Cartesian coordinates is as expected
     assert coordinates.shape == (3, fibonacci_mesh.sampling)
-
-
-# def test_get_axis_vector(fibonacci_mesh):
-#     """
-#     Test that the axis vector is correctly computed and has unit length.
-#     """
-#     axis_vector = fibonacci_mesh.get_axis_vector()
-
-#     print(axis_vector)
-
-#     # Ensure the axis vector has the correct shape and is normalized to length 1
-#     assert axis_vector.shape == (3,)
-#     assert np.isclose(np.linalg.norm(axis_vector), 1.0, atol=1e-6)
-
 
 def test_rotate_around_axis(fibonacci_mesh):
     """

@@ -12,12 +12,12 @@ Sphere::Sphere(const double _diameter, const complex128 _refractive_index, const
 
 // ---------------------- Methods ---------------------------------------
 void Sphere::compute_size_parameter() {
-    this->size_parameter = source->wavenumber * this->diameter / 2;// * this->medium_refractive_index;
+    this->size_parameter = source->wavenumber_vacuum * this->diameter / 2 * this->medium_refractive_index;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
 
 void Sphere::compute_cross_section() {
-    this->cross_section = PI * std::pow(this->diameter / 2.0, 2);
+    this->cross_section = Constants::PI * std::pow(this->diameter / 2.0, 2);
 }
 
 void Sphere::compute_an_bn(size_t _max_order) {
@@ -189,7 +189,7 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
     mu.reserve(phi.size());
 
     for (const double phi : phi)
-        mu.push_back( cos( phi - PI / 2.0 ) );
+        mu.push_back( cos( phi - Constants::PI / 2.0 ) );
 
     for (size_t i = 0; i < phi.size(); i++) {
         auto [pin, taun] = this->get_pi_tau(mu[i], max_order);
@@ -222,7 +222,7 @@ Sphere::compute_nearfields(const std::vector<double>& x, const std::vector<doubl
         throw std::invalid_argument("x, y, z vectors must have the same length");
 
     std::vector<complex128> field_values(n_points);
-    const double k = source->wavenumber * medium_refractive_index;
+    const double k = source->wavenumber_vacuum * medium_refractive_index;
     const complex128 i(0.0, 1.0);
 
     for (size_t point_idx = 0; point_idx < n_points; ++point_idx) {

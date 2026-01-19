@@ -43,7 +43,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 std::vector<double> phi_values = phi.attr("to")(ureg.attr("radian")).attr("magnitude").cast<std::vector<double>>();
 
                 for (size_t i = 0; i < phi_values.size(); ++i)
-                    phi_values[i] += PI / 2.0;
+                    phi_values[i] += Constants::PI / 2.0;
 
                 auto [S1, S2] = self.compute_s1s2(phi_values);
                 return std::make_tuple(

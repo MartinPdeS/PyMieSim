@@ -77,6 +77,11 @@ void register_cylinder(py::module_& module) {
             },
             "Diameter of the cylinder."
         )
+        .def(
+            "print_properties",
+            &Cylinder::print_properties,
+            "Prints the properties of the cylinder."
+        )
         .def_property_readonly(
             "refractive_index",
             [ureg](const Cylinder &self) {

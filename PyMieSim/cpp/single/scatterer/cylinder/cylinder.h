@@ -119,13 +119,14 @@ class Cylinder: public BaseScatterer
          */
         std::vector<complex128> compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) override;
 
+    public:
         void print_properties(int precision) const
         {
             const double radius_m = 0.5 * this->diameter;
 
             // If you already store cross_section, use it; otherwise compute consistent with your code.
             // Your docstring says compute_cross_section() is pi*(d/2)^2, so:
-            const double cross_section_m2 = M_PI * radius_m * radius_m;
+            const double cross_section_m2 = Constants::PI * radius_m * radius_m;
 
             std::printf("\n");
             std::printf("%-16s | %.*e | %-6s\n", "property", precision, 0.0, "unit");

@@ -11,7 +11,7 @@ class CoreShell: public BaseScatterer
     public:
         double core_diameter;
         double shell_thickness;
-        double shell_diameter;
+        double total_diameter;
         complex128 core_refractive_index;
         complex128 shell_refractive_index;
         double x_core;
@@ -132,8 +132,8 @@ class CoreShell: public BaseScatterer
          */
         void apply_medium();
 
-
-        void print_properties() const
+    public:
+        void print_properties(int precision) const
         {
             // Table header
             std::printf("\n");
@@ -142,49 +142,48 @@ class CoreShell: public BaseScatterer
             std::printf("+-------------------+------------------------------+-----------+\n");
 
             // Geometry and indices (these are CoreShell members)
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "core_diameter",    this->core_diameter,    "m");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "shell_thickness",  this->shell_thickness,  "m");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "shell_diameter",   this->shell_diameter,   "m");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "core_diameter",    precision, this->core_diameter,    "m");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "shell_thickness",  precision, this->shell_thickness,  "m");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "total_diameter",   precision, this->total_diameter,   "m");
 
-            std::printf("| %-17s | %14.6e + %14.6ei | %-9s |\n",
+            std::printf("| %-17s | %14.*e + %14.*ei | %-9s |\n",
                 "core_n",
-                std::real(this->core_refractive_index),
-                std::imag(this->core_refractive_index),
+                precision, std::real(this->core_refractive_index),
+                precision, std::imag(this->core_refractive_index),
                 "RIU"
             );
 
-            std::printf("| %-17s | %14.6e + %14.6ei | %-9s |\n",
+            std::printf("| %-17s | %14.*e + %14.*ei | %-9s |\n",
                 "shell_n",
-                std::real(this->shell_refractive_index),
-                std::imag(this->shell_refractive_index),
+                precision, std::real(this->shell_refractive_index),
+                precision, std::imag(this->shell_refractive_index),
                 "RIU"
             );
 
-            double radius = 0.5 * this->shell_diameter;
-            double volume = (4.0 / 3.0) * PI * std::pow(radius, 3);
-            double cross_section = PI * std::pow(radius, 2);
+            double radius = 0.5 * this->total_diameter;
+            double volume = (4.0 / 3.0) * Constants::PI * std::pow(radius, 3);
+            double cross_section = Constants::PI * std::pow(radius, 2);
 
             // BaseScatterer computed properties (assumed to exist as members)
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "size_parameter",   this->size_parameter,         "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "radius",           radius,                       "m");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "volume",           volume,                     "m^3");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "cross_section",    cross_section,              "m^2");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "size_parameter",   precision, this->size_parameter,         "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "radius",           precision, radius,                       "m");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "volume",           precision, volume,                     "m^3");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "cross_section",    precision, cross_section,              "m^2");
 
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "g",                this->get_g(),                "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "g",                precision, this->get_g(),                "1");
 
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qsca",             this->get_Qsca(),             "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qext",             this->get_Qext(),             "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qabs",             this->get_Qabs(),             "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qback",            this->get_Qback(),            "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qratio",           this->get_Qratio(),           "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Qpr",              this->get_Qpr(),              "1");
-
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Csca",             this->get_Csca(),             "m^2");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cext",             this->get_Cext(),             "m^2");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cabs",             this->get_Cabs(),             "m^2");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cback",            this->get_Cback(),            "m^2");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cratio",           this->get_Cratio(),           "1");
-            std::printf("| %-17s | %14.6e                   | %-9s |\n", "Cpr",              this->get_Cpr(),              "m^2");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qsca",             precision, this->get_Qsca(),             "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qext",             precision, this->get_Qext(),             "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qabs",             precision, this->get_Qabs(),             "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qback",            precision, this->get_Qback(),            "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qratio",           precision, this->get_Qratio(),           "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qpr",              precision, this->get_Qpr(),              "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Csca",             precision, this->get_Csca(),             "m^2");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cext",             precision, this->get_Cext(),             "m^2");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cabs",             precision, this->get_Cabs(),             "m^2");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cback",            precision, this->get_Cback(),            "m^2");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cratio",           precision, this->get_Cratio(),           "1");
+            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cpr",              precision, this->get_Cpr(),              "m^2");
 
             std::printf("+-------------------+------------------------------+-----------+\n");
             std::printf("\n");

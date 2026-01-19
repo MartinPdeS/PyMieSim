@@ -1,24 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from PyMieSim.units import ureg
 from typing import Union, Optional, List
 import numpy
 import pandas as pd
 from pydantic.dataclasses import dataclass
-from TypedUnit import ureg
 
 from PyMieSim.binary.interface_experiment import SETUP
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-from PyMieSim.binary.interface_experiment import CppDetectorSet
+from PyMieSim.binary.interface_experiment import CoherentModeSet, PhotodiodeSet
 import PyMieSim
 
 
 class EmptyDetector:
     def __init__(self):
-        self.set = CppDetectorSet()
+        self.set = PhotodiodeSet()
         self.mapping = {}
 
     def _generate_binding(self, *args, **kwargs):

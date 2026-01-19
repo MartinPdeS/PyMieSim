@@ -82,7 +82,7 @@ void FibonacciMesh::compute_projections() {
 }
 
 void FibonacciMesh::compute_mesh() {
-    double golden_angle = PI * (3. - sqrt(5.));  // golden angle = 2.39996322972865332
+    double golden_angle = Constants::PI * (3. - sqrt(5.));  // golden angle = 2.39996322972865332
 
     for (size_t i = 0; i < this->true_number_of_sample; i++){
         double
@@ -92,7 +92,7 @@ void FibonacciMesh::compute_mesh() {
 
         double x = cos(theta) * radius;
         double y = sin(theta) * radius;
-        double angle = - (asin(z) - PI / 2.0);
+        double angle = - (asin(z) - Constants::PI / 2.0);
 
         if (angle < this->min_angle)
             continue;
@@ -109,8 +109,8 @@ void FibonacciMesh::compute_mesh() {
 void FibonacciMesh::compute_properties(){
     double
         diff = cos(this->min_angle) - cos(this->max_angle),
-        solid_angle = 2. * PI * std::abs(diff),
-        ratio = ( 4. * PI / solid_angle );
+        solid_angle = 2. * Constants::PI * std::abs(diff),
+        ratio = ( 4. * Constants::PI / solid_angle );
 
     this->Omega = solid_angle;
     this->dOmega = Omega / this->sampling;

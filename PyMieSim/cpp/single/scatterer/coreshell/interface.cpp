@@ -43,22 +43,6 @@ void register_coreshell(py::module_& module) {
                 double medium_refractive_index_value =
                     medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
 
-                    std::cout<<"core_diameter_meter: "<<core_diameter_meter
-                            <<", shell_thickness_meter: "<<shell_thickness_meter
-                            <<", core_refractive_index_riu: "<<core_refractive_index_riu
-                            <<", shell_refractive_index_riu: "<<shell_refractive_index_riu
-                            <<", medium_refractive_index_value: "<<medium_refractive_index_value
-                            <<std::endl;
-
-                return std::make_shared<CoreShell>(
-                    1e-6,
-                    2e-6,
-                    1.5,
-                    1.6,
-                    1.0,
-                    std::move(source)
-                );
-
                 return std::make_shared<CoreShell>(
                     core_diameter_meter,
                     shell_thickness_meter,
@@ -97,6 +81,11 @@ void register_coreshell(py::module_& module) {
             "source",
             &CoreShell::source,
             "Source of the core-shell scatterer."
+        )
+        .def(
+            "print_properties",
+            &CoreShell::print_properties,
+            "Prints the properties of the core-shell scatterer."
         )
         .def_property_readonly(
             "core_diameter",

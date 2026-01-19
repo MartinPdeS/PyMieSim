@@ -48,7 +48,7 @@ void register_fibonacci(pybind11::module_& module) {
             pybind11::arg("phi_offset"),
             pybind11::arg("gamma_offset"),
             pybind11::arg("min_angle") = py::float_(0.0) * ureg.attr("radian"),
-            pybind11::arg("rotation_angle") = py::float_(0.0) * ureg.attr("radian"),
+            pybind11::arg("rotation") = py::float_(0.0) * ureg.attr("radian"),
             R"pbdoc(
                 Initialize a Fibonacci mesh with specified parameters.
 
@@ -62,7 +62,7 @@ void register_fibonacci(pybind11::module_& module) {
                     Maximum angle for the mesh points (in radians).
                 phi_offset : float
                     Offset for the azimuthal angle (phi) in radians.
-                rotation_angle : float
+                rotation : float
                     Rotation angle for the mesh in radians.
                 gamma_offset : float
                     Offset for the polar angle (gamma) in radians.
@@ -109,6 +109,20 @@ void register_fibonacci(pybind11::module_& module) {
             )pbdoc"
         )
         // Differential solid angle and total solid angle
+        .def_property_readonly(
+            "max_angle",
+            [ureg](const FibonacciMesh& self) {
+                return pybind11::float_(self.max_angle) * ureg.attr("radian");
+            },
+            "Maximum angle covered by the mesh points."
+        )
+        .def_property_readonly(
+            "min_angle",
+            [ureg](const FibonacciMesh& self) {
+                return pybind11::float_(self.min_angle) * ureg.attr("radian");
+            },
+            "Minimum angle covered by the mesh points."
+        )
         .def_property_readonly(
             "d_omega",
             [ureg](const FibonacciMesh& self) {

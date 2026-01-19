@@ -71,6 +71,11 @@ void register_sphere(py::module_& module) {
             &Sphere::property_names,
             "Property names of the sphere."
         )
+        .def(
+            "print_properties",
+            &Sphere::print_properties,
+            "Prints the properties of the sphere."
+        )
         .def_property_readonly(
             "diameter",
             [ureg](const Sphere &self) {

@@ -7,7 +7,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere, CoreShell
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.detector import Photodiode
+from PyMieSim.single.detector import IntegratingSphere
 
 
 @pytest.fixture
@@ -57,19 +57,13 @@ def test_energy_flow_coupling(gaussian_source):
     )
 
     # Define a photodiode detector
-    detector = Photodiode(
+    detector = IntegratingSphere(
         sampling=500,  # Sampling points for the detector
-        NA=2.0 * ureg.AU,  # Numerical aperture
-        gamma_offset=0 * ureg.degree,  # Offset in the gamma angle
-        phi_offset=0 * ureg.degree,  # Offset in the phi angle
-        medium_refractive_index=1.0 * ureg.RIU
     )
 
     # Calculate energy flow and coupling values
     val0 = detector.get_energy_flow(sphere)
     val1 = detector.get_coupling(sphere)
-
-    print(val0, val1)
 
     # Check if the results are consistent
     assert np.isclose(
@@ -77,7 +71,8 @@ def test_energy_flow_coupling(gaussian_source):
     ), "Mismatch between energy flow and coupling values."
 
 
-def test_compare_sphere_coreshell_0(gaussian_source):
+@pytest.mark.parametrize("parameter", ["Qsca", "Qext", "Qabs"])
+def test_compare_sphere_coreshell_0(gaussian_source, parameter: str):
     """
     Compare scattering parameters between a solid sphere and a CoreShell object
     with a zero-thickness shell to verify consistency.
@@ -87,7 +82,7 @@ def test_compare_sphere_coreshell_0(gaussian_source):
         diameter=1000 * ureg.nanometer,
         refractive_index=1.5 * ureg.RIU,
         source=gaussian_source,
-        medium_refractive_index=1.0 * ureg.RIU,
+        medium_refractive_index=1.2 * ureg.RIU,
     )
 
     # Define a core-shell scatterer with zero shell thickness
@@ -96,19 +91,18 @@ def test_compare_sphere_coreshell_0(gaussian_source):
         shell_thickness=0 * ureg.nanometer,  # Zero shell width
         core_refractive_index=1.5 * ureg.RIU,
         shell_refractive_index=1.8 * ureg.RIU,
-        medium_refractive_index=1.0 * ureg.RIU,
+        medium_refractive_index=1.2 * ureg.RIU,
         source=gaussian_source,
     )
 
     # Compare the scattering parameters between the sphere and core-shell
-    for parameter in ["Qsca", "Qext", "Qabs"]:
-        value_sphere = getattr(sphere, parameter)
-        value_coreshell = getattr(coreshell, parameter)
+    value_sphere = getattr(sphere, parameter)
+    value_coreshell = getattr(coreshell, parameter)
 
-        # Check if the results are consistent
-        assert np.isclose(
-            value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
-        ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
+    # Check if the results are consistent
+    assert np.isclose(
+        value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
+    ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
 
 
 if __name__ == "__main__":

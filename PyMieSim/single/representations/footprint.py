@@ -90,7 +90,7 @@ class Footprint():
         ]
 
         max_distance_direct_space = 1 / (
-            numpy.sin(max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi)
+            numpy.sin(max_angle) * self.scatterer.source.wavenumber_vacuum / (2 * numpy.pi)
         )
 
         x = y = (

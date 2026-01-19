@@ -3,7 +3,7 @@
 
 
 // Example: You can also add a class-wide debug_print method.
-void Setup::debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const DetectorSet& detector_set) const {
+void Setup::debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const BaseDetectorSet& detector_set) const {
     if (!debug_mode) return;
     debug_printf("----- Setup Debug Info -----\n");
     debug_printf("SourceSet total combinations: %zu\n", source_set.total_combinations);
@@ -28,7 +28,7 @@ void Setup::debug_print_state(const ScattererSet& scatterer_set, const BaseSourc
 
 
 std::tuple<std::vector<double>, std::vector<size_t>>
-Setup::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
+Setup::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const {
 
     if (debug_mode)
         this->debug_print_state(scatterer_set, source_set, detector_set);
@@ -47,14 +47,13 @@ Setup::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &sour
 
         std::shared_ptr<BaseSource> source = source_set.get_source_by_index(i);
 
-        Photodiode detector = detector_set.get_detector_by_index(k);
+        std::shared_ptr<BaseDetector> detector = detector_set.get_detector_by_index(k);
 
         std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
 
-        detector.scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
-
-        size_t idx = flatten_multi_index(array_shape, source->indices, scatterer_ptr->indices, detector.indices);
-        output_array[idx] = detector.get_coupling(*scatterer_ptr);
+        detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
+        size_t idx = flatten_multi_index(array_shape, source->indices, scatterer_ptr->indices, detector->indices);
+        output_array[idx] = detector->get_coupling(*scatterer_ptr);
     }
     debug_printf("get_scatterer_coupling: finished computation\n");
 
@@ -62,7 +61,7 @@ Setup::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &sour
 }
 
 std::vector<double>
-Setup::get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
+Setup::get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const {
 
     std::vector<size_t> array_shape = {source_set.wavelength.size()};
     size_t full_size = source_set.wavelength.size();
@@ -79,11 +78,11 @@ Setup::get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSour
 
         std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index_sequential(idx, source);
 
-        Photodiode detector = detector_set.get_detector_by_index_sequential(idx);
+        std::shared_ptr<BaseDetector> detector = detector_set.get_detector_by_index_sequential(idx);
 
-        detector.scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
+        detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
 
-        output_array[idx] = detector.get_coupling(*scatterer_ptr);
+        output_array[idx] = detector->get_coupling(*scatterer_ptr);
     }
 
     return output_array;

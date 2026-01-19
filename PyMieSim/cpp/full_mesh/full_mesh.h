@@ -3,8 +3,7 @@
 #include <vector>
 #include <complex>
 #include <coordinates/coordinates.h>
-
-#define PI (double)3.14159265358979323846264338
+#include <utils/constants.h>
 
 typedef std::complex<double> complex128;
 

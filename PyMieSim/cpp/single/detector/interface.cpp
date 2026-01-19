@@ -306,8 +306,6 @@ void register_detector(py::module_& module) {
 
                 Parameters
                 ----------
-                mode_number : str
-                    Identifier for the detector mode (e.g. '0', '1', ...).
                 sampling : int
                     Number of sample points on the detector's angular mesh.
                 NA : float
@@ -320,8 +318,6 @@ void register_detector(py::module_& module) {
                     Polar angle offset (radians) for detector orientation.
                 polarization_filter : float
                     Degree or type of polarization filtering applied.
-                mean_coupling : bool
-                    If true, uses mean coupling; if false, uses point coupling.
                 medium_refractive_index : float, optional
                     Refractive index of the surrounding medium. Default is 1.0.
 
@@ -356,7 +352,6 @@ void register_detector(py::module_& module) {
                     py::object medium_refractive_index,
                     py::object polarization_filter,
                     py::object cache_NA,
-                    py::object mean_coupling,
                     std::size_t sampling
                 ) {
                     py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
@@ -390,7 +385,6 @@ void register_detector(py::module_& module) {
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    bool mean_coupling_value = mean_coupling.cast<bool>();
                     double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
 
                     if (medium_refractive_index_value <= 0.0)
@@ -403,14 +397,12 @@ void register_detector(py::module_& module) {
                         printf("Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n");
 
                     return std::make_shared<Photodiode>(
-                        "NC00",
                         sampling,
                         NA_value,
                         cache_NA_value,
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
-                        mean_coupling_value,
                         medium_refractive_index_value
                     );
                 }
@@ -421,7 +413,6 @@ void register_detector(py::module_& module) {
             py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
             py::arg("cache_NA") = py::float_(0.0) * ureg.attr("dimensionless"),
-            py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
             R"pbdoc(
             Photodiode class representing a photodiode with a coherent light coupling mechanism.
@@ -440,139 +431,19 @@ void register_detector(py::module_& module) {
                 Angle [Degree] of the polarization filter in front of the detector.
             cache_NA : Optional[Dimensionless]
                 Numerical aperture of the detector cache. Default is 0 AU.
-            mean_coupling : bool
-                Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
             medium_refractive_index : RefractiveIndex
                 The refractive index of the medium in which the detector operates. This is important for
                 determining the acceptance cone of light. Default is 1.0 (vacuum or air).
             )pbdoc"
         )
+        .def(
+            "print_properties",
+            &Photodiode::print_properties,
+            R"pbdoc(
+            Print the properties of the Photodiode detector.
+            )pbdoc"
+        )
     ;
-
-    module.def(
-        "IntegratingSphere",
-        [](py::object medium_refractive_index, py::object polarization_filter, std::size_t sampling) {
-
-            py::object ureg = get_shared_ureg();
-            py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
-            py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
-
-            medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
-
-            if (!polarization_filter.is(py::none()))
-                polarization_filter = units_angle.attr("check")(polarization_filter);
-            else
-                polarization_filter = py::float_(std::nan("")) * units_angle;
-
-            const double polarization_filter_value =
-                polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-
-            const double medium_refractive_index_value =
-                medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
-
-
-            return std::make_shared<Photodiode>(
-                "NC00",
-                sampling,
-                2.0,
-                0.0,
-                0.0,
-                0.0,
-                polarization_filter_value,
-                false,
-                1.0
-            );
-        },
-        py::arg("medium_refractive_index") = py::float_(1.0) * get_shared_ureg().attr("RIU"),
-        py::arg("polarization_filter") = py::float_(std::nan("")) * get_shared_ureg().attr("degree"),
-        py::arg("sampling") = 500
-    );
-
-
-    // py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(module,
-    //     "IntegratingSphere",
-    //         R"pbdoc(
-    //             IntegratingSphere for Lorenz-Mie scattering simulations.
-
-    //             This class wraps a C++ Photodiode that samples the scattered field
-    //             according to numerical aperture, orientation offsets, polarization
-    //             filtering, and optional coherent or mean coupling strategies.
-
-    //             Parameters
-    //             ----------
-    //             sampling : int
-    //                 Number of sample points on the detector's angular mesh.
-    //             polarization_filter : float
-    //                 Degree or type of polarization filtering applied.
-    //             medium_refractive_index : float, optional
-    //                 Refractive index of the surrounding medium. Default is 1.0.
-
-
-    //             Attributes
-    //             ----------
-    //             scalar_field : numpy.ndarray
-    //                 The detected scalar field (intensity) sampled on the angular mesh.
-    //             sampling : int
-    //                 Sampling count exposed as a read-only property.
-    //             polarization_filter : float[Angle]
-    //                 Polarization filter setting exposed as a read-only property.
-    //             mesh : numpy.ndarray
-    //                 Underlying Fibonacci mesh of angles used by the detector.
-    //             medium_refractive_index : float[RefractiveIndex]
-    //                 Refractive index of the surrounding medium.
-    //         )pbdoc"
-    //     )
-    //     .def(
-    //         py::init(
-    //             [](
-    //                 py::object medium_refractive_index,
-    //                 py::object polarization_filter,
-    //                 std::size_t sampling
-    //             ) {
-    //                 py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
-    //                 py::object units_dimensionless = py::module::import("PyMieSim").attr("units").attr("Dimensionless")();
-    //                 py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
-    //                 medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
-
-    //                 if (!polarization_filter.is(py::none()))
-    //                     polarization_filter.attr("check")(polarization_filter);
-    //                 else
-    //                     polarization_filter = py::float_(std::nan("")) * units_angle;
-
-    //                 double polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-    //                 double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
-
-    //                 return std::make_shared<Photodiode>(
-    //                     "NC00",
-    //                     sampling,
-    //                     2.0,
-    //                     0.0,
-    //                     0.0,
-    //                     0.0,
-    //                     polarization_filter_value,
-    //                     false,
-    //                     medium_refractive_index_value
-    //                 );
-    //             }
-    //         ),
-    //         py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
-    //         py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
-    //         py::arg("sampling") = 500,
-    //         R"pbdoc(
-    //         CoherentMode class representing a photodiode with a coherent light coupling mechanism.
-    //         This means it is dependent on the phase of the impinging scattered light field.
-    //         Parameters
-    //         ----------
-    //         sampling : int
-    //             Sampling rate of the far-field distribution. Default is 500.
-    //         polarization_filter : Optional[Angle]
-    //             Angle [Degree] of the polarization filter in front of the detector.
-    //         medium_refractive_index : RefractiveIndex
-    //             The refractive index of the medium in which the detector operates. This is important for
-    //             determining the acceptance cone of light. Default is 1.0 (vacuum or air).
-    //         )pbdoc"
-    //     )
-    // ;
 
     py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(module,
         "CoherentMode",
@@ -742,7 +613,77 @@ void register_detector(py::module_& module) {
                 return py::float_(self.rotation) * ureg.attr("radian");
             },
             R"pbdoc(
-            Rotation angle of the detector's field-of-view.
+                Rotation angle of the detector's field-of-view.
+            )pbdoc"
+        )
+        .def(
+            "print_properties",
+            &CoherentMode::print_properties,
+            R"pbdoc(
+            Print the properties of the CoherentMode detector.
+            )pbdoc"
+        )
+        ;
+
+
+    // ------------------ IntegratingSphere (4π) ------------------
+    py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(module, "IntegratingSphere",
+            R"pbdoc(
+            IntegratingSphere detector.
+
+            4π incoherent power collector.
+
+            This detector samples directions over the full sphere (theta in [0, pi])
+            and integrates intensity over all directions.
+
+            Notes
+            -----
+            - NA is not used by this detector.
+            - The mesh still has phi_offset and gamma_offset to rotate the sampling pattern.
+            - If the underlying C++ detector applies interface physics via SnellFresnelInterface,
+            that remains active; otherwise it behaves as an ideal 4π collector.
+            )pbdoc")
+            .def(
+                py::init([](
+                    py::object polarization_filter,
+                    std::size_t sampling
+                ) {
+                    py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
+                    py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
+
+
+                    if (!polarization_filter.is(py::none())) {
+                        polarization_filter = units_angle.attr("check")(polarization_filter);
+                    } else {
+                        polarization_filter = py::float_(std::nan("")) * ureg.attr("radian");
+                    }
+
+                    const double polarization_filter_value =
+                        polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+
+                    return std::make_shared<IntegratingSphere>(sampling, polarization_filter_value);
+                }
+            ),
+            py::arg("polarization_filter") = py::none(),
+            py::arg("sampling") = 400,
+            R"pbdoc(
+            Construct an IntegratingSphere detector.
+
+            Parameters
+            ----------
+            medium_refractive_index : RefractiveIndex
+                Refractive index of the surrounding medium.
+            polarization_filter : Optional[Angle]
+                Polarization filter angle. If None, no polarization filtering is applied.
+            sampling : int
+                Number of angular samples on the Fibonacci mesh.
+            )pbdoc"
+        )
+        .def(
+            "print_properties",
+            &IntegratingSphere::print_properties,
+            R"pbdoc(
+            Print the properties of the IntegratingSphere detector.
             )pbdoc"
         )
         ;

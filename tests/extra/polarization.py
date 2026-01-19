@@ -28,7 +28,7 @@ def test_fail_init_linear():
     """
     Test fail of initialization of Linear polarization.
     """
-    with pytest.raises(ValueError):
+    with pytest.raises(AttributeError):
         Linear(element=[50, 20])
 
 

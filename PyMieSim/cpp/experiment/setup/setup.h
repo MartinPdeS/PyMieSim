@@ -35,7 +35,7 @@ class Setup
          * @param source_set The set of sources involved in the experiment.
          * @param detector_set The set of detectors involved in the experiment.
         */
-        void debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const DetectorSet& detector_set) const;
+        void debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const BaseDetectorSet& detector_set) const;
 
         /**
          * @brief Flattens a multi-dimensional index into a single index (one input vector).
@@ -130,7 +130,7 @@ class Setup
          */
         template<double (BaseScatterer::*function)() const>
         std::tuple<std::vector<double>, std::vector<std::size_t>>
-        get_data(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
+        get_data(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const {
 
             if (debug_mode)
                 this->debug_print_state(scatterer_set, source_set, detector_set);
@@ -177,8 +177,8 @@ class Setup
 
                     std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source_ptr);
 
-                    Photodiode detector = detector_set.get_detector_by_index(k);
-                    idx = this->flatten_multi_index(array_shape, source_ptr->indices, scatterer_ptr->indices, detector.indices);
+                    std::shared_ptr<BaseDetector> detector = detector_set.get_detector_by_index(k);
+                    idx = this->flatten_multi_index(array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
 
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 }
@@ -199,7 +199,7 @@ class Setup
          */
         template<double (BaseScatterer::*function)() const >
         std::vector<double>
-        get_data_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
+        get_data_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const {
 
             if (debug_mode)
                 this->debug_print_state(scatterer_set, source_set, detector_set);
@@ -233,7 +233,7 @@ class Setup
          * @return A tuple containing a numpy array of coupling coefficients and the shape of the array.
          */
         std::tuple<std::vector<double>, std::vector<std::size_t>>
-        get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const;
+        get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const;
 
         /**
          * @brief Computes the coupling coefficient sequentially for given scatterers, sources, and detectors.
@@ -243,7 +243,7 @@ class Setup
          * @return A numpy array of coupling coefficients.
          */
         std::vector<double>
-        get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const;
+        get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const;
 
         /**
          * @brief Computes the far-field patterns for given scatterers, sources, and a Fibonacci mesh.

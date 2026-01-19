@@ -10,7 +10,7 @@ from TypedUnit import Length, Dimensionless, Power, Angle, AnyUnit
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.single.polarization import BasePolarization
-from PyMieSim.binary.interface_experiment import CppGaussianSourceSet
+from PyMieSim.binary.interface_experiment import GaussianSourceSet
 from PyMieSim.utils import config_dict
 
 
@@ -53,7 +53,7 @@ class Gaussian(BaseSource, Sequential):
             is_sequential=self.is_sequential,
         )
 
-        self.set = CppGaussianSourceSet(
+        self.set = GaussianSourceSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

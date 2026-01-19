@@ -10,7 +10,7 @@ from TypedUnit import Length, Angle, ElectricField, AnyUnit
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.single.polarization import BasePolarization
 from PyMieSim.experiment.utils import Sequential
-from PyMieSim.binary.interface_experiment import CppPlaneWaveSourceSet
+from PyMieSim.binary.interface_experiment import PlaneWaveSourceSet
 from PyMieSim.utils import config_dict
 
 
@@ -53,7 +53,7 @@ class PlaneWave(BaseSource, Sequential):
             is_sequential=self.is_sequential,
         )
 
-        self.set = CppPlaneWaveSourceSet(
+        self.set = PlaneWaveSourceSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

@@ -6,7 +6,7 @@ from pydantic.dataclasses import dataclass
 from PyOptik.material.base_class import BaseMaterial
 from TypedUnit import Length, RefractiveIndex, AnyUnit
 
-from PyMieSim.binary.interface_experiment import CppCylinderSet
+from PyMieSim.binary.interface_experiment import CylinderSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
@@ -83,7 +83,7 @@ class Cylinder(BaseScatterer, Sequential):
             scatterer_properties=scatterer_properties,
         )
 
-        self.set = CppCylinderSet(
+        self.set = CylinderSet(
             **{
                 k: v.to_base_units().magnitude if isinstance(v, AnyUnit) else v
                 for k, v in self.binding_kwargs.items()

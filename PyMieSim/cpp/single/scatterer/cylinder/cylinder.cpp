@@ -13,7 +13,7 @@ BaseScatterer(_max_order, std::move(_source), _medium_refractive_index), diamete
 // ---------------------- Methods ---------------------------------------
 
 void Cylinder::compute_size_parameter() {
-    this->size_parameter = source->wavenumber * this->diameter / 2;
+    this->size_parameter = source->wavenumber_vacuum * this->diameter / 2;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
 
@@ -164,8 +164,8 @@ Cylinder::compute_s1s2(const std::vector<double> &phi) const{
         T1[i] = this->b1n[0];
         T2[i] = this->a2n[0];
         for (size_t order = 1; order < max_order ; order++){
-            T1[i] += 2.0 * this->b1n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
-            T2[i] += 2.0 * this->a2n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
+            T1[i] += 2.0 * this->b1n[order] * cos(order * (Constants::PI - (phi[i] + Constants::PI/2.0) ) );
+            T2[i] += 2.0 * this->a2n[order] * cos(order * (Constants::PI - (phi[i] + Constants::PI/2.0) ) );
         }
     }
 
@@ -200,7 +200,7 @@ std::vector<complex128> Cylinder::compute_nearfields(const std::vector<double>&,
 //         throw std::invalid_argument("x and y vectors must have the same length");
 
 //     std::vector<complex128> field_values(n_points);
-//     const double k = source->wavenumber * medium_refractive_index;
+//     const double k = source->wavenumber_vacuum * medium_refractive_index;
 //     const complex128 i(0.0, 1.0);
 
 //     for (size_t point_idx = 0; point_idx < n_points; ++point_idx) {

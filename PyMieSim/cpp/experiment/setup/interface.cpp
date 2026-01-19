@@ -7,7 +7,7 @@ namespace py = pybind11;
 
 #define DEFINE_GETTER_INTERFACE(property) \
     .def("get_"  #property, \
-        [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) { \
+        [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) { \
             auto [output, shape] = self.get_data<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
             return vector_move_from_numpy(output, shape); \
         }, \
@@ -17,7 +17,7 @@ namespace py = pybind11;
         "Retrieves the scattering property for a scatterer" \
     ) \
     .def("get_" #property "_sequential", \
-        [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) { \
+        [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) { \
             std::vector<double> output = self.get_data_sequential<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
             return vector_move_from_numpy(output, {output.size()}); \
         }, \
@@ -84,7 +84,7 @@ void register_setup(py::module& module) {
             )pbdoc"
         )
         .def("get_coupling_sequential",
-            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) {
+            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) {
 
                 std::vector<double> coupling_array = self.get_coupling_sequential(scatterer_set, source_set, detector_set);
                 return vector_move_from_numpy(coupling_array, {coupling_array.size()});
@@ -111,7 +111,7 @@ void register_setup(py::module& module) {
             )pbdoc"
         )
         .def("get_coupling",
-            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) {
+            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) {
 
                 auto [coupling_array, coupling_shape] = self.get_coupling(scatterer_set, source_set, detector_set);
                 return vector_move_from_numpy(coupling_array, coupling_shape);

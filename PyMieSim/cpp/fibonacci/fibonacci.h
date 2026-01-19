@@ -4,9 +4,8 @@
 #include <vector>
 #include <cmath>
 #include "../coordinates/coordinates.h"
+#include <utils/constants.h>
 
-
-#define PI (double)3.14159265358979323846264338
 
 class FibonacciMesh {
     public:

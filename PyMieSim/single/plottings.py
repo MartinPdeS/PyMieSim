@@ -8,7 +8,7 @@ from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
 from PyMieSim.single.source import Gaussian, PlaneWave
-from PyMieSim.single.detector import Photodiode, CoherentMode
+from PyMieSim.single.detector import Photodiode, CoherentMode, IntegratingSphere
 
 
 PyVistaColor = Union[str, Tuple[float, float, float], Sequence[float]]
@@ -64,6 +64,7 @@ class SystemPlotter:
 
         self.register(CoherentMode, self._add_coherent_detector)
         self.register(Photodiode, self._add_photodiode)
+        self.register(IntegratingSphere, self._add_integrating_sphere)
 
     def register(self, object_type: Type[Any], handler: Callable[[Any, pv.Plotter], None]) -> None:
         """
@@ -386,6 +387,44 @@ class SystemPlotter:
 
         scene.add_scalar_bar(mapper=mapping.mapper, title="Collecting Field Real Part")
 
+    def _add_integrating_sphere(
+        self,
+        obj: Photodiode,
+        scene: pv.Plotter,
+        field_point_size: float = 20.0,
+        opacity: float = 0.6) -> None:
+        """
+        Add a schematic integrating sphere detector.
+
+        Parameters
+        ----------
+        obj : Any
+            Integrating sphere detector object (unused, kept for signature uniformity).
+        scene : pyvista.Plotter
+            Target plotter.
+        field_point_size : float, optional
+            Point size for the field visualization. Defaults to 20.0.
+        opacity : float, optional
+            Mesh opacity. Defaults to 0.3.
+        """
+        coordinates = np.vstack(
+            (
+                obj._cpp_mesh.cartesian.x,
+                obj._cpp_mesh.cartesian.y,
+                obj._cpp_mesh.cartesian.z,
+            )
+        )
+
+        points = pv.wrap(coordinates.T)
+
+        _ = scene.add_points(
+            points,
+            point_size=field_point_size,
+            render_points_as_spheres=True,
+            cmap=self.colormap,
+            opacity=opacity,
+            show_scalar_bar=False,
+        )
 
     def _add_data(self, data: Any, scene: pv.Plotter) -> None:
         """
