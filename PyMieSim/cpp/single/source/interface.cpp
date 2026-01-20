@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "source.h"
-#include "pint/pint.h"
+#include <pint/pint.h>
 
 namespace py = pybind11;
 
