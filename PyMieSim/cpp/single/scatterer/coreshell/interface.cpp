@@ -135,7 +135,7 @@ void register_coreshell(py::module_& module) {
             [ureg](const CoreShell &self) {
                 double core_radius = self.core_diameter / 2.0;
                 double shell_outer_radius = core_radius + self.shell_thickness;
-                double volume = (4.0 / 3.0) * M_PI * (shell_outer_radius * shell_outer_radius * shell_outer_radius - core_radius * core_radius * core_radius);
+                double volume = (4.0 / 3.0) * Constants::PI * (shell_outer_radius * shell_outer_radius * shell_outer_radius - core_radius * core_radius * core_radius);
                 return (py::float_(volume) * ureg.attr("meter**3")).attr("to_compact")();
             },
             "Volume of the core-shell scatterer."

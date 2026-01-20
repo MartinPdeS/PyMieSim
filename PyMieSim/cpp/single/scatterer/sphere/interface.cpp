@@ -112,7 +112,7 @@ void register_sphere(py::module_& module) {
         .def_property_readonly(
             "volume",
             [ureg](const Sphere &self) {
-                double volume = (4.0 / 3.0) * M_PI * std::pow(self.diameter / 2.0, 3);
+                double volume = (4.0 / 3.0) * Constants::PI * std::pow(self.diameter / 2.0, 3);
                 return (py::float_(volume) * ureg.attr("meter**3")).attr("to_compact")();
             },
             "Volume of the sphere."
