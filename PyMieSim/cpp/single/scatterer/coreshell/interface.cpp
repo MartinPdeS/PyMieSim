@@ -2,7 +2,6 @@
 #include "./coreshell.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
-#include <iostream>
 
 namespace py = pybind11;
 

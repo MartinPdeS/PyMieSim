@@ -10,16 +10,12 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-#include "source.h"
+#include "./source.h"
 
 namespace py = pybind11;
 
-// Accept polarization as:
-// 1) a bound C++ polarization object (JonesVector / Linear / RightCircular / LeftCircular) from our module
-// 2) a legacy Python polarization object with .element shaped (N,2)
-// 3) anything else: wrap with Python Linear(...) if possible (for backward compatibility)
-//
-// Ultimately returns a C++ JonesVector with element rows.
+
+
 static JonesVector to_cpp_polarization(py::object polarization_like)
 {
     // Case 1: already a bound C++ JonesVector (or derived) object
