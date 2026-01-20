@@ -2,6 +2,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
+#include <pint/pint.h>
 
 #include <array>
 #include <complex>
@@ -9,9 +10,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-
 #include "source.h"
-#include <pint/pint.h>
 
 namespace py = pybind11;
 

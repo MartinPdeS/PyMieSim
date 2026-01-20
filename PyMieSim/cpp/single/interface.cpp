@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 
+#include <pint/pint.h>
 #include "single/polarization/interface.cpp"
 #include "single/scatterer/base_scatterer/interface.cpp"
 #include "single/scatterer/sphere/interface.cpp"
