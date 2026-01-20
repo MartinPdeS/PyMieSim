@@ -9,7 +9,7 @@ from PyMieSim.single.source import (
 from TypedUnit import Length, Angle, ElectricField
 
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.single.polarization import BasePolarization
+from PyMieSim.single.polarization import BasePolarization, Linear
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.binary.interface_experiment import PlaneWaveSourceSet
 
@@ -37,15 +37,13 @@ class PlaneWave(BaseSource, Sequential):
         polarization: Union[BasePolarization, Angle],
         amplitude: ElectricField,
     ):
-        self.mapping = {}
-
         self.wavelength = np.atleast_1d(wavelength)
         self.amplitude = np.atleast_1d(amplitude)
         self.polarization = polarization
 
         if not isinstance(self.polarization, BasePolarization):
             Angle.check(self.polarization)
-            self.polarization = BasePolarization.from_angle(self.polarization)
+            self.polarization = Linear(self.polarization)
 
         self.binding_kwargs = dict(
             wavelength=self.wavelength,

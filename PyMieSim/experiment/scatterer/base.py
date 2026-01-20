@@ -49,22 +49,17 @@ class BaseScatterer:
 
     def _generate_mapping(self) -> None:
         """
-        Constructs a table of the scatterer's refractive_index formatted for data visualization.
-        This method populates the `mapping` dictionary with user-friendly descriptions and formats of the scatterer refractive_index.
+        Updates the internal mapping of the scatterer with current parameter values, allowing for visual representation
+        of the scatterer's properties in a tabular format (useful for debugging and visualization).
 
-        Returns
-        -------
-        list
-            A list of visual representations for each refractive_index in the `mapping` dictionary that has been populated.
+        Attributes like refractive index, diameter, and other scatterer-specific properties are included in this mapping.
         """
-        for attr in self.attributes:
-            values = getattr(self, attr)
-            if values is None:
-                continue
+        self.mapping = {}
 
-            if hasattr(values, "magnitude"):
-                self.mapping["scatterer:" + attr] = pint_pandas.PintArray(
-                    values.magnitude, dtype=values.units
-                )
+        for attr in self.attributes:
+            value = getattr(self, attr)
+            string = "scatterer:" + attr
+            if hasattr(value, "magnitude"):
+                self.mapping[string] = pint_pandas.PintArray(value, dtype=value.units)
             else:
-                self.mapping["scatterer:" + attr] = [repr(m) for m in values]
+                self.mapping[string] = [repr(v) for v in value]

@@ -49,7 +49,6 @@ class Photodiode(BaseDetector, Sequential):
         polarization_filter: Optional[Angle | None] = (numpy.nan,) * ureg.degree,
         medium_refractive_index: Dimensionless = (1.0,) * ureg.AU,
     ):
-        self.mapping = {}
         self.NA = numpy.atleast_1d(NA)
         self.gamma_offset = numpy.atleast_1d(gamma_offset)
         self.phi_offset = numpy.atleast_1d(phi_offset)

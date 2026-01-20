@@ -86,7 +86,6 @@ class CoreShell(BaseScatterer, Sequential):
         shell_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
         medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
     ):
-        self.mapping = {}
         self.source = source
         self.core_diameter = np.atleast_1d(core_diameter)
         self.shell_thickness = np.atleast_1d(shell_thickness)

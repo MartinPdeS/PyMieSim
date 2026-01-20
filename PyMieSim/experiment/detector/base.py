@@ -59,6 +59,9 @@ class BaseDetector:
         self.mapping = {}
 
         for attr in self.attributes:
-            self.mapping["detector:" + attr] = PintArray(
-                getattr(self, attr), dtype=getattr(self, attr).units
-            )
+            value = getattr(self, attr)
+            string = "detector:" + attr
+            if hasattr(value, "magnitude"):
+                self.mapping[string] = PintArray(value, dtype=value.units)
+            else:
+                self.mapping[string] = [repr(v) for v in value]

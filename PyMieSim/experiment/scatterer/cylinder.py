@@ -56,7 +56,6 @@ class Cylinder(BaseScatterer, Sequential):
         refractive_index: List[BaseMaterial] | List[RefractiveIndex],
         medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
     ):
-        self.mapping = {}
         self.source = source
         self.diameter = np.atleast_1d(diameter)
         self.refractive_index = np.atleast_1d(refractive_index)

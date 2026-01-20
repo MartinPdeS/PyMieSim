@@ -64,7 +64,6 @@ class CoherentMode(BaseDetector, Sequential):
         sampling: Optional[Dimensionless] = (200,) * ureg.AU,
         polarization_filter: Optional[Angle] = (numpy.nan,) * ureg.degree
     ):
-        self.mapping = {}
         self.mode_number = numpy.atleast_1d(mode_number)
         self.NA = numpy.atleast_1d(NA)
         self.gamma_offset = numpy.atleast_1d(gamma_offset)
@@ -73,8 +72,13 @@ class CoherentMode(BaseDetector, Sequential):
         self.sampling = numpy.atleast_1d(sampling)
         self.cache_NA = numpy.atleast_1d(cache_NA)
         self.medium_refractive_index = numpy.atleast_1d(medium_refractive_index)
-        self.polarization_filter = numpy.atleast_1d(polarization_filter)
         self.mean_coupling = mean_coupling
+
+
+        if polarization_filter is None:
+            polarization_filter = numpy.nan * ureg.degree
+
+        self.polarization_filter = numpy.atleast_1d(polarization_filter).astype(float)
 
         self.binding_kwargs = {
             "mode_number": self.mode_number,

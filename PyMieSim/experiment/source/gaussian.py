@@ -42,8 +42,6 @@ class Gaussian(BaseSource, Sequential):
         NA: Dimensionless,
         optical_power: Power,
     ):
-        self.mapping = {}
-
         self.NA = np.atleast_1d(NA)
         self.wavelength = np.atleast_1d(wavelength)
         self.optical_power = np.atleast_1d(optical_power)
