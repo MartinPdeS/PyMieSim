@@ -24,7 +24,7 @@ source = Gaussian(
 )
 
 scatterer = CoreShell(
-    core_diameter=[1500] * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
+    core_diameter=[1000, 1250, 1500] * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
     shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
     core_refractive_index=Material.silver,  # Core material
     shell_refractive_index=Material.BK7,  # Shell material

@@ -31,6 +31,7 @@ class Photodiode(BaseDetector, Sequential):
 
     attributes = [
         "NA",
+        "cache_NA",
         "gamma_offset",
         "phi_offset",
         "sampling",
