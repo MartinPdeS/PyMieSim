@@ -15,8 +15,6 @@
 
 namespace py = pybind11;
 
-py::object ureg = get_shared_ureg();
-
 // Accept polarization as:
 // 1) a bound C++ polarization object (JonesVector / Linear / RightCircular / LeftCircular) from our module
 // 2) a legacy Python polarization object with .element shaped (N,2)
@@ -110,39 +108,40 @@ static py::array_t<std::complex<double>> element_to_numpy_2d(const JonesVector& 
 
 void register_sources(py::module_& module)
 {
+    py::object ureg = get_shared_ureg();
     module.doc() = "Source bindings for PyMieSim.";
 
     py::class_<BaseSource, std::shared_ptr<BaseSource>>(module, "BaseSource")
         .def(py::init<>())
         .def_property_readonly(
             "wavelength",
-            [](const BaseSource& self) {
+            [ureg](const BaseSource& self) {
                 return (py::float_(self.wavelength) * ureg.attr("meter")).attr("to_compact")();
             }
         )
         .def_property_readonly(
             "wavenumber_vacuum",
-            [](const BaseSource& self) {
+            [ureg](const BaseSource& self) {
                 return (py::float_(self.wavenumber_vacuum) * ureg.attr("1/meter")).attr("to_compact")();
             }
         )
         .def_property_readonly(
             "amplitude",
-            [](const BaseSource& self) {
+            [ureg](const BaseSource& self) {
                 return (py::float_(self.amplitude) * ureg.attr("volt/meter")).attr("to_compact")();
             }
         )
         // Expose polarization as a 2D complex array (N,2) plus a convenience first row.
         .def_property_readonly(
             "polarization_element",
-            [](const BaseSource& self) {
+            [ureg](const BaseSource& self) {
                 return element_to_numpy_2d(self.polarization);
             },
             "Polarization Jones matrix as a complex array of shape (N, 2)."
         )
         .def_property_readonly(
             "jones_vector",
-            [](const BaseSource& self) {
+            [ureg](const BaseSource& self) {
                 return first_row_to_numpy(self.polarization);
             },
             "First Jones vector row [Ex, Ey] as a complex array of shape (2,)."
@@ -150,12 +149,11 @@ void register_sources(py::module_& module)
 
     py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(module, "PlaneWave")
         .def(
-            py::init([](
+            py::init([ureg](
                 py::object wavelength,
                 py::object polarization,
                 py::object amplitude
             ) {
-
                 py::object units_mod = py::module_::import("PyMieSim.units");
                 py::object UnitLength = units_mod.attr("Length");
                 py::object UnitAmplitude = units_mod.attr("ElectricField");
@@ -186,7 +184,7 @@ void register_sources(py::module_& module)
 
     py::class_<Gaussian, BaseSource, std::shared_ptr<Gaussian>>(module, "Gaussian")
         .def(
-            py::init([](
+            py::init([ureg](
                 py::object wavelength,
                 py::object polarization,
                 py::object NA,
@@ -224,31 +222,31 @@ void register_sources(py::module_& module)
         )
         .def_property_readonly(
             "waist",
-            [](const Gaussian& self) {
+            [ureg](const Gaussian& self) {
                 return (py::float_(self.waist) * ureg.attr("meter")).attr("to_compact")();
             }
         )
         .def_property_readonly(
             "peak_intensity",
-            [](const Gaussian& self) {
+            [ureg](const Gaussian& self) {
                 return (py::float_(self.peak_intensity) * ureg.attr("W/meter**2")).attr("to_compact")();
             }
         )
         .def_property_readonly(
             "area",
-            [](const Gaussian& self) {
+            [ureg](const Gaussian& self) {
                 return (py::float_(self.area) * ureg.attr("meter**2")).attr("to_compact")();
             }
         )
         .def_property_readonly(
             "NA",
-            [](const Gaussian& self) {
+            [ureg](const Gaussian& self) {
                 return (py::float_(self.NA) * ureg.attr("dimensionless")).attr("to_compact")();
             }
         )
         .def_property_readonly(
             "optical_power",
-            [](const Gaussian& self) {
+            [ureg](const Gaussian& self) {
                 return (py::float_(self.optical_power) * ureg.attr("watt")).attr("to_compact")();
             }
         )
