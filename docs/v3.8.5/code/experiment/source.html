@@ -490,7 +490,7 @@
 <span id="experiment-source"></span><h1>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amplitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/source/planewave.html#PlaneWave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/source/planewave.html#PlaneWave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>Represents a Plane Wave light source with a specified amplitude.</p>
 <p>Inherits from BaseSource and specifies amplitude directly.</p>
@@ -504,8 +504,8 @@
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.amplitude">
-<span class="sig-name descname"><span class="pre">amplitude</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ElectricField</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.amplitude" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['wavelength',</span> <span class="pre">'amplitude',</span> <span class="pre">'polarization']</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -549,21 +549,11 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <span class="sig-name descname"><span class="pre">is_sequential</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.is_sequential" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.polarization">
-<span class="sig-name descname"><span class="pre">polarization</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BasePolarization</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.polarization" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.wavelength">
-<span class="sig-name descname"><span class="pre">wavelength</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.wavelength" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/source/gaussian.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/source/gaussian.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
 <p>Represents a Gaussian light source with a specified numerical aperture and optical power.</p>
 <p>Inherits from BaseSource and adds specific attributes for Gaussian sources.</p>
@@ -578,8 +568,8 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.NA">
-<span class="sig-name descname"><span class="pre">NA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.NA" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['wavelength',</span> <span class="pre">'NA',</span> <span class="pre">'optical_power',</span> <span class="pre">'polarization']</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -623,21 +613,6 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <span class="sig-name descname"><span class="pre">is_sequential</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.is_sequential" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.optical_power">
-<span class="sig-name descname"><span class="pre">optical_power</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Power</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.optical_power" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.polarization">
-<span class="sig-name descname"><span class="pre">polarization</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BasePolarization</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Angle</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.polarization" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.wavelength">
-<span class="sig-name descname"><span class="pre">wavelength</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.wavelength" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -666,20 +641,15 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave"><code class="docutils literal notranslate"><span class="pre">PlaneWave</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.amplitude"><code class="docutils literal notranslate"><span class="pre">PlaneWave.amplitude</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.attributes"><code class="docutils literal notranslate"><span class="pre">PlaneWave.attributes</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.build_sequential"><code class="docutils literal notranslate"><span class="pre">PlaneWave.build_sequential()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.is_sequential"><code class="docutils literal notranslate"><span class="pre">PlaneWave.is_sequential</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.polarization"><code class="docutils literal notranslate"><span class="pre">PlaneWave.polarization</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.wavelength"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavelength</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.NA"><code class="docutils literal notranslate"><span class="pre">Gaussian.NA</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.attributes"><code class="docutils literal notranslate"><span class="pre">Gaussian.attributes</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.build_sequential"><code class="docutils literal notranslate"><span class="pre">Gaussian.build_sequential()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.is_sequential"><code class="docutils literal notranslate"><span class="pre">Gaussian.is_sequential</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.optical_power"><code class="docutils literal notranslate"><span class="pre">Gaussian.optical_power</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.polarization"><code class="docutils literal notranslate"><span class="pre">Gaussian.polarization</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.wavelength"><code class="docutils literal notranslate"><span class="pre">Gaussian.wavelength</span></code></a></li>
 </ul>
 </li>
 </ul>

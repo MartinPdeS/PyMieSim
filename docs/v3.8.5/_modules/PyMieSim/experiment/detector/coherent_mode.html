@@ -459,20 +459,17 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span><span class="p">,</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">Dimensionless</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyUnit</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span><span class="p">,</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">Dimensionless</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.detector.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseDetector</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherentModeSet</span>
+
 
 <div class="viewcode-block" id="CoherentMode">
 <a class="viewcode-back" href="../../../../code/experiment/detector.html#PyMieSim.experiment.detector.CoherentMode">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">CoherentMode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">Sequential</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Coherent mode detector for Mie scattering simulations, handling coherent detection modes.</span>
@@ -502,24 +499,50 @@
 <span class="sd">        Specifies if the detection is coherent. Defaults to True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">mode_number</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
-    <span class="n">NA</span><span class="p">:</span> <span class="n">Dimensionless</span>
-    <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Angle</span>
-    <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Angle</span>
-    <span class="n">rotation</span><span class="p">:</span> <span class="n">Angle</span>
-    <span class="n">mean_coupling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Dimensionless</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
-    <span class="n">medium_refractive_index</span><span class="p">:</span> <span class="n">Dimensionless</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
-    <span class="n">sampling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dimensionless</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>
-    <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Angle</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
+    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;mode_number&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cache_NA&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gamma_offset&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;phi_offset&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rotation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sampling&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;polarization_filter&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;medium_refractive_index&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_binding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the</span>
-<span class="sd">        detector is correctly linked to the backend, enabling high-performance Mie scattering calculations.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mode_number</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">NA</span><span class="p">:</span> <span class="n">Dimensionless</span><span class="p">,</span>
+        <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Angle</span><span class="p">,</span>
+        <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Angle</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="n">Angle</span><span class="p">,</span>
+        <span class="n">mean_coupling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Dimensionless</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+        <span class="n">medium_refractive_index</span><span class="p">:</span> <span class="n">Dimensionless</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+        <span class="n">sampling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dimensionless</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">200</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+        <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Angle</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">mode_number</span><span class="p">)</span>
 
-<span class="sd">        Sets up parameters such as mode number, sampling rate, NA, and various offsets for the simulation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">mode</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="s1">&#39;HG&#39;</span><span class="p">,</span> <span class="s1">&#39;LG&#39;</span><span class="p">,</span> <span class="s1">&#39;NC&#39;</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;mode_number must be one of &#39;LP&#39;, &#39;HG&#39;, &#39;LG&#39;, or &#39;NC&#39;, got </span><span class="si">{</span><span class="n">mode_number</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">gamma_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">phi_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">sampling</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">cache_NA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">medium_refractive_index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span> <span class="o">=</span> <span class="n">mean_coupling</span>
+
+
+        <span class="k">if</span> <span class="n">polarization_filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">polarization_filter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">polarization_filter</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;mode_number&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">,</span>
             <span class="s2">&quot;sampling&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span>
