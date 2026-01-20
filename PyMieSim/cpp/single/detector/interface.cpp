@@ -9,6 +9,8 @@
 namespace py = pybind11;
 
 void register_detector(py::module_& module) {
+    py::object ureg = get_shared_ureg();
+
     module.doc() = R"pbdoc(
         Photodiode binding for PyMieSim.
 
@@ -27,7 +29,7 @@ void register_detector(py::module_& module) {
     py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BASE_DETECTOR")
         .def_property_readonly(
             "NA",
-            [](BaseDetector& self) {
+            [ureg](BaseDetector& self) {
                 return py::float_(self.numerical_aperture) * ureg.attr("dimensionless");
             },
             R"pbdoc(
@@ -48,7 +50,7 @@ void register_detector(py::module_& module) {
         )
         .def_property_readonly(
             "max_angle",
-            [](BaseDetector& self) {
+            [ureg](BaseDetector& self) {
                 printf("Getting max_angle\n");
                 return py::float_(self.max_angle) * ureg.attr("radian");
             },
@@ -59,7 +61,7 @@ void register_detector(py::module_& module) {
         )
         .def_property_readonly(
             "min_angle",
-            [](BaseDetector& self) {
+            [ureg](BaseDetector& self) {
                 return py::float_(self.min_angle) * ureg.attr("radian");
             },
             R"pbdoc(
@@ -69,8 +71,8 @@ void register_detector(py::module_& module) {
         )
         .def_property(
             "scalar_field",
-            [](BaseDetector& self) {return vector_as_numpy_view(self, self.scalar_field);},
-            [](BaseDetector& self,
+            [ureg](BaseDetector& self) {return vector_as_numpy_view(self, self.scalar_field);},
+            [ureg](BaseDetector& self,
                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.scalar_field, arr);
             },
@@ -81,7 +83,7 @@ void register_detector(py::module_& module) {
             )pbdoc"
         )
         .def("get_structured_scalarfield",
-            [](BaseDetector& self, size_t sampling) {
+            [ureg](BaseDetector& self, size_t sampling) {
                 std::vector<complex128> vector = self.get_structured_scalarfield(sampling);  // returns vector<double>
                 return vector_move_from_numpy(std::move(vector), {sampling, sampling});
             },
@@ -91,7 +93,7 @@ void register_detector(py::module_& module) {
             )pbdoc"
         )
         .def("get_poynting_field",
-            [](BaseDetector& self, const BaseScatterer& scatterer, py::object distance) {
+            [ureg](BaseDetector& self, const BaseScatterer& scatterer, py::object distance) {
                 double distance_value = distance.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
                 std::vector<double> vector = self.get_poynting_field(scatterer, distance_value);
@@ -143,7 +145,7 @@ void register_detector(py::module_& module) {
         )
         .def(
             "get_energy_flow",
-            [](BaseDetector& self, const BaseScatterer& scatterer) {
+            [ureg](BaseDetector& self, const BaseScatterer& scatterer) {
                 double energy_flow = self.get_energy_flow(scatterer);
                 return (py::float_(energy_flow) * ureg.attr("watt")).attr("to_compact")();
             },
@@ -198,7 +200,7 @@ void register_detector(py::module_& module) {
         )
         .def_property_readonly(
             "phi_offset",
-            [](BaseDetector& self) {
+            [ureg](BaseDetector& self) {
                 return py::float_(self.phi_offset) * ureg.attr("radian");
             },
             R"pbdoc(
@@ -207,7 +209,7 @@ void register_detector(py::module_& module) {
         )
         .def_property_readonly(
             "gamma_offset",
-            [](BaseDetector& self) {
+            [ureg](BaseDetector& self) {
                 return py::float_(self.gamma_offset) * ureg.attr("radian");
             },
             R"pbdoc(
@@ -216,7 +218,7 @@ void register_detector(py::module_& module) {
         )
         .def_property_readonly(
             "polarization_filter",
-            [](BaseDetector& self) {
+            [ureg](BaseDetector& self) {
                 return py::float_(self.polarization_filter) * ureg.attr("radian");
             },
             R"pbdoc(
@@ -250,7 +252,7 @@ void register_detector(py::module_& module) {
             )pbdoc"
         )
         .def("get_coupling",
-            [](BaseDetector& self, const BaseScatterer& scatterer) {
+            [ureg](BaseDetector& self, const BaseScatterer& scatterer) {
                 double coupling = self.get_coupling(scatterer);
 
                 return (py::float_(coupling) * ureg.attr("watt")).attr("to_compact")();
@@ -345,7 +347,7 @@ void register_detector(py::module_& module) {
         )
         .def(
             py::init(
-                [](
+                [ureg](
                     py::object NA,
                     py::object phi_offset,
                     py::object gamma_offset,
@@ -503,7 +505,7 @@ void register_detector(py::module_& module) {
         )
         .def(
             py::init(
-                [](
+                [ureg](
                     std::string mode_number,
                     py::object NA,
                     py::object phi_offset,
@@ -609,7 +611,7 @@ void register_detector(py::module_& module) {
         )
         .def_property_readonly(
             "rotation",
-            [](CoherentMode& self) {
+            [ureg](CoherentMode& self) {
                 return py::float_(self.rotation) * ureg.attr("radian");
             },
             R"pbdoc(
@@ -644,7 +646,7 @@ void register_detector(py::module_& module) {
             that remains active; otherwise it behaves as an ideal 4π collector.
             )pbdoc")
             .def(
-                py::init([](
+                py::init([ureg](
                     py::object polarization_filter,
                     std::size_t sampling
                 ) {

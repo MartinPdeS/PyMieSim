@@ -2,17 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from PyMieSim.units import ureg, Angle, Dimensionless
-from TypedUnit import AnyUnit
 import numpy
-from pydantic.dataclasses import dataclass
 from typing import List, Union, Optional
 
 from PyMieSim.experiment.detector.base import BaseDetector
 from PyMieSim.experiment.utils import Sequential
-from PyMieSim.utils import config_dict
 from PyMieSim.binary.interface_experiment import CoherentModeSet
 
-@dataclass(config=config_dict)
+
 class CoherentMode(BaseDetector, Sequential):
     """
     Coherent mode detector for Mie scattering simulations, handling coherent detection modes.
@@ -42,24 +39,43 @@ class CoherentMode(BaseDetector, Sequential):
         Specifies if the detection is coherent. Defaults to True.
     """
 
-    mode_number: Union[List[str], str]
-    NA: Dimensionless
-    gamma_offset: Angle
-    phi_offset: Angle
-    rotation: Angle
-    mean_coupling: Optional[bool] = False
-    cache_NA: Dimensionless = (0.0,) * ureg.AU
-    medium_refractive_index: Dimensionless = (1.0,) * ureg.AU
-    sampling: Optional[Dimensionless] = (200,) * ureg.AU
-    polarization_filter: Optional[Angle] = (numpy.nan,) * ureg.degree
+    attributes = [
+        "mode_number",
+        "NA",
+        "cache_NA",
+        "gamma_offset",
+        "phi_offset",
+        "rotation",
+        "sampling",
+        "polarization_filter",
+        "medium_refractive_index",
+    ]
 
-    def _generate_binding(self) -> None:
-        """
-        Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the
-        detector is correctly linked to the backend, enabling high-performance Mie scattering calculations.
+    def __init__(
+        self,
+        mode_number: Union[List[str], str],
+        NA: Dimensionless,
+        gamma_offset: Angle,
+        phi_offset: Angle,
+        rotation: Angle,
+        mean_coupling: Optional[bool] = False,
+        cache_NA: Dimensionless = (0.0,) * ureg.AU,
+        medium_refractive_index: Dimensionless = (1.0,) * ureg.AU,
+        sampling: Optional[Dimensionless] = (200,) * ureg.AU,
+        polarization_filter: Optional[Angle] = (numpy.nan,) * ureg.degree
+    ):
+        self.mapping = {}
+        self.mode_number = numpy.atleast_1d(mode_number)
+        self.NA = numpy.atleast_1d(NA)
+        self.gamma_offset = numpy.atleast_1d(gamma_offset)
+        self.phi_offset = numpy.atleast_1d(phi_offset)
+        self.rotation = numpy.atleast_1d(rotation)
+        self.sampling = numpy.atleast_1d(sampling)
+        self.cache_NA = numpy.atleast_1d(cache_NA)
+        self.medium_refractive_index = numpy.atleast_1d(medium_refractive_index)
+        self.polarization_filter = numpy.atleast_1d(polarization_filter)
+        self.mean_coupling = mean_coupling
 
-        Sets up parameters such as mode number, sampling rate, NA, and various offsets for the simulation.
-        """
         self.binding_kwargs = {
             "mode_number": self.mode_number,
             "sampling": self.sampling,

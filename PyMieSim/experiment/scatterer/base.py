@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from PyOptik.material.base_class import BaseMaterial
-from pydantic import field_validator
-from pint_pandas import PintArray
 import numpy
+import pint_pandas
+from PyOptik.material.base_class import BaseMaterial
 
-from TypedUnit import Length, RefractiveIndex
+from PyMieSim.units import RefractiveIndex
 from PyMieSim.binary.interface_experiment import ScattererProperties, MediumProperties
 
 
@@ -16,35 +14,6 @@ class BaseScatterer:
     scatterer parameters for use in PyMieSim simulations.
 
     """
-
-    mapping = None
-    binding_kwargs = None
-    binding = None
-
-    @field_validator(
-        "refractive_index", "core_refractive_index", "shell_refractive_index", "medium_refractive_index", mode="plain"
-    )
-    def _validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        value = numpy.atleast_1d(value)
-
-        if isinstance(value, RefractiveIndex):
-            RefractiveIndex.check(value)
-            return value
-
-        assert numpy.all(
-            [isinstance(p, BaseMaterial) for p in value]
-        ), f"{value} must be either a refractive index quantity (RIU) or BaseMaterial."
-
-        return value
-
-    @field_validator("diameter", "core_diameter", "shell_thickness", mode="plain")
-    def _validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        Length.check(value)
-        return numpy.atleast_1d(value)
 
     def _add_refractive_index(
         self, name: str, refractive_index: RefractiveIndex | BaseMaterial
@@ -94,7 +63,7 @@ class BaseScatterer:
                 continue
 
             if hasattr(values, "magnitude"):
-                self.mapping["scatterer:" + attr] = PintArray(
+                self.mapping["scatterer:" + attr] = pint_pandas.PintArray(
                     values.magnitude, dtype=values.units
                 )
             else:

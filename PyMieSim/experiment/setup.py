@@ -27,7 +27,7 @@ class EmptyDetector:
         pass
 
 
-@dataclass
+# @dataclass
 class Setup(SETUP):
     """
     Orchestrates the setup and execution of light scattering experiments using PyMieSim.
@@ -45,26 +45,21 @@ class Setup(SETUP):
     and executing the simulation to compute and retrieve specified measures.
     """
 
-    scatterer: Union[Sphere, Cylinder, CoreShell]
-    source: Union[Gaussian, PlaneWave]
-    detector: Optional[Union[Photodiode, CoherentMode]] = EmptyDetector()
+    def __init__(
+        self,
+        scatterer: Union[Sphere, Cylinder, CoreShell],
+        source: Union[Gaussian, PlaneWave],
+        detector: Optional[Union[Photodiode, CoherentMode]] = EmptyDetector(),
+    ):
 
-    def __post_init__(self):
-        """
-        Initializes the experiment by setting the source for the scatterer and establishing bindings
-        between the components and the simulation environment.
-        """
-        self.scatterer._generate_binding()
-
-        self.source._generate_binding()
-
-        self.detector._generate_binding()
-
-        self.scatterer.source = self.source
+        self.scatterer = scatterer
+        self.source = source
+        self.detector = detector
 
         super().__init__(
             debug_mode=PyMieSim.debug_mode,
         )
+
 
     def _generate_mapping(self) -> None:
         self.source._generate_mapping()

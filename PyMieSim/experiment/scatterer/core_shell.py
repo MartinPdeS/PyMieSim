@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from pydantic.dataclasses import dataclass
+import numpy as np
 from typing import List
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import Length, RefractiveIndex, AnyUnit
+from TypedUnit import Length, RefractiveIndex
 
 from PyMieSim.binary.interface_experiment import CoreShellSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
-from PyMieSim.utils import config_dict
 
 
-@dataclass(config=config_dict, kw_only=True)
+
 class CoreShell(BaseScatterer, Sequential):
     """
     A data class representing a core-shell scatterer configuration used in PyMieSim simulations.
@@ -79,14 +77,22 @@ class CoreShell(BaseScatterer, Sequential):
         "medium_refractive_index",
     ]
 
-    def _generate_binding(self) -> None:
-        """
-        Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.
-        Prepares structured data from scatterer refractive_index for efficient simulation integration.
-
-        This function populates `binding_kwargs` with values formatted appropriately for the C++ backend used in simulations.
-        """
+    def __init__(
+        self,
+        source: BaseSource,
+        core_diameter: Length,
+        shell_thickness: Length,
+        core_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
+        shell_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
+        medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
+    ):
         self.mapping = {}
+        self.source = source
+        self.core_diameter = np.atleast_1d(core_diameter)
+        self.shell_thickness = np.atleast_1d(shell_thickness)
+        self.core_refractive_index = np.atleast_1d(core_refractive_index)
+        self.shell_refractive_index = np.atleast_1d(shell_refractive_index)
+        self.medium_refractive_index = np.atleast_1d(medium_refractive_index)
 
         mediun_refractive_index = self._add_refractive_index(
             name="medium", refractive_index=self.medium_refractive_index

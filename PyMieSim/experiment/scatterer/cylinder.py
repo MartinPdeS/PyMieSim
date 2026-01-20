@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import numpy as np
 from typing import List
-from pydantic.dataclasses import dataclass
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import Length, RefractiveIndex, AnyUnit
+from TypedUnit import Length, RefractiveIndex
 
 from PyMieSim.binary.interface_experiment import CylinderSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
-from PyMieSim.utils import config_dict
 
-
-@dataclass(config=config_dict, kw_only=True)
 class Cylinder(BaseScatterer, Sequential):
     """
     Represents a cylindrical scatterer configuration for PyMieSim simulations.
@@ -29,12 +25,6 @@ class Cylinder(BaseScatterer, Sequential):
     medium_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
-
-    source: BaseSource
-    diameter: Length
-    refractive_index: List[BaseMaterial] | List[RefractiveIndex]
-    medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex]
-
     available_measure_list = [
         "Qsca",
         "Qext",
@@ -59,16 +49,20 @@ class Cylinder(BaseScatterer, Sequential):
 
     attributes = ["diameter", "refractive_index", "medium_refractive_index"]
 
-    def _generate_binding(self) -> None:
-        """
-        Constructs the keyword arguments necessary for the C++ binding interface, specifically tailored for spherical scatterers.
-        This includes processing material indices and organizing them into a structured dictionary for simulation interaction.
-
-        This method automatically configures the `binding_kwargs` attribute with appropriately formatted values.
-        """
+    def __init__(
+        self,
+        source: BaseSource,
+        diameter: Length,
+        refractive_index: List[BaseMaterial] | List[RefractiveIndex],
+        medium_refractive_index: List[BaseMaterial] | List[RefractiveIndex],
+    ):
         self.mapping = {}
+        self.source = source
+        self.diameter = np.atleast_1d(diameter)
+        self.refractive_index = np.atleast_1d(refractive_index)
+        self.medium_refractive_index = np.atleast_1d(medium_refractive_index)
 
-        mediun_refractive_index = self._add_refractive_index(
+        medium_refractive_index = self._add_refractive_index(
             name="medium", refractive_index=self.medium_refractive_index
         )
 
@@ -79,7 +73,7 @@ class Cylinder(BaseScatterer, Sequential):
         self.binding_kwargs = dict(
             diameter=self.diameter,
             is_sequential=self.is_sequential,
-            medium_refractive_index=mediun_refractive_index,
+            medium_refractive_index=medium_refractive_index,
             refractive_index=refractive_index,
         )
 

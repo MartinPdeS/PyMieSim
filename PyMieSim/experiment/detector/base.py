@@ -49,95 +49,6 @@ class BaseDetector:
     _generate_mapping()
         Generates a mapping of scatterer properties to be used for visualization purposes.
     """
-
-    @field_validator("mode_number", mode="plain")
-    def _validate_mode_number(cls, mode_number):
-        """Ensure mode numbers are valid and belong to supported families."""
-        mode_number = numpy.atleast_1d(mode_number).astype(str)
-        for mode in mode_number:
-            if mode[:2] not in ["LP", "HG", "LG", "NC"]:
-                raise ValueError(
-                    f"Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC"
-                )
-        return mode_number
-
-    @field_validator("polarization_filter", mode="plain")
-    def validate_polarization(cls, value):
-        """
-        Validates the polarization filter. If not provided, defaults to NaN degrees.
-        Ensures the value has angular units (degree or radian).
-
-        Parameters
-        ----------
-        value : Any
-            The input value for polarization filter.
-
-        Returns
-        -------
-        numpy.ndarray
-            A NumPy array containing the validated and converted polarization filter value.
-        """
-        if value is None:
-            value = numpy.nan * ureg.degree
-
-        Angle.check(value)
-
-        return numpy.atleast_1d(value).astype(float)
-
-    @field_validator("gamma_offset", "phi_offset", "rotation", mode="plain")
-    def validate_angle_quantity(cls, value):
-        """
-        Ensures that angular quantities (gamma_offset, phi_offset, rotation) are correctly formatted as Quantities with angle units.
-
-        Parameters
-        ----------
-        value : Any
-            The input value for the angle.
-
-        Returns
-        -------
-        numpy.ndarray
-            A NumPy array containing the validated and converted angle value.
-        """
-        Angle.check(value)
-        return numpy.atleast_1d(value)
-
-    @field_validator("NA", "cache_NA", mode="plain")
-    def validate_au_quantity(cls, value):
-        """
-        Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
-
-        Parameters
-        ----------
-        value : Any
-            The input value to be validated.
-
-        Returns
-        -------
-        numpy.ndarray
-            A NumPy array representing the validated input value.
-        """
-        Angle.check(value)
-        return numpy.atleast_1d(value)
-
-    @field_validator("sampling", mode="plain")
-    def validate_sampling(cls, value):
-        """
-        Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
-
-        Parameters
-        ----------
-        value : Any
-            The input value to be validated.
-
-        Returns
-        -------
-        numpy.ndarray
-            A NumPy array representing the validated input value.
-        """
-        Dimensionless.check(value)
-        return numpy.atleast_1d(value).astype(int)
-
     def _generate_mapping(self) -> None:
         """
         Updates the internal mapping of the detector with current parameter values, allowing for visual representation
@@ -146,17 +57,8 @@ class BaseDetector:
         Attributes like mode number, NA, offsets, and sampling are included in this mapping.
         """
         self.mapping = {}
-        self.mapping.update({"detector:mode_number": self.mode_number})
 
-        for attr in [
-            "NA",
-            "sampling",
-            "cache_NA",
-            "phi_offset",
-            "gamma_offset",
-            "rotation",
-            "polarization_filter",
-        ]:
+        for attr in self.attributes:
             self.mapping["detector:" + attr] = PintArray(
                 getattr(self, attr), dtype=getattr(self, attr).units
             )

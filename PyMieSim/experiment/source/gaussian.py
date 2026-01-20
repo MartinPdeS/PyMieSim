@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import numpy as np
+import pint_pandas
 from typing import Union
 from PyMieSim.single.source import (
     Gaussian as _,
 )  # noqa:F401  # Necessary for pybind11 binding initialization
-from pydantic.dataclasses import dataclass
-from TypedUnit import Length, Dimensionless, Power, Angle, AnyUnit
+
+from TypedUnit import Length, Dimensionless, Power, Angle
 
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
-from PyMieSim.single.polarization import BasePolarization
+from PyMieSim.single.polarization import BasePolarization, Linear
 from PyMieSim.binary.interface_experiment import GaussianSourceSet
-from PyMieSim.utils import config_dict
 
 
-@dataclass(config=config_dict)
 class Gaussian(BaseSource, Sequential):
     """
     Represents a Gaussian light source with a specified numerical aperture and optical power.
@@ -33,17 +33,26 @@ class Gaussian(BaseSource, Sequential):
         The optical power of the source, in Watts.
     """
 
-    NA: Dimensionless
-    optical_power: Power
-    wavelength: Length
-    polarization: Union[BasePolarization, Angle]
+    attributes = ["wavelength", "NA", "optical_power", "polarization"]
 
-    def _generate_binding(self) -> None:
-        """
-        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
-        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
-        """
+    def __init__(
+        self,
+        wavelength: Length,
+        polarization: Union[BasePolarization, Angle],
+        NA: Dimensionless,
+        optical_power: Power,
+    ):
         self.mapping = {}
+
+        self.NA = np.atleast_1d(NA)
+        self.wavelength = np.atleast_1d(wavelength)
+        self.optical_power = np.atleast_1d(optical_power)
+
+        if not isinstance(polarization, BasePolarization):
+            Angle.check(polarization)
+            polarization = Linear(polarization)
+
+        self.polarization = polarization
 
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
@@ -54,3 +63,4 @@ class Gaussian(BaseSource, Sequential):
         )
 
         self.set = GaussianSourceSet(**self.binding_kwargs)
+

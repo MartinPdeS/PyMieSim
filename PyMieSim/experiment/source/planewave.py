@@ -1,20 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import numpy as np
 from typing import Union
 from PyMieSim.single.source import (
     PlaneWave as _,
 )  # noqa:F401  # Necessary for pybind11 binding initialization
-from pydantic.dataclasses import dataclass
-from TypedUnit import Length, Angle, ElectricField, AnyUnit
+
+from TypedUnit import Length, Angle, ElectricField
 
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.single.polarization import BasePolarization
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.binary.interface_experiment import PlaneWaveSourceSet
-from PyMieSim.utils import config_dict
 
-
-@dataclass(config=config_dict)
 class PlaneWave(BaseSource, Sequential):
     """
     Represents a Plane Wave light source with a specified amplitude.
@@ -31,20 +29,23 @@ class PlaneWave(BaseSource, Sequential):
         The amplitude of the plane wave, in Volt/Meter.
     """
 
-    amplitude: ElectricField
-    wavelength: Length
-    polarization: Union[BasePolarization, Angle]
+    attributes = ["wavelength", "amplitude", "polarization"]
 
-    def _generate_binding(self) -> None:
-        """
-        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
-        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
-
-        Returns
-        -------
-        None
-        """
+    def __init__(
+        self,
+        wavelength: Length,
+        polarization: Union[BasePolarization, Angle],
+        amplitude: ElectricField,
+    ):
         self.mapping = {}
+
+        self.wavelength = np.atleast_1d(wavelength)
+        self.amplitude = np.atleast_1d(amplitude)
+        self.polarization = polarization
+
+        if not isinstance(self.polarization, BasePolarization):
+            Angle.check(self.polarization)
+            self.polarization = BasePolarization.from_angle(self.polarization)
 
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
