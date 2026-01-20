@@ -29,7 +29,7 @@ class BaseScatterer:
 
         Raises
         ------
-        ValueError:
+        TypeError:
             If the provided refractive_index is neither a Quantity (refractive index) nor a BaseMaterial.
         """
         CPPClass = MediumProperties if name == "medium" else ScattererProperties
@@ -43,8 +43,8 @@ class BaseScatterer:
             )
             return CPPClass(properties=eval_index)
 
-        raise TypeError(
-            "All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both."
+        raise AssertionError(
+            "Refractive_index must be a list of RefractiveIndex or BaseMaterial objects, not a mix of both."
         )
 
     def _generate_mapping(self) -> None:

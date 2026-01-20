@@ -64,8 +64,10 @@ class CoherentMode(BaseDetector, Sequential):
         sampling: Optional[Dimensionless] = (200,) * ureg.AU,
         polarization_filter: Optional[Angle] = (numpy.nan,) * ureg.degree
     ):
-        assert mode_number[:2] in ['LP', 'HG', 'LG', 'NC'], "mode_number must be one of 'LP', 'HG', 'LG', or 'NC'"
         self.mode_number = numpy.atleast_1d(mode_number)
+
+        for mode in self.mode_number:
+            assert mode[:2] in ['LP', 'HG', 'LG', 'NC'], f"mode_number must be one of 'LP', 'HG', 'LG', or 'NC', got {mode_number}"
         self.NA = numpy.atleast_1d(NA)
         self.gamma_offset = numpy.atleast_1d(gamma_offset)
         self.phi_offset = numpy.atleast_1d(phi_offset)
