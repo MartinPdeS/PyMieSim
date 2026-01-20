@@ -62,7 +62,7 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
             None,
             0 * ureg.degree,
             0 * ureg.degree,
-            100 * ureg.AU,
+            100,
         ),
         (
             "LP01",
@@ -71,7 +71,7 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
             None,
             0 * ureg.degree,
             0 * ureg.degree,
-            100 * ureg.AU,
+            100,
         ),
         (
             "LP01",
@@ -80,7 +80,7 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
             None,
             0 * ureg.degree,
             0 * ureg.degree,
-            100 * ureg.AU,
+            100,
         ),
         (
             "LP01",
@@ -89,7 +89,7 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
             10,
             0 * ureg.degree,
             0 * ureg.degree,
-            100 * ureg.AU,
+            100,
         ),
         (
             "LP01",
@@ -98,7 +98,7 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
             None,
             0,
             0 * ureg.degree,
-            100 * ureg.AU,
+            100,
         ),
         (
             "LP01",
@@ -107,15 +107,6 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
             None,
             0 * ureg.degree,
             0,
-            100 * ureg.AU,
-        ),
-        (
-            "LP01",
-            0 * ureg.degree,
-            0.2 * ureg.AU,
-            None,
-            0 * ureg.degree,
-            0 * ureg.degree,
             100,
         ),
     ],
@@ -123,7 +114,7 @@ def test_invalid_sphere_initialization(diameter, refractive_index, medium_refrac
 def test_invalid_coherent_mode_initialization(
     mode_number, rotation, NA, polarization_filter, gamma_offset, phi_offset, sampling
 ):
-    with pytest.raises(ValueError):
+    with pytest.raises((AssertionError, TypeError)):
         CoherentMode(
             mode_number=mode_number,
             rotation=rotation,

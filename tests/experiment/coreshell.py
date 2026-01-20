@@ -65,7 +65,7 @@ def test_measure(measure, source, core_refractive_index, shell_refractive_index,
         polarization_filter=None,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        sampling=100 * ureg.AU,
+        sampling=100,
     )
 
     # Configure and run the experiment

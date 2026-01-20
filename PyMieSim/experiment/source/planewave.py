@@ -2,12 +2,8 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from typing import Union
-from PyMieSim.single.source import (
-    PlaneWave as _,
-)  # noqa:F401  # Necessary for pybind11 binding initialization
 
-from TypedUnit import Length, Angle, ElectricField
-
+from PyMieSim.units import Length, Angle, ElectricField
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.single.polarization import BasePolarization, Linear
 from PyMieSim.experiment.utils import Sequential

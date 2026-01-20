@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyMieSim.units import ureg, Angle, Dimensionless
 import numpy
 from typing import List, Union, Optional
 
+from PyMieSim.units import ureg, Angle, Dimensionless
 from PyMieSim.experiment.detector.base import BaseDetector
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.binary.interface_experiment import CoherentModeSet
@@ -64,6 +64,7 @@ class CoherentMode(BaseDetector, Sequential):
         sampling: Optional[Dimensionless] = (200,) * ureg.AU,
         polarization_filter: Optional[Angle] = (numpy.nan,) * ureg.degree
     ):
+        assert mode_number[:2] in ['LP', 'HG', 'LG', 'NC'], "mode_number must be one of 'LP', 'HG', 'LG', or 'NC'"
         self.mode_number = numpy.atleast_1d(mode_number)
         self.NA = numpy.atleast_1d(NA)
         self.gamma_offset = numpy.atleast_1d(gamma_offset)

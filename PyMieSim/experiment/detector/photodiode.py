@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from PyMieSim.units import ureg, Angle, Dimensionless
 from typing import Optional
 import numpy
-from dataclasses import field
-from typing import Tuple
+
+from PyMieSim.units import ureg, Angle, Dimensionless
 from PyMieSim.experiment.detector.base import BaseDetector
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.binary.interface_experiment import PhotodiodeSet
@@ -55,7 +54,12 @@ class Photodiode(BaseDetector, Sequential):
         self.cache_NA = numpy.atleast_1d(cache_NA)
         self.medium_refractive_index = numpy.atleast_1d(medium_refractive_index)
         self.sampling = numpy.atleast_1d(sampling)
-        self.polarization_filter = numpy.atleast_1d(polarization_filter)
+
+        if polarization_filter is None:
+            polarization_filter = numpy.nan * ureg.degree
+
+        self.polarization_filter = numpy.atleast_1d(polarization_filter).astype(float)
+
 
         self.binding_kwargs = {
             "sampling": self.sampling,

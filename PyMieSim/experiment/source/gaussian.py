@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import numpy as np
-import pint_pandas
 from typing import Union
-from PyMieSim.single.source import (
-    Gaussian as _,
-)  # noqa:F401  # Necessary for pybind11 binding initialization
 
-from TypedUnit import Length, Dimensionless, Power, Angle
-
+from PyMieSim.units import Length, Dimensionless, Power, Angle
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
 from PyMieSim.single.polarization import BasePolarization, Linear

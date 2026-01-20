@@ -3,8 +3,8 @@
 import numpy as np
 from typing import List
 from PyOptik.material.base_class import BaseMaterial
-from TypedUnit import Length, RefractiveIndex
 
+from PyMieSim.units import Length, RefractiveIndex
 from PyMieSim.binary.interface_experiment import CoreShellSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
