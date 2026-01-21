@@ -1,0 +1,605 @@
+:orphan:
+
+.. _experiment_index:
+
+Experiment Module
+=================
+
+The ``experiment`` package is used to build large parameter sweeps.  It lets you
+combine sources, scatterers and detectors to explore how scattering quantities
+change across many configurations.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Core-Shell
+~~~~~~~~~~
+Examples of particles composed of a core and shell.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the backscattering efficiency (Qback) as functions of core diameter for CoreShell scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_Qback_vs_corediameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/coreshell/coreshell_Qback_vs_corediameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">CoreShell: Qback vs Core Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_a1_vs_corediameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/coreshell/coreshell_a1_vs_corediameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">CoreShell: An vs Core Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_b1_vs_corediameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/coreshell/coreshell_b1_vs_corediameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of core diameter for CoreShell scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_coupling_vs_corediameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/coreshell/coreshell_coupling_vs_corediameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">CoreShell: Coupling vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of core diameter for CoreShell scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_coupling_vs_na_cache_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/coreshell/coreshell_coupling_vs_na_cache`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">CoreShell: Coupling vs Diameter</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Cylinder
+~~~~~~~~
+Examples demonstrating infinite cylindrical scatterers.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qabs_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qabs_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qabs vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim, considering multiple wavelengths.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_index_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_index`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Index</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of wavelength for cylindrical scatterers using PyMieSim, considering cylinders with different diameters and refractive indices.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Cylinder: Qsca vs wavelength std">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_std_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs wavelength std</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_a11_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_b11_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_b11_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: B1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Coupling vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_phioffset_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_phioffset`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Goniometer</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of wavelength for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_wavelength_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_wavelength`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Coupling vs Wavelength</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Sphere
+~~~~~~
+Examples focused on spherical scatterers.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qabs vs diameter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qabs_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_Qabs_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qabs vs diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs diameter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs index">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_index_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_index`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs index</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_wavelength_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_wavelength`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength STD">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_wavelength_std_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_Qsca_vs_wavelength_std`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength STD</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: A1 scattering coefficient">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_a1_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_a1_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: A1 scattering coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: B1 scattering coefficient">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_b1_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_b1_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: B1 scattering coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coherent Goniometer">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_phioffset_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coherent_coupling_vs_phioffset`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coherent Goniometer</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coherent mode field rotation">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_rotation_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coherent_coupling_vs_rotation`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coherent mode field rotation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: coherent coupling vs sampling">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_sampling_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coherent_coupling_vs_sampling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: coherent coupling vs sampling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs diameter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs polarization filter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_filter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_filter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs polarization filter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Goniometer">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_phioffset_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_phioffset`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Goniometer</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs sampling">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_sampling_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_sampling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs sampling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs wavelength">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_wavelength_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/sphere_coupling_vs_wavelength`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs wavelength</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+   :includehidden:
+
+
+   /gallery/experiment/coreshell/index.rst
+   /gallery/experiment/cylinder/index.rst
+   /gallery/experiment/sphere/index.rst
+
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
