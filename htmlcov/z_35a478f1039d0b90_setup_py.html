@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_4de2cfd94814ac66_base_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-01-22 03:05 +0000
+            created at 2026-01-22 03:22 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -91,11 +91,11 @@
     <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">pydantic</span><span class="op">.</span><span class="nam">dataclasses</span> <span class="key">import</span> <span class="nam">dataclass</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">binary</span><span class="op">.</span><span class="nam">interface_experiment</span> <span class="key">import</span> <span class="nam">SETUP</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">scatterer</span> <span class="key">import</span> <span class="nam">Sphere</span><span class="op">,</span> <span class="nam">Cylinder</span><span class="op">,</span> <span class="nam">CoreShell</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">scatterer</span> <span class="key">import</span> <span class="nam">Sphere</span><span class="op">,</span> <span class="nam">InfiniteCylinder</span><span class="op">,</span> <span class="nam">CoreShell</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">detector</span> <span class="key">import</span> <span class="nam">Photodiode</span><span class="op">,</span> <span class="nam">CoherentMode</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">source</span> <span class="key">import</span> <span class="nam">Gaussian</span><span class="op">,</span> <span class="nam">PlaneWave</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">dataframe_subclass</span> <span class="key">import</span> <span class="nam">PyMieSimDataFrame</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">binary</span><span class="op">.</span><span class="nam">interface_experiment</span> <span class="key">import</span> <span class="nam">CoherentModeSet</span><span class="op">,</span> <span class="nam">PhotodiodeSet</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">binary</span><span class="op">.</span><span class="nam">interface_experiment</span> <span class="key">import</span> <span class="nam">PhotodiodeSet</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t"><span class="key">import</span> <span class="nam">PyMieSim</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -118,7 +118,7 @@
     <p class="pln"><span class="n"><a id="t34" href="#t34">34</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t"><span class="str">    Attributes</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t36" href="#t36">36</a></span><span class="t"><span class="str">    ----------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t37" href="#t37">37</a></span><span class="t"><span class="str">    scatterer : Union[Sphere, Cylinder, CoreShell]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t37" href="#t37">37</a></span><span class="t"><span class="str">    scatterer : Union[Sphere, InfiniteCylinder, CoreShell]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t38" href="#t38">38</a></span><span class="t"><span class="str">        Configuration for the scatterer in the experiment. Defines the physical properties of the particle being studied.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t39" href="#t39">39</a></span><span class="t"><span class="str">    source : Union[Gaussian, PlaneWave]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t40" href="#t40">40</a></span><span class="t"><span class="str">        Configuration for the light source. Specifies the characteristics of the light (e.g., wavelength, polarization) illuminating the scatterer.</span>&nbsp;</span><span class="r"></span></p>
@@ -131,7 +131,7 @@
     <p class="pln"><span class="n"><a id="t47" href="#t47">47</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t48" href="#t48">48</a></span><span class="t">    <span class="key">def</span> <span class="nam">__init__</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t49" href="#t49">49</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t50" href="#t50">50</a></span><span class="t">        <span class="nam">scatterer</span><span class="op">:</span> <span class="nam">Union</span><span class="op">[</span><span class="nam">Sphere</span><span class="op">,</span> <span class="nam">Cylinder</span><span class="op">,</span> <span class="nam">CoreShell</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t50" href="#t50">50</a></span><span class="t">        <span class="nam">scatterer</span><span class="op">:</span> <span class="nam">Union</span><span class="op">[</span><span class="nam">Sphere</span><span class="op">,</span> <span class="nam">InfiniteCylinder</span><span class="op">,</span> <span class="nam">CoreShell</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t51" href="#t51">51</a></span><span class="t">        <span class="nam">source</span><span class="op">:</span> <span class="nam">Union</span><span class="op">[</span><span class="nam">Gaussian</span><span class="op">,</span> <span class="nam">PlaneWave</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t52" href="#t52">52</a></span><span class="t">        <span class="nam">detector</span><span class="op">:</span> <span class="nam">Optional</span><span class="op">[</span><span class="nam">Union</span><span class="op">[</span><span class="nam">Photodiode</span><span class="op">,</span> <span class="nam">CoherentMode</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="nam">EmptyDetector</span><span class="op">(</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t53" href="#t53">53</a></span><span class="t">    <span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -473,7 +473,7 @@
             <a class="nav" href="z_4de2cfd94814ac66_base_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-01-22 03:05 +0000
+            created at 2026-01-22 03:22 +0000
         </p>
     </div>
 </footer>
