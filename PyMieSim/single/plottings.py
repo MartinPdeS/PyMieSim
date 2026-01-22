@@ -191,7 +191,7 @@ class SystemPlotter:
         opacity : float, optional
             Mesh opacity. Defaults to 1.0.
         """
-        shape = pv.InfiniteCylinder(
+        shape = pv.Cylinder(
             center=(0.0, 0.0, 0.0),
             radius=0.1,
             height=2.0,
