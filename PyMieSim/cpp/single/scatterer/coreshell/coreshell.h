@@ -136,7 +136,10 @@ class CoreShell: public BaseScatterer
             const std::vector<double>& y,
             const std::vector<double>& z,
             const std::string& field_type
-        ) override {};
+        ) override {
+            throw std::logic_error{"Function not implemented!"};
+            return std::vector<complex128>{};
+        };
 
     private:
         /**
