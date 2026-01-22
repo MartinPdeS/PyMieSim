@@ -108,7 +108,6 @@ class Cylinder: public BaseScatterer
          */
         std::vector<complex128> compute_dn(double nmx, complex128 z) const;  // Page 205 of BH
 
-
         /**
          * @brief Computes the near-field electromagnetic fields for a cylinder.
          * @param x A vector of x-coordinates where the fields are computed.
@@ -117,7 +116,27 @@ class Cylinder: public BaseScatterer
          * @param field_type The type of field to compute (e.g., "E", "H").
          * @return A vector of complex128 values representing the near-field electromagnetic fields.
          */
-        std::vector<complex128> compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) override;
+        std::vector<complex128> compute_nearfields(
+            const std::vector<double>& x,
+            const std::vector<double>& y,
+            const std::vector<double>& z,
+            const std::string& field_type
+        ) override;
+
+        /**
+         * @brief Computes scattered near-field electromagnetic fields using an and bn coefficients.
+         * @param x A vector of x-coordinates where the fields are computed.
+         * @param y A vector of y-coordinates where the fields are computed.
+         * @param z A vector of z-coordinates where the fields are computed.
+         * @param field_type The type of field to compute (e.g., "E", "H").
+         * @return A vector of complex128 values representing the scattered near-field electromagnetic fields.
+         */
+        std::vector<complex128> compute_scattered_nearfields(
+            const std::vector<double>& x,
+            const std::vector<double>& y,
+            const std::vector<double>& z,
+            const std::string& field_type
+        ) override {};
 
     public:
         void print_properties(int precision) const

@@ -112,8 +112,19 @@ class Sphere: public BaseScatterer
          * @param radius The radius of the sphere.
          * @return A vector of complex128 values representing the near-field electromagnetic fields.
          */
-        std::vector<complex128> compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) override;
+        std::vector<complex128> compute_nearfields(
+            const std::vector<double>& x,
+            const std::vector<double>& y,
+            const std::vector<double>& z,
+            const std::string& field_type
+        ) override;
 
+        std::vector<complex128> compute_scattered_nearfields(
+            const std::vector<double>& x,
+            const std::vector<double>& y,
+            const std::vector<double>& z,
+            const std::string& field_type
+        ) override;
 
     public:
         void print_properties(int precision) const

@@ -307,3 +307,61 @@ BaseScatterer::get_unstructured_stokes_parameters(
         std::move(V)
     );
 }
+
+std::vector<complex128>
+BaseScatterer::compute_incident_nearfields(
+    const std::vector<double>& x,
+    const std::vector<double>& y,
+    const std::vector<double>& z,
+    const std::string& field_type
+) const
+{
+    if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" && field_type != "|E|") {
+        throw std::invalid_argument("Invalid field_type. Must be one of: Ex, Ey, Ez, |E|");
+    }
+
+    const std::size_t number_of_points = x.size();
+    if (number_of_points != y.size() || number_of_points != z.size()) {
+        throw std::invalid_argument("x, y, z vectors must have the same length");
+    }
+
+    std::vector<complex128> field_values(number_of_points);
+
+    const double medium_refractive_index = this->medium_refractive_index;
+
+    const double k0 = this->source->wavenumber_vacuum;
+    const double k_medium = k0 * medium_refractive_index;
+
+    const std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
+    const complex128 E0x = jones_vector[0] * this->source->amplitude;
+    const complex128 E0y = jones_vector[1] * this->source->amplitude;
+
+    const complex128 i_unit(0.0, 1.0);
+
+    for (std::size_t point_index = 0; point_index < number_of_points; ++point_index) {
+
+        const double x_position = x[point_index];
+        const double y_position = y[point_index];
+        const double z_position = z[point_index];
+
+        // Plane wave consistent with your BH expansion assumptions: propagation along +z in the medium
+        const complex128 phase = std::exp(i_unit * complex128(k_medium * z_position, 0.0));
+
+        const complex128 Ex_inc = E0x * phase;
+        const complex128 Ey_inc = E0y * phase;
+        const complex128 Ez_inc(0.0, 0.0);
+
+        if (field_type == "Ex") {
+            field_values[point_index] = Ex_inc;
+        } else if (field_type == "Ey") {
+            field_values[point_index] = Ey_inc;
+        } else if (field_type == "Ez") {
+            field_values[point_index] = Ez_inc;
+        } else {
+            const double mag = std::sqrt(std::norm(Ex_inc) + std::norm(Ey_inc) + std::norm(Ez_inc));
+            field_values[point_index] = complex128(mag, 0.0);
+        }
+    }
+
+    return field_values;
+}

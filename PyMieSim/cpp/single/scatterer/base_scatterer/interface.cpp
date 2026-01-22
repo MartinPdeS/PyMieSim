@@ -9,7 +9,7 @@ void register_base_scatterer(pybind11::module_& module) {
 
     pybind11::class_<BaseScatterer, std::shared_ptr<BaseScatterer>>(module, "BASESCATTERER")
         .def(
-            "_cpp_compute_cn_dn",
+            "compute_cn_dn",
             &BaseScatterer::compute_cn_dn,
             pybind11::arg("max_order") = 0,
             R"pbdoc(
@@ -22,7 +22,7 @@ void register_base_scatterer(pybind11::module_& module) {
             )pbdoc"
         )
         .def(
-            "_cpp_compute_an_bn",
+            "compute_an_bn",
             &BaseScatterer::compute_an_bn,
             pybind11::arg("max_order") = 0,
             R"pbdoc(
@@ -188,7 +188,7 @@ void register_base_scatterer(pybind11::module_& module) {
             )pbdoc"
         )
         .def(
-            "_cpp_get_coefficient",
+            "get_coefficient",
             &BaseScatterer::get_coefficient,
             pybind11::arg("type"),
             pybind11::arg("order"),
@@ -523,7 +523,7 @@ void register_base_scatterer(pybind11::module_& module) {
             )pbdoc"
         )
         .def(
-            "compute_nearfields",
+            "compute_total_nearfields",
             [ureg](BaseScatterer& self, const py::object x, const py::object y, const py::object z, const std::string& field_type)
             {
                 std::vector<double> x_values = x.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
@@ -577,7 +577,98 @@ void register_base_scatterer(pybind11::module_& module) {
             )pbdoc"
         )
         .def(
-            "_cpp_compute_nearfields_structured",
+            "compute_scattered_nearfields",
+            [ureg](BaseScatterer& self, const py::object x, const py::object y, const py::object z, const std::string& field_type)
+            {
+                std::vector<double> x_values = x.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
+                std::vector<double> y_values = y.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
+                std::vector<double> z_values = z.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
+
+                std::vector<complex128> field = self.compute_scattered_nearfields(x_values, y_values, z_values, field_type);
+
+                return vector_move_from_numpy(field, {field.size()}) * ureg.attr("volt/meter");
+            },
+            pybind11::arg("x"),
+            pybind11::arg("y"),
+            pybind11::arg("z"),
+            pybind11::arg("field_type"),
+            R"pbdoc(
+                Computes scattered near-field electromagnetic fields using an and bn coefficients.
+
+                This method calculates the scattered electromagnetic fields outside the scatterer
+                using the multipole expansion with vector spherical harmonics. It uses an and bn
+                coefficients for the computation.
+
+                Parameters
+                ----------
+                x : numpy.ndarray
+                    Array of x coordinates of observation points.
+                y : numpy.ndarray
+                    Array of y coordinates of observation points.
+                z : numpy.ndarray
+                    Array of z coordinates of observation points.
+                field_type : str
+                    Field component type: "Ex", "Ey", "Ez", "|E|"
+
+                Returns
+                -------
+                numpy.ndarray
+                    Complex array of field values at specified points.
+
+                Raises
+                ------
+                RuntimeError
+                    If an/bn coefficients are not available for the scatterer type.
+                ValueError
+                    If field_type is not recognized.
+
+                Notes
+                -----
+                This method requires that an and bn coefficients have been computed.
+                Currently supports spherical scatterers only. Cylinder support requires
+                implementation of an/bn coefficients for infinite cylinders.
+            )pbdoc"
+        )
+        .def(
+            "compute_incident_nearfields",
+            [ureg](BaseScatterer& self, const py::object x, const py::object y, const py::object z, const std::string& field_type)
+            {
+                std::vector<double> x_values = x.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
+                std::vector<double> y_values = y.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
+                std::vector<double> z_values = z.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
+                std::vector<complex128> field = self.compute_incident_nearfields(x_values, y_values, z_values, field_type);
+                return vector_move_from_numpy(field, {field.size()}) * ureg.attr("volt/meter");
+            },
+            pybind11::arg("x"),
+            pybind11::arg("y"),
+            pybind11::arg("z"),
+            pybind11::arg("field_type"),
+            R"pbdoc(
+                Computes incident near-field electromagnetic fields.
+                This method calculates the incident electromagnetic fields at specified points
+                using the properties of the incident wave.
+                Parameters
+                ----------
+                x : numpy.ndarray
+                    Array of x coordinates of observation points.
+                y : numpy.ndarray
+                    Array of y coordinates of observation points.
+                z : numpy.ndarray
+                    Array of z coordinates of observation points.
+                field_type : str
+                    Field component type: "Ex", "Ey", "Ez", "|E|"
+                Returns
+                -------
+                numpy.ndarray
+                    Complex array of field values at specified points.
+                Notes
+                -----
+                This method does not depend on scatterer properties and computes fields
+                based solely on the incident wave characteristics.
+            )pbdoc"
+        )
+        .def(
+            "compute_nearfields_structured",
             [ureg](BaseScatterer& self, const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type)
             {
                 auto [field_values, field_x, field_y, field_z, x_coords, y_coords, z_coords] = self.compute_nearfields_structured(x, y, z, field_type);

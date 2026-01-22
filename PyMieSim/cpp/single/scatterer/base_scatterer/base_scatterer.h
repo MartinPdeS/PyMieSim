@@ -276,7 +276,38 @@ public:
      *       implementation of cn/dn coefficients for infinite cylinders.
      */
     virtual std::vector<complex128>
-    compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) = 0;
+    compute_nearfields(
+        const std::vector<double>& x,
+        const std::vector<double>& y,
+        const std::vector<double>& z,
+        const std::string& field_type
+    ) = 0;
+
+    /**
+     * @brief Computes scattered near-field electromagnetic fields using an and bn coefficients.
+     *
+     * This method calculates the scattered electromagnetic fields outside the scatterer
+     * using the multipole expansion with vector spherical harmonics. It uses an and bn
+     * coefficients for the computation.
+     *
+     * @param x,y,z Cartesian coordinates of observation points.
+     * @param field_type Field component type: "Ex", "Ey", "Ez", "|E|"
+     *
+     * @return Vector of complex field values at specified points.
+     *
+     * @throws std::runtime_error If an/bn coefficients are not available for the scatterer type.
+     * @throws std::invalid_argument If field_type is not recognized.
+     *
+     * @note This method requires that an and bn coefficients have been computed.
+     *       Currently supports spherical scatterers only. Cylinder support requires
+     *       implementation of an/bn coefficients for infinite cylinders.
+     */
+    virtual std::vector<complex128> compute_scattered_nearfields(
+        const std::vector<double>& x,
+        const std::vector<double>& y,
+        const std::vector<double>& z,
+        const std::string& field_type
+    ) = 0;
 
     /**
      * @brief Computes near-field electromagnetic fields over a structured 3D grid.
@@ -310,6 +341,34 @@ public:
         const std::vector<double>& z_range,
         const std::string& field_type
     );
+
+    /**
+     * @brief Computes incident near-field electromagnetic fields using an and bn coefficients.
+     *
+     * This method calculates the incident electromagnetic fields at specified points
+     * using the multipole expansion with vector spherical harmonics. It uses an and bn
+     * coefficients for the computation.
+     *
+     * @param x,y,z Cartesian coordinates of observation points.
+     * @param field_type Field component type: "Ex", "Ey", "Ez", "|E|"
+     *
+     * @return Vector of complex field values at specified points.
+     *
+     * @throws std::runtime_error If an/bn coefficients are not available for the scatterer type.
+     * @throws std::invalid_argument If field_type is not recognized.
+     *
+     * @note This method requires that an and bn coefficients have been computed.
+     *       Currently supports spherical scatterers only. Cylinder support requires
+     *       implementation of an/bn coefficients for infinite cylinders.
+     */
+    std::vector<complex128>
+    compute_incident_nearfields(
+        const std::vector<double>& x,
+        const std::vector<double>& y,
+        const std::vector<double>& z,
+        const std::string& field_type
+    ) const;
+
 
     /**
      * @brief Python interface for coefficient retrieval.
