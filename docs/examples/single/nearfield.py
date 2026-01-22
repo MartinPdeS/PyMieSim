@@ -21,7 +21,7 @@ source = Gaussian(
 )
 
 scatterer = Sphere(
-    diameter=10 * ureg.nanometer,
+    diameter=30 * ureg.nanometer,
     source=source,
     refractive_index=(1.4 + 0.j) * ureg.RIU,
     medium_refractive_index=1. * ureg.RIU,
@@ -33,9 +33,9 @@ near_field = NearField(
 
 near_field.plot(
     "|E|:abs",
-    type="total",
+    type="scattered",
     plane_origin=(0.0, 0.0, 0.0),
     plane_normal=(0.0, 1.0, 0.0),
     sampling=400,
-    extent_scale=8,
+    extent_scale=100,
 )

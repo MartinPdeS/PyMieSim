@@ -1,5 +1,5 @@
 """
-Cylinder Scatterer Bohren-Huffman figure 8.7
+InfiniteCylinder Scatterer Bohren-Huffman figure 8.7
 ============================================
 
 """
@@ -12,7 +12,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.directories import validation_data_path
 
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
@@ -30,7 +30,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=diameter,
     refractive_index=1.55 * ureg.RIU,
     medium_refractive_index=1 * ureg.RIU,

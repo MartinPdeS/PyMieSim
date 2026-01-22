@@ -1,5 +1,5 @@
 """
-Cylinder Scatterer Bohren-Huffman figure 8.8
+InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
 ============================================
 
 """
@@ -11,7 +11,7 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
@@ -41,7 +41,7 @@ source = Gaussian(
 )
 
 # Setup cylindrical scatterers
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
 )
 
@@ -91,7 +91,7 @@ plt.plot(
 
 plt.xlabel("Diameter (μm)")
 plt.ylabel("Normalized Scattering Cross Section")
-plt.title("Comparison of Scattering Cross Sections for Cylinders")
+plt.title("Comparison of Scattering Cross Sections for InfiniteCylinders")
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
