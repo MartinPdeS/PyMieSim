@@ -1,0 +1,207 @@
+
+
+.. _sphx_glr_gallery_experiment_cylinder:
+
+Cylinder
+~~~~~~~~
+Examples demonstrating infinite cylindrical scatterers.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qabs_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qabs_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Qabs vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim, considering multiple wavelengths.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Qsca vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_index_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_index`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Qsca vs Index</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of wavelength for cylindrical scatterers using PyMieSim, considering cylinders with different diameters and refractive indices.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Qsca vs Wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="InfiniteCylinder: Qsca vs wavelength std">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_std_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Qsca vs wavelength std</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_a11_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: A1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_b11_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_b11_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: B1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_diameter_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_diameter`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Coupling vs Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_phioffset_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_phioffset`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Goniometer</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of wavelength for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_wavelength_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_wavelength`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Coupling vs Wavelength</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/experiment/cylinder/cylinder_Qabs_vs_diameter
+   /gallery/experiment/cylinder/cylinder_Qsca_vs_diameter
+   /gallery/experiment/cylinder/cylinder_Qsca_vs_index
+   /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength
+   /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std
+   /gallery/experiment/cylinder/cylinder_a11_vs_diameter
+   /gallery/experiment/cylinder/cylinder_b11_vs_diameter
+   /gallery/experiment/cylinder/cylinder_coupling_vs_diameter
+   /gallery/experiment/cylinder/cylinder_coupling_vs_phioffset
+   /gallery/experiment/cylinder/cylinder_coupling_vs_wavelength
+
