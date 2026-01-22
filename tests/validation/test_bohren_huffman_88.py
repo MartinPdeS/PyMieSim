@@ -8,7 +8,7 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
@@ -36,7 +36,7 @@ def test_validation():
         NA=NA,
     )
 
-    scatterer = Cylinder(
+    scatterer = InfiniteCylinder(
         diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
     )
 

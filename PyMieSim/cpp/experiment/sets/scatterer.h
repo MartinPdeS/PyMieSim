@@ -108,15 +108,15 @@ public:
 };
 
 
-// Cylinder class inheriting from BaseSet
-class CylinderSet : public ScattererSet {
+// InfiniteCylinder class inheriting from BaseSet
+class InfiniteCylinderSet : public ScattererSet {
 public:
     std::vector<double> diameter;
     ScattererProperties property;
     MediumProperties medium_property;
 
-    CylinderSet() = default;
-    CylinderSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+    InfiniteCylinderSet() = default;
+    InfiniteCylinderSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
         : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {this->update_shape();}
 
@@ -142,8 +142,8 @@ public:
             throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
     }
 
-    Cylinder get_scatterer_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const {
-        return Cylinder(
+    InfiniteCylinder get_scatterer_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const {
+        return InfiniteCylinder(
             this->diameter[index],
             this->property.get(index, source->wavelength_index),
             this->medium_property.get(index, source->wavelength_index),
@@ -152,20 +152,20 @@ public:
     }
 
     std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const override {
-        Cylinder scatterer(
+        InfiniteCylinder scatterer(
             this->diameter[index],
             this->property.get(index, source->wavelength_index),
             this->medium_property.get(index, source->wavelength_index),
             source
         );
 
-        return std::make_unique<Cylinder>(scatterer);
+        return std::make_unique<InfiniteCylinder>(scatterer);
     }
 
-    Cylinder get_scatterer_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const {
+    InfiniteCylinder get_scatterer_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
-        Cylinder scatterer(
+        InfiniteCylinder scatterer(
             diameter[indices[0]],
             property.get(indices[1], source->wavelength_index),
             medium_property.get(indices[2], source->wavelength_index),
@@ -181,7 +181,7 @@ public:
     std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const override {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
-        Cylinder scatterer = Cylinder(
+        InfiniteCylinder scatterer = InfiniteCylinder(
             diameter[indices[0]],
             property.get(indices[1], source->wavelength_index),
             medium_property.get(indices[2], source->wavelength_index),
@@ -190,7 +190,7 @@ public:
 
         scatterer.indices = indices;
 
-        return std::make_unique<Cylinder>(scatterer);
+        return std::make_unique<InfiniteCylinder>(scatterer);
     }
 };
 

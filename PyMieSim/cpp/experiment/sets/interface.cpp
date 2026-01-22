@@ -72,7 +72,7 @@ void register_sets(py::module& module) {
 
 
     // Binding for CYLINDER::Set
-    py::class_<CylinderSet, ScattererSet, std::shared_ptr<CylinderSet>>(module, "CylinderSet")
+    py::class_<InfiniteCylinderSet, ScattererSet, std::shared_ptr<InfiniteCylinderSet>>(module, "InfiniteCylinderSet")
         .def(
             py::init(
                 [ureg](
@@ -86,7 +86,7 @@ void register_sets(py::module& module) {
                     units_length.attr("check")(diameter);
                     std::vector<double> diameter_value = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
 
-                    return std::make_shared<CylinderSet>(
+                    return std::make_shared<InfiniteCylinderSet>(
                         diameter_value,
                         refractive_index,
                         medium_refractive_index,

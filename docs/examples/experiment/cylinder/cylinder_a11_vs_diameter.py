@@ -1,6 +1,6 @@
 """
-Cylinder: A1 Scattering Coefficient
-===================================
+InfiniteCylinder: A1 Scattering Coefficient
+===========================================
 
 This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.
 """
@@ -10,7 +10,7 @@ This example demonstrates how to compute and visualize the A1 scattering coeffic
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
@@ -21,7 +21,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=np.linspace(100, 10000, 800)
     * ureg.nanometer,  # Diameters ranging from 100 nm to 10000 nm
     refractive_index=1.4 * ureg.RIU,  # Refractive index of the cylinder

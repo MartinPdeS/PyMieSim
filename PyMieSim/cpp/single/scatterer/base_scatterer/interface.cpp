@@ -530,7 +530,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 std::vector<double> y_values = y.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
                 std::vector<double> z_values = z.attr("to")(ureg.attr("meter")).attr("magnitude").cast<std::vector<double>>();
 
-                std::vector<complex128> field = self.compute_nearfields(x_values, y_values, z_values, field_type);
+                std::vector<complex128> field = self.compute_total_nearfields(x_values, y_values, z_values, field_type);
 
                 return vector_move_from_numpy(field, {field.size()}) * ureg.attr("volt/meter");
             },
@@ -671,7 +671,7 @@ void register_base_scatterer(pybind11::module_& module) {
             "compute_nearfields_structured",
             [ureg](BaseScatterer& self, const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type)
             {
-                auto [field_values, field_x, field_y, field_z, x_coords, y_coords, z_coords] = self.compute_nearfields_structured(x, y, z, field_type);
+                auto [field_values, field_x, field_y, field_z, x_coords, y_coords, z_coords] = self.compute_total_nearfields_structured(x, y, z, field_type);
 
                 return std::make_tuple(
                     vector_move_from_numpy(field_values, {x.size(), y.size(), z.size()}),

@@ -1,6 +1,6 @@
 """
-Cylinder: Coupling vs Diameter
-==============================
+InfiniteCylinder: Coupling vs Diameter
+======================================
 
 This example demonstrates how to compute and visualize the coupling efficiency as a function of diameter for cylindrical scatterers using PyMieSim.
 """
@@ -11,7 +11,7 @@ import numpy as np
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
@@ -22,7 +22,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Sphere(
+scatterer = InfiniteCylinder(
     diameter=np.linspace(100, 300, 200) * ureg.nanometer,  # Diameters ranging from 100 nm to 3000 nm
     refractive_index=[1.4] * ureg.RIU,  # Material of the cylinder
     medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium

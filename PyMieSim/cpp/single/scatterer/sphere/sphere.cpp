@@ -736,7 +736,7 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
 
 
 std::vector<complex128>
-Sphere::compute_nearfields(
+Sphere::compute_total_nearfields(
     const std::vector<double>& x,
     const std::vector<double>& y,
     const std::vector<double>& z,
@@ -1041,7 +1041,7 @@ Sphere::compute_scattered_nearfields(
     const complex128 E0y = jones_vector[1] * this->source->amplitude;
 
     // Total field from your existing routine
-    const std::vector<complex128> total_values = this->compute_nearfields(x, y, z, field_type);
+    const std::vector<complex128> total_values = this->compute_total_nearfields(x, y, z, field_type);
 
     if (field_type != "|E|") {
 
@@ -1084,9 +1084,9 @@ Sphere::compute_scattered_nearfields(
     }
 
     // Correct scattered magnitude: |E_total - E_inc|
-    const std::vector<complex128> total_x = this->compute_nearfields(x, y, z, "Ex");
-    const std::vector<complex128> total_y = this->compute_nearfields(x, y, z, "Ey");
-    const std::vector<complex128> total_z = this->compute_nearfields(x, y, z, "Ez");
+    const std::vector<complex128> total_x = this->compute_total_nearfields(x, y, z, "Ex");
+    const std::vector<complex128> total_y = this->compute_total_nearfields(x, y, z, "Ey");
+    const std::vector<complex128> total_z = this->compute_total_nearfields(x, y, z, "Ez");
 
     for (std::size_t i = 0; i < number_of_points; ++i) {
 

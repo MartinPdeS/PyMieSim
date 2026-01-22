@@ -7,11 +7,11 @@ import pandas as pd
 from pydantic.dataclasses import dataclass
 
 from PyMieSim.binary.interface_experiment import SETUP
-from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
+from PyMieSim.experiment.scatterer import Sphere, InfiniteCylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-from PyMieSim.binary.interface_experiment import CoherentModeSet, PhotodiodeSet
+from PyMieSim.binary.interface_experiment import PhotodiodeSet
 import PyMieSim
 
 
@@ -34,7 +34,7 @@ class Setup(SETUP):
 
     Attributes
     ----------
-    scatterer : Union[Sphere, Cylinder, CoreShell]
+    scatterer : Union[Sphere, InfiniteCylinder, CoreShell]
         Configuration for the scatterer in the experiment. Defines the physical properties of the particle being studied.
     source : Union[Gaussian, PlaneWave]
         Configuration for the light source. Specifies the characteristics of the light (e.g., wavelength, polarization) illuminating the scatterer.
@@ -47,7 +47,7 @@ class Setup(SETUP):
 
     def __init__(
         self,
-        scatterer: Union[Sphere, Cylinder, CoreShell],
+        scatterer: Union[Sphere, InfiniteCylinder, CoreShell],
         source: Union[Gaussian, PlaneWave],
         detector: Optional[Union[Photodiode, CoherentMode]] = EmptyDetector(),
     ):

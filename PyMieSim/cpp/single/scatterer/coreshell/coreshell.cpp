@@ -213,8 +213,4 @@ void CoreShell::compute_cn_dn(size_t) {
     throw std::runtime_error("No implementation of cn and dn exists yet!");
 }
 
-std::vector<complex128> CoreShell::compute_nearfields(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::string&) {
-    throw std::runtime_error("Near-field computation is not implemented for CoreShell scatterers.");
-}
-
 // -

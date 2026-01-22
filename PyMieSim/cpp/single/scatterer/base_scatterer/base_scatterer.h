@@ -276,7 +276,7 @@ public:
      *       implementation of cn/dn coefficients for infinite cylinders.
      */
     virtual std::vector<complex128>
-    compute_nearfields(
+    compute_total_nearfields(
         const std::vector<double>& x,
         const std::vector<double>& y,
         const std::vector<double>& z,
@@ -335,7 +335,7 @@ public:
      * @throws std::invalid_argument If field_type is not recognized.
      */
     std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>, std::vector<double>>
-    compute_nearfields_structured(
+    compute_total_nearfields_structured(
         const std::vector<double>& x_range,
         const std::vector<double>& y_range,
         const std::vector<double>& z_range,

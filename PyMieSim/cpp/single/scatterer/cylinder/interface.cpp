@@ -8,8 +8,8 @@ namespace py = pybind11;
 void register_cylinder(py::module_& module) {
     py::object ureg = get_shared_ureg();
 
-    // Binding for Cylinder class
-    py::class_<Cylinder, BaseScatterer, std::shared_ptr<Cylinder>>(module, "Cylinder")
+    // Binding for InfiniteCylinder class
+    py::class_<InfiniteCylinder, BaseScatterer, std::shared_ptr<InfiniteCylinder>>(module, "InfiniteCylinder")
         .def(
             py::init([ureg](
                 py::object diameter,
@@ -31,7 +31,7 @@ void register_cylinder(py::module_& module) {
 
                 double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("refractive_index_unit")).attr("magnitude").cast<double>();
 
-                return std::make_shared<Cylinder>(
+                return std::make_shared<InfiniteCylinder>(
                     diameter_meter,
                     refractive_index_value,
                     medium_refractive_index_value,
@@ -61,17 +61,17 @@ void register_cylinder(py::module_& module) {
         )
         .def_readonly(
             "source",
-            &Cylinder::source,
+            &InfiniteCylinder::source,
             "Source of the cylinder."
         )
         .def_readonly(
             "property_names",
-            &Cylinder::property_names,
+            &InfiniteCylinder::property_names,
             "Property names of the cylinder."
         )
         .def_property_readonly(
             "diameter",
-            [&](const Cylinder &self) {
+            [&](const InfiniteCylinder &self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.diameter) * ureg.attr("meter")).attr("to_compact")();
             },
@@ -79,12 +79,12 @@ void register_cylinder(py::module_& module) {
         )
         .def(
             "print_properties",
-            &Cylinder::print_properties,
+            &InfiniteCylinder::print_properties,
             "Prints the properties of the cylinder."
         )
         .def_property_readonly(
             "refractive_index",
-            [ureg](const Cylinder &self) {
+            [ureg](const InfiniteCylinder &self) {
                 py::object ureg = get_shared_ureg();
 
                 py::object magnitude = py::cast(self.refractive_index);
@@ -95,7 +95,7 @@ void register_cylinder(py::module_& module) {
         )
         .def_property_readonly(
             "medium_refractive_index",
-            [ureg](const Cylinder &self) {
+            [ureg](const InfiniteCylinder &self) {
                 py::object ureg = get_shared_ureg();
                 py::object magnitude = py::cast(self.medium_refractive_index);
 
@@ -105,15 +105,15 @@ void register_cylinder(py::module_& module) {
         )
         .def_property_readonly(
             "radius",
-            [&](const Cylinder &self) {
+            [&](const InfiniteCylinder &self) {
                 py::object ureg = get_shared_ureg();
                 return (py::float_(self.diameter / 2.0) * ureg.attr("meter")).attr("to_compact")();
             },
             "Radius of the cylinder."
         )
         .def_property("a1n",
-            [ureg](Cylinder& self) {return vector_as_numpy_view(self, self.a1n);},
-            [ureg](Cylinder& self,
+            [ureg](InfiniteCylinder& self) {return vector_as_numpy_view(self, self.a1n);},
+            [ureg](InfiniteCylinder& self,
                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.a1n, arr);
             },
@@ -137,8 +137,8 @@ void register_cylinder(py::module_& module) {
             )pbdoc"
         )
         .def_property("b1n",
-            [ureg](Cylinder& self) {return vector_as_numpy_view(self, self.b1n);},
-            [ureg](Cylinder& self,
+            [ureg](InfiniteCylinder& self) {return vector_as_numpy_view(self, self.b1n);},
+            [ureg](InfiniteCylinder& self,
                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.b1n, arr);
             },
@@ -162,8 +162,8 @@ void register_cylinder(py::module_& module) {
             )pbdoc"
         )
         .def_property("a2n",
-            [ureg](Cylinder& self) {return vector_as_numpy_view(self, self.a2n);},
-            [ureg](Cylinder& self,
+            [ureg](InfiniteCylinder& self) {return vector_as_numpy_view(self, self.a2n);},
+            [ureg](InfiniteCylinder& self,
                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.a2n, arr);
             },
@@ -187,8 +187,8 @@ void register_cylinder(py::module_& module) {
             )pbdoc"
         )
         .def_property("b2n",
-            [ureg](Cylinder& self) {return vector_as_numpy_view(self, self.b2n);},
-            [ureg](Cylinder& self,
+            [ureg](InfiniteCylinder& self) {return vector_as_numpy_view(self, self.b2n);},
+            [ureg](InfiniteCylinder& self,
                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.b2n, arr);
             },

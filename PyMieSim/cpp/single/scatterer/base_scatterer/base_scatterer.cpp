@@ -224,7 +224,7 @@ BaseScatterer::compute_full_structured_spf(const size_t sampling, const double r
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>, std::vector<double>>
-BaseScatterer::compute_nearfields_structured(
+BaseScatterer::compute_total_nearfields_structured(
     const std::vector<double>& x_range,
     const std::vector<double>& y_range,
     const std::vector<double>& z_range,
@@ -252,12 +252,12 @@ BaseScatterer::compute_nearfields_structured(
 
 
     // Compute the requested field component using the existing method
-    std::vector<complex128> field_values = this->compute_nearfields(x_coords, y_coords, z_coords, field_type);
+    std::vector<complex128> field_values = this->compute_total_nearfields(x_coords, y_coords, z_coords, field_type);
 
     // Compute all individual field components (Ex, Ey, Ez) for comprehensive analysis
-    std::vector<complex128> field_x_components = this->compute_nearfields(x_coords, y_coords, z_coords, "Ex");
-    std::vector<complex128> field_y_components = this->compute_nearfields(x_coords, y_coords, z_coords, "Ey");
-    std::vector<complex128> field_z_components = this->compute_nearfields(x_coords, y_coords, z_coords, "Ez");
+    std::vector<complex128> field_x_components = this->compute_total_nearfields(x_coords, y_coords, z_coords, "Ex");
+    std::vector<complex128> field_y_components = this->compute_total_nearfields(x_coords, y_coords, z_coords, "Ey");
+    std::vector<complex128> field_z_components = this->compute_total_nearfields(x_coords, y_coords, z_coords, "Ez");
 
     return std::make_tuple(
         std::move(field_values),

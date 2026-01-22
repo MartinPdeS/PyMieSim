@@ -7,7 +7,7 @@ from PyOptik import Material
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment import Setup
 
@@ -16,7 +16,7 @@ properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
 medium_properties = [Material.water, 1.1 * ureg.RIU]
 
 # Measures to be tested
-measures = Cylinder.available_measure_list
+measures = InfiniteCylinder.available_measure_list
 
 gaussian_source = Gaussian(
     wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
@@ -46,7 +46,7 @@ sources = [gaussian_source, planewave_source]
 @pytest.mark.parametrize("measure", measures)
 def test_measure(measure, source, medium_refractive_index, refractive_index):
     # Configure the cylindrical scatterer
-    scatterer = Cylinder(
+    scatterer = InfiniteCylinder(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
         medium_refractive_index=medium_refractive_index,

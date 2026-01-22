@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from PyMieSim.units import ureg
 
-from PyMieSim.single.scatterer import Cylinder
+from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import SystemPlotter
@@ -25,7 +25,7 @@ def test_plot_system(mock_show):
         NA=0.3 * ureg.AU,  # Numerical Aperture
     )
 
-    scatterer = Cylinder(
+    scatterer = InfiniteCylinder(
         diameter=780 * ureg.nanometer,  # 7.8 micrometers diameter
         source=source,
         medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium

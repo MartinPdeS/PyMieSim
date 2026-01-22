@@ -5,7 +5,7 @@
 using complex128 = std::complex<double>;
 
 
-class Cylinder: public BaseScatterer
+class InfiniteCylinder: public BaseScatterer
 {
     public:
         double diameter;
@@ -24,14 +24,14 @@ class Cylinder: public BaseScatterer
         };
 
         /**
-         * @brief Constructs a Cylinder object.
+         * @brief Constructs a InfiniteCylinder object.
          * @param diameter The diameter of the cylinder.
          * @param refractive_index The refractive index of the cylinder.
          * @param medium_refractive_index The refractive index of the medium.
          * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients.
          */
-        Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, std::shared_ptr<BaseSource> source, size_t max_order = 0);
+        InfiniteCylinder(double diameter, complex128 refractive_index, double medium_refractive_index, std::shared_ptr<BaseSource> source, size_t max_order = 0);
 
         /**
          * @brief Computes the size parameter for the sphere.
@@ -116,12 +116,15 @@ class Cylinder: public BaseScatterer
          * @param field_type The type of field to compute (e.g., "E", "H").
          * @return A vector of complex128 values representing the near-field electromagnetic fields.
          */
-        std::vector<complex128> compute_nearfields(
+        std::vector<complex128> compute_total_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
             const std::string& field_type
-        ) override;
+        ) override {
+            throw std::logic_error{"Function not implemented!"};
+            return std::vector<complex128>{};
+        };
 
         /**
          * @brief Computes scattered near-field electromagnetic fields using an and bn coefficients.

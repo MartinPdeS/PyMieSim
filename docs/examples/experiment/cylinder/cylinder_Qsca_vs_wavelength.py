@@ -1,6 +1,6 @@
 """
-Cylinder: Qsca vs Wavelength
-============================
+InfiniteCylinder: Qsca vs Wavelength
+====================================
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of wavelength for cylindrical scatterers using PyMieSim, considering cylinders with different diameters and refractive indices.
 """
@@ -10,7 +10,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 
@@ -22,7 +22,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=[200, 150] * ureg.nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
     refractive_index=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
     medium_refractive_index=[1] * ureg.RIU,  # Refractive index of the surrounding medium

@@ -4,7 +4,7 @@
 import pytest
 from PyMieSim.units import ureg
 
-from PyMieSim.single.scatterer import Cylinder
+from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 
@@ -59,7 +59,7 @@ def test_cylinder_coupling(refractive_index, medium_refractive_index, source):
         NA=0.3 * ureg.AU,
     )
 
-    scatterer = Cylinder(
+    scatterer = InfiniteCylinder(
         diameter=100 * ureg.nanometer,
         source=source,
         medium_refractive_index=medium_refractive_index,
@@ -76,7 +76,7 @@ def test_cylinder_coupling(refractive_index, medium_refractive_index, source):
 )
 @pytest.mark.parametrize("attribute", attributes)
 def test_cylinder_attributes(attribute, refractive_index, medium_refractive_index, source):
-    scatterer = Cylinder(
+    scatterer = InfiniteCylinder(
         diameter=100 * ureg.nanometer,
         source=source,
         medium_refractive_index=medium_refractive_index,

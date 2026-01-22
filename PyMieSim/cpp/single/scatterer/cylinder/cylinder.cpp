@@ -1,7 +1,7 @@
 #include "./cylinder.h"
 
 // ---------------------- Constructors ---------------------------------------
-Cylinder::Cylinder(double _diameter, complex128 _refractive_index, double _medium_refractive_index, std::shared_ptr<BaseSource> _source, size_t _max_order) :
+InfiniteCylinder::InfiniteCylinder(double _diameter, complex128 _refractive_index, double _medium_refractive_index, std::shared_ptr<BaseSource> _source, size_t _max_order) :
 BaseScatterer(_max_order, std::move(_source), _medium_refractive_index), diameter(_diameter), refractive_index(_refractive_index)
 {
     this->compute_cross_section();
@@ -12,16 +12,16 @@ BaseScatterer(_max_order, std::move(_source), _medium_refractive_index), diamete
 
 // ---------------------- Methods ---------------------------------------
 
-void Cylinder::compute_size_parameter() {
+void InfiniteCylinder::compute_size_parameter() {
     this->size_parameter = source->wavenumber_vacuum * this->diameter / 2;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
 
-void Cylinder::compute_cross_section() {
+void InfiniteCylinder::compute_cross_section() {
     this->cross_section = this->diameter;
 }
 
-double Cylinder::get_Qsca() const {
+double InfiniteCylinder::get_Qsca() const {
     complex128 Qsca1=0, Qsca2=0;
 
     for(size_t order = 1; order < max_order; order++)
@@ -36,7 +36,7 @@ double Cylinder::get_Qsca() const {
     return process_polarization(Qsca1, Qsca2);
 }
 
-double Cylinder::get_Qext() const {
+double InfiniteCylinder::get_Qext() const {
     complex128 Qext1 = 0, Qext2 = 0;
 
     for(size_t it = 1; it < max_order; ++it){
@@ -50,11 +50,11 @@ double Cylinder::get_Qext() const {
     return this->process_polarization(Qext1, Qext2);
 }
 
-double Cylinder::get_g() const {
+double InfiniteCylinder::get_g() const {
     return this->get_g_with_farfields(1000);
 }
 
-double Cylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
+double InfiniteCylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
     std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
     complex128
         Ex = jones_vector[0],
@@ -63,7 +63,7 @@ double Cylinder::process_polarization(const complex128 value_0, const complex128
     return std::abs( value_1 ) * pow(std::abs(Ex), 2) + std::abs( value_0 ) * pow(std::abs(Ey), 2);
 }
 
-void Cylinder::compute_an_bn(const size_t max_order) {
+void InfiniteCylinder::compute_an_bn(const size_t max_order) {
     // Resize vectors to hold Mie coefficients for the specified maximum order
     this->a1n.resize(max_order);
     this->b1n.resize(max_order);
@@ -107,7 +107,7 @@ void Cylinder::compute_an_bn(const size_t max_order) {
     }
 }
 
-void Cylinder::compute_cn_dn(const size_t max_order) {
+void InfiniteCylinder::compute_cn_dn(const size_t max_order) {
     // Resize vectors to hold internal field coefficients for the specified maximum order
     this->c1n.resize(max_order);
     this->d1n.resize(max_order);
@@ -157,7 +157,7 @@ void Cylinder::compute_cn_dn(const size_t max_order) {
 
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-Cylinder::compute_s1s2(const std::vector<double> &phi) const{
+InfiniteCylinder::compute_s1s2(const std::vector<double> &phi) const{
     std::vector<complex128> T1(phi.size()), T2(phi.size());
 
     for (size_t i = 0; i < phi.size(); i++){
@@ -174,7 +174,7 @@ Cylinder::compute_s1s2(const std::vector<double> &phi) const{
 
 
 std::vector<complex128>
-Cylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
+InfiniteCylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
     std::vector<complex128> Dn(nmx, 0.0);
 
     for (double n = nmx - 1; n > 0; n--)
@@ -182,61 +182,3 @@ Cylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
 
     return Dn;
 }
-
-std::vector<complex128> Cylinder::compute_nearfields(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::string&) {
-    throw std::runtime_error("Near-field computation is not implemented for Cylinder scatterers.");
-}
-
-// std::vector<complex128>
-// Cylinder::compute_near_field(const std::vector<double>& x,
-//                              const std::vector<double>& y,
-//                              const std::string& field_type)
-// {
-//     if (cn.empty() || dn.empty())
-//         throw std::runtime_error("Near-field computation requires cn and dn coefficients.");
-
-//     const size_t n_points = x.size();
-//     if (n_points != y.size())
-//         throw std::invalid_argument("x and y vectors must have the same length");
-
-//     std::vector<complex128> field_values(n_points);
-//     const double k = source->wavenumber_vacuum * medium_refractive_index;
-//     const complex128 i(0.0, 1.0);
-
-//     for (size_t point_idx = 0; point_idx < n_points; ++point_idx) {
-//         const double x_pos = x[point_idx];
-//         const double y_pos = y[point_idx];
-
-//         const double r = std::hypot(x_pos, y_pos);
-//         const double phi = std::atan2(y_pos, x_pos);
-//         const bool is_inside = (r < this->radius);
-
-//         complex128 Ez = 0.0;
-
-//         for (int n = -static_cast<int>(max_order); n <= static_cast<int>(max_order); ++n) {
-//             size_t idx = std::abs(n);
-//             complex128 coeff = is_inside ? dn[idx] : bn[idx];
-
-//             double arg = k * r;
-//             complex128 radial_func;
-
-//             if (is_inside)
-//                 radial_func = cyl_bessel_j(n, arg);
-//             else
-//                 radial_func = cyl_hankel_1(n, arg);
-
-//             complex128 exp_term = std::exp(i * static_cast<double>(n) * phi);
-//             Ez += coeff * radial_func * exp_term;
-//         }
-
-//         if (field_type == "Ez") {
-//             field_values[point_idx] = Ez;
-//         } else if (field_type == "|E|") {
-//             field_values[point_idx] = std::abs(Ez); // scalar Ez only, no transverse components in this simplified TM case
-//         } else {
-//             throw std::invalid_argument("Unsupported field_type for cylinder: must be Ez or |E| (TM mode only in current implementation)");
-//         }
-//     }
-
-//     return field_values;
-// }

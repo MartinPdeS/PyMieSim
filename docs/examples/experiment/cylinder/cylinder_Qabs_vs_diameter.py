@@ -1,6 +1,6 @@
 """
-Cylinder: Qabs vs Diameter
-==========================
+InfiniteCylinder: Qabs vs Diameter
+==================================
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.
 """
@@ -10,7 +10,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
@@ -22,7 +22,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=np.linspace(1, 800, 300) * ureg.nanometer,  # Diameters ranging from 1 nm to 800 nm
     refractive_index=[
         Material.silver,

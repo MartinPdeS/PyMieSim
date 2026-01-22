@@ -124,12 +124,15 @@ class CoreShell: public BaseScatterer
          * The internal fields (r < radius) are computed using cn and dn coefficients, while
          * external fields (r > radius) use an and bn coefficients.
          */
-        std::vector<complex128> compute_nearfields(
+        std::vector<complex128> compute_total_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
             const std::string& field_type
-        ) override;
+        ) override {
+            throw std::logic_error{"Function not implemented!"};
+            return std::vector<complex128>{};
+        };
 
         std::vector<complex128> compute_scattered_nearfields(
             const std::vector<double>& x,

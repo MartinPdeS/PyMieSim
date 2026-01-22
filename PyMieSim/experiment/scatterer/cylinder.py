@@ -5,12 +5,12 @@ from typing import List
 from PyOptik.material.base_class import BaseMaterial
 
 from PyMieSim.units import Length, RefractiveIndex
-from PyMieSim.binary.interface_experiment import CylinderSet
+from PyMieSim.binary.interface_experiment import InfiniteCylinderSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
 from PyMieSim.experiment.source.base import BaseSource
 from PyMieSim.experiment.utils import Sequential
 
-class Cylinder(BaseScatterer, Sequential):
+class InfiniteCylinder(BaseScatterer, Sequential):
     """
     Represents a cylindrical scatterer configuration for PyMieSim simulations.
 
@@ -76,4 +76,4 @@ class Cylinder(BaseScatterer, Sequential):
             refractive_index=refractive_index,
         )
 
-        self.set = CylinderSet(**self.binding_kwargs)
+        self.set = InfiniteCylinderSet(**self.binding_kwargs)

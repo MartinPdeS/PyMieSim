@@ -6,7 +6,7 @@ import pyvista as pv
 
 from MPSPlots.colormaps import blue_black_red
 
-from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
+from PyMieSim.single.scatterer import Sphere, CoreShell, InfiniteCylinder
 from PyMieSim.single.source import Gaussian, PlaneWave
 from PyMieSim.single.detector import Photodiode, CoherentMode, IntegratingSphere
 
@@ -57,7 +57,7 @@ class SystemPlotter:
         # Order matters: more specific types first when you have inheritance.
         self.register(Sphere, self._add_sphere)
         self.register(CoreShell, self._add_sphere)
-        self.register(Cylinder, self._add_cylinder)
+        self.register(InfiniteCylinder, self._add_cylinder)
 
         self.register(Gaussian, self._add_gaussian)
         self.register(PlaneWave, self._add_planewave)
@@ -183,7 +183,7 @@ class SystemPlotter:
         Parameters
         ----------
         obj : Any
-            Cylinder scatterer object (unused, kept for signature uniformity).
+            InfiniteCylinder scatterer object (unused, kept for signature uniformity).
         scene : pyvista.Plotter
             Target plotter.
         color : str or tuple, optional
@@ -191,7 +191,7 @@ class SystemPlotter:
         opacity : float, optional
             Mesh opacity. Defaults to 1.0.
         """
-        shape = pv.Cylinder(
+        shape = pv.InfiniteCylinder(
             center=(0.0, 0.0, 0.0),
             radius=0.1,
             height=2.0,

@@ -1,6 +1,6 @@
 """
-Cylinder: Goniometer
-====================
+InfiniteCylinder: Goniometer
+============================
 
 This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.
 """
@@ -11,7 +11,7 @@ import numpy as np
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
@@ -23,7 +23,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=2000 * ureg.nanometer,  # 2000 nm
     refractive_index=Material.BK7,  # Material of the cylinder
     medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium

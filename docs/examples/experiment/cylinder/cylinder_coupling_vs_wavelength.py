@@ -1,6 +1,6 @@
 """
-Cylinder: Coupling vs Wavelength
-================================
+InfiniteCylinder: Coupling vs Wavelength
+========================================
 
 This example demonstrates how to compute and visualize the coupling efficiency as a function of wavelength for cylindrical scatterers using PyMieSim.
 """
@@ -11,7 +11,7 @@ import numpy as np
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import InfiniteCylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
@@ -24,7 +24,7 @@ source = Gaussian(
     NA=0.2 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=np.linspace(100, 8000, 5)
     * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
     refractive_index=Material.BK7,  # Material of the cylinder
