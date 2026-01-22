@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from __future__ import annotations
-
 from typing import Tuple, Optional, Sequence, Dict, List
 import numpy
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from MPSPlots.colormaps import blue_black_red
-import MPSPlots
+from MPSPlots import helper
 
 from PyMieSim.units import Length
 
@@ -325,7 +323,7 @@ class NearField:
         )
         ax.add_patch(circle)
 
-    @MPSPlots.helper.post_mpl_plot
+    @helper.post_mpl_plot
     def plot(
         self,
         *field_components: str,
@@ -337,8 +335,7 @@ class NearField:
         v_range: Optional[Tuple[Length, Length]] = None,
         extent_scale: float = 2.5,
         colormap: str = blue_black_red,
-        figure_size: tuple = (6, 6),
-        show_scatterer_outline: bool = True,
+        figure_size: tuple = (6, 6)
     ):
         """
         Plot near fields over a specified plane.
@@ -380,27 +377,30 @@ class NearField:
             extent_scale=extent_scale,
         )
 
-        components, parts = self._parse_field_components(field_components)
-        fields = self._compute_fields(list(components), type=type)
+        requested_components, requested_parts = self._parse_field_components(field_components)
+
+        # Compute each physical component only once, but keep duplicates in the request list
+        unique_components = list(dict.fromkeys(requested_components))
+        fields = self._compute_fields(unique_components, type=type)
 
         figure, axes = plt.subplots(
-            figsize=figure_size,
+            figsize=(figure_size[0] * len(field_components), figure_size[1]),
             nrows=1,
-            ncols=len(fields),
+            ncols=len(field_components),
             squeeze=False,
         )
 
-        for component, part, ax in zip(fields.keys(), parts, axes.flatten()):
-            values = fields[component]
+        for requested_component, requested_part, ax in zip(requested_components, requested_parts, axes.flatten()):
+            values = fields[requested_component]
 
-            if part == "real":
+            if requested_part == "real":
                 field_data = values.real.astype(float)
-            elif part == "imag":
+            elif requested_part == "imag":
                 field_data = values.imag.astype(float)
-            elif part == "abs":
+            elif requested_part == "abs":
                 field_data = numpy.abs(values).astype(float)
             else:
-                raise ValueError(f"Unknown field component part: {part}")
+                raise ValueError(f"Unknown field component part: {requested_part}")
 
             im = ax.pcolormesh(
                 self.u,
@@ -410,15 +410,16 @@ class NearField:
                 shading="auto",
             )
 
-            if show_scatterer_outline:
-                self._add_scatterer_outline_on_plane(ax)
+            self._add_scatterer_outline_on_plane(ax)
 
-            plt.colorbar(im, ax=ax)
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("right", size="3%", pad=0.05)
+            plt.colorbar(im, cax=cax)
 
             ax.set_aspect("equal")
             ax.set_xlabel("plane u")
             ax.set_ylabel("plane v")
-            ax.set_title(f"{type} {component} {part}")
+            ax.set_title(f"{type} {requested_component} {requested_part}")
             ax.grid(visible=False, which="both", axis="both")
 
         return figure

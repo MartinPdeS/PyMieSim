@@ -480,7 +480,6 @@ Sphere::compute_total_nearfields(
     return field_values;
 }
 
-
 std::vector<complex128>
 Sphere::compute_scattered_nearfields(
     const std::vector<double>& x,
@@ -489,6 +488,8 @@ Sphere::compute_scattered_nearfields(
     const std::string& field_type
 )
 {
+    this->compute_an_bn(this->max_order); // or whatever computes an,bn
+
     if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" && field_type != "|E|") {
         throw std::invalid_argument("Invalid field_type. Must be one of: Ex, Ey, Ez, |E|");
     }
@@ -498,97 +499,172 @@ Sphere::compute_scattered_nearfields(
         throw std::invalid_argument("x, y, z vectors must have the same length");
     }
 
-    std::vector<complex128> scattered_values(number_of_points);
+    std::vector<complex128> field_values(number_of_points);
 
     const double radius_particle = 0.5 * this->diameter;
 
     const double medium_refractive_index = this->medium_refractive_index;
-
     const double k0 = this->source->wavenumber_vacuum;
     const double k_medium = k0 * medium_refractive_index;
+
+    const complex128 i_unit(0.0, 1.0);
 
     const std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
     const complex128 E0x = jones_vector[0] * this->source->amplitude;
     const complex128 E0y = jones_vector[1] * this->source->amplitude;
 
-    // Total field from your existing routine
-    const std::vector<complex128> total_values = this->compute_total_nearfields(x, y, z, field_type);
+    std::function<double(double)>
+    clamp_m1_p1_local = [](double value) -> double {
+        if (value < -1.0) return -1.0;
+        if (value >  1.0) return  1.0;
+        return value;
+    };
 
-    if (field_type != "|E|") {
-
-        for (std::size_t i = 0; i < number_of_points; ++i) {
-
-            const double x_position = x[i];
-            const double y_position = y[i];
-            const double z_position = z[i];
-
-            const double r_cartesian = std::sqrt(
-                x_position * x_position + y_position * y_position + z_position * z_position
-            );
-
-            const bool is_inside = (r_cartesian < radius_particle);
-
-            if (is_inside) {
-                // By definition, "scattered" field is typically only defined outside.
-                // Keep it explicit.
-                scattered_values[i] = complex128(0.0, 0.0);
-                continue;
-            }
-
-            // Incident plane wave assumed to propagate along +z, consistent with your BH expansion
-            const complex128 phase = std::exp(complex128(0.0, 1.0) * complex128(k_medium * z_position, 0.0));
-
-            const complex128 Ex_inc = E0x * phase;
-            const complex128 Ey_inc = E0y * phase;
-            const complex128 Ez_inc = complex128(0.0, 0.0);
-
-            if (field_type == "Ex") {
-                scattered_values[i] = total_values[i] - Ex_inc;
-            } else if (field_type == "Ey") {
-                scattered_values[i] = total_values[i] - Ey_inc;
-            } else {
-                scattered_values[i] = total_values[i] - Ez_inc; // Ez_inc = 0
-            }
+    std::function<complex128(std::size_t)>
+    i_to_n = [&](std::size_t n) -> complex128 {
+        switch (n & 3u) {
+            case 0u: return complex128( 1.0,  0.0);
+            case 1u: return complex128( 0.0,  1.0);
+            case 2u: return complex128(-1.0,  0.0);
+            default: return complex128( 0.0, -1.0);
         }
+    };
 
-        return scattered_values;
-    }
+    std::function<std::tuple<complex128, complex128, complex128>(std::size_t, const complex128&)>
+    compute_hn_and_dpsi_over_kr =
+        [&](std::size_t n, const complex128& kr)
+        -> std::tuple<complex128, complex128, complex128>
+    {
+        const double nd = static_cast<double>(n);
+        const double nm1d = static_cast<double>(n - 1);
 
-    // Correct scattered magnitude: |E_total - E_inc|
-    const std::vector<complex128> total_x = this->compute_total_nearfields(x, y, z, "Ex");
-    const std::vector<complex128> total_y = this->compute_total_nearfields(x, y, z, "Ey");
-    const std::vector<complex128> total_z = this->compute_total_nearfields(x, y, z, "Ez");
+        const complex128 hn   = Spherical_::H1n(nd,  kr);
+        const complex128 hnm1 = (n == 1) ? Spherical_::H1n(0.0, kr) : Spherical_::H1n(nm1d, kr);
 
-    for (std::size_t i = 0; i < number_of_points; ++i) {
+        const complex128 dpsi = kr * hnm1 - nd * hn;
 
-        const double x_position = x[i];
-        const double y_position = y[i];
-        const double z_position = z[i];
+        const complex128 h_over_kr = hn / kr;
+        const complex128 dpsi_over_kr = dpsi / kr;
+
+        return {hn, h_over_kr, dpsi_over_kr};
+    };
+
+    // If field_type == "|E|" we need all components to build magnitude
+    const bool need_vector_magnitude = (field_type == "|E|");
+
+    for (std::size_t point_index = 0; point_index < number_of_points; ++point_index) {
+
+        const double x_position = x[point_index];
+        const double y_position = y[point_index];
+        const double z_position = z[point_index];
 
         const double r_cartesian = std::sqrt(
             x_position * x_position + y_position * y_position + z_position * z_position
         );
 
-        const bool is_inside = (r_cartesian < radius_particle);
-
-        if (is_inside) {
-            scattered_values[i] = complex128(0.0, 0.0);
+        if (r_cartesian < 1e-15) {
+            field_values[point_index] = complex128(0.0, 0.0);
             continue;
         }
 
-        const complex128 phase = std::exp(complex128(0.0, 1.0) * complex128(k_medium * z_position, 0.0));
+        const bool is_inside = (r_cartesian < radius_particle);
+        if (is_inside) {
+            field_values[point_index] = complex128(0.0, 0.0);
+            continue;
+        }
 
-        const complex128 Ex_inc = E0x * phase;
-        const complex128 Ey_inc = E0y * phase;
-        const complex128 Ez_inc = complex128(0.0, 0.0);
+        const double mu_raw = z_position / r_cartesian;
+        const double mu = clamp_m1_p1_local(mu_raw);
 
-        const complex128 dx = total_x[i] - Ex_inc;
-        const complex128 dy = total_y[i] - Ey_inc;
-        const complex128 dz = total_z[i] - Ez_inc;
+        const double theta = std::acos(mu);
+        const double phi = std::atan2(y_position, x_position);
 
-        const double mag = std::sqrt(std::norm(dx) + std::norm(dy) + std::norm(dz));
-        scattered_values[i] = complex128(mag, 0.0);
+        const double sin_theta = std::sin(theta);
+        const double cos_theta = std::cos(theta);
+        const double sin_phi   = std::sin(phi);
+        const double cos_phi   = std::cos(phi);
+
+        const complex128 kr = complex128(k_medium * r_cartesian, 0.0);
+
+        auto [pi_vector, tau_vector] = this->get_pi_tau(mu, this->max_order);
+
+        complex128 Er_x(0.0, 0.0), Etheta_x(0.0, 0.0), Ephi_x(0.0, 0.0);
+        complex128 Er_y(0.0, 0.0), Etheta_y(0.0, 0.0), Ephi_y(0.0, 0.0);
+
+        for (std::size_t n = 1; n <= this->max_order; ++n) {
+
+            const double nd = static_cast<double>(n);
+
+            const complex128 En = i_to_n(n) * (2.0 * nd + 1.0) / (nd * (nd + 1.0));
+
+            const complex128 pi_n  = pi_vector[n - 1];
+            const complex128 tau_n = tau_vector[n - 1];
+            const complex128 Pn1 = pi_n * complex128(sin_theta, 0.0);
+
+            const complex128 a_n = this->an[n - 1];
+            const complex128 b_n = this->bn[n - 1];
+
+            const complex128 nn1 = complex128(nd * (nd + 1.0), 0.0);
+
+            auto [hn, h_over_kr, dpsi_over_kr] = compute_hn_and_dpsi_over_kr(n, kr);
+
+            // Outgoing (scattered)
+            const complex128 Mo_r_h(0.0, 0.0);
+            const complex128 Mo_t_h = complex128(cos_phi, 0.0) * pi_n  * hn;
+            const complex128 Mo_p_h = complex128(-sin_phi, 0.0) * tau_n * hn;
+
+            const complex128 Me_r_h(0.0, 0.0);
+            const complex128 Me_t_h = complex128(sin_phi, 0.0) * pi_n  * hn;
+            const complex128 Me_p_h = complex128(cos_phi, 0.0) * tau_n * hn;
+
+            const complex128 Ne_r_h = complex128(cos_phi, 0.0) * nn1 * Pn1 * h_over_kr;
+            const complex128 Ne_t_h = complex128(cos_phi, 0.0) * tau_n * dpsi_over_kr;
+            const complex128 Ne_p_h = complex128(-sin_phi, 0.0) * pi_n  * dpsi_over_kr;
+
+            const complex128 No_r_h = complex128(sin_phi, 0.0) * nn1 * Pn1 * h_over_kr;
+            const complex128 No_t_h = complex128(sin_phi, 0.0) * tau_n * dpsi_over_kr;
+            const complex128 No_p_h = complex128(cos_phi, 0.0) * pi_n  * dpsi_over_kr;
+
+            // Scattered x
+            Er_x     += En * ( i_unit * a_n * Ne_r_h - b_n * Mo_r_h );
+            Etheta_x += En * ( i_unit * a_n * Ne_t_h - b_n * Mo_t_h );
+            Ephi_x   += En * ( i_unit * a_n * Ne_p_h - b_n * Mo_p_h );
+
+            // Scattered y
+            Er_y     += En * ( i_unit * a_n * No_r_h - b_n * Me_r_h );
+            Etheta_y += En * ( i_unit * a_n * No_t_h - b_n * Me_t_h );
+            Ephi_y   += En * ( i_unit * a_n * No_p_h - b_n * Me_p_h );
+        }
+
+        // Combine arbitrary incident polarization
+        const complex128 Er     = E0x * Er_x     + E0y * Er_y;
+        const complex128 Etheta = E0x * Etheta_x + E0y * Etheta_y;
+        const complex128 Ephi   = E0x * Ephi_x   + E0y * Ephi_y;
+
+        // Convert spherical to Cartesian
+        const complex128 Ex =
+            Er * (sin_theta * cos_phi)
+            + Etheta * (cos_theta * cos_phi)
+            + Ephi * (-sin_phi);
+
+        const complex128 Ey =
+            Er * (sin_theta * sin_phi)
+            + Etheta * (cos_theta * sin_phi)
+            + Ephi * (cos_phi);
+
+        const complex128 Ez =
+            Er * (cos_theta)
+            + Etheta * (-sin_theta);
+
+        if (!need_vector_magnitude) {
+            if (field_type == "Ex") field_values[point_index] = Ex;
+            else if (field_type == "Ey") field_values[point_index] = Ey;
+            else field_values[point_index] = Ez;
+        } else {
+            const double mag = std::sqrt(std::norm(Ex) + std::norm(Ey) + std::norm(Ez));
+            field_values[point_index] = complex128(mag, 0.0);
+        }
     }
 
-    return scattered_values;
+    return field_values;
 }

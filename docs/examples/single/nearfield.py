@@ -15,13 +15,13 @@ from PyMieSim.single.representations import NearField
 
 source = Gaussian(
     wavelength=300 * ureg.nanometer,
-    polarization=90 * ureg.degree,
+    polarization=0 * ureg.degree,
     optical_power=1 * ureg.watt,
     NA=0.3 * ureg.AU,
 )
 
 scatterer = Sphere(
-    diameter=30 * ureg.nanometer,
+    diameter=400 * ureg.nanometer,
     source=source,
     refractive_index=(1.4 + 0.j) * ureg.RIU,
     medium_refractive_index=1. * ureg.RIU,
@@ -32,10 +32,12 @@ near_field = NearField(
 )
 
 near_field.plot(
-    "|E|:abs",
-    type="scattered",
+    "Ex:real",
+    "Ex:abs",
+    type="total",
     plane_origin=(0.0, 0.0, 0.0),
     plane_normal=(0.0, 1.0, 0.0),
     sampling=400,
-    extent_scale=100,
+    extent_scale=4,
+    tight_layout=True,
 )
