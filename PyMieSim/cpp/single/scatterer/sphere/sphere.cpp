@@ -1,4 +1,5 @@
 #include "./sphere.h"
+#include <functional>
 
 // ---------------------- Constructors ---------------------------------------
 Sphere::Sphere(const double _diameter, const complex128 _refractive_index, const double _medium_refractive_index, std::shared_ptr<BaseSource> _source, size_t _max_order)
