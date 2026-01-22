@@ -14,9 +14,9 @@
 | PyMieSim/single/plottings.py                   |      101 |       22 |       18 |        8 |     74.79% |126, 132->135, 135->139, 146->149, 155->153, 157, 175-176, 194-201, 225, 269-276, 300-333, 410-420, 446 |
 | PyMieSim/single/representations/base.py        |       32 |       22 |        2 |        0 |     29.41% |53-57, 83-105, 131-153 |
 | PyMieSim/single/representations/far\_fields.py |       60 |        2 |        8 |        1 |     95.59% |     78-79 |
-| PyMieSim/single/representations/near\_field.py |      154 |      135 |       44 |        0 |      9.60% |31-34, 51-64, 98-117, 136-145, 175-215, 233-253, 270-279, 288-326, 371-424 |
+| PyMieSim/single/representations/near\_field.py |      156 |      137 |       42 |        0 |      9.60% |29-32, 49-62, 96-115, 134-143, 173-213, 231-251, 268-277, 286-324, 368-425 |
 | PyMieSim/single/representations/stokes.py      |       41 |        2 |        4 |        1 |     93.33% |     77-78 |
-| **TOTAL**                                      |  **937** |  **216** |  **162** |   **19** | **73.70%** |           |
+| **TOTAL**                                      |  **939** |  **218** |  **160** |   **19** | **73.70%** |           |
 
 13 files skipped due to complete coverage.
 
