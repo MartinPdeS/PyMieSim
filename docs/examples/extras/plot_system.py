@@ -14,7 +14,7 @@ This script is intended to be used in conjunction with the Read the Docs documen
 from math import sqrt
 from PyMieSim.units import ureg
 
-from PyMieSim.single.scatterer import Cylinder
+from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single import SystemPlotter
@@ -27,7 +27,7 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=7800 * ureg.nanometer,  # Diameter of 7.8 micrometers
     source=source,  # The Gaussian source defined above
     medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
