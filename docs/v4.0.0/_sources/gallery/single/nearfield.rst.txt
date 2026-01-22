@@ -27,7 +27,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-39
+.. GENERATED FROM PYTHON SOURCE LINES 10-41
 
 .. code-block:: Python
 
@@ -38,33 +38,35 @@ Importing the package: PyMieSim
     from PyMieSim.single.representations import NearField
 
     source = Gaussian(
-        wavelength=1400 * ureg.nanometer,
-        polarization=30 * ureg.degree,
+        wavelength=300 * ureg.nanometer,
+        polarization=90 * ureg.degree,
         optical_power=1 * ureg.watt,
         NA=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
-        diameter=500 * ureg.nanometer,
+        diameter=10 * ureg.nanometer,
         source=source,
-        refractive_index=1.8 * ureg.RIU,
-        medium_refractive_index=1.0 * ureg.RIU,
+        refractive_index=(1.4 + 0.j) * ureg.RIU,
+        medium_refractive_index=1. * ureg.RIU,
     )
 
     near_field = NearField(
         scatterer=scatterer,
-        sampling=200,
-        x_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
-        y_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
-        z=0 * ureg.micrometer,
-        field_components=["Hz"]
     )
 
-    figure = near_field.plot()
+    near_field.plot(
+        "|E|:abs",
+        type="total",
+        plane_origin=(0.0, 0.0, 0.0),
+        plane_normal=(0.0, 1.0, 0.0),
+        sampling=400,
+        extent_scale=8,
+    )
 
 
 .. image-sg:: /gallery/single/images/sphx_glr_nearfield_001.png
-   :alt: Near-field Hz distribution
+   :alt: total |E| abs
    :srcset: /gallery/single/images/sphx_glr_nearfield_001.png
    :class: sphx-glr-single-img
 
@@ -73,16 +75,18 @@ Importing the package: PyMieSim
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/matplotlib/axes/_axes.py:6024: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-      C = np.asanyarray(args[2])
+    Computing total near field component: |E|
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/near_field.py:251: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+      fields[component] = numpy.asarray(values).reshape(self.X.shape)
 
+    <Figure size 600x600 with 2 Axes>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.360 seconds)
+   **Total running time of the script:** (0 minutes 4.310 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfield.py:

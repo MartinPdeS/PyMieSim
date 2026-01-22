@@ -14,26 +14,28 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.single.representations import NearField
 
 source = Gaussian(
-    wavelength=1400 * ureg.nanometer,
-    polarization=30 * ureg.degree,
+    wavelength=300 * ureg.nanometer,
+    polarization=90 * ureg.degree,
     optical_power=1 * ureg.watt,
     NA=0.3 * ureg.AU,
 )
 
 scatterer = Sphere(
-    diameter=500 * ureg.nanometer,
+    diameter=10 * ureg.nanometer,
     source=source,
-    refractive_index=1.8 * ureg.RIU,
-    medium_refractive_index=1.0 * ureg.RIU,
+    refractive_index=(1.4 + 0.j) * ureg.RIU,
+    medium_refractive_index=1. * ureg.RIU,
 )
 
 near_field = NearField(
     scatterer=scatterer,
-    sampling=200,
-    x_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
-    y_range=(-2 * ureg.micrometer, 2 * ureg.micrometer),
-    z=0 * ureg.micrometer,
-    field_components=["Hz"]
 )
 
-figure = near_field.plot()
+near_field.plot(
+    "|E|:abs",
+    type="total",
+    plane_origin=(0.0, 0.0, 0.0),
+    plane_normal=(0.0, 1.0, 0.0),
+    sampling=400,
+    extent_scale=8,
+)

@@ -793,8 +793,130 @@ Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_nearfields">
-<span class="sig-name descname"><span class="pre">compute_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_nearfields" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_an_bn">
+<span class="sig-name descname"><span class="pre">compute_an_bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_an_bn" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients an and bn for the scatterer.
+:param max_order: The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).
+:type max_order: int, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_cn_dn">
+<span class="sig-name descname"><span class="pre">compute_cn_dn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_cn_dn" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients cn and dn for the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_incident_nearfields">
+<span class="sig-name descname"><span class="pre">compute_incident_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_incident_nearfields" title="Link to this definition">#</a></dt>
+<dd><p>Computes incident near-field electromagnetic fields.
+This method calculates the incident electromagnetic fields at specified points
+using the properties of the incident wave.
+:param x: Array of x coordinates of observation points.
+:type x: numpy.ndarray
+:param y: Array of y coordinates of observation points.
+:type y: numpy.ndarray
+:param z: Array of z coordinates of observation points.
+:type z: numpy.ndarray
+:param field_type: Field component type: “Ex”, “Ey”, “Ez”, “<a href="#id1"><span class="problematic" id="id2">|E|</span></a>”
+:type field_type: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method does not depend on scatterer properties and computes fields
+based solely on the incident wave characteristics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_nearfields_structured">
+<span class="sig-name descname"><span class="pre">compute_nearfields_structured</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_nearfields_structured" title="Link to this definition">#</a></dt>
+<dd><p>Computes near-field electromagnetic fields over a structured 3D grid.</p>
+<p>This method efficiently computes electromagnetic fields over a regular 3D grid
+using the multipole expansion with vector spherical harmonics. More efficient
+than point-by-point computation for regular grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates defining the grid.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates defining the grid.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates defining the grid.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id3"><span class="problematic" id="id4">|E|</span></a>”, “<a href="#id5"><span class="problematic" id="id6">|H|</span></a>”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing:
+- Requested field component values (nx . ny . nz) as numpy.ndarray
+- Ex field component (nx . ny . nz) as numpy.ndarray
+- Ey field component (nx . ny . nz) as numpy.ndarray
+- Ez field component (nx . ny . nz) as numpy.ndarray
+- x coordinates (flattened) as numpy.ndarray
+- y coordinates (flattened) as numpy.ndarray
+- z coordinates (flattened) as numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If cn/dn coefficients are not available.</p></li>
+<li><p><strong>ValueError</strong> – If field_type is not recognized.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method provides all field components for comprehensive analysis and
+visualization of near-field effects around the scatterer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_scattered_nearfields">
+<span class="sig-name descname"><span class="pre">compute_scattered_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_scattered_nearfields" title="Link to this definition">#</a></dt>
+<dd><p>Computes scattered near-field electromagnetic fields using an and bn coefficients.</p>
+<p>This method calculates the scattered electromagnetic fields outside the scatterer
+using the multipole expansion with vector spherical harmonics. It uses an and bn
+coefficients for the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “<a href="#id7"><span class="problematic" id="id8">|E|</span></a>”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If an/bn coefficients are not available for the scatterer type.</p></li>
+<li><p><strong>ValueError</strong> – If field_type is not recognized.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method requires that an and bn coefficients have been computed.
+Currently supports spherical scatterers only. Cylinder support requires
+implementation of an/bn coefficients for infinite cylinders.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_total_nearfields">
+<span class="sig-name descname"><span class="pre">compute_total_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_total_nearfields" title="Link to this definition">#</a></dt>
 <dd><p>Computes near-field electromagnetic fields using internal coefficients cn and dn.</p>
 <p>This method calculates the electromagnetic fields inside and near the scatterer
 using the multipole expansion with vector spherical harmonics. The internal fields
@@ -806,7 +928,7 @@ using the multipole expansion with vector spherical harmonics. The internal fiel
 <li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
 <li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
 <li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
-<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id1"><span class="problematic" id="id2">|E|</span></a>”, “<a href="#id3"><span class="problematic" id="id4">|H|</span></a>”</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id9"><span class="problematic" id="id10">|E|</span></a>”, “<a href="#id11"><span class="problematic" id="id12">|H|</span></a>”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -882,6 +1004,26 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.get_coefficient">
+<span class="sig-name descname"><span class="pre">get_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">complex</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.get_coefficient" title="Link to this definition">#</a></dt>
+<dd><p>Returns a specific scattering coefficient for a given type and order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> (<em>str</em>) – The type of coefficient (‘an’, ‘bn’, ‘cn’, ‘dn’).</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – The order of the scattering coefficient.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the specified scattering coefficient.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1346,8 +1488,130 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_nearfields">
-<span class="sig-name descname"><span class="pre">compute_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_nearfields" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_an_bn">
+<span class="sig-name descname"><span class="pre">compute_an_bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_an_bn" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients an and bn for the scatterer.
+:param max_order: The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).
+:type max_order: int, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_cn_dn">
+<span class="sig-name descname"><span class="pre">compute_cn_dn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_cn_dn" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients cn and dn for the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_incident_nearfields">
+<span class="sig-name descname"><span class="pre">compute_incident_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_incident_nearfields" title="Link to this definition">#</a></dt>
+<dd><p>Computes incident near-field electromagnetic fields.
+This method calculates the incident electromagnetic fields at specified points
+using the properties of the incident wave.
+:param x: Array of x coordinates of observation points.
+:type x: numpy.ndarray
+:param y: Array of y coordinates of observation points.
+:type y: numpy.ndarray
+:param z: Array of z coordinates of observation points.
+:type z: numpy.ndarray
+:param field_type: Field component type: “Ex”, “Ey”, “Ez”, “<a href="#id13"><span class="problematic" id="id14">|E|</span></a>”
+:type field_type: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method does not depend on scatterer properties and computes fields
+based solely on the incident wave characteristics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_nearfields_structured">
+<span class="sig-name descname"><span class="pre">compute_nearfields_structured</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_nearfields_structured" title="Link to this definition">#</a></dt>
+<dd><p>Computes near-field electromagnetic fields over a structured 3D grid.</p>
+<p>This method efficiently computes electromagnetic fields over a regular 3D grid
+using the multipole expansion with vector spherical harmonics. More efficient
+than point-by-point computation for regular grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates defining the grid.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates defining the grid.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates defining the grid.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id15"><span class="problematic" id="id16">|E|</span></a>”, “<a href="#id17"><span class="problematic" id="id18">|H|</span></a>”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing:
+- Requested field component values (nx . ny . nz) as numpy.ndarray
+- Ex field component (nx . ny . nz) as numpy.ndarray
+- Ey field component (nx . ny . nz) as numpy.ndarray
+- Ez field component (nx . ny . nz) as numpy.ndarray
+- x coordinates (flattened) as numpy.ndarray
+- y coordinates (flattened) as numpy.ndarray
+- z coordinates (flattened) as numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If cn/dn coefficients are not available.</p></li>
+<li><p><strong>ValueError</strong> – If field_type is not recognized.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method provides all field components for comprehensive analysis and
+visualization of near-field effects around the scatterer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_scattered_nearfields">
+<span class="sig-name descname"><span class="pre">compute_scattered_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_scattered_nearfields" title="Link to this definition">#</a></dt>
+<dd><p>Computes scattered near-field electromagnetic fields using an and bn coefficients.</p>
+<p>This method calculates the scattered electromagnetic fields outside the scatterer
+using the multipole expansion with vector spherical harmonics. It uses an and bn
+coefficients for the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “<a href="#id19"><span class="problematic" id="id20">|E|</span></a>”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If an/bn coefficients are not available for the scatterer type.</p></li>
+<li><p><strong>ValueError</strong> – If field_type is not recognized.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method requires that an and bn coefficients have been computed.
+Currently supports spherical scatterers only. Cylinder support requires
+implementation of an/bn coefficients for infinite cylinders.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_total_nearfields">
+<span class="sig-name descname"><span class="pre">compute_total_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_total_nearfields" title="Link to this definition">#</a></dt>
 <dd><p>Computes near-field electromagnetic fields using internal coefficients cn and dn.</p>
 <p>This method calculates the electromagnetic fields inside and near the scatterer
 using the multipole expansion with vector spherical harmonics. The internal fields
@@ -1359,7 +1623,7 @@ using the multipole expansion with vector spherical harmonics. The internal fiel
 <li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
 <li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
 <li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
-<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id5"><span class="problematic" id="id6">|E|</span></a>”, “<a href="#id7"><span class="problematic" id="id8">|H|</span></a>”</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id21"><span class="problematic" id="id22">|E|</span></a>”, “<a href="#id23"><span class="problematic" id="id24">|H|</span></a>”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1413,6 +1677,26 @@ implementation of cn/dn coefficients for infinite cylinders.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.get_coefficient">
+<span class="sig-name descname"><span class="pre">get_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">complex</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.get_coefficient" title="Link to this definition">#</a></dt>
+<dd><p>Returns a specific scattering coefficient for a given type and order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> (<em>str</em>) – The type of coefficient (‘an’, ‘bn’, ‘cn’, ‘dn’).</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – The order of the scattering coefficient.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the specified scattering coefficient.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1888,8 +2172,130 @@ B_n = \frac{
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_nearfields">
-<span class="sig-name descname"><span class="pre">compute_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_nearfields" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_an_bn">
+<span class="sig-name descname"><span class="pre">compute_an_bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_an_bn" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients an and bn for the scatterer.
+:param max_order: The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).
+:type max_order: int, optional</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_cn_dn">
+<span class="sig-name descname"><span class="pre">compute_cn_dn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_cn_dn" title="Link to this definition">#</a></dt>
+<dd><p>Computes the coefficients cn and dn for the scatterer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum order of the coefficients to compute (default is 0, which means it will be computed based on the size parameter).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_incident_nearfields">
+<span class="sig-name descname"><span class="pre">compute_incident_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_incident_nearfields" title="Link to this definition">#</a></dt>
+<dd><p>Computes incident near-field electromagnetic fields.
+This method calculates the incident electromagnetic fields at specified points
+using the properties of the incident wave.
+:param x: Array of x coordinates of observation points.
+:type x: numpy.ndarray
+:param y: Array of y coordinates of observation points.
+:type y: numpy.ndarray
+:param z: Array of z coordinates of observation points.
+:type z: numpy.ndarray
+:param field_type: Field component type: “Ex”, “Ey”, “Ez”, “<a href="#id25"><span class="problematic" id="id26">|E|</span></a>”
+:type field_type: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method does not depend on scatterer properties and computes fields
+based solely on the incident wave characteristics.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_nearfields_structured">
+<span class="sig-name descname"><span class="pre">compute_nearfields_structured</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">SupportsFloat</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_nearfields_structured" title="Link to this definition">#</a></dt>
+<dd><p>Computes near-field electromagnetic fields over a structured 3D grid.</p>
+<p>This method efficiently computes electromagnetic fields over a regular 3D grid
+using the multipole expansion with vector spherical harmonics. More efficient
+than point-by-point computation for regular grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates defining the grid.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates defining the grid.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates defining the grid.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id27"><span class="problematic" id="id28">|E|</span></a>”, “<a href="#id29"><span class="problematic" id="id30">|H|</span></a>”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing:
+- Requested field component values (nx . ny . nz) as numpy.ndarray
+- Ex field component (nx . ny . nz) as numpy.ndarray
+- Ey field component (nx . ny . nz) as numpy.ndarray
+- Ez field component (nx . ny . nz) as numpy.ndarray
+- x coordinates (flattened) as numpy.ndarray
+- y coordinates (flattened) as numpy.ndarray
+- z coordinates (flattened) as numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If cn/dn coefficients are not available.</p></li>
+<li><p><strong>ValueError</strong> – If field_type is not recognized.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method provides all field components for comprehensive analysis and
+visualization of near-field effects around the scatterer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_scattered_nearfields">
+<span class="sig-name descname"><span class="pre">compute_scattered_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_scattered_nearfields" title="Link to this definition">#</a></dt>
+<dd><p>Computes scattered near-field electromagnetic fields using an and bn coefficients.</p>
+<p>This method calculates the scattered electromagnetic fields outside the scatterer
+using the multipole expansion with vector spherical harmonics. It uses an and bn
+coefficients for the computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “<a href="#id31"><span class="problematic" id="id32">|E|</span></a>”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If an/bn coefficients are not available for the scatterer type.</p></li>
+<li><p><strong>ValueError</strong> – If field_type is not recognized.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method requires that an and bn coefficients have been computed.
+Currently supports spherical scatterers only. Cylinder support requires
+implementation of an/bn coefficients for infinite cylinders.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_total_nearfields">
+<span class="sig-name descname"><span class="pre">compute_total_nearfields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_total_nearfields" title="Link to this definition">#</a></dt>
 <dd><p>Computes near-field electromagnetic fields using internal coefficients cn and dn.</p>
 <p>This method calculates the electromagnetic fields inside and near the scatterer
 using the multipole expansion with vector spherical harmonics. The internal fields
@@ -1901,7 +2307,7 @@ using the multipole expansion with vector spherical harmonics. The internal fiel
 <li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
 <li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
 <li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
-<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id9"><span class="problematic" id="id10">|E|</span></a>”, “<a href="#id11"><span class="problematic" id="id12">|H|</span></a>”</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id33"><span class="problematic" id="id34">|E|</span></a>”, “<a href="#id35"><span class="problematic" id="id36">|H|</span></a>”</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1975,6 +2381,26 @@ implementation of cn/dn coefficients for infinite cylinders.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.get_coefficient">
+<span class="sig-name descname"><span class="pre">get_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">complex</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.get_coefficient" title="Link to this definition">#</a></dt>
+<dd><p>Returns a specific scattering coefficient for a given type and order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> (<em>str</em>) – The type of coefficient (‘an’, ‘bn’, ‘cn’, ‘dn’).</p></li>
+<li><p><strong>order</strong> (<em>int</em>) – The order of the scattering coefficient.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the specified scattering coefficient.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2160,11 +2586,17 @@ implementation of cn/dn coefficients for infinite cylinders.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.an"><code class="docutils literal notranslate"><span class="pre">Sphere.an</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.bn"><code class="docutils literal notranslate"><span class="pre">Sphere.bn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cn"><code class="docutils literal notranslate"><span class="pre">Sphere.cn</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_nearfields"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_an_bn"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_an_bn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_cn_dn"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_cn_dn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_incident_nearfields"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_incident_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_nearfields_structured"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_nearfields_structured()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_scattered_nearfields"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_scattered_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_total_nearfields"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_total_nearfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cross_section"><code class="docutils literal notranslate"><span class="pre">Sphere.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.diameter"><code class="docutils literal notranslate"><span class="pre">Sphere.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.dn"><code class="docutils literal notranslate"><span class="pre">Sphere.dn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.g"><code class="docutils literal notranslate"><span class="pre">Sphere.g</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_coefficient"><code class="docutils literal notranslate"><span class="pre">Sphere.get_coefficient()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_farfields"><code class="docutils literal notranslate"><span class="pre">Sphere.get_farfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_full_farfields"><code class="docutils literal notranslate"><span class="pre">Sphere.get_full_farfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_s1s2"><code class="docutils literal notranslate"><span class="pre">Sphere.get_s1s2()</span></code></a></li>
@@ -2198,10 +2630,16 @@ implementation of cn/dn coefficients for infinite cylinders.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.a2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.a2n</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b1n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b1n</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b2n</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_nearfields"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_an_bn"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_an_bn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_cn_dn"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_cn_dn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_incident_nearfields"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_incident_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_nearfields_structured"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_nearfields_structured()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_scattered_nearfields"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_scattered_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_total_nearfields"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_total_nearfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.cross_section"><code class="docutils literal notranslate"><span class="pre">Cylinder.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.diameter"><code class="docutils literal notranslate"><span class="pre">Cylinder.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.g"><code class="docutils literal notranslate"><span class="pre">Cylinder.g</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_coefficient"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_coefficient()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_farfields"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_farfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_full_farfields"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_full_farfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_s1s2"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_s1s2()</span></code></a></li>
@@ -2233,12 +2671,18 @@ implementation of cn/dn coefficients for infinite cylinders.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.an"><code class="docutils literal notranslate"><span class="pre">CoreShell.an</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.bn"><code class="docutils literal notranslate"><span class="pre">CoreShell.bn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cn"><code class="docutils literal notranslate"><span class="pre">CoreShell.cn</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_nearfields"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_an_bn"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_an_bn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_cn_dn"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_cn_dn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_incident_nearfields"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_incident_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_nearfields_structured"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_nearfields_structured()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_scattered_nearfields"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_scattered_nearfields()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_total_nearfields"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_total_nearfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.core_diameter"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.core_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cross_section"><code class="docutils literal notranslate"><span class="pre">CoreShell.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.dn"><code class="docutils literal notranslate"><span class="pre">CoreShell.dn</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.g"><code class="docutils literal notranslate"><span class="pre">CoreShell.g</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_coefficient"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_coefficient()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_farfields"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_farfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_full_farfields"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_full_farfields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_s1s2"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_s1s2()</span></code></a></li>
