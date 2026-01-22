@@ -8,7 +8,7 @@ This example demonstrates the computation of scattering properties using PyMieSi
 # %%
 # Importing the package: PyMieSim
 from PyMieSim.units import ureg
-from PyMieSim.single.scatterer import Cylinder
+from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 
 source = Gaussian(
@@ -18,7 +18,7 @@ source = Gaussian(
     NA=0.3 * ureg.AU,  # Numerical Aperture
 )
 
-scatterer = Cylinder(
+scatterer = InfiniteCylinder(
     diameter=300 * ureg.nanometer,  # 300 nm
     source=source,
     refractive_index=(1.4 + 0.1j) * ureg.RIU,
