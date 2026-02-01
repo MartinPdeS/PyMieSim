@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:19.270** total execution time for 6 files **from gallery/single**:
+**00:19.792** total execution time for 6 files **from gallery/single**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_single_nearfield.py` (``nearfield.py``)
-     - 00:13.805
+     - 00:13.827
      - 0.0
    * - :ref:`sphx_glr_gallery_single_farfield.py` (``farfield.py``)
-     - 00:04.042
+     - 00:04.464
      - 0.0
    * - :ref:`sphx_glr_gallery_single_footprint.py` (``footprint.py``)
-     - 00:00.511
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_stokes.py` (``stokes.py``)
-     - 00:00.348
+     - 00:00.513
      - 0.0
    * - :ref:`sphx_glr_gallery_single_spf.py` (``spf.py``)
-     - 00:00.332
+     - 00:00.370
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_stokes.py` (``stokes.py``)
+     - 00:00.368
      - 0.0
    * - :ref:`sphx_glr_gallery_single_s1s2.py` (``s1s2.py``)
-     - 00:00.232
+     - 00:00.250
      - 0.0

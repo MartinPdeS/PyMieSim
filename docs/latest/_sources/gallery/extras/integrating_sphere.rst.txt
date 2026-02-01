@@ -56,14 +56,14 @@ Importing the package: PyMieSim
  .. code-block:: none
 
 
-    <pyvista.plotting.plotter.Plotter object at 0x7f08d92fea10>
+    <pyvista.plotting.plotter.Plotter object at 0x7fd030aeca10>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.323 seconds)
+   **Total running time of the script:** (0 minutes 0.337 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_integrating_sphere.py:
