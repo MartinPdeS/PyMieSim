@@ -218,7 +218,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Scattering efficiency of the scatterer.
 
                 .. math::
-                    Q_{\text{sca}} &= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2)
+                    Q_{\text{sca}} = \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2)
 
                 Returns
                 -------
@@ -236,7 +236,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Extinction efficiency of the scatterer.
 
                 .. math::
-                    Q_{\text{ext}} &= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n)
+                    Q_{\text{ext}} = \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n)
 
                 Returns
                 -------
@@ -254,7 +254,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Absorption efficiency of the scatterer.
 
                 .. math::
-                    Q_{\text{abs}} &= Q_{\text{ext}} - Q_{\text{sca}}
+                    Q_{\text{abs}} = Q_{\text{ext}} - Q_{\text{sca}}
 
                 Returns
                 -------
@@ -272,7 +272,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Backscattering efficiency of the scatterer.
 
                 .. math::
-                    Q_{\text{back}} &= \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2
+                    Q_{\text{back}} = \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2
 
                 Returns
                 -------
@@ -305,7 +305,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 The ratio of forward to backward scattering efficiency (Qforward/Qback) of the scatterer.
 
                 .. math::
-                    Q_{\text{ratio}} &= \frac{Q_{\text{back}}}{Q_{\text{sca}}}
+                    Q_{\text{ratio}} = \frac{Q_{\text{back}}}{Q_{\text{sca}}}
 
                 Returns
                 -------
@@ -323,7 +323,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Radiation pressure efficiency of the scatterer.
 
                 .. math::
-                    Q_{\text{pr}} &= Q_{\text{ext}} - g \cdot Q_{\text{sca}}
+                    Q_{\text{pr}} = Q_{\text{ext}} - g \cdot Q_{\text{sca}}
 
                 Returns
                 -------
@@ -341,7 +341,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Scattering cross-section of the scatterer.
 
                 .. math::
-                    C_{\text{sca}} &= Q_{\text{sca}} \cdot \text{area}
+                    C_{\text{sca}} = Q_{\text{sca}} \cdot \text{area}
 
                 where area is the physical cross-sectional area of the scatterer.
 
@@ -361,7 +361,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Extinction cross-section of the scatterer.
 
                 .. math::
-                    C_{\text{ext}} &= Q_{\text{ext}} \cdot \text{area}
+                    C_{\text{ext}} = Q_{\text{ext}} \cdot \text{area}
 
                 where area is the physical cross-sectional area of the scatterer.
 
@@ -381,7 +381,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Absorption cross-section of the scatterer.
 
                 .. math::
-                    C_{\text{abs}} &= Q_{\text{abs}} \cdot \text{area}
+                    C_{\text{abs}} = Q_{\text{abs}} \cdot \text{area}
 
                 where area is the physical cross-sectional area of the scatterer.
 
@@ -401,7 +401,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Backscattering cross-section of the scatterer.
 
                 .. math::
-                    C_{\text{back}} &= Q_{\text{back}} \cdot \text{area}
+                    C_{\text{back}} = Q_{\text{back}} \cdot \text{area}
 
                 where area is the physical cross-sectional area of the scatterer.
 
@@ -421,7 +421,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Forward-scattering cross-section of the scatterer.
 
                 .. math::
-                    C_{\text{forward}} &= Q_{\text{forward}} \cdot \text{area}
+                    C_{\text{forward}} = Q_{\text{forward}} \cdot \text{area}
 
                 where area is the physical cross-sectional area of the scatterer.
 
@@ -441,7 +441,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 The ratio of forward to backward scattering cross-section (Cforward/Cback) of the scatterer.
 
                 .. math::
-                    C_{\text{ratio}} &= \frac{C_{\text{forward}}}{C_{\text{back}}}
+                    C_{\text{ratio}} = \frac{C_{\text{forward}}}{C_{\text{back}}}
 
                 where Cforward is the forward scattering cross-section and Cback is the backward scattering cross-section.
 
@@ -461,7 +461,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Radiation pressure cross-section of the scatterer.
 
                 .. math::
-                    C_{\text{pr}} &= Q_{\text{pr}} \cdot \text{area}
+                    C_{\text{pr}} = Q_{\text{pr}} \cdot \text{area}
 
                 where area is the physical cross-sectional area of the scatterer.
 
@@ -481,7 +481,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 Asymmetry parameter of the scatterer.
 
                 .. math::
-                    g &= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]
+                    g = \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]
 
 
                 Returns
@@ -555,7 +555,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 z : numpy.ndarray
                     Array of z coordinates of observation points.
                 field_type : str
-                    Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"
+                    Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "\|E\|", "\|H\|"
 
                 Returns
                 -------
@@ -608,7 +608,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 z : numpy.ndarray
                     Array of z coordinates of observation points.
                 field_type : str
-                    Field component type: "Ex", "Ey", "Ez", "|E|"
+                    Field component type: "Ex", "Ey", "Ez", "\|E\|"
 
                 Returns
                 -------
@@ -656,7 +656,8 @@ void register_base_scatterer(pybind11::module_& module) {
                 z : numpy.ndarray
                     Array of z coordinates of observation points.
                 field_type : str
-                    Field component type: "Ex", "Ey", "Ez", "|E|"
+                    Field component type: "Ex", "Ey", "Ez", "\|E\|"
+
                 Returns
                 -------
                 numpy.ndarray
@@ -703,7 +704,7 @@ void register_base_scatterer(pybind11::module_& module) {
                 z : numpy.ndarray
                     Array of z coordinates defining the grid.
                 field_type : str
-                    Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"
+                    Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "\|E\|", "\|H\|"
 
                 Returns
                 -------

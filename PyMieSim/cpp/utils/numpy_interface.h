@@ -5,6 +5,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 
+
 template <typename T>
 std::vector<size_t> get_stride(const std::vector<size_t>& dimensions)
 {
