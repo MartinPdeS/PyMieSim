@@ -37,8 +37,8 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
  .. code-block:: none
 
-    2026-02-01 09:11:20,998 INFO Substituting symbol \mu from STIXNonUnicode
-    2026-02-01 09:11:21,031 INFO Substituting symbol \mu from STIXNonUnicode
+    2026-02-13 13:17:26,541 INFO Substituting symbol \mu from STIXNonUnicode
+    2026-02-13 13:17:26,573 INFO Substituting symbol \mu from STIXNonUnicode
 
 
 
@@ -94,7 +94,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.513 seconds)
+   **Total running time of the script:** (0 minutes 0.483 seconds)
 
 
 .. _sphx_glr_download_gallery_single_footprint.py:
