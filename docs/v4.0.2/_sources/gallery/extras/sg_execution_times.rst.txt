@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:08.109** total execution time for 15 files **from gallery/extras**:
+**00:08.111** total execution time for 15 files **from gallery/extras**:
 
 .. container::
 
@@ -36,43 +36,43 @@ Computation times
      - 00:01.892
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_Qsca_vs_permittivity_vs_size_parameter.py` (``Qsca_vs_permittivity_vs_size_parameter.py``)
-     - 00:01.724
+     - 00:01.744
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_array_scattering.py` (``array_scattering.py``)
-     - 00:01.057
+     - 00:01.039
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_HG01.py` (``HG01.py``)
-     - 00:00.607
+     - 00:00.605
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``plot_system.py``)
-     - 00:00.439
+     - 00:00.436
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py` (``coupling_vs_NA.py``)
-     - 00:00.380
+     - 00:00.377
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_integrating_sphere.py` (``integrating_sphere.py``)
-     - 00:00.329
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_LP01.py` (``LP01.py``)
-     - 00:00.279
+     - 00:00.325
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_LG11.py` (``LG11.py``)
-     - 00:00.278
+     - 00:00.287
      - 0.0
-   * - :ref:`sphx_glr_gallery_extras_LP02.py` (``LP02.py``)
-     - 00:00.271
+   * - :ref:`sphx_glr_gallery_extras_LP01.py` (``LP01.py``)
+     - 00:00.285
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_HG11.py` (``HG11.py``)
+     - 00:00.270
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_LP02.py` (``LP02.py``)
      - 00:00.270
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_photodiode.py` (``photodiode.py``)
      - 00:00.269
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_LP11.py` (``LP11.py``)
-     - 00:00.264
+     - 00:00.266
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_properties_cylinder.py` (``properties_cylinder.py``)
-     - 00:00.048
+     - 00:00.046
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_properties_sphere.py` (``properties_sphere.py``)
      - 00:00.001

@@ -5,7 +5,7 @@ Scatterers
     :members:
     :inherited-members:
 
-.. autoclass:: PyMieSim.single.scatterer.Cylinder
+.. autoclass:: PyMieSim.single.scatterer.InfiniteCylinder
     :members:
     :inherited-members:
 

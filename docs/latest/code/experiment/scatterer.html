@@ -560,6 +560,74 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InfiniteCylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/cylinder.html#InfiniteCylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinder" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
+<p>Represents a cylindrical scatterer configuration for PyMieSim simulations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<em>PyMieSim.experiment.source.base.BaseSource</em>) – Light source configuration for the simulation.</p></li>
+<li><p><strong>diameter</strong> (<em>Length</em>) – Diameter(s) of the cylinder in meters.</p></li>
+<li><p><strong>refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinder.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'refractive_index',</span> <span class="pre">'medium_refractive_index']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.attributes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinder.available_measure_list">
+<span class="sig-name descname"><span class="pre">available_measure_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Qsca',</span> <span class="pre">'Qext',</span> <span class="pre">'Qabs',</span> <span class="pre">'Csca',</span> <span class="pre">'Cext',</span> <span class="pre">'Cabs',</span> <span class="pre">'a11',</span> <span class="pre">'a21',</span> <span class="pre">'a12',</span> <span class="pre">'a22',</span> <span class="pre">'a13',</span> <span class="pre">'a23',</span> <span class="pre">'b11',</span> <span class="pre">'b21',</span> <span class="pre">'b12',</span> <span class="pre">'b22',</span> <span class="pre">'b13',</span> <span class="pre">'b23',</span> <span class="pre">'coupling']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.available_measure_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinder.build_sequential">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Broadcast scalar or single-element parameters to NumPy arrays of uniform length
+and construct a new instance of the class.</p>
+<p>Each parameter passed via keyword arguments may be provided as a scalar or as a list/array.
+Scalars or single-element lists/arrays will be repeated to match the length of the longest
+parameter. If any parameter is given as a list/array with more than one element, its length
+must equal the maximum length among all parameters (or the explicit <cite>total_size</cite> if provided);
+otherwise, a ValueError is raised.</p>
+<p>Additionally, if a keyword argument ‘source’ is provided, it is removed from the
+broadcasted parameters and passed directly to the class constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The explicit target size for broadcasting. Must be a positive integer if provided.
+If not specified, the target size is determined by the maximum size among the input parameters.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments mapping parameter names to values. Each value may be a scalar
+or a list/array of values. Examples include parameters such as <cite>source</cite>, <cite>diameter</cite>,
+<cite>property</cite>, or <cite>medium_property</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new instance of the class with all provided parameters broadcasted as NumPy arrays
+of equal length. If ‘source’ is provided, it is passed directly to the class constructor.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any parameter provided as a list/array has a length greater than one that does not
+    match the target size.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinder.is_sequential">
+<span class="sig-name descname"><span class="pre">is_sequential</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.is_sequential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShell">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_refractive_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/scatterer/core_shell.html#CoreShell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShell" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
@@ -692,6 +760,13 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.available_measure_list"><code class="docutils literal notranslate"><span class="pre">Sphere.available_measure_list</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.build_sequential"><code class="docutils literal notranslate"><span class="pre">Sphere.build_sequential()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.Sphere.is_sequential"><code class="docutils literal notranslate"><span class="pre">Sphere.is_sequential</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinder"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.attributes"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.attributes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.available_measure_list"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.available_measure_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.build_sequential"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.build_sequential()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinder.is_sequential"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.is_sequential</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShell"><code class="docutils literal notranslate"><span class="pre">CoreShell</span></code></a><ul class="nav section-nav flex-column">

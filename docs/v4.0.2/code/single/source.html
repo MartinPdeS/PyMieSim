@@ -492,32 +492,83 @@
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
+<p>Monochromatic plane wave source.</p>
+<p>This source models a spatially uniform incident field with a specified
+wavelength, polarization, and electric field amplitude.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.amplitude">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.amplitude" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Electric field amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Field amplitude with units of electric field (V/m).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.jones_vector">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jones_vector</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.jones_vector" title="Link to this definition">#</a></dt>
-<dd><p>First Jones vector row [Ex, Ey] as a complex array of shape (2,).</p>
+<dd><p>Convenience Jones vector.</p>
+<p>Returns the first row of <a class="reference internal" href="#PyMieSim.single.source.PlaneWave.polarization_element" title="PyMieSim.single.source.PlaneWave.polarization_element"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polarization_element</span></code></a> as a vector
+<code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.polarization_element">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_element</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.polarization_element" title="Link to this definition">#</a></dt>
-<dd><p>Polarization Jones matrix as a complex array of shape (N, 2).</p>
+<dd><p>Polarization Jones matrix.</p>
+<p>The polarization is returned as a complex array with shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.
+Each row corresponds to a Jones vector <code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.wavelength">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.wavelength" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Wavelength in vacuum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wavelength with units of length.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.wavenumber_vacuum">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavenumber_vacuum</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.wavenumber_vacuum" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Vacuum wavenumber.</p>
+<p>This is defined as <code class="docutils literal notranslate"><span class="pre">k0</span> <span class="pre">=</span> <span class="pre">2*pi</span> <span class="pre">/</span> <span class="pre">wavelength</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wavenumber with units of inverse length.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -525,57 +576,156 @@
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
+<p>Monochromatic Gaussian beam source.</p>
+<p>This source models a diffraction limited Gaussian beam characterized by its
+wavelength, polarization, numerical aperture, and optical power.</p>
+<p class="rubric">Notes</p>
+<p>The NA is treated as dimensionless and is used to derive the beam waist and
+related quantities in the C++ implementation.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.NA">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.NA" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Numerical aperture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dimensionless numerical aperture.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.amplitude">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.amplitude" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Electric field amplitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Field amplitude with units of electric field (V/m).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.area">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">area</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.area" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Effective beam area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Area with units of square length.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.jones_vector">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jones_vector</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.jones_vector" title="Link to this definition">#</a></dt>
-<dd><p>First Jones vector row [Ex, Ey] as a complex array of shape (2,).</p>
+<dd><p>Convenience Jones vector.</p>
+<p>Returns the first row of <a class="reference internal" href="#PyMieSim.single.source.Gaussian.polarization_element" title="PyMieSim.single.source.Gaussian.polarization_element"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polarization_element</span></code></a> as a vector
+<code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.optical_power">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">optical_power</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.optical_power" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Optical power.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optical power with units of watts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.peak_intensity">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peak_intensity</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.peak_intensity" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Peak on axis intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Peak intensity with units of power per area.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.polarization_element">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_element</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.polarization_element" title="Link to this definition">#</a></dt>
-<dd><p>Polarization Jones matrix as a complex array of shape (N, 2).</p>
+<dd><p>Polarization Jones matrix.</p>
+<p>The polarization is returned as a complex array with shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.
+Each row corresponds to a Jones vector <code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.waist">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">waist</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.waist" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Beam waist radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Waist radius with units of length.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.wavelength">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.wavelength" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Wavelength in vacuum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wavelength with units of length.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.wavenumber_vacuum">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavenumber_vacuum</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.wavenumber_vacuum" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Vacuum wavenumber.</p>
+<p>This is defined as <code class="docutils literal notranslate"><span class="pre">k0</span> <span class="pre">=</span> <span class="pre">2*pi</span> <span class="pre">/</span> <span class="pre">wavelength</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wavenumber with units of inverse length.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
