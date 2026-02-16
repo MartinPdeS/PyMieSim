@@ -64,13 +64,34 @@ Importing the package: PyMieSim
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: PyVistaDeprecationWarning: 
+    ../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: Arguments 'theta', 'phi', 'r', 'u', 'v', 'w' must be passed as keyword arguments to function 'transform_vectors_sph_to_cart'.
+    From version 0.50, passing these as positional arguments will result in a TypeError.
+      x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: PyVistaDeprecationWarning: 
+    ../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: Arguments 'theta', 'phi', 'r', 'u', 'v', 'w' must be passed as keyword arguments to function 'transform_vectors_sph_to_cart'.
+    From version 0.50, passing these as positional arguments will result in a TypeError.
+      x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: PyVistaDeprecationWarning: 
+    ../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: Arguments 'theta', 'phi', 'r', 'u', 'v', 'w' must be passed as keyword arguments to function 'transform_vectors_sph_to_cart'.
+    From version 0.50, passing these as positional arguments will result in a TypeError.
+      x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: PyVistaDeprecationWarning: 
+    ../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: Arguments 'theta', 'phi', 'r', 'u', 'v', 'w' must be passed as keyword arguments to function 'transform_vectors_sph_to_cart'.
+    From version 0.50, passing these as positional arguments will result in a TypeError.
+      x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.969 seconds)
+   **Total running time of the script:** (0 minutes 4.533 seconds)
 
 
 .. _sphx_glr_download_gallery_single_farfield.py:
