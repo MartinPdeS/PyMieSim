@@ -21,12 +21,6 @@ std::vector<double> BaseScatterer::get_prefactor() const {
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
 BaseScatterer::compute_structured_farfields(const std::vector<complex128>& S1, const std::vector<complex128>& S2, const std::vector<double>& theta, const double& radius) const {
-
-    std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
-    complex128
-        Ex = jones_vector[0],
-        Ey = jones_vector[1];
-
     std::vector<complex128> phi_field, theta_field;
 
     size_t full_size = theta.size() * S1.size();
@@ -39,8 +33,8 @@ BaseScatterer::compute_structured_farfields(const std::vector<complex128>& S1, c
     for (unsigned int p=0; p < S1.size(); p++ )
         for (unsigned int t=0; t < theta.size(); t++ )
         {
-            complex128 phi_point_field = propagator * S1[p] * (Ex * cos(theta[t]) + Ey * sin(theta[t]));
-            complex128 thetea_point_field = propagator * S2[p] * (Ex * sin(theta[t]) - Ey * cos(theta[t]));
+            complex128 phi_point_field = propagator * S1[p] * (this->source->polarization.jones_vector[0] * cos(theta[t]) + this->source->polarization.jones_vector[1] * sin(theta[t]));
+            complex128 thetea_point_field = propagator * S2[p] * (this->source->polarization.jones_vector[0] * sin(theta[t]) - this->source->polarization.jones_vector[1] * cos(theta[t]));
 
             phi_field.push_back(phi_point_field);
             theta_field.push_back(thetea_point_field);
@@ -59,12 +53,6 @@ BaseScatterer::compute_structured_farfields(const std::vector<double>& phi, cons
 std::tuple<std::vector<complex128>, std::vector<complex128>>
 BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
 {
-    std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
-    complex128
-        Ex = jones_vector[0],
-        Ey = jones_vector[1];
-
-
     auto [S1, S2] = this->compute_s1s2(phi);
 
     std::vector<complex128> phi_field, theta_field;
@@ -78,8 +66,8 @@ BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, co
 
     for (unsigned int idx=0; idx < full_size; idx++)
     {
-        complex128 phi_field_point = propagator * S1[idx] * (Ex * cos(theta[idx]) + Ey * sin(theta[idx]));
-        complex128 theta_field_point = propagator * S2[idx] * (Ex * sin(theta[idx]) - Ey * cos(theta[idx]));
+        complex128 phi_field_point = propagator * S1[idx] * (this->source->polarization.jones_vector[0] * cos(theta[idx]) + this->source->polarization.jones_vector[1] * sin(theta[idx]));
+        complex128 theta_field_point = propagator * S2[idx] * (this->source->polarization.jones_vector[0] * sin(theta[idx]) - this->source->polarization.jones_vector[1] * cos(theta[idx]));
 
         phi_field.push_back(phi_field_point);
         theta_field.push_back(theta_field_point);
@@ -332,9 +320,8 @@ BaseScatterer::compute_incident_nearfields(
     const double k0 = this->source->wavenumber_vacuum;
     const double k_medium = k0 * medium_refractive_index;
 
-    const std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
-    const complex128 E0x = jones_vector[0] * this->source->amplitude;
-    const complex128 E0y = jones_vector[1] * this->source->amplitude;
+    const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
+    const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;
 
     const complex128 i_unit(0.0, 1.0);
 

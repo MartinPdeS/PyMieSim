@@ -8,7 +8,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian, PlaneWave
+from PyMieSim.experiment.source import Gaussian, PlaneWave, PolarizationSet
 from PyMieSim.experiment import Setup
 
 # Configure the medium, shell and core materials for the sphere
@@ -19,16 +19,20 @@ medium_properties = [Material.water, 1.1 * ureg.RIU]
 # Define measures to test
 measures = CoreShell.available_measure_list
 
+polarization_set = PolarizationSet(
+    angles=[0] * ureg.radian
+)
+
 gaussian_source = Gaussian(
     wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_set,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 planewave_source = PlaneWave(
     wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_set,
     amplitude=1 * ureg.volt / ureg.meter,
 )
 
@@ -62,7 +66,6 @@ def test_measure(measure, source, core_refractive_index, shell_refractive_index,
     # Setup detector
     detector = Photodiode(
         NA=0.2 * ureg.AU,
-        polarization_filter=None,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100,

@@ -2,7 +2,7 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single.representations import Footprint
 
@@ -12,9 +12,9 @@ def source():
     """Fixture to create a Gaussian source that can be reused in different tests."""
     return Gaussian(
         wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
-        polarization=0 * ureg.degree,  # Polarization value
+        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization value
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
@@ -33,7 +33,7 @@ def setup_scatterer(source):
 def photodiode():
     """Test the Photodiode detector with various sampling rates."""
     return Photodiode(
-        NA=0.2 * ureg.AU,  # Numerical aperture of the detector
+        numerical_aperture=0.2 * ureg.AU,  # Numerical aperture of the detector
         sampling=30,  # Field sampling
         gamma_offset=0 * ureg.degree,  # Gamma offset
         phi_offset=0 * ureg.degree,  # Phi offset
@@ -54,8 +54,8 @@ def test_photodiode_sampling(photodiode, setup_scatterer):
 def test_fails_initialization():
     with pytest.raises(Exception):
         Photodiode(
-            NA=0.2 * ureg.AU,
-            block_NA=0.3 * ureg.AU,
+            numerical_aperture=0.2 * ureg.AU,
+            block_numerical_aperture=0.3 * ureg.AU,
             gamma_offset=0 * ureg.degree,
             phi_offset=0 * ureg.degree,
             medium_refractive_index=1.0 * ureg.RIU

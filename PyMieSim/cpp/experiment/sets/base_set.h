@@ -6,6 +6,55 @@
 #include "single/detector/detector.h"
 #include "single/source/source.h"
 
+
+
+
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h> // For binding std::vector and similar STL containers
+#include <pybind11/complex.h> // For std::complex support
+#include <limits>
+
+#include <pint/pint.h>
+
+
+// namespace py = pybind11;
+// typedef std::complex<double> complex128;
+
+// std::vector<double> cast_scalar_or_array_to_vector_double(const py::object& obj) {
+
+//     // If already iterable (NumPy array, list, tuple)
+//     if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+//         return obj.cast<std::vector<double>>();
+//     }
+
+//     // Otherwise treat as scalar
+//     return { obj.cast<double>() };
+// }
+
+
+// std::vector<unsigned> cast_scalar_or_array_to_vector_unsigned(const py::object& obj) {
+
+//     // If already iterable (NumPy array, list, tuple)
+//     if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+//         return obj.cast<std::vector<unsigned>>();
+//     }
+
+//     // Otherwise treat as scalar
+//     return { obj.cast<unsigned>() };
+// }
+
+// std::vector<std::string> cast_scalar_or_array_to_vector_string(const py::object& obj) {
+
+//     // If already iterable (NumPy array, list, tuple)
+//     if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+//         return obj.cast<std::vector<std::string>>();
+//     }
+
+//     // Otherwise treat as scalar
+//     return { obj.cast<std::string>() };
+// }
+
+
 // Base class to reduce redundancy
 class BaseSet{
     public:

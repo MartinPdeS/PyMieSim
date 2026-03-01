@@ -2,7 +2,7 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.single.representations import Footprint
 
@@ -16,9 +16,9 @@ def test_photodiode_with_sampling(sampling):
 
     source = Gaussian(
         wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
-        polarization=0 * ureg.degree,  # Polarization value
+        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization value
         optical_power=1 * ureg.watt,  # Optical power in watts
-        NA=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
     )
 
     scatterer =  Sphere(

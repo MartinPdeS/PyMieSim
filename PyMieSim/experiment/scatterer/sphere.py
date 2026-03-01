@@ -5,9 +5,9 @@ import numpy as np
 from PyOptik.material.base_class import BaseMaterial
 
 from PyMieSim.units import Length, RefractiveIndex
-from PyMieSim.binary.interface_experiment import SphereSet
+from PyMieSim.binary.interface_experiment import Sphere as SphereSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
-from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.binary.interface_experiment import BaseSourceSet as BaseSource
 from PyMieSim.experiment.utils import Sequential
 
 class Sphere(BaseScatterer, Sequential):
@@ -20,7 +20,7 @@ class Sphere(BaseScatterer, Sequential):
 
     Parameters
     ----------
-    source : PyMieSim.experiment.source.base.BaseSource
+    source : PyMieSim.binary.interface_experiment.BaseSourceSet
         Light source configuration for the simulation.
     diameter : Length
         Diameter(s) of the spherical scatterers in meters.

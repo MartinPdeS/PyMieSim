@@ -5,29 +5,17 @@
 
 BaseSource::BaseSource(
     double _wavelength,
-    JonesVector polarization_value,
+    PolarizationState _polarization_state,
     double _amplitude
 )
     : wavelength(_wavelength),
-      polarization(std::move(polarization_value)),
+      polarization(_polarization_state),
       amplitude(_amplitude)
 {
     this->update_derived_quantities();
     this->validate_polarization();
 }
 
-BaseSource::BaseSource(
-    double _wavelength,
-    std::vector<complex128> _jones_vector,
-    double _amplitude
-)
-    : BaseSource(
-        _wavelength,
-        jones_vector_to_polarization(std::move(_jones_vector)),
-        _amplitude
-    )
-{
-}
 
 double BaseSource::compute_angular_frequency(double wavelength_meter) const
 {
@@ -55,64 +43,44 @@ void BaseSource::update_derived_quantities()
 
 Planewave::Planewave(
     double _wavelength,
-    JonesVector polarization_value,
+    PolarizationState polarization_state,
     double _amplitude)
-    : BaseSource(_wavelength, std::move(polarization_value), _amplitude)
+    : BaseSource(_wavelength, polarization_state, _amplitude)
 {
 }
 
-Planewave::Planewave(
-    double _wavelength,
-    std::vector<complex128> _jones_vector,
-    double _amplitude)
-    : BaseSource(_wavelength, std::move(_jones_vector), _amplitude)
-{
-}
 
 // ---------------------- Gaussian Implementation ---------------------------------------
 
 Gaussian::Gaussian(
     double _wavelength,
-    JonesVector polarization_value,
-    double _NA,
+    PolarizationState polarization_state,
+    double _numerical_aperture,
     double _optical_power)
-    : BaseSource(_wavelength, std::move(polarization_value), 0.0),
-      NA(_NA),
+    : BaseSource(_wavelength, polarization_state, 0.0),
+      numerical_aperture(_numerical_aperture),
       optical_power(_optical_power)
 {
-    this->amplitude = this->compute_amplitude_from_power(this->wavelength, this->NA, this->optical_power);
+    this->amplitude = this->compute_amplitude_from_power(this->wavelength, this->numerical_aperture, this->optical_power);
 }
 
-Gaussian::Gaussian(
-    double _wavelength,
-    std::vector<complex128> _jones_vector,
-    double _NA,
-    double _optical_power)
-    : Gaussian(
-        _wavelength,
-        jones_vector_to_polarization(std::move(_jones_vector)),
-        _NA,
-        _optical_power
-    )
-{
-}
 
 double Gaussian::compute_amplitude_from_power(
     double wavelength_meter,
-    double NA_value,
+    double numerical_aperture_value,
     double optical_power_watt)
 {
     if (wavelength_meter <= 0.0) {
         throw std::invalid_argument("wavelength must be positive.");
     }
-    if (NA_value <= 0.0) {
-        throw std::invalid_argument("NA must be positive.");
+    if (numerical_aperture_value <= 0.0) {
+        throw std::invalid_argument("Numerical aperture must be positive.");
     }
     if (optical_power_watt <= 0.0) {
         throw std::invalid_argument("optical_power must be positive.");
     }
 
-    this->waist = 0.61 * wavelength_meter / NA_value;
+    this->waist = 0.61 * wavelength_meter / numerical_aperture_value;
     this->peak_intensity = 2.0 * optical_power_watt / (Constants::PI * this->waist * this->waist);
     return std::sqrt( 2.0 * this->peak_intensity / (Constants::LIGHT_SPEED * Constants::EPSILON0) );
 }

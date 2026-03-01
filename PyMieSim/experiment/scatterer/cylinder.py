@@ -5,9 +5,9 @@ from typing import List
 from PyOptik.material.base_class import BaseMaterial
 
 from PyMieSim.units import Length, RefractiveIndex
-from PyMieSim.binary.interface_experiment import InfiniteCylinderSet
+from PyMieSim.binary.interface_experiment import InfiniteCylinder as InfiniteCylinderSet
 from PyMieSim.experiment.scatterer.base import BaseScatterer
-from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.binary.interface_experiment import BaseSourceSet as BaseSource
 from PyMieSim.experiment.utils import Sequential
 
 class InfiniteCylinder(BaseScatterer, Sequential):

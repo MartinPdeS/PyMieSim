@@ -4,7 +4,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.single.scatterer import Sphere, CoreShell
-from PyMieSim.single.source import Gaussian, PlaneWave
+from PyMieSim.single.source import Gaussian, PlaneWave, PolarizationState
 from PyMieSim.single.plottings import SystemPlotter
 
 EPSILON0 = 8.854187817620389e-12 * ureg.farad / ureg.meter
@@ -13,7 +13,7 @@ C0 = 299792458.0 * ureg.meter / ureg.second
 def test_energy_flow_vs_coupling_sphere():
     source = PlaneWave(
         wavelength=750 * ureg.nanometer,
-        polarization=30 * ureg.degree,
+        polarization=PolarizationState(angle=30 * ureg.degree),
         amplitude=1.0 * ureg.volt / ureg.meter,
     )
 

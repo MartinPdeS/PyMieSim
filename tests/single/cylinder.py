@@ -5,7 +5,7 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import Photodiode
 
 refractive_index = [1.5 * ureg.RIU, 1.6 * ureg.RIU]
@@ -34,9 +34,9 @@ attributes = [
 def source():
     return Gaussian(
         wavelength=750 * ureg.nanometer,
-        polarization=0 * ureg.degree,
+        polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
 
@@ -46,7 +46,7 @@ def source():
 )
 def test_cylinder_coupling(refractive_index, medium_refractive_index, source):
     detector = Photodiode(
-        NA=0.2 * ureg.AU,
+        numerical_aperture=0.2 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         medium_refractive_index=1.0 * ureg.RIU
@@ -54,9 +54,9 @@ def test_cylinder_coupling(refractive_index, medium_refractive_index, source):
 
     source = Gaussian(
         wavelength=750 * ureg.nanometer,
-        polarization=0 * ureg.degree,
+        polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
     scatterer = InfiniteCylinder(

@@ -7,7 +7,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PlaneWave
+from PyMieSim.experiment.source import Gaussian, PlaneWave, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -18,16 +18,18 @@ medium_properties = [Material.water, 1.1 * ureg.RIU]
 # List of measures to be tested
 measures = Sphere.available_measure_list
 
+polarization_set = PolarizationSet(angles=0 * ureg.degree)
+
 gaussian_source = Gaussian(
     wavelength=np.linspace(600, 1000, 150) * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_set,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 planewave_source = PlaneWave(
     wavelength=np.linspace(600, 1000, 150) * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_set,
     amplitude=1 * ureg.volt / ureg.meter,
 )
 
@@ -57,11 +59,11 @@ def test_get_measure(source, measure, refractive_index, medium_refractive_index)
     detector = CoherentMode(
         mode_number="LP01",
         rotation=0 * ureg.degree,
-        NA=[0.1] * ureg.AU,
+        numerical_aperture=[0.1] * ureg.AU,
         polarization_filter=None,
         gamma_offset=[0, 1] * ureg.degree,
         phi_offset=0 * ureg.degree,
-        sampling=100 * ureg.AU,
+        sampling=100,
     )
 
     # Set up and run the experiment

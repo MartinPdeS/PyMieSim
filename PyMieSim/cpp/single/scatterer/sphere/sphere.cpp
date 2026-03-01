@@ -240,9 +240,8 @@ Sphere::compute_total_nearfields(
 
     const complex128 i_unit(0.0, 1.0);
 
-    const std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
-    const complex128 E0x = jones_vector[0] * this->source->amplitude;
-    const complex128 E0y = jones_vector[1] * this->source->amplitude;
+    const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
+    const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;
 
     auto clamp_m1_p1_local = [](double value) -> double {
         if (value < -1.0) return -1.0;
@@ -510,9 +509,8 @@ Sphere::compute_scattered_nearfields(
 
     const complex128 i_unit(0.0, 1.0);
 
-    const std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
-    const complex128 E0x = jones_vector[0] * this->source->amplitude;
-    const complex128 E0y = jones_vector[1] * this->source->amplitude;
+    const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
+    const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;
 
     std::function<double(double)>
     clamp_m1_p1_local = [](double value) -> double {

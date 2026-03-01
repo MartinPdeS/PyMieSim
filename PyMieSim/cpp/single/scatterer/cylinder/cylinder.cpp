@@ -55,7 +55,7 @@ double InfiniteCylinder::get_g() const {
 }
 
 double InfiniteCylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
-    std::array<complex128, 2> jones_vector = this->source->get_jones_vector_first_row();
+    std::vector<complex128> jones_vector = this->source->get_jones_vector_first_row();
     complex128
         Ex = jones_vector[0],
         Ey = jones_vector[1];

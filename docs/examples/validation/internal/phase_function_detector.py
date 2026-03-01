@@ -17,7 +17,7 @@ from PyMieSim.experiment import Setup
 
 from PyMieSim.single.representations import S1S2
 from PyMieSim.single.scatterer import Sphere as SingleSphere
-from PyMieSim.single.source import Gaussian as SingleGaussian
+from PyMieSim.single.source import Gaussian as SingleGaussian, PolarizationState
 from MPSPlots.styles import mps
 
 # Setup parameters
@@ -59,7 +59,7 @@ dataframe["coupling"] /= dataframe["coupling"].max()  # Normalize data
 # Single scatterer simulation for S1 and S2
 single_source = SingleGaussian(
     wavelength=source_wavelength,
-    polarization=90 * ureg.degree,
+    polarization=PolarizationState(angle=90 * ureg.degree),
     optical_power=1 * ureg.watt,
     NA=0.2 * ureg.AU,
 )

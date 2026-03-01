@@ -6,7 +6,7 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere, CoreShell
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import IntegratingSphere
 
 
@@ -14,7 +14,7 @@ from PyMieSim.single.detector import IntegratingSphere
 def gaussian_source():
     return Gaussian(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=0 * ureg.degree,  # Polarization angle
+        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
         NA=0.3 * ureg.AU,  # Numerical aperture
     )

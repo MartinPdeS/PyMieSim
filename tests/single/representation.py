@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.representations import FarField, Stokes, SPF, S1S2
 
 representations = [FarField, Stokes, SPF, S1S2]
@@ -23,9 +23,9 @@ def test_plottings(mock_show_plt, mock_show_pyvista, representation):
 
     source = Gaussian(
         wavelength=750 * ureg.nanometer,
-        polarization=0 * ureg.degree,
+        polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(

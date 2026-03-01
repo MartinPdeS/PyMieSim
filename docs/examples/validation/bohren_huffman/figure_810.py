@@ -12,7 +12,7 @@ from PyMieSim.units import ureg
 from MPSPlots.styles import mps
 
 from PyMieSim.directories import validation_data_path
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.representations import S1S2
 
@@ -23,9 +23,11 @@ theoretical = numpy.genfromtxt(
 x = theoretical[:, 0]
 y = theoretical[:, 1]
 
+polarization_state = PolarizationState(angle=90 * ureg.degree)
+
 source = Gaussian(
     wavelength=470 * ureg.nanometer,
-    polarization=90 * ureg.degree,
+    polarization=polarization_state,
     optical_power=1e-3 * ureg.watt,
     NA=0.1 * ureg.AU,
 )
@@ -49,7 +51,7 @@ ax.plot(s1s2.phi, data, "C1-", linewidth=3, label="PyMieSim")
 ax.plot(x - 90, y, "k--", linewidth=1, label="B&H [8.10]")
 
 ax.set(
-    xlabel="scatterertering angle [degree]",
+    xlabel="scattering angle [degree]",
     ylabel="Phase function",
     yscale="log",
 )

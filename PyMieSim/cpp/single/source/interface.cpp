@@ -17,94 +17,6 @@
 
 namespace py = pybind11;
 
-static py::array_t<std::complex<double>> first_row_to_numpy(const JonesVector& polarization)
-{
-    const auto& rows = polarization.elements();
-    if (rows.empty()) {
-        throw std::runtime_error("polarization has no elements.");
-    }
-
-    py::array_t<std::complex<double>> out(2);
-    auto w = out.mutable_unchecked<1>();
-
-    w(0) = rows[0][0];
-    w(1) = rows[0][1];
-
-    return out;
-}
-
-static py::array_t<std::complex<double>> element_to_numpy_2d(const JonesVector& polarization)
-{
-    const auto& rows = polarization.elements();
-    const py::ssize_t n_rows = static_cast<py::ssize_t>(rows.size());
-
-    py::array_t<std::complex<double>> out({n_rows, static_cast<py::ssize_t>(2)});
-    auto w = out.mutable_unchecked<2>();
-
-    for (py::ssize_t i = 0; i < n_rows; ++i) {
-        w(i, 0) = rows[static_cast<std::size_t>(i)][0];
-        w(i, 1) = rows[static_cast<std::size_t>(i)][1];
-    }
-
-    return out;
-}
-
-
-static JonesVector to_cpp_polarization(py::object polarization_like)
-{
-    // Case 1: already a bound C++ JonesVector (or derived) object
-    if (py::isinstance<JonesVector>(polarization_like)) {
-        return polarization_like.cast<JonesVector>();
-    }
-
-    // Case 2 and 3: try to normalize via the existing Python polarization module
-    py::object polarization_mod = py::module_::import("PyMieSim.single.polarization");
-    py::object BasePolarization = polarization_mod.attr("BasePolarization");
-    py::object Linear = polarization_mod.attr("Linear");
-
-    if (!py::isinstance(polarization_like, BasePolarization)) {
-        polarization_like = Linear(polarization_like);
-    }
-
-    // Your Python classes store the Jones matrix in .element (shape (N,2))
-    py::object element_obj = polarization_like.attr("element");
-
-    py::array element_any = py::array::ensure(element_obj);
-    if (!element_any) {
-        throw std::invalid_argument("polarization.element must be array like.");
-    }
-
-    py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> element_arr(element_any);
-
-    if (element_arr.ndim() != 2) {
-        throw std::invalid_argument("polarization.element must be a 2D array with shape (N, 2).");
-    }
-    if (element_arr.shape(1) != 2) {
-        throw std::invalid_argument("polarization.element must have second dimension == 2.");
-    }
-    if (element_arr.shape(0) < 1) {
-        throw std::invalid_argument("polarization.element must have at least one row.");
-    }
-
-    const std::size_t n_rows = static_cast<std::size_t>(element_arr.shape(0));
-    auto r = element_arr.unchecked<2>();
-
-    JonesVector::Element rows;
-    rows.reserve(n_rows);
-
-    for (std::size_t i = 0; i < n_rows; ++i) {
-        rows.push_back(JonesVector::Row{
-            r(static_cast<py::ssize_t>(i), 0),
-            r(static_cast<py::ssize_t>(i), 1),
-        });
-    }
-
-    return JonesVector(std::move(rows));
-}
-
-
-
-
 void register_sources(py::module_& module)
 {
     py::object ureg = get_shared_ureg();
@@ -138,7 +50,7 @@ void register_sources(py::module_& module)
         .def_property_readonly(
             "wavelength",
             [ureg](const BaseSource& self) {
-                return (py::float_(self.wavelength) * ureg.attr("meter")).attr("to_compact")();
+                return (py::float_(self.wavelength) * ureg.attr("meter"));
             },
             R"pbdoc(
                 Wavelength in vacuum.
@@ -179,28 +91,9 @@ void register_sources(py::module_& module)
                     Field amplitude with units of electric field (V/m).
             )pbdoc"
         )
-        .def_property_readonly(
-            "polarization_element",
-            [ureg](const BaseSource& self) {
-                return element_to_numpy_2d(self.polarization);
-            },
-            R"pbdoc(
-                Polarization Jones matrix.
-
-                The polarization is returned as a complex array with shape ``(N, 2)``.
-                Each row corresponds to a Jones vector ``[Ex, Ey]``.
-
-                Returns
-                -------
-                numpy.ndarray
-                    Complex array of shape ``(N, 2)``.
-            )pbdoc"
-        )
-        .def_property_readonly(
-            "jones_vector",
-            [ureg](const BaseSource& self) {
-                return first_row_to_numpy(self.polarization);
-            },
+        .def_readonly(
+            "polarization",
+            &BaseSource::polarization,
             R"pbdoc(
                 Convenience Jones vector.
 
@@ -225,28 +118,18 @@ void register_sources(py::module_& module)
         .def(
             py::init([ureg](
                 py::object wavelength,
-                py::object polarization,
+                PolarizationState polarization,
                 py::object amplitude
             ) {
-                py::object units_mod = py::module_::import("PyMieSim.units");
-                py::object UnitLength = units_mod.attr("Length");
-                py::object UnitAmplitude = units_mod.attr("ElectricField");
-
-                polarization = py::reinterpret_borrow<py::object>(polarization);
-                JonesVector polarization_cpp = to_cpp_polarization(polarization);
-
-                amplitude = UnitAmplitude.attr("check")(amplitude);
-                wavelength = UnitLength.attr("check")(wavelength);
-
                 const double wavelength_meter =
-                    wavelength.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                    wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 const double amplitude_v_per_m =
-                    amplitude.attr("to")(ureg.attr("volt/meter")).attr("magnitude").cast<double>();
+                    amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>();
 
                 return std::make_shared<Planewave>(
                     wavelength_meter,
-                    std::move(polarization_cpp),
+                    polarization,
                     amplitude_v_per_m
                 );
             }),
@@ -294,44 +177,36 @@ void register_sources(py::module_& module)
 
             Notes
             -----
-            The NA is treated as dimensionless and is used to derive the beam waist and
+            The numerical_aperture is treated as dimensionless and is used to derive the beam waist and
             related quantities in the C++ implementation.
         )pbdoc"
         )
         .def(
             py::init([ureg](
                 py::object wavelength,
-                py::object polarization,
-                py::object NA,
+                PolarizationState polarization,
+                py::object numerical_aperture,
                 py::object optical_power
             ) {
-                py::object units_mod = py::module_::import("PyMieSim.units");
-                py::object UnitLength = units_mod.attr("Length");
-
-                polarization = py::reinterpret_borrow<py::object>(polarization);
-                JonesVector polarization_cpp = to_cpp_polarization(polarization);
-
-                wavelength = UnitLength.attr("check")(wavelength);
-
                 const double wavelength_meter =
-                    wavelength.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                    wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
-                const double NA_value =
-                    NA.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                const double numerical_aperture_value =
+                    numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
 
                 const double optical_power_watt =
-                    optical_power.attr("to")(ureg.attr("watt")).attr("magnitude").cast<double>();
+                    optical_power.attr("to")("watt").attr("magnitude").cast<double>();
 
                 return std::make_shared<Gaussian>(
                     wavelength_meter,
-                    std::move(polarization_cpp),
-                    NA_value,
+                    polarization,
+                    numerical_aperture_value,
                     optical_power_watt
                 );
             }),
             py::arg("wavelength"),
             py::arg("polarization"),
-            py::arg("NA"),
+            py::arg("numerical_aperture"),
             py::arg("optical_power"),
             R"pbdoc(
                 Construct a Gaussian beam source.
@@ -343,7 +218,7 @@ void register_sources(py::module_& module)
                 polarization : object
                     Polarization specification. See :class:`~PyMieSim.single.source.PlaneWave`
                     for accepted formats.
-                NA : pint.Quantity
+                numerical_aperture : pint.Quantity
                     Numerical aperture. Must be convertible to a dimensionless quantity.
                 optical_power : pint.Quantity
                     Optical power. Must be convertible to watts.
@@ -397,9 +272,9 @@ void register_sources(py::module_& module)
             )pbdoc"
         )
         .def_property_readonly(
-            "NA",
+            "numerical_aperture",
             [ureg](const Gaussian& self) {
-                return (py::float_(self.NA) * ureg.attr("dimensionless")).attr("to_compact")();
+                return (py::float_(self.numerical_aperture) * ureg.attr("dimensionless")).attr("to_compact")();
             },
             R"pbdoc(
                 Numerical aperture.

@@ -135,3 +135,41 @@ inline pybind11::array_t<T> vector_move_from_numpy(
     }
     return out;
 }
+
+
+namespace py = pybind11;
+typedef std::complex<double> complex128;
+
+std::vector<double> cast_scalar_or_array_to_vector_double(const py::object& obj) {
+
+    // If already iterable (NumPy array, list, tuple)
+    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+        return obj.cast<std::vector<double>>();
+    }
+
+    // Otherwise treat as scalar
+    return { obj.cast<double>() };
+}
+
+
+std::vector<unsigned> cast_scalar_or_array_to_vector_unsigned(const py::object& obj) {
+
+    // If already iterable (NumPy array, list, tuple)
+    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+        return obj.cast<std::vector<unsigned>>();
+    }
+
+    // Otherwise treat as scalar
+    return { obj.cast<unsigned>() };
+}
+
+std::vector<std::string> cast_scalar_or_array_to_vector_string(const py::object& obj) {
+
+    // If already iterable (NumPy array, list, tuple)
+    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+        return obj.cast<std::vector<std::string>>();
+    }
+
+    // Otherwise treat as scalar
+    return { obj.cast<std::string>() };
+}

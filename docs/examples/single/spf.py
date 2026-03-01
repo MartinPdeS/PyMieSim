@@ -10,13 +10,14 @@ This example demonstrates the computation and visualization of the Scattering Ph
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import CoreShell
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, RightCircular
 from PyMieSim.single.representations import SPF
-from PyMieSim.single.polarization import RightCircular
+
+polarization = RightCircular()
 
 source = Gaussian(
     wavelength=1000 * ureg.nanometer,
-    polarization=RightCircular(),
+    polarization=polarization,
     optical_power=1 * ureg.watt,
     NA=0.3 * ureg.AU,
 )

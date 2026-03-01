@@ -18,7 +18,7 @@ public:
     double wavelength = 0.0;
 
     // Replace raw Jones vector storage with a polarization object.
-    JonesVector polarization;
+    PolarizationState polarization;
 
     double amplitude = 0.0;
     double wavenumber_vacuum = 0.0;
@@ -31,19 +31,15 @@ public:
     virtual ~BaseSource() = default;
 
     // New canonical constructor
-    BaseSource(double wavelength_meter, JonesVector polarization_value, double amplitude_value);
+    BaseSource(double wavelength_meter, PolarizationState polarization_value, double amplitude_value);
 
     // Optional backward compatible constructor for existing call sites
     BaseSource(double wavelength_meter, std::vector<complex128> jones_vector, double amplitude_value);
 
     // Convenience: first row Jones vector as [Ex, Ey]
-    std::array<complex128, 2> get_jones_vector_first_row() const
+    std::vector<complex128> get_jones_vector_first_row() const
     {
-        const auto& rows = this->polarization.elements();
-        if (rows.empty())
-            throw std::runtime_error("polarization has no elements.");
-
-        return rows[0];
+        return this->polarization.jones_vector;
     }
 
 protected:
@@ -55,29 +51,11 @@ protected:
 
     void validate_polarization() const
     {
-        // In your Python model, element is (N, 2). We enforce at least one row.
-        const auto& rows = this->polarization.elements();
-
-        if (rows.empty()) {
-            throw std::invalid_argument("polarization must contain at least one Jones vector row.");
-        }
-
-        // Also enforce finite values
-        const auto v = rows[0];
-        if (!std::isfinite(v[0].real()) || !std::isfinite(v[0].imag()) ||
-            !std::isfinite(v[1].real()) || !std::isfinite(v[1].imag())) {
+        auto row = this->polarization.jones_vector;
+        if (!std::isfinite(row[0].real()) || !std::isfinite(row[0].imag()) ||
+            !std::isfinite(row[1].real()) || !std::isfinite(row[1].imag())) {
             throw std::invalid_argument("polarization contains non finite values.");
         }
-    }
-
-    static JonesVector jones_vector_to_polarization(std::vector<complex128> jones_vector)
-    {
-        if (jones_vector.size() != 2) {
-            throw std::invalid_argument("jones_vector must have exactly 2 components [Ex, Ey].");
-        }
-
-        JonesVector::Row row{jones_vector[0], jones_vector[1]};
-        return JonesVector(row);
     }
 };
 
@@ -88,21 +66,15 @@ public:
     // New canonical constructor
     Planewave(
         double wavelength_meter,
-        JonesVector polarization_value,
+        PolarizationState polarization_state,
         double amplitude_value
     );
 
-    // Optional backward compatible constructor
-    Planewave(
-        double wavelength_meter,
-        std::vector<complex128> jones_vector,
-        double amplitude_value
-    );
 };
 
 class Gaussian : public BaseSource {
 public:
-    double NA = 0.0;
+    double numerical_aperture = 0.0;
     double optical_power = 0.0;
     double waist = 0.0;
     double peak_intensity = 0.0;
@@ -112,25 +84,18 @@ public:
 
     Gaussian(
         double wavelength_meter,
-        JonesVector polarization_value,
-        double NA_value,
-        double optical_power_watt
-    );
-
-    Gaussian(
-        double wavelength_meter,
-        std::vector<complex128> jones_vector,
-        double NA_value,
+        PolarizationState polarization_state,
+        double numerical_aperture_value,
         double optical_power_watt
     );
 
     /*
-    @brief Compute the amplitude from optical power, wavelength, and NA.
+    @brief Compute the amplitude from optical power, wavelength, and numerical aperture.
     @param wavelength_meter Wavelength in meters.
-    @param NA_value Numerical aperture (dimensionless).
+    @param numerical_aperture_value Numerical aperture (dimensionless).
     @param optical_power_watt Optical power in watts.
     @return Amplitude in V/m.
     @throws std::invalid_argument if any parameter is non-positive.
     */
-    double compute_amplitude_from_power(double wavelength_meter, double NA_value, double optical_power_watt);
+    double compute_amplitude_from_power(double wavelength_meter, double numerical_aperture_value, double optical_power_watt);
 };

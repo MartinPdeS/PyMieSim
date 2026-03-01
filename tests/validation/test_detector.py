@@ -19,7 +19,7 @@ def source_single():
     """
     return single.source.Gaussian(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters (e.g., 1 micron)
-        polarization=0 * ureg.degree,  # Polarization angle
+        polarization=single.source.PolarizationState(angle=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
         NA=0.3 * ureg.AU,  # Numerical aperture
     )

@@ -4,7 +4,6 @@ from PyMieSim.units import ureg
 from typing import Union, Optional, List
 import numpy
 import pandas as pd
-from pydantic.dataclasses import dataclass
 
 from PyMieSim.binary.interface_experiment import SETUP
 from PyMieSim.experiment.scatterer import Sphere, InfiniteCylinder, CoreShell
@@ -60,12 +59,6 @@ class Setup(SETUP):
             debug_mode=PyMieSim.debug_mode,
         )
 
-
-    def _generate_mapping(self) -> None:
-        self.source._generate_mapping()
-        self.scatterer._generate_mapping()
-        self.detector._generate_mapping()
-
     def get_sequential(self, measure: str) -> numpy.ndarray:
         """
         Executes the simulation to compute and retrieve the specified measures in a sequential manner contrary to the standard get function.
@@ -86,8 +79,8 @@ class Setup(SETUP):
         # Compute the values using the binding method
         return getattr(self, method_name)(
             scatterer_set=self.scatterer.set,
-            source_set=self.source.set,
-            detector_set=self.detector.set,
+            source_set=self.source,
+            detector_set=self.detector,
         )
 
     def get(
@@ -185,8 +178,8 @@ class Setup(SETUP):
 
             array = method(
                 scatterer_set=self.scatterer.set,
-                source_set=self.source.set,
-                detector_set=self.detector.set,
+                source_set=self.source,
+                detector_set=self.detector,
             )
 
             output_array.append(array)
@@ -222,8 +215,8 @@ class Setup(SETUP):
             # Compute the values using the binding method
             array = getattr(self, method_name)(
                 scatterer_set=self.scatterer.set,
-                source_set=self.source.set,
-                detector_set=self.detector.set,
+                source_set=self.source,
+                detector_set=self.detector,
             )
 
             # Determine the unit based on the measure type
@@ -349,16 +342,16 @@ class Setup(SETUP):
         pd.DataFrame
             A DataFrame with a MultiIndex created from the experiment mappings.
         """
-        self._generate_mapping()
+        self.scatterer._generate_mapping()
 
         iterables = dict()
 
-        iterables.update(self.source.mapping)
+        iterables.update(self.source.get_mapping())
 
         iterables.update(self.scatterer.mapping)
 
         if self.detector is not None:
-            iterables.update(self.detector.mapping)
+            iterables.update(self.detector.get_mapping())
 
         if drop_unique_level:
             _iterables = {k: v for k, v in iterables.items() if len(v) > 1}

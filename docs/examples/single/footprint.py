@@ -7,16 +7,17 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 # Import necessary components from PyMieSim
 from PyMieSim.units import ureg
-from PyOptik import Material
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.representations import Footprint
+
+polarization_state = PolarizationState(angle=0 * ureg.degree)
 
 source = Gaussian(
     wavelength=1 * ureg.micrometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_state,
     optical_power=1 * ureg.watt,
     NA=0.3 * ureg.AU,
 )

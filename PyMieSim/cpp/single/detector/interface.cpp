@@ -28,7 +28,7 @@ void register_detector(py::module_& module) {
     // ------------------ Bindings for Photodiodes ------------------
     py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BASE_DETECTOR")
         .def_property_readonly(
-            "NA",
+            "numerical_aperture",
             [ureg](BaseDetector& self) {
                 return py::float_(self.numerical_aperture) * ureg.attr("dimensionless");
             },
@@ -310,10 +310,10 @@ void register_detector(py::module_& module) {
                 ----------
                 sampling : int
                     Number of sample points on the detector's angular mesh.
-                NA : float
+                numerical_aperture : float
                     Numerical aperture of the detector; controls the angular acceptance.
-                cache_NA : float
-                    Cached NA threshold for fast lookup (set equal to `NA` to disable).
+                cache_numerical_aperture : float
+                    Cached numerical_aperture threshold for fast lookup (set equal to `numerical_aperture` to disable).
                 phi_offset : float
                     Azimuthal angle offset (radians) for detector orientation.
                 gamma_offset : float
@@ -327,7 +327,7 @@ void register_detector(py::module_& module) {
                 ----------
                 scalar_field : numpy.ndarray
                     The detected scalar field (intensity) sampled on the angular mesh.
-                NA : float[Dimensionless]
+                numerical_aperture : float[Dimensionless]
                     Numerical aperture exposed as a read-only property.
                 sampling : int
                     Sampling count exposed as a read-only property.
@@ -348,12 +348,12 @@ void register_detector(py::module_& module) {
         .def(
             py::init(
                 [ureg](
-                    py::object NA,
+                    py::object numerical_aperture,
                     py::object phi_offset,
                     py::object gamma_offset,
                     py::object medium_refractive_index,
                     py::object polarization_filter,
-                    py::object cache_NA,
+                    py::object cache_numerical_aperture,
                     std::size_t sampling
                 ) {
                     py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
@@ -361,11 +361,11 @@ void register_detector(py::module_& module) {
                     py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
 
 
-                    NA = units_dimensionless.attr("check")(NA);
+                    numerical_aperture = units_dimensionless.attr("check")(numerical_aperture);
 
                     polarization_filter = units_angle.attr("check")(polarization_filter);
 
-                    cache_NA = units_dimensionless.attr("check")(cache_NA);
+                    cache_numerical_aperture = units_dimensionless.attr("check")(cache_numerical_aperture);
                     phi_offset = units_angle.attr("check")(phi_offset);
                     gamma_offset = units_angle.attr("check")(gamma_offset);
                     medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
@@ -376,14 +376,14 @@ void register_detector(py::module_& module) {
                         polarization_filter = py::float_(std::nan("")) * units_angle;
                     }
 
-                    if (!cache_NA.is(py::none())) {
-                        units_dimensionless.attr("check")(cache_NA);
+                    if (!cache_numerical_aperture.is(py::none())) {
+                        units_dimensionless.attr("check")(cache_numerical_aperture);
                     } else {
-                        cache_NA = py::float_(0.0) * units_dimensionless;
+                        cache_numerical_aperture = py::float_(0.0) * units_dimensionless;
                     }
 
-                    double NA_value = NA.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
-                    double cache_NA_value = cache_NA.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                    double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
@@ -391,17 +391,17 @@ void register_detector(py::module_& module) {
 
                     if (medium_refractive_index_value <= 0.0)
                         throw std::runtime_error("Medium refractive index must be positive and non-zero.");
-                    if (NA_value < 0.0)
+                    if (numerical_aperture_value < 0.0)
                         throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
-                    if (NA_value >= medium_refractive_index_value)
+                    if (numerical_aperture_value >= medium_refractive_index_value)
                         throw std::runtime_error("Numerical aperture (NA) must be less than the medium refractive index.");
-                    if (NA_value > 0.342)
+                    if (numerical_aperture_value > 0.342)
                         printf("Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n");
 
                     return std::make_shared<Photodiode>(
                         sampling,
-                        NA_value,
-                        cache_NA_value,
+                        numerical_aperture_value,
+                        cache_numerical_aperture_value,
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
@@ -409,19 +409,19 @@ void register_detector(py::module_& module) {
                     );
                 }
             ),
-            py::arg("NA"),
+            py::arg("numerical_aperture"),
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
-            py::arg("cache_NA") = py::float_(0.0) * ureg.attr("dimensionless"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("dimensionless"),
             py::arg("sampling") = 200,
             R"pbdoc(
             Photodiode class representing a photodiode with a coherent light coupling mechanism.
             This means it is dependent on the phase of the impinging scattered light field.
             Parameters
             ----------
-            NA : Dimensionless
+            numerical_aperture : Dimensionless
                 Numerical aperture of the imaging system.
             gamma_offset : Angle
                 Angle [Degree] offset of the detector in the direction perpendicular to polarization.
@@ -431,7 +431,7 @@ void register_detector(py::module_& module) {
                 Sampling rate of the far-field distribution. Default is 200.
             polarization_filter : Optional[Angle]
                 Angle [Degree] of the polarization filter in front of the detector.
-            cache_NA : Optional[Dimensionless]
+            cache_numerical_aperture : Optional[Dimensionless]
                 Numerical aperture of the detector cache. Default is 0 AU.
             medium_refractive_index : RefractiveIndex
                 The refractive index of the medium in which the detector operates. This is important for
@@ -462,10 +462,10 @@ void register_detector(py::module_& module) {
                     Identifier for the detector mode (e.g. '0', '1', ...).
                 sampling : int
                     Number of sample points on the detector's angular mesh.
-                NA : float
+                numerical_aperture : float
                     Numerical aperture of the detector; controls the angular acceptance.
-                cache_NA : float
-                    Cached NA threshold for fast lookup (set equal to `NA` to disable).
+                cache_numerical_aperture : float
+                    Cached numerical aperture threshold for fast lookup (set equal to `numerical_aperture` to disable).
                 phi_offset : float
                     Azimuthal angle offset (radians) for detector orientation.
                 gamma_offset : float
@@ -483,7 +483,7 @@ void register_detector(py::module_& module) {
                 ----------
                 scalar_field : numpy.ndarray
                     The detected scalar field (intensity) sampled on the angular mesh.
-                NA : float[Dimensionless]
+                numerical_aperture : float[Dimensionless]
                     Numerical aperture exposed as a read-only property.
                 sampling : int
                     Sampling count exposed as a read-only property.
@@ -507,12 +507,12 @@ void register_detector(py::module_& module) {
             py::init(
                 [ureg](
                     std::string mode_number,
-                    py::object NA,
+                    py::object numerical_aperture,
                     py::object phi_offset,
                     py::object gamma_offset,
                     py::object rotation,
                     py::object medium_refractive_index,
-                    py::object cache_NA,
+                    py::object cache_numerical_aperture,
                     py::object polarization_filter,
                     py::object mean_coupling,
                     std::size_t sampling
@@ -522,11 +522,11 @@ void register_detector(py::module_& module) {
                     py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
 
 
-                    NA = units_dimensionless.attr("check")(NA);
+                    numerical_aperture = units_dimensionless.attr("check")(numerical_aperture);
 
                     polarization_filter = units_angle.attr("check")(polarization_filter);
 
-                    cache_NA = units_dimensionless.attr("check")(cache_NA);
+                    cache_numerical_aperture = units_dimensionless.attr("check")(cache_numerical_aperture);
                     phi_offset = units_angle.attr("check")(phi_offset);
                     gamma_offset = units_angle.attr("check")(gamma_offset);
                     medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
@@ -537,13 +537,13 @@ void register_detector(py::module_& module) {
                     else
                         polarization_filter = py::float_(std::nan("")) * units_angle;
 
-                    if (!cache_NA.is(py::none()))
-                        units_dimensionless.attr("check")(cache_NA);
+                    if (!cache_numerical_aperture.is(py::none()))
+                        units_dimensionless.attr("check")(cache_numerical_aperture);
                     else
-                        cache_NA = py::float_(0.0) * units_dimensionless;
+                        cache_numerical_aperture = py::float_(0.0) * units_dimensionless;
 
-                    double NA_value = NA.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
-                    double cache_NA_value = cache_NA.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                    double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
@@ -553,18 +553,18 @@ void register_detector(py::module_& module) {
 
                     if (medium_refractive_index_value <= 0.0)
                         throw std::runtime_error("Medium refractive index must be positive and non-zero.");
-                    if (NA_value < 0.0)
+                    if (numerical_aperture_value < 0.0)
                         throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
-                    if (NA_value >= medium_refractive_index_value)
+                    if (numerical_aperture_value >= medium_refractive_index_value)
                         throw std::runtime_error("Numerical aperture (NA) must be less than the medium refractive index.");
-                    if (NA_value > 0.342)
+                    if (numerical_aperture_value > 0.342)
                         printf("Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n");
 
                     return std::make_shared<CoherentMode>(
                         mode_number,
                         sampling,
-                        NA_value,
-                        cache_NA_value,
+                        numerical_aperture_value,
+                        cache_numerical_aperture_value,
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
@@ -575,12 +575,12 @@ void register_detector(py::module_& module) {
                 }
             ),
             py::arg("mode_number"),
-            py::arg("NA"),
+            py::arg("numerical_aperture"),
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("rotation"),
             py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
-            py::arg("cache_NA") = py::float_(0.0) * ureg.attr("dimensionless"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("dimensionless"),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
             py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
@@ -590,7 +590,7 @@ void register_detector(py::module_& module) {
 
             Parameters
             ----------
-            NA : Dimensionless
+            numerical_aperture : Dimensionless
                 Numerical aperture of the imaging system.
             gamma_offset : Angle
                 Angle [Degree] offset of the detector in the direction perpendicular to polarization.
@@ -600,7 +600,7 @@ void register_detector(py::module_& module) {
                 Sampling rate of the far-field distribution. Default is 200.
             polarization_filter : Optional[Angle]
                 Angle [Degree] of the polarization filter in front of the detector.
-            cache_NA : Optional[Dimensionless]
+            cache_numerical_aperture : Optional[Dimensionless]
                 Numerical aperture of the detector cache. Default is 0 AU.
             mean_coupling : bool
                 Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
@@ -640,7 +640,7 @@ void register_detector(py::module_& module) {
 
             Notes
             -----
-            - NA is not used by this detector.
+            - numerical_aperture is not used by this detector.
             - The mesh still has phi_offset and gamma_offset to rotate the sampling pattern.
             - If the underlying C++ detector applies interface physics via SnellFresnelInterface,
             that remains active; otherwise it behaves as an ideal 4π collector.

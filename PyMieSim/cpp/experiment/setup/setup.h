@@ -9,7 +9,11 @@
 #include "single/scatterer/coreshell/coreshell.h"
 #include "single/source/source.h"
 #include "single/detector/detector.h"
-#include "experiment/sets/sets.cpp"
+
+#include "experiment/sets/source_set/source_set.h"
+#include "experiment/sets/scatterer_set/scatterer_set.h"
+#include "experiment/sets/detector_set/detector_set.h"
+#include "experiment/sets/properties_set/properties_set.h"
 
 class Setup
 {

@@ -6,7 +6,7 @@ import numpy as np
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 
 
 # Reference values from Scott Prahl's Mie scattering database
@@ -25,12 +25,12 @@ def test_validation_scott_prahl(measure_str):
     Validate PyMieSim results against known values from Scott Prahl's Mie scattering database.
 
     Parameters:
-        measure_str (str): The scattering refractive_index to validate (e.g., 'Qsca', 'Qext', 'g').
+        measure_str (str): The scattering parameter to validate (e.g., 'Qsca', 'Qext', 'g').
     """
     # Create a Gaussian light source
     source = Gaussian(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters (e.g., 1 micron)
-        polarization=0 * ureg.degree,  # Polarization angle
+        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
         NA=0.3 * ureg.AU,  # Numerical aperture
     )
@@ -45,7 +45,7 @@ def test_validation_scott_prahl(measure_str):
 
     # Retrieve the reference value from Scott Prahl's data
     scott_prahl_value = scott_prahl_values[measure_str]
-    # Retrieve the corresponding PyMieSim value for the same scattering refractive_index
+    # Retrieve the corresponding PyMieSim value for the same scattering parameter
     pymiesim_value = getattr(scatterer, measure_str)
 
     # Compare the PyMieSim value to the reference value with a relative tolerance of 0.1%
