@@ -70,7 +70,7 @@ void PhotodiodeSet::validate_sequential_data(const size_t expected_size) const {
 
 std::shared_ptr<BaseDetector>
 PhotodiodeSet::get_detector_by_index_sequential(size_t index) const {
-    return std::make_shared<Photodiode>(
+    std::shared_ptr<Photodiode> detector = std::make_shared<Photodiode>(
         this->sampling[index],
         this->numerical_aperture[index],
         this->cache_numerical_aperture[index],
@@ -79,6 +79,8 @@ PhotodiodeSet::get_detector_by_index_sequential(size_t index) const {
         this->polarization_filter[index],
         this->medium_refractive_index[index]
     );
+    detector->indices = {index};
+    return detector;
 }
 
 
@@ -109,6 +111,11 @@ CoherentModeSet::CoherentModeSet(
     medium_refractive_index(medium_refractive_index),
     mean_coupling(mean_coupling)
     {
+        for (std::string mode_number : mode_numbers) {
+            if (mode_number.size() < 4 || !std::isalpha(mode_number[0]) || !std::isalpha(mode_number[1]) || !std::isdigit(mode_number[2]) || !std::isdigit(mode_number[3])) {
+                throw std::invalid_argument("Invalid mode number format: " + mode_number + ". Expected format like 'LP01', 'HG12', etc.");
+            }
+        }
         this->is_sequential = is_sequential;
         this->is_empty = false;
         this->update_shape();
@@ -166,7 +173,7 @@ void CoherentModeSet::validate_sequential_data(const size_t expected_size) const
 
 std::shared_ptr<BaseDetector>
 CoherentModeSet::get_detector_by_index_sequential(size_t index) const {
-    return std::make_shared<CoherentMode>(
+    std::shared_ptr<CoherentMode> detector = std::make_shared<CoherentMode>(
         this->mode_numbers[index],
         this->sampling[index],
         this->numerical_aperture[index],
@@ -178,5 +185,7 @@ CoherentModeSet::get_detector_by_index_sequential(size_t index) const {
         this->mean_coupling,
         this->medium_refractive_index[index]
     );
-}
 
+    detector->indices = {index};
+    return detector;
+}

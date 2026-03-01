@@ -14,19 +14,11 @@ from PyMieSim.binary.interface_experiment import PhotodiodeSet
 import PyMieSim
 
 
-class EmptyDetector:
-    def __init__(self):
-        self.set = PhotodiodeSet()
-        self.mapping = {}
-
-    def _generate_binding(self, *args, **kwargs):
-        pass
-
-    def _generate_mapping(self, *args, **kwargs):
-        pass
+class EmptyDetector(PhotodiodeSet):
+    pass
 
 
-# @dataclass
+
 class Setup(SETUP):
     """
     Orchestrates the setup and execution of light scattering experiments using PyMieSim.
@@ -350,7 +342,7 @@ class Setup(SETUP):
 
         iterables.update(self.scatterer.mapping)
 
-        if self.detector is not None:
+        if not isinstance(self.detector, EmptyDetector):
             iterables.update(self.detector.get_mapping())
 
         if drop_unique_level:

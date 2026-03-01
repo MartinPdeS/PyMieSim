@@ -1,8 +1,8 @@
 #pragma once
 
 #include "experiment/sets/base_set.h"
+#include "experiment/sets/polarization_set/polarization_set.h"
 #include "single/source/source.h"
-#include "./polarization_set.h"
 
 using complex128 = std::complex<double>;
 
@@ -17,6 +17,7 @@ public:
     std::vector<double> amplitude;
 
     BaseSourceSet() = default;
+
     virtual ~BaseSourceSet() = default;
 
     virtual std::shared_ptr<BaseSource> get_source_by_index(const size_t) const = 0;
@@ -26,7 +27,7 @@ public:
     virtual void validate_sequential_data(const size_t) const = 0;
 };
 
-
+#include <iostream>
 class GaussianSourceSet : public BaseSourceSet
 {
 public:

@@ -3,22 +3,11 @@ Goniometric Coupling vs S1 S2 Comparison
 ========================================
 
 """
-
-# Standard library imports
 import numpy as np
 import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
+from PyMieSim import single, experiment
 
-# PyMieSim imports
-from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Sphere as ExperimentSphere
-from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
-from PyMieSim.experiment import Setup
-
-from PyMieSim.single.representations import S1S2
-from PyMieSim.single.scatterer import Sphere as SingleSphere
-from PyMieSim.single.source import Gaussian as SingleGaussian, PolarizationState
-from MPSPlots.styles import mps
 
 # Setup parameters
 scatterer_diameter = 0.3 * ureg.micrometer  # Diameter of the scatterer in meters
@@ -26,14 +15,14 @@ scatterer_index = 1.4 * ureg.RIU  # Refractive index of the scatterer
 source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
 # Experiment source and scatterer setup
-source = ExperimentGaussian(
+source = experiment.source.Gaussian(
     wavelength=1.2 * ureg.micrometer,
-    polarization=[0, 90] * ureg.degree,
+    polarization=experiment.source.PolarizationSet(angles=[0, 90] * ureg.degree),
     optical_power=1 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
-scatterer = ExperimentSphere(
+scatterer = experiment.scatterer.Sphere(
     diameter=scatterer_diameter,
     refractive_index=scatterer_index,
     medium_refractive_index=1.0 * ureg.RIU,
@@ -41,15 +30,15 @@ scatterer = ExperimentSphere(
 )
 
 # Detector setup
-detector = Photodiode(
-    NA=[0.1] * ureg.AU,
+detector = experiment.detector.Photodiode(
+    numerical_aperture=[0.1] * ureg.AU,
     phi_offset=np.linspace(-180, 180, 100) * ureg.degree,
     gamma_offset=0.0 * ureg.degree,
-    sampling=1000 * ureg.AU,
+    sampling=1000
 )
 
 # Configure experiment
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = experiment.Setup(scatterer=scatterer, source=source, detector=detector)
 
 # Gather data
 dataframe = experiment.get("coupling", drop_unique_level=True)
@@ -57,19 +46,21 @@ dataframe = experiment.get("coupling", drop_unique_level=True)
 dataframe["coupling"] /= dataframe["coupling"].max()  # Normalize data
 
 # Single scatterer simulation for S1 and S2
-single_source = SingleGaussian(
+single_source = single.source.Gaussian(
     wavelength=source_wavelength,
-    polarization=PolarizationState(angle=90 * ureg.degree),
+    polarization=single.source.PolarizationState(angle=90 * ureg.degree),
     optical_power=1 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
-single_scatterer = SingleSphere(
+single_scatterer = single.scatterer.Sphere(
     diameter=scatterer_diameter,
     source=single_source,
     refractive_index=scatterer_index,
     medium_refractive_index=1.0 * ureg.RIU,
 )
+
+from PyMieSim.single.representations import S1S2
 
 s1s2 = S1S2(scatterer=single_scatterer, sampling=800)
 phi, s1, s2 = s1s2.phi, np.abs(s1s2.S1) ** 2, np.abs(s1s2.S2) ** 2
@@ -77,8 +68,7 @@ s1 /= s1.max()  # Normalize S1 data
 s2 /= s2.max()  # Normalize S2 data
 
 
-with plt.style.context(mps):
-    figure, ax0 = plt.subplots(1, 1, subplot_kw=dict(projection="polar"))
+figure, ax0 = plt.subplots(1, 1, subplot_kw=dict(projection="polar"))
 
 
 df = (

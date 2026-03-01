@@ -22,9 +22,6 @@ public:
 };
 
 
-
-
-
 // Sphere class inheriting from BaseSet
 class SphereSet : public ScattererSet
 {
@@ -34,6 +31,32 @@ public:
         "property",
         "medium_property"
     };
+    std::vector<std::string> available_measure_list = {
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Qratio",
+        "Qforward",
+        "Qback",
+        "Qpr",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "Cratio",
+        "Cforward",
+        "Cback",
+        "Cpr",
+        "a1",
+        "a2",
+        "a3",
+        "b1",
+        "b2",
+        "b3",
+        "g",
+        "coupling",
+    };
+
+
     std::vector<double> diameter;
     ScattererProperties property;
     MediumProperties medium_property;
@@ -67,6 +90,28 @@ public:
         "diameter",
         "property",
         "medium_property"
+    };
+
+    std::vector<std::string> available_measure_list = {
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "a11",
+        "a21",
+        "a12",
+        "a22",
+        "a13",
+        "a23",
+        "b11",
+        "b21",
+        "b12",
+        "b22",
+        "b13",
+        "b23",
+        "coupling",
     };
     std::vector<double> diameter;
     ScattererProperties property;
@@ -105,6 +150,32 @@ public:
         "shell_property",
         "medium_property"
     };
+
+    std::vector<std::string> available_measure_list = {
+        "Qsca",
+        "Qext",
+        "Qabs",
+        "Qratio",
+        "Qforward",
+        "Qback",
+        "Qpr",
+        "Csca",
+        "Cext",
+        "Cabs",
+        "Cratio",
+        "Cforward",
+        "Cback",
+        "Cpr",
+        "a1",
+        "a2",
+        "a3",
+        "b1",
+        "b2",
+        "b3",
+        "g",
+        "coupling",
+    };
+
     std::vector<double> core_diameter;
     std::vector<double> shell_thickness;
     ScattererProperties core_property;

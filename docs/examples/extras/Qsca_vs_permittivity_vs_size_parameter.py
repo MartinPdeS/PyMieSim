@@ -15,9 +15,12 @@ from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 
+polarization_state = PolarizationSet(
+    angles=90 * ureg.degree,  # Linear polarization at 90 degrees
+)
 
 permitivity = numpy.linspace(-10, 50, 400)
 
@@ -27,9 +30,9 @@ diameter = numpy.linspace(1, 200, 400) * ureg.nanometer
 
 source = Gaussian(
     wavelength=400 * ureg.nanometer,
-    polarization=90 * ureg.degree,
+    polarization=polarization_state,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 

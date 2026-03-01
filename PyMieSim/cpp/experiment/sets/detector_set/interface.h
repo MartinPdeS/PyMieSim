@@ -29,9 +29,9 @@ void register_detector_set(py::module& module) {
                 ) {
                     std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
 
-                    std::vector<double> NA_value = cast_scalar_or_array_to_vector_double(NA.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector_double(NA.attr("to")("dimensionless").attr("magnitude"));
 
-                    std::vector<double> cache_NA_value = cast_scalar_or_array_to_vector_double(cache_NA.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector_double(cache_NA.attr("to")("dimensionless").attr("magnitude"));
 
                     std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
 
@@ -39,7 +39,7 @@ void register_detector_set(py::module& module) {
 
                     std::vector<double> polarization_filter_value;
                     if (polarization_filter.is_none()) {
-                        polarization_filter_value = std::vector<double>(sampling_value.size(), 0.0);
+                        polarization_filter_value = std::vector<double>(sampling_value.size(), std::nan(""));
                     } else {
                         polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
@@ -47,8 +47,8 @@ void register_detector_set(py::module& module) {
 
                     return std::make_shared<PhotodiodeSet>(
                         sampling_value,
-                        NA_value,
-                        cache_NA_value,
+                        numerical_aperture_value,
+                        cache_numerical_aperture_value,
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
@@ -57,11 +57,11 @@ void register_detector_set(py::module& module) {
                     );
                 }
             ),
-            py::arg("NA"),
+            py::arg("numerical_aperture"),
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("sampling") = py::int_(200),
-            py::arg("cache_NA") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
             py::arg("polarization_filter") = py::none(),
             py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
             py::arg("is_sequential") = false,
@@ -70,7 +70,7 @@ void register_detector_set(py::module& module) {
 
                 Parameters
                 ----------
-                NA : float or array-like
+                numerical_aperture : float or array-like
                     Numerical aperture of the photodiode detector. Can be a single value or an array of values for multiple detectors.
                 phi_offset : float or array-like
                     Azimuthal angle offset of the photodiode detector in radians. Can be a single value or an array of values for multiple detectors.
@@ -78,7 +78,7 @@ void register_detector_set(py::module& module) {
                     Polar angle offset of the photodiode detector in radians. Can be a single value or an array of values for multiple detectors.
                 sampling : int or array-like, optional
                     Number of sampling points for the photodiode detector. Can be a single value or an array of values for multiple detectors. Default is 200.
-                cache_NA : float or array-like, optional
+                cache_numerical_aperture : float or array-like, optional
                     Numerical aperture value used for caching the photodiode detector's response. Can be a single value or an array of values for multiple detectors. Default is 0.0.          polarization_filter : float or array-like, optional
                 polarization_filter : float or array-like, optional
                     Polarization filter angle for the photodiode detector in radians. Can be a single value or an array of values for multiple detectors. Default is None (no polarization filter).
@@ -167,10 +167,9 @@ void register_detector_set(py::module& module) {
 
                     std::vector<double> polarization_filter_value;
                     if (polarization_filter.is_none()) {
-                        polarization_filter_value = std::vector<double>(1, std::numeric_limits<double>::quiet_NaN());
-                    }
-                    else {
-                        polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("dimensionless").attr("magnitude"));
+                        polarization_filter_value = std::vector<double>(sampling_value.size(), std::nan(""));
+                    } else {
+                        polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
 
                     std::vector<double> medium_refractive_index_value = cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));

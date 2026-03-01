@@ -19,7 +19,7 @@ source = Gaussian(
     wavelength=1000 * ureg.nanometer,  # 1000 nm
     polarization=polarization,
     optical_power=1 * ureg.watt,  # Arbitrary units
-    NA=0.3 * ureg.AU,  # Numerical Aperture
+    numerical_aperture=0.3 * ureg.AU,  # Numerical Aperture
 )
 
 scatterer = Sphere(

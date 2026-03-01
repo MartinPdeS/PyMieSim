@@ -35,7 +35,6 @@ public:
     double min_angle = 0.0;
     std::vector<complex128> scalar_field;
     FibonacciMesh fibonacci_mesh;
-    bool is_coherent = true;
 
     ModeID mode_id;
     ModeField mode_field;
@@ -148,6 +147,24 @@ public:
      */
     double get_energy_flow(const BaseScatterer& scatterer) const;
 
+    /**
+     * @brief Prints the properties of the detector with a specified precision.
+     * @param precision The number of decimal places to display for floating-point values.
+     */
+    void print_properties(int precision = 4) const {
+        printf("Detector Properties:\n");
+        // printf("  Mode Number: %s\n", this->mode_number.c_str());
+        printf("  Sampling: %zu\n", this->sampling);
+        printf("  Numerical Aperture: %.*f\n", precision, this->numerical_aperture);
+        printf("  Cache Numerical Aperture: %.*f\n", precision, this->cache_numerical_aperture);
+        printf("  Phi Offset (radians): %.*f\n", precision, this->phi_offset);
+        printf("  Gamma Offset (radians): %.*f\n", precision, this->gamma_offset);
+        printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
+        printf("  Medium Refractive Index: %.*f\n", precision, this->medium_refractive_index);
+        printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
+        printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
+    }
+
 private:
     static inline double clamp_m1_p1(double x) {
         return std::max(-1.0, std::min(1.0, x));
@@ -158,7 +175,6 @@ private:
 class Photodiode : public BaseDetector {
 public:
     std::string mode_number;
-    bool is_coherent = true;
 
 public:
     Photodiode() = default;
@@ -185,7 +201,6 @@ public:
         mode_number("NC00")
     {
 
-        this->is_coherent = false;
         this->initialize();
     }
 
@@ -243,21 +258,6 @@ private:
      */
     template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
 
-public:
-    void print_properties(int precision) const {
-        printf("Photodiode Detector Properties:\n");
-        printf("  Mode Number: %s\n", this->mode_number.c_str());
-        printf("  Sampling: %zu\n", this->sampling);
-        printf("  Numerical Aperture: %.*f\n", precision, this->numerical_aperture);
-        printf("  Cache Numerical Aperture: %.*f\n", precision, this->cache_numerical_aperture);
-        printf("  Phi Offset (radians): %.*f\n", precision, this->phi_offset);
-        printf("  Gamma Offset (radians): %.*f\n", precision, this->gamma_offset);
-        printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
-        printf("  Medium Refractive Index: %.*f\n", precision, this->medium_refractive_index);
-        printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
-        printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
-        printf("  Is Coherent: %s\n", this->is_coherent ? "True" : "False");
-    }
 
 };
 
@@ -267,7 +267,6 @@ class CoherentMode : public BaseDetector {
 public:
     std::string mode_number;
     double rotation = 0.0;
-    bool is_coherent = true;
 
 public:
     CoherentMode() = default;
@@ -298,7 +297,6 @@ public:
         mode_number(_mode_number),
         rotation(_rotation)
     {
-        this->is_coherent = true;
         this->initialize();
 
     }
@@ -357,24 +355,6 @@ private:
      * @param polarization_filter The polarization filter value.
      */
     template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
-
-public:
-    void print_properties(int precision) const {
-        printf("Photodiode Detector Properties:\n");
-        printf("  Mode Number: %s\n", this->mode_number.c_str());
-        printf("  Sampling: %zu\n", this->sampling);
-        printf("  Numerical Aperture: %.*f\n", precision, this->numerical_aperture);
-        printf("  Cache Numerical Aperture: %.*f\n", precision, this->cache_numerical_aperture);
-        printf("  Phi Offset (radians): %.*f\n", precision, this->phi_offset);
-        printf("  Gamma Offset (radians): %.*f\n", precision, this->gamma_offset);
-        printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
-        printf("  Medium Refractive Index: %.*f\n", precision, this->medium_refractive_index);
-        printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
-        printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
-        printf("  Is Coherent: %s\n", this->is_coherent ? "True" : "False");
-        printf("  Mean Coupling: %s\n", this->mean_coupling ? "True" : "False");
-    }
-
 };
 
 class IntegratingSphere : public BaseDetector {
@@ -411,7 +391,6 @@ public:
             false
         )
     {
-        this->is_coherent = false;
         this->initialize();
     }
 
@@ -432,17 +411,6 @@ public:
      * This detector does not have a mode field. The function returns an empty vector.
      */
     [[nodiscard]] std::vector<complex128> get_structured_scalarfield(const size_t sampling) const override;
-
-    void print_properties(int precision) const {
-        printf("Integrating Sphere Detector Properties:\n");
-        printf("  Sampling: %zu\n", this->sampling);
-        printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
-        printf("  Medium Refractive Index: %.*f\n", precision, this->medium_refractive_index);
-        printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
-        printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
-        printf("  Is Coherent: %s\n", this->is_coherent ? "True" : "False");
-        printf("  Mean Coupling: %s\n", this->mean_coupling ? "True" : "False");
-    }
 
 private:
     /**

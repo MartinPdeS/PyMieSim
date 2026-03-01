@@ -19,7 +19,7 @@ source = Gaussian(
     wavelength=1 * ureg.micrometer,
     polarization=polarization_state,
     optical_power=1 * ureg.watt,
-    NA=0.3 * ureg.AU,
+    numerical_aperture=0.3 * ureg.AU,
 )
 
 scatterer = Sphere(
@@ -31,7 +31,7 @@ scatterer = Sphere(
 
 detector = CoherentMode(
     mode_number="HG02",
-    NA=0.3 * ureg.AU,
+    numerical_aperture=0.3 * ureg.AU,
     sampling=200,
     gamma_offset=0 * ureg.degree,
     phi_offset=0 * ureg.degree,

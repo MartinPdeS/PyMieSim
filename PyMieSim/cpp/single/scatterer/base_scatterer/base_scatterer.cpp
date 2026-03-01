@@ -30,11 +30,14 @@ BaseScatterer::compute_structured_farfields(const std::vector<complex128>& S1, c
 
     complex128 propagator = this->get_propagator(radius);
 
+    complex128 E0x = this->source->polarization.jones_vector[0];
+    complex128 E0y = this->source->polarization.jones_vector[1];
+
     for (unsigned int p=0; p < S1.size(); p++ )
         for (unsigned int t=0; t < theta.size(); t++ )
         {
-            complex128 phi_point_field = propagator * S1[p] * (this->source->polarization.jones_vector[0] * cos(theta[t]) + this->source->polarization.jones_vector[1] * sin(theta[t]));
-            complex128 thetea_point_field = propagator * S2[p] * (this->source->polarization.jones_vector[0] * sin(theta[t]) - this->source->polarization.jones_vector[1] * cos(theta[t]));
+            complex128 phi_point_field = propagator * S1[p] * (E0x * cos(theta[t]) + E0y * sin(theta[t]));
+            complex128 thetea_point_field = propagator * S2[p] * (E0x * sin(theta[t]) - E0y * cos(theta[t]));
 
             phi_field.push_back(phi_point_field);
             theta_field.push_back(thetea_point_field);
@@ -64,10 +67,13 @@ BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, co
 
     complex128 propagator = this->get_propagator(radius);
 
+    complex128 E0x = this->source->polarization.jones_vector[0];
+    complex128 E0y = this->source->polarization.jones_vector[1];
+
     for (unsigned int idx=0; idx < full_size; idx++)
     {
-        complex128 phi_field_point = propagator * S1[idx] * (this->source->polarization.jones_vector[0] * cos(theta[idx]) + this->source->polarization.jones_vector[1] * sin(theta[idx]));
-        complex128 theta_field_point = propagator * S2[idx] * (this->source->polarization.jones_vector[0] * sin(theta[idx]) - this->source->polarization.jones_vector[1] * cos(theta[idx]));
+        complex128 phi_field_point = propagator * S1[idx] * (E0x * cos(theta[idx]) + E0y * sin(theta[idx]));
+        complex128 theta_field_point = propagator * S2[idx] * (E0x * sin(theta[idx]) - E0y * cos(theta[idx]));
 
         phi_field.push_back(phi_field_point);
         theta_field.push_back(theta_field_point);

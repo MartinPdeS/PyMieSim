@@ -7,7 +7,7 @@ from unittest.mock import patch
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single.representations import Footprint
 
@@ -23,9 +23,9 @@ def test_sphere_plottings(mock_show_plt):
     # Create a Gaussian light source
     source = Gaussian(
         wavelength=750 * ureg.nanometer,  # Wavelength in meters (e.g., 750 nm)
-        polarization=0 * ureg.degree,  # Polarization angle
+        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
     )
 
     # Create a spherical scatterer
@@ -38,7 +38,7 @@ def test_sphere_plottings(mock_show_plt):
 
     # Create a photodiode detector
     detector = Photodiode(
-        NA=0.1 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.1 * ureg.AU,  # Numerical aperture
         phi_offset=0 * ureg.degree,  # Azimuthal angle offset
         gamma_offset=0 * ureg.degree,  # Polar angle offset
         polarization_filter=0 * ureg.degree,  # Polarization filter angle

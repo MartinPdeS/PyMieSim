@@ -1,7 +1,6 @@
 #include "setup.h"
 
 
-
 // Example: You can also add a class-wide debug_print method.
 void Setup::debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const BaseDetectorSet& detector_set) const {
     if (!debug_mode) return;

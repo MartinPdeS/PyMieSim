@@ -19,7 +19,7 @@ source = Gaussian(
     wavelength=1000 * ureg.nanometer,
     polarization=polarization,
     optical_power=1 * ureg.watt,
-    NA=0.3 * ureg.AU,
+    numerical_aperture=0.3 * ureg.AU,
 )
 
 scatterer = CoreShell(

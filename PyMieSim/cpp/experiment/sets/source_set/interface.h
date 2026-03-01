@@ -1,34 +1,15 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
-#include <complex> // For std::complex support
+
 
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
 #include "./source_set.h"
 
-using complex128 = std::complex<double>;
 namespace py = pybind11;
 
 void register_source_set(py::module& module) {
     py::object ureg = get_shared_ureg();
-
-    py::class_<PolarizationSet, std::shared_ptr<PolarizationSet>>(module, "PolarizationSet")
-        .def(
-            py::init<>(
-                [](const py::object& angles) {
-                    std::vector<double> angles_value = \
-                        cast_scalar_or_array_to_vector_double(angles.attr("to")("radian").attr("magnitude"));
-                    return std::make_shared<PolarizationSet>(angles_value);
-                }
-            ),
-            py::arg("angles")
-        )
-        .def(
-            "__len__",
-            [](const PolarizationSet& self) { return self.number_of_states(); },
-            "Returns the number of polarization states defined by the angles."
-        )
-    ;
 
     // Binding for SOURCE::Set
     py::class_<BaseSourceSet, std::shared_ptr<BaseSourceSet>>(module, "BaseSourceSet");

@@ -20,7 +20,11 @@ void register_polarization(py::module_& module)
         )pbdoc"
         )
         .def(
-            py::init<const std::vector<complex128>&>(),
+            py::init(
+                [](const std::vector<complex128>& jones_vector) {
+                    return std::make_shared<PolarizationState>(jones_vector);
+                }
+            ),
             py::arg("jones_vector"),
             R"pbdoc(
                 Initializes the polarization state using a Jones vector.

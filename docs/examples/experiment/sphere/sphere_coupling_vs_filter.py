@@ -33,7 +33,7 @@ scatterer = Sphere(
 )
 
 detector = Photodiode(
-    NA=[0.1] * ureg.AU,
+    numerical_aperture=[0.1] * ureg.AU,
     phi_offset=-180 * ureg.degree,
     gamma_offset=0 * ureg.degree,
     polarization_filter=np.linspace(-180, 180, 100) * ureg.degree,

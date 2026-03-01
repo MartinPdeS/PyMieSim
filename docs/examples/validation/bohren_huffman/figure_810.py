@@ -1,6 +1,6 @@
 """
 InfiniteCylinder Scatterer Bohren-Huffman figure 8.10
-=============================================
+=====================================================
 
 """
 
@@ -29,7 +29,7 @@ source = Gaussian(
     wavelength=470 * ureg.nanometer,
     polarization=polarization_state,
     optical_power=1e-3 * ureg.watt,
-    NA=0.1 * ureg.AU,
+    numerical_aperture=0.1 * ureg.AU,
 )
 
 scatterer = InfiniteCylinder(

@@ -16,8 +16,6 @@ core_properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
 shell_properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
 medium_properties = [Material.water, 1.1 * ureg.RIU]
 
-# Define measures to test
-measures = CoreShell.available_measure_list
 
 polarization_set = PolarizationSet(
     angles=[0] * ureg.radian
@@ -51,7 +49,7 @@ sources = [gaussian_source, planewave_source]
 @pytest.mark.parametrize(
     "shell_refractive_index", shell_properties, ids=[f"Property:{m}" for m in shell_properties]
 )
-@pytest.mark.parametrize("measure", measures)
+@pytest.mark.parametrize("measure", CoreShell.available_measure_list)
 def test_measure(measure, source, core_refractive_index, shell_refractive_index, medium_refractive_index):
     # Setup core-shell scatterer
     scatterer = CoreShell(
@@ -65,7 +63,7 @@ def test_measure(measure, source, core_refractive_index, shell_refractive_index,
 
     # Setup detector
     detector = Photodiode(
-        NA=0.2 * ureg.AU,
+        numerical_aperture=0.2 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100,

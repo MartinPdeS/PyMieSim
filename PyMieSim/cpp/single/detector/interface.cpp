@@ -242,15 +242,6 @@ void register_detector(py::module_& module) {
                 Contains family and number information for the mode.
             )pbdoc"
         )
-        .def_readonly(
-            "is_coherent",
-            &BaseDetector::is_coherent,
-            R"pbdoc(
-            CoherentMode detection mode flag.
-
-            True if the detector is in coherent mode; false for incoherent.
-            )pbdoc"
-        )
         .def("get_coupling",
             [ureg](BaseDetector& self, const BaseScatterer& scatterer) {
                 double coupling = self.get_coupling(scatterer);
@@ -356,37 +347,18 @@ void register_detector(py::module_& module) {
                     py::object cache_numerical_aperture,
                     std::size_t sampling
                 ) {
-                    py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
-                    py::object units_dimensionless = py::module::import("PyMieSim").attr("units").attr("Dimensionless")();
-                    py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
 
-
-                    numerical_aperture = units_dimensionless.attr("check")(numerical_aperture);
-
-                    polarization_filter = units_angle.attr("check")(polarization_filter);
-
-                    cache_numerical_aperture = units_dimensionless.attr("check")(cache_numerical_aperture);
-                    phi_offset = units_angle.attr("check")(phi_offset);
-                    gamma_offset = units_angle.attr("check")(gamma_offset);
-                    medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
-
+                    double polarization_filter_value;
                     if (!polarization_filter.is(py::none())) {
-                        polarization_filter.attr("check")(polarization_filter);
+                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
                     } else {
-                        polarization_filter = py::float_(std::nan("")) * units_angle;
+                        polarization_filter_value = std::nan("");
                     }
 
-                    if (!cache_numerical_aperture.is(py::none())) {
-                        units_dimensionless.attr("check")(cache_numerical_aperture);
-                    } else {
-                        cache_numerical_aperture = py::float_(0.0) * units_dimensionless;
-                    }
-
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
                     double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
 
                     if (medium_refractive_index_value <= 0.0)
@@ -517,36 +489,17 @@ void register_detector(py::module_& module) {
                     py::object mean_coupling,
                     std::size_t sampling
                 ) {
-                    py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
-                    py::object units_dimensionless = py::module::import("PyMieSim").attr("units").attr("Dimensionless")();
-                    py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
-
-
-                    numerical_aperture = units_dimensionless.attr("check")(numerical_aperture);
-
-                    polarization_filter = units_angle.attr("check")(polarization_filter);
-
-                    cache_numerical_aperture = units_dimensionless.attr("check")(cache_numerical_aperture);
-                    phi_offset = units_angle.attr("check")(phi_offset);
-                    gamma_offset = units_angle.attr("check")(gamma_offset);
-                    medium_refractive_index = units_refractive_index.attr("check")(medium_refractive_index);
-                    rotation = units_angle.attr("check")(rotation);
-
-                    if (!polarization_filter.is(py::none()))
-                        units_angle.attr("check")(polarization_filter);
-                    else
-                        polarization_filter = py::float_(std::nan("")) * units_angle;
-
-                    if (!cache_numerical_aperture.is(py::none()))
-                        units_dimensionless.attr("check")(cache_numerical_aperture);
-                    else
-                        cache_numerical_aperture = py::float_(0.0) * units_dimensionless;
+                    double polarization_filter_value;
+                    if (!polarization_filter.is(py::none())) {
+                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
+                    } else {
+                        polarization_filter_value = std::nan("");
+                    }
 
                     double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double rotation_value = rotation.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     bool mean_coupling_value = mean_coupling.cast<bool>();
                     double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
@@ -650,18 +603,12 @@ void register_detector(py::module_& module) {
                     py::object polarization_filter,
                     std::size_t sampling
                 ) {
-                    py::object units_refractive_index = py::module::import("PyMieSim").attr("units").attr("RefractiveIndex")();
-                    py::object units_angle = py::module::import("PyMieSim").attr("units").attr("Angle")();
-
-
+                    double polarization_filter_value;
                     if (!polarization_filter.is(py::none())) {
-                        polarization_filter = units_angle.attr("check")(polarization_filter);
+                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
                     } else {
-                        polarization_filter = py::float_(std::nan("")) * ureg.attr("radian");
+                        polarization_filter_value = std::nan("");
                     }
-
-                    const double polarization_filter_value =
-                        polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
 
                     return std::make_shared<IntegratingSphere>(sampling, polarization_filter_value);
                 }

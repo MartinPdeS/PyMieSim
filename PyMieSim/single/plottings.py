@@ -237,7 +237,7 @@ class SystemPlotter:
         color : str or tuple, optional
             Mesh color. Defaults to "red".
         """
-        numerical_aperture = float(obj.NA.magnitude)
+        numerical_aperture = float(obj.numerical_aperture.magnitude)
         half_angle_rad = self._numerical_aperture_to_half_angle_radian(numerical_aperture)
         half_angle_deg = float(np.rad2deg(half_angle_rad))
 

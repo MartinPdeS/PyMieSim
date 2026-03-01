@@ -12,15 +12,19 @@ from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
+polarization_set = PolarizationSet(
+    angles=[30.0] * ureg.degree,
+)
+
 source = Gaussian(
     wavelength=1200 * ureg.nanometer,  # 1200 nm
-    polarization=90 * ureg.degree,  # Polarization angle in ureg.degrees
+    polarization=polarization_set,  # Polarization angle in ureg.degrees
     optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    NA=0.2 * ureg.AU,  # Numerical Aperture
+    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
 )
 
 scatterer = InfiniteCylinder(
@@ -31,11 +35,11 @@ scatterer = InfiniteCylinder(
 )
 
 detector = Photodiode(
-    NA=[0.5, 0.3, 0.1, 0.05] * ureg.AU,  # Array of Numerical Apertures for the detector
+    numerical_aperture=[0.5, 0.3, 0.1, 0.05] * ureg.AU,  # Array of Numerical Apertures for the detector
     phi_offset=np.linspace(-180, 180, 200)
     * ureg.degree,  # Angular displacement from -180 to 180 ureg.degrees
     gamma_offset=0 * ureg.degree,  # Gamma offset in ureg.degrees
-    sampling=400 * ureg.AU,  # Number of sampling points
+    sampling=400,  # Number of sampling points
     polarization_filter=None,  # No polarization filter
 )
 
