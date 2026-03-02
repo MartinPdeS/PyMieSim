@@ -3,7 +3,7 @@ import numpy
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import Sphere, CoreShell
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment.setup import Setup
 
 
@@ -11,9 +11,9 @@ from PyMieSim.experiment.setup import Setup
 def source():
     return Gaussian(
         wavelength=750 * ureg.nanometer,  # 750 nm
-        polarization=30 * ureg.degree,  # Polarization in ureg.degrees
+        polarization=PolarizationSet(angles=30 * ureg.degree),  # Polarization in ureg.degrees
         optical_power=1 * ureg.watt,  # Power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical Aperture
     )
 
 

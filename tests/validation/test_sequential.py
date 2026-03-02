@@ -14,7 +14,7 @@ SIZE = 10
 ONES = numpy.ones(SIZE)
 
 WAVELENGTH = numpy.linspace(600, 1000, SIZE) * ureg.nanometer
-POLARIZATION = PolarizationSet(angles=0 * ureg.degree)
+POLARIZATION = 0
 OPTICAL_POWER = 1e-3 * ureg.watt
 NA = 0.2 * ureg.AU
 
@@ -27,7 +27,7 @@ CACHE_NA = 0.2 * NA
 PHI_OFFSET = 0 * ureg.degree
 GAMMA_OFFSET = 0 * ureg.degree
 POLARIZATION_FILTER = 0 * ureg.degree
-SAMPLING = 100 * ureg.AU
+SAMPLING = 100
 ROTATION = 0 * ureg.degree
 
 
@@ -36,7 +36,7 @@ ROTATION = 0 * ureg.degree
 def test_sequential_vs_standard_no_detector():
     source_standard = Gaussian(
         wavelength=WAVELENGTH,
-        polarization=POLARIZATION,
+        polarization=PolarizationSet(angles=0 * ureg.degree),
         optical_power=OPTICAL_POWER,
         numerical_aperture=NA,
     )
@@ -59,7 +59,7 @@ def test_sequential_vs_standard_no_detector():
 
     source_sequential = Gaussian(
         wavelength=WAVELENGTH,
-        polarization=ONES * POLARIZATION,
+        polarization=PolarizationSet(angles=ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
         numerical_aperture=ONES * NA,
     )
@@ -92,7 +92,7 @@ def test_sequential_vs_standard_no_detector():
 def test_sequential_vs_standard_detector():
     source_standard = Gaussian(
         wavelength=WAVELENGTH,
-        polarization=POLARIZATION,
+        polarization=PolarizationSet(angles=POLARIZATION * ureg.degree),
         optical_power=OPTICAL_POWER,
         numerical_aperture=NA,
     )
@@ -126,7 +126,7 @@ def test_sequential_vs_standard_detector():
 
     source_sequential = Gaussian(
         wavelength=WAVELENGTH,
-        polarization=ONES * POLARIZATION,
+        polarization=PolarizationSet(angles=POLARIZATION * ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
         numerical_aperture=ONES * NA,
     )
@@ -143,7 +143,7 @@ def test_sequential_vs_standard_detector():
         gamma_offset=ONES * GAMMA_OFFSET,
         numerical_aperture=ONES * NA,
         cache_numerical_aperture=ONES * CACHE_NA,
-        sampling=ONES * SAMPLING,
+        sampling=[SAMPLING] * SIZE,
         polarization_filter=ONES * POLARIZATION_FILTER,
         medium_refractive_index=ONES * MEDIUM_PROPERTY,
     )

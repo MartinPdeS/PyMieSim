@@ -35,7 +35,7 @@ def source_experiment():
     """
     return experiment.source.Gaussian(
         wavelength=1000 * ureg.nanometer,
-        polarization=0 * ureg.degree,
+        polarization=experiment.source.PolarizationSet(angles=0 * ureg.degree),
         optical_power=1 * ureg.watt,
         numerical_aperture=0.3 * ureg.AU,
     )
@@ -168,7 +168,7 @@ def test_detector_experiment_polarization_filter(
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=[0, 180] * ureg.degree,  # List of polarization filters
-        sampling=100 * ureg.AU,  # Sampling points for the simulation
+        sampling=100,  # Sampling points for the simulation
     )
 
     # Setup the experiment with the scatterer, detector, and source
