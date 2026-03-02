@@ -21,7 +21,7 @@ def source_single():
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters (e.g., 1 micron)
         polarization=single.source.PolarizationState(angle=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
@@ -37,7 +37,7 @@ def source_experiment():
         wavelength=1000 * ureg.nanometer,
         polarization=0 * ureg.degree,
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
 
@@ -89,7 +89,7 @@ def test_detector_single_polarization_filter(scatterer_single):
     """
     # Create two photodiode detectors with different polarization filters (0° and 180°)
     detector_0 = single.detector.Photodiode(
-        NA=0.1 * ureg.AU,
+        numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=0 * ureg.degree,
@@ -97,7 +97,7 @@ def test_detector_single_polarization_filter(scatterer_single):
     )
 
     detector_180 = single.detector.Photodiode(
-        NA=0.1 * ureg.AU,
+        numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=180 * ureg.degree,
@@ -127,7 +127,7 @@ def test_detector_single_rotation(scatterer_single):
     rotation = 0 * ureg.degree
     detector_0 = single.detector.CoherentMode(
         mode_number="LP11",
-        NA=0.1 * ureg.AU,
+        numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=40 * ureg.degree,
         rotation=rotation,
@@ -135,7 +135,7 @@ def test_detector_single_rotation(scatterer_single):
     )
     detector_180 = single.detector.CoherentMode(
         mode_number="LP11",
-        NA=0.1 * ureg.AU,
+        numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=40 * ureg.degree,
         rotation=rotation + 180 * ureg.degree,
@@ -164,7 +164,7 @@ def test_detector_experiment_polarization_filter(
     """
     # Create a photodiode detector with two polarization filters (0° and 180°)
     detector = experiment.detector.Photodiode(
-        NA=0.1 * ureg.AU,
+        numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=[0, 180] * ureg.degree,  # List of polarization filters

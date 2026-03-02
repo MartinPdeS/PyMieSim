@@ -72,9 +72,9 @@ def test_energy_flow_vs_coupling_sphere():
 def _test_energy_flow_vs_coupling_cylinder():
     source = Gaussian(
         wavelength=750 * ureg.nanometer,  # 750 nm
-        polarization=30 * ureg.degree,  # Polarization in ureg.degrees
+        polarization=PolarizationState(angle=30 * ureg.degree),  # Polarization in ureg.degrees
         optical_power=1 * ureg.watt,  # Power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical Aperture
     )
 
     # Define the scatterer (sphere)

@@ -9,7 +9,7 @@ from PyMieSim.units import ureg
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
 from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 
 
@@ -20,7 +20,7 @@ def test_validation():
     ) / (ureg.meter * ureg.meter)
 
     wavelength = 632.8 * ureg.nanometer
-    polarization_values = [0, 90] * ureg.degree
+    polarization_values = PolarizationSet(angles=[0, 90] * ureg.degree)
     optical_power = 1e-3 * ureg.watt
     NA = 0.2 * ureg.AU
     diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
@@ -33,7 +33,7 @@ def test_validation():
         wavelength=wavelength,
         polarization=polarization_values,
         optical_power=optical_power,
-        NA=NA,
+        numerical_aperture=NA,
     )
 
     scatterer = InfiniteCylinder(

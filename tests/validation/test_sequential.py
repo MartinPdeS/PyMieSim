@@ -6,7 +6,7 @@ import numpy
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment import Setup
 
@@ -14,7 +14,7 @@ SIZE = 10
 ONES = numpy.ones(SIZE)
 
 WAVELENGTH = numpy.linspace(600, 1000, SIZE) * ureg.nanometer
-POLARIZATION = 0 * ureg.degree
+POLARIZATION = PolarizationSet(angles=0 * ureg.degree)
 OPTICAL_POWER = 1e-3 * ureg.watt
 NA = 0.2 * ureg.AU
 
@@ -38,7 +38,7 @@ def test_sequential_vs_standard_no_detector():
         wavelength=WAVELENGTH,
         polarization=POLARIZATION,
         optical_power=OPTICAL_POWER,
-        NA=NA,
+        numerical_aperture=NA,
     )
 
     scatterer_standard = Sphere(
@@ -61,7 +61,7 @@ def test_sequential_vs_standard_no_detector():
         wavelength=WAVELENGTH,
         polarization=ONES * POLARIZATION,
         optical_power=ONES * OPTICAL_POWER,
-        NA=ONES * NA,
+        numerical_aperture=ONES * NA,
     )
 
     scatterer_sequential = Sphere(
@@ -94,7 +94,7 @@ def test_sequential_vs_standard_detector():
         wavelength=WAVELENGTH,
         polarization=POLARIZATION,
         optical_power=OPTICAL_POWER,
-        NA=NA,
+        numerical_aperture=NA,
     )
 
     scatterer_standard = Sphere(
@@ -107,8 +107,8 @@ def test_sequential_vs_standard_detector():
     detector_standard = Photodiode(
         phi_offset=PHI_OFFSET,
         gamma_offset=GAMMA_OFFSET,
-        NA=NA,
-        cache_NA=CACHE_NA,
+        numerical_aperture=NA,
+        cache_numerical_aperture=CACHE_NA,
         sampling=SAMPLING,
         polarization_filter=POLARIZATION_FILTER,
     )
@@ -128,7 +128,7 @@ def test_sequential_vs_standard_detector():
         wavelength=WAVELENGTH,
         polarization=ONES * POLARIZATION,
         optical_power=ONES * OPTICAL_POWER,
-        NA=ONES * NA,
+        numerical_aperture=ONES * NA,
     )
 
     scatterer_sequential = Sphere(
@@ -141,8 +141,8 @@ def test_sequential_vs_standard_detector():
     detector_sequential = Photodiode(
         phi_offset=ONES * PHI_OFFSET,
         gamma_offset=ONES * GAMMA_OFFSET,
-        NA=ONES * NA,
-        cache_NA=ONES * CACHE_NA,
+        numerical_aperture=ONES * NA,
+        cache_numerical_aperture=ONES * CACHE_NA,
         sampling=ONES * SAMPLING,
         polarization_filter=ONES * POLARIZATION_FILTER,
         medium_refractive_index=ONES * MEDIUM_PROPERTY,

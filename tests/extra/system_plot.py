@@ -36,7 +36,7 @@ def test_plot_system(mock_show):
         numerical_aperture=0.1 * ureg.AU,  # Numerical Aperture
         gamma_offset=90 * ureg.degree,  # Gamma offset in ureg.degrees
         phi_offset=0 * ureg.degree,  # Phi offset in ureg.degrees
-        polarization_filter=PolarizationState(angle=0 * ureg.degree),  # Polarization filter angle in ureg.degrees
+        polarization_filter=0 * ureg.degree,  # Polarization filter angle in ureg.degrees
         medium_refractive_index=1.0 * ureg.RIU
     )
     spf = SPF(scatterer=scatterer)

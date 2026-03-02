@@ -7,7 +7,7 @@ import pandas as pd
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
@@ -28,9 +28,9 @@ PYMIESCATT_MEASURES = {
 def gaussian_source():
     return Gaussian(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=0 * ureg.degree,  # Polarization angle
+        polarization=PolarizationSet(angles=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
     )
 
 
