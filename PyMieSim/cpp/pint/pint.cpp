@@ -1,20 +1,68 @@
 #include "pint.h"
 
+#include <mutex>
+#include <stdexcept>
+
 namespace py = pybind11;
 
-UnitRegistrySingleton& UnitRegistrySingleton::instance() {
-    static UnitRegistrySingleton singleton_instance;
-    return singleton_instance;
-}
+
+class UnitRegistrySingleton {
+public:
+    static UnitRegistrySingleton& instance() {
+        static UnitRegistrySingleton singleton_instance;
+        return singleton_instance;
+    }
+
+    UnitRegistrySingleton(const UnitRegistrySingleton&) = delete;
+    UnitRegistrySingleton& operator=(const UnitRegistrySingleton&) = delete;
+
+    void set_ureg(py::object ureg_object) {
+        py::gil_scoped_acquire gil;
+
+        std::call_once(initialization_flag, [this, ureg_object = std::move(ureg_object)]() mutable {
+            ureg = std::move(ureg_object);
+            if (ureg.is_none()) {
+                throw std::runtime_error("UnitRegistrySingleton.set_ureg: ureg is None.");
+            }
+        });
+    }
+
+    py::object get_ureg() const {
+        py::gil_scoped_acquire gil;
+
+        if (ureg.is_none()) {
+            throw std::runtime_error("UnitRegistrySingleton.get_ureg: ureg not initialized.");
+        }
+        return ureg;
+    }
+
+    bool is_initialized() const {
+        py::gil_scoped_acquire gil;
+        return !ureg.is_none();
+    }
+
+private:
+    UnitRegistrySingleton() = default;
+    mutable std::once_flag initialization_flag;
+    py::object ureg = py::none();
+};
+
 
 py::object get_shared_ureg() {
+    if (UnitRegistrySingleton::instance().is_initialized()) {
+        return UnitRegistrySingleton::instance().get_ureg();
+    }
+
     py::gil_scoped_acquire gil;
 
     py::module_ interface_module = py::module_::import("PyMieSim.binary.interface_pint");
     if (!py::hasattr(interface_module, "get_ureg")) {
         throw std::runtime_error("PyMieSim.binary.interface_pint.get_ureg not found.");
     }
-    return interface_module.attr("get_ureg")();
+
+    py::object ureg = interface_module.attr("get_ureg")();
+    UnitRegistrySingleton::instance().set_ureg(ureg);
+    return ureg;
 }
 
 
