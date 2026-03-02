@@ -44,7 +44,7 @@ This script is intended to be used in conjunction with the Read the Docs documen
  .. code-block:: none
 
 
-    <pyvista.plotting.plotter.Plotter object at 0x7fa4edafb010>
+    <pyvista.plotting.plotter.Plotter object at 0x7f6f4e04db50>
 
 
 
@@ -101,7 +101,7 @@ This script is intended to be used in conjunction with the Read the Docs documen
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.274 seconds)
+   **Total running time of the script:** (0 minutes 0.280 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_system.py:
