@@ -182,11 +182,8 @@ class FarField():
         theta = numpy.linspace(0, 360, n_points)
         phi = numpy.linspace(180, 0, n_points)
 
-        # Define the vector direction (unit vector along x-axis)
-        vector = numpy.array([1, 0, 0])
-
         # Convert spherical coordinates to Cartesian coordinates
-        x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+        x, y, z = pyvista.transform_vectors_sph_to_cart(theta=theta, phi=phi, r=radius, u=1, v=0, w=0)
 
         # Combine the Cartesian coordinates into a vector array
         vector_field = numpy.c_[x.ravel(), y.ravel(), z.ravel()]
@@ -230,11 +227,8 @@ class FarField():
         theta = numpy.linspace(0, 360, n_points)
         phi = numpy.linspace(180, 0, n_points)
 
-        # Define the vector direction (unit vector along y-axis)
-        vector = numpy.array([0, 1, 0])
-
         # Convert spherical coordinates to Cartesian coordinates
-        x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+        x, y, z = pyvista.transform_vectors_sph_to_cart(theta=theta, phi=phi, r=radius, u=0, v=1, w=0)
 
         # Combine the Cartesian coordinates into a vector array
         vector_field = numpy.c_[x.ravel(), y.ravel(), z.ravel()]

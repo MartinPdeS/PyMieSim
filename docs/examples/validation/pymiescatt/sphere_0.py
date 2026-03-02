@@ -32,7 +32,7 @@ diameters = (
 # Setup source
 source = Gaussian(
     wavelength=wavelength,
-    polarization=polarization_value,
+    polarization=polarization,
     optical_power=optical_power,
     numerical_aperture=NA,
 )
