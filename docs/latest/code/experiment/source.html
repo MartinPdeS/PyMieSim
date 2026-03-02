@@ -490,128 +490,112 @@
 <span id="experiment-source"></span><h1>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/source/planewave.html#PlaneWave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
-<p>Represents a Plane Wave light source with a specified amplitude.</p>
-<p>Inherits from BaseSource and specifies amplitude directly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wavelength</strong> (<em>Quantity</em>) – The wavelength(s) of the light source.</p></li>
-<li><p><strong>polarization</strong> (<em>Union</em><em>[</em><em>UnitPolarizationAngle</em><em>, </em><em>Quantity</em><em>]</em>) – Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.</p></li>
-<li><p><strong>amplitude</strong> (<em>Quantity</em>) – The amplitude of the plane wave, in Volt/Meter.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSourceSet</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.amplitude">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.amplitude" title="Link to this definition">#</a></dt>
+<dd><p>Returns the amplitudes of the plane wave source set as a NumPy array with appropriate units.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.attributes">
-<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['wavelength',</span> <span class="pre">'amplitude',</span> <span class="pre">'polarization']</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.attributes" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">attributes</span></span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.build_sequential">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.build_sequential" title="Link to this definition">#</a></dt>
-<dd><p>Broadcast scalar or single-element parameters to NumPy arrays of uniform length
-and construct a new instance of the class.</p>
-<p>Each parameter passed via keyword arguments may be provided as a scalar or as a list/array.
-Scalars or single-element lists/arrays will be repeated to match the length of the longest
-parameter. If any parameter is given as a list/array with more than one element, its length
-must equal the maximum length among all parameters (or the explicit <cite>total_size</cite> if provided);
-otherwise, a ValueError is raised.</p>
-<p>Additionally, if a keyword argument ‘source’ is provided, it is removed from the
-broadcasted parameters and passed directly to the class constructor.</p>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization:</span> <span class="pre">PyMieSim.binary.interface_experiment.PolarizationSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude:</span> <span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.source.PlaneWave" title="PyMieSim.binary.interface_experiment.PlaneWave"><span class="pre">PyMieSim.binary.interface_experiment.PlaneWave</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Construct a sequential PlaneWaveSourceSet by broadcasting scalar or single element inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>total_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The explicit target size for broadcasting. Must be a positive integer if provided.
-If not specified, the target size is determined by the maximum size among the input parameters.</p></li>
-<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments mapping parameter names to values. Each value may be a scalar
-or a list/array of values. Examples include parameters such as <cite>source</cite>, <cite>diameter</cite>,
-<cite>property</cite>, or <cite>medium_property</cite>.</p></li>
+<li><p><strong>total_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the maximum size among wavelength and amplitude.</p></li>
+<li><p><strong>wavelength</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Wavelength(s). Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>polarization</strong> (<em>PolarizationSet</em>) – Must have number_of_states equal to 1 or total_size.</p></li>
+<li><p><strong>amplitude</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Amplitude(s). Scalars or length 1 arrays broadcast to total_size.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new instance of the class with all provided parameters broadcasted as NumPy arrays
-of equal length. If ‘source’ is provided, it is passed directly to the class constructor.</p>
+<dd class="field-even"><p>Instance with is_sequential = True.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If any parameter provided as a list/array has a length greater than one that does not
-    match the target size.</p>
+<dd class="field-odd"><p>PlaneWaveSourceSet</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.is_sequential">
-<span class="sig-name descname"><span class="pre">is_sequential</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.is_sequential" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.get_mapping">
+<span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.source.PlaneWave" title="PyMieSim.binary.interface_experiment.PlaneWave"><span class="pre">PyMieSim.binary.interface_experiment.PlaneWave</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.get_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Generates a mapping of source attributes to their corresponding values for the PlaneWaveSourceSet instance.
+The mapping includes keys such as ‘source:wavelength’, ‘source:polarization’, and ‘source:amplitude’.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.PlaneWave.wavelength">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#PyMieSim.experiment.source.PlaneWave.wavelength" title="Link to this definition">#</a></dt>
+<dd><p>Returns the wavelengths of the plane wave source set as a NumPy array with appropriate units.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/experiment/source/gaussian.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequential</span></code></p>
-<p>Represents a Gaussian light source with a specified numerical aperture and optical power.</p>
-<p>Inherits from BaseSource and adds specific attributes for Gaussian sources.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wavelength</strong> (<em>Quantity</em>) – The wavelength(s) of the light source.</p></li>
-<li><p><strong>polarization</strong> (<em>Union</em><em>[</em><em>UnitPolarizationAngle</em><em>, </em><em>Quantity</em><em>]</em>) – Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.</p></li>
-<li><p><strong>NA</strong> (<em>Quantity</em>) – The numerical aperture(s) of the Gaussian source.</p></li>
-<li><p><strong>optical_power</strong> (<em>Quantity</em>) – The optical power of the source, in Watts.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSourceSet</span></code></p>
+<dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.attributes">
-<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['wavelength',</span> <span class="pre">'NA',</span> <span class="pre">'optical_power',</span> <span class="pre">'polarization']</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.attributes" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">attributes</span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.attributes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.build_sequential">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.build_sequential" title="Link to this definition">#</a></dt>
-<dd><p>Broadcast scalar or single-element parameters to NumPy arrays of uniform length
-and construct a new instance of the class.</p>
-<p>Each parameter passed via keyword arguments may be provided as a scalar or as a list/array.
-Scalars or single-element lists/arrays will be repeated to match the length of the longest
-parameter. If any parameter is given as a list/array with more than one element, its length
-must equal the maximum length among all parameters (or the explicit <cite>total_size</cite> if provided);
-otherwise, a ValueError is raised.</p>
-<p>Additionally, if a keyword argument ‘source’ is provided, it is removed from the
-broadcasted parameters and passed directly to the class constructor.</p>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization:</span> <span class="pre">PyMieSim.binary.interface_experiment.PolarizationSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power:</span> <span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.source.Gaussian" title="PyMieSim.binary.interface_experiment.Gaussian"><span class="pre">PyMieSim.binary.interface_experiment.Gaussian</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Construct a sequential GaussianSourceSet by broadcasting scalar or single element inputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>total_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The explicit target size for broadcasting. Must be a positive integer if provided.
-If not specified, the target size is determined by the maximum size among the input parameters.</p></li>
-<li><p><strong>**kwargs</strong> (<em>dict</em>) – Arbitrary keyword arguments mapping parameter names to values. Each value may be a scalar
-or a list/array of values. Examples include parameters such as <cite>source</cite>, <cite>diameter</cite>,
-<cite>property</cite>, or <cite>medium_property</cite>.</p></li>
+<li><p><strong>total_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the maximum size among wavelength, numerical_aperture, optical_power.</p></li>
+<li><p><strong>wavelength</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Wavelength(s). Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>polarization</strong> (<em>PolarizationSet</em>) – Must have number_of_states equal to 1 or total_size.</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Numerical aperture(s). Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>optical_power</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Optical power(s). Scalars or length 1 arrays broadcast to total_size.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new instance of the class with all provided parameters broadcasted as NumPy arrays
-of equal length. If ‘source’ is provided, it is passed directly to the class constructor.</p>
+<dd class="field-even"><p>Instance with is_sequential = True.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If any parameter provided as a list/array has a length greater than one that does not
-    match the target size.</p>
+<dd class="field-odd"><p>GaussianSourceSet</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.is_sequential">
-<span class="sig-name descname"><span class="pre">is_sequential</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.is_sequential" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.get_mapping">
+<span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.source.Gaussian" title="PyMieSim.binary.interface_experiment.Gaussian"><span class="pre">PyMieSim.binary.interface_experiment.Gaussian</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.get_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Generates a mapping of source attributes to their corresponding values for the GaussianSourceSet instance.
+The mapping includes keys such as ‘source:wavelength’, ‘source:polarization’, ‘source:numerical_aperture’, and ‘source:optical_power’.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.numerical_aperture">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.numerical_aperture" title="Link to this definition">#</a></dt>
+<dd><p>Returns the numerical apertures of the Gaussian source set as a NumPy array with appropriate units.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.optical_power">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">optical_power</span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.optical_power" title="Link to this definition">#</a></dt>
+<dd><p>Returns the optical powers of the Gaussian source set as a NumPy array with appropriate units.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.source.Gaussian.wavelength">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavelength</span></span><a class="headerlink" href="#PyMieSim.experiment.source.Gaussian.wavelength" title="Link to this definition">#</a></dt>
+<dd><p>Returns the wavelengths of the Gaussian source set as a NumPy array with appropriate units.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -641,15 +625,20 @@ of equal length. If ‘source’ is provided, it is passed directly to the class
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave"><code class="docutils literal notranslate"><span class="pre">PlaneWave</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.amplitude"><code class="docutils literal notranslate"><span class="pre">PlaneWave.amplitude</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.attributes"><code class="docutils literal notranslate"><span class="pre">PlaneWave.attributes</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.build_sequential"><code class="docutils literal notranslate"><span class="pre">PlaneWave.build_sequential()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.is_sequential"><code class="docutils literal notranslate"><span class="pre">PlaneWave.is_sequential</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.get_mapping"><code class="docutils literal notranslate"><span class="pre">PlaneWave.get_mapping()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.PlaneWave.wavelength"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavelength</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.attributes"><code class="docutils literal notranslate"><span class="pre">Gaussian.attributes</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.build_sequential"><code class="docutils literal notranslate"><span class="pre">Gaussian.build_sequential()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.is_sequential"><code class="docutils literal notranslate"><span class="pre">Gaussian.is_sequential</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.get_mapping"><code class="docutils literal notranslate"><span class="pre">Gaussian.get_mapping()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">Gaussian.numerical_aperture</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.optical_power"><code class="docutils literal notranslate"><span class="pre">Gaussian.optical_power</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.source.Gaussian.wavelength"><code class="docutils literal notranslate"><span class="pre">Gaussian.wavelength</span></code></a></li>
 </ul>
 </li>
 </ul>

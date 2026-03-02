@@ -12,16 +12,20 @@ import numpy
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
+
+polarization_set = PolarizationSet(
+    angles=[0.0] * ureg.degree,
+)
 
 source = Gaussian(
     wavelength=[800, 900, 1000]
     * ureg.nanometer,  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
-    polarization=0 * ureg.degree,  # Linear polarization angle in radians
+    polarization=polarization_set,  # Linear polarization angle in radians
     optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    NA=0.2 * ureg.AU,  # Numerical Aperture
+    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
 )
 
 scatterer = CoreShell(

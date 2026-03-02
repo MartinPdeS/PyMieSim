@@ -34,7 +34,7 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
     import matplotlib.pyplot as plt
 
     from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.source import PlaneWave
+    from PyMieSim.single.source import PlaneWave, PolarizationState
 
 
 
@@ -53,7 +53,7 @@ Create a simple plane wave source
 
     source = PlaneWave(
         wavelength=632.8 * ureg.nanometer,
-        polarization=0 * ureg.degree,
+        polarization=PolarizationState(angle=0 * ureg.degree),
         amplitude=1 * ureg.volt / ureg.meter,
     )
 
@@ -187,7 +187,7 @@ Stokes parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.909 seconds)
+   **Total running time of the script:** (0 minutes 0.944 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_array_scattering.py:

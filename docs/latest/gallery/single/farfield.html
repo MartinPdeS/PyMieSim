@@ -555,14 +555,16 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationState</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations</span><span class="w"> </span><span class="kn">import</span> <span class="n">FarField</span>
+
+<span class="n">polarization</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 1000 nm</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Right circular polarization</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization</span><span class="p">,</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>  <span class="c1"># Arbitrary units</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
@@ -578,25 +580,7 @@ to download the full example code.</p>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">far_fields</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_farfield_001.png" srcset="../../_images/sphx_glr_farfield_001.png" alt="farfield" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: PyVistaDeprecationWarning:
-../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: Arguments &#39;theta&#39;, &#39;phi&#39;, &#39;r&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39; must be passed as keyword arguments to function &#39;transform_vectors_sph_to_cart&#39;.
-From version 0.50, passing these as positional arguments will result in a TypeError.
-  x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
-/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: PyVistaDeprecationWarning:
-../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:237: Arguments &#39;theta&#39;, &#39;phi&#39;, &#39;r&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39; must be passed as keyword arguments to function &#39;transform_vectors_sph_to_cart&#39;.
-From version 0.50, passing these as positional arguments will result in a TypeError.
-  x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
-/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: PyVistaDeprecationWarning:
-../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: Arguments &#39;theta&#39;, &#39;phi&#39;, &#39;r&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39; must be passed as keyword arguments to function &#39;transform_vectors_sph_to_cart&#39;.
-From version 0.50, passing these as positional arguments will result in a TypeError.
-  x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
-/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: PyVistaDeprecationWarning:
-../../../../../../../../opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/far_fields.py:189: Arguments &#39;theta&#39;, &#39;phi&#39;, &#39;r&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39; must be passed as keyword arguments to function &#39;transform_vectors_sph_to_cart&#39;.
-From version 0.50, passing these as positional arguments will result in a TypeError.
-  x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.784 seconds)</p>
+<img src="../../_images/sphx_glr_farfield_001.png" srcset="../../_images/sphx_glr_farfield_001.png" alt="farfield" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.725 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-farfield-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d07ca25563d65eaf650247b0fc7f3c7d/farfield.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">farfield.ipynb</span></code></a></p>

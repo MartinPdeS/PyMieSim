@@ -10,15 +10,19 @@ import numpy as np
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import MaterialBank
 
+polarization_set = PolarizationSet(
+    angles=0.0 * ureg.degree,
+)
+
 source = Gaussian(
     wavelength=np.linspace(400, 1000, 50) * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_set,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 scatterer = Sphere(

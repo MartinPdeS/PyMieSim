@@ -560,16 +560,20 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreShell</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span>
+
+<span class="n">polarization_set</span> <span class="o">=</span> <span class="n">PolarizationSet</span><span class="p">(</span>
+    <span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>
     <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Array of wavelengths: 800 nm, 900 nm, 1000 nm</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Linear polarization angle in radians</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_set</span><span class="p">,</span>  <span class="c1"># Linear polarization angle in radians</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>  <span class="c1"># 1 milliureg.watt</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Aperture</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShell</span><span class="p">(</span>
@@ -592,7 +596,7 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.</p>
 <img src="../../../_images/sphx_glr_coreshell_Qback_vs_corediameter_001.png" srcset="../../../_images/sphx_glr_coreshell_Qback_vs_corediameter_001.png" alt="coreshell Qback vs corediameter" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.308 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.317 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-qback-vs-corediameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/8df6241e7e5bb2e6d40f66083ba8365b/coreshell_Qback_vs_corediameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_Qback_vs_corediameter.ipynb</span></code></a></p>

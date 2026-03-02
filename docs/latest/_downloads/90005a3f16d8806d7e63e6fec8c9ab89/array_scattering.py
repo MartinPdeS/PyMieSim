@@ -11,13 +11,13 @@ from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import PlaneWave
+from PyMieSim.single.source import PlaneWave, PolarizationState
 
 # %%
 # Create a simple plane wave source
 source = PlaneWave(
     wavelength=632.8 * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=PolarizationState(angle=0 * ureg.degree),
     amplitude=1 * ureg.volt / ureg.meter,
 )
 

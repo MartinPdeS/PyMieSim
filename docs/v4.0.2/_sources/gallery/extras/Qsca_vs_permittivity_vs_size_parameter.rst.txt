@@ -30,7 +30,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-60
+.. GENERATED FROM PYTHON SOURCE LINES 13-63
 
 .. code-block:: Python
 
@@ -39,9 +39,12 @@ Importing the package: PyMieSim
     import matplotlib.pyplot as plt
 
     from PyMieSim.experiment.scatterer import Sphere
-    from PyMieSim.experiment.source import Gaussian
+    from PyMieSim.experiment.source import Gaussian, PolarizationSet
     from PyMieSim.experiment import Setup
 
+    polarization_state = PolarizationSet(
+        angles=90 * ureg.degree,  # Linear polarization at 90 degrees
+    )
 
     permitivity = numpy.linspace(-10, 50, 400)
 
@@ -51,9 +54,9 @@ Importing the package: PyMieSim
 
     source = Gaussian(
         wavelength=400 * ureg.nanometer,
-        polarization=90 * ureg.degree,
+        polarization=polarization_state,
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU,
+        numerical_aperture=0.2 * ureg.AU,
     )
 
 
@@ -96,7 +99,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.673 seconds)
+   **Total running time of the script:** (0 minutes 1.854 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_Qsca_vs_permittivity_vs_size_parameter.py:

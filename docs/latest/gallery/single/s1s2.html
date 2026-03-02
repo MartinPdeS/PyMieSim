@@ -554,14 +554,16 @@ to download the full example code.</p>
 <p>Importing the package: PyMieSim</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationState</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations</span><span class="w"> </span><span class="kn">import</span> <span class="n">S1S2</span>
+
+<span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_state</span><span class="p">,</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
@@ -576,7 +578,7 @@ to download the full example code.</p>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">s1s2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_s1s2_001.png" srcset="../../_images/sphx_glr_s1s2_001.png" alt="S$_1$ parameter, S$_2$ parameter" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.211 seconds)</p>
+<img src="../../_images/sphx_glr_s1s2_001.png" srcset="../../_images/sphx_glr_s1s2_001.png" alt="S$_1$ parameter, S$_2$ parameter" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.204 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-s1s2-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/cbdfd993471d6ac4752e91295bc76c84/s1s2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">s1s2.ipynb</span></code></a></p>

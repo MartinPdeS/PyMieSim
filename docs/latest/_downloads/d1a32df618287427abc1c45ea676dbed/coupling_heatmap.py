@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 
 
@@ -22,11 +22,15 @@ index = numpy.linspace(1.3, 2.1, 100) * ureg.RIU
 
 diameter = numpy.linspace(1, 2000, 100) * ureg.nanometer
 
+polarization_state = PolarizationSet(
+    angles=90 * ureg.degree,  # Linear polarization at 90 degrees
+)
+
 source = Gaussian(
     wavelength=400 * ureg.nanometer,
-    polarization=90 * ureg.degree,
+    polarization=polarization_state,  # Linear polarization at 90 degrees
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 scatterer = Sphere(
@@ -35,10 +39,10 @@ scatterer = Sphere(
 
 detector = Photodiode(
     polarization_filter=0 * ureg.degree,
-    NA=0.3 * ureg.RIU,
+    numerical_aperture=0.3 * ureg.RIU,
     phi_offset=0 * ureg.degree,
     gamma_offset=0 * ureg.degree,
-    sampling=400 * ureg.AU,
+    sampling=400
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)

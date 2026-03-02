@@ -15,7 +15,7 @@ from PyMieSim.single import SystemPlotter
 detector = CoherentMode(
     mode_number="LG23",  # Specifying LP23 mode
     sampling=900 * ureg.AU,  # Number of sampling points
-    NA=0.4 * ureg.AU,  # Numerical Aperture
+    numerical_aperture=0.4 * ureg.AU,  # Numerical Aperture
     gamma_offset=0 * ureg.degree,  # Gamma offset
     rotation=0 * ureg.degree,  # Rotation angle
     phi_offset=40 * ureg.degree,  # Phi offset in degrees

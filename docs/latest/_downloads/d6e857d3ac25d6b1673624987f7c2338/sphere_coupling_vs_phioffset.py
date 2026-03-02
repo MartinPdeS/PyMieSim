@@ -9,18 +9,21 @@ Sphere: Goniometer
 from PyMieSim.units import ureg
 import numpy
 
-from PyMieSim.experiment.detector import Photodiode, CoherentMode
+from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
-from PyMieSim.single.polarization import RightCircular
 from PyOptik import Material
+
+polarization_set = PolarizationSet(
+    angles=[90.0] * ureg.degree,
+)
 
 source = Gaussian(
     wavelength=1200 * ureg.nanometer,
-    polarization=RightCircular(),
+    polarization=polarization_set,
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 scatterer = Sphere(
     diameter=20 * ureg.nanometer,
@@ -30,11 +33,11 @@ scatterer = Sphere(
 )
 
 detector = Photodiode(
-    NA=[0.1, 0.2] * ureg.AU,
+    numerical_aperture=[0.1, 0.2] * ureg.AU,
     phi_offset=numpy.linspace(-180, 180, 200) * ureg.degree,
-    cache_NA=0.05 * ureg.AU,
+    cache_numerical_aperture=0.05 * ureg.AU,
     gamma_offset=0 * ureg.degree,
-    sampling=400 * ureg.AU,
+    sampling=400
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)

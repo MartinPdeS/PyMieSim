@@ -560,7 +560,7 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 
 
@@ -568,11 +568,15 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 
 <span class="n">diameter</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
 
+<span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationSet</span><span class="p">(</span>
+    <span class="n">angles</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>  <span class="c1"># Linear polarization at 90 degrees</span>
+<span class="p">)</span>
+
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">400</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_state</span><span class="p">,</span>  <span class="c1"># Linear polarization at 90 degrees</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
@@ -581,10 +585,10 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 
 <span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
     <span class="n">polarization_filter</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
     <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">sampling</span><span class="o">=</span><span class="mi">400</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">400</span>
 <span class="p">)</span>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
@@ -604,7 +608,7 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.911 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.930 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-coupling-heatmap-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/983ddb3ebce117868a88c719e85b85e5/coupling_heatmap.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coupling_heatmap.ipynb</span></code></a></p>

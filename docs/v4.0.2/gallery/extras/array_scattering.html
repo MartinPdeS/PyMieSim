@@ -557,13 +557,13 @@ Stokes parameters using arbitrary <code class="docutils literal notranslate"><sp
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">PolarizationState</span>
 </pre></div>
 </div>
 <p>Create a simple plane wave source</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mf">632.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">amplitude</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">volt</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -648,7 +648,7 @@ Stokes parameters using arbitrary <code class="docutils literal notranslate"><sp
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_array_scattering_003.png" srcset="../../_images/sphx_glr_array_scattering_003.png" alt="Stokes I, Stokes Q, Stokes U, Stokes V" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.909 seconds)</p>
+<img src="../../_images/sphx_glr_array_scattering_003.png" srcset="../../_images/sphx_glr_array_scattering_003.png" alt="Stokes I, Stokes Q, Stokes U, Stokes V" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.944 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-array-scattering-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ab1bad67fc136628f73cc30d3d7708d4/array_scattering.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">array_scattering.ipynb</span></code></a></p>

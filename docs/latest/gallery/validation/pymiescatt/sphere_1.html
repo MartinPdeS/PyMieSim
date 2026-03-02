@@ -507,7 +507,7 @@ to download the full example code.</p>
 
 <span class="c1"># PyMieSim imports</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">mps</span>
@@ -526,9 +526,9 @@ to download the full example code.</p>
 <span class="c1"># Configure the Gaussian source</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="n">NA</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="n">NA</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Setup spherical scatterer</span>
@@ -583,7 +583,7 @@ to download the full example code.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.446 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.434 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-sphere-1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/dd2190af52ca72481cbdc76871e5dec1/sphere_1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_1.ipynb</span></code></a></p>

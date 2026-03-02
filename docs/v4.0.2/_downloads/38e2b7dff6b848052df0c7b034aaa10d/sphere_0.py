@@ -12,7 +12,7 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 from MPSPlots.styles import mps
@@ -20,7 +20,7 @@ from MPSPlots.styles import mps
 
 # Define parameters
 wavelength = 632.8 * ureg.nanometer  # Wavelength of the light source in meters
-polarization_value = 0 * ureg.degree
+polarization = PolarizationSet(angles=0 * ureg.degree)
 optical_power = 1e-3 * ureg.watt  # Power in watts
 NA = 0.2 * ureg.AU  # Numerical aperture
 medium_index = 1.21 * ureg.RIU
@@ -32,9 +32,9 @@ diameters = (
 # Setup source
 source = Gaussian(
     wavelength=wavelength,
-    polarization=polarization_value,
+    polarization=polarization,
     optical_power=optical_power,
-    NA=NA,
+    numerical_aperture=NA,
 )
 
 # Setup scatterer

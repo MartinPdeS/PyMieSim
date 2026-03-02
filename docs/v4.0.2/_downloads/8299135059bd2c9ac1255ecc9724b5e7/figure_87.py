@@ -1,6 +1,6 @@
 """
 InfiniteCylinder Scatterer Bohren-Huffman figure 8.7
-============================================
+====================================================
 
 """
 
@@ -13,7 +13,7 @@ from PyMieSim.units import ureg
 from PyMieSim.directories import validation_data_path
 
 from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 
 theoretical = numpy.genfromtxt(
@@ -25,9 +25,9 @@ volume = numpy.pi * (diameter.to_base_units().magnitude / 2) ** 2
 
 source = Gaussian(
     wavelength=632.8 * ureg.nanometer,
-    polarization=[0, 90] * ureg.degree,
+    polarization=PolarizationSet(angles=[0, 90] * ureg.degree),
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 scatterer = InfiniteCylinder(

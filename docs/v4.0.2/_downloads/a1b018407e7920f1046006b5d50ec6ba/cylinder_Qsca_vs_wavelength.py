@@ -11,15 +11,19 @@ import numpy as np
 from PyMieSim.units import ureg
 
 from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
+
+polarization_state = PolarizationSet(
+    angles=0 * ureg.degree,  # Linear polarization angle in radians
+)
 
 source = Gaussian(
     wavelength=np.linspace(400, 1000, 150)
     * ureg.nanometer,  # Wavelengths ranging from 400 nm to 1000 nm
-    polarization=0 * ureg.degree,  # Linear polarization angle in radians
+    polarization=polarization_state,
     optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    NA=0.2 * ureg.AU,  # Numerical Aperture
+    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
 )
 
 scatterer = InfiniteCylinder(

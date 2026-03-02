@@ -559,7 +559,7 @@ to download the full example code.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationSet</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span>
@@ -569,11 +569,15 @@ to download the full example code.</p>
 
 <span class="n">Material</span><span class="o">.</span><span class="n">print_available</span><span class="p">()</span>
 
+<span class="n">polarization_set</span> <span class="o">=</span> <span class="n">PolarizationSet</span><span class="p">(</span>
+    <span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+<span class="p">)</span>
+
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">405</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_set</span><span class="p">,</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
@@ -661,7 +665,7 @@ to download the full example code.</p>
 +-----------------------+-----------------------+
 | methanol              |                       |
 +-----------------------+-----------------------+
-/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405 nanometer to 405 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
+/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405.0 nanometer to 405.0 nanometer which is outside the allowable range of 436.79999999999995 nanometer to 1.052 micrometer µm. [Material: polystyren]
   warnings.warn(
 
 &lt;Figure size 800x500 with 1 Axes&gt;

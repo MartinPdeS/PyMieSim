@@ -10,14 +10,17 @@ This example demonstrates the process of computing and visualizing the far-field
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.representations import NearField
+
+polarization_state = PolarizationState(angle=0 * ureg.degree)
+
 
 source = Gaussian(
     wavelength=300 * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_state,
     optical_power=1 * ureg.watt,
-    NA=0.3 * ureg.AU,
+    numerical_aperture=0.3 * ureg.AU,
 )
 
 scatterer = Sphere(

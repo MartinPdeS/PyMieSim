@@ -49,7 +49,6 @@
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'code/single/detector';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
@@ -501,8 +500,8 @@ filtering, and optional coherent or mean coupling strategies.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – Number of sample points on the detector’s angular mesh.</p></li>
-<li><p><strong>NA</strong> (<em>float</em>) – Numerical aperture of the detector; controls the angular acceptance.</p></li>
-<li><p><strong>cache_NA</strong> (<em>float</em>) – Cached NA threshold for fast lookup (set equal to <cite>NA</cite> to disable).</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture of the detector; controls the angular acceptance.</p></li>
+<li><p><strong>cache_numerical_aperture</strong> (<em>float</em>) – Cached numerical_aperture threshold for fast lookup (set equal to <cite>numerical_aperture</cite> to disable).</p></li>
 <li><p><strong>phi_offset</strong> (<em>float</em>) – Azimuthal angle offset (radians) for detector orientation.</p></li>
 <li><p><strong>gamma_offset</strong> (<em>float</em>) – Polar angle offset (radians) for detector orientation.</p></li>
 <li><p><strong>polarization_filter</strong> (<em>float</em>) – Degree or type of polarization filtering applied.</p></li>
@@ -522,8 +521,8 @@ filtering, and optional coherent or mean coupling strategies.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.NA">
-<span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.NA" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.numerical_aperture">
+<span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.numerical_aperture" title="Link to this definition">#</a></dt>
 <dd><p>Numerical aperture exposed as a read-only property.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -609,201 +608,10 @@ filtering, and optional coherent or mean coupling strategies.</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="id0">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
-<dd><p>Numerical aperture of the detector.</p>
-<p>Controls the angular extent of collected light.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id1">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gamma_offset</span></span><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
-<dd><p>Polar offset angle for detector orientation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_coupling">
-<span class="sig-name descname"><span class="pre">get_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_coupling" title="Link to this definition">#</a></dt>
-<dd><p>Compute the light coupling between the detector and a scatterer.</p>
-<p>The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:</p>
-<div class="math notranslate nohighlight">
-\[|\iint_{\Omega}  \Phi_{det} \, \Psi_{scat}^* \,  d \Omega|^2\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p>( Phi_{det} ): The capturing field of the detector, representing the sensitivity of the detector to the incoming scattered field.</p></li>
-<li><p>( Psi_{scat} ): The scattered field produced by the scatterer.</p></li>
-<li><p>( Omega ): The solid angle over which the integration is performed, typically covering the full ( 4pi ) steradians around the scatterer.</p></li>
-<li><p>( dOmega ): The differential solid angle element.</p></li>
-</ul>
-<p>This integral computes the overlap between the detector’s sensitivity pattern and the scattered field, which is then squared to represent the power coupled into the detector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scatterer</strong> (<em>BaseScatterer</em>) – The scatterer object that interacts with the incident light, producing the scattered field.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The power coupling between the detector and the scatterer, expressed in watts (W). This value represents the amount of scattered power that is captured by the detector.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Quantity</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The method internally invokes the appropriate binding method based on the type of scatterer (e.g., Sphere, Cylinder) to calculate the coupling.</p></li>
-<li><p>The coupling depends on both the geometry of the detector and the nature of the scattered field, making it essential for evaluating the efficiency of light collection in scattering experiments.</p></li>
-</ul>
-<p class="rubric">Example</p>
-<p>A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_energy_flow">
-<span class="sig-name descname"><span class="pre">get_energy_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_energy_flow" title="Link to this definition">#</a></dt>
-<dd><p>Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.</p>
-<p>The energy flow is computed using the following relationship between the scattered energy and the incident intensity:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}W_a &amp;= \sigma_{sca} \cdot I_{inc} \\[10pt]
-P &amp;= \int_{A} I \, dA \\[10pt]
-I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p>( W_a ): Energy flow (W)</p></li>
-<li><p>( sigma_{sca} ): Scattering cross section (m²)</p></li>
-<li><p>( I_{inc} ): Incident intensity (W/m²)</p></li>
-<li><p>( P ): Radiated power (W)</p></li>
-<li><p>( I ): Energy density (W/m²)</p></li>
-<li><p>( c ): Speed of light in vacuum (m/s)</p></li>
-<li><p>( n ): Refractive index of the surrounding medium</p></li>
-<li><p>( epsilon_0 ): Permittivity of free space (F/m)</p></li>
-<li><p>( E ): Electric field (V/m)</p></li>
-</ul>
-<p>The total power is computed by integrating the intensity over the surface area of the scatterer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scatterer</strong> (<em>BaseScatterer</em>) – The scatterer object, which contains information about the scattering properties of the particle, such as geometry and material.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The total energy flow (radiated power) from the scatterer, expressed in watts.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Quantity</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This method computes the energy flow by calculating the Poynting vector (which represents the directional energy flux) and summing it over the surface mesh of the scatterer. The final result is the total radiated power.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_poynting_field">
-<span class="sig-name descname"><span class="pre">get_poynting_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_poynting_field" title="Link to this definition">#</a></dt>
-<dd><p>Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.</p>
-<p>The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:</p>
-<div class="math notranslate nohighlight">
-\[\vec{S} = \epsilon_0 c^2 \, \vec{E} \times \vec{B}\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p>( vec{S} ): Poynting vector (W/m²)</p></li>
-<li><p>( epsilon_0 ): Permittivity of free space (F/m)</p></li>
-<li><p>( c ): Speed of light in vacuum (m/s)</p></li>
-<li><p>( vec{E} ): Electric field vector (V/m)</p></li>
-<li><p>( vec{B} ): Magnetic field vector (T)</p></li>
-</ul>
-<p>The cross product of the electric and magnetic field vectors results in the Poynting vector, which represents the flow of electromagnetic energy in space.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scatterer</strong> (<em>BaseScatterer</em>) – An instance of a PyMieSim scatterer (e.g., SPHERE or CYLINDER).</p></li>
-<li><p><strong>distance</strong> (<em>float</em><em>, </em><em>optional</em>) – Distance from the scatterer to the detector (default is 1).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A 2D array of shape (sampling, sampling) containing the Poynting vector magnitudes.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Poynting vector is computed over a 3D mesh of voxels that cover the entire solid angle of ( 4pi ) steradians. This method calculates the local energy flux at each voxel and returns the norm, which represents the magnitude of energy flow at each point in space around the scatterer.</p>
-<p>The Poynting vector is fundamental in understanding how energy is transmitted through space in the form of electromagnetic waves.</p>
-<p class="rubric">Example</p>
-<p>This method is used to assess the distribution of energy around a scatterer. The total energy flow can be obtained by integrating the Poynting vector over the surface enclosing the scatterer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
-<dd><p>NumPy array of shape (sampling, 2) with columns [gamma, phi].</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.is_coherent">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_coherent</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.is_coherent" title="Link to this definition">#</a></dt>
-<dd><p>CoherentMode detection mode flag.</p>
-<p>True if the detector is in coherent mode; false for incoherent.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id2">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_angle</span></span><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
-<dd><p>Returns the maximum angle of the detector in radians.
-This is used to determine the angular coverage of the detector.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id3">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_angle</span></span><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
-<dd><p>Returns the minimum angle of the detector in radians.
-This is used to determine the angular coverage of the detector.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.mode_field">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_field</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.mode_field" title="Link to this definition">#</a></dt>
-<dd><p>ModeField instance representing the detector’s mode.
-Contains methods for field computation and projections.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.mode_id">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_id</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.mode_id" title="Link to this definition">#</a></dt>
-<dd><p>ModeID instance representing the detector’s mode identifier.
-Contains family and number information for the mode.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id4">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phi_offset</span></span><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
-<dd><p>Azimuthal offset angle for detector orientation.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id5">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_filter</span></span><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
-<dd><p>Polarization filter setting.
-Specifies any linear or circular filter applied to the signal.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.print_properties">
 <span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.binary.interface_single.Photodiode"><span class="pre">PyMieSim.binary.interface_single.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.print_properties" title="Link to this definition">#</a></dt>
 <dd><p>Print the properties of the Photodiode detector.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id6">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
-<dd><p>Number of samples per full angular sweep.</p>
-<p>Determines resolution of the detected field.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id7">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scalar_field</span></span><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
-<dd><p>Complex far field samples as numpy.complex128, shape (N,)
-Getter returns a zero copy view tied to the detector lifetime
-Setter accepts any 1D array castable to complex128</p>
 </dd></dl>
 
 </dd></dl>
@@ -821,8 +629,8 @@ filtering, and optional coherent or mean coupling strategies.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode_number</strong> (<em>str</em>) – Identifier for the detector mode (e.g. ‘0’, ‘1’, …).</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>) – Number of sample points on the detector’s angular mesh.</p></li>
-<li><p><strong>NA</strong> (<em>float</em>) – Numerical aperture of the detector; controls the angular acceptance.</p></li>
-<li><p><strong>cache_NA</strong> (<em>float</em>) – Cached NA threshold for fast lookup (set equal to <cite>NA</cite> to disable).</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture of the detector; controls the angular acceptance.</p></li>
+<li><p><strong>cache_numerical_aperture</strong> (<em>float</em>) – Cached numerical aperture threshold for fast lookup (set equal to <cite>numerical_aperture</cite> to disable).</p></li>
 <li><p><strong>phi_offset</strong> (<em>float</em>) – Azimuthal angle offset (radians) for detector orientation.</p></li>
 <li><p><strong>gamma_offset</strong> (<em>float</em>) – Polar angle offset (radians) for detector orientation.</p></li>
 <li><p><strong>polarization_filter</strong> (<em>float</em>) – Degree or type of polarization filtering applied.</p></li>
@@ -844,8 +652,8 @@ filtering, and optional coherent or mean coupling strategies.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.NA">
-<span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.NA" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.numerical_aperture">
+<span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.numerical_aperture" title="Link to this definition">#</a></dt>
 <dd><p>Numerical aperture exposed as a read-only property.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -942,182 +750,6 @@ filtering, and optional coherent or mean coupling strategies.</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="id8">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
-<dd><p>Numerical aperture of the detector.</p>
-<p>Controls the angular extent of collected light.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id9">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gamma_offset</span></span><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
-<dd><p>Polar offset angle for detector orientation.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_coupling">
-<span class="sig-name descname"><span class="pre">get_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_coupling" title="Link to this definition">#</a></dt>
-<dd><p>Compute the light coupling between the detector and a scatterer.</p>
-<p>The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:</p>
-<div class="math notranslate nohighlight">
-\[|\iint_{\Omega}  \Phi_{det} \, \Psi_{scat}^* \,  d \Omega|^2\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p>( Phi_{det} ): The capturing field of the detector, representing the sensitivity of the detector to the incoming scattered field.</p></li>
-<li><p>( Psi_{scat} ): The scattered field produced by the scatterer.</p></li>
-<li><p>( Omega ): The solid angle over which the integration is performed, typically covering the full ( 4pi ) steradians around the scatterer.</p></li>
-<li><p>( dOmega ): The differential solid angle element.</p></li>
-</ul>
-<p>This integral computes the overlap between the detector’s sensitivity pattern and the scattered field, which is then squared to represent the power coupled into the detector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scatterer</strong> (<em>BaseScatterer</em>) – The scatterer object that interacts with the incident light, producing the scattered field.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The power coupling between the detector and the scatterer, expressed in watts (W). This value represents the amount of scattered power that is captured by the detector.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Quantity</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The method internally invokes the appropriate binding method based on the type of scatterer (e.g., Sphere, Cylinder) to calculate the coupling.</p></li>
-<li><p>The coupling depends on both the geometry of the detector and the nature of the scattered field, making it essential for evaluating the efficiency of light collection in scattering experiments.</p></li>
-</ul>
-<p class="rubric">Example</p>
-<p>A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_energy_flow">
-<span class="sig-name descname"><span class="pre">get_energy_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_energy_flow" title="Link to this definition">#</a></dt>
-<dd><p>Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.</p>
-<p>The energy flow is computed using the following relationship between the scattered energy and the incident intensity:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}W_a &amp;= \sigma_{sca} \cdot I_{inc} \\[10pt]
-P &amp;= \int_{A} I \, dA \\[10pt]
-I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p>( W_a ): Energy flow (W)</p></li>
-<li><p>( sigma_{sca} ): Scattering cross section (m²)</p></li>
-<li><p>( I_{inc} ): Incident intensity (W/m²)</p></li>
-<li><p>( P ): Radiated power (W)</p></li>
-<li><p>( I ): Energy density (W/m²)</p></li>
-<li><p>( c ): Speed of light in vacuum (m/s)</p></li>
-<li><p>( n ): Refractive index of the surrounding medium</p></li>
-<li><p>( epsilon_0 ): Permittivity of free space (F/m)</p></li>
-<li><p>( E ): Electric field (V/m)</p></li>
-</ul>
-<p>The total power is computed by integrating the intensity over the surface area of the scatterer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scatterer</strong> (<em>BaseScatterer</em>) – The scatterer object, which contains information about the scattering properties of the particle, such as geometry and material.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The total energy flow (radiated power) from the scatterer, expressed in watts.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Quantity</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This method computes the energy flow by calculating the Poynting vector (which represents the directional energy flux) and summing it over the surface mesh of the scatterer. The final result is the total radiated power.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_poynting_field">
-<span class="sig-name descname"><span class="pre">get_poynting_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASESCATTERER</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_poynting_field" title="Link to this definition">#</a></dt>
-<dd><p>Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.</p>
-<p>The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:</p>
-<div class="math notranslate nohighlight">
-\[\vec{S} = \epsilon_0 c^2 \, \vec{E} \times \vec{B}\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p>( vec{S} ): Poynting vector (W/m²)</p></li>
-<li><p>( epsilon_0 ): Permittivity of free space (F/m)</p></li>
-<li><p>( c ): Speed of light in vacuum (m/s)</p></li>
-<li><p>( vec{E} ): Electric field vector (V/m)</p></li>
-<li><p>( vec{B} ): Magnetic field vector (T)</p></li>
-</ul>
-<p>The cross product of the electric and magnetic field vectors results in the Poynting vector, which represents the flow of electromagnetic energy in space.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scatterer</strong> (<em>BaseScatterer</em>) – An instance of a PyMieSim scatterer (e.g., SPHERE or CYLINDER).</p></li>
-<li><p><strong>distance</strong> (<em>float</em><em>, </em><em>optional</em>) – Distance from the scatterer to the detector (default is 1).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A 2D array of shape (sampling, sampling) containing the Poynting vector magnitudes.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Poynting vector is computed over a 3D mesh of voxels that cover the entire solid angle of ( 4pi ) steradians. This method calculates the local energy flux at each voxel and returns the norm, which represents the magnitude of energy flow at each point in space around the scatterer.</p>
-<p>The Poynting vector is fundamental in understanding how energy is transmitted through space in the form of electromagnetic waves.</p>
-<p class="rubric">Example</p>
-<p>This method is used to assess the distribution of energy around a scatterer. The total energy flow can be obtained by integrating the Poynting vector over the surface enclosing the scatterer.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_single.BASE_DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
-<dd><p>NumPy array of shape (sampling, 2) with columns [gamma, phi].</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.is_coherent">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_coherent</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.is_coherent" title="Link to this definition">#</a></dt>
-<dd><p>CoherentMode detection mode flag.</p>
-<p>True if the detector is in coherent mode; false for incoherent.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id10">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_angle</span></span><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
-<dd><p>Returns the maximum angle of the detector in radians.
-This is used to determine the angular coverage of the detector.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id11">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_angle</span></span><a class="headerlink" href="#id11" title="Link to this definition">#</a></dt>
-<dd><p>Returns the minimum angle of the detector in radians.
-This is used to determine the angular coverage of the detector.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.mode_field">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_field</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.mode_field" title="Link to this definition">#</a></dt>
-<dd><p>ModeField instance representing the detector’s mode.
-Contains methods for field computation and projections.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.mode_id">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_id</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.mode_id" title="Link to this definition">#</a></dt>
-<dd><p>ModeID instance representing the detector’s mode identifier.
-Contains family and number information for the mode.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id12">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phi_offset</span></span><a class="headerlink" href="#id12" title="Link to this definition">#</a></dt>
-<dd><p>Azimuthal offset angle for detector orientation.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id13">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_filter</span></span><a class="headerlink" href="#id13" title="Link to this definition">#</a></dt>
-<dd><p>Polarization filter setting.
-Specifies any linear or circular filter applied to the signal.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.print_properties">
 <span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.binary.interface_single.CoherentMode"><span class="pre">PyMieSim.binary.interface_single.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.print_properties" title="Link to this definition">#</a></dt>
@@ -1125,24 +757,9 @@ Specifies any linear or circular filter applied to the signal.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id14">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#id14" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
 <dd><p>Rotation angle of the detector’s field-of-view.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id15">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#id15" title="Link to this definition">#</a></dt>
-<dd><p>Number of samples per full angular sweep.</p>
-<p>Determines resolution of the detected field.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id16">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scalar_field</span></span><a class="headerlink" href="#id16" title="Link to this definition">#</a></dt>
-<dd><p>Complex far field samples as numpy.complex128, shape (N,)
-Getter returns a zero copy view tied to the detector lifetime
-Setter accepts any 1D array castable to complex128</p>
 </dd></dl>
 
 </dd></dl>
@@ -1174,7 +791,7 @@ Setter accepts any 1D array castable to complex128</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode"><code class="docutils literal notranslate"><span class="pre">Photodiode</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.scalar_field"><code class="docutils literal notranslate"><span class="pre">Photodiode.scalar_field</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.NA</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">Photodiode.numerical_aperture</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.sampling"><code class="docutils literal notranslate"><span class="pre">Photodiode.sampling</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.phi_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.phi_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.gamma_offset</span></code></a></li>
@@ -1182,27 +799,12 @@ Setter accepts any 1D array castable to complex128</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mesh"><code class="docutils literal notranslate"><span class="pre">Photodiode.mesh</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.max_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.max_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.min_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.min_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Photodiode.NA</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">Photodiode.gamma_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_coupling"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_coupling()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_energy_flow"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_energy_flow()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_poynting_field"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_poynting_field()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_structured_scalarfield()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.is_coherent"><code class="docutils literal notranslate"><span class="pre">Photodiode.is_coherent</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">Photodiode.max_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">Photodiode.min_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mode_field"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_field</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mode_id"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_id</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">Photodiode.phi_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">Photodiode.polarization_filter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.print_properties"><code class="docutils literal notranslate"><span class="pre">Photodiode.print_properties()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">Photodiode.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">Photodiode.scalar_field</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode"><code class="docutils literal notranslate"><span class="pre">CoherentMode</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.scalar_field"><code class="docutils literal notranslate"><span class="pre">CoherentMode.scalar_field</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.NA</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">CoherentMode.numerical_aperture</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.sampling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.sampling</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.phi_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.phi_offset</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.gamma_offset</span></code></a></li>
@@ -1211,23 +813,8 @@ Setter accepts any 1D array castable to complex128</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mesh"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mesh</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.max_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.max_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.min_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.min_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">CoherentMode.NA</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">CoherentMode.gamma_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_coupling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_coupling()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_energy_flow"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_energy_flow()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_poynting_field"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_poynting_field()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_structured_scalarfield()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.is_coherent"><code class="docutils literal notranslate"><span class="pre">CoherentMode.is_coherent</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">CoherentMode.max_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><code class="docutils literal notranslate"><span class="pre">CoherentMode.min_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mode_field"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_field</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mode_id"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_id</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><code class="docutils literal notranslate"><span class="pre">CoherentMode.phi_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><code class="docutils literal notranslate"><span class="pre">CoherentMode.polarization_filter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.print_properties"><code class="docutils literal notranslate"><span class="pre">CoherentMode.print_properties()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><code class="docutils literal notranslate"><span class="pre">CoherentMode.rotation</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15"><code class="docutils literal notranslate"><span class="pre">CoherentMode.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><code class="docutils literal notranslate"><span class="pre">CoherentMode.scalar_field</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">CoherentMode.rotation</span></code></a></li>
 </ul>
 </li>
 </ul>

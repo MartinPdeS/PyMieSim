@@ -27,20 +27,22 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-32
+.. GENERATED FROM PYTHON SOURCE LINES 10-34
 
 .. code-block:: Python
 
     from PyMieSim.units import ureg
     from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.source import Gaussian
+    from PyMieSim.single.source import Gaussian, PolarizationState
     from PyMieSim.single.representations import S1S2
+
+    polarization_state = PolarizationState(angle=0 * ureg.degree)
 
     source = Gaussian(
         wavelength=450 * ureg.nanometer,
-        polarization=0 * ureg.degree,
+        polarization=polarization_state,
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
@@ -68,7 +70,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.211 seconds)
+   **Total running time of the script:** (0 minutes 0.204 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:

@@ -26,7 +26,7 @@ defined, it is possible to use PyMieSim to find the scattering efficiency of the
 scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-59
+.. GENERATED FROM PYTHON SOURCE LINES 10-63
 
 
 
@@ -48,7 +48,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
     from PyMieSim.experiment.detector import Photodiode
     from PyMieSim.experiment.scatterer import Sphere
-    from PyMieSim.experiment.source import Gaussian
+    from PyMieSim.experiment.source import Gaussian, PolarizationSet
     from PyMieSim.experiment import Setup
 
 
@@ -56,11 +56,15 @@ of a sphere as a function of the permittivity and the size parameter.
 
     diameter = numpy.linspace(1, 2000, 100) * ureg.nanometer
 
+    polarization_state = PolarizationSet(
+        angles=90 * ureg.degree,  # Linear polarization at 90 degrees
+    )
+
     source = Gaussian(
         wavelength=400 * ureg.nanometer,
-        polarization=90 * ureg.degree,
+        polarization=polarization_state,  # Linear polarization at 90 degrees
         optical_power=1e-3 * ureg.watt,
-        NA=0.2 * ureg.AU,
+        numerical_aperture=0.2 * ureg.AU,
     )
 
     scatterer = Sphere(
@@ -69,10 +73,10 @@ of a sphere as a function of the permittivity and the size parameter.
 
     detector = Photodiode(
         polarization_filter=0 * ureg.degree,
-        NA=0.3 * ureg.RIU,
+        numerical_aperture=0.3 * ureg.RIU,
         phi_offset=0 * ureg.degree,
         gamma_offset=0 * ureg.degree,
-        sampling=400 * ureg.AU,
+        sampling=400
     )
 
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
@@ -94,7 +98,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.911 seconds)
+   **Total running time of the script:** (0 minutes 1.930 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_coupling_heatmap.py:

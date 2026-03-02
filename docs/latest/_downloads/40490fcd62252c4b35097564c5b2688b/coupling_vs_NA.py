@@ -14,9 +14,9 @@ from PyMieSim import single
 
 source = experiment.source.Gaussian(
     wavelength=500 * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=experiment.source.PolarizationSet(angles=0 * ureg.degree),
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 scatterer = experiment.scatterer.Sphere(
@@ -27,10 +27,10 @@ scatterer = experiment.scatterer.Sphere(
 )
 
 detector = experiment.detector.Photodiode(
-    NA=np.linspace(0.1, 1, 150) * ureg.AU,
+    numerical_aperture=np.linspace(0.1, 1, 150) * ureg.AU,
     phi_offset=0 * ureg.degree,
     gamma_offset=[0, 10] * ureg.degree,
-    sampling=2000 * ureg.AU,
+    sampling=2000
 )
 
 setup = experiment.Setup(scatterer=scatterer, source=source, detector=detector)
@@ -41,9 +41,9 @@ dataframe.plot(x="detector:NA")
 
 single_source = single.Gaussian(
     wavelength=950 * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=single.source.PolarizationState(angle=0 * ureg.degree),
     optical_power=1e-3 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 single_scatterer = single.scatterer.Sphere(

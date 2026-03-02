@@ -10,17 +10,20 @@ from PyMieSim.units import ureg
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
-source = Gaussian(
-    wavelength=[950, 1050] * ureg.nanometer,
-    polarization=0 * ureg.degree,
-    optical_power=[1e-3] * ureg.watt,
-    NA=0.2 * ureg.AU,
+polarization_set = PolarizationSet(
+    angles=[0] * ureg.radian
 )
 
+source = Gaussian(
+    wavelength=[950, 1050] * ureg.nanometer,
+    polarization=polarization_set,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=0.2 * ureg.AU,
+)
 
 scatterer = Sphere(
     diameter=np.linspace(100, 2000, 20) * ureg.nanometer,
@@ -30,11 +33,11 @@ scatterer = Sphere(
 )
 
 detector = Photodiode(
-    NA=[0.1] * ureg.AU,
+    numerical_aperture=[0.1] * ureg.AU,
     phi_offset=-180 * ureg.degree,
     gamma_offset=0 * ureg.degree,
     polarization_filter=np.linspace(-180, 180, 100) * ureg.degree,
-    sampling=[500] * ureg.AU,
+    sampling=[500],
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)

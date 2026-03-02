@@ -499,21 +499,11 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="goniometric-coupling-vs-s1-s2-comparison">
 <span id="sphx-glr-gallery-validation-internal-phase-function-detector-py"></span><h1>Goniometric Coupling vs S1 S2 Comparison<a class="headerlink" href="#goniometric-coupling-vs-s1-s2-comparison" title="Link to this heading">#</a></h1>
-<img src="../../../_images/sphx_glr_phase_function_detector_001.png" srcset="../../../_images/sphx_glr_phase_function_detector_001.png" alt="Polarization 90 degree" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<img src="../../../_images/sphx_glr_phase_function_detector_001.png" srcset="../../../_images/sphx_glr_phase_function_detector_001.png" alt="Polarization 90 degree" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">single</span><span class="p">,</span> <span class="n">experiment</span>
 
-<span class="c1"># PyMieSim imports</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span> <span class="k">as</span> <span class="n">ExperimentSphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">ExperimentGaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations</span><span class="w"> </span><span class="kn">import</span> <span class="n">S1S2</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span> <span class="k">as</span> <span class="n">SingleSphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">SingleGaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">mps</span>
 
 <span class="c1"># Setup parameters</span>
 <span class="n">scatterer_diameter</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span>  <span class="c1"># Diameter of the scatterer in meters</span>
@@ -521,14 +511,14 @@ to download the full example code.</p>
 <span class="n">source_wavelength</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span>  <span class="c1"># Wavelength of the source in meters</span>
 
 <span class="c1"># Experiment source and scatterer setup</span>
-<span class="n">source</span> <span class="o">=</span> <span class="n">ExperimentGaussian</span><span class="p">(</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="mf">1.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">experiment</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">ExperimentSphere</span><span class="p">(</span>
+<span class="n">scatterer</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="n">scatterer_diameter</span><span class="p">,</span>
     <span class="n">refractive_index</span><span class="o">=</span><span class="n">scatterer_index</span><span class="p">,</span>
     <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
@@ -536,15 +526,15 @@ to download the full example code.</p>
 <span class="p">)</span>
 
 <span class="c1"># Detector setup</span>
-<span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
-    <span class="n">NA</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+<span class="n">detector</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">Photodiode</span><span class="p">(</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
     <span class="n">phi_offset</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">gamma_offset</span><span class="o">=</span><span class="mf">0.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">sampling</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">1000</span>
 <span class="p">)</span>
 
 <span class="c1"># Configure experiment</span>
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
 
 <span class="c1"># Gather data</span>
 <span class="n">dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">,</span> <span class="n">drop_unique_level</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -552,19 +542,21 @@ to download the full example code.</p>
 <span class="n">dataframe</span><span class="p">[</span><span class="s2">&quot;coupling&quot;</span><span class="p">]</span> <span class="o">/=</span> <span class="n">dataframe</span><span class="p">[</span><span class="s2">&quot;coupling&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>  <span class="c1"># Normalize data</span>
 
 <span class="c1"># Single scatterer simulation for S1 and S2</span>
-<span class="n">single_source</span> <span class="o">=</span> <span class="n">SingleGaussian</span><span class="p">(</span>
+<span class="n">single_source</span> <span class="o">=</span> <span class="n">single</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">Gaussian</span><span class="p">(</span>
     <span class="n">wavelength</span><span class="o">=</span><span class="n">source_wavelength</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">single</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">single_scatterer</span> <span class="o">=</span> <span class="n">SingleSphere</span><span class="p">(</span>
+<span class="n">single_scatterer</span> <span class="o">=</span> <span class="n">single</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="n">scatterer_diameter</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">single_source</span><span class="p">,</span>
     <span class="n">refractive_index</span><span class="o">=</span><span class="n">scatterer_index</span><span class="p">,</span>
     <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations</span><span class="w"> </span><span class="kn">import</span> <span class="n">S1S2</span>
 
 <span class="n">s1s2</span> <span class="o">=</span> <span class="n">S1S2</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">single_scatterer</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
 <span class="n">phi</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s1</span></a><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s2</span></a> <span class="o">=</span> <span class="n">s1s2</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s1s2</span><span class="o">.</span><span class="n">S1</span></a><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s1s2</span><span class="o">.</span><span class="n">S2</span></a><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
@@ -572,8 +564,7 @@ to download the full example code.</p>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s2</span></a> <span class="o">/=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s2</span></a><span class="o">.</span><span class="n">max</span><span class="p">()</span>  <span class="c1"># Normalize S2 data</span>
 
 
-<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">mps</span><span class="p">):</span>
-    <span class="n">figure</span><span class="p">,</span> <span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;polar&quot;</span><span class="p">))</span>
+<span class="n">figure</span><span class="p">,</span> <span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s2">&quot;polar&quot;</span><span class="p">))</span>
 
 
 <span class="n">df</span> <span class="o">=</span> <span class="p">(</span>

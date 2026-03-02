@@ -21,7 +21,7 @@
 Effect of Shell dimensions in equivalent medium
 ===============================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-44
+.. GENERATED FROM PYTHON SOURCE LINES 6-48
 
 .. code-block:: Python
 
@@ -33,7 +33,7 @@ Effect of Shell dimensions in equivalent medium
 
     # PyMieSim imports
     from PyMieSim.experiment.scatterer import CoreShell
-    from PyMieSim.experiment.source import Gaussian
+    from PyMieSim.experiment.source import Gaussian, PolarizationSet
     from PyMieSim.experiment import Setup
 
     # Setup parameters
@@ -41,12 +41,16 @@ Effect of Shell dimensions in equivalent medium
     scatterer_index = 1.4 * ureg.RIU  # Refractive index of the scatterer
     source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
+    polarization_set = PolarizationSet(
+        angles=[0, 90] * ureg.degree,
+    )
+
     # Experiment source and scatterer setup
     source = Gaussian(
         wavelength=1.2 * ureg.micrometer,
-        polarization=[0, 90] * ureg.degree,
+        polarization=polarization_set,
         optical_power=1 * ureg.watt,
-        NA=0.2 * ureg.AU,
+        numerical_aperture=0.2 * ureg.AU,
     )
 
     scatterer = CoreShell(
@@ -70,7 +74,7 @@ Effect of Shell dimensions in equivalent medium
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-55
+.. GENERATED FROM PYTHON SOURCE LINES 49-59
 
 .. code-block:: Python
 
@@ -96,12 +100,12 @@ Effect of Shell dimensions in equivalent medium
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
+.. GENERATED FROM PYTHON SOURCE LINES 60-62
 
 As it is supposed the scattering Cross-section should not be affected by
 the shell thickness as it's refractive index is same as the surrounding medium.
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-64
+.. GENERATED FROM PYTHON SOURCE LINES 62-68
 
 .. code-block:: Python
 
@@ -126,7 +130,7 @@ the shell thickness as it's refractive index is same as the surrounding medium.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.488 seconds)
+   **Total running time of the script:** (0 minutes 0.496 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_internal_core_shell_empty_shell.py:

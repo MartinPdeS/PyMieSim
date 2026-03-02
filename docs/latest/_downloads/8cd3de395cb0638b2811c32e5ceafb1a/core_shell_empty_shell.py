@@ -11,7 +11,7 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 
 # Setup parameters
@@ -19,12 +19,16 @@ scatterer_diameter = 0.3 * ureg.micrometer  # Diameter of the scatterer in meter
 scatterer_index = 1.4 * ureg.RIU  # Refractive index of the scatterer
 source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
+polarization_set = PolarizationSet(
+    angles=[0, 90] * ureg.degree,
+)
+
 # Experiment source and scatterer setup
 source = Gaussian(
     wavelength=1.2 * ureg.micrometer,
-    polarization=[0, 90] * ureg.degree,
+    polarization=polarization_set,
     optical_power=1 * ureg.watt,
-    NA=0.2 * ureg.AU,
+    numerical_aperture=0.2 * ureg.AU,
 )
 
 scatterer = CoreShell(

@@ -31,13 +31,11 @@ users through practical implementations.
          :color: primary
          :outline:
          :expand:
-         :link-type: doc
 
          Open
 
    .. grid-item-card:: Experiment
       :link: /gallery/experiment/index
-      :link-type: doc
       :text-align: center
 
       End to end tutorials with realistic workflows.
@@ -48,7 +46,6 @@ users through practical implementations.
          :color: primary
          :outline:
          :expand:
-         :link-type: doc
 
          Open
 
@@ -65,6 +62,5 @@ users through practical implementations.
          :color: primary
          :outline:
          :expand:
-         :link-type: doc
 
          Open

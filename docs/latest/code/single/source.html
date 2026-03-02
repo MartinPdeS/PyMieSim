@@ -510,30 +510,14 @@ wavelength, polarization, and electric field amplitude.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.jones_vector">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jones_vector</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.jones_vector" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.polarization">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.polarization" title="Link to this definition">#</a></dt>
 <dd><p>Convenience Jones vector.</p>
-<p>Returns the first row of <a class="reference internal" href="#PyMieSim.single.source.PlaneWave.polarization_element" title="PyMieSim.single.source.PlaneWave.polarization_element"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polarization_element</span></code></a> as a vector
+<p>Returns the first row of <code class="xref py py-attr docutils literal notranslate"><span class="pre">polarization_element</span></code> as a vector
 <code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.polarization_element">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_element</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.polarization_element" title="Link to this definition">#</a></dt>
-<dd><p>Polarization Jones matrix.</p>
-<p>The polarization is returned as a complex array with shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.
-Each row corresponds to a Jones vector <code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
@@ -580,22 +564,8 @@ Each row corresponds to a Jones vector <code class="docutils literal notranslate
 <p>This source models a diffraction limited Gaussian beam characterized by its
 wavelength, polarization, numerical aperture, and optical power.</p>
 <p class="rubric">Notes</p>
-<p>The NA is treated as dimensionless and is used to derive the beam waist and
+<p>The numerical_aperture is treated as dimensionless and is used to derive the beam waist and
 related quantities in the C++ implementation.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.NA">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NA</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.NA" title="Link to this definition">#</a></dt>
-<dd><p>Numerical aperture.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dimensionless numerical aperture.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.amplitude">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.amplitude" title="Link to this definition">#</a></dt>
@@ -625,17 +595,15 @@ related quantities in the C++ implementation.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.jones_vector">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">jones_vector</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.jones_vector" title="Link to this definition">#</a></dt>
-<dd><p>Convenience Jones vector.</p>
-<p>Returns the first row of <a class="reference internal" href="#PyMieSim.single.source.Gaussian.polarization_element" title="PyMieSim.single.source.Gaussian.polarization_element"><code class="xref py py-attr docutils literal notranslate"><span class="pre">polarization_element</span></code></a> as a vector
-<code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.numerical_aperture">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.numerical_aperture" title="Link to this definition">#</a></dt>
+<dd><p>Numerical aperture.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>.</p>
+<dd class="field-odd"><p>Dimensionless numerical aperture.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+<dd class="field-even"><p>pint.Quantity</p>
 </dd>
 </dl>
 </dd></dl>
@@ -669,14 +637,14 @@ related quantities in the C++ implementation.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.polarization_element">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_element</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.polarization_element" title="Link to this definition">#</a></dt>
-<dd><p>Polarization Jones matrix.</p>
-<p>The polarization is returned as a complex array with shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.
-Each row corresponds to a Jones vector <code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.polarization">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.polarization" title="Link to this definition">#</a></dt>
+<dd><p>Convenience Jones vector.</p>
+<p>Returns the first row of <code class="xref py py-attr docutils literal notranslate"><span class="pre">polarization_element</span></code> as a vector
+<code class="docutils literal notranslate"><span class="pre">[Ex,</span> <span class="pre">Ey]</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.</p>
+<dd class="field-odd"><p>Complex array of shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
@@ -756,20 +724,18 @@ Each row corresponds to a Jones vector <code class="docutils literal notranslate
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave"><code class="docutils literal notranslate"><span class="pre">PlaneWave</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.amplitude"><code class="docutils literal notranslate"><span class="pre">PlaneWave.amplitude</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.jones_vector"><code class="docutils literal notranslate"><span class="pre">PlaneWave.jones_vector</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.polarization_element"><code class="docutils literal notranslate"><span class="pre">PlaneWave.polarization_element</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.polarization"><code class="docutils literal notranslate"><span class="pre">PlaneWave.polarization</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.wavelength"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavelength</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.wavenumber_vacuum"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavenumber_vacuum</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.NA"><code class="docutils literal notranslate"><span class="pre">Gaussian.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.amplitude"><code class="docutils literal notranslate"><span class="pre">Gaussian.amplitude</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.area"><code class="docutils literal notranslate"><span class="pre">Gaussian.area</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.jones_vector"><code class="docutils literal notranslate"><span class="pre">Gaussian.jones_vector</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">Gaussian.numerical_aperture</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.optical_power"><code class="docutils literal notranslate"><span class="pre">Gaussian.optical_power</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.peak_intensity"><code class="docutils literal notranslate"><span class="pre">Gaussian.peak_intensity</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.polarization_element"><code class="docutils literal notranslate"><span class="pre">Gaussian.polarization_element</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.polarization"><code class="docutils literal notranslate"><span class="pre">Gaussian.polarization</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.waist"><code class="docutils literal notranslate"><span class="pre">Gaussian.waist</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.wavelength"><code class="docutils literal notranslate"><span class="pre">Gaussian.wavelength</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.wavenumber_vacuum"><code class="docutils literal notranslate"><span class="pre">Gaussian.wavenumber_vacuum</span></code></a></li>

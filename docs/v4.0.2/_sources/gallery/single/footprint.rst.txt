@@ -23,7 +23,7 @@ Scatterer Footprint Calculation and Visualization
 
 This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-48
+.. GENERATED FROM PYTHON SOURCE LINES 7-49
 
 
 
@@ -33,37 +33,27 @@ This example demonstrates how to compute and visualize the footprint of a scatte
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    2026-03-01 09:11:53,174 INFO Substituting symbol \mu from STIXNonUnicode
-    2026-03-01 09:11:53,202 INFO Substituting symbol \mu from STIXNonUnicode
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
 
     # Import necessary components from PyMieSim
     from PyMieSim.units import ureg
-    from PyOptik import Material
 
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.detector import CoherentMode
-    from PyMieSim.single.source import Gaussian
+    from PyMieSim.single.source import Gaussian, PolarizationState
     from PyMieSim.single.representations import Footprint
+
+    polarization_state = PolarizationState(angle=0 * ureg.degree)
 
     source = Gaussian(
         wavelength=1 * ureg.micrometer,
-        polarization=0 * ureg.degree,
+        polarization=polarization_state,
         optical_power=1 * ureg.watt,
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
@@ -75,7 +65,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
     detector = CoherentMode(
         mode_number="HG02",
-        NA=0.3 * ureg.AU,
+        numerical_aperture=0.3 * ureg.AU,
         sampling=200,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
@@ -94,7 +84,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.482 seconds)
+   **Total running time of the script:** (0 minutes 0.548 seconds)
 
 
 .. _sphx_glr_download_gallery_single_footprint.py:

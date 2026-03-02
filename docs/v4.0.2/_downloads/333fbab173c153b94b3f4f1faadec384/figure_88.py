@@ -1,6 +1,6 @@
 """
 InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
-============================================
+====================================================
 
 """
 
@@ -12,7 +12,7 @@ from PyMieSim.units import ureg
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
 from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PolarizationSet
 from PyMieSim.experiment import Setup
 
 # Load theoretical data
@@ -22,9 +22,9 @@ theoretical_data = np.genfromtxt(
 
 # Define parameters
 wavelength = 632.8 * ureg.nanometer  # Wavelength of the source in meters
-polarization_values = [0, 90] * ureg.degree  # Polarization values in degrees
+polarization_set = PolarizationSet(angles=[0, 90] * ureg.degree)  # Create polarization set
 optical_power = 1e-3 * ureg.watt  # Optical power in watts
-NA = 0.2 * ureg.AU  # Numerical aperture
+numerical_aperture = 0.2 * ureg.AU  # Numerical aperture
 diameters = np.geomspace(10, 6000, 800) * ureg.nanometer  # Diameters from 10 nm to 6 μm
 index = 1.55 * ureg.RIU  # Refractive index of the cylinder
 medium_index = 1.335 * ureg.RIU  # Refractive index of the medium
@@ -35,9 +35,9 @@ volumes = np.pi * (diameters / 2) ** 2
 # Configure the Gaussian source
 source = Gaussian(
     wavelength=wavelength,
-    polarization=polarization_values,
+    polarization=polarization_set,
     optical_power=optical_power,
-    NA=NA,
+    numerical_aperture=numerical_aperture,
 )
 
 # Setup cylindrical scatterers

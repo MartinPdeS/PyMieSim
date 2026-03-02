@@ -9,14 +9,16 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 # Importing the package: PyMieSim
 from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.representations import S1S2
+
+polarization_state = PolarizationState(angle=0 * ureg.degree)
 
 source = Gaussian(
     wavelength=450 * ureg.nanometer,
-    polarization=0 * ureg.degree,
+    polarization=polarization_state,
     optical_power=1 * ureg.watt,
-    NA=0.3 * ureg.AU,
+    numerical_aperture=0.3 * ureg.AU,
 )
 
 scatterer = Sphere(
