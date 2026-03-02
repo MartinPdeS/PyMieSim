@@ -23,7 +23,7 @@ def test_valid_experiment(mock_show):
     The test constructs a valid source, scatterer, and detector using scalar and array
     parameters, then runs the experiment. It is expected that no error is raised.
     """
-    polarization_set = PolarizationSet(angles=0 * ureg.degree)
+    polarization_set = PolarizationSet(angles=[0] * TOTAL_SIZE * ureg.degree)
     source = Gaussian.build_sequential(
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
         polarization=polarization_set,
@@ -47,7 +47,7 @@ def test_valid_experiment(mock_show):
         polarization_filter=np.nan * ureg.degree,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        sampling=100 * ureg.AU,
+        sampling=100,
         total_size=TOTAL_SIZE,
     )
 

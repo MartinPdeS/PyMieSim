@@ -3,7 +3,8 @@
 
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
-#include "./detector_set.h"
+#include <experiment/sets/detector_set/detector_set.h>
+#include <experiment/sets/sequential_broadcast.h>
 
 namespace py = pybind11;
 
@@ -132,7 +133,92 @@ void register_detector_set(py::module& module) {
                 The mapping includes keys such as 'detector:sampling', 'detector:NA', 'detector:cache_NA', 'detector:phi_offset', 'detector:gamma_offset', 'detector:polarization_filter', and 'detector:medium_refractive_index'.
             )pdoc"
         )
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const py::object& total_size,
+                const py::object& numerical_aperture,
+                const py::object& phi_offset,
+                const py::object& gamma_offset,
+                const py::object& sampling,
+                const py::object& cache_numerical_aperture,
+                const py::object& polarization_filter,
+                const py::object& medium_refractive_index
+            ) {
+                const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
 
+                std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
+
+                std::vector<double> numerical_aperture_value =
+                    cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+
+                std::vector<double> cache_numerical_aperture_value =
+                    cast_scalar_or_array_to_vector_double(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+
+                std::vector<double> phi_offset_value =
+                    cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
+
+                std::vector<double> gamma_offset_value =
+                    cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
+
+                std::vector<double> medium_refractive_index_value =
+                    cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+
+                std::vector<double> polarization_filter_value;
+                if (polarization_filter.is_none()) {
+                    polarization_filter_value = std::vector<double>{std::nan("")}; // broadcast later
+                } else {
+                    polarization_filter_value =
+                        cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
+                }
+
+                const size_t target_size = resolve_target_size(
+                    total_size_value,
+                    {
+                        {"sampling", std::vector<double>{static_cast<double>(sampling_value.size())}}, // placeholder not used
+                        {"numerical_aperture", numerical_aperture_value},
+                        {"cache_numerical_aperture", cache_numerical_aperture_value},
+                        {"phi_offset", phi_offset_value},
+                        {"gamma_offset", gamma_offset_value},
+                        {"polarization_filter", polarization_filter_value},
+                        {"medium_refractive_index", medium_refractive_index_value}
+                    }
+                );
+
+                sampling_value = broadcast_vector_unsigned("sampling", sampling_value, target_size);
+                numerical_aperture_value = broadcast_vector_double("numerical_aperture", numerical_aperture_value, target_size);
+                cache_numerical_aperture_value = broadcast_vector_double("cache_numerical_aperture", cache_numerical_aperture_value, target_size);
+                phi_offset_value = broadcast_vector_double("phi_offset", phi_offset_value, target_size);
+                gamma_offset_value = broadcast_vector_double("gamma_offset", gamma_offset_value, target_size);
+                polarization_filter_value = broadcast_vector_double("polarization_filter", polarization_filter_value, target_size);
+                medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+
+                return std::make_shared<PhotodiodeSet>(
+                    sampling_value,
+                    numerical_aperture_value,
+                    cache_numerical_aperture_value,
+                    phi_offset_value,
+                    gamma_offset_value,
+                    polarization_filter_value,
+                    medium_refractive_index_value,
+                    true
+                );
+            },
+            py::arg("total_size") = py::none(),
+            py::arg("numerical_aperture"),
+            py::arg("phi_offset"),
+            py::arg("gamma_offset"),
+            py::arg("sampling") = py::int_(200),
+            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("polarization_filter") = py::none(),
+            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            R"pdoc(
+                Construct a sequential PhotodiodeSet by broadcasting scalar or single element inputs.
+
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the maximum size among all provided parameters.
+            )pdoc"
+        )
         ;
 
 
@@ -302,6 +388,109 @@ void register_detector_set(py::module& module) {
             R"pdoc(
                 Generates a mapping of detector attributes to their corresponding values for the CoherentModeSet instance.
                 The mapping includes keys such as 'detector:mode_number', 'detector:sampling', 'detector:NA', 'detector:cache_NA', 'detector:phi_offset', 'detector:gamma_offset', 'detector:polarization_filter', 'detector:rotation', 'detector:medium_refractive_index', and 'detector:mean_coupling'.
+            )pdoc"
+        )
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const py::object& total_size,
+                const py::object& mode_number,
+                const py::object& numerical_aperture,
+                const py::object& phi_offset,
+                const py::object& gamma_offset,
+                const py::object& rotation,
+                const py::object& cache_numerical_aperture,
+                const py::object& sampling,
+                const py::object& polarization_filter,
+                const py::object& medium_refractive_index,
+                const bool& mean_coupling
+            ) {
+                const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
+
+                std::vector<std::string> mode_number_values = cast_scalar_or_array_to_vector_string(mode_number);
+                std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
+
+                std::vector<double> numerical_aperture_value =
+                    cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+
+                std::vector<double> cache_numerical_aperture_value =
+                    cast_scalar_or_array_to_vector_double(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+
+                std::vector<double> phi_offset_value =
+                    cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
+
+                std::vector<double> gamma_offset_value =
+                    cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
+
+                std::vector<double> rotation_value =
+                    cast_scalar_or_array_to_vector_double(rotation.attr("to")("radian").attr("magnitude"));
+
+                std::vector<double> polarization_filter_value;
+                if (polarization_filter.is_none()) {
+                    polarization_filter_value = std::vector<double>{std::nan("")}; // broadcast later
+                } else {
+                    polarization_filter_value =
+                        cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
+                }
+
+                std::vector<double> medium_refractive_index_value =
+                    cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+
+                const size_t target_size = resolve_target_size_from_sizes(
+                    total_size_value,
+                    {
+                        {"mode_number", mode_number_values.size()},
+                        {"sampling", sampling_value.size()},
+                        {"numerical_aperture", numerical_aperture_value.size()},
+                        {"cache_numerical_aperture", cache_numerical_aperture_value.size()},
+                        {"phi_offset", phi_offset_value.size()},
+                        {"gamma_offset", gamma_offset_value.size()},
+                        {"rotation", rotation_value.size()},
+                        {"polarization_filter", polarization_filter_value.size()},
+                        {"medium_refractive_index", medium_refractive_index_value.size()}
+                    }
+                );
+
+                mode_number_values = broadcast_vector_string("mode_number", mode_number_values, target_size);
+                sampling_value = broadcast_vector_unsigned("sampling", sampling_value, target_size);
+                numerical_aperture_value = broadcast_vector_double("numerical_aperture", numerical_aperture_value, target_size);
+                cache_numerical_aperture_value = broadcast_vector_double("cache_numerical_aperture", cache_numerical_aperture_value, target_size);
+                phi_offset_value = broadcast_vector_double("phi_offset", phi_offset_value, target_size);
+                gamma_offset_value = broadcast_vector_double("gamma_offset", gamma_offset_value, target_size);
+                rotation_value = broadcast_vector_double("rotation", rotation_value, target_size);
+                polarization_filter_value = broadcast_vector_double("polarization_filter", polarization_filter_value, target_size);
+                medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+
+                return std::make_shared<CoherentModeSet>(
+                    mode_number_values,
+                    sampling_value,
+                    numerical_aperture_value,
+                    cache_numerical_aperture_value,
+                    phi_offset_value,
+                    gamma_offset_value,
+                    polarization_filter_value,
+                    rotation_value,
+                    medium_refractive_index_value,
+                    mean_coupling,
+                    true
+                );
+            },
+            py::arg("total_size") = py::none(),
+            py::arg("mode_number"),
+            py::arg("numerical_aperture"),
+            py::arg("phi_offset"),
+            py::arg("gamma_offset"),
+            py::arg("rotation"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("sampling") = py::int_(200),
+            py::arg("polarization_filter") = py::none(),
+            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("mean_coupling") = false,
+            R"pdoc(
+                Construct a sequential CoherentModeSet by broadcasting scalar or single element inputs.
+
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the maximum size among all provided parameters.
             )pdoc"
         )
         ;

@@ -4,7 +4,8 @@
 
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
-#include "./source_set.h"
+#include <experiment/sets/source_set/source_set.h>
+#include <experiment/sets/sequential_broadcast.h>
 
 namespace py = pybind11;
 
@@ -101,6 +102,85 @@ void register_source_set(py::module& module) {
                 The mapping includes keys such as 'source:wavelength', 'source:polarization', 'source:numerical_aperture', and 'source:optical_power'.
             )pdoc"
         )
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const py::object& total_size,
+                const py::object& wavelength,
+                const std::shared_ptr<PolarizationSet>& polarization,
+                const py::object& numerical_aperture,
+                const py::object& optical_power
+            ) {
+                const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
+
+                std::vector<double> wavelength_value =
+                    cast_scalar_or_array_to_vector_double(wavelength.attr("to")("meter").attr("magnitude"));
+
+                std::vector<double> numerical_aperture_values =
+                    cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+
+                std::vector<double> optical_power_values =
+                    cast_scalar_or_array_to_vector_double(optical_power.attr("to")("watt").attr("magnitude"));
+
+                const size_t target_size = resolve_target_size(
+                    total_size_value,
+                    {
+                        {"wavelength", wavelength_value},
+                        {"numerical_aperture", numerical_aperture_values},
+                        {"optical_power", optical_power_values}
+                    }
+                );
+
+                wavelength_value = broadcast_vector_double("wavelength", wavelength_value, target_size);
+                numerical_aperture_values = broadcast_vector_double("numerical_aperture", numerical_aperture_values, target_size);
+                optical_power_values = broadcast_vector_double("optical_power", optical_power_values, target_size);
+
+                const size_t polarization_size = polarization ? polarization->number_of_states() : 0;
+                if (polarization_size == 0) {
+                    throw std::invalid_argument("polarization is null or has zero states.");
+                }
+                if (!(polarization_size == 1 || polarization_size == target_size)) {
+                    std::ostringstream oss;
+                    oss << "Inconsistent sizes: 'polarization' has number_of_states " << polarization_size
+                        << " but expected 1 or " << target_size << ".";
+                    throw std::invalid_argument(oss.str());
+                }
+
+                return std::make_shared<GaussianSourceSet>(
+                    wavelength_value,
+                    polarization,
+                    numerical_aperture_values,
+                    optical_power_values,
+                    true
+                );
+            },
+            py::arg("total_size") = py::none(),
+            py::arg("wavelength"),
+            py::arg("polarization"),
+            py::arg("numerical_aperture"),
+            py::arg("optical_power"),
+            R"pdoc(
+                Construct a sequential GaussianSourceSet by broadcasting scalar or single element inputs.
+
+                Parameters
+                ----------
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the maximum size among wavelength, numerical_aperture, optical_power.
+                wavelength : Quantity or array-like Quantity
+                    Wavelength(s). Scalars or length 1 arrays broadcast to total_size.
+                polarization : PolarizationSet
+                    Must have number_of_states equal to 1 or total_size.
+                numerical_aperture : Quantity or array-like Quantity
+                    Numerical aperture(s). Scalars or length 1 arrays broadcast to total_size.
+                optical_power : Quantity or array-like Quantity
+                    Optical power(s). Scalars or length 1 arrays broadcast to total_size.
+
+                Returns
+                -------
+                GaussianSourceSet
+                    Instance with is_sequential = True.
+            )pdoc"
+        )
         ;
 
     py::class_<PlaneWaveSourceSet, BaseSourceSet, std::shared_ptr<PlaneWaveSourceSet>>(module, "PlaneWave")
@@ -172,6 +252,75 @@ void register_source_set(py::module& module) {
             R"pdoc(
                 Generates a mapping of source attributes to their corresponding values for the PlaneWaveSourceSet instance.
                 The mapping includes keys such as 'source:wavelength', 'source:polarization', and 'source:amplitude'.
+            )pdoc"
+        )
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const py::object& total_size,
+                const py::object& wavelength,
+                const std::shared_ptr<PolarizationSet>& polarization,
+                const py::object& amplitude
+            ) {
+                const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
+
+                std::vector<double> wavelength_value =
+                    cast_scalar_or_array_to_vector_double(wavelength.attr("to")("meter").attr("magnitude"));
+
+                std::vector<double> amplitude_values =
+                    cast_scalar_or_array_to_vector_double(amplitude.attr("to")("volt/meter").attr("magnitude"));
+
+                const size_t target_size = resolve_target_size(
+                    total_size_value,
+                    {
+                        {"wavelength", wavelength_value},
+                        {"amplitude", amplitude_values}
+                    }
+                );
+
+                wavelength_value = broadcast_vector_double("wavelength", wavelength_value, target_size);
+                amplitude_values = broadcast_vector_double("amplitude", amplitude_values, target_size);
+
+                const size_t polarization_size = polarization ? polarization->number_of_states() : 0;
+                if (polarization_size == 0) {
+                    throw std::invalid_argument("polarization is null or has zero states.");
+                }
+                if (!(polarization_size == 1 || polarization_size == target_size)) {
+                    std::ostringstream oss;
+                    oss << "Inconsistent sizes: 'polarization' has number_of_states " << polarization_size
+                        << " but expected 1 or " << target_size << ".";
+                    throw std::invalid_argument(oss.str());
+                }
+
+                return std::make_shared<PlaneWaveSourceSet>(
+                    wavelength_value,
+                    polarization,
+                    amplitude_values,
+                    true
+                );
+            },
+            py::arg("total_size") = py::none(),
+            py::arg("wavelength"),
+            py::arg("polarization"),
+            py::arg("amplitude"),
+            R"pdoc(
+                Construct a sequential PlaneWaveSourceSet by broadcasting scalar or single element inputs.
+
+                Parameters
+                ----------
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the maximum size among wavelength and amplitude.
+                wavelength : Quantity or array-like Quantity
+                    Wavelength(s). Scalars or length 1 arrays broadcast to total_size.
+                polarization : PolarizationSet
+                    Must have number_of_states equal to 1 or total_size.
+                amplitude : Quantity or array-like Quantity
+                    Amplitude(s). Scalars or length 1 arrays broadcast to total_size.
+
+                Returns
+                -------
+                PlaneWaveSourceSet
+                    Instance with is_sequential = True.
             )pdoc"
         )
         ;

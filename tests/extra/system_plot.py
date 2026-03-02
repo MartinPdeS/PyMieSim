@@ -22,7 +22,7 @@ def test_plot_system(mock_show):
         wavelength=1550 * ureg.nanometer,  # 1550 nm wavelength
         polarization=0 * ureg.degree,  # Linear polarization angle in radians
         optical_power=1 * ureg.watt,  # Optical power in arbitrary units
-        NA=0.3 * ureg.AU,  # Numerical Aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical Aperture
     )
 
     scatterer = InfiniteCylinder(
@@ -33,7 +33,7 @@ def test_plot_system(mock_show):
     )
 
     detector = Photodiode(
-        NA=0.1 * ureg.AU,  # Numerical Aperture
+        numerical_aperture=0.1 * ureg.AU,  # Numerical Aperture
         gamma_offset=90 * ureg.degree,  # Gamma offset in ureg.degrees
         phi_offset=0 * ureg.degree,  # Phi offset in ureg.degrees
         polarization_filter=0* ureg.degree,  # Polarization filter angle in ureg.degrees
