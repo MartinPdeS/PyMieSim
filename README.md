@@ -5,20 +5,17 @@
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
 | PyMieSim/experiment/dataframe\_subclass.py     |       65 |       12 |       10 |        1 |     80.00% |150-156, 195, 221-225, 244-248 |
-| PyMieSim/experiment/setup.py                   |       99 |        4 |       26 |        4 |     93.60% |24, 296-299, 360->363, 366->370, 375 |
-| PyMieSim/experiment/source/base.py             |       21 |        9 |       10 |        0 |     51.61% |     20-33 |
-| PyMieSim/experiment/source/gaussian.py         |       19 |        0 |        2 |        1 |     95.24% |    44->48 |
-| PyMieSim/experiment/source/planewave.py        |       18 |        0 |        2 |        1 |     95.00% |    40->44 |
-| PyMieSim/experiment/utils.py                   |       32 |        1 |       14 |        2 |     93.48% |44->50, 58 |
+| PyMieSim/experiment/setup.py                   |       88 |        3 |       26 |        3 |     94.74% |281-284, 351->355, 360 |
+| PyMieSim/experiment/utils.py                   |       32 |        2 |       14 |        4 |     86.96% |44->50, 58, 66->63, 123 |
 | PyMieSim/single/mesh.py                        |       38 |        7 |        0 |        0 |     81.58% |94, 106, 118, 130, 142-148 |
 | PyMieSim/single/plottings.py                   |      101 |       22 |       18 |        8 |     74.79% |126, 132->135, 135->139, 146->149, 155->153, 157, 175-176, 194-201, 225, 269-276, 300-333, 410-420, 446 |
 | PyMieSim/single/representations/base.py        |       32 |       22 |        2 |        0 |     29.41% |53-57, 83-105, 131-153 |
-| PyMieSim/single/representations/far\_fields.py |       60 |        2 |        8 |        1 |     95.59% |     78-79 |
+| PyMieSim/single/representations/far\_fields.py |       58 |        2 |        8 |        1 |     95.45% |     78-79 |
 | PyMieSim/single/representations/near\_field.py |      156 |      137 |       42 |        0 |      9.60% |29-32, 49-62, 96-115, 134-143, 173-213, 231-251, 268-277, 286-324, 368-425 |
 | PyMieSim/single/representations/stokes.py      |       41 |        2 |        4 |        1 |     93.33% |     77-78 |
-| **TOTAL**                                      |  **939** |  **218** |  **160** |   **19** | **73.70%** |           |
+| **TOTAL**                                      |  **809** |  **209** |  **136** |   **18** | **71.11%** |           |
 
-13 files skipped due to complete coverage.
+9 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
