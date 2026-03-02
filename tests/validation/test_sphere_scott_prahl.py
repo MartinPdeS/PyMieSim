@@ -32,7 +32,7 @@ def test_validation_scott_prahl(measure_str):
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters (e.g., 1 micron)
         polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        NA=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
     )
 
     # Create a spherical scatterer
