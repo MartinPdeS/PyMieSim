@@ -61,7 +61,7 @@ Importing the package: PyMieSim
  .. code-block:: none
 
 
-    <pyvista.plotting.plotter.Plotter object at 0x7fdf6b206090>
+    <pyvista.plotting.plotter.Plotter object at 0x7fa4ee26a710>
 
 
 
