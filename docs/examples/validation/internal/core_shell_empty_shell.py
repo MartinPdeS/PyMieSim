@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import CoreShellSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 # Setup parameters
@@ -24,36 +24,28 @@ polarization_set = PolarizationSet(
 )
 
 # Experiment source and scatterer setup
-source = Gaussian(
-    wavelength=1.2 * ureg.micrometer,
+source = GaussianSet(
+    wavelength=[1200] * ureg.nanometer,
     polarization=polarization_set,
-    optical_power=1 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = CoreShell(
-    core_diameter=300 * ureg.nanometer,
+scatterer = CoreShellSet(
+    core_diameter=[300] * ureg.nanometer,
     shell_thickness=np.linspace(100, 300, 100) * ureg.nanometer,
-    core_refractive_index=1.4 * ureg.RIU,
-    shell_refractive_index=1.3 * ureg.RIU,
-    medium_refractive_index=1.3 * ureg.RIU,
+    core_refractive_index=[1.4] * ureg.RIU,
+    shell_refractive_index=[1.3] * ureg.RIU,
+    medium_refractive_index=[1.3] * ureg.RIU,
     source=source,
 )
 
 
-# Configure experiment
 experiment = Setup(scatterer=scatterer, source=source)
 
-# Gather data
-# %%
 dataframe = experiment.get("Csca")
 
-
-figure = dataframe.plot(x="scatterer:shell_thickness", show=False)
-
-figure.axes[0].set_ylim([0, 4.0e-16])
-
-plt.show()
+figure = dataframe.plot(x="scatterer:shell_thickness")
 
 
 # %%
@@ -61,7 +53,6 @@ plt.show()
 # the shell thickness as it's refractive index is same as the surrounding medium.
 dataframe = experiment.get("Qsca")
 
-figure = dataframe.plot(x="scatterer:shell_thickness", show=False)
+figure = dataframe.plot(x="scatterer:shell_thickness")
 
-plt.show()
 # Similarly the scattering decrease as the scatterer becomes technically larger but the effects of the shell is for no account.

@@ -11,7 +11,7 @@ from PyMieSim.experiment.scatterer import SphereSet, InfiniteCylinderSet, CoreSh
 from PyMieSim.experiment.detector import PhotodiodeSet, CoherentModeSet
 from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-
+from PyMieSim.experiment.source import PolarizationSet
 import PyMieSim
 
 
@@ -251,6 +251,12 @@ class Setup(SETUP):
             # ----------------------------------------------------------
             # Scalar fallback
             # ----------------------------------------------------------
+
+
+            if isinstance(param_values, PolarizationSet):
+                values[key] = param_values
+                continue
+
             values[key] = [param_values]
 
         return values, units
@@ -282,7 +288,6 @@ class Setup(SETUP):
             units = {k: u for k, u in units.items() if k in values}
 
         parameter_names = list(values.keys())
-
 
         mesh = np.meshgrid(*values.values(), indexing="ij")
 

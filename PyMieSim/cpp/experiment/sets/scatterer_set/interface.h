@@ -1296,8 +1296,8 @@ void register_scatterer_set(py::module& module) {
             "get_mapping",
             [ureg](const CoreShellSet& self) {
                 py::dict mapping;
-                mapping["scatterer:core_diameter"] = py::cast(self.core_diameter);
-                mapping["scatterer:shell_thickness"] = py::cast(self.shell_thickness);
+                mapping["scatterer:core_diameter"] = py::cast(self.core_diameter) * ureg.attr("meter");
+                mapping["scatterer:shell_thickness"] = py::cast(self.shell_thickness) * ureg.attr("meter");
                 mapping["scatterer:core_refractive_index"] = self.core_property;
                 mapping["scatterer:shell_refractive_index"] = self.shell_property;
                 mapping["scatterer:medium_refractive_index"] = self.medium_property;

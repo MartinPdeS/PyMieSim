@@ -10,9 +10,9 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import PhotodiodeSet
+from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -20,27 +20,26 @@ polarization_set = PolarizationSet(
     angles=[30.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=1200 * ureg.nanometer,  # 1200 nm
-    polarization=polarization_set,  # Polarization angle in ureg.degrees
-    optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
+source = GaussianSet(
+    wavelength=[1200] * ureg.nanometer,
+    polarization=polarization_set,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = InfiniteCylinder(
-    diameter=2000 * ureg.nanometer,  # 2000 nm
-    refractive_index=Material.BK7,  # Material of the cylinder
-    medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
+scatterer = InfiniteCylinderSet(
+    diameter=[2000] * ureg.nanometer,
+    material=[Material.BK7],
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 
-detector = Photodiode(
-    numerical_aperture=[0.5, 0.3, 0.1, 0.05] * ureg.AU,  # Array of Numerical Apertures for the detector
-    phi_offset=np.linspace(-180, 180, 200)
-    * ureg.degree,  # Angular displacement from -180 to 180 ureg.degrees
-    gamma_offset=0 * ureg.degree,  # Gamma offset in ureg.degrees
-    sampling=400,  # Number of sampling points
-    polarization_filter=None,  # No polarization filter
+detector = PhotodiodeSet(
+    numerical_aperture=[0.5, 0.3, 0.1, 0.05] * ureg.AU,
+    phi_offset=np.linspace(-180, 180, 200) * ureg.degree,
+    gamma_offset=[0] * ureg.degree,
+    sampling=[400],
+    polarization_filter=None,
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)

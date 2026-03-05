@@ -5,13 +5,11 @@ CoreShell: B1 vs Core Diameter
 This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.
 """
 
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import CoreShellSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -19,19 +17,19 @@ polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=800 * ureg.nanometer,  # 800 nm
-    polarization=polarization_set,  # Linear polarization angle in radians
-    optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
+source = GaussianSet(
+    wavelength=[800] * ureg.nanometer,
+    polarization=polarization_set,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = CoreShell(
-    core_diameter=np.geomspace(100, 3000, 500) * ureg.nanometer,  # Geometrically spaced core diameters
-    shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
-    core_refractive_index=[1.3, 1.6] * ureg.RIU,  # Refractive index of the core
-    shell_refractive_index=Material.BK7,  # BK7 glass material for the shell
-    medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
+scatterer = CoreShellSet(
+    core_diameter=np.geomspace(100, 3000, 500) * ureg.nanometer,
+    shell_thickness=[800] * ureg.nanometer,
+    core_refractive_index=[1.3, 1.6] * ureg.RIU,
+    shell_material=[Material.BK7],
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 

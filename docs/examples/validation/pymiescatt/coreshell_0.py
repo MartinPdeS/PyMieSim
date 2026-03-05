@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import CoreShellSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
@@ -28,17 +28,20 @@ shell_thickness = 600 * ureg.nanometer  # Shell width in meters
 core_diameters = np.geomspace(10, 500, 40) * ureg.nanometer  # Core diameters in meters
 
 # Setup source
-source = Gaussian(
-    wavelength=wavelength, polarization=polarization, optical_power=optical_power, numerical_aperture=NA
+source = GaussianSet(
+    wavelength=[600] * ureg.nanometer,
+    polarization=polarization,
+    optical_power=[1] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU
 )
 
 # Setup scatterer
-scatterer = CoreShell(
+scatterer = CoreShellSet(
     core_diameter=core_diameters,
-    shell_thickness=shell_thickness,
-    core_refractive_index=core_index,
-    shell_refractive_index=shell_index,
-    medium_refractive_index=medium_index,
+    shell_thickness=[600] * ureg.nanometer,
+    core_refractive_index=[1.5] * ureg.RIU,
+    shell_refractive_index=[1.4] * ureg.RIU,
+    medium_refractive_index=[1.0] * ureg.RIU,
     source=source,
 )
 

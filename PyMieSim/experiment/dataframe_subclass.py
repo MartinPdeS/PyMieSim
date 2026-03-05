@@ -213,12 +213,12 @@ class PyMieSimDataFrame(pd.DataFrame):
         self,
         x: str,
         y: list[str] | None = None,
-        legend_resolution: int | None = 4,
-        x_tick_resolution: int | None = 4,
-        y_tick_resolution: int | None = 4,
+        legend_resolution: int | None = 1,
+        x_tick_resolution: int | None = 1,
+        y_tick_resolution: int | None = 1,
         **kwargs,
     ):
-
+        y = [y] if isinstance(y, str) else y
         self._validate_column(x)
 
         df = self.copy()
@@ -235,8 +235,6 @@ class PyMieSimDataFrame(pd.DataFrame):
             and df[c].nunique(dropna=True) > 1
         ]
 
-        print(parameters)
-
         figure, ax = self._create_figure()
 
         groups = df.groupby(parameters) if parameters else [(None, df)]
@@ -251,7 +249,6 @@ class PyMieSimDataFrame(pd.DataFrame):
             )
 
             for measure in y:
-
                 ax.plot(
                     group[x].to_numpy(),
                     group[measure].to_numpy(),
