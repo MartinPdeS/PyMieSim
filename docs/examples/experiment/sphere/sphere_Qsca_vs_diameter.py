@@ -34,8 +34,10 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=np.linspace(10, 1000, 150) * ureg.nanometer,
-    medium_refractive_index=[1.33, 1.34, 1.5] * ureg.RIU,
-    refractive_index=Material.polystyren,
+    # medium_refractive_index=[1.33, 1.34, 1.5] * ureg.RIU,
+    # material=[Material.polystyren, Material.gold],
+    refractive_index=[1.59] * ureg.RIU,
+    medium_material=[Material.water],
     source=source,
 )
 

@@ -26,12 +26,12 @@ public:
 class SphereSet : public ScattererSet
 {
 public:
-    std::vector<std::string> attributes = {
+    inline static const std::vector<std::string> attributes = {
         "diameter",
         "property",
         "medium_property"
     };
-    std::vector<std::string> available_measure_list = {
+    inline static const std::vector<std::string> available_measure_list = {
         "Qsca",
         "Qext",
         "Qabs",
@@ -63,7 +63,12 @@ public:
 
     SphereSet() = default;
 
-    SphereSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+    SphereSet(
+        const std::vector<double>& diameter,
+        const ScattererProperties& property,
+        const MediumProperties& medium_property,
+        const bool is_sequential
+    )
         : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {
             this->update_shape();
@@ -86,13 +91,13 @@ public:
 // InfiniteCylinder class inheriting from BaseSet
 class InfiniteCylinderSet : public ScattererSet {
 public:
-    std::vector<std::string> attributes = {
+    inline static const std::vector<std::string> attributes = {
         "diameter",
         "property",
         "medium_property"
     };
 
-    std::vector<std::string> available_measure_list = {
+    inline static const std::vector<std::string> available_measure_list = {
         "Qsca",
         "Qext",
         "Qabs",
@@ -118,7 +123,12 @@ public:
     MediumProperties medium_property;
 
     InfiniteCylinderSet() = default;
-    InfiniteCylinderSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+    InfiniteCylinderSet(
+        const std::vector<double>& diameter,
+        const ScattererProperties& property,
+        const MediumProperties& medium_property,
+        const bool is_sequential
+    )
         : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {
             this->update_shape();
@@ -143,7 +153,7 @@ public:
 // Core-shell class
 class CoreShellSet : public ScattererSet {
 public:
-    std::vector<std::string> attributes = {
+    inline static const std::vector<std::string> attributes = {
         "core_diameter",
         "shell_thickness",
         "core_property",
@@ -151,7 +161,7 @@ public:
         "medium_property"
     };
 
-    std::vector<std::string> available_measure_list = {
+    inline static const std::vector<std::string> available_measure_list = {
         "Qsca",
         "Qext",
         "Qabs",

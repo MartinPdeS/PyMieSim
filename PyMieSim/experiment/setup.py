@@ -70,7 +70,7 @@ class Setup(SETUP):
 
         # Compute the values using the binding method
         return getattr(self, method_name)(
-            scatterer_set=self.scatterer.set,
+            scatterer_set=self.scatterer,
             source_set=self.source,
             detector_set=self.detector,
         )
@@ -169,7 +169,7 @@ class Setup(SETUP):
             method = getattr(self, method_name)
 
             array = method(
-                scatterer_set=self.scatterer.set,
+                scatterer_set=self.scatterer,
                 source_set=self.source,
                 detector_set=self.detector,
             )
@@ -206,7 +206,7 @@ class Setup(SETUP):
 
             # Compute the values using the binding method
             array = getattr(self, method_name)(
-                scatterer_set=self.scatterer.set,
+                scatterer_set=self.scatterer,
                 source_set=self.source,
                 detector_set=self.detector,
             )
@@ -334,16 +334,19 @@ class Setup(SETUP):
         pd.DataFrame
             A DataFrame with a MultiIndex created from the experiment mappings.
         """
-        self.scatterer._generate_mapping()
-
         iterables = dict()
 
         iterables.update(self.source.get_mapping())
-
-        iterables.update(self.scatterer.mapping)
+        iterables.update(self.scatterer.get_mapping())
 
         if not isinstance(self.detector, EmptyDetector):
             iterables.update(self.detector.get_mapping())
+
+        for key, values in iterables.items():
+            iterables[key] = [
+                tuple(v) if isinstance(v, list) else v
+                for v in values
+            ]
 
         if drop_unique_level:
             _iterables = {k: v for k, v in iterables.items() if len(v) > 1}

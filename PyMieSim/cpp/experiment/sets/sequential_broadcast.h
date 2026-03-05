@@ -58,6 +58,31 @@ inline std::vector<double> broadcast_vector_double(
     return values;
 }
 
+inline std::vector<std::complex<double>> broadcast_vector_complex128(
+    const std::string& name,
+    const std::vector<std::complex<double>>& values,
+    const size_t target_size
+) {
+    if (values.empty()) {
+        std::ostringstream oss;
+        oss << "Parameter '" << name << "' is empty. Provide a scalar or a non empty array.";
+        throw std::invalid_argument(oss.str());
+    }
+
+    if (values.size() == 1) {
+        return std::vector<std::complex<double>>(target_size, values[0]);
+    }
+
+    if (values.size() != target_size) {
+        std::ostringstream oss;
+        oss << "Inconsistent sizes: '" << name << "' has size " << values.size()
+            << " but expected 1 or " << target_size << ".";
+        throw std::invalid_argument(oss.str());
+    }
+
+    return values;
+}
+
 inline std::vector<unsigned> broadcast_vector_unsigned(
     const std::string& name,
     const std::vector<unsigned>& values,

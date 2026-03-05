@@ -32,7 +32,7 @@ scatterer = CoreShell(
     shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
     core_refractive_index=Material.silver,  # Core material
     shell_refractive_index=Material.BK7,  # Shell material
-    medium_refractive_index=1 * ureg.RIU,  # Surrounding medium's refractive index
+    medium_refractive_index=1. * ureg.RIU,  # Surrounding medium's refractive index
     source=source,
 )
 

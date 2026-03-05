@@ -151,6 +151,17 @@ std::vector<double> cast_scalar_or_array_to_vector_double(const py::object& obj)
     return { obj.cast<double>() };
 }
 
+std::vector<complex128> cast_scalar_or_array_to_vector_complex128(const py::object& obj) {
+
+    // If already iterable (NumPy array, list, tuple)
+    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
+        return obj.cast<std::vector<complex128>>();
+    }
+
+    // Otherwise treat as scalar
+    return { obj.cast<complex128>() };
+}
+
 
 std::vector<unsigned> cast_scalar_or_array_to_vector_unsigned(const py::object& obj) {
 

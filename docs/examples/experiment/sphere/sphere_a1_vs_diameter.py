@@ -29,7 +29,7 @@ scatterer = Sphere(
     medium_refractive_index=[1.0] * ureg.RIU,
     source=source,
 )
-#
+
 experiment = Setup(scatterer=scatterer, source=source)
 
 dataframe = experiment.get("a1")

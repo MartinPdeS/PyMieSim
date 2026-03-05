@@ -27,7 +27,7 @@ public:
     virtual void validate_sequential_data(const size_t) const = 0;
 };
 
-#include <iostream>
+
 class GaussianSourceSet : public BaseSourceSet
 {
 public:

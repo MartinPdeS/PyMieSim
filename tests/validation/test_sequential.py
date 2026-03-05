@@ -57,16 +57,16 @@ def test_sequential_vs_standard_no_detector():
 
     assert setup_standard is not None, "Error while running the standard get function."
 
-    source_sequential = Gaussian(
+    source_sequential = Gaussian.build_sequential(
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
         numerical_aperture=ONES * NA,
     )
 
-    scatterer_sequential = Sphere(
+    scatterer_sequential = Sphere.build_sequential(
+        total_size=SIZE,
         diameter=ONES * DIAMETER,
-        source=source_sequential,
         refractive_index=ONES * PROPERTY,
         medium_refractive_index=ONES * MEDIUM_PROPERTY,
     )
@@ -124,21 +124,21 @@ def test_sequential_vs_standard_detector():
     assert data_standard is not None, "Error while running the standard get function."
 
 
-    source_sequential = Gaussian(
+    source_sequential = Gaussian.build_sequential(
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=POLARIZATION * ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
         numerical_aperture=ONES * NA,
     )
 
-    scatterer_sequential = Sphere(
+    scatterer_sequential = Sphere.build_sequential(
+        total_size=SIZE,
         diameter=ONES * DIAMETER,
-        source=source_sequential,
         refractive_index=ONES * PROPERTY,
         medium_refractive_index=ONES * MEDIUM_PROPERTY,
     )
 
-    detector_sequential = Photodiode(
+    detector_sequential = Photodiode.build_sequential(
         phi_offset=ONES * PHI_OFFSET,
         gamma_offset=ONES * GAMMA_OFFSET,
         numerical_aperture=ONES * NA,

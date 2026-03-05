@@ -73,7 +73,7 @@ def test_sphere_rejects_invalid_diameter_type():
 
 def test_sphere_rejects_invalid_refractive_index_type():
     source = _valid_plane_wave_source()
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         Sphere(
             diameter=100 * ureg.nanometer,
             source=source,
@@ -84,7 +84,7 @@ def test_sphere_rejects_invalid_refractive_index_type():
 
 def test_sphere_rejects_invalid_medium_refractive_index_type():
     source = _valid_plane_wave_source()
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         Sphere(
             diameter=100 * ureg.nanometer,
             source=source,

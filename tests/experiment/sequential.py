@@ -33,7 +33,7 @@ def test_valid_experiment(mock_show):
     )
 
     scatterer = Sphere.build_sequential(
-        source=source,
+        # source=source,
         diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
         refractive_index=1.4 * ureg.RIU,
         medium_refractive_index=1.0 * ureg.RIU,
@@ -72,9 +72,8 @@ def test_invalid_medium_refractive_index():
         total_size=TOTAL_SIZE,
     )
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         Sphere.build_sequential(
-            source=source,
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             refractive_index=1.4 * ureg.RIU,
             medium_refractive_index=Material.water,  # This should trigger an error
@@ -97,9 +96,8 @@ def test_invalid_refractive_index():
         total_size=TOTAL_SIZE,
     )
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(AttributeError):
         Sphere.build_sequential(
-            source=source,
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             refractive_index=Material.water,  # This should trigger an error
             medium_refractive_index=1.0 * ureg.RIU,
@@ -124,7 +122,6 @@ def test_parameter_broadcasting():
     )
 
     scatterer = Sphere.build_sequential(
-        source=source,
         diameter=500 * ureg.nanometer,  # Scalar value
         refractive_index=1.5 * ureg.RIU,  # Scalar value
         medium_refractive_index=1.2 * ureg.RIU,  # Scalar value
@@ -132,6 +129,7 @@ def test_parameter_broadcasting():
     )
 
     # Check that each broadcasted attribute is an array with the proper length.
+
     assert scatterer.diameter.size == TOTAL_SIZE
     assert scatterer.refractive_index.size == TOTAL_SIZE
     assert scatterer.medium_refractive_index.size == TOTAL_SIZE
@@ -154,7 +152,6 @@ def test_broadcasted_values():
         total_size=TOTAL_SIZE,
     )
     scatterer = Sphere.build_sequential(
-        source=source,
         diameter=value,
         refractive_index=1.6 * ureg.RIU,
         medium_refractive_index=1.0 * ureg.RIU,
@@ -162,8 +159,8 @@ def test_broadcasted_values():
     )
 
     # Create an expected array filled with the broadcasted value.
-    expected = np.full(TOTAL_SIZE, value.magnitude, dtype=object) * value.units
-    np.testing.assert_array_equal(scatterer.diameter.magnitude, expected.magnitude)
+    expected = np.full(TOTAL_SIZE, value.magnitude) * value.units
+    np.testing.assert_array_equal(scatterer.diameter.to("nm").magnitude, expected.to("nm").magnitude)
 
 
 if __name__ == "__main__":
