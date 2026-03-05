@@ -15,7 +15,7 @@ void register_source_set(py::module& module) {
     // Binding for SOURCE::Set
     py::class_<BaseSourceSet, std::shared_ptr<BaseSourceSet>>(module, "BaseSourceSet");
 
-    py::class_<GaussianSourceSet, BaseSourceSet, std::shared_ptr<GaussianSourceSet>>(module, "Gaussian")
+    py::class_<GaussianSourceSet, BaseSourceSet, std::shared_ptr<GaussianSourceSet>>(module, "GaussianSet")
         .def(
             py::init(
                 [ureg](
@@ -91,10 +91,10 @@ void register_source_set(py::module& module) {
             "get_mapping",
             [ureg](const GaussianSourceSet& self) {
                 py::dict mapping;
-                mapping["source:wavelength"] = py::cast(self.wavelength);
+                mapping["source:wavelength"] = py::cast(self.wavelength) * ureg.attr("meter");
                 mapping["source:polarization"] = py::cast(self.polarization);
-                mapping["source:numerical_aperture"] = py::cast(self.numerical_aperture);
-                mapping["source:optical_power"] = py::cast(self.optical_power);
+                mapping["source:numerical_aperture"] = py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
+                mapping["source:optical_power"] = py::cast(self.optical_power) * ureg.attr("watt");
                 return mapping;
             },
             R"pdoc(
@@ -183,7 +183,7 @@ void register_source_set(py::module& module) {
         )
         ;
 
-    py::class_<PlaneWaveSourceSet, BaseSourceSet, std::shared_ptr<PlaneWaveSourceSet>>(module, "PlaneWave")
+    py::class_<PlaneWaveSourceSet, BaseSourceSet, std::shared_ptr<PlaneWaveSourceSet>>(module, "PlaneWaveSet")
         .def(
             py::init(
                 [ureg](
@@ -244,9 +244,9 @@ void register_source_set(py::module& module) {
             "get_mapping",
             [ureg](const PlaneWaveSourceSet& self) {
                 py::dict mapping;
-                mapping["source:wavelength"] = py::cast(self.wavelength);
+                mapping["source:wavelength"] = py::cast(self.wavelength) * ureg.attr("meter");
                 mapping["source:polarization"] = py::cast(self.polarization);
-                mapping["source:amplitude"] = py::cast(self.amplitude);
+                mapping["source:amplitude"] = py::cast(self.amplitude) * ureg.attr("volt/meter");
                 return mapping;
             },
             R"pdoc(

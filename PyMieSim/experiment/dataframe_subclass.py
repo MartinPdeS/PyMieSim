@@ -1,248 +1,373 @@
 from typing import Self
-
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from matplotlib.ticker import FormatStrFormatter
 from MPSPlots import helper
+from PyMieSim.units import ureg
 
 
 class PyMieSimDataFrame(pd.DataFrame):
-    """
-    A subclass of pandas DataFrame with custom plot methods tailored for
-    multi-indexed data containing pint-quantified values.
-    """
 
     @property
     def _constructor(self):
-        """
-        Ensures that operations returning DataFrames return instances of PyMieSimDataFrame.
-        """
         return PyMieSimDataFrame
 
-    def _validate_axis(self, axis: str) -> None:
-        # Validate that 'x' is a valid index level.
-        if axis not in self.index.names:
-            available = ", ".join(self.index.names)
+    # ---------------------------------------------------------
+    # utilities
+    # ---------------------------------------------------------
+
+    def _units(self):
+        return self.attrs.get("units", {})
+
+    def _validate_column(self, column: str):
+
+        if column not in self.columns:
+            available = ", ".join(self.columns)
             raise ValueError(
-                f"x parameter '{axis}' is not in the DataFrame index. Available index levels: {available}"
+                f"Column '{column}' not found. Available columns: {available}"
             )
 
-    def _get_complementary_axis(self, *axis) -> tuple:
-        return [level for level in self.index.names if level not in axis]
+    def _measure_columns(self):
 
-    def plot(self, *args, **kwargs):
+        units = self._units()
+
+        measures = []
+
+        for column in self.columns:
+
+            if column in units:
+
+                if not (
+                    column.startswith("scatterer:")
+                    or column.startswith("detector:")
+                    or column.startswith("source:")
+                ):
+                    measures.append(column)
+
+        return measures
+
+    def _axis_label(self, column):
+
+        units = self._units()
+
+        if column in units:
+            return f"{column} [{units[column]}]"
+
+        return column
+
+    def _clean_parameter_name(self, name):
+        return name.split(":")[-1]
+
+    def _format_parameter_label(self, parameters, values, precision=None):
+
+        if parameters is None:
+            return None
+
+        if not isinstance(values, tuple):
+            values = (values,)
+
+        parts = []
+
+        for p, v in zip(parameters, values):
+
+            p = self._clean_parameter_name(p)
+
+            if isinstance(v, (int, float)) and precision is not None:
+                v = f"{v:.{precision}f}"
+
+            parts.append(f"{p}: {v}")
+
+        return " | ".join(parts)
+
+    # ---------------------------------------------------------
+    # unit scaling utilities
+    # ---------------------------------------------------------
+
+    def scale_column_unit(self, column: str, target_unit) -> Self:
         """
-        Plots the DataFrame using a specified MultiIndex level for the x-axis.
-        Optionally, if a standard deviation level is provided, it will also
-        plot the mean ± std.
-
-        Parameters
-        ----------
-        x : str
-            The MultiIndex level to use for the x-axis.
-        alpha : float, optional
-            The transparency level for the shaded standard deviation region.
-        std : Optional[str], optional
-            The MultiIndex level used for standard deviation calculation.
-        figure_size : tuple
-            Figure size.
-        show : bool
-            Plot the figure.
-        save_as : str
-            if set, save the figure.
-        tight_layout : bool
-            If set, render the plot in tight layout.
-        show : bool, optional
-            If True, displays the plot.
-        **kwargs : dict
-            Additional keyword arguments passed to the underlying plotting functions.
-
-        Returns
-        -------
-        plt.Axes
-            The matplotlib Axes with the plot.
+        Convert a column to a new unit.
         """
-        if kwargs.get("std", False):
-            return self.plot_with_std(*args, **kwargs)
-        else:
-            return self.plot_standard(*args, **kwargs)
 
-    @helper.post_mpl_plot
-    def plot_with_std(self, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
-        """
-        Plot the mean with standard deviation shading.
-        Expects the DataFrame to have a MultiIndex and a 'pint' attribute.
+        self._validate_column(column)
 
-        Parameters
-        ----------
-        x : str
-            The MultiIndex level to use for the x-axis.
-        std : str
-            The MultiIndex level used for standard deviation calculation.
-        alpha : float, optional
-            Transparency for the std shading.
-        show : bool, optional
-            Whether to call plt.show() after plotting.
-        **kwargs : dict
-            Additional keyword arguments for line styling.
-        """
-        figure, ax = plt.subplots(1, 1)
+        units = self._units()
 
-        self._validate_axis(axis=x)
-        self._validate_axis(axis=std)
+        if column not in units:
+            raise ValueError(f"No unit registered for column '{column}'")
 
-        # Determine levels to unstack
-        no_std_levels = self._get_complementary_axis(std)
-        no_x_levels = self._get_complementary_axis(x, std)
+        current_unit = units[column]
 
-        # Calculate standard deviation and mean, preserving pint units
-        std_df = (
-            self.pint.dequantify()
-            .unstack(no_std_levels)
-            .apply(np.std)
-            .to_frame(name="std")
-            .unstack("unit")
-            .pint.quantify()
-        )
-        mean_df = (
-            self.pint.dequantify()
-            .unstack(no_std_levels)
-            .apply(np.mean)
-            .to_frame(name="mean")
-            .unstack("unit")
-            .pint.quantify()
-        )
-
-        combined_df = pd.concat([mean_df, std_df], axis=1)
-        groupby_levels = self.columns.names + no_x_levels
-
-        for name, group in combined_df.groupby(groupby_levels):
-            group = group.droplevel(groupby_levels)
-
-            label = [item for pair in zip(groupby_levels, name) for item in pair]
-
-            label = " : ".join(map(str, label))
-
-            ax.plot(group.index, group["mean"], linewidth=1, linestyle="--", **kwargs)
-            ax.fill_between(
-                x=group.index,
-                y1=group["mean"] + group["std"],
-                y2=group["mean"] - group["std"],
-                alpha=alpha,
-                edgecolor="black",
-                label=label,
-            )
-
-        ax.legend()
-
-        return figure
-
-    def _format_legend(self, ax: plt.Axes) -> None:
-        """
-        Formats the legend of a Matplotlib Axes by replacing parentheses and commas
-        in the legend labels with vertical bars for better readability.
-
-        Parameters
-        ----------
-        ax : plt.Axes
-            The Matplotlib Axes object whose legend will be formatted.
-        """
-        leg = ax.get_legend()  # Get the existing legend from the axes
-        for text in leg.get_texts():
-            original_label = text.get_text()
-            new_label = (
-                original_label.replace(")", "").replace("(", "").replace(", ", " | ")
-            )
-            text.set_text(new_label)
-
-    @helper.post_mpl_plot
-    def plot_standard(self, x: str, **kwargs) -> None:
-        """
-        Generate a line plot of the data without standard deviation shading.
-
-        If the data is complex, both real and imaginary parts are plotted.
-
-        Parameters
-        ----------
-        x : str
-            Name of the index level to use for the x-axis.
-        y : str, optional
-            Name of the column to plot on the y-axis. If None, the first available column is used.
-        show : bool, default=True
-            If True, display the plot immediately.
-        log_scale_x : bool, default=False
-            If True, set the x-axis to logarithmic scale.
-        log_scale_y : bool, default=False
-            If True, set the y-axis to logarithmic scale.
-        **kwargs
-            Additional keyword arguments passed to the underlying Matplotlib plot call.
-
-        Returns
-        -------
-        None
-        """
-        figure, ax = plt.subplots(1, 1)
-
-        self._validate_axis(axis=x)
+        factor = (1 * current_unit).to(target_unit).magnitude
 
         df = self.copy()
 
-        groupby_levels = df._get_complementary_axis(x)
+        df[column] = df[column] * factor
 
-        df = df.unstack(groupby_levels)
+        df.attrs["units"][column] = target_unit
 
-        if isinstance(df.index, pd.MultiIndex) and df.index.nlevels == 1:
-            df.index = df.index.get_level_values(0)
+        return df
 
-        super(PyMieSimDataFrame, df).plot(ax=ax, **kwargs)
+    def to_compact(self) -> Self:
+        """
+        Scale each column to its most compact unit based on the largest value.
+        """
 
-        legend = ax.legend()
+        df = self.copy()
 
-        legend.set_title(" | ".join(df.columns.names))
+        units = df._units()
+
+        for column, unit in units.items():
+
+            values = df[column].to_numpy()
+
+            if values.size == 0:
+                continue
+
+            max_val = np.nanmax(np.abs(values))
+
+            if max_val == 0:
+                continue
+
+            quantity = max_val * unit
+
+            compact_unit = quantity.to_compact().units
+
+            factor = (1 * unit).to(compact_unit).magnitude
+
+            df[column] = df[column] * factor
+
+            df.attrs["units"][column] = compact_unit
+
+        return df
+
+    # ---------------------------------------------------------
+    # plotting helpers
+    # ---------------------------------------------------------
+
+    def _create_figure(self):
+        return plt.subplots(1, 1)
+
+    def _apply_axis_resolution(self, ax, x_precision, y_precision):
+
+        if x_precision is not None:
+            ax.xaxis.set_major_formatter(
+                FormatStrFormatter(f"%.{x_precision}f")
+            )
+
+        if y_precision is not None:
+            ax.yaxis.set_major_formatter(
+                FormatStrFormatter(f"%.{y_precision}f")
+            )
+
+    def _format_legend(self, ax, precision):
+
+        legend = ax.get_legend()
+
+        if legend is None or precision is None:
+            return
+
+        for text in legend.get_texts():
+
+            label = text.get_text()
+
+            parts = []
+
+            for item in label.split(" | "):
+
+                if ":" in item:
+
+                    name, value = item.split(":")
+                    name = name.strip()
+                    value = value.strip()
+
+                    try:
+                        value = float(value)
+                        value = f"{value:.{precision}f}"
+                        parts.append(f"{name}: {value}")
+                    except ValueError:
+                        parts.append(item)
+
+                else:
+                    parts.append(item)
+
+            text.set_text(" | ".join(parts))
+
+    # ---------------------------------------------------------
+    # plotting dispatcher
+    # ---------------------------------------------------------
+
+    def plot(self, *args, **kwargs):
+
+        if kwargs.get("std", None) is not None:
+            return self.plot_with_std(*args, **kwargs)
+
+        return self.plot_standard(*args, **kwargs)
+
+    # ---------------------------------------------------------
+    # standard plotting
+    # ---------------------------------------------------------
+
+    @helper.post_mpl_plot
+    def plot_standard(
+        self,
+        x: str,
+        y: list[str] | None = None,
+        legend_resolution: int | None = 4,
+        x_tick_resolution: int | None = 4,
+        y_tick_resolution: int | None = 4,
+        **kwargs,
+    ):
+
+        self._validate_column(x)
+
+        df = self.copy()
+
+        measures = self._measure_columns()
+
+        if y is None:
+            y = measures
+
+        parameters = [
+            c for c in df.columns
+            if c not in ([x] + y)
+            and not df[c].isna().all()
+            and df[c].nunique(dropna=True) > 1
+        ]
+
+        print(parameters)
+
+        figure, ax = self._create_figure()
+
+        groups = df.groupby(parameters) if parameters else [(None, df)]
+
+        for key, group in groups:
+            group = group.sort_values(x)
+
+            label = self._format_parameter_label(
+                parameters,
+                key,
+                precision=legend_resolution
+            )
+
+            for measure in y:
+
+                ax.plot(
+                    group[x].to_numpy(),
+                    group[measure].to_numpy(),
+                    label=label if label else measure,
+                    **kwargs,
+                )
+
+        ax.set_xlabel(self._axis_label(x))
+        ax.set_ylabel(self._axis_label(y[0]))
+
+        ax.legend()
+
+        self._apply_axis_resolution(ax, x_tick_resolution, y_tick_resolution)
+        self._format_legend(ax, legend_resolution)
 
         return figure
 
-    def add_weight(self, weight_index: str, weight: np.ndarray) -> Self:
-        """
-        Multiply the DataFrame by a weight array along a specified MultiIndex level.
+    # ---------------------------------------------------------
+    # std plotting
+    # ---------------------------------------------------------
 
-        Parameters
-        ----------
-        weight_index : str
-            The MultiIndex level to apply the weights to.
-        weight : np.ndarray
-            The weight array to multiply with the DataFrame.
+    @helper.post_mpl_plot
+    def plot_with_std(
+        self,
+        x: str,
+        std: str,
+        y: list[str] | None = None,
+        alpha: float = 0.4,
+        legend_resolution: int = 4,
+        x_tick_resolution: int = 4,
+        y_tick_resolution: int = 4,
+        **kwargs,
+    ):
 
-        Returns
-        -------
-        Self
-            A new DataFrame with the weights applied.
-        """
-        self._validate_axis(axis=weight_index)
+        self._validate_column(x)
+        self._validate_column(std)
 
-        stacking_index = self._get_complementary_axis(weight_index)
+        df = self.copy()
 
-        return (
-            self.unstack(stacking_index)
-            .multiply(weight.squeeze(), axis="index")
-            .stack(stacking_index)
-        )
+        measures = self._measure_columns()
 
-    def sum_over(self, axis: str) -> Self:
-        """
-        Sum the DataFrame over a specified MultiIndex level.
-        Parameters
-        ----------
-        axis : str
-            The MultiIndex level to sum over.
+        if y is None:
+            y = measures
 
-        Returns
-        -------
-        Self
-            A new DataFrame summed over the specified axis.
-        """
-        self._validate_axis(axis=axis)
+        parameters = [
+            c for c in df.columns
+            if c not in ([x, std] + y)
+        ]
 
-        stacking_index = [name for name in self.index.names if name != axis]
+        grouped = df.groupby(parameters + [x])
 
-        return self.groupby(stacking_index).sum()  # .to_frame().T
+        mean = grouped.mean().reset_index()
+        stdv = grouped.std().reset_index()
+
+        figure, ax = self._create_figure()
+
+        groups = mean.groupby(parameters) if parameters else [(None, mean)]
+
+        for measure in y:
+
+            for key, group_df in groups:
+
+                group_df = group_df.sort_values(x)
+
+                if parameters:
+                    mask = stdv[parameters].eq(group_df[parameters].iloc[0]).all(axis=1)
+                    std_group = stdv[mask]
+                else:
+                    std_group = stdv
+
+                label = self._format_parameter_label(
+                    parameters,
+                    key,
+                    precision=legend_resolution
+                )
+
+                ax.plot(
+                    group_df[x],
+                    group_df[measure],
+                    label=label if label else measure,
+                    **kwargs,
+                )
+
+                ax.fill_between(
+                    group_df[x],
+                    group_df[measure] - std_group[measure],
+                    group_df[measure] + std_group[measure],
+                    alpha=alpha,
+                )
+
+        ax.set_xlabel(self._axis_label(x))
+        ax.set_ylabel(self._axis_label(y[0]))
+
+        ax.legend()
+
+        self._apply_axis_resolution(ax, x_tick_resolution, y_tick_resolution)
+        self._format_legend(ax, legend_resolution)
+
+        return figure
+
+    # ---------------------------------------------------------
+    # dataframe utilities
+    # ---------------------------------------------------------
+
+    def add_weight(self, weight_column: str, weight: np.ndarray) -> Self:
+
+        self._validate_column(weight_column)
+
+        df = self.copy()
+
+        df[weight_column] = df[weight_column] * weight.squeeze()
+
+        return df
+
+    def sum_over(self, column: str) -> Self:
+
+        self._validate_column(column)
+
+        return self.groupby(column).sum()

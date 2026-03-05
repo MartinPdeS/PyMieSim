@@ -9,25 +9,25 @@ Sphere: Qsca vs index
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 polarization_set = PolarizationSet(
     angles=[30.0] * ureg.degree,
 )
 
-source = Gaussian(
+source = GaussianSet(
     wavelength=[500.0, 1000.0, 1500.0] * ureg.nanometer,
     polarization=polarization_set,
-    optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = Sphere(
-    diameter=800.0 * ureg.nanometer,
+scatterer = SphereSet(
+    diameter=[800.0] * ureg.nanometer,
     refractive_index=np.linspace(1.3, 1.9, 150) * ureg.RIU,
-    medium_refractive_index=1.0 * ureg.RIU,
+    medium_refractive_index=[1.0] * ureg.RIU,
     source=source,
 )
 

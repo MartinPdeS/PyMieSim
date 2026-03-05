@@ -22,6 +22,7 @@ inline ScattererProperties make_scatterer_properties_from_material(
     py::list items = py::cast<py::list>(materials);
 
     std::vector<std::vector<complex128>> spectral_values;
+    std::vector<std::string> material_names;
 
     py::object wavelength = py::cast(source.wavelength);
 
@@ -36,9 +37,14 @@ inline ScattererProperties make_scatterer_properties_from_material(
         spectral_values.push_back(
             cast_scalar_or_array_to_vector_complex128(result)
         );
+
+        std::string name =
+            py::cast<std::string>(item.attr("__repr__")());
+
+        material_names.push_back(name);
     }
 
-    return ScattererProperties(spectral_values);
+    return ScattererProperties(spectral_values, material_names);
 }
 
 inline MediumProperties make_medium_properties_from_material(
@@ -56,6 +62,7 @@ inline MediumProperties make_medium_properties_from_material(
     py::list items = py::cast<py::list>(materials);
 
     std::vector<std::vector<double>> spectral_values;
+    std::vector<std::string> material_names;
 
     py::object wavelength = py::cast(source.wavelength);
 
@@ -70,9 +77,14 @@ inline MediumProperties make_medium_properties_from_material(
         spectral_values.push_back(
             cast_scalar_or_array_to_vector_double(result)
         );
+
+        std::string name =
+            py::cast<std::string>(item.attr("__repr__")());
+
+        material_names.push_back(name);
     }
 
-    return MediumProperties(spectral_values);
+    return MediumProperties(spectral_values, material_names);
 }
 
 
@@ -86,7 +98,7 @@ void register_scatterer_set(py::module& module) {
     .def_readonly("is_sequential", &ScattererSet::is_sequential)
     ;
 
-    py::class_<SphereSet, ScattererSet, std::shared_ptr<SphereSet>>(module, "Sphere")
+    py::class_<SphereSet, ScattererSet, std::shared_ptr<SphereSet>>(module, "SphereSet")
         .def(
             py::init(
                 [ureg](
@@ -447,7 +459,7 @@ void register_scatterer_set(py::module& module) {
 
 
     // Binding for CYLINDER::Set
-    py::class_<InfiniteCylinderSet, ScattererSet, std::shared_ptr<InfiniteCylinderSet>>(module, "InfiniteCylinder")
+    py::class_<InfiniteCylinderSet, ScattererSet, std::shared_ptr<InfiniteCylinderSet>>(module, "InfiniteCylinderSet")
         .def(
             py::init(
                 [ureg](
@@ -736,7 +748,7 @@ void register_scatterer_set(py::module& module) {
 
 
     // Binding for CORESHELL::Set
-    py::class_<CoreShellSet, ScattererSet, std::shared_ptr<CoreShellSet>>(module, "CoreShell")
+    py::class_<CoreShellSet, ScattererSet, std::shared_ptr<CoreShellSet>>(module, "CoreShellSet")
         .def(
             py::init(
                 [ureg](

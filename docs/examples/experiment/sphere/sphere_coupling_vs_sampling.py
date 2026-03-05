@@ -9,9 +9,9 @@ Sphere: Coupling vs sampling
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import PhotodiodeSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -20,23 +20,23 @@ polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=400 * ureg.nanometer,
+source = GaussianSet(
+    wavelength=[400] * ureg.nanometer,
     polarization=polarization_set,
-    optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
-scatterer = Sphere(
-    diameter=5000 * ureg.nanometer,
-    refractive_index=Material.BK7,
-    medium_refractive_index=1 * ureg.RIU,
+scatterer = SphereSet(
+    diameter=[5000] * ureg.nanometer,
+    material=[Material.BK7],
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 
-detector = Photodiode(
+detector = PhotodiodeSet(
     numerical_aperture=[0.2] * ureg.AU,
     phi_offset=numpy.linspace(-20, 20, 400) * ureg.degree,
-    gamma_offset=0 * ureg.degree,
+    gamma_offset=[0] * ureg.degree,
     sampling=[20, 40, 80, 160]
 )
 

@@ -375,12 +375,12 @@ void register_detector_set(py::module& module) {
             [ureg](const CoherentModeSet& self) {
                 py::dict mapping;
                 mapping["detector:mode_number"] = py::cast(self.mode_numbers);
+                mapping["detector:sampling"] = py::cast(self.sampling);
                 mapping["detector:NA"] = py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
                 mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture) * ureg.attr("dimensionless");
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
                 mapping["detector:rotation"] = py::cast(self.rotation) * ureg.attr("radian");
-                mapping["detector:sampling"] = py::cast(self.sampling);
                 mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
                 mapping["detector:medium_refractive_index"] = py::cast(self.medium_refractive_index) * ureg.attr("RIU");
                 return mapping;

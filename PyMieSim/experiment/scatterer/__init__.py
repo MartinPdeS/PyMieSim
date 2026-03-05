@@ -1,1 +1,1 @@
-from PyMieSim.binary.interface_experiment import CoreShell, Sphere, InfiniteCylinder
+from PyMieSim.binary.interface_experiment import CoreShellSet, SphereSet, InfiniteCylinderSet

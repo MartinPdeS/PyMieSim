@@ -8,9 +8,9 @@ Sphere: Coupling vs polarization filter
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import PhotodiodeSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -18,24 +18,24 @@ polarization_set = PolarizationSet(
     angles=[0] * ureg.radian
 )
 
-source = Gaussian(
+source = GaussianSet(
     wavelength=[950, 1050] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=0.2 * ureg.AU,
 )
 
-scatterer = Sphere(
+scatterer = SphereSet(
     diameter=np.linspace(100, 2000, 20) * ureg.nanometer,
-    refractive_index=[Material.BK7, Material.water],
-    medium_refractive_index=1 * ureg.RIU,
+    material=[Material.BK7, Material.water],
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 
-detector = Photodiode(
+detector = PhotodiodeSet(
     numerical_aperture=[0.1] * ureg.AU,
-    phi_offset=-180 * ureg.degree,
-    gamma_offset=0 * ureg.degree,
+    phi_offset=[-180] * ureg.degree,
+    gamma_offset=[0] * ureg.degree,
     polarization_filter=np.linspace(-180, 180, 100) * ureg.degree,
     sampling=[500],
 )

@@ -1,370 +1,371 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from PyMieSim.units import ureg
-from typing import Union, Optional, List
-import numpy
+
+from typing import Union, Optional, List, Dict, Iterable
+import numpy as np
 import pandas as pd
 
+from PyMieSim.units import ureg
 from PyMieSim.binary.interface_experiment import SETUP
-from PyMieSim.experiment.scatterer import Sphere, InfiniteCylinder, CoreShell
-from PyMieSim.experiment.detector import Photodiode, CoherentMode
-from PyMieSim.experiment.source import Gaussian, PlaneWave
+from PyMieSim.experiment.scatterer import SphereSet, InfiniteCylinderSet, CoreShellSet
+from PyMieSim.experiment.detector import PhotodiodeSet, CoherentModeSet
+from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-from PyMieSim.binary.interface_experiment import PhotodiodeSet
+
 import PyMieSim
 
 
-class EmptyDetector(PhotodiodeSet):
+class EmptyDetectorSet(PhotodiodeSet):
+    """Sentinel class used when no detector is provided."""
     pass
-
 
 
 class Setup(SETUP):
     """
-    Orchestrates the setup and execution of light scattering experiments using PyMieSim.
+    High level orchestration class for PyMieSim experiments.
 
-    Attributes
-    ----------
-    scatterer : Union[Sphere, InfiniteCylinder, CoreShell]
-        Configuration for the scatterer in the experiment. Defines the physical properties of the particle being studied.
-    source : Union[Gaussian, PlaneWave]
-        Configuration for the light source. Specifies the characteristics of the light (e.g., wavelength, polarization) illuminating the scatterer.
-    detector : Union[Photodiode, CoherentMode, None], optional
-        Configuration for the detector, if any. Details the method of detection for scattered light, including positional and analytical parameters. Defaults to None.
+    This class coordinates the interaction between the source,
+    scatterer and detector sets and exposes a simple interface
+    for computing simulation measures.
 
-    Methods provide functionality for initializing bindings, generating parameter tables for visualization,
-    and executing the simulation to compute and retrieve specified measures.
+    The class supports two execution modes:
+
+    1. Sequential execution returning raw arrays.
+    2. Structured execution returning a pandas DataFrame where
+       simulation parameters define the parameter grid.
+
+    Units are stored in ``DataFrame.attrs["units"]`` and the
+    DataFrame itself only contains pure numerical values.
     """
 
     def __init__(
         self,
-        scatterer: Union[Sphere, InfiniteCylinder, CoreShell],
-        source: Union[Gaussian, PlaneWave],
-        detector: Optional[Union[Photodiode, CoherentMode]] = EmptyDetector(),
+        scatterer: Union[SphereSet, InfiniteCylinderSet, CoreShellSet],
+        source: Union[GaussianSet, PlaneWaveSet],
+        detector: Optional[Union[PhotodiodeSet, CoherentModeSet]] = EmptyDetectorSet(),
     ):
+        """
+        Parameters
+        ----------
+        scatterer
+            Scatterer parameter set.
+        source
+            Optical source parameter set.
+        detector
+            Detector configuration set.
+        """
 
         self.scatterer = scatterer
         self.source = source
         self.detector = detector
 
-        super().__init__(
-            debug_mode=PyMieSim.debug_mode,
-        )
+        super().__init__(debug_mode=PyMieSim.debug_mode)
 
-    def get_sequential(self, measure: str) -> numpy.ndarray:
+    # ------------------------------------------------------------------
+    # Sequential execution
+    # ------------------------------------------------------------------
+
+    def get_sequential(self, measure: str) -> np.ndarray:
         """
-        Executes the simulation to compute and retrieve the specified measures in a sequential manner contrary to the standard get function.
-        This means that ranges are not iterated in a structured fashion into a dataframe but are only run once.
-        This methods was developed for specific aims, for the best suited vizualization tools go for the .get() method.
+        Compute a measure once using the current parameter sets.
+
+        Unlike :func:`get`, this method does not construct a parameter
+        grid and simply returns the raw output of the simulation.
 
         Parameters
         ----------
-        measures : str
-            The measure to be computed in the simulation, provided as arguments by the user.
+        measure
+            Name of the measure to compute.
+
         Returns
         -------
         numpy.ndarray
-            An array containing the computed measures.
+            Computed values.
         """
-        method_name = f"get_{measure}_sequential"
 
-        # Compute the values using the binding method
-        return getattr(self, method_name)(
+        method = getattr(self, f"get_{measure}_sequential")
+
+        return method(
             scatterer_set=self.scatterer,
             source_set=self.source,
             detector_set=self.detector,
         )
 
+    # ------------------------------------------------------------------
+    # Main public interface
+    # ------------------------------------------------------------------
+
     def get(
         self,
-        *measures,
-        scale_unit: bool = False,
+        *measures: str,
         drop_unique_level: bool = True,
         add_units: bool = True,
         as_numpy: bool = False,
-    ) -> pd.DataFrame:
-        """
-        Run the simulation to compute specified measures and return the results.
-
-        Parameters
-        ----------
-        measures : tuple
-            Variable-length tuple of measure names to compute, specified by the user.
-        scale_unit : bool, optional
-            If True, scales the units in the output DataFrame to the most appropriate units. Defaults to False.
-        drop_unique_level : bool, optional
-            If True, removes levels from the DataFrame's MultiIndex where only one unique value exists, simplifying the DataFrame. Defaults to True.
-        add_units : bool, optional
-            If True, includes units in the output DataFrame using pint quantities. If False, the output will contain raw numeric values only. Defaults to True.
-        as_numpy : bool, optional
-            If True, returns the result as a NumPy array instead of a DataFrame. Defaults to False.
-
-        Returns
-        -------
-        pd.DataFrame or np.ndarray
-            A DataFrame containing the computed measures with optional units and simplified MultiIndex, or a NumPy array if `as_numpy` is set to True.
-        """
-        measures = set(numpy.atleast_1d(measures))
-
-        if "coupling" in measures:
-            assert (
-                self.detector is not None
-            ), "To compute the coupling power the detector has to be provided to Setup class"
-
-        if as_numpy:
-            return self._get_measure_array(measures)
-
-        is_complex = self._is_complex_measure(measures)
-
-        df = self.generate_dataframe(
-            measure=list(measures),
-            is_complex=is_complex,
-            drop_unique_level=drop_unique_level,
-        )
-
-        df = self._get_measure_dataframe(df, measures, is_complex, add_units)
-
-        # Optionally scale the units in the DataFrame
-        if scale_unit:
-            df = self.scale_dataframe_units(df)
-
-        return df
-
-    def _is_complex_measure(self, measures: set) -> bool:
-        """
-        Determines if the measures involve complex values based on measure names.
-        No complex value are computed now, as the a & b parameters a return as absolute values for convienience.
-
-        Parameters
-        ----------
-        measures : set
-            A set of measures requested for computation.
-
-        Returns
-        -------
-        bool
-            True if any measure involves complex values, False otherwise.
-        """
-        return False
-
-    def _get_measure_array(self, measures: List[str]) -> pd.DataFrame:
-        """
-        Retrieve data for specified measures and return them as a NumPy array.
-
-        Parameters
-        ----------
-        measures : List[str]
-            List of measure names to compute.
-
-        Returns
-        -------
-        np.ndarray
-            A NumPy array containing computed values for the specified measures.
-        """
-        output_array = []
-
-        for measure in measures:
-            method_name = f"get_{measure}"
-
-            method = getattr(self, method_name)
-
-            array = method(
-                scatterer_set=self.scatterer,
-                source_set=self.source,
-                detector_set=self.detector,
-            )
-
-            output_array.append(array)
-
-        return numpy.asarray(output_array).squeeze()
-
-    def _get_measure_dataframe(
-        self, df: pd.DataFrame, measures: List[str], is_complex: bool, add_units: bool
-    ) -> pd.DataFrame:
-        """
-        Populate a DataFrame with computed values for specified measures.
-
-        Parameters
-        ----------
-        df : pd.DataFrame
-            DataFrame in which to store computed values for the specified measures.
-        measures : List[str]
-            List of measure names to compute and add to the DataFrame.
-        is_complex : bool
-            Indicates whether any of the measures involve complex values.
-        add_units : bool
-            If True, adds units to the computed values in the DataFrame.
-
-        Returns
-        -------
-        pd.DataFrame
-            Updated DataFrame with computed values for the specified measures, with optional units if `add_units` is True.
-        """
-        for measure in measures:
-
-            method_name = f"get_{measure}"
-
-            # Compute the values using the binding method
-            array = getattr(self, method_name)(
-                scatterer_set=self.scatterer,
-                source_set=self.source,
-                detector_set=self.detector,
-            )
-
-            # Determine the unit based on the measure type
-            dtype = self._determine_dtype(measure)
-
-            # Set the data in the DataFrame
-            df = self._set_data(
-                measure=measure,
-                dataframe=df,
-                array=array,
-                dtype=dtype,
-                is_complex=is_complex,
-                add_units=add_units,
-            )
-
-        return df
-
-    def _determine_dtype(self, measure: str):
-        """
-        Determine the appropriate unit (dtype) based on the measure's first character.
-
-        Parameters
-        ----------
-        measure : str
-            The measure type to determine the unit for.
-
-        Returns
-        -------
-        pint.Quantity
-            The appropriate unit for the measure.
-        """
-        match measure[0]:
-            case "C":
-                return ureg.meter**2  # Cross-section measure
-            case "c":
-                assert (
-                    self.detector is not None
-                ), "Detector needs to be defined in order to measure coupling"
-                return ureg.watt  # Power measure
-            case _:
-                return ureg.dimensionless  # Arbitrary units for other measures
-
-    def _set_data(
-        self,
-        measure: str,
-        dataframe: pd.DataFrame,
-        array: numpy.ndarray,
-        dtype: type,
-        is_complex: bool,
-        add_units: bool,
-    ) -> None:
-        """
-        Sets the real and imaginary parts of a NumPy array as separate 'real' and 'imag' levels
-        in the 'type' index of a pandas DataFrame.
-
-        Parameters
-        ----------
-        dataframe : pd.DataFrame
-            The target DataFrame with a MultiIndex that includes a 'type' level (with possible values 'real' and 'imag').
-        array : np.ndarray
-            A complex NumPy array whose real and imaginary parts will be assigned to the DataFrame.
-        dtype : type
-            The data type to cast the real and imaginary parts into, using PintArrays.
-        is_complex : bool
-            A flag that indicates whether the input array is complex. If False, the 'type' level is not saved, and the array is treated as purely real.
-        """
-        dtype = f"pint[{dtype}]" if add_units else float
-
-        if is_complex:
-            dataframe[(measure, "real")] = pd.Series(
-                array.ravel().real, dtype=dtype, index=dataframe.index
-            )
-            dataframe[(measure, "imag")] = pd.Series(
-                array.ravel().imag, dtype=dtype, index=dataframe.index
-            )
-
-        else:
-            dataframe[measure] = pd.Series(
-                array.ravel(), dtype=dtype, index=dataframe.index
-            )
-
-        return dataframe
-
-    def scale_dataframe_units(self, dataframe: pd.DataFrame) -> pd.DataFrame:
-        """
-        Scales the units of all columns in a pandas DataFrame to the most compact unit
-        based on the maximum value in each column.
-
-        This method iterates over each column in the DataFrame, retrieves the maximum value's
-        unit, and converts the entire column to that unit using pint's unit system.
-
-        Parameters
-        ----------
-        dataframe : pd.DataFrame
-            A DataFrame where each column contains PintArray elements with units.
-
-        Returns
-        -------
-        pd.DataFrame
-            The updated DataFrame with all columns scaled to the most compact unit based on the maximum value in each column.
-        """
-        max_value_unit = dataframe.max().max().to_compact().units
-
-        for name, col in dataframe.items():
-            dataframe[name] = col.pint.to(max_value_unit)
-
-        return dataframe
-
-    def generate_dataframe(
-        self, measure, is_complex: bool = False, drop_unique_level: bool = True
+        scale_unit: bool = True,
     ):
         """
-        Generates a pandas DataFrame with a MultiIndex based on the mapping
-        of 'source' and 'scatterer' from an experiment object.
+        Run the simulation and compute the requested measures.
 
         Parameters
         ----------
-        experiment :
-            The experiment object containing 'source' and 'scatterer' mappings.
+        measures
+            Names of the measures to compute.
+        drop_unique_level
+            Remove parameters that only contain a single value.
+        add_units
+            Store units inside ``DataFrame.attrs["units"]``.
+        as_numpy
+            Return raw NumPy arrays instead of a DataFrame.
+        scale_unit
+            Automatically convert results to compact units.
 
         Returns
         -------
-        pd.DataFrame
-            A DataFrame with a MultiIndex created from the experiment mappings.
+        pandas.DataFrame or numpy.ndarray
         """
-        iterables = dict()
 
-        iterables.update(self.source.get_mapping())
-        iterables.update(self.scatterer.get_mapping())
+        measures = list(set(np.atleast_1d(measures)))
 
-        if not isinstance(self.detector, EmptyDetector):
-            iterables.update(self.detector.get_mapping())
+        if "coupling" in measures and isinstance(self.detector, EmptyDetectorSet):
+            raise ValueError("Detector must be provided to compute coupling.")
 
-        for key, values in iterables.items():
-            iterables[key] = [
-                tuple(v) if isinstance(v, list) else v
-                for v in values
-            ]
+        if as_numpy:
+            return self._compute_measure_arrays(measures)
+
+        dataframe = self._build_dataframe(measures, drop_unique_level)
+
+        self._populate_measure_columns(dataframe, measures, add_units)
+
+        if scale_unit:
+            dataframe = dataframe.to_compact()
+
+        return dataframe
+
+    # ------------------------------------------------------------------
+    # Measure computation
+    # ------------------------------------------------------------------
+
+    def _compute_measure_arrays(self, measures: List[str]) -> np.ndarray:
+        """
+        Return measures as a stacked NumPy array.
+
+        Parameters
+        ----------
+        measures
+            Names of the measures to compute.
+
+        Returns
+        -------
+        numpy.ndarray
+            Computed values.
+        """
+
+        arrays = []
+
+        for measure in measures:
+
+            method = getattr(self, f"get_{measure}")
+
+            values = method(
+                scatterer_set=self.scatterer,
+                source_set=self.source,
+                detector_set=self.detector,
+            )
+
+            arrays.append(np.asarray(values))
+
+        return np.squeeze(np.asarray(arrays))
+
+    # ------------------------------------------------------------------
+    # DataFrame generation
+    # ------------------------------------------------------------------
+
+    def _collect_parameter_mappings(self) -> Dict[str, Iterable]:
+        """
+        Collect parameter mappings from source, scatterer and detector.
+
+        Returns
+        -------
+        dict
+            A dictionary containing parameter names as keys and their corresponding values as lists.
+        """
+
+        mappings = {}
+
+        mappings.update(self.source.get_mapping())
+        mappings.update(self.scatterer.get_mapping())
+
+        if not isinstance(self.detector, EmptyDetectorSet):
+            mappings.update(self.detector.get_mapping())
+
+        return mappings
+
+    def _separate_units_and_values(self, mappings: Dict[str, Iterable]):
+        """
+        Extract numeric values and units from parameter mappings.
+
+        This function also handles PyMieSim C++ Properties objects
+        which represent either constant parameters or spectral
+        materials.
+
+        Returns
+        -------
+        Tuple[Dict[str, Iterable], Dict[str, pint.Unit]]
+        """
+
+        units = {}
+        values = {}
+
+        for key, param_values in mappings.items():
+
+            # ----------------------------------------------------------
+            # Pint quantities
+            # ----------------------------------------------------------
+            if hasattr(param_values, "units"):
+                units[key] = param_values.units
+                values[key] = np.atleast_1d(param_values.magnitude)
+                continue
+
+            # ----------------------------------------------------------
+            # PyMieSim Properties objects (C++ bindings)
+            # ----------------------------------------------------------
+            if hasattr(param_values, "is_constant") and hasattr(param_values, "is_spectral"):
+
+                if param_values.is_constant():
+                    values[key] = list(param_values)
+
+                else:
+                    # Spectral case
+                    # Each material corresponds to one entry in the grid
+                    values[key] = list(param_values.material_names)
+
+                continue
+
+            # ----------------------------------------------------------
+            # Standard iterable parameters
+            # ----------------------------------------------------------
+            if isinstance(param_values, (list, tuple, np.ndarray)):
+                values[key] = list(param_values)
+                continue
+
+            # ----------------------------------------------------------
+            # Scalar fallback
+            # ----------------------------------------------------------
+            values[key] = [param_values]
+
+        return values, units
+
+    def _build_dataframe(self, measures: List[str], drop_unique_level: bool):
+        """
+        Construct a DataFrame with a parameter grid defined by the source, scatterer and detector parameter sets.
+
+
+        Parameters
+        ----------
+        measures
+            Names of the measures to compute.
+        drop_unique_level
+            Remove parameters that only contain a single value.
+
+        Returns
+        -------
+        pandas.DataFrame
+        """
+        mappings = self._collect_parameter_mappings()
+
+        values, units = self._separate_units_and_values(mappings)
 
         if drop_unique_level:
-            _iterables = {k: v for k, v in iterables.items() if len(v) > 1}
 
-            if len(_iterables) != 0:
-                iterables = _iterables
+            values = {k: v for k, v in values.items() if len(v) > 1}
 
-        # Create a MultiIndex from the iterables
-        row_index = pd.MultiIndex.from_product(
-            iterables.values(), names=iterables.keys()
-        )
+            units = {k: u for k, u in units.items() if k in values}
 
-        if is_complex:
-            columns = pd.MultiIndex.from_product(
-                [measure, ["real", "imag"]], names=["data", "type"]
+        parameter_names = list(values.keys())
+
+
+        mesh = np.meshgrid(*values.values(), indexing="ij")
+
+        flattened = [m.reshape(-1) for m in mesh]
+
+        dataframe = PyMieSimDataFrame(dict(zip(parameter_names, flattened)))
+
+        dataframe.attrs["units"] = units
+
+        for m in measures:
+            dataframe[m] = np.nan
+
+        return dataframe
+
+    # ------------------------------------------------------------------
+    # Populate simulation outputs
+    # ------------------------------------------------------------------
+
+    def _populate_measure_columns(
+        self,
+        dataframe: pd.DataFrame,
+        measures: List[str],
+        add_units: bool,
+    ):
+        """
+        Fill the DataFrame with computed simulation results.
+
+        Parameters
+        ----------
+        dataframe
+            DataFrame to populate.
+        measures
+            List of measures to compute and add to the DataFrame.
+        add_units
+            Whether to store units in ``DataFrame.attrs["units"]``.
+
+        Returns
+        -------
+        None
+        """
+
+        units = dataframe.attrs.setdefault("units", {})
+
+        for measure in measures:
+
+            method = getattr(self, f"get_{measure}")
+
+            values = method(
+                scatterer_set=self.scatterer,
+                source_set=self.source,
+                detector_set=self.detector,
             )
-        else:
-            columns = pd.MultiIndex.from_product([measure], names=["data"])
 
-        # Return an empty DataFrame with the generated MultiIndex
-        return PyMieSimDataFrame(columns=columns, index=row_index)
+            dataframe[measure] = values.ravel()
+
+            if add_units:
+                units[measure] = self._determine_unit(measure)
+
+    # ------------------------------------------------------------------
+    # Unit inference
+    # ------------------------------------------------------------------
+
+    def _determine_unit(self, measure: str):
+        """
+        Infer the physical unit associated with a measure.
+
+        Parameters
+        ----------
+        measure
+            Name of the measure.
+
+        Returns
+        -------
+        pint.Unit
+
+        """
+
+        if measure.startswith("C"):
+            return ureg.meter ** 2
+
+        if measure.startswith("c"):
+            if isinstance(self.detector, EmptyDetectorSet):
+                raise ValueError("Detector required for coupling computation.")
+            return ureg.watt
+
+        return ureg.dimensionless
