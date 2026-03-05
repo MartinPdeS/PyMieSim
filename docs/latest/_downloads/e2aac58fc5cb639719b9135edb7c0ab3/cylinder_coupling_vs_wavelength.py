@@ -10,9 +10,9 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import CoherentModeSet
+from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -20,30 +20,27 @@ polarization_set = PolarizationSet(
     angles=[30.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=np.linspace(950, 1050, 300)
-    * ureg.nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
-    polarization=polarization_set,  # Linear polarization angle in radians
-    optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
+source = GaussianSet(
+    wavelength=np.linspace(950, 1050, 300) * ureg.nanometer,
+    polarization=polarization_set,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = InfiniteCylinder(
-    diameter=np.linspace(100, 8000, 5)
-    * ureg.nanometer,  # Diameters ranging from 100 nm to 8000 nm
-    refractive_index=Material.BK7,  # Material of the cylinder
-    medium_refractive_index=1 * ureg.RIU,  # Refractive index of the surrounding medium
+scatterer = InfiniteCylinderSet(
+    diameter=np.linspace(300, 500, 5) * ureg.nanometer,
+    material=[Material.BK7],
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 
-detector = CoherentMode(
-    mode_number="LP11",  # Specifying the LP11 mode
-    numerical_aperture=[0.05, 0.01] * ureg.AU,  # Array of Numerical Apertures for the detector
-    phi_offset=-180 * ureg.degree,  # Phi offset in ureg.degrees
-    gamma_offset=0 * ureg.degree,  # Gamma offset in ureg.degrees
-    polarization_filter=None,  # No polarization filter
-    sampling=300,  # Number of sampling points
-    rotation=0 * ureg.degree,  # Rotation of the mode field
+detector = CoherentModeSet(
+    mode_number=["LP11"],
+    numerical_aperture=[0.05, 0.01] * ureg.AU,
+    phi_offset=[-180] * ureg.degree,
+    gamma_offset=[0] * ureg.degree,
+    sampling=[300],
+    rotation=[0] * ureg.degree,
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)

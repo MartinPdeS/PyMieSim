@@ -9,9 +9,9 @@ Sphere: Coupling vs diameter
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import CoherentModeSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -19,26 +19,26 @@ polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=1200 * ureg.nanometer,
+source = GaussianSet(
+    wavelength=[1200] * ureg.nanometer,
     polarization=polarization_set,
-    optical_power=1e-3 * ureg.watt,
+    optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.1] * ureg.AU,
 )
-scatterer = Sphere(
+scatterer = SphereSet(
     diameter=numpy.linspace(100, 10000, 600) * ureg.nanometer,
-    refractive_index=Material.BK7,
-    medium_refractive_index=1.0 * ureg.RIU,
+    material=[Material.BK7],
+    medium_refractive_index=[1.0] * ureg.RIU,
     source=source,
 )
 
-detector = CoherentMode(
+detector = CoherentModeSet(
     mode_number=["LP01", "LP11", "LP02"],
-    numerical_aperture=0.2 * ureg.AU,
-    rotation=0 * ureg.degree,
-    phi_offset=0.0 * ureg.degree,
-    gamma_offset=0.0 * ureg.degree,
-    sampling=600,
+    numerical_aperture=[0.2] * ureg.AU,
+    rotation=[0] * ureg.degree,
+    phi_offset=[0.0] * ureg.degree,
+    gamma_offset=[0.0] * ureg.degree,
+    sampling=[600],
     mean_coupling=True,
     polarization_filter=None,
 )

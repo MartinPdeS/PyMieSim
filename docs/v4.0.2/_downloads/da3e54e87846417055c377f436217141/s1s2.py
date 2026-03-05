@@ -28,6 +28,8 @@ scatterer = Sphere(
     refractive_index=1.4 * ureg.RIU,
 )
 
+scatterer.Qsca
+
 s1s2 = S1S2(scatterer=scatterer, sampling=200)  # Specify the number of sampling points
 
 figure = s1s2.plot()

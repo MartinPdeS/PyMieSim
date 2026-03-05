@@ -9,7 +9,6 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.10
 import numpy
 import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
-from MPSPlots.styles import mps
 
 from PyMieSim.directories import validation_data_path
 from PyMieSim.single.source import Gaussian, PolarizationState
@@ -44,8 +43,8 @@ data = (numpy.abs(s1s2.S1) ** 2 + numpy.abs(s1s2.S2) ** 2) * (
     0.5 / (numpy.pi * source.wavenumber_vacuum.to_base_units())
 ) ** (1 / 4)
 
-with plt.style.context(mps):
-    figure, ax = plt.subplots(1, 1)
+
+figure, ax = plt.subplots(1, 1)
 
 ax.plot(s1s2.phi, data, "C1-", linewidth=3, label="PyMieSim")
 ax.plot(x - 90, y, "k--", linewidth=1, label="B&H [8.10]")

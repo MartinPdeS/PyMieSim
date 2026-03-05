@@ -12,8 +12,8 @@ from PyMieSim.units import ureg
 
 from PyMieSim.directories import validation_data_path
 
-from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 theoretical = numpy.genfromtxt(
@@ -23,17 +23,17 @@ theoretical = numpy.genfromtxt(
 diameter = numpy.geomspace(10, 6000, 800) * ureg.nanometer
 volume = numpy.pi * (diameter.to_base_units().magnitude / 2) ** 2
 
-source = Gaussian(
-    wavelength=632.8 * ureg.nanometer,
+source = GaussianSet(
+    wavelength=[632.8] * ureg.nanometer,
     polarization=PolarizationSet(angles=[0, 90] * ureg.degree),
-    optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = InfiniteCylinder(
+scatterer = InfiniteCylinderSet(
     diameter=diameter,
-    refractive_index=1.55 * ureg.RIU,
-    medium_refractive_index=1 * ureg.RIU,
+    refractive_index=[1.55] * ureg.RIU,
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 
@@ -42,11 +42,9 @@ experiment = Setup(
     source=source,
 )
 
-dataframe = experiment.get("Csca", add_units=False)
+values = experiment.get("Csca", as_numpy=True)
 
-data = dataframe.squeeze().values.reshape([-1, diameter.size]) / volume * 1e-4 / 100
-
-print(data.shape)
+data = values / volume * 1e-4 / 100
 
 plt.figure(figsize=(8, 4))
 plt.plot(diameter, data[0], "b--", linewidth=3, label="PyMieSim")

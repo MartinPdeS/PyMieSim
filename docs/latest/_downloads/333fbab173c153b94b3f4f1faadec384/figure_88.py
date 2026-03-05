@@ -11,8 +11,8 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
-from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 # Load theoretical data
@@ -33,27 +33,27 @@ medium_index = 1.335 * ureg.RIU  # Refractive index of the medium
 volumes = np.pi * (diameters / 2) ** 2
 
 # Configure the Gaussian source
-source = Gaussian(
-    wavelength=wavelength,
+source = GaussianSet(
+    wavelength=[632.8] * ureg.nanometer,
     polarization=polarization_set,
-    optical_power=optical_power,
-    numerical_aperture=numerical_aperture,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
 # Setup cylindrical scatterers
-scatterer = InfiniteCylinder(
-    diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
+scatterer = InfiniteCylinderSet(
+    diameter=diameters,
+    refractive_index=[1.55] * ureg.RIU,
+    medium_refractive_index=[1.335] * ureg.RIU,
+    source=source
 )
 
 # Create experimental setup
 experiment = Setup(scatterer=scatterer, source=source)
 
 # Compute PyMieSim scattering cross section data
-csca_data = (
-    experiment.get("Csca", add_units=False)
-    .squeeze()
-    .values.reshape([-1, diameters.size])
-)
+csca_data = experiment.get("Csca", as_numpy=True)
+
 normalized_csca = (
     csca_data / volumes.to_base_units() * 1e-4 / 100
 )  # Normalize the data as per specific needs

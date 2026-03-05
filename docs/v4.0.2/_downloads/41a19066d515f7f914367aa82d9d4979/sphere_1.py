@@ -11,11 +11,10 @@ import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
-from MPSPlots.styles import mps
 
 
 # Define parameters
@@ -29,16 +28,19 @@ diameters = (
 )  # Diameters from 10 nm to 6 μm
 
 # Configure the Gaussian source
-source = Gaussian(
-    wavelength=wavelength,
+source = GaussianSet(
+    wavelength=[632.8] * ureg.nanometer,
     polarization=PolarizationSet(angles=0 * ureg.degree),
-    optical_power=optical_power,
-    numerical_aperture=NA,
+    optical_power=[1] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
 # Setup spherical scatterer
-scatterer = Sphere(
-    diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
+scatterer = SphereSet(
+    diameter=diameters,
+    refractive_index=[(1.4 + 0.2j)] * ureg.RIU,
+    medium_refractive_index=[1.2] * ureg.RIU,
+    source=source
 )
 
 # Create experimental setup
@@ -54,8 +56,8 @@ pymiescatt_dataframe = pd.read_csv(
 )
 
 # Plot results
-with plt.style.context(mps):
-    figure, ax = plt.subplots(1, 1)
+
+figure, ax = plt.subplots(1, 1)
 
 
 pymiescatt_dataframe.diameter *= 1e9

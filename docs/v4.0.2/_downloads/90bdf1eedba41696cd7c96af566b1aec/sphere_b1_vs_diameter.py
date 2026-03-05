@@ -9,24 +9,24 @@ Sphere: B1 scattering coefficient
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=400 * ureg.nanometer,
+source = GaussianSet(
+    wavelength=[400] * ureg.nanometer,
     polarization=polarization_set,
-    optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
-scatterer = Sphere(
+scatterer = SphereSet(
     diameter=np.linspace(100, 10000, 800) * ureg.nanometer,
-    refractive_index=1.4 * ureg.RIU,
-    medium_refractive_index=1 * ureg.RIU,
+    refractive_index=[1.4] * ureg.RIU,
+    medium_refractive_index=[1] * ureg.RIU,
     source=source,
 )
 

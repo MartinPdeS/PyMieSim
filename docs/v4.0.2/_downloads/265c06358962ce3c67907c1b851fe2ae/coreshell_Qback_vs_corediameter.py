@@ -11,8 +11,8 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import CoreShell
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import CoreShellSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -20,21 +20,19 @@ polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
 )
 
-source = Gaussian(
-    wavelength=[800, 900, 1000]
-    * ureg.nanometer,  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
-    polarization=polarization_set,  # Linear polarization angle in radians
-    optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-    numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
+source = GaussianSet(
+    wavelength=[800, 900, 1000] * ureg.nanometer,
+    polarization=polarization_set,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = CoreShell(
-    core_diameter=numpy.geomspace(100, 600, 400)
-    * ureg.nanometer,  # Core diameters from 100 nm to 600 nm
-    shell_thickness=800 * ureg.nanometer,  # Shell width of 800 nm
-    core_refractive_index=Material.silver,  # Core material
-    shell_refractive_index=Material.BK7,  # Shell material
-    medium_refractive_index=1 * ureg.RIU,  # Surrounding medium's refractive index
+scatterer = CoreShellSet(
+    core_diameter=numpy.geomspace(100, 600, 400) * ureg.nanometer,
+    shell_thickness=[800] * ureg.nanometer,
+    core_material=[Material.silver],
+    shell_material=[Material.BK7],
+    medium_material=[Material.water],
     source=source,
 )
 

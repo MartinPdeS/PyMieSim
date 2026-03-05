@@ -34,23 +34,23 @@ Importing the package dependencies: numpy, PyMieSim
     import numpy as np
     from PyMieSim.units import ureg
 
-    from PyMieSim.experiment.scatterer import InfiniteCylinder
-    from PyMieSim.experiment.source import Gaussian, PolarizationSet
+    from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
     from PyMieSim.experiment import Setup
 
     polarization_state = PolarizationSet(
         angles=0 * ureg.degree,  # Linear polarization angle in radians
     )
 
-    source = Gaussian(
+    source = GaussianSet(
         wavelength=np.linspace(400, 1000, 150)
         * ureg.nanometer,  # Wavelengths ranging from 400 nm to 1000 nm
         polarization=polarization_state,
-        optical_power=1e-3 * ureg.watt,  # 1 milliureg.watt
-        numerical_aperture=0.2 * ureg.AU,  # Numerical Aperture
+        optical_power=[1e-3] * ureg.watt,  # 1 milliureg.watt
+        numerical_aperture=[0.2] * ureg.AU,  # Numerical Aperture
     )
 
-    scatterer = InfiniteCylinder(
+    scatterer = InfiniteCylinderSet(
         diameter=[200, 150] * ureg.nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
         refractive_index=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
         medium_refractive_index=[1] * ureg.RIU,  # Refractive index of the surrounding medium
@@ -75,6 +75,8 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pandas/core/groupby/ops.py:231: ComplexWarning: Casting complex values to real discards the imaginary part
+      values = ensure_float64(values)
 
     <Figure size 800x500 with 1 Axes>
 
@@ -83,7 +85,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.314 seconds)
+   **Total running time of the script:** (0 minutes 0.197 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py:

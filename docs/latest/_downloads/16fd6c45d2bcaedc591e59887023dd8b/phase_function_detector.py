@@ -15,35 +15,35 @@ scatterer_index = 1.4 * ureg.RIU  # Refractive index of the scatterer
 source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
 # Experiment source and scatterer setup
-source = experiment.source.Gaussian(
-    wavelength=1.2 * ureg.micrometer,
+source = experiment.source.GaussianSet(
+    wavelength=[1.2] * ureg.micrometer,
     polarization=experiment.source.PolarizationSet(angles=[0, 90] * ureg.degree),
-    optical_power=1 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = experiment.scatterer.Sphere(
+scatterer = experiment.scatterer.SphereSet(
     diameter=scatterer_diameter,
     refractive_index=scatterer_index,
-    medium_refractive_index=1.0 * ureg.RIU,
+    medium_refractive_index=[1.0] * ureg.RIU,
     source=source,
 )
 
 # Detector setup
-detector = experiment.detector.Photodiode(
+detector = experiment.detector.PhotodiodeSet(
     numerical_aperture=[0.1] * ureg.AU,
     phi_offset=np.linspace(-180, 180, 100) * ureg.degree,
-    gamma_offset=0.0 * ureg.degree,
-    sampling=1000
+    gamma_offset=[0.0] * ureg.degree,
+    sampling=[1000]
 )
 
 # Configure experiment
 experiment = experiment.Setup(scatterer=scatterer, source=source, detector=detector)
 
 # Gather data
-dataframe = experiment.get("coupling", drop_unique_level=True)
-# dataframe.index = /= 180 / np.pi
-dataframe["coupling"] /= dataframe["coupling"].max()  # Normalize data
+data_experiment = experiment.get("coupling", as_numpy=True)
+
+data_experiment /= data_experiment.max()  # Normalize data
 
 # Single scatterer simulation for S1 and S2
 single_source = single.source.Gaussian(
@@ -70,30 +70,29 @@ s2 /= s2.max()  # Normalize S2 data
 
 figure, ax0 = plt.subplots(1, 1, subplot_kw=dict(projection="polar"))
 
-
-df = (
-    dataframe.unstack("source:polarization")
-    .pint.dequantify()
-    .reset_index()
-    .pint.quantify()
-)
-
-df.plot(
-    x="detector:phi_offset",
-    y="coupling",
-    ax=ax0,
-    linewidth=3,
-    title="Polarization 90 degree",
-)
-
 phi += 90 * ureg.degree
+ax0.plot(
+    detector.phi_offset.to('radian').magnitude,
+    data_experiment[0, :],
+    linewidth=3
+)
+
+ax0.plot(
+    detector.phi_offset.to('radian').magnitude,
+    data_experiment[1, :],
+    linewidth=3
+)
+
 ax0.plot(
     phi.to('radian').magnitude, s1, color="black", linestyle="--", linewidth=1, label="Computed S1"
 )
 
+
 ax0.plot(
     phi.to('radian').magnitude, s2, color="black", linestyle="--", linewidth=1, label="Computed S2"
 )
+
+plt.legend()
 
 ax0.grid()
 
