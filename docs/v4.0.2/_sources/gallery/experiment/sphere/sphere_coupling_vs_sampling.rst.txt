@@ -81,7 +81,7 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/experiment/dataframe_subclass.py:127: RuntimeWarning: All-NaN slice encountered
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/experiment/dataframe_subclass.py:125: RuntimeWarning: All-NaN slice encountered
       max_val = np.nanmax(np.abs(values))
 
     <Figure size 800x500 with 1 Axes>
@@ -91,7 +91,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.008 seconds)
+   **Total running time of the script:** (0 minutes 1.014 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_sampling.py:
