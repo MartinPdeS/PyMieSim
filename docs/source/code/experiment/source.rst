@@ -3,10 +3,10 @@
 Sources
 =======
 
-.. autoclass:: PyMieSim.experiment.source.PlaneWave
+.. autoclass:: PyMieSim.experiment.source.PlaneWaveSet
     :members:
     :inherited-members:
 
-.. autoclass:: PyMieSim.experiment.source.Gaussian
+.. autoclass:: PyMieSim.experiment.source.GaussianSet
     :members:
     :inherited-members:
