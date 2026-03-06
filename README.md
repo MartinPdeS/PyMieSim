@@ -4,8 +4,8 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
-| PyMieSim/experiment/dataframe\_subclass.py     |       65 |       12 |       10 |        1 |     80.00% |150-156, 195, 221-225, 244-248 |
-| PyMieSim/experiment/setup.py                   |       89 |        3 |       28 |        3 |     94.87% |281-284, 354->358, 363 |
+| PyMieSim/experiment/dataframe\_subclass.py     |      165 |       25 |       52 |       10 |     82.95% |39->37, 57, 65, 76->79, 92-109, 126-127, 153->158, 158->exit, 168, 188-189, 228->231, 293->296, 317-318, 361-367, 371-373 |
+| PyMieSim/experiment/setup.py                   |       98 |        3 |       36 |        4 |     94.78% |130, 139->142, 260, 373 |
 | PyMieSim/experiment/utils.py                   |       32 |       32 |       14 |        0 |      0.00% |     1-127 |
 | PyMieSim/single/mesh.py                        |       38 |        7 |        0 |        0 |     81.58% |94, 106, 118, 130, 142-148 |
 | PyMieSim/single/plottings.py                   |      101 |       22 |       18 |        8 |     74.79% |126, 132->135, 135->139, 146->149, 155->153, 157, 175-176, 194-201, 225, 269-276, 300-333, 410-420, 446 |
@@ -13,9 +13,9 @@
 | PyMieSim/single/representations/far\_fields.py |       58 |        2 |        8 |        1 |     95.45% |     78-79 |
 | PyMieSim/single/representations/near\_field.py |      156 |      137 |       42 |        0 |      9.60% |29-32, 49-62, 96-115, 134-143, 173-213, 231-251, 268-277, 286-324, 368-425 |
 | PyMieSim/single/representations/stokes.py      |       41 |        2 |        4 |        1 |     93.33% |     77-78 |
-| **TOTAL**                                      |  **725** |  **239** |  **130** |   **14** | **63.39%** |           |
+| **TOTAL**                                      |  **834** |  **252** |  **180** |   **24** | **66.86%** |           |
 
-5 files skipped due to complete coverage.
+6 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
