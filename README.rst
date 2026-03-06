@@ -55,21 +55,21 @@ Below is a short example computing the scattering efficiency of a sphere.
    import numpy as np
    from TypedUnit import ureg
 
-   from PyMieSim.experiment.scatterer import Sphere
-   from PyMieSim.experiment.source import Gaussian
+   from PyMieSim.experiment.scatterer import SphereSet
+   from PyMieSim.experiment.source import GaussianSet
    from PyMieSim.experiment import Setup
 
-   source = Gaussian(
+   source = GaussianSet(
        wavelength=np.linspace(400, 1000, 500) * ureg.nanometer,
        polarization=0 * ureg.degree,
        optical_power=1e-3 * ureg.watt,
        NA=0.2 * ureg.AU,
    )
 
-   scatterer = Sphere(
+   scatterer = SphereSet(
        diameter=[200, 300] * ureg.nanometer,
        property=[4] * ureg.RIU,
-       medium_property=1 * ureg.RIU,
+       medium_property=[1] * ureg.RIU,
        source=source,
    )
 
