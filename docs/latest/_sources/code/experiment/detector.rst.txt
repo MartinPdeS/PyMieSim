@@ -3,8 +3,8 @@
 Detectors
 ==========
 
-.. autoclass:: PyMieSim.experiment.detector.Photodiode
+.. autoclass:: PyMieSim.experiment.detector.PhotodiodeSet
     :inherited-members:
 
-.. autoclass:: PyMieSim.experiment.detector.CoherentMode
+.. autoclass:: PyMieSim.experiment.detector.CoherentModeSet
     :inherited-members:

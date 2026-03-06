@@ -488,6 +488,173 @@
                   
   <section id="scatterers">
 <span id="experiment-scatterer"></span><h1>Scatterers<a class="headerlink" href="#scatterers" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SphereSet</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScattererSet</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'property',</span> <span class="pre">'medium_property']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.attributes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.available_measure_list">
+<span class="sig-name descname"><span class="pre">available_measure_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Qsca',</span> <span class="pre">'Qext',</span> <span class="pre">'Qabs',</span> <span class="pre">'Qratio',</span> <span class="pre">'Qforward',</span> <span class="pre">'Qback',</span> <span class="pre">'Qpr',</span> <span class="pre">'Csca',</span> <span class="pre">'Cext',</span> <span class="pre">'Cabs',</span> <span class="pre">'Cratio',</span> <span class="pre">'Cforward',</span> <span class="pre">'Cback',</span> <span class="pre">'Cpr',</span> <span class="pre">'a1',</span> <span class="pre">'a2',</span> <span class="pre">'a3',</span> <span class="pre">'b1',</span> <span class="pre">'b2',</span> <span class="pre">'b3',</span> <span class="pre">'g',</span> <span class="pre">'coupling']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.available_measure_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.build_sequential">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.scatterer.SphereSet" title="PyMieSim.binary.interface_experiment.SphereSet"><span class="pre">PyMieSim.binary.interface_experiment.SphereSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Construct a sequential SphereSet by broadcasting scalar or single element inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the size of the diameter vector after conversion.</p></li>
+<li><p><strong>diameter</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Diameter(s) of the spheres. Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instance with is_sequential = True.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.experiment.scatterer.SphereSet" title="PyMieSim.experiment.scatterer.SphereSet">SphereSet</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.diameter">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diameter</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.diameter" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.get_mapping">
+<span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.scatterer.SphereSet" title="PyMieSim.binary.interface_experiment.SphereSet"><span class="pre">PyMieSim.binary.interface_experiment.SphereSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.get_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Generates a mapping of scatterer attributes to their corresponding values for the SphereSet instance.
+The mapping includes keys such as ‘scatterer:diameter’, ‘scatterer:refractive_index’, and ‘scatterer:medium_refractive_index’.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.is_sequential">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_sequential</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.is_sequential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.medium_refractive_index">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">medium_refractive_index</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.medium_refractive_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.SphereSet.refractive_index">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">refractive_index</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.SphereSet.refractive_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinderSet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InfiniteCylinderSet</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScattererSet</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinderSet.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['diameter',</span> <span class="pre">'property',</span> <span class="pre">'medium_property']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.attributes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinderSet.available_measure_list">
+<span class="sig-name descname"><span class="pre">available_measure_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Qsca',</span> <span class="pre">'Qext',</span> <span class="pre">'Qabs',</span> <span class="pre">'Csca',</span> <span class="pre">'Cext',</span> <span class="pre">'Cabs',</span> <span class="pre">'a11',</span> <span class="pre">'a21',</span> <span class="pre">'a12',</span> <span class="pre">'a22',</span> <span class="pre">'a13',</span> <span class="pre">'a23',</span> <span class="pre">'b11',</span> <span class="pre">'b21',</span> <span class="pre">'b12',</span> <span class="pre">'b22',</span> <span class="pre">'b13',</span> <span class="pre">'b23',</span> <span class="pre">'coupling']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.available_measure_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinderSet.build_sequential">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet" title="PyMieSim.binary.interface_experiment.InfiniteCylinderSet"><span class="pre">PyMieSim.binary.interface_experiment.InfiniteCylinderSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Construct a sequential InfiniteCylinderSet by broadcasting scalar or single element inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the size of the diameter vector after conversion.</p></li>
+<li><p><strong>diameter</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Diameter(s) of the cylinders. Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the cylindrical scatterers themselves.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instance with is_sequential = True.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet" title="PyMieSim.experiment.scatterer.InfiniteCylinderSet">InfiniteCylinderSet</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinderSet.get_mapping">
+<span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet" title="PyMieSim.binary.interface_experiment.InfiniteCylinderSet"><span class="pre">PyMieSim.binary.interface_experiment.InfiniteCylinderSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.get_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Generates a mapping of scatterer attributes to their corresponding values for the InfiniteCylinderSet instance.
+The mapping includes keys such as ‘scatterer:diameter’, ‘scatterer:refractive_index’, and ‘scatterer:medium_refractive_index’.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.InfiniteCylinderSet.is_sequential">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_sequential</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.is_sequential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShellSet">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShellSet</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShellSet" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScattererSet</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShellSet.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['core_diameter',</span> <span class="pre">'shell_thickness',</span> <span class="pre">'core_property',</span> <span class="pre">'shell_property',</span> <span class="pre">'medium_property']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShellSet.attributes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShellSet.available_measure_list">
+<span class="sig-name descname"><span class="pre">available_measure_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Qsca',</span> <span class="pre">'Qext',</span> <span class="pre">'Qabs',</span> <span class="pre">'Qratio',</span> <span class="pre">'Qforward',</span> <span class="pre">'Qback',</span> <span class="pre">'Qpr',</span> <span class="pre">'Csca',</span> <span class="pre">'Cext',</span> <span class="pre">'Cabs',</span> <span class="pre">'Cratio',</span> <span class="pre">'Cforward',</span> <span class="pre">'Cback',</span> <span class="pre">'Cpr',</span> <span class="pre">'a1',</span> <span class="pre">'a2',</span> <span class="pre">'a3',</span> <span class="pre">'b1',</span> <span class="pre">'b2',</span> <span class="pre">'b3',</span> <span class="pre">'g',</span> <span class="pre">'coupling']</span></em><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShellSet.available_measure_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShellSet.build_sequential">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.scatterer.CoreShellSet" title="PyMieSim.binary.interface_experiment.CoreShellSet"><span class="pre">PyMieSim.binary.interface_experiment.CoreShellSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShellSet.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Construct a sequential CoreShellSet by broadcasting scalar or single element inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the size of the core_diameter vector after conversion.</p></li>
+<li><p><strong>core_diameter</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Diameter(s) of the core. Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>shell_thickness</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Thickness(es) of the shell. Scalars or length 1 arrays broadcast to total_size.</p></li>
+<li><p><strong>core_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the core.</p></li>
+<li><p><strong>shell_refractive_index</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the shell.</p></li>
+<li><p><strong>medium_refractive_index</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instance with is_sequential = True.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.experiment.scatterer.CoreShellSet" title="PyMieSim.experiment.scatterer.CoreShellSet">CoreShellSet</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShellSet.get_mapping">
+<span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.scatterer.CoreShellSet" title="PyMieSim.binary.interface_experiment.CoreShellSet"><span class="pre">PyMieSim.binary.interface_experiment.CoreShellSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShellSet.get_mapping" title="Link to this definition">#</a></dt>
+<dd><p>Generates a mapping of scatterer attributes to their corresponding values for the CoreShellSet instance.
+The mapping includes keys such as ‘scatterer:core_diameter’, ‘scatterer:shell_thickness’, ‘scatterer:core_refractive_index’, ‘scatterer:shell_refractive_index’, and ‘scatterer:medium_refractive_index’.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.experiment.scatterer.CoreShellSet.is_sequential">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_sequential</span></span><a class="headerlink" href="#PyMieSim.experiment.scatterer.CoreShellSet.is_sequential" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 
@@ -504,6 +671,44 @@
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet"><code class="docutils literal notranslate"><span class="pre">SphereSet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.attributes"><code class="docutils literal notranslate"><span class="pre">SphereSet.attributes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.available_measure_list"><code class="docutils literal notranslate"><span class="pre">SphereSet.available_measure_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.build_sequential"><code class="docutils literal notranslate"><span class="pre">SphereSet.build_sequential()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.diameter"><code class="docutils literal notranslate"><span class="pre">SphereSet.diameter</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.get_mapping"><code class="docutils literal notranslate"><span class="pre">SphereSet.get_mapping()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.is_sequential"><code class="docutils literal notranslate"><span class="pre">SphereSet.is_sequential</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">SphereSet.medium_refractive_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.SphereSet.refractive_index"><code class="docutils literal notranslate"><span class="pre">SphereSet.refractive_index</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinderSet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.attributes"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinderSet.attributes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.available_measure_list"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinderSet.available_measure_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.build_sequential"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinderSet.build_sequential()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.get_mapping"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinderSet.get_mapping()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.InfiniteCylinderSet.is_sequential"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinderSet.is_sequential</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShellSet"><code class="docutils literal notranslate"><span class="pre">CoreShellSet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShellSet.attributes"><code class="docutils literal notranslate"><span class="pre">CoreShellSet.attributes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShellSet.available_measure_list"><code class="docutils literal notranslate"><span class="pre">CoreShellSet.available_measure_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShellSet.build_sequential"><code class="docutils literal notranslate"><span class="pre">CoreShellSet.build_sequential()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShellSet.get_mapping"><code class="docutils literal notranslate"><span class="pre">CoreShellSet.get_mapping()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.experiment.scatterer.CoreShellSet.is_sequential"><code class="docutils literal notranslate"><span class="pre">CoreShellSet.is_sequential</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
