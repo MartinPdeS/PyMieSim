@@ -6,15 +6,15 @@ import pytest
 from PyMieSim.units import ureg
 from PyOptik import Material
 
-from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PlaneWave, PolarizationSet
+from PyMieSim.experiment.detector import CoherentModeSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet, PolarizationSet
 
 
 
 def test_gaussian_rejects_invalid_wavelength_type():
     with pytest.raises(AttributeError):
-        Gaussian(
+        GaussianSet(
             wavelength=100,  # must carry units
             polarization=PolarizationSet(angles=0 * ureg.degree),
             optical_power=1e-3 * ureg.watt,
@@ -24,7 +24,7 @@ def test_gaussian_rejects_invalid_wavelength_type():
 
 def test_gaussian_rejects_invalid_optical_power_units():
     with pytest.raises(AttributeError):
-        Gaussian(
+        GaussianSet(
             wavelength=100 * ureg.nanometer,
             polarization=PolarizationSet(angles=0 * ureg.degree),
             optical_power=1e-3,  # must carry watt
@@ -34,7 +34,7 @@ def test_gaussian_rejects_invalid_optical_power_units():
 
 def test_gaussian_rejects_invalid_NA_units():
     with pytest.raises(AttributeError):
-        Gaussian(
+        GaussianSet(
             wavelength=100 * ureg.nanometer,
             polarization=PolarizationSet(angles=0 * ureg.degree),
             optical_power=1e-3 * ureg.watt,
@@ -44,7 +44,7 @@ def test_gaussian_rejects_invalid_NA_units():
 
 def test_gaussian_rejects_invalid_polarization_type():
     with pytest.raises(TypeError):
-        Gaussian(
+        GaussianSet(
             wavelength=100 * ureg.nanometer,
             polarization=0,  # must carry degree
             optical_power=1e-3 * ureg.watt,
@@ -53,7 +53,7 @@ def test_gaussian_rejects_invalid_polarization_type():
 
 
 def _valid_plane_wave_source():
-    return PlaneWave(
+    return PlaneWaveSet(
         wavelength=1e3 * ureg.nanometer,
         polarization=PolarizationSet(angles=0 * ureg.degree),
         amplitude=1 * ureg.volt / ureg.meter,
@@ -63,7 +63,7 @@ def _valid_plane_wave_source():
 def test_sphere_rejects_invalid_diameter_type():
     source = _valid_plane_wave_source()
     with pytest.raises(AttributeError):
-        Sphere(
+        SphereSet(
             diameter=100,  # must carry length units
             source=source,
             refractive_index=1.5 * ureg.RIU,
@@ -74,7 +74,7 @@ def test_sphere_rejects_invalid_diameter_type():
 def test_sphere_rejects_invalid_refractive_index_type():
     source = _valid_plane_wave_source()
     with pytest.raises(AttributeError):
-        Sphere(
+        SphereSet(
             diameter=100 * ureg.nanometer,
             source=source,
             refractive_index=1.5,  # must carry RIU
@@ -85,7 +85,7 @@ def test_sphere_rejects_invalid_refractive_index_type():
 def test_sphere_rejects_invalid_medium_refractive_index_type():
     source = _valid_plane_wave_source()
     with pytest.raises(AttributeError):
-        Sphere(
+        SphereSet(
             diameter=100 * ureg.nanometer,
             source=source,
             refractive_index=1.5 * ureg.RIU,
@@ -95,7 +95,7 @@ def test_sphere_rejects_invalid_medium_refractive_index_type():
 
 def test_coherent_mode_rejects_invalid_mode_string():
     with pytest.raises(Exception):
-        CoherentMode(
+        CoherentModeSet(
             mode_number="invalid",  # should be like "LP01"
             rotation=0 * ureg.degree,
             numerical_aperture=0.2 * ureg.AU,
@@ -108,7 +108,7 @@ def test_coherent_mode_rejects_invalid_mode_string():
 
 def test_coherent_mode_rejects_rotation_without_units():
     with pytest.raises(AttributeError):
-        CoherentMode(
+        CoherentModeSet(
             mode_number="LP01",
             rotation=0,  # must carry degree
             numerical_aperture=0.2 * ureg.AU,
@@ -121,7 +121,7 @@ def test_coherent_mode_rejects_rotation_without_units():
 
 def test_coherent_mode_rejects_NA_without_units():
     with pytest.raises(AttributeError):
-        CoherentMode(
+        CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
             numerical_aperture=0.2,  # must carry AU
@@ -134,7 +134,7 @@ def test_coherent_mode_rejects_NA_without_units():
 
 def test_coherent_mode_rejects_polarization_filter_wrong_type():
     with pytest.raises(AttributeError):
-        CoherentMode(
+        CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
             numerical_aperture=0.2 * ureg.AU,
@@ -147,7 +147,7 @@ def test_coherent_mode_rejects_polarization_filter_wrong_type():
 
 def test_coherent_mode_rejects_gamma_offset_without_units():
     with pytest.raises(AttributeError):
-        CoherentMode(
+        CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
             numerical_aperture=0.2 * ureg.AU,
@@ -160,7 +160,7 @@ def test_coherent_mode_rejects_gamma_offset_without_units():
 
 def test_coherent_mode_rejects_phi_offset_without_units():
     with pytest.raises(AttributeError):
-        CoherentMode(
+        CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
             numerical_aperture=0.2 * ureg.AU,

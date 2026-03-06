@@ -6,9 +6,9 @@ import numpy as np
 from unittest.mock import patch
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import CoherentModeSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 
@@ -24,7 +24,7 @@ def test_valid_experiment(mock_show):
     parameters, then runs the experiment. It is expected that no error is raised.
     """
     polarization_set = PolarizationSet(angles=[0] * TOTAL_SIZE * ureg.degree)
-    source = Gaussian.build_sequential(
+    source = GaussianSet.build_sequential(
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=1e-3 * ureg.watt,
@@ -32,7 +32,7 @@ def test_valid_experiment(mock_show):
         total_size=TOTAL_SIZE,
     )
 
-    scatterer = Sphere.build_sequential(
+    scatterer = SphereSet.build_sequential(
         # source=source,
         diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
         refractive_index=1.4 * ureg.RIU,
@@ -40,7 +40,7 @@ def test_valid_experiment(mock_show):
         total_size=TOTAL_SIZE,
     )
 
-    detector = CoherentMode.build_sequential(
+    detector = CoherentModeSet.build_sequential(
         mode_number="LP01",
         rotation=0 * ureg.degree,
         numerical_aperture=0.2 * ureg.AU,
@@ -54,7 +54,7 @@ def test_valid_experiment(mock_show):
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
     # This call should complete without raising an error.
-    experiment.get_sequential(Sphere.available_measure_list[0])
+    experiment.get_sequential(SphereSet.available_measure_list[0])
 
 
 def test_invalid_medium_refractive_index():
@@ -64,7 +64,7 @@ def test_invalid_medium_refractive_index():
     When medium_refractive_index is defined using Material.water, the configuration should be rejected.
     """
     polarization_set = PolarizationSet(angles=0 * ureg.degree)
-    source = Gaussian.build_sequential(
+    source = GaussianSet.build_sequential(
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=1e-3 * ureg.watt,
@@ -73,7 +73,7 @@ def test_invalid_medium_refractive_index():
     )
 
     with pytest.raises(AttributeError):
-        Sphere.build_sequential(
+        SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             refractive_index=1.4 * ureg.RIU,
             medium_refractive_index=Material.water,  # This should trigger an error
@@ -88,7 +88,7 @@ def test_invalid_refractive_index():
     When refractive_index is defined using Material.water, the configuration should be rejected.
     """
     polarization_set = PolarizationSet(angles=0 * ureg.degree)
-    source = Gaussian.build_sequential(
+    source = GaussianSet.build_sequential(
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=1e-3 * ureg.watt,
@@ -97,7 +97,7 @@ def test_invalid_refractive_index():
     )
 
     with pytest.raises(AttributeError):
-        Sphere.build_sequential(
+        SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             refractive_index=Material.water,  # This should trigger an error
             medium_refractive_index=1.0 * ureg.RIU,
@@ -113,7 +113,7 @@ def test_parameter_broadcasting():
     the resulting arrays all have a size equal to TOTAL_SIZE.
     """
     polarization_set = PolarizationSet(angles=45 * ureg.degree)
-    source = Gaussian.build_sequential(
+    source = GaussianSet.build_sequential(
         wavelength=800 * ureg.nanometer,  # Scalar value
         polarization=polarization_set,
         optical_power=2e-3 * ureg.watt,
@@ -121,7 +121,7 @@ def test_parameter_broadcasting():
         total_size=TOTAL_SIZE,
     )
 
-    scatterer = Sphere.build_sequential(
+    scatterer = SphereSet.build_sequential(
         diameter=500 * ureg.nanometer,  # Scalar value
         refractive_index=1.5 * ureg.RIU,  # Scalar value
         medium_refractive_index=1.2 * ureg.RIU,  # Scalar value
@@ -144,14 +144,14 @@ def test_broadcasted_values():
     """
     value = 700 * ureg.nanometer
     polarization_set = PolarizationSet(angles=0 * ureg.degree)
-    source = Gaussian.build_sequential(
+    source = GaussianSet.build_sequential(
         wavelength=value,
         polarization=polarization_set,
         optical_power=1e-3 * ureg.watt,
         numerical_aperture=0.2 * ureg.AU,
         total_size=TOTAL_SIZE,
     )
-    scatterer = Sphere.build_sequential(
+    scatterer = SphereSet.build_sequential(
         diameter=value,
         refractive_index=1.6 * ureg.RIU,
         medium_refractive_index=1.0 * ureg.RIU,

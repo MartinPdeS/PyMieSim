@@ -5,9 +5,9 @@ import pytest
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
-from PyMieSim.experiment.detector import Photodiode
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector import PhotodiodeSet
 from PyMieSim.experiment import Setup
 
 SIZE = 10
@@ -34,14 +34,14 @@ ROTATION = 0 * ureg.degree
 
 
 def test_sequential_vs_standard_no_detector():
-    source_standard = Gaussian(
+    source_standard = GaussianSet(
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=0 * ureg.degree),
         optical_power=OPTICAL_POWER,
         numerical_aperture=NA,
     )
 
-    scatterer_standard = Sphere(
+    scatterer_standard = SphereSet(
         diameter=DIAMETER,
         source=source_standard,
         refractive_index=PROPERTY,
@@ -53,18 +53,18 @@ def test_sequential_vs_standard_no_detector():
         source=source_standard
     )
 
-    data_standard = setup_standard.get("Qsca", add_units=False).values.squeeze()
+    data_standard = setup_standard.get("Qsca", as_numpy=True).squeeze()
 
     assert setup_standard is not None, "Error while running the standard get function."
 
-    source_sequential = Gaussian.build_sequential(
+    source_sequential = GaussianSet.build_sequential(
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
         numerical_aperture=ONES * NA,
     )
 
-    scatterer_sequential = Sphere.build_sequential(
+    scatterer_sequential = SphereSet.build_sequential(
         total_size=SIZE,
         diameter=ONES * DIAMETER,
         refractive_index=ONES * PROPERTY,
@@ -90,21 +90,21 @@ def test_sequential_vs_standard_no_detector():
 
 
 def test_sequential_vs_standard_detector():
-    source_standard = Gaussian(
+    source_standard = GaussianSet(
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=POLARIZATION * ureg.degree),
         optical_power=OPTICAL_POWER,
         numerical_aperture=NA,
     )
 
-    scatterer_standard = Sphere(
+    scatterer_standard = SphereSet(
         diameter=DIAMETER,
         source=source_standard,
         refractive_index=PROPERTY,
         medium_refractive_index=MEDIUM_PROPERTY,
     )
 
-    detector_standard = Photodiode(
+    detector_standard = PhotodiodeSet(
         phi_offset=PHI_OFFSET,
         gamma_offset=GAMMA_OFFSET,
         numerical_aperture=NA,
@@ -119,26 +119,26 @@ def test_sequential_vs_standard_detector():
         detector=detector_standard
     )
 
-    data_standard = setup_standard.get("coupling", add_units=False).values.squeeze()
+    data_standard = setup_standard.get("coupling", as_numpy=True).squeeze()
 
     assert data_standard is not None, "Error while running the standard get function."
 
 
-    source_sequential = Gaussian.build_sequential(
+    source_sequential = GaussianSet.build_sequential(
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=POLARIZATION * ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
         numerical_aperture=ONES * NA,
     )
 
-    scatterer_sequential = Sphere.build_sequential(
+    scatterer_sequential = SphereSet.build_sequential(
         total_size=SIZE,
         diameter=ONES * DIAMETER,
         refractive_index=ONES * PROPERTY,
         medium_refractive_index=ONES * MEDIUM_PROPERTY,
     )
 
-    detector_sequential = Photodiode.build_sequential(
+    detector_sequential = PhotodiodeSet.build_sequential(
         phi_offset=ONES * PHI_OFFSET,
         gamma_offset=ONES * GAMMA_OFFSET,
         numerical_aperture=ONES * NA,
@@ -154,7 +154,7 @@ def test_sequential_vs_standard_detector():
         detector=detector_sequential,
     )
 
-    data_sequential = setup_sequential.get_sequential("coupling").squeeze()
+    data_sequential = setup_sequential.get_sequential("coupling")
 
     assert data_sequential is not None, "Error while running the standard get function."
 

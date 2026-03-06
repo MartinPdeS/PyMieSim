@@ -6,15 +6,15 @@ import numpy as np
 import pandas as pd
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
 
 @pytest.fixture
 def gaussian_source():
-    return Gaussian(
+    return GaussianSet(
         wavelength=1000 * ureg.nanometer,  # Wavelength in meters
         polarization=PolarizationSet(angles=0 * ureg.degree),  # Polarization angle
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
@@ -41,7 +41,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     medium_indexes = [1.0] * ureg.RIU
 
     # Get data from PyMieSim
-    scatterer = Sphere(
+    scatterer = SphereSet(
         diameter=diameters,
         refractive_index=index,
         medium_refractive_index=medium_indexes,
@@ -51,10 +51,10 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     experiment = Setup(scatterer=scatterer, source=gaussian_source)
 
     # Retrieve the specified measurement from the experiment
-    pymiesim_data = experiment.get(measure, drop_unique_level=False)
+    pymiesim_data = experiment.get(measure)
 
     discrepency = np.allclose(
-        pymiesim_data[measure].squeeze().values.quantity,
+        pymiesim_data.get(measure).magnitude,
         pymiescatt_dataframe[measure].squeeze().values,
         atol=1e-3,
         rtol=1e-2,

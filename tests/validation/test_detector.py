@@ -6,8 +6,7 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim import single, experiment
-import PyMieSim
-PyMieSim.debug_mode = False
+
 
 @pytest.fixture
 def source_single():
@@ -33,7 +32,7 @@ def source_experiment():
     Returns:
         experiment.source.Gaussian: Gaussian light source for experiment-based scattering.
     """
-    return experiment.source.Gaussian(
+    return experiment.source.GaussianSet(
         wavelength=1000 * ureg.nanometer,
         polarization=experiment.source.PolarizationSet(angles=0 * ureg.degree),
         optical_power=1 * ureg.watt,
@@ -66,16 +65,16 @@ def scatterer_experiment(source_experiment):
     Fixture to create a spherical scatterer for experiment-based scattering.
 
     Parameters:
-        source_experiment (experiment.source.Gaussian): Light source for the experiment.
+        source_experiment (experiment.source.GaussianSet): Light source for the experiment.
 
     Returns:
-        experiment.scatterer.Sphere: Scatterer object for experiment-based scattering.
+        experiment.scatterer.SphereSet: Scatterer object for experiment-based scattering.
     """
-    return experiment.scatterer.Sphere(
-        diameter=1000 * ureg.nanometer,
-        refractive_index=(1.5 + 0.5j) * ureg.RIU,
+    return experiment.scatterer.SphereSet(
+        diameter=[1000] * ureg.nanometer,
+        refractive_index=[(1.5 + 0.5j)] * ureg.RIU,
         source=source_experiment,
-        medium_refractive_index=1 * ureg.RIU,
+        medium_refractive_index=[1] * ureg.RIU,
     )
 
 
@@ -163,7 +162,7 @@ def test_detector_experiment_polarization_filter(
         scatterer_experiment (experiment.scatterer.Sphere): Spherical scatterer.
     """
     # Create a photodiode detector with two polarization filters (0° and 180°)
-    detector = experiment.detector.Photodiode(
+    detector = experiment.detector.PhotodiodeSet(
         numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,

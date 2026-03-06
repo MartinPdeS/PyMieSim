@@ -8,8 +8,8 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
-from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 
@@ -29,24 +29,21 @@ def test_validation():
 
     volumes = np.pi * (diameters / 2) ** 2
 
-    source = Gaussian(
+    source = GaussianSet(
         wavelength=wavelength,
         polarization=polarization_values,
         optical_power=optical_power,
         numerical_aperture=NA,
     )
 
-    scatterer = InfiniteCylinder(
+    scatterer = InfiniteCylinderSet(
         diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
     )
 
     experiment = Setup(scatterer=scatterer, source=source)
 
-    csca_data = (
-        experiment.get("Csca", add_units=False)
-        .squeeze()
-        .values.reshape([-1, diameters.size])
-    )
+    csca_data =  experiment.get("Csca", as_numpy=True)
+
     normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100
 
     assert np.allclose(normalized_csca[0], theoretical_data[0], atol=0, rtol=1e-3), (

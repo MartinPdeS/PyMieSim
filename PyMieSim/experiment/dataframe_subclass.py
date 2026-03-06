@@ -121,10 +121,10 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             values = df[column].to_numpy()
 
-            if values.size == 0:
+            try:
+                max_val = np.nanmax(np.abs(values))
+            except:
                 continue
-
-            max_val = np.nanmax(np.abs(values))
 
             if max_val == 0:
                 continue
@@ -348,6 +348,9 @@ class PyMieSimDataFrame(pd.DataFrame):
         self._format_legend(ax, legend_resolution)
 
         return figure
+
+    def get(self, key: str):
+        return self[key].to_numpy() * self._units().get(key, 1)
 
     # ---------------------------------------------------------
     # dataframe utilities

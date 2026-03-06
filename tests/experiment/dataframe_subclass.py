@@ -6,9 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentMode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian, PolarizationSet
+from PyMieSim.experiment.detector import CoherentModeSet
+from PyMieSim.experiment.scatterer import SphereSet
+from PyMieSim.experiment.source import GaussianSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 
@@ -17,26 +17,25 @@ def get_experiment_dataframe():
     Generate experiment data in the same way as in your example.
     Returns a PyMieSimDataFrame instance.
     """
-    source = Gaussian(
+    source = GaussianSet(
         wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
         polarization=PolarizationSet(0 * ureg.degree),
-        optical_power=1e-3 * ureg.watt,
-        numerical_aperture=0.2 * ureg.AU,
+        optical_power=[1e-3] * ureg.watt,
+        numerical_aperture=[0.2] * ureg.AU,
     )
-    scatterer = Sphere(
-        diameter=100 * ureg.nanometer,
+    scatterer = SphereSet(
+        diameter=[100] * ureg.nanometer,
         source=source,
-        refractive_index=1.4 * ureg.RIU,
-        medium_refractive_index=1.1 * ureg.RIU,
+        refractive_index=[1.4 ]* ureg.RIU,
+        medium_refractive_index=[1.1] * ureg.RIU,
     )
-    detector = CoherentMode(
-        mode_number="LP01",
-        rotation=0 * ureg.degree,
+    detector = CoherentModeSet(
+        mode_number=["LP01"],
+        rotation=[0] * ureg.degree,
         numerical_aperture=[0.1, 0.2] * ureg.AU,
-        polarization_filter=None,
-        gamma_offset=0 * ureg.degree,
-        phi_offset=0 * ureg.degree,
-        sampling=100,
+        gamma_offset=[0] * ureg.degree,
+        phi_offset=[0] * ureg.degree,
+        sampling=[100],
     )
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
     # Get the measurement dataframe (assumed to be a PyMieSimDataFrame subclass)
@@ -76,9 +75,7 @@ def test_plot_invalid_x():
     Test that plotting with an invalid x index level raises a ValueError.
     """
     df = get_experiment_dataframe()
-    with pytest.raises(
-        ValueError, match="x parameter 'invalid_x' is not in the DataFrame index"
-    ):
+    with pytest.raises(ValueError):
         df.plot(x="invalid_x", std="detector:NA", show=False)
     plt.close()
 

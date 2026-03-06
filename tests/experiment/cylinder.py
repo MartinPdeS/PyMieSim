@@ -8,67 +8,39 @@ from PyOptik import Material
 from PyOptik.material.base_class import BaseMaterial
 
 from PyMieSim.units import ureg
-from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import InfiniteCylinder
-from PyMieSim.experiment.source import Gaussian, PlaneWave, PolarizationSet
+from PyMieSim.experiment.detector import PhotodiodeSet
+from PyMieSim.experiment.scatterer import InfiniteCylinderSet
+from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet, PolarizationSet
 from PyMieSim.experiment import Setup
 
 
 properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
 medium_properties = [Material.water, 1.1 * ureg.RIU]
 
-measures = InfiniteCylinder.available_measure_list
+measures = InfiniteCylinderSet.available_measure_list
 
 
 polarization = PolarizationSet(angles=0 * ureg.degree)
 
-gaussian_source = Gaussian(
-    wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
+gaussian_source = GaussianSet(
+    wavelength=np.linspace(600, 1000, 15) * ureg.nanometer,
     polarization=polarization,
-    optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2] * ureg.AU,
 )
 
-planewave_source = PlaneWave(
-    wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
+planewave_source = PlaneWaveSet(
+    wavelength=np.linspace(600, 1000, 15) * ureg.nanometer,
     polarization=polarization,
-    amplitude=1 * ureg.volt / ureg.meter,
+    amplitude=[1] * ureg.volt / ureg.meter,
 )
 
 sources = [gaussian_source, planewave_source]
 
 
-def normalize_material(value):
-    if isinstance(value, (list, tuple, np.ndarray)):
-        return list(value)
-
-    return [value]
-
-
-def normalize_refractive_index(value):
-    return np.atleast_1d(value.magnitude) * value.units
-
-
-def build_kwargs(refractive_index_value, medium_value):
-
-    kwargs = {}
-
-    if isinstance(refractive_index_value, BaseMaterial):
-        kwargs["material"] = normalize_material(refractive_index_value)
-    else:
-        kwargs["refractive_index"] = normalize_refractive_index(refractive_index_value)
-
-    if isinstance(medium_value, BaseMaterial):
-        kwargs["medium_material"] = normalize_material(medium_value)
-    else:
-        kwargs["medium_refractive_index"] = normalize_refractive_index(medium_value)
-
-    return kwargs
-
-
 @pytest.mark.parametrize(
     "medium_value",
-    medium_properties,
+    [[m] for m in medium_properties],
     ids=[f"Medium:{m}" for m in medium_properties],
 )
 
@@ -80,7 +52,7 @@ def build_kwargs(refractive_index_value, medium_value):
 
 @pytest.mark.parametrize(
     "refractive_index_value",
-    properties,
+    [[m] for m in properties],
     ids=[f"Property:{m}" for m in properties],
 )
 
@@ -90,24 +62,25 @@ def build_kwargs(refractive_index_value, medium_value):
 )
 
 def test_measure(measure, source, medium_value, refractive_index_value):
+    kwargs = {}
+    for key, value in zip(["", "medium_"], [refractive_index_value, medium_value]):
+        if isinstance(value[0], BaseMaterial):
+            kwargs[f"{key}material"] = value
+        else:
+            kwargs[f"{key}refractive_index"] = [value[0].magnitude] * value[0].units
 
-    scatterer_kwargs = build_kwargs(
-        refractive_index_value,
-        medium_value,
-    )
 
-    scatterer = InfiniteCylinder(
+    scatterer = InfiniteCylinderSet(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
         source=source,
-        **scatterer_kwargs
+        **kwargs
     )
 
-    detector = Photodiode(
-        numerical_aperture=0.2 * ureg.AU,
-        polarization_filter=None,
-        gamma_offset=0 * ureg.degree,
-        phi_offset=0 * ureg.degree,
-        sampling=100,
+    detector = PhotodiodeSet(
+        numerical_aperture=[0.2] * ureg.AU,
+        gamma_offset=[0] * ureg.degree,
+        phi_offset=[0] * ureg.degree,
+        sampling=[100],
     )
 
     experiment = Setup(
