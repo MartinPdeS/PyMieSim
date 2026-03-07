@@ -1,10 +1,12 @@
 #include <pybind11/pybind11.h>
 #include "coordinates.h"
-#include "../utils/numpy_interface.h"
+#include <utils/numpy_interface.h>
 
 
-void register_coordinates(pybind11::module_& module) {
-    pybind11::class_<Cartesian>(module, "CARTESIANCOORDINATE")
+
+PYBIND11_MODULE(coordinates, module)
+{
+    pybind11::class_<Cartesian>(module, "Cartesian")
         .def_property_readonly("x",
             [](const Cartesian& self) {
                 return pybind11::array_t<double>(self.x.size(), self.x.data(), pybind11::cast(self));
@@ -35,7 +37,7 @@ void register_coordinates(pybind11::module_& module) {
     ;
 
     // ------------------ Bindings for SphericalCoordinate ------------------
-    pybind11::class_<Spherical>(module, "SPHERICALCOORDINATE")
+    pybind11::class_<Spherical>(module, "Spherical")
         .def_property_readonly("r",
             [](const Spherical& self) {
                 std::vector<size_t> shape = {self.r.size()};
@@ -74,7 +76,7 @@ void register_coordinates(pybind11::module_& module) {
         )
     ;
 
-    pybind11::class_<VectorField>(module, "VECTORFIELD")
+    pybind11::class_<VectorField>(module, "VectorField")
         .def_property_readonly("data",
              [](const VectorField& self) {
                 std::vector<size_t> shape = {self.sampling, 3};

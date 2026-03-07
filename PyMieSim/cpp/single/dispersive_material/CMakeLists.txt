@@ -1,8 +1,9 @@
-# PyMieSim/cpp/single/optical_interface/CMakeLists.txt
-set(NAME "optical_interface")
+# PyMieSim/cpp/single/material/CMakeLists.txt
+set(NAME "material")
 
-add_library("${NAME}" STATIC "${NAME}.cpp")
+add_library("${NAME}" STATIC "material.cpp" "medium.h")
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+target_link_libraries("${NAME}" PUBLIC pint)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")

@@ -13,7 +13,7 @@ from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.single import SystemPlotter
 
 detector = IntegratingSphere(
-    sampling=500 * ureg.AU,  # Number of sampling points
+    sampling=500,
 )
 
 plotter = SystemPlotter()

@@ -1,5 +1,5 @@
-# PyMieSim/cpp/single/optical_interface/CMakeLists.txt
-set(NAME "optical_interface")
+# PyMieSim/cpp/single/full_mesh/CMakeLists.txt
+set(NAME "full_mesh")
 
 add_library("${NAME}" STATIC "${NAME}.cpp")
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")

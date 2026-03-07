@@ -5,7 +5,7 @@
 
 namespace py = pybind11;
 
-void register_optical_interface(py::module_& module) {
-
+PYBIND11_MODULE(optical_interface, module)
+{
 
 }

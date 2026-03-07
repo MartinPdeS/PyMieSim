@@ -2,8 +2,8 @@
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
 #include <utils/constants.h>
-#include <dispersive_material/material.h>
-#include <dispersive_material/medium.h>
+#include <single/dispersive_material/material.h>
+#include <single/dispersive_material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -13,7 +13,7 @@ class Sphere: public BaseScatterer
     public:
         double diameter;
         std::shared_ptr<BaseMaterial> material;
-        inline static std::vector<std::string> property_names = {
+        inline static const std::vector<std::string> property_names = {
             "size_parameter",
             "radius",
             "volume",
@@ -37,14 +37,105 @@ class Sphere: public BaseScatterer
             "Cpr",
         };
 
-
+        /**
+         * @brief Constructs a Sphere scatterer with the given parameters.
+         * @param diameter The diameter of the sphere.
+         * @param material A shared pointer to the material of the sphere.
+         * @param medium A shared pointer to the surrounding medium.
+         * @param source A shared pointer to the source of the incident light.
+         * @param max_order The maximum order of the coefficients to compute.
+         */
         Sphere(
             const double diameter,
-            const std::shared_ptr<BaseMaterial> material,
-            const std::shared_ptr<BaseMedium> medium,
-            const std::shared_ptr<BaseSource> source,
-            size_t max_order = 0
-        );
+            std::shared_ptr<BaseMaterial> material,
+            std::shared_ptr<BaseMedium> medium,
+            std::shared_ptr<BaseSource> source,
+            const size_t max_order = 0
+        )
+        : BaseScatterer(
+            max_order,
+            std::move(source),
+            std::move(medium)
+        ),
+        diameter(diameter),
+        material(std::move(material))
+        {
+            this->init(max_order);
+        }
+
+        /**
+         * @brief Constructs a Sphere scatterer with the given parameters, using a constant medium.
+         * @param diameter The diameter of the sphere.
+         * @param material A shared pointer to the material of the sphere.
+         * @param medium The refractive index of the surrounding medium.
+         * @param source A shared pointer to the source of the incident light.
+         * @param max_order The maximum order of the coefficients to compute.
+         */
+        Sphere(
+            const double diameter,
+            std::shared_ptr<BaseMaterial> material,
+            const double medium,
+            std::shared_ptr<BaseSource> source,
+            const size_t max_order = 0
+        )
+        : Sphere(
+            diameter,
+            std::move(material),
+            std::make_shared<ConstantMedium>(medium),
+            std::move(source),
+            max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a Sphere scatterer with the given parameters, using a constant material.
+         * @param diameter The diameter of the sphere.
+         * @param material The refractive index of the sphere material.
+         * @param medium A shared pointer to the surrounding medium.
+         * @param source A shared pointer to the source of the incident light.
+         * @param max_order The maximum order of the coefficients to compute.
+         */
+        Sphere(
+            const double diameter,
+            const complex128 material,
+            std::shared_ptr<BaseMedium> medium,
+            std::shared_ptr<BaseSource> source,
+            const size_t max_order = 0
+        )
+        : Sphere(
+            diameter,
+            std::make_shared<ConstantMaterial>(material),
+            std::move(medium),
+            std::move(source),
+            max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a Sphere scatterer with the given parameters, using constant material and medium.
+         * @param diameter The diameter of the sphere.
+         * @param material The refractive index of the sphere material.
+         * @param medium The refractive index of the surrounding medium.
+         * @param source A shared pointer to the source of the incident light.
+         * @param max_order The maximum order of the coefficients to compute.
+         */
+        Sphere(
+            const double diameter,
+            const complex128 material,
+            const double medium,
+            std::shared_ptr<BaseSource> source,
+            const size_t max_order = 0
+        )
+        : Sphere(
+            diameter,
+            std::make_shared<ConstantMaterial>(material),
+            std::make_shared<ConstantMedium>(medium),
+            std::move(source),
+            max_order
+        )
+        {}
+
+        void init(size_t _max_order = 0);
 
         /**
          * @brief Computes the size parameter for the sphere.

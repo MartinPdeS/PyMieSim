@@ -2,7 +2,8 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single.representations import Footprint
 
@@ -15,26 +16,26 @@ def test_lp_modes(mode_number):
     """Test different LP, LG, and HG modes with varying rotations."""
 
     source = Gaussian(
-        wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
-        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization value
-        optical_power=1 * ureg.watt,  # Optical power in watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
+        wavelength=750 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
     scatterer = Sphere(
-        diameter=100 * ureg.nanometer,  # Diameter in meters
-        source=source,  # Source defined in the setup_source fixture
-        material=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium=1.0 * ureg.RIU,  # Refractive index of the medium
+        diameter=100 * ureg.nanometer,
+        source=source,
+        material=1.4 * ureg.RIU,
+        medium=1.0 * ureg.RIU,
     )
 
     detector = CoherentMode(
         mode_number=mode_number,
-        numerical_aperture=0.2 * ureg.AU,  # Numerical aperture for the detector
-        sampling=100,  # Field sampling
-        gamma_offset=0 * ureg.degree,  # Gamma offset
-        phi_offset=0 * ureg.degree,  # Phi offset
-        rotation=0 * ureg.degree,  # Rotation angle
+        numerical_aperture=0.2 * ureg.AU,
+        sampling=100,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        rotation=0 * ureg.degree,
     )
 
     footprint = Footprint(scatterer=scatterer, detector=detector)

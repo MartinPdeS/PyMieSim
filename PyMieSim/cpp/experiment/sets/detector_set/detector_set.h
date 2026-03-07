@@ -31,14 +31,14 @@ class BaseDetectorSet : public BaseSet
 class PhotodiodeSet : public BaseDetectorSet
 {
     public:
-        std::vector<std::string> attributes = {
+        inline static const std::vector<std::string> attributes = {
             "sampling",
             "numerical_aperture",
             "cache_numerical_aperture",
             "phi_offset",
             "gamma_offset",
             "polarization_filter",
-            "medium_refractive_index"
+            "medium"
         };
 
         std::vector<unsigned> sampling;
@@ -47,7 +47,7 @@ class PhotodiodeSet : public BaseDetectorSet
         std::vector<double> phi_offset;
         std::vector<double> gamma_offset;
         std::vector<double> polarization_filter;
-        std::vector<double> medium_refractive_index;
+        std::vector<double> medium;
 
         PhotodiodeSet() = default;
 
@@ -58,7 +58,7 @@ class PhotodiodeSet : public BaseDetectorSet
             const std::vector<double> &phi_offset,
             const std::vector<double> &gamma_offset,
             const std::vector<double> &polarization_filter,
-            const std::vector<double> &medium_refractive_index,
+            const std::vector<double> &medium,
             const bool is_sequential
         );
 
@@ -75,7 +75,7 @@ class PhotodiodeSet : public BaseDetectorSet
 class CoherentModeSet : public BaseDetectorSet
 {
     public:
-        std::vector<std::string> attributes = {
+        inline static const std::vector<std::string> attributes = {
             "mode_numbers",
             "sampling",
             "numerical_aperture",
@@ -84,7 +84,7 @@ class CoherentModeSet : public BaseDetectorSet
             "gamma_offset",
             "polarization_filter",
             "rotation",
-            "medium_refractive_index"
+            "medium"
         };
         std::vector<std::string> mode_numbers;
         std::vector<unsigned> sampling;
@@ -94,7 +94,7 @@ class CoherentModeSet : public BaseDetectorSet
         std::vector<double> gamma_offset;
         std::vector<double> polarization_filter;
         std::vector<double> rotation;
-        std::vector<double> medium_refractive_index;
+        std::vector<double> medium;
         bool coherent;
         bool mean_coupling;
 
@@ -109,7 +109,7 @@ class CoherentModeSet : public BaseDetectorSet
             const std::vector<double> &gamma_offset,
             const std::vector<double> &polarization_filter,
             const std::vector<double> &rotation,
-            const std::vector<double> &medium_refractive_index,
+            const std::vector<double> &medium,
             const bool &mean_coupling,
             const bool is_sequential
         );

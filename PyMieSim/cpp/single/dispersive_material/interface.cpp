@@ -8,7 +8,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(interface_dispersive_material, module) {
+PYBIND11_MODULE(dispersive_material, module) {
     py::object ureg = get_shared_ureg();
 
     py::class_<BaseMaterial, std::shared_ptr<BaseMaterial>>(module, "BaseMaterial")

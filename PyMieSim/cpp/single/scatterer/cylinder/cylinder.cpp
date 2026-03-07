@@ -1,14 +1,9 @@
 #include "./cylinder.h"
 
-// ---------------------- Constructors ---------------------------------------
-InfiniteCylinder::InfiniteCylinder(
-    double _diameter,
-    std::shared_ptr<BaseMaterial> _material,
-    std::shared_ptr<BaseMedium> _medium,
-    std::shared_ptr<BaseSource> _source,
-    size_t _max_order) :
-    BaseScatterer(_max_order, std::move(_source), std::move(_medium)), diameter(_diameter), material(_material)
-{
+
+// ---------------------- Methods ---------------------------------------
+
+void InfiniteCylinder::init(const size_t _max_order) {
     this->material->initialize(this->source->wavelength);
     this->medium->initialize(this->source->wavelength);
     this->compute_cross_section();
@@ -16,8 +11,6 @@ InfiniteCylinder::InfiniteCylinder(
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->compute_an_bn(this->max_order);
 }
-
-// ---------------------- Methods ---------------------------------------
 
 void InfiniteCylinder::compute_size_parameter() {
     this->size_parameter = source->wavenumber_vacuum * this->diameter / 2;

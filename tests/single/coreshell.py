@@ -5,7 +5,8 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import CoreShell
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 
 # Core, shell, and medium parameters

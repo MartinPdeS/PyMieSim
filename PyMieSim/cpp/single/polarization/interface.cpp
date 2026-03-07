@@ -8,7 +8,7 @@
 namespace py = pybind11;
 
 
-void register_polarization(py::module_& module)
+PYBIND11_MODULE(polarization, module)
 {
     py::object ureg = get_shared_ureg();
 

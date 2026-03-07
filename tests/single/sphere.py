@@ -6,7 +6,8 @@ import numpy
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests

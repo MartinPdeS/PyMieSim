@@ -111,14 +111,20 @@ message(STATUS "")
 # set(GLOBAL PYMIESIM_TARGETS "")
 
 # ----------------- collect subdirectories --------------------
-add_subdirectory(PyMieSim/cpp/pint)                         # pint
-add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
-add_subdirectory(PyMieSim/cpp/dispersive_material)          # dispersive_material
-add_subdirectory(PyMieSim/cpp/bessel_subroutine)            # bessel_subroutine
-add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
-add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
-add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
-add_subdirectory(PyMieSim/cpp/single)                       # single             - interface_single
+add_subdirectory(PyMieSim/cpp/pint)                           # pint
+add_subdirectory(PyMieSim/cpp/single/coordinates)             # coordinates
+add_subdirectory(PyMieSim/cpp/single/dispersive_material)     # dispersive_material
+add_subdirectory(PyMieSim/cpp/bessel_subroutine)              # bessel_subroutine
+add_subdirectory(PyMieSim/cpp/single/mode_field)              # cpp_mode_field
+add_subdirectory(PyMieSim/cpp/single/full_mesh)                    # cpp_full_mesh
+add_subdirectory(PyMieSim/cpp/single/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
+
+# add_subdirectory(PyMieSim/cpp/single)
+add_subdirectory(PyMieSim/cpp/single/polarization)
+add_subdirectory(PyMieSim/cpp/single/source)                          # single             - interface_single
+add_subdirectory(PyMieSim/cpp/single/scatterer)
+add_subdirectory(PyMieSim/cpp/single/optical_interface)                    # cpp_fibonacci      - interface_fibonacci
+add_subdirectory(PyMieSim/cpp/single/detector)
 # add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
 # ----------------- collect subdirectories --------------------
 

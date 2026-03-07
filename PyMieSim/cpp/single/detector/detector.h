@@ -6,14 +6,15 @@
 #include <stdexcept>
 #include <string>
 
-#include <fibonacci/fibonacci.h>
+#include <single/fibonacci/fibonacci.h>
 #include <single/source/source.h>
 #include <single/optical_interface/optical_interface.h>
 #include <single/scatterer/base_scatterer/base_scatterer.h>
-#include <mode_field/mode_field.h>
+#include <single/mode_field/mode_field.h>
 #include <utils/math.h>
 #include <utils/constants.h>
-#include <dispersive_material/medium.h>
+#include <single/dispersive_material/medium.h>
+
 
 using complex128 = std::complex<double>;
 
@@ -55,7 +56,7 @@ public:
         const double _phi_offset,
         const double _gamma_offset,
         const double _polarization_filter,
-        const std::shared_ptr<BaseMedium> _medium,
+        std::shared_ptr<BaseMedium> _medium,
         std::shared_ptr<BaseSource> _source,
         const bool _mean_coupling)
     :   sampling(_sampling),
@@ -205,6 +206,31 @@ public:
         this->initialize();
     }
 
+    Photodiode(
+        const size_t _sampling,
+        const double _numerical_aperture,
+        const double _cache_numerical_aperture,
+        const double _phi_offset,
+        const double _gamma_offset,
+        const double _polarization_filter,
+        const double _medium)
+    :   BaseDetector(
+            _sampling,
+            _numerical_aperture,
+            _cache_numerical_aperture,
+            _phi_offset,
+            _gamma_offset,
+            _polarization_filter,
+            std::make_shared<ConstantMedium>(_medium),
+            nullptr,
+            false
+        ),
+        mode_number("NC00")
+    {
+
+        this->initialize();
+    }
+
     double get_coupling(const BaseScatterer& scatterer) const override;
 
     [[nodiscard]] std::vector<complex128> get_structured_scalarfield(const size_t sampling) const override;
@@ -299,7 +325,35 @@ public:
         rotation(_rotation)
     {
         this->initialize();
+    }
 
+    CoherentMode(
+        const std::string &_mode_number,
+        const size_t _sampling,
+        const double _numerical_aperture,
+        const double _cache_numerical_aperture,
+        const double _phi_offset,
+        const double _gamma_offset,
+        const double _polarization_filter,
+        const double _rotation,
+        const bool _mean_coupling,
+        const double _medium
+    )
+    :   BaseDetector(
+            _sampling,
+            _numerical_aperture,
+            _cache_numerical_aperture,
+            _phi_offset,
+            _gamma_offset,
+            _polarization_filter,
+            std::make_shared<ConstantMedium>(_medium),
+            nullptr,
+            _mean_coupling
+        ),
+        mode_number(_mode_number),
+        rotation(_rotation)
+    {
+        this->initialize();
     }
 
     double get_coupling(const BaseScatterer& scatterer) const override;

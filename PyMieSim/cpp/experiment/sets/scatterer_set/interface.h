@@ -2,7 +2,10 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 
 #include <pint/pint.h>
-#include "./scatterer_set.h"
+#include "./base.h"
+#include "./sphere.h"
+#include "./cylinder.h"
+#include "./core_shell.h"
 
 
 namespace py = pybind11;

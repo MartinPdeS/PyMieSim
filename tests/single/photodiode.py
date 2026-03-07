@@ -2,7 +2,8 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single.representations import Footprint
 
@@ -24,8 +25,8 @@ def setup_scatterer(source):
     return Sphere(
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
         source=source,  # Source from source fixture
-        refractive_index=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        material=1.4 * ureg.RIU,  # Refractive index of the scatterer
+        medium=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
     )
 
 
@@ -37,7 +38,7 @@ def photodiode():
         sampling=30,  # Field sampling
         gamma_offset=0 * ureg.degree,  # Gamma offset
         phi_offset=0 * ureg.degree,  # Phi offset
-        medium_refractive_index=1.0 * ureg.RIU
+        medium=1.0 * ureg.RIU
     )
 
 
@@ -58,7 +59,7 @@ def test_fails_initialization():
             block_numerical_aperture=0.3 * ureg.AU,
             gamma_offset=0 * ureg.degree,
             phi_offset=0 * ureg.degree,
-            medium_refractive_index=1.0 * ureg.RIU
+            medium=1.0 * ureg.RIU
         )
 
 

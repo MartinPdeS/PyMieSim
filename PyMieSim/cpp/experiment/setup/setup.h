@@ -4,16 +4,18 @@
 #include <memory>
 #include <cstdarg>    // For va_list, va_start, va_end
 #include <cstdio>     // For printf, vprintf
-#include "single/scatterer/sphere/sphere.h"
-#include "single/scatterer/cylinder/cylinder.h"
-#include "single/scatterer/coreshell/coreshell.h"
-#include "single/source/source.h"
-#include "single/detector/detector.h"
+#include <single/scatterer/sphere/sphere.h>
+#include <single/scatterer/cylinder/cylinder.h>
+#include <single/scatterer/coreshell/coreshell.h>
+#include <single/source/source.h>
+#include <single/detector/detector.h>
 
-#include "experiment/sets/source_set/source_set.h"
-#include "experiment/sets/scatterer_set/scatterer_set.h"
-#include "experiment/sets/detector_set/detector_set.h"
-#include "experiment/sets/properties_set/properties_set.h"
+#include <experiment/sets/source_set/source_set.h>
+#include <experiment/sets/scatterer_set/sphere.h>
+#include <experiment/sets/scatterer_set/cylinder.h>
+#include <experiment/sets/scatterer_set/core_shell.h>
+#include <experiment/sets/detector_set/detector_set.h>
+#include <experiment/sets/properties_set/properties_set.h>
 
 class Setup
 {

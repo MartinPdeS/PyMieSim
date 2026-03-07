@@ -2,8 +2,8 @@
 
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
-#include <dispersive_material/material.h>
-#include <dispersive_material/medium.h>
+#include <single/dispersive_material/material.h>
+#include <single/dispersive_material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -19,7 +19,7 @@ class CoreShell: public BaseScatterer
         double x_core;
         double x_shell;
 
-        inline static std::vector<std::string> property_names = {
+        inline static const std::vector<std::string> property_names = {
             "size_parameter",
             "radius",
             "volume",
@@ -56,14 +56,231 @@ class CoreShell: public BaseScatterer
          * @param compute_c_d Whether to compute the cn and dn coefficients (default is false).
          */
         CoreShell(
-            double core_diameter,
-            double shell_thickness,
-            std::shared_ptr<BaseMaterial> core_material,
-            std::shared_ptr<BaseMaterial> shell_material,
-            std::shared_ptr<BaseMedium> medium_material,
-            std::shared_ptr<BaseSource> source,
-            size_t max_order = 0
-        );
+            double _core_diameter,
+            double _shell_thickness,
+            std::shared_ptr<BaseMaterial> _core_material,
+            std::shared_ptr<BaseMaterial> _shell_material,
+            std::shared_ptr<BaseMedium> _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order)
+        :   BaseScatterer(
+                _max_order,
+                std::move(_source),
+                std::move(_medium)
+            ),
+            core_diameter(_core_diameter),
+            shell_thickness(_shell_thickness),
+            core_material(std::move(_core_material)),
+            shell_material(std::move(_shell_material))
+        {
+            this->init(_max_order);
+        }
+
+        /**
+         * @brief Constructs a CoreShell object with constant core and shell materials.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            std::shared_ptr<BaseMaterial> _core_material,
+            std::shared_ptr<BaseMaterial> _shell_material,
+            double _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            std::move(_core_material),
+            std::move(_shell_material),
+            std::make_shared<ConstantMedium>(_medium),
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a CoreShell object with constant core material and shell material.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            std::shared_ptr<BaseMaterial> _core_material,
+            const complex128 _shell_material,
+            double _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            std::move(_core_material),
+            std::make_shared<ConstantMaterial>(_shell_material),
+            std::make_shared<ConstantMedium>(_medium),
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a CoreShell object with constant core material and shell material.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            const complex128 _core_material,
+            const complex128 _shell_material,
+            double _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            std::make_shared<ConstantMaterial>(_core_material),
+            std::make_shared<ConstantMaterial>(_shell_material),
+            std::make_shared<ConstantMedium>(_medium),
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a CoreShell object with constant core material and shell material.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            const complex128 _core_material,
+            const complex128 _shell_material,
+            std::shared_ptr<BaseMedium> _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            std::make_shared<ConstantMaterial>(_core_material),
+            std::make_shared<ConstantMaterial>(_shell_material),
+            _medium,
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a CoreShell object with constant core material and shell material.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            const complex128 _core_material,
+            std::shared_ptr<BaseMaterial> _shell_material,
+            std::shared_ptr<BaseMedium> _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            std::make_shared<ConstantMaterial>(_core_material),
+            _shell_material,
+            _medium,
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a CoreShell object with constant core material and shell material.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            std::shared_ptr<BaseMaterial> _core_material,
+            const complex128 _shell_material,
+            std::shared_ptr<BaseMedium> _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            _core_material,
+            std::make_shared<ConstantMaterial>(_shell_material),
+            _medium,
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+        /**
+         * @brief Constructs a CoreShell object with constant core material and shell material.
+         * @param _core_diameter The diameter of the core.
+         * @param _shell_thickness The thickness of the shell.
+         * @param _core_material The material of the core.
+         * @param _shell_material The material of the shell.
+         * @param _medium The material of the medium.
+         * @param _source The light source.
+         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
+         */
+        CoreShell(
+            double _core_diameter,
+            double _shell_thickness,
+            const complex128 _core_material,
+            std::shared_ptr<BaseMaterial> _shell_material,
+            const double _medium,
+            std::shared_ptr<BaseSource> _source,
+            size_t _max_order = 0)
+        :   CoreShell(
+            _core_diameter,
+            _shell_thickness,
+            std::make_shared<ConstantMaterial>(_core_material),
+            _shell_material,
+            std::make_shared<ConstantMedium>(_medium),
+            std::move(_source),
+            _max_order
+        )
+        {}
+
+
+        void init(size_t _max_order = 0);
 
         /**
          * @brief Computes the size parameter for the sphere.

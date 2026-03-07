@@ -5,12 +5,11 @@ Near-Fields Computation and Visualization
 This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
 """
 
-# %%
-# Importing the package: PyMieSim
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.representations import NearField
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)

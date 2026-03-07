@@ -6,10 +6,11 @@ import pyvista as pv
 
 from MPSPlots.colormaps import blue_black_red
 
-# from PyMieSim.single.scatterer import Sphere, CoreShell, InfiniteCylinder
+from PyMieSim.single.scatterer import Sphere, CoreShell, InfiniteCylinder
 from PyMieSim.single.source import Gaussian, PlaneWave
 from PyMieSim.single.detector import Photodiode, CoherentMode, IntegratingSphere
-
+from PyMieSim.single.fibonacci import FibonacciMesh  # noqa: F401: need to register those class
+from PyMieSim.single.coordinates import Cartesian, Spherical  # noqa: F401: need to register those class
 
 PyVistaColor = Union[str, Tuple[float, float, float], Sequence[float]]
 
@@ -288,7 +289,7 @@ class SystemPlotter:
         Parameters
         ----------
         obj : PyMieSim.single.detector.CoherentMode
-            Coherent detector instance providing `_cpp_mesh` (with cartesian x/y/z)
+            Coherent detector instance providing `mesh` (with cartesian x/y/z)
             and `scalar_field` (complex scalar field values).
         scene : pyvista.Plotter
             Target plotter.
@@ -299,9 +300,9 @@ class SystemPlotter:
         """
         coordinates = np.vstack(
             (
-                obj._cpp_mesh.cartesian.x,
-                obj._cpp_mesh.cartesian.y,
-                obj._cpp_mesh.cartesian.z,
+                obj.mesh.cartesian.x,
+                obj.mesh.cartesian.y,
+                obj.mesh.cartesian.z,
             )
         )
 
@@ -354,9 +355,9 @@ class SystemPlotter:
         """
         coordinates = np.vstack(
             (
-                obj._cpp_mesh.cartesian.x,
-                obj._cpp_mesh.cartesian.y,
-                obj._cpp_mesh.cartesian.z,
+                obj.mesh.cartesian.x,
+                obj.mesh.cartesian.y,
+                obj.mesh.cartesian.z,
             )
         )
 
@@ -409,9 +410,9 @@ class SystemPlotter:
         """
         coordinates = np.vstack(
             (
-                obj._cpp_mesh.cartesian.x,
-                obj._cpp_mesh.cartesian.y,
-                obj._cpp_mesh.cartesian.z,
+                obj.mesh.cartesian.x,
+                obj.mesh.cartesian.y,
+                obj.mesh.cartesian.z,
             )
         )
 

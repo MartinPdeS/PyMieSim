@@ -1,21 +1,9 @@
 #include "./coreshell.h"
 
 
-// ---------------------- Constructors ---------------------------------------
-CoreShell::CoreShell(
-    double _core_diameter,
-    double _shell_thickness,
-    const std::shared_ptr<BaseMaterial> _core_material,
-    const std::shared_ptr<BaseMaterial> _shell_material,
-    const std::shared_ptr<BaseMedium> _medium_material,
-    std::shared_ptr<BaseSource> _source,
-    size_t _max_order)
-:   BaseScatterer(_max_order, std::move(_source), _medium_material),
-    core_diameter(_core_diameter),
-    shell_thickness(_shell_thickness),
-    core_material(_core_material),
-    shell_material(_shell_material)
-{
+// ---------------------- Methods ---------------------------------------
+
+void CoreShell::init(const size_t _max_order) {
     this->medium->initialize(this->source->wavelength);
     this->core_material->initialize(this->source->wavelength);
     this->shell_material->initialize(this->source->wavelength);
@@ -27,10 +15,6 @@ CoreShell::CoreShell(
     this->apply_medium();
     this->compute_an_bn(this->max_order);
 }
-
-
-
-// ---------------------- Methods ---------------------------------------
 
 void CoreShell::compute_size_parameter() {
     this->size_parameter = source->wavenumber_vacuum * this->total_diameter / 2 * this->medium->get_refractive_index();

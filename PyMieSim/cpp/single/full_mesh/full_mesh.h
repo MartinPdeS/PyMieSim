@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <complex>
-#include <coordinates/coordinates.h>
+#include <single/coordinates/coordinates.h>
 #include <utils/constants.h>
 
 typedef std::complex<double> complex128;

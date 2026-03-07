@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.representations import FarField, Stokes, SPF, S1S2
 
 representations = [FarField, Stokes, SPF, S1S2]

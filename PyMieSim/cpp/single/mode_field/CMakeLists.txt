@@ -1,8 +1,9 @@
-# PyMieSim/cpp/single/optical_interface/CMakeLists.txt
-set(NAME "optical_interface")
+# PyMieSim/cpp/single/mode_field/CMakeLists.txt
+set(NAME "mode_field")
 
 add_library("${NAME}" STATIC "${NAME}.cpp")
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+target_link_libraries("${NAME}" PUBLIC bessel_subroutine)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")

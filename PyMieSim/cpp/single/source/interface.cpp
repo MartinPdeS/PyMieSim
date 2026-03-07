@@ -17,7 +17,7 @@
 
 namespace py = pybind11;
 
-void register_sources(py::module_& module)
+PYBIND11_MODULE(source, module)
 {
     py::object ureg = get_shared_ureg();
     module.doc() = "Source bindings for PyMieSim.";

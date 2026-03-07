@@ -3,7 +3,7 @@
 set(NAME "single")
 
 add_subdirectory(material)                     # material
-add_subdirectory(polarization)                 # polarization  - optical_interface
+# add_subdirectory(polarization)                 # polarization  - optical_interface
 add_subdirectory(scatterer/base_scatterer)     # base_scatterer
 add_subdirectory(scatterer/sphere)             # sphere         - interface_sphere
 add_subdirectory(scatterer/cylinder)           # cylinder       - interface_cylinder
@@ -21,3 +21,5 @@ target_link_libraries("interface_${NAME}" PUBLIC detector sphere cylinder coresh
 
 
 set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS "interface_${NAME}")
+
+

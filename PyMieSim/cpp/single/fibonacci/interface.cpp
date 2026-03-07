@@ -5,10 +5,12 @@
 
 namespace py = pybind11;
 
-void register_fibonacci(pybind11::module_& module) {
+// void register_fibonacci(pybind11::module_& module) {
+PYBIND11_MODULE(fibonacci, module)
+{
     py::object ureg = get_shared_ureg();
 
-    pybind11::class_<FibonacciMesh, std::shared_ptr<FibonacciMesh>>(module, "FIBONACCIMESH")
+    pybind11::class_<FibonacciMesh, std::shared_ptr<FibonacciMesh>>(module, "FibonacciMesh")
         .def(
             py::init(
                 [ureg](

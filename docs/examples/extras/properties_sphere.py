@@ -6,7 +6,8 @@ Samples Properties
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 

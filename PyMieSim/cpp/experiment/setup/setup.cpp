@@ -50,7 +50,7 @@ Setup::get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &sour
 
         std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source);
 
-        detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
+        // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
         size_t idx = flatten_multi_index(array_shape, source->indices, scatterer_ptr->indices, detector->indices);
         output_array[idx] = detector->get_coupling(*scatterer_ptr);
     }
@@ -79,7 +79,7 @@ Setup::get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSour
 
         std::shared_ptr<BaseDetector> detector = detector_set.get_detector_by_index_sequential(idx);
 
-        detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
+        // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
 
         output_array[idx] = detector->get_coupling(*scatterer_ptr);
     }

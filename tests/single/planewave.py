@@ -2,7 +2,8 @@ import pytest
 from unittest.mock import patch
 from PyMieSim.units import ureg
 
-from PyMieSim.single.source import PlaneWave, PolarizationState
+from PyMieSim.single.source import PlaneWave
+from PyMieSim.single.polarization import PolarizationState
 
 
 def test_planewave_initialization():

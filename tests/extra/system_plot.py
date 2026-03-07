@@ -3,7 +3,8 @@ from unittest.mock import patch
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import SystemPlotter
 from PyMieSim.single.representations import SPF
@@ -19,25 +20,25 @@ def test_plot_system(mock_show):
 
     """
     source = Gaussian(
-        wavelength=1550 * ureg.nanometer,  # 1550 nm wavelength
-        polarization=PolarizationState(angle=0 * ureg.degree),  # Linear polarization angle in radians
-        optical_power=1 * ureg.watt,  # Optical power in arbitrary units
-        numerical_aperture=0.3 * ureg.AU,  # Numerical Aperture
+        wavelength=1550 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
     scatterer = InfiniteCylinder(
-        diameter=780 * ureg.nanometer,  # 7.8 micrometers diameter
+        diameter=780 * ureg.nanometer,
         source=source,
-        medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
-        refractive_index=sqrt(1.5) * ureg.RIU,  # Refractive index of the scatterer
+        medium=1.0 * ureg.RIU,
+        material=sqrt(1.5) * ureg.RIU,
     )
 
     detector = Photodiode(
-        numerical_aperture=0.1 * ureg.AU,  # Numerical Aperture
-        gamma_offset=90 * ureg.degree,  # Gamma offset in ureg.degrees
-        phi_offset=0 * ureg.degree,  # Phi offset in ureg.degrees
-        polarization_filter=0 * ureg.degree,  # Polarization filter angle in ureg.degrees
-        medium_refractive_index=1.0 * ureg.RIU
+        numerical_aperture=0.1 * ureg.AU,
+        gamma_offset=90 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        polarization_filter=0 * ureg.degree,
+        medium=1.0 * ureg.RIU
     )
     spf = SPF(scatterer=scatterer)
 

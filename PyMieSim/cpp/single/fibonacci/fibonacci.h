@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <cmath>
-#include "../coordinates/coordinates.h"
+#include <single/coordinates/coordinates.h>
 #include <utils/constants.h>
 
 

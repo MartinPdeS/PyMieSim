@@ -17,7 +17,8 @@ void register_coreshell(py::module_& module) {
                 const py::object& core_material,
                 const py::object& shell_material,
                 const py::object& medium,
-                const std::shared_ptr<BaseSource>& source
+                const std::shared_ptr<BaseSource>& source,
+                int max_order = 0
             ) {
                 double core_diameter_meter =
                     core_diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
@@ -40,7 +41,8 @@ void register_coreshell(py::module_& module) {
                     std::move(parsed_core_material),
                     std::move(parsed_shell_material),
                     std::move(parsed_medium),
-                    std::move(source)
+                    std::move(source),
+                    max_order
                 );
             }),
             py::arg("core_diameter"),
@@ -49,6 +51,7 @@ void register_coreshell(py::module_& module) {
             py::arg("shell_material"),
             py::arg("medium"),
             py::arg("source"),
+            py::arg("max_order") = 0,
             R"pbdoc(
                 Constructor for CORESHELL, initializing it with physical and optical properties.
 
@@ -66,6 +69,8 @@ void register_coreshell(py::module_& module) {
                     The surrounding medium of the core-shell scatterer.
                 source : BaseSource
                     The source of the incident light.
+                max_order : int, optional
+                    The maximum order of the scattering coefficients to compute. If set to 0, it will
             )pbdoc"
         )
         .def_readonly(

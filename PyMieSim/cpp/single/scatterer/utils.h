@@ -2,6 +2,8 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
+#include <single/dispersive_material/material.h>
+#include <single/dispersive_material/medium.h>
 
 namespace py = pybind11;
 

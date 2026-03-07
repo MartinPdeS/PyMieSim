@@ -1,28 +1,24 @@
 #include <pybind11/pybind11.h>
 #include "./detector.h"
-#include <fibonacci/interface.cpp>
-#include <coordinates/interface.cpp>
-#include <mode_field/interface.cpp>
-#include <utils/numpy_interface.h>
+
 #include <pint/pint.h>
+#include <utils/numpy_interface.h>
+#include <single/scatterer/utils.h>
+
 
 namespace py = pybind11;
 
-void register_detector(py::module_& module) {
+PYBIND11_MODULE(detector, module) {
     py::object ureg = get_shared_ureg();
 
     module.doc() = R"pbdoc(
         Photodiode binding for PyMieSim.
 
-        Provides a `DETECTOR` class to compute coupling to scatterers
+        Provides a `BaseDetector` class to compute coupling to scatterers
         and expose the detected field distribution.
     )pbdoc";
 
-    register_coordinates(module);
-    register_fibonacci(module);
-    register_mode_field(module);
-
-    py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BASE_DETECTOR")
+    py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BaseDetector")
         .def_property_readonly(
             "numerical_aperture",
             [ureg](BaseDetector& self) {
@@ -35,13 +31,13 @@ void register_detector(py::module_& module) {
             )pbdoc"
         )
         .def_readonly(
-            "_cpp_mesh",
+            "mesh",
             &BaseDetector::fibonacci_mesh,
             R"pbdoc(
-            The Fibonacci angular mesh used for sampling.
+                The Fibonacci angular mesh used for sampling.
 
-            Provided as a NumPy array of shape (sampling, 2) containing
-            (gamma, phi) pairs.
+                Provided as a NumPy array of shape (sampling, 2) containing
+                (gamma, phi) pairs.
             )pbdoc"
         )
         .def_property_readonly(
@@ -280,40 +276,23 @@ void register_detector(py::module_& module) {
                     py::object cache_numerical_aperture,
                     std::size_t sampling
                 ) {
-                    double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
-                    double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                    double numerical_aperture_value = numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
+                    double phi_offset_value = phi_offset.attr("to")("radian").attr("magnitude").cast<double>();
+                    double gamma_offset_value = gamma_offset.attr("to")("radian").attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
 
                     double polarization_filter_value;
                     if (polarization_filter.is(py::none())) {
                         polarization_filter_value = std::nan("");
                     } else {
-                        polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
                     }
 
-                    std::shared_ptr<BaseMedium> medium_value;
-                    if (medium.is(py::none())) {
-                        medium_value = std::make_shared<ConstantMedium>(1.0);
-                    }
-                    else if (py::isinstance<BaseMedium>(medium)) {
-                        medium_value = medium.cast<std::shared_ptr<BaseMedium>>();
-                    }
-                    else if (py::hasattr(medium, "to")) {
-                        double refractive_index_value = medium.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
-                        medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
-                    }
-                    else {
-                        try {
-                            double refractive_index_value = medium.cast<double>();
-                            medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
-                        }
-                        catch (const py::cast_error&) {
-                            throw std::runtime_error(
-                                "medium must be None, a BaseMedium instance, or a real refractive index."
-                            );
-                        }
-                    }
+                    std::shared_ptr<BaseMedium> parsed_medium;
+                    if (medium.is(py::none()))
+                        parsed_medium = std::make_shared<ConstantMedium>(1.0);
+                    else
+                        parsed_medium = parse_medium_object(medium, ureg);
 
                     if (numerical_aperture_value < 0.0) {
                         throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
@@ -332,7 +311,7 @@ void register_detector(py::module_& module) {
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
-                        medium_value
+                        std::move(parsed_medium)
                     );
                 }
             ),
@@ -391,42 +370,26 @@ void register_detector(py::module_& module) {
                     py::object mean_coupling,
                     std::size_t sampling
                 ) {
-                    double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
-                    double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double rotation_value = rotation.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
+                    double numerical_aperture_value = numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
+                    double phi_offset_value = phi_offset.attr("to")("radian").attr("magnitude").cast<double>();
+                    double gamma_offset_value = gamma_offset.attr("to")("radian").attr("magnitude").cast<double>();
+                    double rotation_value = rotation.attr("to")("radian").attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
                     bool mean_coupling_value = mean_coupling.cast<bool>();
 
                     double polarization_filter_value;
                     if (polarization_filter.is(py::none())) {
                         polarization_filter_value = std::nan("");
                     } else {
-                        polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
                     }
 
-                    std::shared_ptr<BaseMedium> medium_value;
-                    if (medium.is(py::none())) {
-                        medium_value = std::make_shared<ConstantMedium>(1.0);
-                    }
-                    else if (py::isinstance<BaseMedium>(medium)) {
-                        medium_value = medium.cast<std::shared_ptr<BaseMedium>>();
-                    }
-                    else if (py::hasattr(medium, "to")) {
-                        double refractive_index_value = medium.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
-                        medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
-                    }
-                    else {
-                        try {
-                            double refractive_index_value = medium.cast<double>();
-                            medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
-                        }
-                        catch (const py::cast_error&) {
-                            throw std::runtime_error(
-                                "medium must be None, a BaseMedium instance, or a real refractive index."
-                            );
-                        }
-                    }
+                    std::shared_ptr<BaseMedium> parsed_medium;
+                    if (medium.is(py::none()))
+                        parsed_medium = std::make_shared<ConstantMedium>(1.0);
+                    else
+                        parsed_medium = parse_medium_object(medium, ureg);
+
 
                     if (numerical_aperture_value < 0.0) {
                         throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
@@ -448,7 +411,7 @@ void register_detector(py::module_& module) {
                         polarization_filter_value,
                         rotation_value,
                         mean_coupling_value,
-                        medium_value
+                        std::move(parsed_medium)
                     );
                 }
             ),

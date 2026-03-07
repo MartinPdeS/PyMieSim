@@ -5,11 +5,10 @@ S1 S2 Function Computation
 This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.
 """
 
-# %%
-# Importing the package: PyMieSim
 from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.representations import S1S2
 
 
@@ -25,8 +24,8 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=6 * ureg.nanometer,
     source=source,
-    medium_refractive_index=1.0 * ureg.RIU,
-    refractive_index=1.4 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
+    material=1.4 * ureg.RIU,
 )
 
 scatterer.Qsca

@@ -5,7 +5,7 @@ import numpy
 from typing import Optional
 from PyMieSim.units import ureg, Angle
 
-from PyMieSim.binary.interface_single import FIBONACCIMESH
+from PyMieSim.single.fibonacci import FibonacciMesh as FIBONACCIMESH
 
 class FibonacciMesh(FIBONACCIMESH):
     """

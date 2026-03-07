@@ -25,7 +25,7 @@ void register_detector_set(py::module& module) {
                     const py::object& sampling,
                     const py::object& cache_NA,
                     const py::object& polarization_filter,
-                    const py::object& medium_refractive_index,
+                    const py::object& medium,
                     bool is_sequential
                 ) {
                     std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
@@ -44,7 +44,7 @@ void register_detector_set(py::module& module) {
                     } else {
                         polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
-                    std::vector<double> medium_refractive_index_value = cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                    std::vector<double> medium_value = cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
 
                     return std::make_shared<PhotodiodeSet>(
                         sampling_value,
@@ -53,7 +53,7 @@ void register_detector_set(py::module& module) {
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
-                        medium_refractive_index_value,
+                        medium_value,
                         is_sequential
                     );
                 }
@@ -64,7 +64,7 @@ void register_detector_set(py::module& module) {
             py::arg("sampling") = py::int_(200),
             py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
             py::arg("is_sequential") = false,
             R"pdoc(
                 Initializes a detector set with scalar fields, numerical aperture, offsets, filters, angle, coherence, and coupling type.
@@ -83,7 +83,7 @@ void register_detector_set(py::module& module) {
                     Numerical aperture value used for caching the photodiode detector's response. Can be a single value or an array of values for multiple detectors. Default is 0.0.          polarization_filter : float or array-like, optional
                 polarization_filter : float or array-like, optional
                     Polarization filter angle for the photodiode detector in radians. Can be a single value or an array of values for multiple detectors. Default is None (no polarization filter).
-                medium_refractive_index : float or array-like, optional
+                medium : float or array-like, optional
                     Refractive index of the medium in which the photodiode detector is placed. Can be a single value or an array of values for multiple detectors. Default is 1.0.
                 is_sequential : bool, optional
                     Indicates whether the detector set should be treated as sequential (i.e., each detector is evaluated independently) or as a batch (i.e., all detectors are evaluated together). Default is False (batch mode).
@@ -125,7 +125,7 @@ void register_detector_set(py::module& module) {
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
                 mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
-                mapping["detector:medium_refractive_index"] = py::cast(self.medium_refractive_index) * ureg.attr("RIU");
+                mapping["detector:medium"] = py::cast(self.medium) * ureg.attr("RIU");
                 return mapping;
             },
             R"pdoc(
@@ -143,7 +143,7 @@ void register_detector_set(py::module& module) {
                 const py::object& sampling,
                 const py::object& cache_numerical_aperture,
                 const py::object& polarization_filter,
-                const py::object& medium_refractive_index
+                const py::object& medium
             ) {
                 const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
 
@@ -161,8 +161,8 @@ void register_detector_set(py::module& module) {
                 std::vector<double> gamma_offset_value =
                     cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
 
-                std::vector<double> medium_refractive_index_value =
-                    cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<double> medium_value =
+                    cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
 
                 std::vector<double> polarization_filter_value;
                 if (polarization_filter.is_none()) {
@@ -181,7 +181,7 @@ void register_detector_set(py::module& module) {
                         {"phi_offset", phi_offset_value},
                         {"gamma_offset", gamma_offset_value},
                         {"polarization_filter", polarization_filter_value},
-                        {"medium_refractive_index", medium_refractive_index_value}
+                        {"medium", medium_value}
                     }
                 );
 
@@ -191,7 +191,7 @@ void register_detector_set(py::module& module) {
                 phi_offset_value = broadcast_vector_double("phi_offset", phi_offset_value, target_size);
                 gamma_offset_value = broadcast_vector_double("gamma_offset", gamma_offset_value, target_size);
                 polarization_filter_value = broadcast_vector_double("polarization_filter", polarization_filter_value, target_size);
-                medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+                medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
                 return std::make_shared<PhotodiodeSet>(
                     sampling_value,
@@ -200,7 +200,7 @@ void register_detector_set(py::module& module) {
                     phi_offset_value,
                     gamma_offset_value,
                     polarization_filter_value,
-                    medium_refractive_index_value,
+                    medium_value,
                     true
                 );
             },
