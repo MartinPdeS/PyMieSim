@@ -107,25 +107,24 @@ message(STATUS "==============================================================")
 message(STATUS "")
 # ----------------- logging build configuration --------------------
 
-
-# set(GLOBAL PYMIESIM_TARGETS "")
-
 # ----------------- collect subdirectories --------------------
-add_subdirectory(PyMieSim/cpp/pint)                           # pint
-add_subdirectory(PyMieSim/cpp/single/coordinates)             # coordinates
-add_subdirectory(PyMieSim/cpp/single/dispersive_material)     # dispersive_material
-add_subdirectory(PyMieSim/cpp/bessel_subroutine)              # bessel_subroutine
-add_subdirectory(PyMieSim/cpp/single/mode_field)              # cpp_mode_field
-add_subdirectory(PyMieSim/cpp/single/full_mesh)                    # cpp_full_mesh
-add_subdirectory(PyMieSim/cpp/single/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
+add_subdirectory(PyMieSim/cpp/pint)
+add_subdirectory(PyMieSim/cpp/single/coordinates)
+add_subdirectory(PyMieSim/cpp/single/dispersive_material)
+add_subdirectory(PyMieSim/cpp/bessel_subroutine)
+add_subdirectory(PyMieSim/cpp/single/mode_field)
+add_subdirectory(PyMieSim/cpp/single/full_mesh)
+add_subdirectory(PyMieSim/cpp/single/fibonacci)
 
-# add_subdirectory(PyMieSim/cpp/single)
+
 add_subdirectory(PyMieSim/cpp/single/polarization)
-add_subdirectory(PyMieSim/cpp/single/source)                          # single             - interface_single
+add_subdirectory(PyMieSim/cpp/single/source)
 add_subdirectory(PyMieSim/cpp/single/scatterer)
-add_subdirectory(PyMieSim/cpp/single/optical_interface)                    # cpp_fibonacci      - interface_fibonacci
+add_subdirectory(PyMieSim/cpp/single/optical_interface)
 add_subdirectory(PyMieSim/cpp/single/detector)
-# add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
+add_subdirectory(PyMieSim/cpp/experiment/polarization_set)
+add_subdirectory(PyMieSim/cpp/experiment/source_set)
+# add_subdirectory(PyMieSim/cpp/experiment/detector_set)
 # ----------------- collect subdirectories --------------------
 
 get_property(PYMIESIM_TARGETS GLOBAL PROPERTY PYMIESIM_TARGETS)
