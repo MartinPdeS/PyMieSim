@@ -13,6 +13,7 @@
 #include <mode_field/mode_field.h>
 #include <utils/math.h>
 #include <utils/constants.h>
+#include <dispersive_material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -25,7 +26,7 @@ public:
     double phi_offset = 0.0;
     double gamma_offset = 0.0;
     double polarization_filter = 0.0;
-    double medium_refractive_index = 1.0;
+    std::shared_ptr<BaseMedium> medium;
     std::shared_ptr<BaseSource> source;
     bool mean_coupling = true;
 
@@ -54,7 +55,7 @@ public:
         const double _phi_offset,
         const double _gamma_offset,
         const double _polarization_filter,
-        const double _medium_refractive_index,
+        const std::shared_ptr<BaseMedium> _medium,
         std::shared_ptr<BaseSource> _source,
         const bool _mean_coupling)
     :   sampling(_sampling),
@@ -63,7 +64,7 @@ public:
         phi_offset(_phi_offset),
         gamma_offset(_gamma_offset),
         polarization_filter(_polarization_filter),
-        medium_refractive_index(_medium_refractive_index),
+        medium(std::move(_medium)),
         source(std::move(_source)),
         mean_coupling(_mean_coupling)
     {}
@@ -160,7 +161,7 @@ public:
         printf("  Phi Offset (radians): %.*f\n", precision, this->phi_offset);
         printf("  Gamma Offset (radians): %.*f\n", precision, this->gamma_offset);
         printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
-        printf("  Medium Refractive Index: %.*f\n", precision, this->medium_refractive_index);
+        printf("  Medium Refractive Index: %.*f\n", precision, this->medium->get_refractive_index());
         printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
         printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
     }
@@ -186,7 +187,7 @@ public:
         const double _phi_offset,
         const double _gamma_offset,
         const double _polarization_filter,
-        const double _medium_refractive_index = 1.0)
+        const std::shared_ptr<BaseMedium> _medium)
     :   BaseDetector(
             _sampling,
             _numerical_aperture,
@@ -194,7 +195,7 @@ public:
             _phi_offset,
             _gamma_offset,
             _polarization_filter,
-            _medium_refractive_index,
+            std::move(_medium),
             nullptr,
             false
         ),
@@ -281,7 +282,7 @@ public:
         const double _polarization_filter,
         const double _rotation,
         const bool _mean_coupling,
-        const double _medium_refractive_index
+        const std::shared_ptr<BaseMedium> _medium
     )
     :   BaseDetector(
             _sampling,
@@ -290,7 +291,7 @@ public:
             _phi_offset,
             _gamma_offset,
             _polarization_filter,
-            _medium_refractive_index,
+            std::move(_medium),
             nullptr,
             _mean_coupling
         ),
@@ -386,7 +387,7 @@ public:
             0.0,  /* phi_offset */
             0.0,  /* gamma_offset */
             _polarization_filter,
-            1.0,
+            std::make_shared<ConstantMedium>(1.0),  /* medium */
             nullptr,
             false
         )

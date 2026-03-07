@@ -8,27 +8,8 @@ from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import Photodiode
 
-refractive_index = [1.5 * ureg.RIU, 1.6 * ureg.RIU]
-medium_refractive_index = [1.3 * ureg.RIU, 1.4 * ureg.RIU]
-
-
-# Attributes to check
-attributes = [
-    "a1n",
-    "a2n",
-    "b1n",
-    "b2n",
-    "size_parameter",
-    "cross_section",
-    "g",
-    "Qsca",
-    "Qext",
-    "Qabs",
-    "Csca",
-    "Cext",
-    "Cabs",
-]
-
+materials = [1.5 * ureg.RIU, 1.6 * ureg.RIU]
+mediums = [1.3 * ureg.RIU, 1.4 * ureg.RIU]
 
 @pytest.fixture()
 def source():
@@ -40,16 +21,16 @@ def source():
     )
 
 
-@pytest.mark.parametrize("refractive_index", refractive_index, ids=[f"refractive_index:{m}" for m in refractive_index])
+@pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
 @pytest.mark.parametrize(
-    "medium_refractive_index", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
+    "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
 )
-def test_cylinder_coupling(refractive_index, medium_refractive_index, source):
+def test_cylinder_coupling(material, medium, source):
     detector = Photodiode(
         numerical_aperture=0.2 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        medium_refractive_index=1.0 * ureg.RIU
+        medium=medium
     )
 
     source = Gaussian(
@@ -62,25 +43,25 @@ def test_cylinder_coupling(refractive_index, medium_refractive_index, source):
     scatterer = InfiniteCylinder(
         diameter=100 * ureg.nanometer,
         source=source,
-        medium_refractive_index=medium_refractive_index,
-        refractive_index=refractive_index,
+        medium=medium,
+        material=material,
     )
 
     # Calculate optical coupling
     _ = detector.get_coupling(scatterer)
 
 
-@pytest.mark.parametrize("refractive_index", refractive_index, ids=[f"refractive_index:{m}" for m in refractive_index])
+@pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
 @pytest.mark.parametrize(
-    "medium_refractive_index", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
+    "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
 )
-@pytest.mark.parametrize("attribute", attributes)
-def test_cylinder_attributes(attribute, refractive_index, medium_refractive_index, source):
+@pytest.mark.parametrize("attribute", InfiniteCylinder.property_names)
+def test_cylinder_attributes(attribute, material, medium, source):
     scatterer = InfiniteCylinder(
         diameter=100 * ureg.nanometer,
         source=source,
-        medium_refractive_index=medium_refractive_index,
-        refractive_index=refractive_index,
+        medium=medium,
+        material=material,
     )
 
     # Access and validate the specified attribute

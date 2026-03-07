@@ -2,6 +2,8 @@
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
 #include <utils/constants.h>
+#include <dispersive_material/material.h>
+#include <dispersive_material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -10,37 +12,39 @@ class Sphere: public BaseScatterer
 {
     public:
         double diameter;
-        complex128 refractive_index;
-        std::vector<std::string> property_names = {
+        std::shared_ptr<BaseMaterial> material;
+        inline static std::vector<std::string> property_names = {
             "size_parameter",
             "radius",
             "volume",
             "cross_section",
             "g",
+            "an",
+            "bn",
             "Qsca",
             "Qext",
             "Qabs",
             "Qback",
             "Qratio",
+            "Qforward",
             "Qpr",
             "Csca",
             "Cext",
             "Cabs",
             "Cback",
             "Cratio",
-            "Cpr"
+            "Cforward",
+            "Cpr",
         };
 
-        /**
-         * @brief Constructs a Sphere object.
-         * @param diameter The diameter of the sphere.
-         * @param refractive_index The refractive index of the sphere.
-         * @param medium_refractive_index The refractive index of the medium.
-         * @param source The light source.
-         * @param max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         * @param compute_cn_dn Whether to compute the cn and dn coefficients (default is false).
-         */
-        Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, std::shared_ptr<BaseSource> source, size_t max_order = 0);
+
+        Sphere(
+            const double diameter,
+            const std::shared_ptr<BaseMaterial> material,
+            const std::shared_ptr<BaseMedium> medium,
+            const std::shared_ptr<BaseSource> source,
+            size_t max_order = 0
+        );
 
         /**
          * @brief Computes the size parameter for the sphere.

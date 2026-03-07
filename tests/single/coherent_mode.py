@@ -24,8 +24,8 @@ def test_lp_modes(mode_number):
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,  # Diameter in meters
         source=source,  # Source defined in the setup_source fixture
-        refractive_index=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the medium
+        material=1.4 * ureg.RIU,  # Refractive index of the scatterer
+        medium=1.0 * ureg.RIU,  # Refractive index of the medium
     )
 
     detector = CoherentMode(

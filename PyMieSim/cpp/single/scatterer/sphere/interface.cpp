@@ -3,8 +3,10 @@
 #include "./sphere.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
+#include <single/scatterer/utils.h>
 
 namespace py = pybind11;
+
 
 void register_sphere(py::module_& module) {
     py::object ureg = get_shared_ureg();
@@ -12,36 +14,31 @@ void register_sphere(py::module_& module) {
     py::class_<Sphere, BaseScatterer, std::shared_ptr<Sphere>>(module, "Sphere")
         .def(
             py::init([ureg](
-                py::object diameter,
-                py::object refractive_index,
-                py::object medium_refractive_index,
-                std::shared_ptr<BaseSource> source,
-                std::size_t max_order
+                const py::object& diameter,
+                const py::object& material,
+                const py::object& medium,
+                const std::shared_ptr<BaseSource>& source,
+                const std::size_t max_order
             ) {
-                py::object units_length = py::module_::import("PyMieSim.units").attr("Length");
-                py::object units_riu = py::module_::import("PyMieSim.units").attr("RefractiveIndex");
+                const double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                diameter = units_length.attr("check")(diameter);
-                refractive_index = units_riu.attr("check")(refractive_index);
-                medium_refractive_index = units_riu.attr("check")(medium_refractive_index);
+                const std::shared_ptr<BaseMaterial> parsed_material =
+                    parse_material_object(material, ureg);
 
-                double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
-
-                complex128 refractive_index_value = refractive_index.attr("to")(ureg.attr("refractive_index_unit")).attr("magnitude").cast<complex128>();
-
-                double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("refractive_index_unit")).attr("magnitude").cast<double>();
+                const std::shared_ptr<BaseMedium> parsed_medium =
+                    parse_medium_object(medium, ureg);
 
                 return std::make_shared<Sphere>(
                     diameter_meter,
-                    refractive_index_value,
-                    medium_refractive_index_value,
+                    std::move(parsed_material),
+                    std::move(parsed_medium),
                     std::move(source),
                     max_order
                 );
             }),
             py::arg("diameter"),
-            py::arg("refractive_index"),
-            py::arg("medium_refractive_index"),
+            py::arg("material"),
+            py::arg("medium"),
             py::arg("source"),
             py::arg("max_order") = 0,
             R"pbdoc(
@@ -51,10 +48,10 @@ void register_sphere(py::module_& module) {
                 ----------
                 diameter : float[Length]
                     The diameter of the sphere.
-                refractive_index : complex[RefractiveIndex]
-                    The refractive index of the sphere.
-                medium_refractive_index : float[RefractiveIndex]
-                    The refractive index of the surrounding medium.
+                material : BaseMaterial or complex[RefractiveIndex]
+                    The material of the sphere, or a constant complex refractive index.
+                medium : BaseMedium or float[RefractiveIndex]
+                    The surrounding medium, or a constant real refractive index.
                 source : BaseSource
                     The source of the incident light.
                 max_order : int, optional
@@ -66,7 +63,7 @@ void register_sphere(py::module_& module) {
             &Sphere::source,
             "Source of the sphere."
         )
-        .def_readonly(
+        .def_readonly_static(
             "property_names",
             &Sphere::property_names,
             "Property names of the sphere."
@@ -83,23 +80,15 @@ void register_sphere(py::module_& module) {
             },
             "Diameter of the sphere."
         )
-        .def_property_readonly(
-            "refractive_index",
-            [ureg](const Sphere &self) {
-                py::object magnitude = py::cast(self.refractive_index);
-
-                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
-            },
-            "Refractive index of the sphere."
+        .def_readonly(
+            "material",
+            &Sphere::material,
+            "Material of the sphere."
         )
-        .def_property_readonly(
-            "medium_refractive_index",
-            [ureg](const Sphere &self) {
-                py::object magnitude = py::float_(self.medium_refractive_index);
-
-                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
-            },
-            "Refractive index of the surrounding medium."
+        .def_readonly(
+            "medium",
+            &Sphere::medium,
+            "Medium surrounding the sphere."
         )
         .def_property_readonly(
             "radius",

@@ -31,8 +31,8 @@ def test_plottings(mock_show_plt, mock_show_pyvista, representation):
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
         source=source,
-        medium_refractive_index=1.0 * ureg.RIU,
-        refractive_index=1.4 * ureg.RIU,
+        medium=1.0 * ureg.RIU,
+        material=1.4 * ureg.RIU,
     )
 
     data = representation(scatterer=scatterer)

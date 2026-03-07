@@ -6,7 +6,7 @@ import pyvista as pv
 
 from MPSPlots.colormaps import blue_black_red
 
-from PyMieSim.single.scatterer import Sphere, CoreShell, InfiniteCylinder
+# from PyMieSim.single.scatterer import Sphere, CoreShell, InfiniteCylinder
 from PyMieSim.single.source import Gaussian, PlaneWave
 from PyMieSim.single.detector import Photodiode, CoherentMode, IntegratingSphere
 

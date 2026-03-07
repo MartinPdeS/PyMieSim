@@ -4,6 +4,7 @@
 #include "experiment/sets/base_set.h"
 #include "single/scatterer/base_scatterer/base_scatterer.h"
 #include "experiment/sets/properties_set/properties_set.h"
+#include <dispersive_material/dispersive_material.h>
 
 using ScattererPtr = std::unique_ptr<BaseScatterer>;   // const because callers must not mutate
 

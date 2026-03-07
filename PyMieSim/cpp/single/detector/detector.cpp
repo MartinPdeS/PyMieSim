@@ -8,14 +8,12 @@ std::vector<double> BaseDetector::get_poynting_field(
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, distance);
 
-    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
-
     std::vector<double> poynting(phi_field.size());
 
     for (size_t i = 0; i < phi_field.size(); ++i) {
         const double fields_squared = std::norm(phi_field[i]) + std::norm(theta_field[i]);
         poynting[i] = (
-            scatterer.medium_refractive_index *
+            scatterer.medium->get_refractive_index() *
             Constants::EPSILON0 *
             Constants::LIGHT_SPEED *
             fields_squared
@@ -318,7 +316,7 @@ double Photodiode::get_coupling(const BaseScatterer& scatterer) const {
     this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
 
     return (
-        scatterer.medium_refractive_index *
+        scatterer.medium->get_refractive_index() *
         Constants::EPSILON0 *
         Constants::LIGHT_SPEED *
         (coupling_theta + coupling_phi) *
@@ -467,8 +465,6 @@ double CoherentMode::get_coupling_mean(const BaseScatterer& scatterer) const
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
 
-    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
-
     auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
@@ -493,8 +489,6 @@ double CoherentMode::get_coupling_point(const BaseScatterer& scatterer) const
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
 
-    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
-
     auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
@@ -505,7 +499,7 @@ double CoherentMode::get_coupling_point(const BaseScatterer& scatterer) const
     this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
 
     return (
-        scatterer.medium_refractive_index *
+        scatterer.medium->get_refractive_index() *
         Constants::EPSILON0 *
         Constants::LIGHT_SPEED *
         (coupling_theta + coupling_phi) *
@@ -554,8 +548,6 @@ double IntegratingSphere::get_coupling(const BaseScatterer& scatterer) const
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
 
-    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
-
     double coupling = 0.0;
 
     for (size_t i = 0; i < theta_field.size(); ++i) {
@@ -575,7 +567,7 @@ double IntegratingSphere::get_coupling(const BaseScatterer& scatterer) const
         coupling = theta_w * sum_theta + phi_w * sum_phi;
     }
     return (
-        scatterer.medium_refractive_index *
+        scatterer.medium->get_refractive_index() *
         Constants::EPSILON0 *
         Constants::LIGHT_SPEED *
         coupling *

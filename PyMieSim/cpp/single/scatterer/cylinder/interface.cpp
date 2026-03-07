@@ -2,6 +2,7 @@
 #include "./cylinder.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
+#include <single/scatterer/utils.h>
 
 namespace py = pybind11;
 
@@ -13,35 +14,30 @@ void register_cylinder(py::module_& module) {
         .def(
             py::init([ureg](
                 py::object diameter,
-                py::object refractive_index,
-                py::object medium_refractive_index,
-                std::shared_ptr<BaseSource> source,
+                const py::object& material,
+                const py::object& medium,
+                const std::shared_ptr<BaseSource> source,
                 std::size_t max_order
             ) {
-                py::object units_length = py::module_::import("PyMieSim.units").attr("Length");
-                py::object units_riu = py::module_::import("PyMieSim.units").attr("RefractiveIndex");
-
-                diameter = units_length.attr("check")(diameter);
-                refractive_index = units_riu.attr("check")(refractive_index);
-                medium_refractive_index = units_riu.attr("check")(medium_refractive_index);
-
                 double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                complex128 refractive_index_value = refractive_index.attr("to")(ureg.attr("refractive_index_unit")).attr("magnitude").cast<complex128>();
+                const std::shared_ptr<BaseMaterial> parsed_material =
+                    parse_material_object(material, ureg);
 
-                double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("refractive_index_unit")).attr("magnitude").cast<double>();
+                const std::shared_ptr<BaseMedium> parsed_medium =
+                    parse_medium_object(medium, ureg);
 
                 return std::make_shared<InfiniteCylinder>(
                     diameter_meter,
-                    refractive_index_value,
-                    medium_refractive_index_value,
+                    std::move(parsed_material),
+                    std::move(parsed_medium),
                     std::move(source),
                     max_order
                 );
             }),
             py::arg("diameter"),
-            py::arg("refractive_index"),
-            py::arg("medium_refractive_index"),
+            py::arg("material"),
+            py::arg("medium"),
             py::arg("source"),
             py::arg("max_order") = 0,
             R"pbdoc(
@@ -51,10 +47,10 @@ void register_cylinder(py::module_& module) {
                 ----------
                 diameter : float
                     The diameter of the cylinder.
-                refractive_index : complex
-                    The refractive index of the cylinder.
-                medium_refractive_index : float
-                    The refractive index of the surrounding medium.
+                material : BaseMaterial
+                    The material of the cylinder.
+                medium : BaseMedium
+                    The surrounding medium of the cylinder.
                 source : BaseSource
                     The source of the incident light.
             )pbdoc"
@@ -64,7 +60,7 @@ void register_cylinder(py::module_& module) {
             &InfiniteCylinder::source,
             "Source of the cylinder."
         )
-        .def_readonly(
+        .def_readonly_static(
             "property_names",
             &InfiniteCylinder::property_names,
             "Property names of the cylinder."
@@ -82,26 +78,15 @@ void register_cylinder(py::module_& module) {
             &InfiniteCylinder::print_properties,
             "Prints the properties of the cylinder."
         )
-        .def_property_readonly(
-            "refractive_index",
-            [ureg](const InfiniteCylinder &self) {
-                py::object ureg = get_shared_ureg();
-
-                py::object magnitude = py::cast(self.refractive_index);
-
-                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
-            },
-            "Refractive index of the cylinder."
+        .def_readonly(
+            "material",
+            &InfiniteCylinder::material,
+            "Material of the cylinder."
         )
-        .def_property_readonly(
-            "medium_refractive_index",
-            [ureg](const InfiniteCylinder &self) {
-                py::object ureg = get_shared_ureg();
-                py::object magnitude = py::cast(self.medium_refractive_index);
-
-                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
-            },
-            "Refractive index of the surrounding medium."
+        .def_readonly(
+            "medium",
+            &InfiniteCylinder::medium,
+            "Medium of the cylinder."
         )
         .def_property_readonly(
             "radius",

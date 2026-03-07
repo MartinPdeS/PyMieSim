@@ -26,8 +26,8 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=400 * ureg.nanometer,
     source=source,
-    refractive_index=(1.4 + 0.j) * ureg.RIU,
-    medium_refractive_index=1. * ureg.RIU,
+    material=(1.4 + 5.j) * ureg.RIU,
+    medium=1. * ureg.RIU,
 )
 
 near_field = NearField(

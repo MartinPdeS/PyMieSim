@@ -12,6 +12,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.representations import S1S2
 
+
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 
 source = Gaussian(

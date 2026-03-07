@@ -5,17 +5,21 @@
 CoreShell::CoreShell(
     double _core_diameter,
     double _shell_thickness,
-    complex128 _core_refractive_index,
-    complex128 _shell_refractive_index,
-    double _medium_refractive_index,
+    const std::shared_ptr<BaseMaterial> _core_material,
+    const std::shared_ptr<BaseMaterial> _shell_material,
+    const std::shared_ptr<BaseMedium> _medium_material,
     std::shared_ptr<BaseSource> _source,
     size_t _max_order)
-:   BaseScatterer(_max_order, std::move(_source), _medium_refractive_index),
+:   BaseScatterer(_max_order, std::move(_source), _medium_material),
     core_diameter(_core_diameter),
     shell_thickness(_shell_thickness),
-    core_refractive_index(_core_refractive_index),
-    shell_refractive_index(_shell_refractive_index)
+    core_material(_core_material),
+    shell_material(_shell_material)
 {
+    this->medium->initialize(this->source->wavelength);
+    this->core_material->initialize(this->source->wavelength);
+    this->shell_material->initialize(this->source->wavelength);
+
     this->total_diameter = this->core_diameter + this->shell_thickness;
     this->compute_cross_section();
     this->compute_size_parameter();
@@ -29,10 +33,10 @@ CoreShell::CoreShell(
 // ---------------------- Methods ---------------------------------------
 
 void CoreShell::compute_size_parameter() {
-    this->size_parameter = source->wavenumber_vacuum * this->total_diameter / 2 * this->medium_refractive_index;
+    this->size_parameter = source->wavenumber_vacuum * this->total_diameter / 2 * this->medium->get_refractive_index();
     this->size_parameter_squared = pow(this->size_parameter, 2);
-    this->x_shell = source->wavenumber_vacuum * this->total_diameter / 2.0 * this->medium_refractive_index;
-    this->x_core = source->wavenumber_vacuum * this->core_diameter / 2.0 * this->medium_refractive_index;
+    this->x_shell = source->wavenumber_vacuum * this->total_diameter / 2.0 * this->medium->get_refractive_index();
+    this->x_core = source->wavenumber_vacuum * this->core_diameter / 2.0 * this->medium->get_refractive_index();
 }
 
 void CoreShell::compute_cross_section() {
@@ -40,8 +44,8 @@ void CoreShell::compute_cross_section() {
 }
 
 void CoreShell::apply_medium() {
-    this->core_refractive_index /= this->medium_refractive_index;
-    this->shell_refractive_index /= this->medium_refractive_index;
+    this->core_material->get_refractive_index() /= this->medium->get_refractive_index();
+    this->shell_material->get_refractive_index() /= this->medium->get_refractive_index();
 }
 
 void CoreShell::compute_an_bn(const size_t max_order)
@@ -51,16 +55,16 @@ void CoreShell::compute_an_bn(const size_t max_order)
 
     // Calculate scaled parameters and initialize phase shift factors
     complex128
-        relative_index = this->shell_refractive_index / this->core_refractive_index,
-        u = this->core_refractive_index * this->x_core,
-        v = this->shell_refractive_index * this->x_core,
-        w = this->shell_refractive_index * this->x_shell,
+        relative_index = this->shell_material->get_refractive_index() / this->core_material->get_refractive_index(),
+        u = this->core_material->get_refractive_index() * this->x_core,
+        v = this->shell_material->get_refractive_index() * this->x_core,
+        w = this->shell_material->get_refractive_index() * this->x_shell,
         sv = sqrt(0.5 * Constants::PI * v),
         sw = sqrt(0.5 * Constants::PI * w),
         sy = sqrt(0.5 * Constants::PI * this->x_shell);
 
     // Determine the necessary array size for continuity factors
-    size_t mx = static_cast<size_t>(std::max( abs( this->core_refractive_index * this->x_shell ), abs( this->shell_refractive_index*this->x_shell ) ));
+    size_t mx = static_cast<size_t>(std::max( abs( this->core_material->get_refractive_index() * this->x_shell ), abs( this->shell_material->get_refractive_index()*this->x_shell ) ));
     size_t nmx  = std::max( max_order, mx ) + 16  ;
 
     std::vector<complex128> pv(max_order + 1), pw(max_order + 1), py(max_order + 1), chv(max_order + 1), chw(max_order + 1), chy(max_order + 1), gsy(max_order + 1), gs1y(max_order + 1);
@@ -111,8 +115,8 @@ void CoreShell::compute_an_bn(const size_t max_order)
         fv[order] = pv[order] / chv[order];
         dns[order] = ((uu[order] * fv[order] / pw[order]) / (uu[order] * (pw[order] - chw[order] * fv[order]) + pw[order] / pv[order] / chv[order])) + Dw[order];
         gns[order] = ((vv[order] * fv[order] / pw[order]) / (vv[order] * (pw[order] - chw[order] * fv[order]) + pw[order] / pv[order] / chv[order])) + Dw[order];
-        a1[order] = dns[order] / shell_refractive_index + idx / x_shell;
-        b1[order] = shell_refractive_index * gns[order] + idx / x_shell;
+        a1[order] = dns[order] / this->shell_material->get_refractive_index() + idx / x_shell;
+        b1[order] = this->shell_material->get_refractive_index() * gns[order] + idx / x_shell;
         an[order] = (py[order] * a1[order] - p1y[order]) / (gsy[order] * a1[order] - gs1y[order]);
         bn[order] = (py[order] * b1[order] - p1y[order]) / (gsy[order] * b1[order] - gs1y[order]);
     }

@@ -16,16 +16,12 @@ void register_detector(py::module_& module) {
 
         Provides a `DETECTOR` class to compute coupling to scatterers
         and expose the detected field distribution.
-    )pbdoc"
-    ;
+    )pbdoc";
 
     register_coordinates(module);
-
     register_fibonacci(module);
-
     register_mode_field(module);
 
-    // ------------------ Bindings for Photodiodes ------------------
     py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BASE_DETECTOR")
         .def_property_readonly(
             "numerical_aperture",
@@ -51,7 +47,6 @@ void register_detector(py::module_& module) {
         .def_property_readonly(
             "max_angle",
             [ureg](BaseDetector& self) {
-                printf("Getting max_angle\n");
                 return py::float_(self.max_angle) * ureg.attr("radian");
             },
             R"pbdoc(
@@ -71,9 +66,10 @@ void register_detector(py::module_& module) {
         )
         .def_property(
             "scalar_field",
-            [ureg](BaseDetector& self) {return vector_as_numpy_view(self, self.scalar_field);},
-            [ureg](BaseDetector& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
+            [ureg](BaseDetector& self) {
+                return vector_as_numpy_view(self, self.scalar_field);
+            },
+            [ureg](BaseDetector& self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
                 vector_assign_from_numpy(self.scalar_field, arr);
             },
             R"pbdoc(
@@ -82,9 +78,10 @@ void register_detector(py::module_& module) {
                 Setter accepts any 1D array castable to complex128
             )pbdoc"
         )
-        .def("get_structured_scalarfield",
+        .def(
+            "get_structured_scalarfield",
             [ureg](BaseDetector& self, size_t sampling) {
-                std::vector<complex128> vector = self.get_structured_scalarfield(sampling);  // returns vector<double>
+                std::vector<complex128> vector = self.get_structured_scalarfield(sampling);
                 return vector_move_from_numpy(std::move(vector), {sampling, sampling});
             },
             py::arg("sampling"),
@@ -92,7 +89,8 @@ void register_detector(py::module_& module) {
                 NumPy array of shape (sampling, 2) with columns [gamma, phi].
             )pbdoc"
         )
-        .def("get_poynting_field",
+        .def(
+            "get_poynting_field",
             [ureg](BaseDetector& self, const BaseScatterer& scatterer, py::object distance) {
                 double distance_value = distance.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
@@ -186,7 +184,7 @@ void register_detector(py::module_& module) {
 
             Notes
             -----
-            This method computes the energy flow by calculating the Poynting vector (which represents the directional energy flux) and summing it over the surface mesh of the scatterer. The final result is the total radiated power.
+            This method computes the energy flow by calculating the Poynting vector and summing it over the surface mesh of the scatterer.
             )pbdoc"
         )
         .def_readonly(
@@ -242,29 +240,17 @@ void register_detector(py::module_& module) {
                 Contains family and number information for the mode.
             )pbdoc"
         )
-        .def("get_coupling",
+        .def(
+            "get_coupling",
             [ureg](BaseDetector& self, const BaseScatterer& scatterer) {
                 double coupling = self.get_coupling(scatterer);
-
                 return (py::float_(coupling) * ureg.attr("watt")).attr("to_compact")();
             },
             py::arg("scatterer"),
             R"pbdoc(
             Compute the light coupling between the detector and a scatterer.
 
-            The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:
-
-            .. math::
-                |\iint_{\Omega}  \Phi_{det} \, \Psi_{scat}^* \,  d \Omega|^2
-
-            Where:
-
-            - \( \Phi_{det} \): The capturing field of the detector, representing the sensitivity of the detector to the incoming scattered field.
-            - \( \Psi_{scat} \): The scattered field produced by the scatterer.
-            - \( \Omega \): The solid angle over which the integration is performed, typically covering the full \( 4\pi \) steradians around the scatterer.
-            - \( d\Omega \): The differential solid angle element.
-
-            This integral computes the overlap between the detector's sensitivity pattern and the scattered field, which is then squared to represent the power coupled into the detector.
+            The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer.
 
             Parameters
             ----------
@@ -274,101 +260,70 @@ void register_detector(py::module_& module) {
             Returns
             -------
             Quantity
-                The power coupling between the detector and the scatterer, expressed in watts (W). This value represents the amount of scattered power that is captured by the detector.
-
-            Notes
-            -----
-            - The method internally invokes the appropriate binding method based on the type of scatterer (e.g., Sphere, Cylinder) to calculate the coupling.
-            - The coupling depends on both the geometry of the detector and the nature of the scattered field, making it essential for evaluating the efficiency of light collection in scattering experiments.
-
-            Example
-            -------
-            A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.
+                The power coupling between the detector and the scatterer, expressed in watts.
             )pbdoc"
-        )
-        ;
+        );
 
-    py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(module,
-        "Photodiode",
-            R"pbdoc(
-                Photodiode for Lorenz-Mie scattering simulations.
-
-                This class wraps a C++ Photodiode that samples the scattered field
-                according to numerical aperture, orientation offsets, polarization
-                filtering, and optional coherent or mean coupling strategies.
-
-                Parameters
-                ----------
-                sampling : int
-                    Number of sample points on the detector's angular mesh.
-                numerical_aperture : float
-                    Numerical aperture of the detector; controls the angular acceptance.
-                cache_numerical_aperture : float
-                    Cached numerical_aperture threshold for fast lookup (set equal to `numerical_aperture` to disable).
-                phi_offset : float
-                    Azimuthal angle offset (radians) for detector orientation.
-                gamma_offset : float
-                    Polar angle offset (radians) for detector orientation.
-                polarization_filter : float
-                    Degree or type of polarization filtering applied.
-                medium_refractive_index : float, optional
-                    Refractive index of the surrounding medium. Default is 1.0.
-
-                Attributes
-                ----------
-                scalar_field : numpy.ndarray
-                    The detected scalar field (intensity) sampled on the angular mesh.
-                numerical_aperture : float[Dimensionless]
-                    Numerical aperture exposed as a read-only property.
-                sampling : int
-                    Sampling count exposed as a read-only property.
-                phi_offset : float[Angle]
-                    Azimuthal offset exposed as a read-only property.
-                gamma_offset : float[Angle]
-                    Polar offset exposed as a read-only property.
-                polarization_filter : float[Angle]
-                    Polarization filter setting exposed as a read-only property.
-                mesh : numpy.ndarray
-                    Underlying Fibonacci mesh of angles used by the detector.
-                max_angle : float[Angle]
-                    Maximum polar angle in the mesh (radians).
-                min_angle : float[Angle]
-                    Minimum polar angle in the mesh (radians); zero if no cache.
-            )pbdoc"
-        )
+    py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(module, "Photodiode",
+        R"pbdoc(
+            Photodiode for Lorenz-Mie scattering simulations.
+        )pbdoc"
+    )
         .def(
             py::init(
                 [ureg](
                     py::object numerical_aperture,
                     py::object phi_offset,
                     py::object gamma_offset,
-                    py::object medium_refractive_index,
+                    py::object medium,
                     py::object polarization_filter,
                     py::object cache_numerical_aperture,
                     std::size_t sampling
                 ) {
-
-                    double polarization_filter_value;
-                    if (!polarization_filter.is(py::none())) {
-                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
-                    } else {
-                        polarization_filter_value = std::nan("");
-                    }
-
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
                     double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
-                    double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
 
-                    if (medium_refractive_index_value <= 0.0)
-                        throw std::runtime_error("Medium refractive index must be positive and non-zero.");
-                    if (numerical_aperture_value < 0.0)
+                    double polarization_filter_value;
+                    if (polarization_filter.is(py::none())) {
+                        polarization_filter_value = std::nan("");
+                    } else {
+                        polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+                    }
+
+                    std::shared_ptr<BaseMedium> medium_value;
+                    if (medium.is(py::none())) {
+                        medium_value = std::make_shared<ConstantMedium>(1.0);
+                    }
+                    else if (py::isinstance<BaseMedium>(medium)) {
+                        medium_value = medium.cast<std::shared_ptr<BaseMedium>>();
+                    }
+                    else if (py::hasattr(medium, "to")) {
+                        double refractive_index_value = medium.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
+                        medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
+                    }
+                    else {
+                        try {
+                            double refractive_index_value = medium.cast<double>();
+                            medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
+                        }
+                        catch (const py::cast_error&) {
+                            throw std::runtime_error(
+                                "medium must be None, a BaseMedium instance, or a real refractive index."
+                            );
+                        }
+                    }
+
+                    if (numerical_aperture_value < 0.0) {
                         throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
-                    if (numerical_aperture_value >= medium_refractive_index_value)
-                        throw std::runtime_error("Numerical aperture (NA) must be less than the medium refractive index.");
-                    if (numerical_aperture_value > 0.342)
-                        printf("Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n");
+                    }
+
+                    if (numerical_aperture_value > 0.342) {
+                        std::printf(
+                            "Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n"
+                        );
+                    }
 
                     return std::make_shared<Photodiode>(
                         sampling,
@@ -377,37 +332,36 @@ void register_detector(py::module_& module) {
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
-                        medium_refractive_index_value
+                        medium_value
                     );
                 }
             ),
             py::arg("numerical_aperture"),
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
-            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = py::none(),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
             py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("dimensionless"),
             py::arg("sampling") = 200,
             R"pbdoc(
             Photodiode class representing a photodiode with a coherent light coupling mechanism.
-            This means it is dependent on the phase of the impinging scattered light field.
+
             Parameters
             ----------
             numerical_aperture : Dimensionless
                 Numerical aperture of the imaging system.
             gamma_offset : Angle
-                Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+                Angle offset of the detector in the direction perpendicular to polarization.
             phi_offset : Angle
-                Angle [Degree] offset of the detector in the direction parallel to polarization.
+                Angle offset of the detector in the direction parallel to polarization.
             sampling : int
-                Sampling rate of the far-field distribution. Default is 200.
+                Sampling rate of the far field distribution. Default is 200.
             polarization_filter : Optional[Angle]
-                Angle [Degree] of the polarization filter in front of the detector.
+                Angle of the polarization filter in front of the detector.
             cache_numerical_aperture : Optional[Dimensionless]
-                Numerical aperture of the detector cache. Default is 0 AU.
-            medium_refractive_index : RefractiveIndex
-                The refractive index of the medium in which the detector operates. This is important for
-                determining the acceptance cone of light. Default is 1.0 (vacuum or air).
+                Numerical aperture of the detector cache. Default is 0.
+            medium : BaseMedium or float[RefractiveIndex]
+                The medium in which the detector operates. Default is vacuum or air.
             )pbdoc"
         )
         .def(
@@ -416,65 +370,13 @@ void register_detector(py::module_& module) {
             R"pbdoc(
             Print the properties of the Photodiode detector.
             )pbdoc"
-        )
-    ;
+        );
 
-    py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(module,
-        "CoherentMode",
-            R"pbdoc(
-                Photodiode for Lorenz-Mie scattering simulations.
-
-                This class wraps a C++ Photodiode that samples the scattered field
-                according to numerical aperture, orientation offsets, polarization
-                filtering, and optional coherent or mean coupling strategies.
-
-                Parameters
-                ----------
-                mode_number : str
-                    Identifier for the detector mode (e.g. '0', '1', ...).
-                sampling : int
-                    Number of sample points on the detector's angular mesh.
-                numerical_aperture : float
-                    Numerical aperture of the detector; controls the angular acceptance.
-                cache_numerical_aperture : float
-                    Cached numerical aperture threshold for fast lookup (set equal to `numerical_aperture` to disable).
-                phi_offset : float
-                    Azimuthal angle offset (radians) for detector orientation.
-                gamma_offset : float
-                    Polar angle offset (radians) for detector orientation.
-                polarization_filter : float
-                    Degree or type of polarization filtering applied.
-                rotation : float
-                    Rotation angle (radians) of the detector's field-of-view.
-                mean_coupling : bool
-                    If true, uses mean coupling; if false, uses point coupling.
-                medium_refractive_index : float, optional
-                    Refractive index of the surrounding medium. Default is 1.0.
-
-                Attributes
-                ----------
-                scalar_field : numpy.ndarray
-                    The detected scalar field (intensity) sampled on the angular mesh.
-                numerical_aperture : float[Dimensionless]
-                    Numerical aperture exposed as a read-only property.
-                sampling : int
-                    Sampling count exposed as a read-only property.
-                phi_offset : float[Angle]
-                    Azimuthal offset exposed as a read-only property.
-                gamma_offset : float[Angle]
-                    Polar offset exposed as a read-only property.
-                polarization_filter : float[Angle]
-                    Polarization filter setting exposed as a read-only property.
-                rotation : float[Angle]
-                    Rotation angle exposed as a read-only property.
-                mesh : numpy.ndarray
-                    Underlying Fibonacci mesh of angles used by the detector.
-                max_angle : float[Angle]
-                    Maximum polar angle in the mesh (radians).
-                min_angle : float[Angle]
-                    Minimum polar angle in the mesh (radians); zero if no cache.
-            )pbdoc"
-        )
+    py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(module, "CoherentMode",
+        R"pbdoc(
+            CoherentMode detector for Lorenz-Mie scattering simulations.
+        )pbdoc"
+    )
         .def(
             py::init(
                 [ureg](
@@ -483,35 +385,58 @@ void register_detector(py::module_& module) {
                     py::object phi_offset,
                     py::object gamma_offset,
                     py::object rotation,
-                    py::object medium_refractive_index,
+                    py::object medium,
                     py::object cache_numerical_aperture,
                     py::object polarization_filter,
                     py::object mean_coupling,
                     std::size_t sampling
                 ) {
-                    double polarization_filter_value;
-                    if (!polarization_filter.is(py::none())) {
-                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
-                    } else {
-                        polarization_filter_value = std::nan("");
-                    }
-
                     double numerical_aperture_value = numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     double phi_offset_value = phi_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     double rotation_value = rotation.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")(ureg.attr("dimensionless")).attr("magnitude").cast<double>();
                     bool mean_coupling_value = mean_coupling.cast<bool>();
-                    double medium_refractive_index_value = medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
 
-                    if (medium_refractive_index_value <= 0.0)
-                        throw std::runtime_error("Medium refractive index must be positive and non-zero.");
-                    if (numerical_aperture_value < 0.0)
+                    double polarization_filter_value;
+                    if (polarization_filter.is(py::none())) {
+                        polarization_filter_value = std::nan("");
+                    } else {
+                        polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+                    }
+
+                    std::shared_ptr<BaseMedium> medium_value;
+                    if (medium.is(py::none())) {
+                        medium_value = std::make_shared<ConstantMedium>(1.0);
+                    }
+                    else if (py::isinstance<BaseMedium>(medium)) {
+                        medium_value = medium.cast<std::shared_ptr<BaseMedium>>();
+                    }
+                    else if (py::hasattr(medium, "to")) {
+                        double refractive_index_value = medium.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
+                        medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
+                    }
+                    else {
+                        try {
+                            double refractive_index_value = medium.cast<double>();
+                            medium_value = std::make_shared<ConstantMedium>(refractive_index_value);
+                        }
+                        catch (const py::cast_error&) {
+                            throw std::runtime_error(
+                                "medium must be None, a BaseMedium instance, or a real refractive index."
+                            );
+                        }
+                    }
+
+                    if (numerical_aperture_value < 0.0) {
                         throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
-                    if (numerical_aperture_value >= medium_refractive_index_value)
-                        throw std::runtime_error("Numerical aperture (NA) must be less than the medium refractive index.");
-                    if (numerical_aperture_value > 0.342)
-                        printf("Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n");
+                    }
+
+                    if (numerical_aperture_value > 0.342) {
+                        std::printf(
+                            "Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n"
+                        );
+                    }
 
                     return std::make_shared<CoherentMode>(
                         mode_number,
@@ -523,7 +448,7 @@ void register_detector(py::module_& module) {
                         polarization_filter_value,
                         rotation_value,
                         mean_coupling_value,
-                        medium_refractive_index_value
+                        medium_value
                     );
                 }
             ),
@@ -532,34 +457,34 @@ void register_detector(py::module_& module) {
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("rotation"),
-            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = py::none(),
             py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("dimensionless"),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
             py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
             R"pbdoc(
             CoherentMode class representing a photodiode with a coherent light coupling mechanism.
-            This means it is dependent on the phase of the impinging scattered light field.
 
             Parameters
             ----------
             numerical_aperture : Dimensionless
                 Numerical aperture of the imaging system.
             gamma_offset : Angle
-                Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+                Angle offset of the detector in the direction perpendicular to polarization.
             phi_offset : Angle
-                Angle [Degree] offset of the detector in the direction parallel to polarization.
+                Angle offset of the detector in the direction parallel to polarization.
+            rotation : Angle
+                Rotation angle of the detector field of view.
             sampling : int
-                Sampling rate of the far-field distribution. Default is 200.
+                Sampling rate of the far field distribution. Default is 200.
             polarization_filter : Optional[Angle]
-                Angle [Degree] of the polarization filter in front of the detector.
+                Angle of the polarization filter in front of the detector.
             cache_numerical_aperture : Optional[Dimensionless]
-                Numerical aperture of the detector cache. Default is 0 AU.
+                Numerical aperture of the detector cache. Default is 0.
             mean_coupling : bool
-                Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
-            medium_refractive_index : RefractiveIndex
-                The refractive index of the medium in which the detector operates. This is important for
-                determining the acceptance cone of light. Default is 1.0 (vacuum or air).
+                Indicates if the coupling mechanism is point wise or mean wise.
+            medium : BaseMedium or float[RefractiveIndex]
+                The medium in which the detector operates. Default is vacuum or air.
             )pbdoc"
         )
         .def_property_readonly(
@@ -568,7 +493,7 @@ void register_detector(py::module_& module) {
                 return py::float_(self.rotation) * ureg.attr("radian");
             },
             R"pbdoc(
-                Rotation angle of the detector's field-of-view.
+                Rotation angle of the detector's field of view.
             )pbdoc"
         )
         .def(
@@ -577,40 +502,32 @@ void register_detector(py::module_& module) {
             R"pbdoc(
             Print the properties of the CoherentMode detector.
             )pbdoc"
-        )
-        ;
+        );
 
-
-    // ------------------ IntegratingSphere (4π) ------------------
     py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(module, "IntegratingSphere",
-            R"pbdoc(
-            IntegratingSphere detector.
+        R"pbdoc(
+        IntegratingSphere detector.
 
-            4π incoherent power collector.
-
-            This detector samples directions over the full sphere (theta in [0, pi])
-            and integrates intensity over all directions.
-
-            Notes
-            -----
-            - numerical_aperture is not used by this detector.
-            - The mesh still has phi_offset and gamma_offset to rotate the sampling pattern.
-            - If the underlying C++ detector applies interface physics via SnellFresnelInterface,
-            that remains active; otherwise it behaves as an ideal 4π collector.
-            )pbdoc")
-            .def(
-                py::init([ureg](
+        4π incoherent power collector.
+        )pbdoc"
+    )
+        .def(
+            py::init(
+                [ureg](
                     py::object polarization_filter,
                     std::size_t sampling
                 ) {
                     double polarization_filter_value;
-                    if (!polarization_filter.is(py::none())) {
-                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
-                    } else {
+                    if (polarization_filter.is(py::none())) {
                         polarization_filter_value = std::nan("");
+                    } else {
+                        polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
                     }
 
-                    return std::make_shared<IntegratingSphere>(sampling, polarization_filter_value);
+                    return std::make_shared<IntegratingSphere>(
+                        sampling,
+                        polarization_filter_value
+                    );
                 }
             ),
             py::arg("polarization_filter") = py::none(),
@@ -620,8 +537,6 @@ void register_detector(py::module_& module) {
 
             Parameters
             ----------
-            medium_refractive_index : RefractiveIndex
-                Refractive index of the surrounding medium.
             polarization_filter : Optional[Angle]
                 Polarization filter angle. If None, no polarization filtering is applied.
             sampling : int
@@ -634,6 +549,5 @@ void register_detector(py::module_& module) {
             R"pbdoc(
             Print the properties of the IntegratingSphere detector.
             )pbdoc"
-        )
-        ;
+        );
 }

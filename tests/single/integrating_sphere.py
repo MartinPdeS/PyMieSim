@@ -24,8 +24,8 @@ def test_photodiode_with_sampling(sampling):
     scatterer =  Sphere(
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
         source=source,  # Gaussian source from source fixture
-        refractive_index=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium_refractive_index=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        material=1.4 * ureg.RIU,  # Refractive index of the scatterer
+        medium=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
     )
 
     detector = IntegratingSphere(sampling=sampling)

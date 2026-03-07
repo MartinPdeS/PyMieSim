@@ -2,6 +2,7 @@
 #include "./coreshell.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
+#include <single/scatterer/utils.h>
 
 namespace py = pybind11;
 
@@ -13,48 +14,40 @@ void register_coreshell(py::module_& module) {
             py::init([ureg](
                 py::object core_diameter,
                 py::object shell_thickness,
-                py::object core_refractive_index,
-                py::object shell_refractive_index,
-                py::object medium_refractive_index,
-                std::shared_ptr<BaseSource> source
+                const py::object& core_material,
+                const py::object& shell_material,
+                const py::object& medium,
+                const std::shared_ptr<BaseSource>& source
             ) {
-                py::object units_length = py::module_::import("PyMieSim.units").attr("Length");
-                py::object units_riu = py::module_::import("PyMieSim.units").attr("RefractiveIndex");
-
-                core_diameter = units_length.attr("check")(core_diameter);
-                shell_thickness = units_length.attr("check")(shell_thickness);
-                core_refractive_index = units_riu.attr("check")(core_refractive_index);
-                shell_refractive_index = units_riu.attr("check")(shell_refractive_index);
-                medium_refractive_index = units_riu.attr("check")(medium_refractive_index);
                 double core_diameter_meter =
                     core_diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
                 double shell_thickness_meter =
                     shell_thickness.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                std::complex<double> core_refractive_index_riu =
-                    core_refractive_index.attr("to")(ureg.attr("RIU")) .attr("magnitude") .cast<std::complex<double>>();
+                const std::shared_ptr<BaseMaterial> parsed_core_material =
+                    parse_material_object(core_material, ureg);
 
-                std::complex<double> shell_refractive_index_riu =
-                    shell_refractive_index.attr("to")(ureg.attr("RIU")) .attr("magnitude") .cast<std::complex<double>>();
+                const std::shared_ptr<BaseMaterial> parsed_shell_material =
+                    parse_material_object(shell_material, ureg);
 
-                double medium_refractive_index_value =
-                    medium_refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
+                const std::shared_ptr<BaseMedium> parsed_medium =
+                    parse_medium_object(medium, ureg);
 
                 return std::make_shared<CoreShell>(
                     core_diameter_meter,
                     shell_thickness_meter,
-                    core_refractive_index_riu,
-                    shell_refractive_index_riu,
-                    medium_refractive_index_value,
+                    std::move(parsed_core_material),
+                    std::move(parsed_shell_material),
+                    std::move(parsed_medium),
                     std::move(source)
                 );
             }),
             py::arg("core_diameter"),
             py::arg("shell_thickness"),
-            py::arg("core_refractive_index"),
-            py::arg("shell_refractive_index"),
-            py::arg("medium_refractive_index"),
+            py::arg("core_material"),
+            py::arg("shell_material"),
+            py::arg("medium"),
             py::arg("source"),
             R"pbdoc(
                 Constructor for CORESHELL, initializing it with physical and optical properties.
@@ -65,12 +58,12 @@ void register_coreshell(py::module_& module) {
                     The diameter of the core of the spherical shell.
                 shell_thickness : float
                     The thickness of the shell surrounding the core.
-                core_refractive_index : complex
-                    The refractive index of the core.
-                shell_refractive_index : complex
-                    The refractive index of the shell.
-                medium_refractive_index : float
-                    The refractive index of the surrounding medium.
+                core_material : BaseMaterial
+                    The material of the core.
+                shell_material : BaseMaterial
+                    The material of the shell.
+                medium : BaseMedium
+                    The surrounding medium of the core-shell scatterer.
                 source : BaseSource
                     The source of the incident light.
             )pbdoc"
@@ -99,23 +92,17 @@ void register_coreshell(py::module_& module) {
             },
             "Thickness of the shell."
         )
-        .def_property_readonly(
-            "core_refractive_index",
-            [ureg](const CoreShell &self) {
-                py::object magnitude = py::cast(self.core_refractive_index);
-                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
-            },
-            "Refractive index of the core shell."
-        )
-        .def_property_readonly(
-            "shell_refractive_index",
-            [ureg](const CoreShell &self) {
-                py::object magnitude = py::cast(self.shell_refractive_index);
-                return (magnitude * ureg.attr("RIU")).attr("to_compact")();
-            },
-            "Refractive index of the shell."
+        .def_readonly(
+            "core_material",
+            &CoreShell::core_material,
+            "Material of the core shell."
         )
         .def_readonly(
+            "shell_material",
+            &CoreShell::shell_material,
+            "Material of the shell."
+        )
+        .def_readonly_static(
             "property_names",
             &CoreShell::property_names,
             "Property names of the core-shell scatterer."

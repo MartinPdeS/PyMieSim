@@ -10,30 +10,8 @@ from PyMieSim.single.source import Gaussian, PolarizationState
 from PyMieSim.single.detector import Photodiode
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
-refractive_index = [1.2 * ureg.RIU, 1.6 * ureg.RIU]
-medium_refractive_index = [1.1 * ureg.RIU, 1.4 * ureg.RIU]
-
-attributes = [
-    "size_parameter",
-    "cross_section",
-    "g",
-    "an",
-    "bn",
-    "Qsca",
-    "Qext",
-    "Qabs",
-    "Qback",
-    "Qratio",
-    "Qforward",
-    "Qpr",
-    "Csca",
-    "Cext",
-    "Cabs",
-    "Cback",
-    "Cratio",
-    "Cforward",
-    "Cpr",
-]
+materials = [1.2 * ureg.RIU, 1.6 * ureg.RIU]
+mediums = [1.1 * ureg.RIU, 1.4 * ureg.RIU]
 
 
 @pytest.fixture()
@@ -46,30 +24,30 @@ def source():
     )
 
 
-@pytest.mark.parametrize("refractive_index", refractive_index, ids=[f"refractive_index:{m}" for m in refractive_index])
+@pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
 @pytest.mark.parametrize(
-    "medium_refractive_index", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
+    "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
 )
-@pytest.mark.parametrize("attribute", attributes)
-def test_sphere_attribute(attribute, refractive_index, medium_refractive_index, source):
+@pytest.mark.parametrize("attribute", Sphere.property_names)
+def test_sphere_attribute(attribute, material, medium, source):
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
         source=source,
-        medium_refractive_index=medium_refractive_index,
-        refractive_index=refractive_index,
+        medium=medium,
+        material=material,
     )
     _ = getattr(scatterer, attribute)
 
     # scatterer.print_properties()
 
 
-@pytest.mark.parametrize("refractive_index", refractive_index, ids=[f"refractive_index:{m}" for m in refractive_index])
+@pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
 @pytest.mark.parametrize(
-    "medium_refractive_index", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
+    "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
 )
 def test_sphere_coupling(
-    refractive_index,
-    medium_refractive_index,
+    material,
+    medium,
     source,
 ):
     detector = Photodiode(
@@ -77,28 +55,28 @@ def test_sphere_coupling(
         numerical_aperture=0.2 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        medium_refractive_index=1.0 * ureg.RIU
+        medium=1.0 * ureg.RIU
     )
 
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
         source=source,
-        medium_refractive_index=medium_refractive_index,
-        refractive_index=refractive_index,
+        medium=medium,
+        material=material,
     )
     _ = detector.get_coupling(scatterer)
 
 
-@pytest.mark.parametrize("refractive_index", refractive_index, ids=[f"refractive_index:{m}" for m in refractive_index])
+@pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
 @pytest.mark.parametrize(
-    "medium_refractive_index", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
+    "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
 )
-def test_unstructured_array_functions(refractive_index, medium_refractive_index, source):
+def test_unstructured_array_functions(material, medium, source):
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
         source=source,
-        medium_refractive_index=medium_refractive_index,
-        refractive_index=refractive_index,
+        medium=medium,
+        material=material,
     )
 
     phi = numpy.linspace(0, numpy.pi, 5) * ureg.radian

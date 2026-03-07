@@ -1,9 +1,16 @@
 #include "./cylinder.h"
 
 // ---------------------- Constructors ---------------------------------------
-InfiniteCylinder::InfiniteCylinder(double _diameter, complex128 _refractive_index, double _medium_refractive_index, std::shared_ptr<BaseSource> _source, size_t _max_order) :
-BaseScatterer(_max_order, std::move(_source), _medium_refractive_index), diameter(_diameter), refractive_index(_refractive_index)
+InfiniteCylinder::InfiniteCylinder(
+    double _diameter,
+    std::shared_ptr<BaseMaterial> _material,
+    std::shared_ptr<BaseMedium> _medium,
+    std::shared_ptr<BaseSource> _source,
+    size_t _max_order) :
+    BaseScatterer(_max_order, std::move(_source), std::move(_medium)), diameter(_diameter), material(_material)
 {
+    this->material->initialize(this->source->wavelength);
+    this->medium->initialize(this->source->wavelength);
     this->compute_cross_section();
     this->compute_size_parameter();
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
@@ -72,7 +79,7 @@ void InfiniteCylinder::compute_an_bn(const size_t max_order) {
 
     // Compute the arguments used in the Bessel and Hankel function calculations
     complex128
-        m = this->refractive_index / this->medium_refractive_index, // Relative refractive index
+        m = this->material->get_refractive_index() / this->medium->get_refractive_index(), // Relative refractive index
         mx = m * size_parameter; // Scaled size parameter for internal calculations
 
     // Precompute Bessel and Hankel functions up to max_order
@@ -115,7 +122,7 @@ void InfiniteCylinder::compute_cn_dn(const size_t max_order) {
     this->d2n.resize(max_order);
 
     // Compute the relative refractive index and scaled internal size parameter
-    complex128 m = this->refractive_index / this->medium_refractive_index;
+    complex128 m = this->material->get_refractive_index() / this->medium->get_refractive_index();
     complex128 mx = m * size_parameter;
 
     // Impedance ratio (used in TE mode internal coefficient)

@@ -25,8 +25,8 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=2 * ureg.micrometer,
     source=source,
-    medium_refractive_index=1.0 * ureg.RIU,
-    refractive_index=1.8 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
+    material=1.8 * ureg.RIU,
 )
 
 detector = CoherentMode(
@@ -36,7 +36,7 @@ detector = CoherentMode(
     gamma_offset=0 * ureg.degree,
     phi_offset=0 * ureg.degree,
     rotation=0 * ureg.degree,
-    medium_refractive_index=1.0 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
 )
 
 footprint = Footprint(

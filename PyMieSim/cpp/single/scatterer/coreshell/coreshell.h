@@ -2,6 +2,8 @@
 
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
+#include <dispersive_material/material.h>
+#include <dispersive_material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -12,28 +14,32 @@ class CoreShell: public BaseScatterer
         double core_diameter;
         double shell_thickness;
         double total_diameter;
-        complex128 core_refractive_index;
-        complex128 shell_refractive_index;
+        std::shared_ptr<BaseMaterial> core_material;
+        std::shared_ptr<BaseMaterial> shell_material;
         double x_core;
         double x_shell;
 
-        std::vector<std::string> property_names = {
+        inline static std::vector<std::string> property_names = {
             "size_parameter",
             "radius",
             "volume",
             "cross_section",
+            "an",
+            "bn",
             "g",
             "Qsca",
             "Qext",
             "Qabs",
             "Qback",
             "Qratio",
+            "Qforward",
             "Qpr",
             "Csca",
             "Cext",
             "Cabs",
             "Cback",
             "Cratio",
+            "Cforward",
             "Cpr"
         };
 
@@ -42,14 +48,22 @@ class CoreShell: public BaseScatterer
          * @brief Constructs a CoreShell object.
          * @param core_diameter The diameter of the core.
          * @param shell_thickness The thickness of the shell.
-         * @param core_refractive_index The refractive index of the core.
-         * @param shell_refractive_index The refractive index of the shell.
-         * @param medium_refractive_index The refractive index of the medium.
+         * @param core_material The material of the core.
+         * @param shell_material The material of the shell.
+         * @param medium_material The material of the medium.
          * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          * @param compute_c_d Whether to compute the cn and dn coefficients (default is false).
          */
-        CoreShell(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index, double medium_refractive_index, std::shared_ptr<BaseSource> source, size_t max_order = 0);
+        CoreShell(
+            double core_diameter,
+            double shell_thickness,
+            std::shared_ptr<BaseMaterial> core_material,
+            std::shared_ptr<BaseMaterial> shell_material,
+            std::shared_ptr<BaseMedium> medium_material,
+            std::shared_ptr<BaseSource> source,
+            size_t max_order = 0
+        );
 
         /**
          * @brief Computes the size parameter for the sphere.
@@ -166,15 +180,15 @@ class CoreShell: public BaseScatterer
 
             std::printf("| %-17s | %14.*e + %14.*ei | %-9s |\n",
                 "core_n",
-                precision, std::real(this->core_refractive_index),
-                precision, std::imag(this->core_refractive_index),
+                precision, std::real(this->core_material->get_refractive_index()),
+                 precision, std::imag(this->core_material->get_refractive_index()),
                 "RIU"
             );
 
             std::printf("| %-17s | %14.*e + %14.*ei | %-9s |\n",
                 "shell_n",
-                precision, std::real(this->shell_refractive_index),
-                precision, std::imag(this->shell_refractive_index),
+                precision, std::real(this->shell_material->get_refractive_index()),
+                precision, std::imag(this->shell_material->get_refractive_index()),
                 "RIU"
             );
 

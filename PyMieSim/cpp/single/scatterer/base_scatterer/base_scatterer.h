@@ -8,6 +8,7 @@
 #include <bessel_subroutine/bessel_subroutine.h>
 #include <utils/defines.h>
 #include <memory>
+#include <dispersive_material/medium.h>
 
 typedef std::complex<double> complex128;
 
@@ -19,12 +20,15 @@ public:
     double size_parameter;
     double size_parameter_squared;
     double cross_section;
-    double medium_refractive_index;
+    std::shared_ptr<BaseMedium> medium;
     std::vector<size_t> indices;
 
     BaseScatterer() = default;
-    BaseScatterer(const size_t _max_order, std::shared_ptr<BaseSource> _source, const double _medium_refractive_index)
-    : max_order(_max_order), source(std::move(_source)), medium_refractive_index(_medium_refractive_index){}
+    BaseScatterer(
+        const size_t _max_order,
+        std::shared_ptr<BaseSource> _source,
+        std::shared_ptr<BaseMedium> _medium)
+    : max_order(_max_order), source(std::move(_source)), medium(std::move(_medium)){}
 
     // VIRTUAL INTERFACE ----------------------------------------------
     virtual ~BaseScatterer() = default;

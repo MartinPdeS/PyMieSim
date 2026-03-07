@@ -153,7 +153,7 @@ complex128
 BaseScatterer::get_propagator(const double &radius) const {
     return (
         source->amplitude /
-        (source->wavenumber_vacuum * this->medium_refractive_index * radius) *
+        (source->wavenumber_vacuum * this->medium->get_refractive_index(source->wavelength) * radius) *
         exp(-complex128(0, 1) * source->wavenumber_vacuum * radius)
     );
 }
@@ -321,10 +321,8 @@ BaseScatterer::compute_incident_nearfields(
 
     std::vector<complex128> field_values(number_of_points);
 
-    const double medium_refractive_index = this->medium_refractive_index;
-
     const double k0 = this->source->wavenumber_vacuum;
-    const double k_medium = k0 * medium_refractive_index;
+    const double k_medium = k0 * this->medium->get_refractive_index(this->source->wavelength);
 
     const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
     const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;

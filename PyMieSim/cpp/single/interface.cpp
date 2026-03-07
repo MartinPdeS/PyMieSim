@@ -10,7 +10,6 @@
 #include "single/setup_single/interface.cpp"
 #include "single/detector/interface.cpp"
 
-
 namespace py = pybind11;
 
 PYBIND11_MODULE(interface_single, module) {

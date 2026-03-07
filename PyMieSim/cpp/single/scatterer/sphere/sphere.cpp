@@ -2,9 +2,17 @@
 #include <functional>
 
 // ---------------------- Constructors ---------------------------------------
-Sphere::Sphere(const double _diameter, const complex128 _refractive_index, const double _medium_refractive_index, std::shared_ptr<BaseSource> _source, size_t _max_order)
-: BaseScatterer(_max_order, std::move(_source), _medium_refractive_index), diameter(_diameter), refractive_index(_refractive_index)
+Sphere::Sphere(
+    const double _diameter,
+    const std::shared_ptr<BaseMaterial> _material,
+    const std::shared_ptr<BaseMedium> _medium,
+    const std::shared_ptr<BaseSource> _source,
+    size_t _max_order
+)
+: BaseScatterer(_max_order, std::move(_source), std::move(_medium)), diameter(_diameter), material(_material)
 {
+    this->material->initialize(this->source->wavelength);
+    this->medium->initialize(this->source->wavelength);
     this->compute_cross_section();
     this->compute_size_parameter();
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
@@ -13,7 +21,7 @@ Sphere::Sphere(const double _diameter, const complex128 _refractive_index, const
 
 // ---------------------- Methods ---------------------------------------
 void Sphere::compute_size_parameter() {
-    this->size_parameter = source->wavenumber_vacuum * this->diameter / 2 * this->medium_refractive_index;
+    this->size_parameter = source->wavenumber_vacuum * this->diameter / 2 * this->medium->get_refractive_index();
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
 
@@ -28,7 +36,7 @@ void Sphere::compute_an_bn(size_t _max_order) {
     bn.resize(_max_order);
 
     complex128 psi_n, chi_n, psi_1, chi_1, xi_n, xi_nm1,
-        m = this->refractive_index / this->medium_refractive_index,
+        m = this->material->get_refractive_index() / this->medium->get_refractive_index(),
         mx = m * size_parameter,
         derivative_a, derivative_b;
 
@@ -72,7 +80,7 @@ void Sphere::compute_cn_dn(size_t _max_order) {
 
     complex128
         x = size_parameter,
-        m = this->refractive_index / this->medium_refractive_index,
+        m = this->material->get_refractive_index() / this->medium->get_refractive_index(),
         z = m * x;
 
     size_t nmx = std::max( _max_order, (size_t) std::abs(z) ) + 16;
@@ -230,11 +238,10 @@ Sphere::compute_total_nearfields(
 
     const double radius_particle = 0.5 * this->diameter;
 
-    const double medium_refractive_index = this->medium_refractive_index;
-    const complex128 particle_refractive_index = this->refractive_index;
+    const complex128 particle_refractive_index = this->material->get_refractive_index();
 
     const double k0 = this->source->wavenumber_vacuum;
-    const double k_medium = k0 * medium_refractive_index;
+    const double k_medium = k0 * this->medium->get_refractive_index();
 
     const complex128 k_particle = complex128(k0, 0.0) * particle_refractive_index;
 
@@ -503,9 +510,8 @@ Sphere::compute_scattered_nearfields(
 
     const double radius_particle = 0.5 * this->diameter;
 
-    const double medium_refractive_index = this->medium_refractive_index;
     const double k0 = this->source->wavenumber_vacuum;
-    const double k_medium = k0 * medium_refractive_index;
+    const double k_medium = k0 * this->medium->get_refractive_index();
 
     const complex128 i_unit(0.0, 1.0);
 

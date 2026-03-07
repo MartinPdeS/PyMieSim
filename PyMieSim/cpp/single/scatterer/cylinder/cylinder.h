@@ -1,6 +1,8 @@
 #pragma once
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
+#include <dispersive_material/material.h>
+#include <dispersive_material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -9,11 +11,15 @@ class InfiniteCylinder: public BaseScatterer
 {
     public:
         double diameter;
-        complex128 refractive_index;
-        std::vector<std::string> property_names = {
+        std::shared_ptr<BaseMaterial> material;
+        inline static std::vector<std::string> property_names = {
             "size_parameter",
             "radius",
             "cross_section",
+            "a1n",
+            "a2n",
+            "b1n",
+            "b2n",
             "g",
             "Qsca",
             "Qext",
@@ -27,11 +33,17 @@ class InfiniteCylinder: public BaseScatterer
          * @brief Constructs a InfiniteCylinder object.
          * @param diameter The diameter of the cylinder.
          * @param refractive_index The refractive index of the cylinder.
-         * @param medium_refractive_index The refractive index of the medium.
+         * @param medium The medium in which the cylinder is embedded.
          * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients.
          */
-        InfiniteCylinder(double diameter, complex128 refractive_index, double medium_refractive_index, std::shared_ptr<BaseSource> source, size_t max_order = 0);
+        InfiniteCylinder(
+            double diameter,
+            std::shared_ptr<BaseMaterial> material,
+            std::shared_ptr<BaseMedium> medium,
+            std::shared_ptr<BaseSource> source,
+            size_t max_order = 0
+        );
 
         /**
          * @brief Computes the size parameter for the sphere.
