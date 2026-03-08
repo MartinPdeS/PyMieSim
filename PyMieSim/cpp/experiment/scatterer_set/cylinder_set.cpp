@@ -1,4 +1,4 @@
-#include "./cylinder.h"
+#include "./cylinder_set.h"
 
 
 // InfiniteCylinderSet methods
@@ -27,8 +27,8 @@ void InfiniteCylinderSet::validate_sequential_data(const size_t expected_size) c
 InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const {
     return InfiniteCylinder(
         this->diameter[index],
-        this->property.get(index, source->wavelength_index),
-        this->medium_property.get(index, source->wavelength_index),
+        this->property[index],
+        this->medium_property[index],
         source
     );
 }
@@ -36,8 +36,8 @@ InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index_sequential(const si
 std::unique_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const {
     InfiniteCylinder scatterer(
         this->diameter[index],
-        this->property.get(index, source->wavelength_index),
-        this->medium_property.get(index, source->wavelength_index),
+        this->property[index],
+        this->medium_property[index],
         source
     );
 
@@ -49,8 +49,8 @@ InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_i
 
     InfiniteCylinder scatterer(
         diameter[indices[0]],
-        property.get(indices[1], source->wavelength_index),
-        medium_property.get(indices[2], source->wavelength_index),
+        property[indices[1]],
+        medium_property[indices[2]],
         source
     );
 
@@ -65,8 +65,8 @@ std::unique_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index(c
 
     InfiniteCylinder scatterer = InfiniteCylinder(
         diameter[indices[0]],
-        property.get(indices[1], source->wavelength_index),
-        medium_property.get(indices[2], source->wavelength_index),
+        property[indices[1]],
+        medium_property[indices[2]],
         source
     );
 

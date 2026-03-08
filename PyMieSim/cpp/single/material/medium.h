@@ -52,16 +52,16 @@ public:
     }
 };
 
-class DispersiveMedium : public BaseMedium {
+class Medium : public BaseMedium {
 public:
     std::string name;
     std::vector<double> wavelengths;
     std::vector<double> refractive_indices;
     bool allow_extrapolation = false;
 
-    DispersiveMedium() = default;
+    Medium() = default;
 
-    DispersiveMedium(
+    Medium(
         const std::string& name,
         const std::vector<double>& wavelengths,
         const std::vector<double>& refractive_indices,

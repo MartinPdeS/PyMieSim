@@ -1,4 +1,4 @@
-#include "./core_shell.h"
+#include "./core_shell_set.h"
 
 
 
@@ -21,9 +21,9 @@ CoreShell CoreShellSet::get_scatterer_by_index(const size_t flat_index, std::sha
     CoreShell scatterer(
         core_diameter[indices[0]],
         shell_thickness[indices[1]],
-        core_property.get(indices[2], source->wavelength_index),
-        shell_property.get(indices[3], source->wavelength_index),
-        medium_property.get(indices[4], source->wavelength_index),
+        core_property[indices[2]],
+        shell_property[indices[3]],
+        medium_property[indices[4]],
         source
     );
 
@@ -38,9 +38,9 @@ std::unique_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index(const si
     CoreShell scatterer(
         core_diameter[indices[0]],
         shell_thickness[indices[1]],
-        core_property.get(indices[2], source->wavelength_index),
-        shell_property.get(indices[3], source->wavelength_index),
-        medium_property.get(indices[4], source->wavelength_index),
+        core_property[indices[2]],
+        shell_property[indices[3]],
+        medium_property[indices[4]],
         source
     );
 
@@ -71,9 +71,9 @@ CoreShell CoreShellSet::get_scatterer_by_index_sequential(const size_t index, st
     CoreShell scatterer(
         core_diameter[index],
         shell_thickness[index],
-        core_property.get(index, source->wavelength_index),
-        shell_property.get(index, source->wavelength_index),
-        medium_property.get(index, source->wavelength_index),
+        core_property[index],
+        shell_property[index],
+        medium_property[index],
         source
     );
 
@@ -84,9 +84,9 @@ std::unique_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index_sequenti
     CoreShell scatterer = CoreShell(
         core_diameter[index],
         shell_thickness[index],
-        core_property.get(index, source->wavelength_index),
-        shell_property.get(index, source->wavelength_index),
-        medium_property.get(index, source->wavelength_index),
+        core_property[index],
+        shell_property[index],
+        medium_property[index],
         source
     );
 

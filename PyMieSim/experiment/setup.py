@@ -6,12 +6,13 @@ import numpy as np
 import pandas as pd
 
 from PyMieSim.units import ureg
-from PyMieSim.binary.interface_experiment import SETUP
-from PyMieSim.experiment.scatterer import SphereSet, InfiniteCylinderSet, CoreShellSet
-from PyMieSim.experiment.detector import PhotodiodeSet, CoherentModeSet
-from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet
+from PyMieSim.experiment._setup import Setup as SETUP
+from PyMieSim.experiment.scatterer_set import SphereSet#, InfiniteCylinderSet, CoreShellSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet, CoherentModeSet
+from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-from PyMieSim.experiment.source import PolarizationSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
+from PyMieSim.experiment.material_set import MaterialSet
 import PyMieSim
 
 
@@ -40,7 +41,7 @@ class Setup(SETUP):
 
     def __init__(
         self,
-        scatterer: Union[SphereSet, InfiniteCylinderSet, CoreShellSet],
+        scatterer,#: Union[SphereSet, InfiniteCylinderSet, CoreShellSet],
         source: Union[GaussianSet, PlaneWaveSet],
         detector: Optional[Union[PhotodiodeSet, CoherentModeSet]] = EmptyDetectorSet(),
     ):
@@ -54,12 +55,13 @@ class Setup(SETUP):
         detector
             Detector configuration set.
         """
-
-        self.scatterer = scatterer
-        self.source = source
-        self.detector = detector
-
         super().__init__(debug_mode=PyMieSim.debug_mode)
+
+        self.initialize(
+            scatterer_set=scatterer,
+            source_set=source,
+            detector_set=detector
+        )
 
     # ------------------------------------------------------------------
     # Sequential execution
@@ -82,14 +84,7 @@ class Setup(SETUP):
         numpy.ndarray
             Computed values.
         """
-
-        method = getattr(self, f"get_{measure}_sequential")
-
-        return method(
-            scatterer_set=self.scatterer,
-            source_set=self.source,
-            detector_set=self.detector,
-        )
+        return getattr(self, f"get_{measure}_sequential")()
 
     # ------------------------------------------------------------------
     # Main public interface
@@ -126,7 +121,7 @@ class Setup(SETUP):
 
         measures = list(set(np.atleast_1d(measures)))
 
-        if "coupling" in measures and isinstance(self.detector, EmptyDetectorSet):
+        if "coupling" in measures and isinstance(self.detector_set, EmptyDetectorSet):
             raise ValueError("Detector must be provided to compute coupling.")
 
         if as_numpy:
@@ -163,14 +158,7 @@ class Setup(SETUP):
         arrays = []
 
         for measure in measures:
-
-            method = getattr(self, f"get_{measure}")
-
-            values = method(
-                scatterer_set=self.scatterer,
-                source_set=self.source,
-                detector_set=self.detector,
-            )
+            values = getattr(self, f"get_{measure}")()
 
             arrays.append(np.asarray(values))
 
@@ -192,11 +180,11 @@ class Setup(SETUP):
 
         mappings = {}
 
-        mappings.update(self.source.get_mapping())
-        mappings.update(self.scatterer.get_mapping())
+        mappings.update(self.source_set.get_mapping())
+        mappings.update(self.scatterer_set.get_mapping())
 
-        if not isinstance(self.detector, EmptyDetectorSet):
-            mappings.update(self.detector.get_mapping())
+        if not isinstance(self.detector_set, EmptyDetectorSet):
+            mappings.update(self.detector_set.get_mapping())
 
         return mappings
 
@@ -204,9 +192,8 @@ class Setup(SETUP):
         """
         Extract numeric values and units from parameter mappings.
 
-        This function also handles PyMieSim C++ Properties objects
-        which represent either constant parameters or spectral
-        materials.
+        This function also converts non-numeric simulation objects such as
+        materials into dataframe-safe representations for grouping and plotting.
 
         Returns
         -------
@@ -227,18 +214,17 @@ class Setup(SETUP):
                 continue
 
             # ----------------------------------------------------------
-            # PyMieSim Properties objects (C++ bindings)
+            # Material sets
             # ----------------------------------------------------------
-            if hasattr(param_values, "is_constant") and hasattr(param_values, "is_spectral"):
+            if isinstance(param_values, MaterialSet):
+                values[key] = [repr(material) for material in param_values]
+                continue
 
-                if param_values.is_constant():
-                    values[key] = list(param_values)
-
-                else:
-                    # Spectral case
-                    # Each material corresponds to one entry in the grid
-                    values[key] = list(param_values.material_names)
-
+            # ----------------------------------------------------------
+            # Polarization sets
+            # ----------------------------------------------------------
+            if isinstance(param_values, PolarizationSet):
+                values[key] = [repr(polarization) for polarization in param_values]
                 continue
 
             # ----------------------------------------------------------
@@ -249,56 +235,78 @@ class Setup(SETUP):
                 continue
 
             # ----------------------------------------------------------
-            # Scalar fallback
+            # Generic iterable fallback for custom pybind11 containers
             # ----------------------------------------------------------
-
-
-            if isinstance(param_values, PolarizationSet):
-                values[key] = param_values
+            if hasattr(param_values, "__len__") and hasattr(param_values, "__getitem__"):
+                values[key] = [repr(param_values[index]) for index in range(len(param_values))]
                 continue
 
+            # ----------------------------------------------------------
+            # Scalar fallback
+            # ----------------------------------------------------------
             values[key] = [param_values]
 
         return values, units
 
     def _build_dataframe(self, measures: List[str], drop_unique_level: bool):
         """
-        Construct a DataFrame with a parameter grid defined by the source, scatterer and detector parameter sets.
-
+        Construct a DataFrame from the canonical experiment shape stored in ``self.shape``.
 
         Parameters
         ----------
         measures
-            Names of the measures to compute.
+            Names of the measures to initialize in the dataframe.
         drop_unique_level
             Remove parameters that only contain a single value.
 
         Returns
         -------
-        pandas.DataFrame
+        PyMieSimDataFrame
         """
         mappings = self._collect_parameter_mappings()
-
         values, units = self._separate_units_and_values(mappings)
 
-        if drop_unique_level:
-
-            values = {k: v for k, v in values.items() if len(v) > 1}
-
-            units = {k: u for k, u in units.items() if k in values}
-
         parameter_names = list(values.keys())
+        parameter_axes = list(values.values())
 
-        mesh = np.meshgrid(*values.values(), indexing="ij")
+        if len(parameter_axes) != len(self.array_shape):
+            raise ValueError(
+                f"Mismatch between number of parameter axes ({len(parameter_axes)}) "
+                f"and setup shape dimensions ({len(self.array_shape)})."
+            )
 
-        flattened = [m.reshape(-1) for m in mesh]
+        dataframe_dict = {}
 
-        dataframe = PyMieSimDataFrame(dict(zip(parameter_names, flattened)))
+        total_size = int(np.prod(self.array_shape))
+
+        for axis_index, (parameter_name, axis_values, axis_size) in enumerate(zip(parameter_names, parameter_axes, self.array_shape)):
+
+            if len(axis_values) != axis_size:
+                raise ValueError(
+                    f"Parameter '{parameter_name}' has length {len(axis_values)} "
+                    f"but corresponding setup axis has size {axis_size}."
+                )
+
+            if drop_unique_level and axis_size == 1:
+                continue
+
+            reshaped = np.asarray(axis_values, dtype=object).reshape(
+                [axis_size if i == axis_index else 1 for i in range(len(self.array_shape))]
+            )
+
+            broadcasted = np.broadcast_to(reshaped, self.array_shape)
+
+            dataframe_dict[parameter_name] = broadcasted.reshape(total_size)
+
+        if drop_unique_level:
+            units = {key: value for key, value in units.items() if key in dataframe_dict}
+
+        dataframe = PyMieSimDataFrame(dataframe_dict)
 
         dataframe.attrs["units"] = units
 
-        for m in measures:
-            dataframe[m] = np.nan
+        for measure in measures:
+            dataframe[measure] = np.nan
 
         return dataframe
 
@@ -333,13 +341,7 @@ class Setup(SETUP):
 
         for measure in measures:
 
-            method = getattr(self, f"get_{measure}")
-
-            values = method(
-                scatterer_set=self.scatterer,
-                source_set=self.source,
-                detector_set=self.detector,
-            )
+            values = getattr(self, f"get_{measure}")()
 
             dataframe[measure] = values.ravel()
 
@@ -369,7 +371,7 @@ class Setup(SETUP):
             return ureg.meter ** 2
 
         if measure.startswith("c"):
-            if isinstance(self.detector, EmptyDetectorSet):
+            if isinstance(self.detector_set, EmptyDetectorSet):
                 raise ValueError("Detector required for coupling computation.")
             return ureg.watt
 

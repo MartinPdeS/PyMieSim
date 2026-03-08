@@ -2,8 +2,8 @@
 
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
-#include <single/dispersive_material/material.h>
-#include <single/dispersive_material/medium.h>
+#include <single/material/material.h>
+#include <single/material/medium.h>
 
 using complex128 = std::complex<double>;
 
@@ -62,7 +62,7 @@ class CoreShell: public BaseScatterer
             std::shared_ptr<BaseMaterial> _shell_material,
             std::shared_ptr<BaseMedium> _medium,
             std::shared_ptr<BaseSource> _source,
-            size_t _max_order)
+            size_t _max_order = 0)
         :   BaseScatterer(
                 _max_order,
                 std::move(_source),

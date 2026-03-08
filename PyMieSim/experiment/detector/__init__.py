@@ -1,2 +1,0 @@
-from PyMieSim.binary.interface_experiment import CoherentModeSet
-from PyMieSim.binary.interface_experiment import PhotodiodeSet

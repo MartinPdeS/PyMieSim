@@ -1,10 +1,9 @@
 #pragma once
 
 #include <memory>
-#include "experiment/sets/base_set.h"
+#include "experiment/base_set.h"
 #include "single/scatterer/base_scatterer/base_scatterer.h"
-#include "experiment/sets/properties_set/properties_set.h"
-#include <dispersive_material/material.h>
+#include <single/material/material.h>
 
 
 class ScattererSet: public BaseSet

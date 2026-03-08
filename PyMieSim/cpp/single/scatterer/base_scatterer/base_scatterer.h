@@ -8,7 +8,7 @@
 #include <single/full_mesh/full_mesh.h>
 #include <bessel_subroutine/bessel_subroutine.h>
 #include <utils/defines.h>
-#include <single/dispersive_material/medium.h>
+#include <single/material/medium.h>
 
 typedef std::complex<double> complex128;
 

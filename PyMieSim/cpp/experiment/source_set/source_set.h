@@ -1,6 +1,6 @@
 #pragma once
 
-#include "experiment/sets/base_set.h"
+#include "experiment/base_set.h"
 #include "experiment/polarization_set/polarization_set.h"
 #include "single/source/source.h"
 

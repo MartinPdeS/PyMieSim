@@ -2,8 +2,8 @@
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
 #include <utils/constants.h>
-#include <single/dispersive_material/material.h>
-#include <single/dispersive_material/medium.h>
+#include <single/material/material.h>
+#include <single/material/medium.h>
 
 using complex128 = std::complex<double>;
 

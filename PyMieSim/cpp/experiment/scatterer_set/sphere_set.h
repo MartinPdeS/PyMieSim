@@ -1,6 +1,8 @@
 #pragma once
 
-#include <experiment/sets/scatterer_set/base.h>
+#include <experiment/scatterer_set/base_set.h>
+#include <experiment/material_set/material_set.h>
+#include <experiment/material_set/medium_set.h>
 
 
 // Sphere class inheriting from BaseSet
@@ -39,15 +41,15 @@ public:
 
 
     std::vector<double> diameter;
-    ScattererProperties property;
-    MediumProperties medium_property;
+    MaterialSet property;
+    MediumSet medium_property;
 
     SphereSet() = default;
 
     SphereSet(
         const std::vector<double>& diameter,
-        const ScattererProperties& property,
-        const MediumProperties& medium_property,
+        const MaterialSet& property,
+        const MediumSet& medium_property,
         const bool is_sequential
     )
         : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)

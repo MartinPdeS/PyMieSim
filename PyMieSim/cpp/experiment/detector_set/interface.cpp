@@ -3,7 +3,7 @@
 
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
-#include <./detector_set.h>
+#include "./detector_set.h"
 #include <experiment/sequential_broadcast.h>
 
 namespace py = pybind11;
@@ -89,7 +89,7 @@ PYBIND11_MODULE(detector_set, module) {
                     Indicates whether the detector set should be treated as sequential (i.e., each detector is evaluated independently) or as a batch (i.e., all detectors are evaluated together). Default is False (batch mode).
             )pdoc"
         )
-        .def_readonly("attributes", &PhotodiodeSet::attributes)
+        .def_readonly_static("attributes", &PhotodiodeSet::attributes)
         .def_readonly("sampling", &PhotodiodeSet::sampling)
         .def_property_readonly(
             "numerical_aperture",
@@ -130,7 +130,7 @@ PYBIND11_MODULE(detector_set, module) {
             },
             R"pdoc(
                 Generates a mapping of detector attributes to their corresponding values for the PhotodiodeSet instance.
-                The mapping includes keys such as 'detector:sampling', 'detector:NA', 'detector:cache_NA', 'detector:phi_offset', 'detector:gamma_offset', 'detector:polarization_filter', and 'detector:medium_refractive_index'.
+                The mapping includes keys such as 'detector:sampling', 'detector:NA', 'detector:cache_NA', 'detector:phi_offset', 'detector:gamma_offset', 'detector:polarization_filter', and 'detector:medium'.
             )pdoc"
         )
         .def_static(
@@ -211,7 +211,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("sampling") = py::int_(200),
             py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
             R"pdoc(
                 Construct a sequential PhotodiodeSet by broadcasting scalar or single element inputs.
 
@@ -235,7 +235,7 @@ PYBIND11_MODULE(detector_set, module) {
                     const py::object& cache_numerical_aperture,
                     const py::object& sampling,
                     const py::object& polarization_filter,
-                    const py::object& medium_refractive_index,
+                    const py::object& medium,
                     const bool& mean_coupling,
                     bool is_sequential
                 ) {
@@ -258,7 +258,7 @@ PYBIND11_MODULE(detector_set, module) {
                         polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
 
-                    std::vector<double> medium_refractive_index_value = cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                    std::vector<double> medium_value = cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
 
                     std::vector<double> rotation_value = cast_scalar_or_array_to_vector_double(rotation.attr("to")("radian").attr("magnitude"));
 
@@ -271,7 +271,7 @@ PYBIND11_MODULE(detector_set, module) {
                         gamma_offset_value,
                         polarization_filter_value,
                         rotation_value,
-                        medium_refractive_index_value,
+                        medium_value,
                         mean_coupling,
                         is_sequential
                     );
@@ -285,7 +285,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
             py::arg("sampling") = py::int_(200),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
             py::arg("mean_coupling") = false,
             py::arg("is_sequential") = false,
             R"pdoc(
@@ -309,7 +309,7 @@ PYBIND11_MODULE(detector_set, module) {
                     Number of sampling points for the coherent mode detector. Can be a single value or an array of values for multiple detectors. Default is 200.
                 polarization_filter : float or array-like, optional
                     Polarization filter angle for the coherent mode detector in radians. Can be a single value or an array of values for multiple detectors. Default is NaN (no polarization filter).
-                medium_refractive_index : float or array-like, optional
+                medium : float or array-like, optional
                     Refractive index of the medium in which the coherent mode detector is placed. Can be a single value or an array of values for multiple detectors. Default is 1.0.
                 mean_coupling : bool, optional
                     Indicates whether to use mean coupling when calculating the response of the coherent mode detector. Default is False.
@@ -317,7 +317,7 @@ PYBIND11_MODULE(detector_set, module) {
                     Indicates whether the detector set should be treated as sequential (i.e., each detector is evaluated independently) or as a batch (i.e., all detectors are evaluated together). Default is False (batch mode).
             )pdoc"
         )
-        .def_readonly("attributes", &CoherentModeSet::attributes)
+        .def_readonly_static("attributes", &CoherentModeSet::attributes)
         .def_readonly("mean_coupling", &CoherentModeSet::mean_coupling)
         .def_readonly("coherent", &CoherentModeSet::coherent)
         .def_readonly("mode_numbers", &CoherentModeSet::mode_numbers)
@@ -365,9 +365,9 @@ PYBIND11_MODULE(detector_set, module) {
             }
         )
         .def_property_readonly(
-            "medium_refractive_index",
+            "medium",
             [ureg](const CoherentModeSet& self) {
-                return py::cast(self.medium_refractive_index) * ureg.attr("RIU");
+                return py::cast(self.medium) * ureg.attr("RIU");
             }
         )
         .def(
@@ -382,12 +382,12 @@ PYBIND11_MODULE(detector_set, module) {
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
                 mapping["detector:rotation"] = py::cast(self.rotation) * ureg.attr("radian");
                 mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
-                mapping["detector:medium_refractive_index"] = py::cast(self.medium_refractive_index) * ureg.attr("RIU");
+                mapping["detector:medium"] = py::cast(self.medium) * ureg.attr("RIU");
                 return mapping;
             },
             R"pdoc(
                 Generates a mapping of detector attributes to their corresponding values for the CoherentModeSet instance.
-                The mapping includes keys such as 'detector:mode_number', 'detector:sampling', 'detector:NA', 'detector:cache_NA', 'detector:phi_offset', 'detector:gamma_offset', 'detector:polarization_filter', 'detector:rotation', 'detector:medium_refractive_index', and 'detector:mean_coupling'.
+                The mapping includes keys such as 'detector:mode_number', 'detector:sampling', 'detector:NA', 'detector:cache_NA', 'detector:phi_offset', 'detector:gamma_offset', 'detector:polarization_filter', 'detector:rotation', 'detector:medium', and 'detector:mean_coupling'.
             )pdoc"
         )
         .def_static(
@@ -402,7 +402,7 @@ PYBIND11_MODULE(detector_set, module) {
                 const py::object& cache_numerical_aperture,
                 const py::object& sampling,
                 const py::object& polarization_filter,
-                const py::object& medium_refractive_index,
+                const py::object& medium,
                 const bool& mean_coupling
             ) {
                 const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
@@ -433,8 +433,8 @@ PYBIND11_MODULE(detector_set, module) {
                         cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
                 }
 
-                std::vector<double> medium_refractive_index_value =
-                    cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<double> medium_value =
+                    cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
 
                 const size_t target_size = resolve_target_size_from_sizes(
                     total_size_value,
@@ -447,7 +447,7 @@ PYBIND11_MODULE(detector_set, module) {
                         {"gamma_offset", gamma_offset_value.size()},
                         {"rotation", rotation_value.size()},
                         {"polarization_filter", polarization_filter_value.size()},
-                        {"medium_refractive_index", medium_refractive_index_value.size()}
+                        {"medium", medium_value.size()}
                     }
                 );
 
@@ -459,7 +459,7 @@ PYBIND11_MODULE(detector_set, module) {
                 gamma_offset_value = broadcast_vector_double("gamma_offset", gamma_offset_value, target_size);
                 rotation_value = broadcast_vector_double("rotation", rotation_value, target_size);
                 polarization_filter_value = broadcast_vector_double("polarization_filter", polarization_filter_value, target_size);
-                medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+                medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
                 return std::make_shared<CoherentModeSet>(
                     mode_number_values,
@@ -470,7 +470,7 @@ PYBIND11_MODULE(detector_set, module) {
                     gamma_offset_value,
                     polarization_filter_value,
                     rotation_value,
-                    medium_refractive_index_value,
+                    medium_value,
                     mean_coupling,
                     true
                 );
@@ -484,7 +484,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
             py::arg("sampling") = py::int_(200),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium_refractive_index") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
             py::arg("mean_coupling") = false,
             R"pdoc(
                 Construct a sequential CoherentModeSet by broadcasting scalar or single element inputs.

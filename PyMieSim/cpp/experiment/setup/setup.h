@@ -10,17 +10,22 @@
 #include <single/source/source.h>
 #include <single/detector/detector.h>
 
-#include <experiment/sets/source_set/source_set.h>
-#include <experiment/sets/scatterer_set/sphere.h>
-#include <experiment/sets/scatterer_set/cylinder.h>
-#include <experiment/sets/scatterer_set/core_shell.h>
-#include <experiment/sets/detector_set/detector_set.h>
-#include <experiment/sets/properties_set/properties_set.h>
+#include <experiment/source_set/source_set.h>
+#include <experiment/scatterer_set/sphere_set.h>
+// #include <experiment/scatterer_set/cylinder_set.h>
+// #include <experiment/scatterer_set/core_shell_set.h>
+#include <experiment/detector_set/detector_set.h>
+// #include <experiment/properties_set/properties_set.h>
 
 class Setup
 {
     public:
         bool debug_mode = false;
+        std::vector<size_t> array_shape;
+        size_t total_iterations;
+        std::shared_ptr<ScattererSet> scatterer_set;
+        std::shared_ptr<BaseSourceSet> source_set;
+        std::shared_ptr<BaseDetectorSet> detector_set;
 
         explicit Setup(bool debug_mode = false) : debug_mode(debug_mode) {}
 
@@ -41,7 +46,7 @@ class Setup
          * @param source_set The set of sources involved in the experiment.
          * @param detector_set The set of detectors involved in the experiment.
         */
-        void debug_print_state(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const BaseDetectorSet& detector_set) const;
+        void debug_print_state() const;
 
         /**
          * @brief Flattens a multi-dimensional index into a single index (one input vector).
@@ -73,7 +78,7 @@ class Setup
             const std::vector<std::size_t>& dimensions,
             const std::vector<std::size_t>& first_multi_index,
             const std::vector<std::size_t>& second_multi_index
-        ) const
+        )
         {
             const std::vector<std::size_t> multi_index =
                 this->concatenate_vector(first_multi_index, second_multi_index);
@@ -89,7 +94,7 @@ class Setup
             const std::vector<std::size_t>& first_multi_index,
             const std::vector<std::size_t>& second_multi_index,
             const std::vector<std::size_t>& third_multi_index
-        ) const
+        )
         {
             const std::vector<std::size_t> multi_index =
                 this->concatenate_vector(first_multi_index, second_multi_index, third_multi_index);
@@ -99,7 +104,7 @@ class Setup
         /**
          * @brief Concatenates two vectors into a single vector.
          */
-        std::vector<std::size_t> concatenate_vector(const std::vector<std::size_t> first_vector, const std::vector<std::size_t>& second_vector) const
+        std::vector<std::size_t> concatenate_vector(const std::vector<std::size_t> first_vector, const std::vector<std::size_t>& second_vector)
         {
             std::vector<std::size_t> output_vector;
             output_vector.reserve(first_vector.size() + second_vector.size());
@@ -113,7 +118,7 @@ class Setup
         /**
          * @brief Concatenates three vectors into a single vector.
          */
-        std::vector<std::size_t> concatenate_vector(const std::vector<std::size_t>& first_vector, const std::vector<std::size_t>& second_vector, const std::vector<std::size_t>& third_vector) const
+        std::vector<std::size_t> concatenate_vector(const std::vector<std::size_t>& first_vector, const std::vector<std::size_t>& second_vector, const std::vector<std::size_t>& third_vector)
         {
             std::vector<std::size_t> output_vector;
             output_vector.reserve(first_vector.size() + second_vector.size() + third_vector.size());
@@ -125,6 +130,30 @@ class Setup
             return output_vector;
         }
 
+        void initialize(
+            std::shared_ptr<ScattererSet> scatterer_set,
+            std::shared_ptr<BaseSourceSet> source_set,
+            std::shared_ptr<BaseDetectorSet> detector_set
+        ) {
+
+            this->scatterer_set = std::move(scatterer_set);
+            this->source_set = std::move(source_set);
+            this->detector_set = std::move(detector_set);
+
+            if (debug_mode)
+                this->debug_print_state();
+
+            if (this->detector_set->is_empty) {
+                this->array_shape = this->concatenate_vector(this->source_set->shape, this->scatterer_set->shape);
+                this->total_iterations = this->source_set->total_combinations * this->scatterer_set->total_combinations;
+            }
+            else {
+                this->array_shape = this->concatenate_vector(this->source_set->shape, this->scatterer_set->shape, this->detector_set->shape);
+                this->total_iterations = this->source_set->total_combinations * this->scatterer_set->total_combinations * this->detector_set->total_combinations;
+            }
+
+            debug_printf("get_scatterer_data: total_iterations = %zu\n", this->total_iterations);
+        }
 
         /**
          * @brief Generic method to get scatterer data by invoking a member function.
@@ -135,63 +164,45 @@ class Setup
          * @return A tuple containing a numpy array of the requested data and the shape of the array.
          */
         template<double (BaseScatterer::*function)() const>
-        std::tuple<std::vector<double>, std::vector<std::size_t>>
-        get_data(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const {
+        std::tuple<std::vector<double>, std::vector<std::size_t>> get_data() {
 
-            if (debug_mode)
-                this->debug_print_state(scatterer_set, source_set, detector_set);
-
-            std::vector<std::size_t> array_shape;
-            size_t total_iterations;
-
-            if (detector_set.is_empty) {
-                array_shape = this->concatenate_vector(source_set.shape, scatterer_set.shape);
-                total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
-            }
-            else {
-                array_shape = this->concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
-                total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
-            }
-
-            debug_printf("get_scatterer_data: total_iterations = %zu\n", total_iterations);
-
-            std::vector<double> output_array(total_iterations);
+            std::vector<double> output_array(this->total_iterations);
 
             #pragma omp parallel for
-            for (long long flat_index = 0; flat_index < static_cast<long long>(total_iterations); ++flat_index) {
+            for (long long flat_index = 0; flat_index < static_cast<long long>(this->total_iterations); ++flat_index) {
                 size_t idx; // Declare idx locally so each iteration has its own copy
 
-                if (detector_set.is_empty) {
+                if (this->detector_set->is_empty) {
                     // 2D case: only source and scatterer
-                    size_t i = flat_index / scatterer_set.total_combinations;
-                    size_t j = flat_index % scatterer_set.total_combinations;
-                    std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
+                    size_t i = flat_index / this->scatterer_set->total_combinations;
+                    size_t j = flat_index % this->scatterer_set->total_combinations;
+                    std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
 
-                    std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source_ptr);
+                    std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j, source_ptr);
 
                     const std::vector<std::size_t> multi_index =
                         this->concatenate_vector(source_ptr->indices, source_ptr->indices);
 
-                    idx = this->flatten_multi_index(array_shape, source_ptr->indices, scatterer_ptr->indices);
+                    idx = this->flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices);
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 } else {
                     // 3D case: source, scatterer, and detector
-                    long long i = flat_index / (scatterer_set.total_combinations * detector_set.total_combinations);
-                    long long j = (flat_index / detector_set.total_combinations) % scatterer_set.total_combinations;
-                    long long k = flat_index % detector_set.total_combinations;
-                    std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
+                    long long i = flat_index / (this->scatterer_set->total_combinations * this->detector_set->total_combinations);
+                    long long j = (flat_index / this->detector_set->total_combinations) % this->scatterer_set->total_combinations;
+                    long long k = flat_index % this->detector_set->total_combinations;
+                    std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
 
-                    std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, source_ptr);
+                    std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j, source_ptr);
 
-                    std::shared_ptr<BaseDetector> detector = detector_set.get_detector_by_index(k);
-                    idx = this->flatten_multi_index(array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
+                    std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index(k);
+                    idx = this->flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
 
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 }
             }
 
             debug_printf("get_scatterer_data: finished computation\n");
-            return std::make_tuple(std::move(output_array), std::move(array_shape));
+            return std::make_tuple(std::move(output_array), this->array_shape);
         }
 
 
@@ -203,26 +214,24 @@ class Setup
          * @param detector_set The set of detectors.
          * @return A numpy array containing the requested data.
          */
-        template<double (BaseScatterer::*function)() const >
-        std::vector<double>
-        get_data_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const {
+        template<double (BaseScatterer::*function)() const> std::vector<double> get_data_sequential() {
 
             if (debug_mode)
-                this->debug_print_state(scatterer_set, source_set, detector_set);
+                this->debug_print_state();
 
-            std::vector<std::size_t> array_shape = {source_set.wavelength.size()};
-            size_t full_size = source_set.wavelength.size();
-            scatterer_set.validate_sequential_data(full_size);
-            source_set.validate_sequential_data(full_size);
+            this->array_shape = {this->source_set->wavelength.size()};
+            size_t full_size = this->source_set->wavelength.size();
+            this->scatterer_set->validate_sequential_data(full_size);
+            this->source_set->validate_sequential_data(full_size);
             debug_printf("get_scatterer_data_sequential: full_size = %zu\n", full_size);
 
             std::vector<double> output_array(full_size);
 
             #pragma omp parallel for
             for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
-                std::shared_ptr<BaseSource> source = source_set.get_source_by_index_sequential(idx);
+                std::shared_ptr<BaseSource> source = this->source_set->get_source_by_index_sequential(idx);
 
-                std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index_sequential(idx, source);
+                std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx, source);
 
                 output_array[idx] = std::invoke(function, *scatterer_ptr);
 
@@ -238,8 +247,7 @@ class Setup
          * @param detector_set The set of detectors.
          * @return A tuple containing a numpy array of coupling coefficients and the shape of the array.
          */
-        std::tuple<std::vector<double>, std::vector<std::size_t>>
-        get_coupling(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const;
+        std::tuple<std::vector<double>, std::vector<std::size_t>> get_coupling();
 
         /**
          * @brief Computes the coupling coefficient sequentially for given scatterers, sources, and detectors.
@@ -248,8 +256,7 @@ class Setup
          * @param detector_set The set of detectors.
          * @return A numpy array of coupling coefficients.
          */
-        std::vector<double>
-        get_coupling_sequential(const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) const;
+        std::vector<double>get_coupling_sequential();
 
         /**
          * @brief Computes the far-field patterns for given scatterers, sources, and a Fibonacci mesh.
@@ -260,6 +267,6 @@ class Setup
          * @return A tuple containing a numpy array of far-field patterns and the shape of the array.
          */
         std::tuple<std::vector<complex128>, std::vector<std::size_t>>
-        get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance = 1) const;
+        get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance = 1);
 
 };

@@ -13,7 +13,7 @@
 #include <single/mode_field/mode_field.h>
 #include <utils/math.h>
 #include <utils/constants.h>
-#include <single/dispersive_material/medium.h>
+#include <single/material/medium.h>
 
 
 using complex128 = std::complex<double>;

@@ -1,5 +1,5 @@
 #include <pybind11/pybind11.h>
-#include "setup.cpp"
+#include "./setup.cpp"
 #include <utils/numpy_interface.h>
 #include <utils/defines.h>
 
@@ -7,23 +7,17 @@ namespace py = pybind11;
 
 #define DEFINE_GETTER_INTERFACE(property) \
     .def("get_"  #property, \
-        [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) { \
-            auto [output, shape] = self.get_data<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
+        [](Setup& self) { \
+            auto [output, shape] = self.get_data<&BaseScatterer::get_##property>(); \
             return vector_move_from_numpy(output, shape); \
         }, \
-        pybind11::arg("scatterer_set"), \
-        pybind11::arg("source_set"), \
-        pybind11::arg("detector_set"), \
         "Retrieves the scattering property for a scatterer" \
     ) \
     .def("get_" #property "_sequential", \
-        [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) { \
-            std::vector<double> output = self.get_data_sequential<&BaseScatterer::get_##property>(scatterer_set, source_set, detector_set); \
+        [](Setup& self) { \
+            std::vector<double> output = self.get_data_sequential<&BaseScatterer::get_##property>(); \
             return vector_move_from_numpy(output, {output.size()}); \
         }, \
-        pybind11::arg("scatterer_set"), \
-        pybind11::arg("source_set"), \
-        pybind11::arg("detector_set"), \
         "Retrieves the scattering property for a scatterer" \
     )
 
@@ -63,10 +57,10 @@ namespace py = pybind11;
     DEFINE_GETTER_INTERFACE(G)
 
 
-void register_setup(py::module& module) {
+PYBIND11_MODULE(_setup, module) {
     module.doc() = "Interface for conducting Lorenz-Mie Theory (LMT) experiments within the PyMieSim package.";
 
-    pybind11::class_<Setup>(module, "SETUP")
+    pybind11::class_<Setup>(module, "Setup")
         .def(
             pybind11::init<bool>(),
             pybind11::arg("debug_mode") = false,
@@ -83,27 +77,21 @@ void register_setup(py::module& module) {
                     If set to True, enables debug printing for tracing computations. Default is True.
             )pbdoc"
         )
+        .def_readwrite("scatterer_set", &Setup::scatterer_set)
+        .def_readwrite("source_set", &Setup::source_set)
+        .def_readwrite("detector_set", &Setup::detector_set)
+        .def_readonly("debug_mode", &Setup::debug_mode)
+        .def_readonly("array_shape", &Setup::array_shape)
+        .def_readonly("total_iterations", &Setup::total_iterations)
+        .def("initialize", &Setup::initialize, pybind11::arg("scatterer_set"), pybind11::arg("source_set"), pybind11::arg("detector_set"))
         .def("get_coupling_sequential",
-            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) {
+            [](Setup& self) {
 
-                std::vector<double> coupling_array = self.get_coupling_sequential(scatterer_set, source_set, detector_set);
+                std::vector<double> coupling_array = self.get_coupling_sequential();
                 return vector_move_from_numpy(coupling_array, {coupling_array.size()});
             },
-            pybind11::arg("scatterer_set"),
-            pybind11::arg("source_set"),
-            pybind11::arg("detector_set"),
             R"pbdoc(
                 Retrieves the coupling power for a combination of scatterers, sources, and detectors in a sequential manner.
-
-                Parameters
-                ----------
-                scatterer_set : ScattererSet
-                    The set of scatterers.
-                source_set : BaseSourceSet
-                    The set of sources.
-                detector_set : DetectorSet
-                    The set of detectors.
-
                 Returns
                 -------
                 numpy.ndarray
@@ -111,25 +99,13 @@ void register_setup(py::module& module) {
             )pbdoc"
         )
         .def("get_coupling",
-            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet &source_set, const BaseDetectorSet &detector_set) {
+            [](Setup& self) {
 
-                auto [coupling_array, coupling_shape] = self.get_coupling(scatterer_set, source_set, detector_set);
+                auto [coupling_array, coupling_shape] = self.get_coupling();
                 return vector_move_from_numpy(coupling_array, coupling_shape);
             },
-            pybind11::arg("scatterer_set"),
-            pybind11::arg("source_set"),
-            pybind11::arg("detector_set"),
             R"pbdoc(
                 Retrieves the coupling power for a combination of scatterers, sources, and detectors.
-
-                Parameters
-                ----------
-                scatterer_set : ScattererSet
-                    The set of scatterers.
-                source_set : BaseSourceSet
-                    The set of sources.
-                detector_set : DetectorSet
-                    The set of detectors.
             )pbdoc"
         )
         .def("_get_farfields",
