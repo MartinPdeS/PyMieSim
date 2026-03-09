@@ -19,42 +19,53 @@ std::vector<double> BaseScatterer::get_prefactor() const {
 }
 
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_structured_farfields(const std::vector<complex128>& S1, const std::vector<complex128>& S2, const std::vector<double>& theta, const double& radius) const {
+std::tuple<
+    std::vector<complex128>,
+    std::vector<complex128>,
+    FullSteradian
+>
+BaseScatterer::get_structured_farfields(
+    const size_t& sampling,
+    const double& radius,
+    const std::shared_ptr<BaseSource>& source
+) const {
+
+    FullSteradian mesh(sampling);
+
     std::vector<complex128> phi_field, theta_field;
+    phi_field.reserve(mesh.total_size);
+    theta_field.reserve(mesh.total_size);
 
-    size_t full_size = theta.size() * S1.size();
+    std::pair<std::vector<complex128>, std::vector<complex128>> s1s2 = this->compute_s1s2(mesh.spherical.phi);
 
-    phi_field.reserve(full_size);
-    theta_field.reserve(full_size);
+    complex128 propagator = this->get_propagator(radius, source);
 
-    complex128 propagator = this->get_propagator(radius);
+    complex128 E0x = source->polarization.jones_vector[0];
+    complex128 E0y = source->polarization.jones_vector[1];
 
-    complex128 E0x = this->source->polarization.jones_vector[0];
-    complex128 E0y = this->source->polarization.jones_vector[1];
+    const std::vector<complex128>& S1 = s1s2.first;
+    const std::vector<complex128>& S2 = s1s2.second;
 
-    for (unsigned int p=0; p < S1.size(); p++ )
-        for (unsigned int t=0; t < theta.size(); t++ )
+    for (unsigned int p=0; p < sampling; p++ )
+        for (unsigned int t=0; t < sampling; t++ )
         {
-            complex128 phi_point_field = propagator * S1[p] * (E0x * cos(theta[t]) + E0y * sin(theta[t]));
-            complex128 thetea_point_field = propagator * S2[p] * (E0x * sin(theta[t]) - E0y * cos(theta[t]));
+            complex128 phi_point_field = propagator * S1[p] * (E0x * cos(mesh.spherical.theta[t]) + E0y * sin(mesh.spherical.theta[t]));
+            complex128 theta_point_field = propagator * S2[p] * (E0x * sin(mesh.spherical.theta[t]) - E0y * cos(mesh.spherical.theta[t]));
 
             phi_field.push_back(phi_point_field);
-            theta_field.push_back(thetea_point_field);
+            theta_field.push_back(theta_point_field);
         }
 
-    return std::make_tuple(phi_field, theta_field);
+    return std::make_tuple(phi_field, theta_field, mesh);
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_structured_farfields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
-    auto [S1, S2] = this->compute_s1s2(phi);
-
-    return this->compute_structured_farfields(S1, S2, theta, radius);
-}
-
-std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
+BaseScatterer::compute_unstructured_farfields(
+    const std::vector<double>& phi,
+    const std::vector<double>& theta,
+    const double radius,
+    const std::shared_ptr<BaseSource>& source
+) const
 {
     auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -65,10 +76,10 @@ BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, co
     phi_field.reserve(full_size);
     theta_field.reserve(full_size);
 
-    complex128 propagator = this->get_propagator(radius);
+    complex128 propagator = this->get_propagator(radius, source);
 
-    complex128 E0x = this->source->polarization.jones_vector[0];
-    complex128 E0y = this->source->polarization.jones_vector[1];
+    complex128 E0x = source->polarization.jones_vector[0];
+    complex128 E0y = source->polarization.jones_vector[1];
 
     for (unsigned int idx=0; idx < full_size; idx++)
     {
@@ -83,31 +94,20 @@ BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, co
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_unstructured_farfields(const FibonacciMesh& fibonacci_mesh, const double radius) const
+BaseScatterer::compute_unstructured_farfields(
+    const FibonacciMesh& fibonacci_mesh,
+    const double radius,
+    const std::shared_ptr<BaseSource>& source
+) const
 {
     return this->compute_unstructured_farfields(
         fibonacci_mesh.spherical.phi,
         fibonacci_mesh.spherical.theta,
-        radius
+        radius,
+        source
     );
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
-BaseScatterer::compute_full_structured_farfields(const size_t& sampling, const double& radius) const
-{
-    FullSteradian full_mesh = FullSteradian(sampling, radius);
-
-    auto [S1, S2] = this->compute_s1s2(full_mesh.spherical.phi);
-
-    auto [phi_field, theta_field] = this->compute_structured_farfields(S1, S2, full_mesh.spherical.theta, radius);
-
-    return std::make_tuple(
-        std::move(phi_field),
-        std::move(theta_field),
-        std::move(full_mesh.spherical.phi),
-        std::move(full_mesh.spherical.theta)
-    );
-}
 
 std::vector<complex128>
 BaseScatterer::compute_dn(double nmx, complex128 z)  const { //Page 127 of BH
@@ -120,14 +120,14 @@ BaseScatterer::compute_dn(double nmx, complex128 z)  const { //Page 127 of BH
 }
 
 double
-BaseScatterer::get_g_with_farfields(size_t sampling) const {
-    auto [SPF, fibonacci_mesh] = this->compute_full_structured_spf(sampling);
+BaseScatterer::get_g_with_farfields(std::shared_ptr<BaseSource> source, size_t sampling) const {
+    auto [SPF, mesh] = this->get_structured_spf(source, sampling);
 
     double
-    norm = abs(fibonacci_mesh.get_integral(SPF)),
-    expected_cos = abs(fibonacci_mesh.get_cos_integral(SPF));
+    norm = abs(mesh.get_integral(SPF)),
+    expected_cos = abs(mesh.get_cos_integral(SPF));
 
-    return expected_cos/norm;
+    return expected_cos / norm;
 }
 
 complex128
@@ -150,7 +150,7 @@ BaseScatterer::get_coefficient(const std::string &type, const size_t order) {
 }
 
 complex128
-BaseScatterer::get_propagator(const double &radius) const {
+BaseScatterer::get_propagator(const double &radius, std::shared_ptr<BaseSource> source) const {
     return (
         source->amplitude /
         (source->wavenumber_vacuum * this->medium->get_refractive_index(source->wavelength) * radius) *
@@ -195,14 +195,12 @@ BaseScatterer::get_pi_tau(const double& mu, const size_t& max_order) const {
 }
 
 std::tuple<std::vector<double>, FullSteradian>
-BaseScatterer::compute_full_structured_spf(const size_t sampling, const double radius) const
+BaseScatterer::get_structured_spf(std::shared_ptr<BaseSource> source, const size_t sampling, const double radius) const
 {
-    FullSteradian full_mesh = FullSteradian(sampling, radius);
-
-    auto [phi_field, theta_field] = this->compute_structured_farfields(
-        full_mesh.spherical.phi,
-        full_mesh.spherical.theta,
-        radius
+    auto [phi_field, theta_field, full_mesh] = this->get_structured_farfields(
+        sampling,
+        radius,
+        source
     );
 
     std::vector<double> spf;
@@ -217,41 +215,73 @@ BaseScatterer::compute_full_structured_spf(const size_t sampling, const double r
     return std::make_tuple(std::move(spf), std::move(full_mesh));
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>, std::vector<double>>
-BaseScatterer::compute_total_nearfields_structured(
+std::tuple<
+    std::vector<complex128>,
+    std::vector<complex128>,
+    std::vector<complex128>,
+    std::vector<complex128>,
+    std::vector<double>,
+    std::vector<double>,
+    std::vector<double>
+>
+BaseScatterer::get_structured_total_nearfields(
     const std::vector<double>& x_range,
     const std::vector<double>& y_range,
     const std::vector<double>& z_range,
-    const std::string& field_type
+    const std::string& field_type,
+    std::shared_ptr<BaseSource> source
 ) {
-    const long long nx = x_range.size();
-    const long long ny = y_range.size();
-    const long long nz = z_range.size();
-    const long long total_points = nx * ny * nz;
+    const size_t number_of_x_points = x_range.size();
+    const size_t number_of_y_points = y_range.size();
+    const size_t number_of_z_points = z_range.size();
 
-    // Prepare coordinate vectors for the structured grid
-    std::vector<double> x_coords, y_coords, z_coords;
-    x_coords.reserve(total_points);
-    y_coords.reserve(total_points);
-    z_coords.reserve(total_points);
+    if (number_of_x_points == 0 || number_of_y_points == 0 || number_of_z_points == 0) {
+        throw std::runtime_error("x_range, y_range, and z_range must all be non empty.");
+    }
 
-    #pragma omp parallel for collapse(3) // Enable OpenMP parallelization
-    for (long long ix = 0; ix < nx; ++ix)
-        for (long long iy = 0; iy < ny; ++iy)
-            for (long long iz = 0; iz < nz; ++iz) {
-                x_coords.push_back(x_range[ix]);
-                y_coords.push_back(y_range[iy]);
-                z_coords.push_back(z_range[iz]);
+    if (number_of_x_points > std::numeric_limits<size_t>::max() / number_of_y_points) {
+        throw std::runtime_error("Structured grid size overflow while computing number_of_x_points * number_of_y_points.");
+    }
+
+    const size_t number_of_xy_points = number_of_x_points * number_of_y_points;
+
+    if (number_of_xy_points > std::numeric_limits<size_t>::max() / number_of_z_points) {
+        throw std::runtime_error("Structured grid size overflow while computing total number of grid points.");
+    }
+
+    const size_t total_number_of_points = number_of_xy_points * number_of_z_points;
+
+    std::vector<double> x_coords(total_number_of_points);
+    std::vector<double> y_coords(total_number_of_points);
+    std::vector<double> z_coords(total_number_of_points);
+
+    #pragma omp parallel for collapse(3)
+    for (size_t x_index = 0; x_index < number_of_x_points; ++x_index) {
+        for (size_t y_index = 0; y_index < number_of_y_points; ++y_index) {
+            for (size_t z_index = 0; z_index < number_of_z_points; ++z_index) {
+                const size_t linear_index =
+                    x_index * (number_of_y_points * number_of_z_points) +
+                    y_index * number_of_z_points +
+                    z_index;
+
+                x_coords[linear_index] = x_range[x_index];
+                y_coords[linear_index] = y_range[y_index];
+                z_coords[linear_index] = z_range[z_index];
             }
+        }
+    }
 
+    std::vector<complex128> field_values =
+        this->get_total_nearfields(x_coords, y_coords, z_coords, field_type, source);
 
-    // Compute the requested field component using the existing method
-    std::vector<complex128> field_values = this->compute_total_nearfields(x_coords, y_coords, z_coords, field_type);
+    std::vector<complex128> field_x_components =
+        this->get_total_nearfields(x_coords, y_coords, z_coords, "Ex", source);
 
-    // Compute all individual field components (Ex, Ey, Ez) for comprehensive analysis
-    std::vector<complex128> field_x_components = this->compute_total_nearfields(x_coords, y_coords, z_coords, "Ex");
-    std::vector<complex128> field_y_components = this->compute_total_nearfields(x_coords, y_coords, z_coords, "Ey");
-    std::vector<complex128> field_z_components = this->compute_total_nearfields(x_coords, y_coords, z_coords, "Ez");
+    std::vector<complex128> field_y_components =
+        this->get_total_nearfields(x_coords, y_coords, z_coords, "Ey", source);
+
+    std::vector<complex128> field_z_components =
+        this->get_total_nearfields(x_coords, y_coords, z_coords, "Ez", source);
 
     return std::make_tuple(
         std::move(field_values),
@@ -264,14 +294,20 @@ BaseScatterer::compute_total_nearfields_structured(
     );
 }
 
-std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>>
-BaseScatterer::get_unstructured_stokes_parameters(
+std::tuple<
+    std::vector<double>,
+    std::vector<double>,
+    std::vector<double>,
+    std::vector<double>
+>
+BaseScatterer::get_unstructured_stokes(
     const std::vector<double>& phi,
     const std::vector<double>& theta,
-    const double r
+    const double distance,
+    std::shared_ptr<BaseSource> source
 ) const
 {
-    auto [E_phi, E_theta] = this->compute_unstructured_farfields(phi, theta, r);
+    auto [E_phi, E_theta] = this->compute_unstructured_farfields(phi, theta, distance, source);
 
     std::vector<double> I(E_phi.size());
     std::vector<double> Q(E_phi.size());
@@ -302,12 +338,60 @@ BaseScatterer::get_unstructured_stokes_parameters(
     );
 }
 
+std::tuple<
+    std::vector<double>,
+    std::vector<double>,
+    std::vector<double>,
+    std::vector<double>,
+    FullSteradian
+>
+BaseScatterer::get_structured_stokes(
+    const size_t sampling,
+    const double distance,
+    std::shared_ptr<BaseSource> source
+) const {
+    auto [E_phi, E_theta, full_mesh] = this->get_structured_farfields(sampling, distance, source);
+
+    size_t total_size = full_mesh.sampling * full_mesh.sampling;
+    std::vector<double> I(total_size);
+    std::vector<double> Q(total_size);
+    std::vector<double> U(total_size);
+    std::vector<double> V(total_size);
+
+    double I_max = 0.0;
+
+    for (size_t i = 0; i < total_size; ++i) {
+        const double intensity = std::norm(E_phi[i]) + std::norm(E_theta[i]);
+        I[i] = intensity;
+        I_max = std::max(I_max, intensity);
+
+        Q[i] = (std::norm(E_phi[i]) - std::norm(E_theta[i])) / intensity;
+        U[i] = (2.0 * std::real(E_phi[i] * std::conj(E_theta[i]))) / intensity;
+        V[i] = (-2.0 * std::imag(E_phi[i] * std::conj(E_theta[i]))) / intensity;
+    }
+
+    if (I_max > 0.0) {
+        for (double& v : I)
+            v /= I_max;
+    }
+
+    return std::make_tuple(
+        std::move(I),
+        std::move(Q),
+        std::move(U),
+        std::move(V),
+        std::move(full_mesh)
+    );
+}
+
+
 std::vector<complex128>
 BaseScatterer::compute_incident_nearfields(
     const std::vector<double>& x,
     const std::vector<double>& y,
     const std::vector<double>& z,
-    const std::string& field_type
+    const std::string& field_type,
+    const std::shared_ptr<BaseSource>& source
 ) const
 {
     if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" && field_type != "|E|") {
@@ -321,11 +405,11 @@ BaseScatterer::compute_incident_nearfields(
 
     std::vector<complex128> field_values(number_of_points);
 
-    const double k0 = this->source->wavenumber_vacuum;
-    const double k_medium = k0 * this->medium->get_refractive_index(this->source->wavelength);
+    const double k0 = source->wavenumber_vacuum;
+    const double k_medium = k0 * this->medium->get_refractive_index(source->wavelength);
 
-    const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
-    const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;
+    const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
+    const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
 
     const complex128 i_unit(0.0, 1.0);
 

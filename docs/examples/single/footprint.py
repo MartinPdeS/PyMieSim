@@ -13,6 +13,7 @@ from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.representations import Footprint
+from PyMieSim.single import Setup
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 
@@ -25,7 +26,6 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=2 * ureg.micrometer,
-    source=source,
     medium=1.0 * ureg.RIU,
     material=1.8 * ureg.RIU,
 )
@@ -40,9 +40,14 @@ detector = CoherentMode(
     medium=1.0 * ureg.RIU,
 )
 
-footprint = Footprint(
+setup = Setup(
     scatterer=scatterer,
+    source=source,
     detector=detector,
+)
+
+footprint = Footprint(
+    setup=setup,
     sampling=100,
 )
 

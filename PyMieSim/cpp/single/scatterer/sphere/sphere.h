@@ -42,47 +42,36 @@ class Sphere: public BaseScatterer
          * @param diameter The diameter of the sphere.
          * @param material A shared pointer to the material of the sphere.
          * @param medium A shared pointer to the surrounding medium.
-         * @param source A shared pointer to the source of the incident light.
          * @param max_order The maximum order of the coefficients to compute.
          */
         Sphere(
             const double diameter,
             std::shared_ptr<BaseMaterial> material,
             std::shared_ptr<BaseMedium> medium,
-            std::shared_ptr<BaseSource> source,
             const size_t max_order = 0
         )
-        : BaseScatterer(
-            max_order,
-            std::move(source),
-            std::move(medium)
-        ),
-        diameter(diameter),
-        material(std::move(material))
-        {
-            this->init(max_order);
-        }
+        :   BaseScatterer(max_order, std::move(medium)),
+            diameter(diameter),
+            material(std::move(material))
+        {}
 
         /**
          * @brief Constructs a Sphere scatterer with the given parameters, using a constant medium.
          * @param diameter The diameter of the sphere.
          * @param material A shared pointer to the material of the sphere.
          * @param medium The refractive index of the surrounding medium.
-         * @param source A shared pointer to the source of the incident light.
          * @param max_order The maximum order of the coefficients to compute.
          */
         Sphere(
             const double diameter,
             std::shared_ptr<BaseMaterial> material,
             const double medium,
-            std::shared_ptr<BaseSource> source,
             const size_t max_order = 0
         )
         : Sphere(
             diameter,
             std::move(material),
             std::make_shared<ConstantMedium>(medium),
-            std::move(source),
             max_order
         )
         {}
@@ -92,21 +81,18 @@ class Sphere: public BaseScatterer
          * @param diameter The diameter of the sphere.
          * @param material The refractive index of the sphere material.
          * @param medium A shared pointer to the surrounding medium.
-         * @param source A shared pointer to the source of the incident light.
          * @param max_order The maximum order of the coefficients to compute.
          */
         Sphere(
             const double diameter,
             const complex128 material,
             std::shared_ptr<BaseMedium> medium,
-            std::shared_ptr<BaseSource> source,
             const size_t max_order = 0
         )
         : Sphere(
             diameter,
             std::make_shared<ConstantMaterial>(material),
             std::move(medium),
-            std::move(source),
             max_order
         )
         {}
@@ -116,32 +102,29 @@ class Sphere: public BaseScatterer
          * @param diameter The diameter of the sphere.
          * @param material The refractive index of the sphere material.
          * @param medium The refractive index of the surrounding medium.
-         * @param source A shared pointer to the source of the incident light.
          * @param max_order The maximum order of the coefficients to compute.
          */
         Sphere(
             const double diameter,
             const complex128 material,
             const double medium,
-            std::shared_ptr<BaseSource> source,
             const size_t max_order = 0
         )
         : Sphere(
             diameter,
             std::make_shared<ConstantMaterial>(material),
             std::make_shared<ConstantMedium>(medium),
-            std::move(source),
             max_order
         )
         {}
 
-        void init(size_t _max_order = 0);
+        void init(const std::shared_ptr<BaseSource>& source, size_t _max_order = 0) override;
 
         /**
          * @brief Computes the size parameter for the sphere.
          * The size parameter is defined as (wavenumber * diameter / 2) * medium_refractive_index.
          */
-        void compute_size_parameter() override;
+        void compute_size_parameter(const std::shared_ptr<BaseSource>& source) override;
 
         /**
          * @brief Computes the cross-sectional area of the sphere.
@@ -207,18 +190,20 @@ class Sphere: public BaseScatterer
          * @param radius The radius of the sphere.
          * @return A vector of complex128 values representing the near-field electromagnetic fields.
          */
-        std::vector<complex128> compute_total_nearfields(
+        std::vector<complex128> get_total_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
-            const std::string& field_type
+            const std::string& field_type,
+            const std::shared_ptr<BaseSource>& source
         ) override;
 
-        std::vector<complex128> compute_scattered_nearfields(
+        std::vector<complex128> get_scattered_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
-            const std::string& field_type
+            const std::string& field_type,
+            const std::shared_ptr<BaseSource>& source
         ) override;
 
     public:

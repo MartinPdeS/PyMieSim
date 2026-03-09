@@ -3,15 +3,12 @@
 
 import numpy
 import pyvista
-from pydantic.dataclasses import dataclass
 from typing import List
 from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.units import ureg, Length
-from PyMieSim.utils import config_dict, spherical_to_cartesian
 
 
-@dataclass(config=config_dict, kw_only=True)
 class FarField():
     r"""
     Compute the far-field scattering pattern for the scatterer.
@@ -53,32 +50,16 @@ class FarField():
     - The far-field approximation assumes that the distance from the scatterer is large enough that the curvature of the wavefronts can be neglected, and the fields can be treated as planar.
     - This method is useful for determining the angular distribution of the scattered light, which is critical in applications such as radar cross-section analysis, optical scattering experiments, and remote sensing.
 
-    Example
-    -------
-    You can use this method to compute the far-field scattering pattern of a spherical scatterer, which is essential in understanding how the scatterer redirects light in the far field.
-
-    Example usage:
-
-    >>> farfield = scatterer.get_farfield(sampling=500)
-    >>> print(farfield.E_phi, farfield.E_theta)
 
     """
-    scatterer: object
-    sampling: int = 200
-    distance: Length = 1.0 * ureg.meter
+    def __init__(self,  setup: object, sampling: int = 200, distance: Length = 1.0 * ureg.meter):
+        self.setup = setup
+        self.sampling = sampling
+        self.distance = distance
 
-    def __post_init__(self):
-        fields = self.scatterer.get_full_farfields(
+        self.E_phi, self.E_theta, self.mesh = self.setup.get_structured_farfields(
             sampling=self.sampling, distance=self.distance
         )
-        self.E_phi, self.E_theta, self.theta, self.phi = fields
-
-    def get_colormap_limits(self, scalar: numpy.ndarray, symmetric: bool = False):
-        if symmetric:
-            max_abs = numpy.abs(scalar).max()
-            return [-max_abs, max_abs]
-        else:
-            return None
 
     def plot(
         self,
@@ -87,7 +68,6 @@ class FarField():
         show_edges: bool = False,
         colormap: str = blue_black_red,
         opacity: float = 1.0,
-        symmetric_colormap: bool = False,
         show_axis_label: bool = False,
     ) -> None:
         """
@@ -105,15 +85,10 @@ class FarField():
             The colormap to use for scalar mapping. Default is 'blue_black_red'.
         opacity : float
             The opacity of the mesh. Default is 1.0.
-        symmetric_colormap : bool
-            If True, the colormap will be symmetric around zero. Default is False.
         show_axis_label : bool
             If True, shows the axis labels. Default is False.
         """
-        phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
-        x, y, z = spherical_to_cartesian(
-            r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh
-        )
+        cartesian = self.mesh.spherical_mesh.to_cartesian()
 
         window_size = (unit_size[1] * 4, unit_size[0])  # Two subplots horizontally
 
@@ -127,12 +102,15 @@ class FarField():
 
         for idx, (label, field) in enumerate(zip(repr_label, repr)):
             field = field.flatten(order="F")
-            mesh = pyvista.StructuredGrid(x, y, z)
+            mesh = pyvista.StructuredGrid(
+                cartesian.x.to("meter").magnitude,
+                cartesian.y.to("meter").magnitude,
+                cartesian.z.to("meter").magnitude
+            )
             scene.subplot(0, idx)
 
-            colormap_limits = self.get_colormap_limits(
-                scalar=field, symmetric=symmetric_colormap
-            )
+            max_abs = numpy.abs(field).max()
+            colormap_limits = [-max_abs.magnitude, max_abs.magnitude]
 
             mapping = scene.add_mesh(
                 mesh,
@@ -145,10 +123,10 @@ class FarField():
                 show_scalar_bar=False,
             )
             if "theta" in label:
-                self.add_theta_vector_to_3d_plot(scene=scene, radius=0.6)
+                self.add_theta_vector_to_3d_plot(scene=scene, radius=1.1, color="White")
 
             if "phi" in label:
-                self.add_phi_vector_to_3d_plot(scene=scene, radius=0.6)
+                self.add_phi_vector_to_3d_plot(scene=scene, radius=1.1, color="White")
 
             scene.add_axes_at_origin(labels_off=not show_axis_label)
             scene.add_scalar_bar(mapper=mapping.mapper, title=f"{label} field")

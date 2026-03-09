@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
-from pydantic.dataclasses import dataclass
 from typing import List
 import pyvista
 from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.units import ureg
-from PyMieSim.single.representations.base import BaseRepresentation
-from PyMieSim.utils import config_dict, spherical_to_cartesian
+from PyMieSim.single.full_mesh import FullMesh # Necessary for loading the class, even if not directly used in this file
 
 
-@dataclass(config=config_dict, kw_only=True)
 class Stokes():
     r"""
     Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.
@@ -61,48 +57,15 @@ class Stokes():
     >>> print(stokes_params.I, stokes_params.Q, stokes_params.U, stokes_params.V)
 
     """
-    scatterer: object
-    sampling: int = 200
 
-    def __post_init__(self):
-        fields = self.scatterer.get_full_farfields(
-            sampling=self.sampling, distance=1 * ureg.meter
+    def __init__(self, setup: object, sampling: int = 200, distance: ureg.Quantity = 1.0 * ureg.meter):
+        self.setup = setup
+        self.sampling = sampling
+        self.distance = distance
+
+        self.I, self.Q, self.U, self.V, self.mesh = self.setup.get_structured_stokes(
+            sampling=self.sampling, distance=self.distance
         )
-        self.E_phi, self.E_theta, self.theta, self.phi = fields
-
-        self.compute_components()
-
-    def get_colormap_limits(self, scalar: numpy.ndarray, symmetric: bool = False):
-        if symmetric:
-            max_abs = numpy.abs(scalar).max()
-            return [-max_abs, max_abs]
-        else:
-            return None
-
-    def compute_components(self) -> None:
-        r"""
-        Computes the Stokes parameters (I, Q, U, V) based on the electric field components (E_phi and E_theta).
-
-        The method calculates the normalized intensity (I), linear polarizations (Q and U), and circular polarization (V) of the light
-        scattered by the particle, using the electric field components in spherical coordinates.
-
-        The Stokes parameters are calculated using the following formulas:
-
-        .. math:
-            - I = |E_phi|^2 + |E_theta|^2
-            - Q = |E_phi|^2 - |E_theta|^2
-            - U = 2 * Re{E_phi * E_theta*}
-            - V = -2 * Im{E_phi * E_theta*}
-
-        The results are stored as attributes of the instance: I, Q, U, and V.
-
-        """
-        intensity = numpy.abs(self.E_phi) ** 2 + numpy.abs(self.E_theta) ** 2
-
-        self.I = intensity / numpy.max(intensity)  # noqa: E741
-        self.Q = (numpy.abs(self.E_phi) ** 2 - numpy.abs(self.E_theta) ** 2) / intensity
-        self.U = (+2 * numpy.real(self.E_phi * self.E_theta.conjugate())) / intensity
-        self.V = (-2 * numpy.imag(self.E_phi * self.E_theta.conjugate())) / intensity
 
     def plot(
         self,
@@ -111,7 +74,6 @@ class Stokes():
         show_edges: bool = False,
         colormap: str = blue_black_red,
         opacity: float = 1.0,
-        symmetric_colormap: bool = False,
         show_axis_label: bool = False,
     ) -> None:
         """
@@ -129,15 +91,10 @@ class Stokes():
             The colormap to use for scalar mapping. Default is 'blue_black_red'.
         opacity : float
             The opacity of the mesh. Default is 1.0.
-        symmetric_colormap : bool
-            If True, the colormap will be symmetric around zero. Default is False.
         show_axis_label : bool
             If True, shows the axis labels. Default is False.
         """
-        phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
-        x, y, z = spherical_to_cartesian(
-            r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh
-        )
+        cartesian = self.mesh.spherical_mesh.to_cartesian()
 
         window_size = (unit_size[1] * 4, unit_size[0])  # Four subplots horizontally
 
@@ -150,12 +107,12 @@ class Stokes():
             zip(["I", "Q", "U", "V"], [self.I, self.Q, self.U, self.V])
         ):
             field = field.flatten(order="F")
-            mesh = pyvista.StructuredGrid(x, y, z)
-            scene.subplot(0, idx)
-
-            colormap_limits = self.get_colormap_limits(
-                scalar=field, symmetric=symmetric_colormap
+            mesh = pyvista.StructuredGrid(
+                cartesian.x.to("meter").magnitude,
+                cartesian.y.to("meter").magnitude,
+                cartesian.z.to("meter").magnitude
             )
+            scene.subplot(0, idx)
 
             mapping = scene.add_mesh(
                 mesh,
@@ -164,7 +121,6 @@ class Stokes():
                 opacity=opacity,
                 style="surface",
                 show_edges=show_edges,
-                clim=colormap_limits,
                 show_scalar_bar=False,
             )
 

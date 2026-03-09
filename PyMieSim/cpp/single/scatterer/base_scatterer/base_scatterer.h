@@ -16,7 +16,6 @@ typedef std::complex<double> complex128;
 class BaseScatterer {
 public:
     size_t max_order;
-    std::shared_ptr<BaseSource> source;
     double size_parameter;
     double size_parameter_squared;
     double cross_section;
@@ -24,11 +23,8 @@ public:
     std::vector<size_t> indices;
 
     BaseScatterer() = default;
-    BaseScatterer(
-        const size_t _max_order,
-        std::shared_ptr<BaseSource> _source,
-        std::shared_ptr<BaseMedium> _medium)
-    : max_order(_max_order), source(std::move(_source)), medium(std::move(_medium)){}
+    BaseScatterer(const size_t _max_order, std::shared_ptr<BaseMedium> _medium)
+    : max_order(_max_order), medium(std::move(_medium)){}
 
     // VIRTUAL INTERFACE ----------------------------------------------
     virtual ~BaseScatterer() = default;
@@ -43,7 +39,7 @@ public:
     virtual double get_Qforward() const {throw std::logic_error{"Function not implementend!"};};
     virtual double get_g() const {throw std::logic_error{"Function not implementend!"};};
 
-    virtual void compute_size_parameter() = 0;
+    virtual void compute_size_parameter(const std::shared_ptr<BaseSource>& source) = 0;
     virtual void compute_cross_section() = 0;
 
 
@@ -53,7 +49,13 @@ public:
     // CYLINDRICAL SCATTERER GETTERS --------------------------------------------------------
     DEFINE_COEFFICIENTS_GETTERS_8(a1, b1, c1, d1, a2, b2, c2, d2)
 
+
+    virtual void init(const std::shared_ptr<BaseSource>& source, size_t _max_order = 0) = 0;
+
     // COEFFICIENT ----------------------------------------------------
+    double get_cross_section() const {return this->cross_section;};
+
+    double get_size_parameter() const {return this->size_parameter;};
 
     /**
      * @brief Computes the asymmetry factor g using the fields at a given sampling.
@@ -62,7 +64,7 @@ public:
      * @note This method computes the asymmetry factor g based on the fields at a specified sampling.
      * It uses the scattering amplitudes S1 and S2 to calculate the asymmetry factor.
      */
-    double get_g_with_farfields(size_t sampling) const;
+    double get_g_with_farfields(std::shared_ptr<BaseSource> source, size_t sampling) const;
 
 
     /**
@@ -157,13 +159,20 @@ public:
      * @param radius The radius of the scatterer.
      * @return A tuple containing the phi and theta fields.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_structured_farfields(
-        const std::vector<complex128>& S1,
-        const std::vector<complex128>& S2,
-        const std::vector<double>& theta,
-        const double& radius = 1.0
-    ) const;
+    // std::tuple<
+    //     std::vector<complex128>,
+    //     std::vector<complex128>,
+    //     std::vector<double>,
+    //     std::vector<double>
+    // >
+    // get_structured_farfields(
+    //     const std::vector<complex128>& S1,
+    //     const std::vector<complex128>& S2,
+    //     const std::vector<double>& phi,
+    //     const std::vector<double>& theta,
+    //     const double& radius,
+    //     const std::shared_ptr<BaseSource>& source
+    // ) const;
 
     /**
      * @brief Computes the structured fields based on phi and theta angles.
@@ -172,12 +181,18 @@ public:
      * @param radius The radius of the scatterer.
      * @return A tuple containing the phi and theta fields.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_structured_farfields(
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double radius
-    ) const;
+    // std::tuple<
+    //     std::vector<complex128>,
+    //     std::vector<complex128>,
+    //     std::vector<double>,
+    //     std::vector<double>
+    // >
+    // get_structured_farfields(
+    //     const std::vector<double>& phi,
+    //     const std::vector<double>& theta,
+    //     const double radius,
+    //     const std::shared_ptr<BaseSource>& source
+    // ) const;
 
     /**
      * @brief Computes the unstructured fields based on phi and theta angles.
@@ -190,7 +205,8 @@ public:
     compute_unstructured_farfields(
         const std::vector<double>& phi,
         const std::vector<double>& theta,
-        const double radius
+        const double radius,
+        const std::shared_ptr<BaseSource>& source
     ) const;
 
     /**
@@ -202,19 +218,21 @@ public:
     std::tuple<std::vector<complex128>, std::vector<complex128>>
     compute_unstructured_farfields(
         const FibonacciMesh& fibonacci_mesh,
-        const double radius
+        const double radius,
+        const std::shared_ptr<BaseSource>& source
     ) const;
 
     /**
      * @brief Computes the full structured fields for a given sampling and radius.
      * @param sampling The number of sampling points.
      * @param radius The radius of the scatterer.
-     * @return A tuple containing the phi field, theta field, phi angles, and theta angles.
+     * @return A tuple containing the phi field, theta field, and the full steradian mesh.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
-    compute_full_structured_farfields(
+    std::tuple<std::vector<complex128>, std::vector<complex128>, FullSteradian>
+    get_structured_farfields(
         const size_t& sampling,
-        const double& radius
+        const double& radius,
+        const std::shared_ptr<BaseSource>& source
     ) const;
 
     /**
@@ -248,7 +266,7 @@ public:
      * @param radius The radius of the scatterer.
      * @return The propagator as a complex128 value.
      */
-    complex128 get_propagator(const double &radius) const;
+    complex128 get_propagator(const double &radius, std::shared_ptr<BaseSource> source) const;
 
     /**
      * @brief Computes the dn coefficients for a given nmx and z.
@@ -280,11 +298,12 @@ public:
      *       implementation of cn/dn coefficients for infinite cylinders.
      */
     virtual std::vector<complex128>
-    compute_total_nearfields(
+    get_total_nearfields(
         const std::vector<double>& x,
         const std::vector<double>& y,
         const std::vector<double>& z,
-        const std::string& field_type
+        const std::string& field_type,
+        const std::shared_ptr<BaseSource>& source
     ) = 0;
 
     /**
@@ -306,11 +325,12 @@ public:
      *       Currently supports spherical scatterers only. Cylinder support requires
      *       implementation of an/bn coefficients for infinite cylinders.
      */
-    virtual std::vector<complex128> compute_scattered_nearfields(
+    virtual std::vector<complex128> get_scattered_nearfields(
         const std::vector<double>& x,
         const std::vector<double>& y,
         const std::vector<double>& z,
-        const std::string& field_type
+        const std::string& field_type,
+        const std::shared_ptr<BaseSource>& source
     ) = 0;
 
     /**
@@ -338,12 +358,21 @@ public:
      * @throws std::runtime_error If cn/dn coefficients are not available.
      * @throws std::invalid_argument If field_type is not recognized.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>, std::vector<double>>
-    compute_total_nearfields_structured(
+    std::tuple<
+        std::vector<complex128>,
+        std::vector<complex128>,
+        std::vector<complex128>,
+        std::vector<complex128>,
+        std::vector<double>,
+        std::vector<double>,
+        std::vector<double>
+    >
+    get_structured_total_nearfields(
         const std::vector<double>& x_range,
         const std::vector<double>& y_range,
         const std::vector<double>& z_range,
-        const std::string& field_type
+        const std::string& field_type,
+        std::shared_ptr<BaseSource> source
     );
 
     /**
@@ -370,7 +399,8 @@ public:
         const std::vector<double>& x,
         const std::vector<double>& y,
         const std::vector<double>& z,
-        const std::string& field_type
+        const std::string& field_type,
+        const std::shared_ptr<BaseSource>& source
     ) const;
 
 
@@ -396,7 +426,8 @@ public:
      * @return A tuple containing the phi field, theta field, phi angles, and theta angles.
      */
     std::tuple<std::vector<double>, FullSteradian>
-    compute_full_structured_spf(
+    get_structured_spf(
+        std::shared_ptr<BaseSource> source,
         const size_t sampling,
         const double radius = 1.0
     ) const;
@@ -410,11 +441,31 @@ public:
      *
      * @return A tuple containing vectors for Stokes parameters I, Q, U, and V.
      */
-    std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>>
-    get_unstructured_stokes_parameters(
+    std::tuple<
+        std::vector<double>,
+        std::vector<double>,
+        std::vector<double>,
+        std::vector<double>
+    >
+    get_unstructured_stokes(
         const std::vector<double>& phi,
         const std::vector<double>& theta,
-        const double r
+        const double distance,
+        std::shared_ptr<BaseSource> source
+    ) const;
+
+
+    std::tuple<
+        std::vector<double>,
+        std::vector<double>,
+        std::vector<double>,
+        std::vector<double>,
+        FullSteradian
+    >
+    get_structured_stokes(
+        const size_t sampling,
+        const double distance,
+        std::shared_ptr<BaseSource> source
     ) const;
 
 

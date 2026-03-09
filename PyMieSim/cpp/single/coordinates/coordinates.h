@@ -4,6 +4,7 @@
 #include <array>
 #include <stdexcept>
 
+struct Cartesian;
 
 struct SphericalCoordinate {
     double r = 0.0, phi = 0.0, theta = 0.0;
@@ -108,6 +109,7 @@ struct VectorField {
 
 struct Spherical {
     std::vector<double> r, phi, theta;
+    std::vector<size_t> shape;
 
     /**
      * @brief Default constructor for Spherical coordinates.
@@ -120,10 +122,13 @@ struct Spherical {
      * @param sampling The number of samples to reserve for the Spherical coordinates.
      */
     explicit Spherical(const size_t sampling);
+
+    Cartesian to_cartesian() const;
 };
 
 struct Cartesian {
     std::vector<double> x, y, z;
+    std::vector<size_t> shape;
 
     /**
      * @brief Default constructor for Cartesian coordinates.

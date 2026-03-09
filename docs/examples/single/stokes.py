@@ -11,8 +11,9 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.representations import Stokes
+from PyMieSim.single import Setup
 
-polarization_state = PolarizationState(angle=10 * ureg.degree)
+polarization_state = PolarizationState(angle=0 * ureg.degree)
 
 source = Gaussian(
     wavelength=750 * ureg.nanometer,
@@ -23,11 +24,15 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=300 * ureg.nanometer,
-    source=source,
     medium=1.0 * ureg.RIU,
     material=1.4 * ureg.RIU,
 )
 
-stokes = Stokes(scatterer=scatterer, sampling=100)
+setup = Setup(
+    scatterer=scatterer,
+    source=source,
+)
+
+stokes = Stokes(setup=setup, sampling=100)
 
 figure = stokes.plot()

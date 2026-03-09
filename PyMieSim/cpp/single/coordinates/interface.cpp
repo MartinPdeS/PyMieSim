@@ -1,33 +1,80 @@
 #include <pybind11/pybind11.h>
 #include "coordinates.h"
 #include <utils/numpy_interface.h>
-
+#include <pint/pint.h>
 
 
 PYBIND11_MODULE(coordinates, module)
 {
+    py::object ureg = get_shared_ureg();
+
+
     pybind11::class_<Cartesian>(module, "Cartesian")
-        .def_property_readonly("x",
-            [](const Cartesian& self) {
-                return pybind11::array_t<double>(self.x.size(), self.x.data(), pybind11::cast(self));
+        .def(
+            "to_spherical",
+            &Cartesian::to_spherical,
+            R"pbdoc(
+                Converts the Cartesian coordinates to spherical coordinates.
+                This method transforms the Cartesian coordinates of the mesh points into their corresponding spherical coordinates.
+            )pbdoc"
+        )
+        .def_property_readonly(
+            "x",
+            [ureg](const Cartesian& self) {
+                const pybind11::ssize_t number_of_rows = self.shape[0];
+                const pybind11::ssize_t number_of_columns = self.shape[1];
+
+                return pybind11::array_t<double>(
+                    {number_of_rows, number_of_columns},
+                    {
+                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
+                        static_cast<pybind11::ssize_t>(sizeof(double))
+                    },
+                    self.x.data(),
+                    pybind11::cast(self)
+                ) * ureg("meter");
             },
             R"pbdoc(
                 Returns x coordinates of points on the Cartesian mesh as a NumPy array.
                 This property provides the x-coordinates of the mesh points in Cartesian coordinates.
             )pbdoc"
         )
-        .def_property_readonly("y",
-            [](const Cartesian& self) {
-                return pybind11::array_t<double>(self.y.size(), self.y.data(), pybind11::cast(self));
+        .def_property_readonly(
+            "y",
+            [ureg](const Cartesian& self) {
+                const pybind11::ssize_t number_of_rows = self.shape[0];
+                const pybind11::ssize_t number_of_columns = self.shape[1];
+
+                return pybind11::array_t<double>(
+                    {number_of_rows, number_of_columns},
+                    {
+                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
+                        static_cast<pybind11::ssize_t>(sizeof(double))
+                    },
+                    self.y.data(),
+                    pybind11::cast(self)
+                ) * ureg("meter");
             },
             R"pbdoc(
                 Returns y coordinates of points on the Cartesian mesh as a NumPy array.
                 This property provides the y-coordinates of the mesh points in Cartesian coordinates.
             )pbdoc"
         )
-        .def_property_readonly("z",
-            [](const Cartesian& self) {
-                return pybind11::array_t<double>(self.z.size(), self.z.data(), pybind11::cast(self));
+        .def_property_readonly(
+            "z",
+            [ureg](const Cartesian& self) {
+                const pybind11::ssize_t number_of_rows = self.shape[0];
+                const pybind11::ssize_t number_of_columns = self.shape[1];
+
+                return pybind11::array_t<double>(
+                    {number_of_rows, number_of_columns},
+                    {
+                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
+                        static_cast<pybind11::ssize_t>(sizeof(double))
+                    },
+                    self.z.data(),
+                    pybind11::cast(self)
+                ) * ureg("meter");
             },
             R"pbdoc(
                 Returns z coordinates of points on the Cartesian mesh as a NumPy array.
@@ -38,40 +85,75 @@ PYBIND11_MODULE(coordinates, module)
 
     // ------------------ Bindings for SphericalCoordinate ------------------
     pybind11::class_<Spherical>(module, "Spherical")
-        .def_property_readonly("r",
-            [](const Spherical& self) {
-                std::vector<size_t> shape = {self.r.size()};
-                std::vector<size_t> strides = get_stride<double>(shape);
+        .def(
+            "to_cartesian",
+            &Spherical::to_cartesian,
+            R"pbdoc(
+                Converts the spherical coordinates to Cartesian coordinates.
+                This method transforms the spherical coordinates of the mesh points into their corresponding Cartesian coordinates.
+            )pbdoc"
+        )
+        .def_property_readonly(
+            "r",
+            [ureg](const Spherical& self) {
+                const pybind11::ssize_t number_of_rows = self.shape[0];
+                const pybind11::ssize_t number_of_columns = self.shape[1];
 
-                return pybind11::array_t<double>(shape, strides, self.r.data(), pybind11::cast(self));
+                return pybind11::array_t<double>(
+                    {number_of_rows, number_of_columns},
+                    {
+                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
+                        static_cast<pybind11::ssize_t>(sizeof(double))
+                    },
+                    self.r.data(),
+                    pybind11::cast(self)
+                ) * ureg("meter");
             },
             R"pbdoc(
                 Returns radial distances of points on the spherical mesh as a NumPy array.
                 This property provides the radial distances of the mesh points in spherical coordinates.
             )pbdoc"
         )
-        .def_property_readonly("phi",
-            [](const Spherical& self) {
-                std::vector<size_t> shape = {self.phi.size()};
-                std::vector<size_t> strides = get_stride<double>(shape);
+        .def_property_readonly(
+            "phi",
+            [ureg](const Spherical& self) {
+                const pybind11::ssize_t number_of_rows = self.shape[0];
+                const pybind11::ssize_t number_of_columns = self.shape[1];
 
-                return pybind11::array_t<double>(shape, strides, self.phi.data(), pybind11::cast(self));
+                return pybind11::array_t<double>(
+                    {number_of_rows, number_of_columns},
+                    {
+                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
+                        static_cast<pybind11::ssize_t>(sizeof(double))
+                    },
+                    self.phi.data(),
+                    pybind11::cast(self)
+                ) * ureg("radian");
             },
             R"pbdoc(
                 Returns azimuthal angles (phi) of points on the spherical mesh as a NumPy array.
                 This property provides the azimuthal angles of the mesh points in spherical coordinates.
             )pbdoc"
         )
-        .def_property_readonly("theta",
-            [](const Spherical& self) {
-                std::vector<size_t> shape = {self.theta.size()};
-                std::vector<size_t> strides = get_stride<double>(shape);
+        .def_property_readonly(
+            "theta",
+            [ureg](const Spherical& self) {
+                const pybind11::ssize_t number_of_rows = self.shape[0];
+                const pybind11::ssize_t number_of_columns = self.shape[1];
 
-                return pybind11::array_t<double>(shape, strides, self.theta.data(), pybind11::cast(self));
+                return pybind11::array_t<double>(
+                    {number_of_rows, number_of_columns},
+                    {
+                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
+                        static_cast<pybind11::ssize_t>(sizeof(double))
+                    },
+                    self.theta.data(),
+                    pybind11::cast(self)
+                ) * ureg("radian");
             },
             R"pbdoc(
                 Returns polar angles (theta) of points on the spherical mesh as a NumPy array.
-                This property provides the polar angles of the mesh points in spherical coordinates.
+                This property provides the azimuthal angles of the mesh points in spherical coordinates.
             )pbdoc"
         )
     ;

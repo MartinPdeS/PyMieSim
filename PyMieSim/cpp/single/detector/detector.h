@@ -82,7 +82,7 @@ public:
      * @return The coupling coefficient.
      * @note This function computes the coupling coefficient based on the mode field and the scatterer's properties.
      */
-    virtual double get_coupling(const BaseScatterer& scatterer) const = 0;
+    virtual double get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const = 0;
 
     /**
      * @brief Parses the mode number string to extract mode family and numbers.
@@ -140,14 +140,14 @@ public:
      * @param distance The distance at which to compute the Poynting vector (default is 1).
      * @return The Poynting vector value.
      */
-    std::vector<double> get_poynting_field(const BaseScatterer& scatterer, double distance = 1) const;
+    std::vector<double> get_poynting_field(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source, double distance = 1) const;
 
     /**
      * @brief Computes the energy flow for a given scatterer at a specified distance.
      * @param scatterer The scatterer for which the energy flow is computed.
      * @return The total energy flow value.
      */
-    double get_energy_flow(const BaseScatterer& scatterer) const;
+    double get_energy_flow(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const;
 
     /**
      * @brief Prints the properties of the detector with a specified precision.
@@ -231,7 +231,7 @@ public:
         this->initialize();
     }
 
-    double get_coupling(const BaseScatterer& scatterer) const override;
+    double get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const override;
 
     [[nodiscard]] std::vector<complex128> get_structured_scalarfield(const size_t sampling) const override;
 
@@ -242,7 +242,7 @@ private:
      * @return The coupling coefficient.
      * @note This function computes the coupling coefficient based on the mode field and the scatterer's properties.
      */
-    double get_coupling_point(const BaseScatterer& scatterer) const;
+    double get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const;
 
     /**
      * @brief Computes the coupling coefficient for a given scatterer, considering coherent modes.
@@ -250,7 +250,7 @@ private:
      * @return The coupling coefficient.
      * @note This function computes the coupling coefficient based on the mode field and the scatterer's properties.
      */
-    double get_coupling_mean(const BaseScatterer& scatterer) const;
+    double get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const;
 
     /**
      * @brief Initializes the detector with the given medium refractive index.
@@ -275,7 +275,7 @@ private:
      * @note This function modifies the input fields in place, applying the scalar field to both projections.
      */
     void apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const;
-
+public:
     /**
      * @brief Applies a polarization filter to the coupling coefficients.
      * @tparam T Type of the coupling coefficients.
@@ -356,7 +356,7 @@ public:
         this->initialize();
     }
 
-    double get_coupling(const BaseScatterer& scatterer) const override;
+    double get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const override;
 
     [[nodiscard]] std::vector<complex128> get_structured_scalarfield(const size_t sampling) const override;
 
@@ -368,7 +368,7 @@ private:
      * @return The coupling coefficient.
      * @note This function computes the coupling coefficient based on the mode field and the scatterer's properties.
      */
-    double get_coupling_point(const BaseScatterer& scatterer) const;
+    double get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const;
 
     /**
      * @brief Computes the coupling coefficient for a given scatterer, considering coherent modes.
@@ -376,7 +376,7 @@ private:
      * @return The coupling coefficient.
      * @note This function computes the coupling coefficient based on the mode field and the scatterer's properties.
      */
-    double get_coupling_mean(const BaseScatterer& scatterer) const;
+    double get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const;
 
     /**
      * @brief Initializes the detector with the given medium refractive index.
@@ -458,7 +458,7 @@ public:
      * If Fresnel transmission is enabled in snell_interface, a scalar amplitude
      * transmission is applied to the fields before intensity computation.
      */
-    double get_coupling(const BaseScatterer& scatterer) const override;
+    double get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const override;
 
     /**
      * @brief Not used for integrating sphere.

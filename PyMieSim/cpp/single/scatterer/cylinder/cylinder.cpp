@@ -3,16 +3,19 @@
 
 // ---------------------- Methods ---------------------------------------
 
-void InfiniteCylinder::init(const size_t _max_order) {
-    this->material->initialize(this->source->wavelength);
-    this->medium->initialize(this->source->wavelength);
+void InfiniteCylinder::init(const std::shared_ptr<BaseSource>& source, const size_t _max_order) {
+    this->material->initialize(source->wavelength);
+    this->medium->initialize(source->wavelength);
+    this->jones_vector = source->get_jones_vector_first_row();
+
     this->compute_cross_section();
-    this->compute_size_parameter();
+    this->compute_size_parameter(source);
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->compute_an_bn(this->max_order);
 }
 
-void InfiniteCylinder::compute_size_parameter() {
+
+void InfiniteCylinder::compute_size_parameter(const std::shared_ptr<BaseSource>& source) {
     this->size_parameter = source->wavenumber_vacuum * this->diameter / 2;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
@@ -50,15 +53,11 @@ double InfiniteCylinder::get_Qext() const {
     return this->process_polarization(Qext1, Qext2);
 }
 
-double InfiniteCylinder::get_g() const {
-    return this->get_g_with_farfields(1000);
-}
 
 double InfiniteCylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
-    std::vector<complex128> jones_vector = this->source->get_jones_vector_first_row();
     complex128
-        Ex = jones_vector[0],
-        Ey = jones_vector[1];
+        Ex = this->jones_vector[0],
+        Ey = this->jones_vector[1];
 
     return std::abs( value_1 ) * pow(std::abs(Ex), 2) + std::abs( value_0 ) * pow(std::abs(Ey), 2);
 }

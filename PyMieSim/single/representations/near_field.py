@@ -84,7 +84,7 @@ class NearField:
         Object exposing compute_total_nearfields, compute_incident_nearfields, compute_scattered_nearfields.
     """
 
-    def __init__(self, scatterer: object) -> None:
+    def __init__(self, setup: object) -> None:
         """
         Initialize NearField object.
 
@@ -93,7 +93,7 @@ class NearField:
         scatterer
             Object exposing compute_total_nearfields, compute_incident_nearfields, compute_scattered_nearfields.
         """
-        self.scatterer = scatterer
+        self.setup = setup
 
         self.sampling: int = 200
 
@@ -131,10 +131,10 @@ class NearField:
         Tuple[Tuple[Length, Length], Tuple[Length, Length]]
             (u_range, v_range)
         """
-        if not hasattr(self.scatterer, "diameter"):
+        if not hasattr(self.setup.scatterer, "diameter"):
             raise ValueError("scatterer must expose diameter to infer a default plotting extent")
 
-        radius = 0.5 * self.scatterer.diameter
+        radius = 0.5 * self.setup.scatterer.diameter
         half_width = extent_scale * radius
 
         u_range = (-half_width, half_width)
@@ -192,7 +192,10 @@ class NearField:
         self.U = U
         self.V = V
 
-        origin = (plane_origin[0], plane_origin[1], plane_origin[2])
+        if plane_origin is None:
+            origin = (0.0, 0.0, 0.0)
+        else:
+            origin = (plane_origin[0], plane_origin[1], plane_origin[2])
 
         if plane_normal is None:
             normal = (0.0, 0.0, 1.0)
@@ -234,19 +237,26 @@ class NearField:
         y_flat = self.Y.reshape(-1)
         z_flat = self.Z.reshape(-1)
 
+        kwargs = {
+            "x": x_flat,
+            "y": y_flat,
+            "z": z_flat,
+        }
+
         for component in field_components:
             print(f"Computing {type} near field component: {component}")
+            kwargs["field_type"] = component
 
             if type == "total":
-                values = self.scatterer.compute_total_nearfields(x=x_flat, y=y_flat, z=z_flat, field_type=component)
+                values = self.setup.get_total_nearfields(**kwargs)
             elif type == "incident":
-                values = self.scatterer.compute_incident_nearfields(x=x_flat, y=y_flat, z=z_flat, field_type=component)
+                values = self.setup.get_incident_nearfields(**kwargs)
             elif type == "scattered":
-                values = self.scatterer.compute_scattered_nearfields(x=x_flat, y=y_flat, z=z_flat, field_type=component)
+                values = self.setup.get_scattered_nearfields(**kwargs)
             else:
                 raise ValueError(f"Unknown field type: {type}")
 
-            fields[component] = numpy.asarray(values).reshape(self.X.shape)
+        fields[component] = numpy.asarray(values).reshape(self.X.shape)
 
         return fields
 
@@ -286,10 +296,10 @@ class NearField:
         if self.U is None or self.V is None:
             return
 
-        if not hasattr(self.scatterer, "diameter"):
+        if not hasattr(self.setup.scatterer, "diameter"):
             return
 
-        radius = 0.5 * self.scatterer.diameter
+        radius = 0.5 * self.setup.scatterer.diameter
 
         sphere_center = numpy.array([0.0, 0.0, 0.0], dtype=float)
 

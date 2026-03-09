@@ -87,15 +87,21 @@ PYBIND11_MODULE(detector, module) {
         )
         .def(
             "get_poynting_field",
-            [ureg](BaseDetector& self, const BaseScatterer& scatterer, py::object distance) {
-                double distance_value = distance.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+            [ureg](
+                BaseDetector& self,
+                std::shared_ptr<BaseScatterer> scatterer,
+                const py::object& distance,
+                std::shared_ptr<BaseSource> source
+            ) {
+                double distance_value = distance.attr("to")("meter").attr("magnitude").cast<double>();
 
-                std::vector<double> vector = self.get_poynting_field(scatterer, distance_value);
+                std::vector<double> vector = self.get_poynting_field(scatterer, source, distance_value);
                 py::array_t<double> array = vector_move_from_numpy(std::move(vector), {vector.size()});
                 return (array * ureg.attr("watt/meter**2")).attr("to_compact")();
             },
             py::arg("scatterer"),
             py::arg("distance") = 1.0,
+            py::arg("source"),
             R"pbdoc(
                 Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
 
@@ -139,11 +145,16 @@ PYBIND11_MODULE(detector, module) {
         )
         .def(
             "get_energy_flow",
-            [ureg](BaseDetector& self, const BaseScatterer& scatterer) {
-                double energy_flow = self.get_energy_flow(scatterer);
+            [ureg](
+                BaseDetector& self,
+                std::shared_ptr<BaseScatterer> scatterer,
+                std::shared_ptr<BaseSource> source
+            ) {
+                double energy_flow = self.get_energy_flow(scatterer, source);
                 return (py::float_(energy_flow) * ureg.attr("watt")).attr("to_compact")();
             },
             py::arg("scatterer"),
+            py::arg("source"),
             R"pbdoc(
             Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.
 
@@ -172,6 +183,8 @@ PYBIND11_MODULE(detector, module) {
             ----------
             scatterer : BaseScatterer
                 The scatterer object, which contains information about the scattering properties of the particle, such as geometry and material.
+            source : BaseSource
+                The source object, which contains information about the incident light, such as intensity and polarization.
 
             Returns
             -------
@@ -238,11 +251,16 @@ PYBIND11_MODULE(detector, module) {
         )
         .def(
             "get_coupling",
-            [ureg](BaseDetector& self, const BaseScatterer& scatterer) {
-                double coupling = self.get_coupling(scatterer);
+            [ureg](
+                BaseDetector& self,
+                std::shared_ptr<BaseScatterer> scatterer,
+                std::shared_ptr<BaseSource> source
+            ) {
+                double coupling = self.get_coupling(scatterer, source);
                 return (py::float_(coupling) * ureg.attr("watt")).attr("to_compact")();
             },
             py::arg("scatterer"),
+            py::arg("source"),
             R"pbdoc(
             Compute the light coupling between the detector and a scatterer.
 
@@ -252,6 +270,8 @@ PYBIND11_MODULE(detector, module) {
             ----------
             scatterer : BaseScatterer
                 The scatterer object that interacts with the incident light, producing the scattered field.
+            source : BaseSource
+                The source object that defines the properties of the incident light, such as intensity and polarization.
 
             Returns
             -------

@@ -3,14 +3,12 @@
 
 import numpy
 import MPSPlots
-from pydantic.dataclasses import dataclass
 import matplotlib.pyplot as plt
 from TypedUnit import ureg
 
-from PyMieSim.utils import config_dict, rotate_on_x
+from PyMieSim.utils import rotate_on_x
 
 
-@dataclass(config=config_dict, kw_only=True)
 class Footprint():
     r"""
     Compute the footprint of the scattered light coupling with the detector.
@@ -59,13 +57,12 @@ class Footprint():
     >>> print(footprint)
 
     """
-
-    detector: object
-    scatterer: object
-    sampling: int = 200
-    padding_factor: int = 20
-
-    def __post_init__(self):
+    def __init__(self, setup: object, sampling: int = 200, padding_factor: int = 20):
+        self.setup = setup
+        self.sampling = sampling
+        self.padding_factor = padding_factor
+        self.detector = setup.detector
+        self.scatterer = setup.scatterer
         self.compute_footprint()
 
     def compute_footprint(self):
@@ -90,7 +87,7 @@ class Footprint():
         ]
 
         max_distance_direct_space = 1 / (
-            numpy.sin(max_angle) * self.scatterer.source.wavenumber_vacuum / (2 * numpy.pi)
+            numpy.sin(max_angle) * self.setup.source.wavenumber_vacuum / (2 * numpy.pi)
         )
 
         x = y = (
@@ -103,7 +100,7 @@ class Footprint():
 
         _, phi, theta = rotate_on_x(phi + numpy.pi / 2, theta, numpy.pi / 2)
 
-        far_field_para, far_field_perp = self.scatterer.get_farfields(
+        far_field_para, far_field_perp = self.setup.get_farfields(
             phi=(phi.ravel() + numpy.pi / 2) * ureg.radian,
             theta=theta.ravel() * ureg.radian,
             distance=1.0 * ureg.meter,
@@ -168,7 +165,7 @@ class Footprint():
         )
 
         # Perform the two-dimensional inverse Fourier transform on the padded scalar field.
-        fourier_transformed = numpy.fft.ifft2(padded_scalar)
+        fourier_transformed = numpy.fft.ifft2(padded_scalar.magnitude)
 
         # Compute the squared magnitude and center the zero-frequency component.
         fourier_magnitude_squared = (

@@ -11,6 +11,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.representations import NearField
+from PyMieSim.single import Setup
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 
@@ -24,22 +25,26 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=400 * ureg.nanometer,
-    source=source,
     material=(1.4 + 5.j) * ureg.RIU,
     medium=1. * ureg.RIU,
 )
 
-near_field = NearField(
+setup = Setup(
     scatterer=scatterer,
+    source=source,
+)
+
+near_field = NearField(
+    setup=setup,
 )
 
 near_field.plot(
     "Ex:real",
     "Ex:abs",
-    type="total",
+    type="scattered",
     plane_origin=(0.0, 0.0, 0.0),
     plane_normal=(0.0, 1.0, 0.0),
-    sampling=400,
+    sampling=100,
     extent_scale=4,
     tight_layout=True,
 )

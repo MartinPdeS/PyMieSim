@@ -16,7 +16,6 @@ void register_cylinder(py::module_& module) {
                 py::object diameter,
                 const py::object& material,
                 const py::object& medium,
-                const std::shared_ptr<BaseSource> source,
                 std::size_t max_order
             ) {
                 double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
@@ -31,14 +30,12 @@ void register_cylinder(py::module_& module) {
                     diameter_meter,
                     std::move(parsed_material),
                     std::move(parsed_medium),
-                    std::move(source),
                     max_order
                 );
             }),
             py::arg("diameter"),
             py::arg("material"),
             py::arg("medium"),
-            py::arg("source"),
             py::arg("max_order") = 0,
             R"pbdoc(
                 Constructor for CYLINDER, initializing it with physical and optical properties.
@@ -51,14 +48,7 @@ void register_cylinder(py::module_& module) {
                     The material of the cylinder.
                 medium : BaseMedium
                     The surrounding medium of the cylinder.
-                source : BaseSource
-                    The source of the incident light.
             )pbdoc"
-        )
-        .def_readonly(
-            "source",
-            &InfiniteCylinder::source,
-            "Source of the cylinder."
         )
         .def_readonly_static(
             "property_names",

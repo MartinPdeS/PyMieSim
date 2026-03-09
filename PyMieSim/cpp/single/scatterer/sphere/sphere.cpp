@@ -2,16 +2,18 @@
 #include <functional>
 
 // ---------------------- Methods ---------------------------------------
-void Sphere::init(size_t _max_order) {
-    this->material->initialize(this->source->wavelength);
-    this->medium->initialize(this->source->wavelength);
+void Sphere::init(const std::shared_ptr<BaseSource>& source, size_t _max_order) {
+    this->material->initialize(source->wavelength);
+    this->medium->initialize(source->wavelength);
+
     this->compute_cross_section();
-    this->compute_size_parameter();
+    this->compute_size_parameter(source);
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->compute_an_bn(this->max_order);
+
 }
 
-void Sphere::compute_size_parameter() {
+void Sphere::compute_size_parameter(const std::shared_ptr<BaseSource>& source) {
     this->size_parameter = source->wavenumber_vacuum * this->diameter / 2 * this->medium->get_refractive_index();
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
@@ -207,11 +209,12 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
 }
 
 std::vector<complex128>
-Sphere::compute_total_nearfields(
+Sphere::get_total_nearfields(
     const std::vector<double>& x,
     const std::vector<double>& y,
     const std::vector<double>& z,
-    const std::string& field_type
+    const std::string& field_type,
+    const std::shared_ptr<BaseSource>& source
 )
 {
     this->compute_cn_dn(this->max_order);
@@ -231,15 +234,15 @@ Sphere::compute_total_nearfields(
 
     const complex128 particle_refractive_index = this->material->get_refractive_index();
 
-    const double k0 = this->source->wavenumber_vacuum;
+    const double k0 = source->wavenumber_vacuum;
     const double k_medium = k0 * this->medium->get_refractive_index();
 
     const complex128 k_particle = complex128(k0, 0.0) * particle_refractive_index;
 
     const complex128 i_unit(0.0, 1.0);
 
-    const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
-    const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;
+    const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
+    const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
 
     auto clamp_m1_p1_local = [](double value) -> double {
         if (value < -1.0) return -1.0;
@@ -479,11 +482,12 @@ Sphere::compute_total_nearfields(
 }
 
 std::vector<complex128>
-Sphere::compute_scattered_nearfields(
+Sphere::get_scattered_nearfields(
     const std::vector<double>& x,
     const std::vector<double>& y,
     const std::vector<double>& z,
-    const std::string& field_type
+    const std::string& field_type,
+    const std::shared_ptr<BaseSource>& source
 )
 {
     this->compute_an_bn(this->max_order); // or whatever computes an,bn
@@ -501,13 +505,13 @@ Sphere::compute_scattered_nearfields(
 
     const double radius_particle = 0.5 * this->diameter;
 
-    const double k0 = this->source->wavenumber_vacuum;
+    const double k0 = source->wavenumber_vacuum;
     const double k_medium = k0 * this->medium->get_refractive_index();
 
     const complex128 i_unit(0.0, 1.0);
 
-    const complex128 E0x = this->source->polarization.jones_vector[0] * this->source->amplitude;
-    const complex128 E0y = this->source->polarization.jones_vector[1] * this->source->amplitude;
+    const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
+    const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
 
     std::function<double(double)>
     clamp_m1_p1_local = [](double value) -> double {

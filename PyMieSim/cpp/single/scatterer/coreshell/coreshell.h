@@ -51,7 +51,6 @@ class CoreShell: public BaseScatterer
          * @param core_material The material of the core.
          * @param shell_material The material of the shell.
          * @param medium_material The material of the medium.
-         * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          * @param compute_c_d Whether to compute the cn and dn coefficients (default is false).
          */
@@ -61,20 +60,13 @@ class CoreShell: public BaseScatterer
             std::shared_ptr<BaseMaterial> _core_material,
             std::shared_ptr<BaseMaterial> _shell_material,
             std::shared_ptr<BaseMedium> _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
-        :   BaseScatterer(
-                _max_order,
-                std::move(_source),
-                std::move(_medium)
-            ),
+        :   BaseScatterer(_max_order, std::move(_medium)),
             core_diameter(_core_diameter),
             shell_thickness(_shell_thickness),
             core_material(std::move(_core_material)),
             shell_material(std::move(_shell_material))
-        {
-            this->init(_max_order);
-        }
+        {}
 
         /**
          * @brief Constructs a CoreShell object with constant core and shell materials.
@@ -83,7 +75,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -92,7 +83,6 @@ class CoreShell: public BaseScatterer
             std::shared_ptr<BaseMaterial> _core_material,
             std::shared_ptr<BaseMaterial> _shell_material,
             double _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -100,7 +90,6 @@ class CoreShell: public BaseScatterer
             std::move(_core_material),
             std::move(_shell_material),
             std::make_shared<ConstantMedium>(_medium),
-            std::move(_source),
             _max_order
         )
         {}
@@ -112,7 +101,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -121,7 +109,6 @@ class CoreShell: public BaseScatterer
             std::shared_ptr<BaseMaterial> _core_material,
             const complex128 _shell_material,
             double _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -129,7 +116,6 @@ class CoreShell: public BaseScatterer
             std::move(_core_material),
             std::make_shared<ConstantMaterial>(_shell_material),
             std::make_shared<ConstantMedium>(_medium),
-            std::move(_source),
             _max_order
         )
         {}
@@ -141,7 +127,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -150,7 +135,6 @@ class CoreShell: public BaseScatterer
             const complex128 _core_material,
             const complex128 _shell_material,
             double _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -158,7 +142,6 @@ class CoreShell: public BaseScatterer
             std::make_shared<ConstantMaterial>(_core_material),
             std::make_shared<ConstantMaterial>(_shell_material),
             std::make_shared<ConstantMedium>(_medium),
-            std::move(_source),
             _max_order
         )
         {}
@@ -170,7 +153,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -179,7 +161,6 @@ class CoreShell: public BaseScatterer
             const complex128 _core_material,
             const complex128 _shell_material,
             std::shared_ptr<BaseMedium> _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -187,7 +168,6 @@ class CoreShell: public BaseScatterer
             std::make_shared<ConstantMaterial>(_core_material),
             std::make_shared<ConstantMaterial>(_shell_material),
             _medium,
-            std::move(_source),
             _max_order
         )
         {}
@@ -199,7 +179,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -208,7 +187,6 @@ class CoreShell: public BaseScatterer
             const complex128 _core_material,
             std::shared_ptr<BaseMaterial> _shell_material,
             std::shared_ptr<BaseMedium> _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -216,7 +194,6 @@ class CoreShell: public BaseScatterer
             std::make_shared<ConstantMaterial>(_core_material),
             _shell_material,
             _medium,
-            std::move(_source),
             _max_order
         )
         {}
@@ -228,7 +205,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -237,7 +213,6 @@ class CoreShell: public BaseScatterer
             std::shared_ptr<BaseMaterial> _core_material,
             const complex128 _shell_material,
             std::shared_ptr<BaseMedium> _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -245,7 +220,6 @@ class CoreShell: public BaseScatterer
             _core_material,
             std::make_shared<ConstantMaterial>(_shell_material),
             _medium,
-            std::move(_source),
             _max_order
         )
         {}
@@ -257,7 +231,6 @@ class CoreShell: public BaseScatterer
          * @param _core_material The material of the core.
          * @param _shell_material The material of the shell.
          * @param _medium The material of the medium.
-         * @param _source The light source.
          * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          */
         CoreShell(
@@ -266,7 +239,6 @@ class CoreShell: public BaseScatterer
             const complex128 _core_material,
             std::shared_ptr<BaseMaterial> _shell_material,
             const double _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0)
         :   CoreShell(
             _core_diameter,
@@ -274,19 +246,18 @@ class CoreShell: public BaseScatterer
             std::make_shared<ConstantMaterial>(_core_material),
             _shell_material,
             std::make_shared<ConstantMedium>(_medium),
-            std::move(_source),
             _max_order
         )
         {}
 
 
-        void init(size_t _max_order = 0);
+        void init(const std::shared_ptr<BaseSource>& source, size_t _max_order = 0) override;
 
         /**
          * @brief Computes the size parameter for the sphere.
          * The size parameter is defined as (wavenumber * diameter / 2) * medium_refractive_index.
          */
-        void compute_size_parameter() override;
+        void compute_size_parameter(const std::shared_ptr<BaseSource>& source) override;
 
         /**
          * @brief Computes the cross-sectional area of the sphere.
@@ -355,21 +326,23 @@ class CoreShell: public BaseScatterer
          * The internal fields (r < radius) are computed using cn and dn coefficients, while
          * external fields (r > radius) use an and bn coefficients.
          */
-        std::vector<complex128> compute_total_nearfields(
+        std::vector<complex128> get_total_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
-            const std::string& field_type
+            const std::string& field_type,
+            const std::shared_ptr<BaseSource>& source
         ) override {
             throw std::logic_error{"Function not implemented!"};
             return std::vector<complex128>{};
         };
 
-        std::vector<complex128> compute_scattered_nearfields(
+        std::vector<complex128> get_scattered_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
-            const std::string& field_type
+            const std::string& field_type,
+            const std::shared_ptr<BaseSource>& source
         ) override {
             throw std::logic_error{"Function not implemented!"};
             return std::vector<complex128>{};

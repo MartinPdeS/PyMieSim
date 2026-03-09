@@ -92,6 +92,19 @@ Spherical::Spherical(const size_t sampling){
     theta.reserve(sampling);
 }
 
+Cartesian Spherical::to_cartesian() const {
+    Cartesian cart(r.size());
+    for (size_t i = 0; i < r.size(); ++i) {
+        cart.x.push_back(r[i] * std::cos(phi[i]) * std::cos(theta[i]));
+        cart.y.push_back(r[i] * std::cos(phi[i]) * std::sin(theta[i]));
+        cart.z.push_back(r[i] * std::sin(phi[i]));
+    }
+
+    cart.shape = this->shape;
+
+    return cart;
+}
+
 // ---------- Cartesian Coordinate System ----------------
 Cartesian::Cartesian(const size_t sampling){
     x.reserve(sampling);
@@ -112,6 +125,8 @@ Spherical Cartesian::to_spherical() const {
         sph.theta.push_back(std::atan2(y[i], x[i]));
         sph.phi.push_back(std::asin(z[i] / sph.r[i]));
     }
+
+    sph.shape = this->shape;
     return sph;
 }
 

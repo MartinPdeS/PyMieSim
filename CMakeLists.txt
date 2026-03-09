@@ -109,25 +109,27 @@ message(STATUS "")
 
 # ----------------- collect subdirectories --------------------
 add_subdirectory(PyMieSim/cpp/pint)
+add_subdirectory(PyMieSim/cpp/bessel_subroutine)
+
 add_subdirectory(PyMieSim/cpp/single/coordinates)
 add_subdirectory(PyMieSim/cpp/single/material)
-add_subdirectory(PyMieSim/cpp/bessel_subroutine)
 add_subdirectory(PyMieSim/cpp/single/mode_field)
 add_subdirectory(PyMieSim/cpp/single/full_mesh)
 add_subdirectory(PyMieSim/cpp/single/fibonacci)
-
-
+add_subdirectory(PyMieSim/cpp/single/setup)
 add_subdirectory(PyMieSim/cpp/single/polarization)
 add_subdirectory(PyMieSim/cpp/single/source)
 add_subdirectory(PyMieSim/cpp/single/scatterer)
 add_subdirectory(PyMieSim/cpp/single/optical_interface)
 add_subdirectory(PyMieSim/cpp/single/detector)
-add_subdirectory(PyMieSim/cpp/experiment/polarization_set)
-add_subdirectory(PyMieSim/cpp/experiment/source_set)
-add_subdirectory(PyMieSim/cpp/experiment/material_set)
-add_subdirectory(PyMieSim/cpp/experiment/scatterer_set)
-add_subdirectory(PyMieSim/cpp/experiment/detector_set)
-add_subdirectory(PyMieSim/cpp/experiment/setup)
+
+
+# add_subdirectory(PyMieSim/cpp/experiment/polarization_set)
+# add_subdirectory(PyMieSim/cpp/experiment/source_set)
+# add_subdirectory(PyMieSim/cpp/experiment/material_set)
+# add_subdirectory(PyMieSim/cpp/experiment/scatterer_set)
+# add_subdirectory(PyMieSim/cpp/experiment/detector_set)
+# add_subdirectory(PyMieSim/cpp/experiment/setup)
 # ----------------- collect subdirectories --------------------
 
 get_property(PYMIESIM_TARGETS GLOBAL PROPERTY PYMIESIM_TARGETS)

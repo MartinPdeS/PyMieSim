@@ -121,7 +121,7 @@ std::vector<complex128> ModeField::get_HG_unstructured(std::vector<double>& x_co
    size_t x_number = this->mode_id.number_0;
    size_t y_number = this->mode_id.number_1;
 
-   double k = 2 * PI / wavelength;  // Wave number
+   double k = 2 * Constants::PI / wavelength;  // Wave number
    double w0 = waist_radius;  // Beam waist
 
    std::vector<complex128> field(x_coords.size());
@@ -130,14 +130,14 @@ std::vector<complex128> ModeField::get_HG_unstructured(std::vector<double>& x_co
    this->normalize_coordinates(x_coords, y_coords);
 
    // Calculate the beam width at distance z
-   double w = w0 * std::sqrt(1 + (z * wavelength / (PI * w0 * w0)) * (z * wavelength / (PI * w0 * w0)));
+   double w = w0 * std::sqrt(1 + (z * wavelength / (Constants::PI * w0 * w0)) * (z * wavelength / (Constants::PI * w0 * w0)));
 
    // Radius of curvature of the beam's wavefront at z
    double R = (z == 0) ? std::numeric_limits<double>::infinity() :
-   z * (1 + (PI * w0 * w0 / (z * wavelength)) * (PI * w0 * w0 / (z * wavelength)));
+   z * (1 + (Constants::PI * w0 * w0 / (z * wavelength)) * (Constants::PI * w0 * w0 / (z * wavelength)));
 
    // Gouy phase shift at z
-   double gouy_phase = std::atan(z * PI / (wavelength * w0 * w0));
+   double gouy_phase = std::atan(z * Constants::PI / (wavelength * w0 * w0));
 
    // Process each coordinate
    for (size_t i = 0; i < x_coords.size(); ++i) {
@@ -232,7 +232,7 @@ std::vector<complex128> ModeField::get_LG_unstructured(std::vector<double> &x_co
    size_t radial_number = mode_id.number_1;
 
 
-   double k = 2 * PI / wavelength;  // Wave number
+   double k = 2 * Constants::PI / wavelength;  // Wave number
    double w0 = waist_radius;  // Beam waist
 
    std::vector<complex128> field(x_coords.size());
@@ -248,9 +248,9 @@ std::vector<complex128> ModeField::get_LG_unstructured(std::vector<double> &x_co
         double theta = std::atan2(y, x);
 
       // Beam parameters at z
-      double w = w0 * std::sqrt(1 + (z * wavelength / (PI * w0 * w0)) * (z * wavelength / (PI * w0 * w0)));
-      double R = (z == 0) ? std::numeric_limits<double>::infinity() : z * (1 + (PI * w0 * w0 / (z * wavelength)) * (PI * w0 * w0 / (z * wavelength)));
-      double gouy_phase = std::atan(z * PI / (wavelength * w0 * w0));
+      double w = w0 * std::sqrt(1 + (z * wavelength / (Constants::PI * w0 * w0)) * (z * wavelength / (Constants::PI * w0 * w0)));
+      double R = (z == 0) ? std::numeric_limits<double>::infinity() : z * (1 + (Constants::PI * w0 * w0 / (z * wavelength)) * (Constants::PI * w0 * w0 / (z * wavelength)));
+      double gouy_phase = std::atan(z * Constants::PI / (wavelength * w0 * w0));
 
       // Laguerre polynomial
       double L_pl = laguerre_imp(azimuthal_number, radial_number, 2 * r * r / (w * w));

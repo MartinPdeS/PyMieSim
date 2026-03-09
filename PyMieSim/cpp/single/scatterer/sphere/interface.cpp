@@ -17,7 +17,6 @@ void register_sphere(py::module_& module) {
                 const py::object& diameter,
                 const py::object& material,
                 const py::object& medium,
-                const std::shared_ptr<BaseSource>& source,
                 const std::size_t max_order
             ) {
                 const double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
@@ -32,14 +31,12 @@ void register_sphere(py::module_& module) {
                     diameter_meter,
                     std::move(parsed_material),
                     std::move(parsed_medium),
-                    std::move(source),
                     max_order
                 );
             }),
             py::arg("diameter"),
             py::arg("material"),
             py::arg("medium"),
-            py::arg("source"),
             py::arg("max_order") = 0,
             R"pbdoc(
                 Constructor for SPHERE, initializing it with physical and optical properties.
@@ -52,16 +49,9 @@ void register_sphere(py::module_& module) {
                     The material of the sphere, or a constant complex refractive index.
                 medium : BaseMedium or float[RefractiveIndex]
                     The surrounding medium, or a constant real refractive index.
-                source : BaseSource
-                    The source of the incident light.
                 max_order : int, optional
                     The maximum order of spherical harmonics to use in the scattering calculation. Default is 0.
             )pbdoc"
-        )
-        .def_readonly(
-            "source",
-            &Sphere::source,
-            "Source of the sphere."
         )
         .def_readonly_static(
             "property_names",

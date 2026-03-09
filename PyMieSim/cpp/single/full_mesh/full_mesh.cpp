@@ -4,6 +4,7 @@
 FullSteradian::FullSteradian(const size_t sampling, const double radius)
  : sampling(sampling), radius(radius)
 {
+    total_size = sampling * sampling;
     dTheta = 2.0 * Constants::PI / (sampling - 1);
     dPhi   = 1.0 * Constants::PI / (sampling - 1);
 
@@ -11,6 +12,25 @@ FullSteradian::FullSteradian(const size_t sampling, const double radius)
         this->spherical.phi.push_back(p * dPhi - Constants::PI / 2.0);
     for (size_t t=0; t<sampling; t++)
         this->spherical.theta.push_back(t * dTheta - Constants::PI / 1.0);
+
+    this->spherical.shape = {sampling,};
+
+    for (size_t p=0; p<sampling; p++)
+        for (size_t t=0; t<sampling; t++)
+        {
+            double phi = this->spherical.phi[p];
+            double theta = this->spherical.theta[t];
+
+            this->spherical_mesh.r.push_back(radius);
+            this->spherical_mesh.phi.push_back(phi);
+            this->spherical_mesh.theta.push_back(theta);
+            this->spherical_mesh.shape = {sampling, sampling};
+
+            this->cartesian_mesh.x.push_back(radius * sin(phi) * cos(theta));
+            this->cartesian_mesh.y.push_back(radius * sin(phi) * sin(theta));
+            this->cartesian_mesh.z.push_back(radius * cos(phi));
+            this->cartesian_mesh.shape = {sampling, sampling};
+        }
 }
 
 template<typename dtype>

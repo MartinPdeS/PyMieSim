@@ -3,20 +3,21 @@
 
 // ---------------------- Methods ---------------------------------------
 
-void CoreShell::init(const size_t _max_order) {
-    this->medium->initialize(this->source->wavelength);
-    this->core_material->initialize(this->source->wavelength);
-    this->shell_material->initialize(this->source->wavelength);
+void CoreShell::init(const std::shared_ptr<BaseSource>& source, const size_t _max_order) {
+    this->core_material->initialize(source->wavelength);
+    this->shell_material->initialize(source->wavelength);
+    this->medium->initialize(source->wavelength);
 
     this->total_diameter = this->core_diameter + this->shell_thickness;
     this->compute_cross_section();
-    this->compute_size_parameter();
+    this->compute_size_parameter(source);
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->apply_medium();
     this->compute_an_bn(this->max_order);
 }
 
-void CoreShell::compute_size_parameter() {
+
+void CoreShell::compute_size_parameter(const std::shared_ptr<BaseSource>& source) {
     this->size_parameter = source->wavenumber_vacuum * this->total_diameter / 2 * this->medium->get_refractive_index();
     this->size_parameter_squared = pow(this->size_parameter, 2);
     this->x_shell = source->wavenumber_vacuum * this->total_diameter / 2.0 * this->medium->get_refractive_index();

@@ -12,6 +12,7 @@ class InfiniteCylinder: public BaseScatterer
     public:
         double diameter;
         std::shared_ptr<BaseMaterial> material;
+        std::vector<complex128> jones_vector;
         inline static const std::vector<std::string> property_names = {
             "size_parameter",
             "radius",
@@ -34,44 +35,34 @@ class InfiniteCylinder: public BaseScatterer
          * @param diameter The diameter of the cylinder.
          * @param refractive_index The refractive index of the cylinder.
          * @param medium The medium in which the cylinder is embedded.
-         * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients.
          */
         InfiniteCylinder(
             double _diameter,
             std::shared_ptr<BaseMaterial> _material,
             std::shared_ptr<BaseMedium> _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0
-        ) :
-            BaseScatterer(
-                _max_order,
-                std::move(_source),
-                std::move(_medium)
-            ), diameter(_diameter), material(_material)
-        {
-            this->init(_max_order);
-        }
+        ) : BaseScatterer(_max_order, std::move(_medium)),
+            diameter(_diameter),
+            material(_material)
+        {}
 
         /**
          * @brief Constructs a InfiniteCylinder object with constant material.
          * @param diameter The diameter of the cylinder.
          * @param material The refractive index of the cylinder material.
          * @param medium A shared pointer to the surrounding medium.
-         * @param source A shared pointer to the source of the incident light.
          * @param max_order The maximum order of the coefficients to compute.
          */
         InfiniteCylinder(
             double _diameter,
             complex128 _material,
             std::shared_ptr<BaseMedium> _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0) :
             InfiniteCylinder(
                 _diameter,
                 std::make_shared<ConstantMaterial>(_material),
                 std::move(_medium),
-                std::move(_source),
                 _max_order
             )
         {}
@@ -81,20 +72,17 @@ class InfiniteCylinder: public BaseScatterer
          * @param diameter The diameter of the cylinder.
          * @param material The refractive index of the cylinder material.
          * @param medium The refractive index of the surrounding medium.
-         * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients.
          */
         InfiniteCylinder(
             double _diameter,
             complex128 _material,
             double _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0) :
             InfiniteCylinder(
                 _diameter,
                 std::make_shared<ConstantMaterial>(_material),
                 std::make_shared<ConstantMedium>(_medium),
-                std::move(_source),
                 _max_order
             )
         {}
@@ -104,20 +92,17 @@ class InfiniteCylinder: public BaseScatterer
          * @param diameter The diameter of the cylinder.
          * @param material A shared pointer to the material of the cylinder.
          * @param medium The refractive index of the surrounding medium.
-         * @param source A shared pointer to the source of the incident light.
          * @param max_order The maximum order of the coefficients to compute.
          */
         InfiniteCylinder(
             double _diameter,
             std::shared_ptr<BaseMaterial> _material,
             double _medium,
-            std::shared_ptr<BaseSource> _source,
             size_t _max_order = 0) :
             InfiniteCylinder(
                 _diameter,
                 std::move(_material),
                 std::make_shared<ConstantMedium>(_medium),
-                std::move(_source),
                 _max_order
             )
         {}
@@ -127,16 +112,15 @@ class InfiniteCylinder: public BaseScatterer
          * @param diameter The diameter of the cylinder.
          * @param material The refractive index of the cylinder material.
          * @param medium The refractive index of the surrounding medium.
-         * @param source The light source.
          * @param max_order The maximum order of the scattering coefficients.
          */
-        void init(const size_t _max_order = 0);
+        void init(const std::shared_ptr<BaseSource>& source, size_t _max_order = 0) override;
 
         /**
          * @brief Computes the size parameter for the sphere.
          * The size parameter is defined as (wavenumber * diameter / 2) * medium_refractive_index.
          */
-        void compute_size_parameter() override;
+        void compute_size_parameter(const std::shared_ptr<BaseSource>& source) override;
 
         /**
          * @brief Computes the cross-sectional area of the sphere.
@@ -180,7 +164,7 @@ class InfiniteCylinder: public BaseScatterer
          * @brief Computes the asymmetry factor g for a sphere.
          * @return The asymmetry factor g.
          */
-        double get_g() const override;
+        double get_g() const override {throw std::logic_error{"Function not implemented!"};}
 
         /**
          * @brief Computes the scattering amplitudes S1 and S2 for a sphere.
@@ -215,11 +199,12 @@ class InfiniteCylinder: public BaseScatterer
          * @param field_type The type of field to compute (e.g., "E", "H").
          * @return A vector of complex128 values representing the near-field electromagnetic fields.
          */
-        std::vector<complex128> compute_total_nearfields(
+        std::vector<complex128> get_total_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
-            const std::string& field_type
+            const std::string& field_type,
+            const std::shared_ptr<BaseSource>& source
         ) override {
             throw std::logic_error{"Function not implemented!"};
             return std::vector<complex128>{};
@@ -233,11 +218,12 @@ class InfiniteCylinder: public BaseScatterer
          * @param field_type The type of field to compute (e.g., "E", "H").
          * @return A vector of complex128 values representing the scattered near-field electromagnetic fields.
          */
-        std::vector<complex128> compute_scattered_nearfields(
+        std::vector<complex128> get_scattered_nearfields(
             const std::vector<double>& x,
             const std::vector<double>& y,
             const std::vector<double>& z,
-            const std::string& field_type
+            const std::string& field_type,
+            const std::shared_ptr<BaseSource>& source
         ) override {
             throw std::logic_error{"Function not implemented!"};
             return std::vector<complex128>{};

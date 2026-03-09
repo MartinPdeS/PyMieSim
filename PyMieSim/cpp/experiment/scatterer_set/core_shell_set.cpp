@@ -50,7 +50,6 @@ std::unique_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index(const si
 }
 
 void CoreShellSet::validate_sequential_data(const size_t expected_size) const {
-    // Check each vector's size and throw an error with the specific vector name if sizes don't match
     if (this->core_diameter.size() != expected_size)
         throw std::runtime_error("Error: Vector size mismatch in sequential computation. core_diameter has a different size than expected size.");
 

@@ -2,18 +2,19 @@
 
 
 std::vector<double> BaseDetector::get_poynting_field(
-    const BaseScatterer& scatterer,
+    std::shared_ptr<BaseScatterer> scatterer,
+    std::shared_ptr<BaseSource> source,
     double distance
 ) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, distance);
+    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, distance, source);
 
     std::vector<double> poynting(phi_field.size());
 
     for (size_t i = 0; i < phi_field.size(); ++i) {
         const double fields_squared = std::norm(phi_field[i]) + std::norm(theta_field[i]);
         poynting[i] = (
-            scatterer.medium->get_refractive_index() *
+            scatterer->medium->get_refractive_index() *
             Constants::EPSILON0 *
             Constants::LIGHT_SPEED *
             fields_squared
@@ -23,10 +24,10 @@ std::vector<double> BaseDetector::get_poynting_field(
     return poynting;
 }
 
-double BaseDetector::get_energy_flow(const BaseScatterer& scatterer) const
+double BaseDetector::get_energy_flow(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
     const double distance = 1.0;
-    const std::vector<double> poynting_vector = this->get_poynting_field(scatterer, distance);
+    const std::vector<double> poynting_vector = this->get_poynting_field(scatterer, source, distance);
 
     const double dA = distance * distance * this->fibonacci_mesh.dOmega;
 
@@ -305,8 +306,8 @@ std::vector<complex128> Photodiode::get_structured_scalarfield(const size_t samp
 
 
 // ------------------------- Coupling Function -------------------------
-double Photodiode::get_coupling(const BaseScatterer& scatterer) const {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
+double Photodiode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const {
+    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     // this->apply_interface_transmission_to_fields(theta_field, phi_field);
 
@@ -316,7 +317,7 @@ double Photodiode::get_coupling(const BaseScatterer& scatterer) const {
     this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
 
     return (
-        scatterer.medium->get_refractive_index() *
+        scatterer->medium->get_refractive_index() *
         Constants::EPSILON0 *
         Constants::LIGHT_SPEED *
         (coupling_theta + coupling_phi) *
@@ -456,14 +457,14 @@ std::vector<complex128> CoherentMode::get_structured_scalarfield(const size_t sa
 }
 
 // ------------------------- Coupling Function -------------------------
-double CoherentMode::get_coupling(const BaseScatterer& scatterer) const {
-    return this->mean_coupling ? this->get_coupling_mean(scatterer) : this->get_coupling_point(scatterer);
+double CoherentMode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const {
+    return this->mean_coupling ? this->get_coupling_mean(scatterer, source) : this->get_coupling_point(scatterer, source);
 }
 
 
-double CoherentMode::get_coupling_mean(const BaseScatterer& scatterer) const
+double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
+    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
@@ -485,9 +486,9 @@ double CoherentMode::get_coupling_mean(const BaseScatterer& scatterer) const
 }
 
 
-double CoherentMode::get_coupling_point(const BaseScatterer& scatterer) const
+double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
+    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
@@ -499,7 +500,7 @@ double CoherentMode::get_coupling_point(const BaseScatterer& scatterer) const
     this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
 
     return (
-        scatterer.medium->get_refractive_index() *
+        scatterer->medium->get_refractive_index() *
         Constants::EPSILON0 *
         Constants::LIGHT_SPEED *
         (coupling_theta + coupling_phi) *
@@ -514,7 +515,7 @@ double CoherentMode::get_coupling_point(const BaseScatterer& scatterer) const
 void IntegratingSphere::initialize()
 {
     // 4π acceptance: theta in [0, pi]
-    this->max_angle = PI;
+    this->max_angle = Constants::PI;
     this->min_angle = 0.0;
 
     this->fibonacci_mesh = FibonacciMesh(
@@ -544,9 +545,9 @@ std::vector<complex128> IntegratingSphere::get_structured_scalarfield(const size
     return std::vector<complex128>(sampling * sampling, complex128(1.0, 0.0));
 }
 
-double IntegratingSphere::get_coupling(const BaseScatterer& scatterer) const
+double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
+    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     double coupling = 0.0;
 
@@ -567,7 +568,7 @@ double IntegratingSphere::get_coupling(const BaseScatterer& scatterer) const
         coupling = theta_w * sum_theta + phi_w * sum_phi;
     }
     return (
-        scatterer.medium->get_refractive_index() *
+        scatterer->medium->get_refractive_index() *
         Constants::EPSILON0 *
         Constants::LIGHT_SPEED *
         coupling *

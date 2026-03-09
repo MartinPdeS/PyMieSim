@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
-from pydantic.dataclasses import dataclass
 from typing import List
-from PyMieSim.units import ureg
 import pyvista
-from PyMieSim.utils import config_dict, spherical_to_cartesian
+
+from PyMieSim.units import ureg
+from PyMieSim.utils import spherical_to_cartesian
+from PyMieSim.single.full_mesh import FullMesh # Necessary for loading the class, even if not directly used in this file
 
 
-@dataclass(config=config_dict, kw_only=True)
 class SPF():
     r"""
     Compute the scattering phase function (SPF) for the scatterer.
@@ -56,31 +55,17 @@ class SPF():
     >>> print(spf)
 
     """
-    scatterer: object
-    sampling: int = 200
-
-    def __post_init__(self):
-        fields = self.scatterer.get_full_farfields(
-            sampling=self.sampling, distance=1.0 * ureg.meter
+    def __init__(self, setup, sampling: int = 200):
+        self.setup = setup
+        self.sampling = sampling
+        self.SPF, self.mesh = self.setup.get_structured_spf(
+            sampling=self.sampling,
+            distance=1.0 * ureg.meter
         )
-        self.E_phi, self.E_theta, self.theta, self.phi = fields
-
-        self.compute_components()
-
-    def compute_components(self) -> None:
-        """
-        Computes the Scattering Phase Function (SPF) based on the electric field components (E_phi and E_theta).
-
-        The SPF is calculated as the square root of the sum of the squared magnitudes of the electric field components, representing
-        the total scattering intensity distribution as a function of angles.
-
-        The result is stored as the SPF attribute of the instance.
-        """
-        self.SPF = numpy.sqrt(numpy.abs(self.E_phi) ** 2 + numpy.abs(self.E_theta) ** 2)
 
     def plot(
         self,
-        unit_size: List[float] = (400, 400),
+        unit_size: List[float] = (800, 800),
         background_color: str = "white",
         show_edges: bool = False,
         colormap: str = "viridis",
@@ -98,7 +83,7 @@ class SPF():
         Parameters
         ----------
         unit_size : List[float]
-            The size of the plot window in pixels (width, height). Default is (400, 400).
+            The size of the plot window in pixels (width, height). Default is (800, 800).
         background_color : str
             The background color of the plot. Default is 'white'.
         show_edges : bool
@@ -112,18 +97,14 @@ class SPF():
         show_axis_label : bool
             If True, shows the axis labels. Default is False.
         """
-        # Define the window size based on the unit size provided
-        window_size = (unit_size[1], unit_size[0])  # One subplot
+        window_size = (unit_size[1], unit_size[0])
 
-        # Create a PyVista plotting scene with the specified theme and window size
         scene = pyvista.Plotter(
             theme=pyvista.themes.DocumentTheme(), window_size=window_size
         )
 
-        # Set the background color of the scene
         scene.set_background(background_color)
 
-        # Add the 3D axis-aligned plot to the scene using the specified settings
         mapping = self._add_to_3d_ax(
             scene=scene,
             colormap=colormap,
@@ -132,13 +113,10 @@ class SPF():
             set_surface=set_surface,
         )
 
-        # Optionally add axis labels
         scene.add_axes_at_origin(labels_off=not show_axis_label)
 
-        # Add a scalar bar to the scene to represent the scattering phase function
         scene.add_scalar_bar(mapper=mapping.mapper, title="Scattering Phase Function")
 
-        # Display the scene
         scene.show()
 
     def _add_to_3d_ax(
@@ -169,29 +147,19 @@ class SPF():
         opacity : float
             The opacity of the surface mesh. Default is 1.0.
         """
-        # Create mesh grids for phi and theta
-        phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
+        x, y, z = spherical_to_cartesian(
+            r=self.SPF,
+            phi=self.mesh.spherical_mesh.phi.to("radian").magnitude,
+            theta=self.mesh.spherical_mesh.theta.to("radian").magnitude
+        )
 
-        # Normalize the scattering phase function (SPF) for visualization
-        scalar = self.SPF / self.SPF.max() * 2
-
-        # Determine the coordinates based on whether the surface represents the SPF or a unit sphere
-        if set_surface:
-            x, y, z = spherical_to_cartesian(r=scalar, phi=phi_mesh, theta=theta_mesh)
-        else:
-            x, y, z = spherical_to_cartesian(
-                r=numpy.ones(phi_mesh.shape) * 0.5, phi=phi_mesh, theta=theta_mesh
-            )
-
-        # Create a structured grid from the calculated coordinates
         mesh = pyvista.StructuredGrid(x, y, z)
 
-        # Add the surface mesh to the scene
         mapping = scene.add_mesh(
             mesh,
             cmap=colormap,
-            scalars=scalar.flatten(order="F"),
-            opacity=opacity,
+            scalars=self.SPF.T.flatten(),
+            opacity=1.0,
             style="surface",
             show_edges=show_edges,
             show_scalar_bar=False,

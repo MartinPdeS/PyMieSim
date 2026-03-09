@@ -12,10 +12,14 @@ class FullSteradian
     public:
         size_t sampling;
         double radius;
+        size_t total_size;
 
         double dTheta, dPhi;
         Cartesian cartesian;
         Spherical spherical;
+
+        Spherical spherical_mesh;
+        Cartesian cartesian_mesh;
 
         /**
          * @brief Default constructor for FullSteradian mesh.

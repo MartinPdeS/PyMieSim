@@ -2,13 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from pydantic.dataclasses import dataclass
 from MPSPlots import helper
 
-from PyMieSim.utils import config_dict
 from PyMieSim.units import ureg
 
-@dataclass(config=config_dict, kw_only=True)
 class S1S2():
     r"""
     Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.
@@ -56,14 +53,13 @@ class S1S2():
     >>> print(s1s2.S1, s1s2.S2)
 
     """
-    scatterer: object
-    sampling: int = 200
+    def __init__(self, setup, sampling: int = 200):
+        self.setup = setup
+        self.sampling = sampling
+        self.phi = numpy.linspace(-numpy.pi, numpy.pi, self.sampling) * ureg.radian
 
-    def __post_init__(self):
-        self.phi = numpy.linspace(-180, 180, self.sampling) * ureg.degree
-
-        self.S1, self.S2 = self.scatterer.get_s1s2(
-            phi=numpy.deg2rad(self.phi) + numpy.pi / 2
+        self.S1, self.S2 = self.setup.get_s1s2(
+            angles=self.phi
         )
 
     @helper.pre_plot(nrows=1, ncols=2, subplot_kw={"polar": True})
@@ -82,18 +78,18 @@ class S1S2():
         # Plot for S1 parameter
         axes[0].set(title=r"S$_1$ parameter")
         axes[0].fill_between(
-            numpy.deg2rad(self.phi),
+            self.phi,
             y1=0,
             y2=numpy.abs(self.S1),
             color="C0",
             alpha=0.7,
-            # edgecolor="black",
+            edgecolor="black",
         )
 
         # Plot for S2 parameter
         axes[1].set(title=r"S$_2$ parameter")
         axes[1].fill_between(
-            numpy.deg2rad(self.phi),
+            self.phi,
             y1=0,
             y2=numpy.abs(self.S2),
             color="C1",
