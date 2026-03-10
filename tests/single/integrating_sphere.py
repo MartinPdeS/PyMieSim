@@ -5,7 +5,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import IntegratingSphere
-from PyMieSim.single.representations import Footprint
+from PyMieSim.single import Setup
 
 # Define sampling to be tested
 samplings = [100, 200]
@@ -24,14 +24,18 @@ def test_photodiode_with_sampling(sampling):
 
     scatterer =  Sphere(
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
-        source=source,  # Gaussian source from source fixture
         material=1.4 * ureg.RIU,  # Refractive index of the scatterer
         medium=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
     )
 
     detector = IntegratingSphere(sampling=sampling)
 
-    footprint = Footprint(scatterer=scatterer, detector=detector)
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector,
+    )
+    footprint = setup.get_representation("footprint")
 
     # Example verification step (not operational as we're not evaluating the output here)
     assert footprint is not None, "Expected a valid footprint but got None."

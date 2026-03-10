@@ -15,12 +15,9 @@ class Sphere: public BaseScatterer
         std::shared_ptr<BaseMaterial> material;
         inline static const std::vector<std::string> property_names = {
             "size_parameter",
-            "radius",
-            "volume",
             "cross_section",
             "g",
-            "an",
-            "bn",
+            "g_with_farfields",
             "Qsca",
             "Qext",
             "Qabs",

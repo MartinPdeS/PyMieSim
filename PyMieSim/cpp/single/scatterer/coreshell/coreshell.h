@@ -21,12 +21,9 @@ class CoreShell: public BaseScatterer
 
         inline static const std::vector<std::string> property_names = {
             "size_parameter",
-            "radius",
-            "volume",
             "cross_section",
-            "an",
-            "bn",
             "g",
+            "g_with_farfields",
             "Qsca",
             "Qext",
             "Qabs",

@@ -9,7 +9,7 @@ from MPSPlots.colormaps import blue_black_red
 from PyMieSim.units import ureg, Length
 
 
-class FarField():
+class FarFields():
     r"""
     Compute the far-field scattering pattern for the scatterer.
 
@@ -57,7 +57,7 @@ class FarField():
         self.sampling = sampling
         self.distance = distance
 
-        self.E_phi, self.E_theta, self.mesh = self.setup.get_structured_farfields(
+        self.E_phi, self.E_theta, self.mesh = self.setup.get_farfields(
             sampling=self.sampling, distance=self.distance
         )
 
@@ -101,7 +101,7 @@ class FarField():
         repr_label = ["phi real", "phi imag", "theta real", "theta imag"]
 
         for idx, (label, field) in enumerate(zip(repr_label, repr)):
-            field = field.flatten(order="F")
+            field = field.flatten(order="F").magnitude
             mesh = pyvista.StructuredGrid(
                 cartesian.x.to("meter").magnitude,
                 cartesian.y.to("meter").magnitude,
@@ -110,7 +110,7 @@ class FarField():
             scene.subplot(0, idx)
 
             max_abs = numpy.abs(field).max()
-            colormap_limits = [-max_abs.magnitude, max_abs.magnitude]
+            colormap_limits = [-max_abs, max_abs]
 
             mapping = scene.add_mesh(
                 mesh,

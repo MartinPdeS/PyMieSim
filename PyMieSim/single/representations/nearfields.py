@@ -62,7 +62,7 @@ def _make_plane_basis(plane_normal: Sequence[float]) -> Tuple[numpy.ndarray, num
     return n_hat, u_hat, v_hat
 
 
-class NearField:
+class NearFields:
     """
     Near field visualization for a scatterer.
 

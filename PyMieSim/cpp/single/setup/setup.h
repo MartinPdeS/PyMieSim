@@ -72,6 +72,7 @@ class Setup
             RETURN_IF_MATCH(Cpr)
 
             RETURN_IF_MATCH(g)
+            if (data_name == "g_with_farfields") return scatterer->get_g_with_farfields(this->source, 1000);
 
             throw std::invalid_argument("Unknown data name: " + data_name);
         }
@@ -82,7 +83,7 @@ class Setup
                 throw std::logic_error("Detector is not defined in the setup. Poynting field cannot be computed.");
             }
 
-            auto [theta_field, phi_field] = this->scatterer->compute_unstructured_farfields(
+            auto [theta_field, phi_field] = this->scatterer->get_unstructured_farfields(
                 this->detector->fibonacci_mesh,
                 distance,
                 this->source
@@ -103,6 +104,7 @@ class Setup
             return poynting;
         }
 
+    //------------------------ S1S2 --------------------------
     std::pair<std::vector<complex128>, std::vector<complex128>>
     get_s1s2(const std::vector<double>& angles) const
     {
@@ -113,13 +115,14 @@ class Setup
         return scatterer->compute_s1s2(phi_values);
     }
 
+    //------------------------ FARFIELDS --------------------------
     std::pair<std::vector<complex128>, std::vector<complex128>>
-    get_farfields(
+    get_unstructured_farfields(
         const std::vector<double>& phi,
         const std::vector<double>& theta,
         double distance
     ) const {
-        return this->scatterer->compute_unstructured_farfields(
+        return this->scatterer->get_unstructured_farfields(
             phi,
             theta,
             distance,
@@ -143,6 +146,7 @@ class Setup
         );
     }
 
+    //------------------------ NEARFIELDS --------------------------
     std::vector<complex128>
     get_scattered_nearfields(
         const std::vector<double>& x,
@@ -191,6 +195,7 @@ class Setup
         );
     }
 
+    //------------------------ STOKES --------------------------
     std::tuple<
         std::vector<double>,
         std::vector<double>,
@@ -228,6 +233,9 @@ class Setup
         );
     }
 
+
+
+    //------------------------ SPF --------------------------
     std::pair<std::vector<double>, FullSteradian>
     get_structured_spf(
         const size_t sampling,
@@ -236,6 +244,20 @@ class Setup
         return this->scatterer->get_structured_spf(
             this->source,
             sampling,
+            distance
+        );
+    }
+
+    std::vector<double>
+    get_unstructured_spf(
+        const std::vector<double>& phi,
+        const std::vector<double>& theta,
+        const double distance = 1.0
+    ) const {
+        return this->scatterer->get_unstructured_spf(
+            this->source,
+            phi,
+            theta,
             distance
         );
     }

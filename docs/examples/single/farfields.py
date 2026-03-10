@@ -14,7 +14,6 @@ from PyMieSim.single import source
 
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.representations import FarField
 from PyMieSim.single import Setup
 
 polarization = PolarizationState(angle=30 * ureg.degree)
@@ -38,7 +37,6 @@ setup = Setup(
 )
 
 
-far_fields = FarField(setup=setup, sampling=100)
-
+far_fields = setup.get_representation("farfields", sampling=100)
 
 figure = far_fields.plot()

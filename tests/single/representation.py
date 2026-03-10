@@ -10,16 +10,17 @@ import matplotlib.pyplot as plt
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
-from PyMieSim.single.representations import FarField, Stokes, SPF, S1S2
+from PyMieSim.single.detector import Photodiode
+from PyMieSim.single import Setup
 
-representations = [FarField, Stokes, SPF, S1S2]
+representation_list = ["farfields", "stokes", "spf", "s1s2", "footprint"]
 
 
 
 # Parametrized test for plotting functions
-@pytest.mark.parametrize("representation", representations)
 @patch("pyvista.Plotter.show")
 @patch("matplotlib.pyplot.show")
+@pytest.mark.parametrize("representation", representation_list)
 def test_plottings(mock_show_plt, mock_show_pyvista, representation):
 
     source = Gaussian(
@@ -31,12 +32,25 @@ def test_plottings(mock_show_plt, mock_show_pyvista, representation):
 
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        source=source,
         medium=1.0 * ureg.RIU,
         material=1.4 * ureg.RIU,
     )
 
-    data = representation(scatterer=scatterer)
+    detector = Photodiode(
+        sampling=100,
+        numerical_aperture=0.2 * ureg.AU,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        medium=1.0 * ureg.RIU
+    )
+
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector,
+    )
+
+    data = setup.get_representation(representation)
 
     assert data is not None
     data.plot()

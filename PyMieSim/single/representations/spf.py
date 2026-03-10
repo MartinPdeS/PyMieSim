@@ -58,7 +58,7 @@ class SPF():
     def __init__(self, setup, sampling: int = 200):
         self.setup = setup
         self.sampling = sampling
-        self.SPF, self.mesh = self.setup.get_structured_spf(
+        self.SPF, self.mesh = self.setup.get_spf(
             sampling=self.sampling,
             distance=1.0 * ureg.meter
         )

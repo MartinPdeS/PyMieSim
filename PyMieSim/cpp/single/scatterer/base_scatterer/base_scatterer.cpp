@@ -60,7 +60,7 @@ BaseScatterer::get_structured_farfields(
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_unstructured_farfields(
+BaseScatterer::get_unstructured_farfields(
     const std::vector<double>& phi,
     const std::vector<double>& theta,
     const double radius,
@@ -94,13 +94,13 @@ BaseScatterer::compute_unstructured_farfields(
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_unstructured_farfields(
+BaseScatterer::get_unstructured_farfields(
     const FibonacciMesh& fibonacci_mesh,
     const double radius,
     const std::shared_ptr<BaseSource>& source
 ) const
 {
-    return this->compute_unstructured_farfields(
+    return this->get_unstructured_farfields(
         fibonacci_mesh.spherical.phi,
         fibonacci_mesh.spherical.theta,
         radius,
@@ -215,6 +215,31 @@ BaseScatterer::get_structured_spf(std::shared_ptr<BaseSource> source, const size
     return std::make_tuple(std::move(spf), std::move(full_mesh));
 }
 
+std::vector<double> BaseScatterer::get_unstructured_spf(
+    std::shared_ptr<BaseSource> source,
+    const std::vector<double>& phi,
+    const std::vector<double>& theta,
+    const double radius
+) const {
+    auto [phi_field, theta_field] = this->get_unstructured_farfields(
+        phi,
+        theta,
+        radius,
+        source
+    );
+
+    std::vector<double> spf;
+    spf.reserve(phi_field.size());
+
+    for (size_t iter = 0; iter < phi_field.size(); iter++)
+    {
+        double value = pow(abs(phi_field[iter]), 2) + pow(abs(theta_field[iter]), 2);
+        spf.push_back( value );
+    }
+
+    return spf;
+}
+
 std::tuple<
     std::vector<complex128>,
     std::vector<complex128>,
@@ -307,7 +332,7 @@ BaseScatterer::get_unstructured_stokes(
     std::shared_ptr<BaseSource> source
 ) const
 {
-    auto [E_phi, E_theta] = this->compute_unstructured_farfields(phi, theta, distance, source);
+    auto [E_phi, E_theta] = this->get_unstructured_farfields(phi, theta, distance, source);
 
     std::vector<double> I(E_phi.size());
     std::vector<double> Q(E_phi.size());

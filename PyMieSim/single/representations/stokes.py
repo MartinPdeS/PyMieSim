@@ -63,7 +63,7 @@ class Stokes():
         self.sampling = sampling
         self.distance = distance
 
-        self.I, self.Q, self.U, self.V, self.mesh = self.setup.get_structured_stokes(
+        self.I, self.Q, self.U, self.V, self.mesh = self.setup.get_stokes(
             sampling=self.sampling, distance=self.distance
         )
 
@@ -106,7 +106,7 @@ class Stokes():
         for idx, (name, field) in enumerate(
             zip(["I", "Q", "U", "V"], [self.I, self.Q, self.U, self.V])
         ):
-            field = field.flatten(order="F")
+            field = field.flatten(order="F").magnitude
             mesh = pyvista.StructuredGrid(
                 cartesian.x.to("meter").magnitude,
                 cartesian.y.to("meter").magnitude,

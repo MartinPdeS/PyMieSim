@@ -5,7 +5,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single.representations import Footprint
+from PyMieSim.single import Setup
 
 # Define a list of mode numbers and rotation angles to be tested
 mode_numbers = ["LP01", "LP11", "LP21", "LG01", "LG11", "LG21", "HG01", "HG11", "HG21"]
@@ -24,7 +24,6 @@ def test_lp_modes(mode_number):
 
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        source=source,
         material=1.4 * ureg.RIU,
         medium=1.0 * ureg.RIU,
     )
@@ -38,7 +37,13 @@ def test_lp_modes(mode_number):
         rotation=0 * ureg.degree,
     )
 
-    footprint = Footprint(scatterer=scatterer, detector=detector)
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector,
+    )
+
+    footprint = setup.get_representation("footprint")
 
     assert footprint is not None, "Expected a valid footprint but got None."
 

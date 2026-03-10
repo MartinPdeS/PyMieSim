@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch
 from PyMieSim.units import ureg
 
 from PyMieSim.single.source import PlaneWave

@@ -10,7 +10,6 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import RightCircular
-from PyMieSim.single.representations import SPF
 from PyMieSim.single import Setup
 
 polarization = RightCircular()
@@ -35,6 +34,6 @@ setup = Setup(
     source=source,
 )
 
-spf = SPF(setup=setup, sampling=100)
+spf = setup.get_representation("spf", sampling=100)
 
 figure = spf.plot()

@@ -9,6 +9,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
+from PyMieSim.single import Setup
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 materials = [1.2 * ureg.RIU, 1.6 * ureg.RIU]
@@ -29,28 +30,8 @@ def source():
 @pytest.mark.parametrize(
     "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
 )
-@pytest.mark.parametrize("attribute", Sphere.property_names)
+@pytest.mark.parametrize("attribute", Sphere.property_names + ["coupling"])
 def test_sphere_attribute(attribute, material, medium, source):
-    scatterer = Sphere(
-        diameter=100 * ureg.nanometer,
-        source=source,
-        medium=medium,
-        material=material,
-    )
-    _ = getattr(scatterer, attribute)
-
-    # scatterer.print_properties()
-
-
-@pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
-@pytest.mark.parametrize(
-    "medium", mediums, ids=[f"Medium:{m}" for m in mediums]
-)
-def test_sphere_coupling(
-    material,
-    medium,
-    source,
-):
     detector = Photodiode(
         sampling=100,
         numerical_aperture=0.2 * ureg.AU,
@@ -61,11 +42,17 @@ def test_sphere_coupling(
 
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        source=source,
         medium=medium,
         material=material,
     )
-    _ = detector.get_coupling(scatterer)
+
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector,
+    )
+
+    _ = setup.get(attribute)
 
 
 @pytest.mark.parametrize("material", materials, ids=[f"material:{m}" for m in materials])
@@ -75,24 +62,28 @@ def test_sphere_coupling(
 def test_unstructured_array_functions(material, medium, source):
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        source=source,
         medium=medium,
         material=material,
     )
 
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+    )
+
     phi = numpy.linspace(0, numpy.pi, 5) * ureg.radian
-    s1, s2 = scatterer.get_s1s2(phi)
+    s1, s2 = setup.get_s1s2(phi)
     assert s1.shape == phi.shape
     assert s2.shape == phi.shape
 
     theta = numpy.linspace(0, numpy.pi / 2, 5) * ureg.radian
-    I, Q, U, V = scatterer.get_stokes_parameters(phi, theta, 1 * ureg.meter)
+    I, Q, U, V = setup.get_stokes(phi, theta, 1 * ureg.meter)
     assert I.shape == phi.shape
     assert Q.shape == phi.shape
     assert U.shape == phi.shape
     assert V.shape == phi.shape
 
-    E_para, E_perp = scatterer.get_farfields(phi, theta, 1 * ureg.meter)
+    E_para, E_perp = setup.get_farfields(phi, theta, 1 * ureg.meter)
     assert E_para.shape == phi.shape
     assert E_perp.shape == phi.shape
 

@@ -26,15 +26,8 @@ def test_invalid_gaussian_initialization(optical_power, numerical_aperture, pola
 
 
 def test_invalid_sphere_initialization():
-    source = Gaussian(
-        optical_power=1 * ureg.watt,
-        numerical_aperture=0.1 * ureg.AU,
-        polarization=PolarizationState(angle=0 * ureg.degree),
-        wavelength=1550 * ureg.nanometer,
-    )
     with pytest.raises(Exception):
         Sphere(
-            source=source,
             medium=1.0 * ureg.RIU,
             material=1.5 * ureg.RIU,
             diameter=100,

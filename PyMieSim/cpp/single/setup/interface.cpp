@@ -92,12 +92,15 @@ PYBIND11_MODULE(setup, module)
                     If an unknown data name is provided.
             )pbdoc"
         )
+
+        //------------------------ S1S2 --------------------------
+
         .def(
             "get_s1s2",
             [ureg](Setup& self, const py::object& angles)
             {
                 std::vector<double> angle_values =
-                    angles.attr("to")(ureg.attr("radian"))
+                    angles.attr("to")("radian")
                     .attr("magnitude")
                     .cast<std::vector<double>>();
 
@@ -117,9 +120,9 @@ PYBIND11_MODULE(setup, module)
                 Compute the complex scattering amplitude functions :math:`S_1(\phi)` and :math:`S_2(\phi)`.
 
                 These quantities are the standard amplitude scattering functions used in Lorenz Mie theory.
-                %
+
                 They relate the incident field to the scattered far field and define the angular dependence of the scattered response for the two orthogonal polarization channels.
-                %
+
                 In this implementation, :math:`S_1` and :math:`S_2` are returned with units of length.
 
                 The differential scattering cross section is obtained from these amplitudes as
@@ -143,9 +146,7 @@ PYBIND11_MODULE(setup, module)
                 Parameters
                 ----------
                 angles : pint.Quantity
-                    One dimensional array of scattering angles.
-                    %
-                    Values must be convertible to radians.
+                    One dimensional array of scattering angles. Values must be convertible to radians.
 
                 Returns
                 -------
@@ -161,6 +162,168 @@ PYBIND11_MODULE(setup, module)
                 In the underlying C++ implementation, the input angles are shifted by :math:`\pi/2` before calling the scatterer level routine, so this method should be treated as the public high level angular interface for users.
             )pbdoc"
         )
+
+
+
+        //------------------------ STOKES --------------------------
+        .def(
+            "get_stokes",
+            [ureg](
+                Setup& self,
+                const size_t sampling,
+                const py::object& distance
+            ) {
+                std::tuple<
+                    std::vector<double>,
+                    std::vector<double>,
+                    std::vector<double>,
+                    std::vector<double>,
+                    FullSteradian
+                > stokes_parameters = // [i, Q, U, V, FullSteradian]
+                     self.get_structured_stokes(
+                        sampling,
+                        distance.attr("to")("meter").attr("magnitude").cast<double>()
+                );
+
+                std::vector<size_t> shape = {sampling, sampling};
+                py::array_t<double> i_array = _vector_to_numpy(std::get<0>(stokes_parameters), shape);
+                py::array_t<double> Q_array = _vector_to_numpy(std::get<1>(stokes_parameters), shape);
+                py::array_t<double> U_array = _vector_to_numpy(std::get<2>(stokes_parameters), shape);
+                py::array_t<double> V_array = _vector_to_numpy(std::get<3>(stokes_parameters), shape);
+
+                return py::make_tuple(
+                    i_array * ureg.attr("watt/m**2"),
+                    Q_array * ureg.attr("watt/m**2"),
+                    U_array * ureg.attr("watt/m**2"),
+                    V_array * ureg.attr("watt/m**2"),
+                    std::get<4>(stokes_parameters)
+                );
+            },
+            py::arg("sampling"),
+            py::arg("distance"),
+             R"pbdoc(
+                Returns the unstructured Stokes parameters around the scatterer.
+
+                Parameters
+                ----------
+                sampling : int
+                    The number of points in the angular sampling for both phi and theta directions.
+                distance : float
+                    The radial distance from the scatterer.
+
+                Returns
+                -------
+                tuple
+                    A NumPy array with the unstructured Stokes parameters (I, Q, U, V) around the scatterer.
+
+            )pbdoc"
+        )
+        .def(
+            "get_stokes",
+            [ureg](
+                Setup& self,
+                const py::object& phi,
+                const py::object& theta,
+                const py::object& distance
+            ) {
+                std::tuple<
+                    std::vector<double>,
+                    std::vector<double>,
+                    std::vector<double>,
+                    std::vector<double>
+                > stokes_parameters = self.get_unstructured_stokes(
+                    phi.attr("to")("radian").attr("magnitude").cast<std::vector<double>>(),
+                    theta.attr("to")("radian").attr("magnitude").cast<std::vector<double>>(),
+                    distance.attr("to")("meter").attr("magnitude").cast<double>()
+                );
+
+                py::array_t<double> i_array = _vector_to_numpy(std::get<0>(stokes_parameters));
+                py::array_t<double> Q_array = _vector_to_numpy(std::get<1>(stokes_parameters));
+                py::array_t<double> U_array = _vector_to_numpy(std::get<2>(stokes_parameters));
+                py::array_t<double> V_array = _vector_to_numpy(std::get<3>(stokes_parameters));
+
+                return py::make_tuple(
+                    i_array * ureg.attr("watt/m**2"),
+                    Q_array * ureg.attr("watt/m**2"),
+                    U_array * ureg.attr("watt/m**2"),
+                    V_array * ureg.attr("watt/m**2")
+                );
+            },
+            py::arg("phi"),
+            py::arg("theta"),
+            py::arg("distance"),
+            R"pbdoc(
+                Returns the Stokes parameters at specified angles and distance from the scatterer.
+
+                Parameters
+                ----------
+                phi : pint.Quantity
+                    One dimensional array of azimuthal angles. Values must be convertible to radians.
+                theta : pint.Quantity
+                    One dimensional array of polar angles. Values must be convertible to radians.
+                distance : pint.Quantity
+                    Observation distance from the scatterer center. Values must be convertible to meter.
+
+                Returns
+                -------
+                tuple
+                    A tuple containing four one-dimensional NumPy arrays representing the Stokes parameters (I, Q, U, V) at the specified angles and distance from the scatterer.
+            )pbdoc"
+        )
+
+
+
+        //------------------------ FARFIELDS --------------------------
+        .def(
+            "get_farfields",
+            [ureg](
+                Setup& self,
+                const size_t sampling,
+                const py::object& distance
+            ) {
+                std::tuple<
+                    std::vector<complex128>,
+                    std::vector<complex128>,
+                    FullSteradian
+                > farfield_meshes = self.get_structured_farfields(
+                    sampling,
+                    distance.attr("to")("meter").attr("magnitude").cast<double>()
+                );
+
+                std::vector<size_t> shape = {sampling, sampling};
+
+                py::array_t<complex128> phi_field_mesh = _vector_to_numpy(std::get<0>(farfield_meshes), shape);
+                py::array_t<complex128> theta_field_mesh = _vector_to_numpy(std::get<1>(farfield_meshes), shape);
+
+                return py::make_tuple(
+                    phi_field_mesh * ureg.attr("volt/meter"),
+                    theta_field_mesh * ureg.attr("volt/meter"),
+                    std::get<2>(farfield_meshes)
+                );
+            },
+            py::arg("sampling"),
+            py::arg("distance"),
+            py::return_value_policy::copy,
+            R"pbdoc(
+                Computes the full structured far fields over a spherical mesh.
+
+                Parameters
+                ----------
+                sampling : int
+                    The number of points in the angular sampling for both phi and theta directions.
+                distance : float
+                    The radial distance from the scatterer at which to compute the far fields.
+
+                Returns
+                -------
+                tuple
+                    A tuple containing:
+                    - phi_field_mesh: A 2D NumPy array of complex values representing the phi component of the far field on the mesh.
+                    - theta_field_mesh: A 2D NumPy array of complex values representing the theta component of the far field on the mesh.
+                    - phi_mesh: A 2D NumPy array of floats representing the phi angles of the mesh.
+                    - theta_mesh: A 2D NumPy array of floats representing the theta angles of the mesh.
+            )pbdoc"
+        )
         .def(
             "get_farfields",
             [ureg](
@@ -170,22 +333,22 @@ PYBIND11_MODULE(setup, module)
                 const py::object& distance
             ) {
                 std::vector<double> phi_values =
-                    phi.attr("to")(ureg.attr("radian"))
+                    phi.attr("to")("radian")
                     .attr("magnitude")
                     .cast<std::vector<double>>();
 
                 std::vector<double> theta_values =
-                    theta.attr("to")(ureg.attr("radian"))
+                    theta.attr("to")("radian")
                     .attr("magnitude")
                     .cast<std::vector<double>>();
 
                 double distance_value =
-                    distance.attr("to")(ureg.attr("meter"))
+                    distance.attr("to")("meter")
                     .attr("magnitude")
                     .cast<double>();
 
                 std::pair<std::vector<complex128>, std::vector<complex128>> farfield_components =
-                    self.get_farfields(
+                    self.get_unstructured_farfields(
                         phi_values,
                         theta_values,
                         distance_value
@@ -255,125 +418,13 @@ PYBIND11_MODULE(setup, module)
                 This method returns electric field components only. It does not return magnetic field components.
             )pbdoc"
         )
+
+
+
+
+        //------------------------ SPF --------------------------
         .def(
-            "get_structured_stokes",
-            [ureg](
-                Setup& self,
-                const size_t sampling,
-                const py::object& distance
-            ) {
-                std::tuple<
-                    std::vector<double>,
-                    std::vector<double>,
-                    std::vector<double>,
-                    std::vector<double>,
-                    FullSteradian
-                > stokes_parameters = // [i, Q, U, V, FullSteradian]
-                     self.get_structured_stokes(
-                        sampling,
-                        distance.attr("to")("meter").attr("magnitude").cast<double>()
-                );
-
-                std::vector<size_t> shape = {sampling, sampling};
-                py::array_t<double> i_array = _vector_to_numpy(std::get<0>(stokes_parameters), shape);
-                py::array_t<double> Q_array = _vector_to_numpy(std::get<1>(stokes_parameters), shape);
-                py::array_t<double> U_array = _vector_to_numpy(std::get<2>(stokes_parameters), shape);
-                py::array_t<double> V_array = _vector_to_numpy(std::get<3>(stokes_parameters), shape);
-
-                return py::make_tuple(
-                    i_array * ureg.attr("watt/m**2"),
-                    Q_array * ureg.attr("watt/m**2"),
-                    U_array * ureg.attr("watt/m**2"),
-                    V_array * ureg.attr("watt/m**2"),
-                    std::get<4>(stokes_parameters)
-                );
-            },
-            py::arg("sampling"),
-            py::arg("distance"),
-             R"pbdoc(
-                Returns the unstructured Stokes parameters around the scatterer.
-
-                Parameters
-                ----------
-                sampling : int
-                    The number of points in the angular sampling for both phi and theta directions.
-                distance : float
-                    The radial distance from the scatterer.
-
-                Returns
-                -------
-                tuple
-                    A NumPy array with the unstructured Stokes parameters (I, Q, U, V) around the scatterer.
-            R"pbdoc(
-                Returns the unstructured Stokes parameters around the scatterer.
-
-                Parameters
-                ----------
-                phi : float
-                    The azimuthal angle (in radians).
-                theta : float
-                    The polar angle (in radians).
-                distance : float
-                    The radial distance from the scatterer.
-
-                Returns
-                -------
-                tuple
-                    A NumPy array with the unstructured Stokes parameters (I, Q, U, V) around the scatterer.
-            )pbdoc"
-        )
-        .def(
-            "get_structured_farfields",
-            [ureg](
-                Setup& self,
-                const size_t sampling,
-                const py::object& distance
-            ) {
-                std::tuple<
-                    std::vector<complex128>,
-                    std::vector<complex128>,
-                    FullSteradian
-                > farfield_meshes = self.get_structured_farfields(
-                    sampling,
-                    distance.attr("to")("meter").attr("magnitude").cast<double>()
-                );
-
-                std::vector<size_t> shape = {sampling, sampling};
-
-                py::array_t<complex128> phi_field_mesh = _vector_to_numpy(std::get<0>(farfield_meshes), shape);
-                py::array_t<complex128> theta_field_mesh = _vector_to_numpy(std::get<1>(farfield_meshes), shape);
-
-                return py::make_tuple(
-                    phi_field_mesh * ureg.attr("volt/meter"),
-                    theta_field_mesh * ureg.attr("volt/meter"),
-                    std::get<2>(farfield_meshes)
-                );
-            },
-            py::arg("sampling"),
-            py::arg("distance"),
-            py::return_value_policy::copy,
-            R"pbdoc(
-                Computes the full structured far fields over a spherical mesh.
-
-                Parameters
-                ----------
-                sampling : int
-                    The number of points in the angular sampling for both phi and theta directions.
-                distance : float
-                    The radial distance from the scatterer at which to compute the far fields.
-
-                Returns
-                -------
-                tuple
-                    A tuple containing:
-                    - phi_field_mesh: A 2D NumPy array of complex values representing the phi component of the far field on the mesh.
-                    - theta_field_mesh: A 2D NumPy array of complex values representing the theta component of the far field on the mesh.
-                    - phi_mesh: A 2D NumPy array of floats representing the phi angles of the mesh.
-                    - theta_mesh: A 2D NumPy array of floats representing the theta angles of the mesh.
-            )pbdoc"
-        )
-        .def(
-            "get_structured_spf",
+            "get_spf",
             [ureg](
                 Setup& self,
                 const size_t sampling,
@@ -413,6 +464,62 @@ PYBIND11_MODULE(setup, module)
                     - spf_field_mesh: A 2D NumPy array of floats representing the scattering phase function values on the mesh.
                     - phi_mesh: A 2D NumPy array of floats representing the phi angles of the mesh.
                     - theta_mesh: A 2D NumPy array of floats representing the theta angles of the mesh.
+            )pbdoc"
+        )
+        .def(
+            "get_spf",
+            [ureg](
+                Setup& self,
+                const py::object& phi,
+                const py::object& theta,
+                const py::object& distance
+            ) {
+                std::vector<double> phi_values =
+                    phi.attr("to")("radian")
+                    .attr("magnitude")
+                    .cast<std::vector<double>>();
+
+                std::vector<double> theta_values =
+                    theta.attr("to")("radian")
+                    .attr("magnitude")
+                    .cast<std::vector<double>>();
+
+                double distance_value =
+                    distance.attr("to")("meter")
+                    .attr("magnitude")
+                    .cast<double>();
+
+                std::vector<double> spf_values = self.get_unstructured_spf(
+                    phi_values,
+                    theta_values,
+                    distance_value
+                );
+
+                py::array_t<double> spf_array = _vector_to_numpy(spf_values);
+
+                return spf_array;
+            },
+            py::arg("phi"),
+            py::arg("theta"),
+            py::arg("distance") = py::float_(1.0) * ureg.attr("meter"),
+            R"pbdoc(
+                Compute the unstructured scattering phase function (SPF) at specified angles and distance from the scatterer.
+
+                Parameters
+                ----------
+                phi : pint.Quantity
+                    One dimensional array of azimuthal angles. Values must be convertible to radians.
+
+                theta : pint.Quantity
+                    One dimensional array of polar angles. Values must be convertible to radians.
+
+                distance : pint.Quantity
+                    Observation distance from the scatterer center. Must be convertible to meter.
+
+                Returns
+                -------
+                numpy.ndarray
+                    A one-dimensional NumPy array of floats representing the scattering phase function values at the specified angles and distance from the scatterer.
             )pbdoc"
         )
 
@@ -600,17 +707,47 @@ PYBIND11_MODULE(setup, module)
                 implementation of cn/dn coefficients for infinite cylinders.
             )pbdoc"
         )
-        .def(
-            "get_representation",
-            [](const Setup& self, const std::string& representation_type, py::args args, py::kwargs kwargs) {
-                kwargs["setup"] = py::cast(self);
-                py::module_ representations_module = py::module_::import("PyMieSim.single.representations");
-                py::object representation_class = representations_module.attr(representation_type.c_str());
+    .def(
+        "get_representation",
+        [](const Setup& self, const std::string& representation_type, py::kwargs kwargs) {
+            std::string module_name;
+            std::string class_name;
 
-                return representation_class(*args, **kwargs);
-            },
-            py::arg("representation_type")
-        )
+            if (representation_type == "farfields") {
+                module_name = "PyMieSim.single.representations.farfields";
+                class_name = "FarFields";
+            }
+            else if (representation_type == "stokes") {
+                module_name = "PyMieSim.single.representations.stokes";
+                class_name = "Stokes";
+            }
+            else if (representation_type == "spf") {
+                module_name = "PyMieSim.single.representations.spf";
+                class_name = "SPF";
+            }
+            else if (representation_type == "s1s2") {
+                module_name = "PyMieSim.single.representations.s1s2";
+                class_name = "S1S2";
+            }
+            else if (representation_type == "nearfields") {
+                module_name = "PyMieSim.single.representations.nearfields";
+                class_name = "NearFields";
+            }
+            else if (representation_type == "footprint") {
+                module_name = "PyMieSim.single.representations.footprint";
+                class_name = "Footprint";
+            }
+            else {
+                throw std::runtime_error("Unknown representation type: " + representation_type);
+            }
+
+            py::module_ representation_module = py::module_::import(module_name.c_str());
+            py::object representation_class = representation_module.attr(class_name.c_str());
+
+            return representation_class(py::cast(self), **kwargs);
+        },
+        py::arg("representation_type")
+    )
         ;
 
 

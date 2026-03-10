@@ -7,7 +7,7 @@ std::vector<double> BaseDetector::get_poynting_field(
     double distance
 ) const
 {
-    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, distance, source);
+    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, distance, source);
 
     std::vector<double> poynting(phi_field.size());
 
@@ -307,7 +307,7 @@ std::vector<complex128> Photodiode::get_structured_scalarfield(const size_t samp
 
 // ------------------------- Coupling Function -------------------------
 double Photodiode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const {
-    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     // this->apply_interface_transmission_to_fields(theta_field, phi_field);
 
@@ -464,7 +464,7 @@ double CoherentMode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std:
 
 double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
-    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
@@ -488,7 +488,7 @@ double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer,
 
 double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
-    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
@@ -547,7 +547,7 @@ std::vector<complex128> IntegratingSphere::get_structured_scalarfield(const size
 
 double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
 {
-    auto [theta_field, phi_field] = scatterer->compute_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     double coupling = 0.0;
 

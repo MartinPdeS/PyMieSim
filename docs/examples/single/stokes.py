@@ -10,7 +10,6 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
-from PyMieSim.single.representations import Stokes
 from PyMieSim.single import Setup
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
@@ -33,6 +32,6 @@ setup = Setup(
     source=source,
 )
 
-stokes = Stokes(setup=setup, sampling=100)
+stokes = setup.get_representation("stokes", sampling=100)
 
 figure = stokes.plot()

@@ -8,6 +8,7 @@ from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
+from PyMieSim.single import Setup
 
 # Core, shell, and medium parameters
 core_refractive_index = [1.2 * ureg.RIU, 1.4 * ureg.RIU, 1.0 * ureg.RIU]
@@ -36,7 +37,8 @@ def source():
 @pytest.mark.parametrize(
     "medium", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
 )
-def test_coupling(core_material, shell_material, medium, source):
+@pytest.mark.parametrize("attribute", CoreShell.property_names + ["coupling"])
+def test_coupling(attribute, core_material, shell_material, medium, source):
     detector = Photodiode(
         numerical_aperture=0.2 * ureg.AU,
         gamma_offset=0 * ureg.degree,
@@ -46,41 +48,21 @@ def test_coupling(core_material, shell_material, medium, source):
     scatterer = CoreShell(
         core_diameter=100 * ureg.nanometer,
         shell_thickness=200 * ureg.nanometer,
-        source=source,
         medium=medium,
         core_material=core_material,
         shell_material=shell_material,
+    )
+
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector,
     )
 
     # Calculate optical coupling
-    coupling = detector.get_coupling(scatterer)
+    coupling = setup.get(attribute)
     assert coupling is not None
 
-
-# Parametrized test for attributes
-@pytest.mark.parametrize(
-    "core_material", core_refractive_index, ids=[f"Core:{m}" for m in core_refractive_index]
-)
-@pytest.mark.parametrize(
-    "shell_material", shell_refractive_index, ids=[f"Shell:{m}" for m in shell_refractive_index]
-)
-@pytest.mark.parametrize(
-    "medium", medium_refractive_index, ids=[f"Medium:{m}" for m in medium_refractive_index]
-)
-@pytest.mark.parametrize("attribute", CoreShell.property_names)
-def test_attribute(attribute, core_material, shell_material, medium, source):
-    scatterer = CoreShell(
-        core_diameter=100 * ureg.nanometer,
-        shell_thickness=200 * ureg.nanometer,
-        source=source,
-        medium=medium,
-        core_material=core_material,
-        shell_material=shell_material,
-    )
-
-    # Access and verify the attribute
-    attr_value = getattr(scatterer, attribute)
-    assert attr_value is not None
 
 
 if __name__ == "__main__":

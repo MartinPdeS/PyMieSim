@@ -64,7 +64,7 @@ public:
      * @note This method computes the asymmetry factor g based on the fields at a specified sampling.
      * It uses the scattering amplitudes S1 and S2 to calculate the asymmetry factor.
      */
-    double get_g_with_farfields(std::shared_ptr<BaseSource> source, size_t sampling) const;
+    double get_g_with_farfields(std::shared_ptr<BaseSource> source, size_t sampling = 1000) const;
 
 
     /**
@@ -202,7 +202,7 @@ public:
      * @return A tuple containing the phi and theta fields.
      */
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_farfields(
+    get_unstructured_farfields(
         const std::vector<double>& phi,
         const std::vector<double>& theta,
         const double radius,
@@ -216,7 +216,7 @@ public:
      * @return A tuple containing the phi and theta fields.
      */
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_farfields(
+    get_unstructured_farfields(
         const FibonacciMesh& fibonacci_mesh,
         const double radius,
         const std::shared_ptr<BaseSource>& source
@@ -429,6 +429,14 @@ public:
     get_structured_spf(
         std::shared_ptr<BaseSource> source,
         const size_t sampling,
+        const double radius = 1.0
+    ) const;
+
+    std::vector<double>
+    get_unstructured_spf(
+        std::shared_ptr<BaseSource> source,
+        const std::vector<double>& phi,
+        const std::vector<double>& theta,
         const double radius = 1.0
     ) const;
 

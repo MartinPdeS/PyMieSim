@@ -6,11 +6,10 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 """
 
 from PyMieSim.units import ureg
-from PyMieSim.single.scatterer import Sphere, InfiniteCylinder
+from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
-from PyMieSim.single.representations import S1S2
-from PyMieSim.single.material import Material, Medium
+from PyMieSim.single.material import Material
 from PyMieSim.single import Setup
 
 bk7 = Material(
@@ -41,7 +40,7 @@ setup = Setup(
     source=source,
 )
 
-s1s2 = setup.get_representation("S1S2", sampling=200)  # Specify the number of sampling points
+s1s2 = setup.get_representation("s1s2", sampling=200)  # Specify the number of sampling points
 
 
 # s1s2 = S1S2(setup=setup, sampling=200)  # Specify the number of sampling points

@@ -5,7 +5,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single.representations import Footprint
+from PyMieSim.single import Setup
 
 
 @pytest.fixture
@@ -20,11 +20,10 @@ def source():
 
 
 @pytest.fixture
-def setup_scatterer(source):
+def setup_scatterer():
     """Fixture to create a scatterer using the Gaussian source defined above."""
     return Sphere(
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
-        source=source,  # Source from source fixture
         material=1.4 * ureg.RIU,  # Refractive index of the scatterer
         medium=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
     )
@@ -42,11 +41,16 @@ def photodiode():
     )
 
 
-def test_photodiode_sampling(photodiode, setup_scatterer):
+def test_photodiode_sampling(photodiode, source, setup_scatterer):
     """Test the Photodiode detector with various sampling rates."""
 
+    setup = Setup(
+        scatterer=setup_scatterer,
+        source=source,
+        detector=photodiode,
+    )
     # Perform the operation to be tested
-    footprint = Footprint(scatterer=setup_scatterer, detector=photodiode)
+    footprint = setup.get_representation("footprint")
 
     # Example verification step (not operational as we're not evaluating the output here)
     assert footprint is not None, "Expected a valid footprint but got None."

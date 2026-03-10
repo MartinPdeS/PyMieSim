@@ -15,13 +15,8 @@ class InfiniteCylinder: public BaseScatterer
         std::vector<complex128> jones_vector;
         inline static const std::vector<std::string> property_names = {
             "size_parameter",
-            "radius",
             "cross_section",
-            "a1n",
-            "a2n",
-            "b1n",
-            "b2n",
-            "g",
+            "g_with_farfields",
             "Qsca",
             "Qext",
             "Qabs",

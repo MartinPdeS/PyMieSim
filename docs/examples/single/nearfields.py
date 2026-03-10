@@ -10,7 +10,6 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.polarization import PolarizationState
-from PyMieSim.single.representations import NearField
 from PyMieSim.single import Setup
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
@@ -34,9 +33,7 @@ setup = Setup(
     source=source,
 )
 
-near_field = NearField(
-    setup=setup,
-)
+near_field = setup.get_representation("nearfields")
 
 near_field.plot(
     "Ex:real",
