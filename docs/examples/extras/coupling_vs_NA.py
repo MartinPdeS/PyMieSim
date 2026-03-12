@@ -5,26 +5,25 @@ Sphere: Coupling vs numerical aperture
 
 import numpy as np
 from PyMieSim.units import ureg
-from PyOptik import Material
+from PyMieSim.material import SellmeierMaterial
 
 from PyMieSim import experiment
 from PyMieSim import single
 
-source = experiment.source.GaussianSet(
+source = experiment.source_set.GaussianSet(
     wavelength=[500] * ureg.nanometer,
-    polarization=experiment.source.PolarizationSet(angles=[0] * ureg.degree),
+    polarization=experiment.polarization_set.PolarizationSet(angles=[0] * ureg.degree),
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2] * ureg.AU,
 )
 
-scatterer = experiment.scatterer.SphereSet(
+scatterer = experiment.scatterer_set.SphereSet(
     diameter=[500e-9] * ureg.meter,
-    material=[Material.BK7],
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    material=[SellmeierMaterial("BK7")],
+    medium=[1] * ureg.RIU,
 )
 
-detector = experiment.detector.PhotodiodeSet(
+detector = experiment.detector_set.PhotodiodeSet(
     numerical_aperture=np.linspace(0.1, 1, 150) * ureg.AU,
     phi_offset=[0] * ureg.degree,
     gamma_offset=[0, 10] * ureg.degree,

@@ -9,12 +9,14 @@ Sphere: Qsca vs diameter
 import numpy as np
 
 from PyMieSim.units import ureg
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
-from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
+from PyMieSim.experiment.material_set import MaterialSet, MediumSet
+from PyMieSim.experiment.setup import Setup
+from PyMieSim.material import print_available, SellmeierMaterial
 
-Material.print_available()
+print_available()
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
@@ -27,11 +29,12 @@ source = GaussianSet(
     numerical_aperture=[0.2] * ureg.AU,
 )
 
+polystyrene = SellmeierMaterial("polystyrene")
+
 scatterer = SphereSet(
     diameter=np.linspace(10, 1000, 150) * ureg.nanometer,
-    material=[Material.polystyren, Material.gold],
-    medium_material=[Material.water],
-    source=source,
+    material=MaterialSet([polystyrene]),
+    medium=MediumSet([1.33, 1.34, 1.5] * ureg.RIU),
 )
 
 experiment = Setup(scatterer=scatterer, source=source)

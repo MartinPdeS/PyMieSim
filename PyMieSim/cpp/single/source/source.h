@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "single/polarization/polarization.h"
+#include "polarization/polarization.h"
 #include <utils/constants.h>
 
 using complex128 = std::complex<double>;

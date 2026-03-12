@@ -4,11 +4,11 @@
 #include <complex>
 #include <vector>
 #include <single/source/source.h>
-#include <single/fibonacci/fibonacci.h>
-#include <single/full_mesh/full_mesh.h>
+#include <mesh/fibonacci.h>
+#include <mesh/full_mesh.h>
 #include <bessel_subroutine/bessel_subroutine.h>
 #include <utils/defines.h>
-#include <single/material/medium.h>
+#include <material/material.h>
 
 typedef std::complex<double> complex128;
 

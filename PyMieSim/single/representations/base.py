@@ -2,18 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from pydantic.dataclasses import dataclass
 import pyvista
 
-from TypedUnit import Length
-
-
-config_dict = dict(
-    arbitrary_types_allowed=True, kw_only=True, slots=True, extra="forbid"
-)
-
-
-@dataclass(config=config_dict, kw_only=True)
 class BaseRepresentation:
     """
     Base class for scattering representations.
@@ -30,32 +20,6 @@ class BaseRepresentation:
     Methods:
         compute_components: A placeholder method intended to be overridden by subclasses for computing specific scattering components.
     """
-
-    # scatterer: object
-    # sampling: int
-    # distance: Length
-
-    # def __post_init__(self):
-    #     fields = self.scatterer._cpp_get_full_farfields(
-    #         sampling=self.sampling, distance=self.distance.to_base_units().magnitude
-    #     )
-    #     self.E_phi, self.E_theta, self.theta, self.phi = fields
-
-    #     self.compute_components()
-
-    # def compute_components(self) -> None:
-    #     """
-    #     Placeholder method for computing scattering components. Intended to be overridden by subclasses.
-    #     """
-    #     raise NotImplementedError("This method should be implemented by subclasses.")
-
-    def get_colormap_limits(self, scalar: numpy.ndarray, symmetric: bool = False):
-        if symmetric:
-            max_abs = numpy.abs(scalar).max()
-            return [-max_abs, max_abs]
-        else:
-            return None
-
     def add_theta_vector_to_3d_plot(
         self,
         scene: pyvista.Plotter,

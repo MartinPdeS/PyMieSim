@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import Setup
 

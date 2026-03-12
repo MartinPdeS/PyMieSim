@@ -1,7 +1,7 @@
 # PyMieSim/cpp/experiment/material_set/CMakeLists.txt
 set(NAME "material_set")
 
-add_library("${NAME}" STATIC "material_set.cpp" "medium_set.cpp")
+add_library("${NAME}" STATIC "material_set.cpp")
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 target_link_libraries("${NAME}" PUBLIC material)
 

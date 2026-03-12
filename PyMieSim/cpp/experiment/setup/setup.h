@@ -12,10 +12,9 @@
 
 #include <experiment/source_set/source_set.h>
 #include <experiment/scatterer_set/sphere_set.h>
-// #include <experiment/scatterer_set/cylinder_set.h>
-// #include <experiment/scatterer_set/core_shell_set.h>
+#include <experiment/scatterer_set/cylinder_set.h>
+#include <experiment/scatterer_set/core_shell_set.h>
 #include <experiment/detector_set/detector_set.h>
-// #include <experiment/properties_set/properties_set.h>
 
 class Setup
 {
@@ -140,6 +139,8 @@ class Setup
             this->source_set = std::move(source_set);
             this->detector_set = std::move(detector_set);
 
+
+
             if (debug_mode)
                 this->debug_print_state();
 
@@ -178,8 +179,9 @@ class Setup
                     size_t j = flat_index % this->scatterer_set->total_combinations;
                     std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
 
-                    std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j, source_ptr);
+                    std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j);
 
+                    scatterer_ptr->init(source_ptr);
                     const std::vector<std::size_t> multi_index =
                         this->concatenate_vector(source_ptr->indices, source_ptr->indices);
 
@@ -192,8 +194,9 @@ class Setup
                     long long k = flat_index % this->detector_set->total_combinations;
                     std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
 
-                    std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j, source_ptr);
+                    std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j);
 
+                    scatterer_ptr->init(source_ptr);
                     std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index(k);
                     idx = this->flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
 
@@ -231,7 +234,7 @@ class Setup
             for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
                 std::shared_ptr<BaseSource> source = this->source_set->get_source_by_index_sequential(idx);
 
-                std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx, source);
+                std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx);
 
                 output_array[idx] = std::invoke(function, *scatterer_ptr);
 

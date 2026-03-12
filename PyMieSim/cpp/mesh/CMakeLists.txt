@@ -1,7 +1,7 @@
-# PyMieSim/cpp/single/fibonacci/CMakeLists.txt
-set(NAME "fibonacci")
+# PyMieSim/cpp/mesh/CMakeLists.txt
+set(NAME "mesh")
 
-add_library("${NAME}" STATIC "${NAME}.cpp")
+add_library("${NAME}" STATIC "fibonacci.cpp" "full_mesh.cpp")
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
@@ -10,7 +10,7 @@ target_link_libraries("interface_${NAME}" PUBLIC pybind11::module "${NAME}")
 
 install(
     TARGETS "${NAME}" "interface_${NAME}"
-    LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
-    RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
-    ARCHIVE DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
+    LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim"
+    RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim"
+    ARCHIVE DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim"
 )

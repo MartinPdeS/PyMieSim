@@ -1,73 +1,22 @@
 #pragma once
 
-#include <vector>
-#include <complex>
-#include <string>
-#include <stdexcept>
-#include <algorithm>
-#include <cstddef>
+#include "./base.h"
 
-using complex128 = std::complex<double>;
 
-class BaseMaterial {
-public:
-    virtual ~BaseMaterial() = default;
-
-    void initialize(const double wavelength) {
-        this->refractive_index = this->compute_refractive_index(wavelength);
-        this->is_initialized = true;
-    }
-
-    complex128 get_refractive_index() const {
-        if (!this->is_initialized) {
-            throw std::runtime_error(
-                "Material refractive index was requested before initialization."
-            );
-        }
-
-        return this->refractive_index;
-    }
-
-    complex128 get_refractive_index(const double wavelength) const {
-        return this->compute_refractive_index(wavelength);
-    }
-
-public:
-    complex128 refractive_index = complex128(0.0, 0.0);
-    bool is_initialized = false;
-
-    virtual complex128 compute_refractive_index(double wavelength) const = 0;
-};
-
-class ConstantMaterial : public BaseMaterial {
-public:
-    complex128 constant_refractive_index;
-
-    ConstantMaterial() = default;
-
-    explicit ConstantMaterial(const complex128& refractive_index)
-        : constant_refractive_index(refractive_index) {}
-
-protected:
-    complex128 compute_refractive_index(const double wavelength) const override {
-        (void)wavelength;
-        return constant_refractive_index;
-    }
-};
-
-class Material : public BaseMaterial {
+template <typename RefractiveIndexType>
+class BaseTabulated : public Base<RefractiveIndexType> {
 public:
     std::string name;
     std::vector<double> wavelengths;
-    std::vector<complex128> refractive_indices;
+    std::vector<RefractiveIndexType> refractive_indices;
     bool allow_extrapolation = false;
 
-    Material() = default;
+    BaseTabulated() = default;
 
-    Material(
+    BaseTabulated(
         const std::string& name,
         const std::vector<double>& wavelengths,
-        const std::vector<complex128>& refractive_indices,
+        const std::vector<RefractiveIndexType>& refractive_indices,
         const bool allow_extrapolation = false
     )
         : name(name),
@@ -79,7 +28,7 @@ public:
     }
 
 protected:
-    complex128 compute_refractive_index(const double wavelength) const override {
+    RefractiveIndexType compute_refractive_index(const double wavelength) const override {
         this->validate_query_preconditions();
 
         const std::size_t number_of_points = wavelengths.size();
@@ -176,7 +125,7 @@ private:
         }
     }
 
-    complex128 interpolate_between_indices(
+    RefractiveIndexType interpolate_between_indices(
         const double wavelength,
         const std::size_t lower_index,
         const std::size_t upper_index
@@ -184,8 +133,8 @@ private:
         const double lower_wavelength = wavelengths[lower_index];
         const double upper_wavelength = wavelengths[upper_index];
 
-        const complex128 lower_refractive_index = refractive_indices[lower_index];
-        const complex128 upper_refractive_index = refractive_indices[upper_index];
+        const RefractiveIndexType lower_refractive_index = refractive_indices[lower_index];
+        const RefractiveIndexType upper_refractive_index = refractive_indices[upper_index];
 
         const double interpolation_fraction =
             (wavelength - lower_wavelength) / (upper_wavelength - lower_wavelength);
@@ -194,3 +143,6 @@ private:
              + upper_refractive_index * interpolation_fraction;
     }
 };
+
+using TabulatedMedium = BaseTabulated<double>;
+using TabulatedMaterial = BaseTabulated<complex128>;

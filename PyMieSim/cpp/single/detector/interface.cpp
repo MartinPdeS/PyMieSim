@@ -369,7 +369,67 @@ PYBIND11_MODULE(detector, module) {
             R"pbdoc(
             Print the properties of the Photodiode detector.
             )pbdoc"
-        );
+        )
+        .def(
+            "add_to_scene",
+            [](
+                const Photodiode& self,
+                const py::object& scene,
+                const py::object& cone_color,
+                const double field_point_size = 20.0
+            ) {
+                py::module_ pyvista = py::module_::import("pyvista");
+                py::module_ numpy = py::module_::import("numpy");
+
+                const py::ssize_t sampling = static_cast<py::ssize_t>(self.sampling);
+
+                py::array_t<double> coordinates_array(
+                    py::array::ShapeContainer{
+                        static_cast<py::ssize_t>(3),
+                        sampling
+                    }
+                );
+
+                auto coordinates = coordinates_array.mutable_unchecked<2>();
+
+                for (py::ssize_t index = 0; index < sampling; ++index) {
+                    coordinates(0, index) = self.fibonacci_mesh.cartesian.x[index];
+                    coordinates(1, index) = self.fibonacci_mesh.cartesian.y[index];
+                    coordinates(2, index) = self.fibonacci_mesh.cartesian.z[index];
+                }
+
+                py::object points = pyvista.attr("wrap")(coordinates_array.attr("T"));
+
+                scene.attr("add_points")(
+                    points,
+                    py::arg("color") = "black",
+                    py::arg("point_size") = field_point_size,
+                    py::arg("render_points_as_spheres") = true
+                );
+
+                py::object mean_vector = coordinates_array.attr("mean")(1);
+                py::object center = mean_vector / py::float_(2.0);
+                py::object direction = numpy.attr("negative")(mean_vector);
+
+                py::object cone_mesh = pyvista.attr("Cone")(
+                    py::arg("center") = center,
+                    py::arg("direction") = direction,
+                    py::arg("height") = py::float_(std::cos(self.max_angle)),
+                    py::arg("resolution") = py::int_(100),
+                    py::arg("angle") = py::float_(self.max_angle * 180.0 / 3.14159265358979323846)
+                );
+
+                scene.attr("add_mesh")(
+                    cone_mesh,
+                    py::arg("color") = cone_color,
+                    py::arg("opacity") = 0.6
+                );
+            },
+            py::arg("scene"),
+            py::arg("cone_color") = py::str("blue"),
+            py::arg("field_point_size") = 20.0
+        )
+        ;
 
     py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(module, "CoherentMode",
         R"pbdoc(
@@ -485,7 +545,83 @@ PYBIND11_MODULE(detector, module) {
             R"pbdoc(
             Print the properties of the CoherentMode detector.
             )pbdoc"
-        );
+        )
+        .def(
+            "add_to_scene",
+            [](const CoherentMode& self,
+            const py::object& scene,
+            const py::object& cone_color = py::str("blue"),
+            const double field_point_size = 20.0) -> void
+            {
+                py::module_ numpy = py::module_::import("numpy");
+                py::module_ pyvista = py::module_::import("pyvista");
+                py::object blue_black_red = py::module_::import("MPSPlots.colormaps").attr("blue_black_red");
+
+                const py::ssize_t sampling = static_cast<py::ssize_t>(self.sampling);
+
+                py::array_t<double> coordinates_array(
+                    py::array::ShapeContainer{
+                        static_cast<py::ssize_t>(3),
+                        static_cast<py::ssize_t>(sampling)
+                    }
+                );
+
+                auto coordinates = coordinates_array.mutable_unchecked<2>();
+
+                for (py::ssize_t index = 0; index < sampling; ++index) {
+                    coordinates(0, index) = self.fibonacci_mesh.cartesian.x[index];
+                    coordinates(1, index) = self.fibonacci_mesh.cartesian.y[index];
+                    coordinates(2, index) = self.fibonacci_mesh.cartesian.z[index];
+                }
+
+                py::object points = pyvista.attr("wrap")(coordinates_array.attr("T"));
+
+                py::array scalar_field_array = py::cast(self.scalar_field);
+                py::object scalar_field_real = numpy.attr("asarray")(scalar_field_array).attr("real");
+
+                py::ssize_t scalar_field_size = scalar_field_real.attr("size").cast<py::ssize_t>();
+
+                double absolute_maximum = 1.0;
+                if (scalar_field_size > 0) {
+                    absolute_maximum = numpy.attr("abs")(scalar_field_real).attr("max")().cast<double>();
+                }
+
+                py::object mapping = scene.attr("add_points")(
+                    points,
+                    py::arg("scalars") = scalar_field_real,
+                    py::arg("point_size") = field_point_size,
+                    py::arg("render_points_as_spheres") = true,
+                    py::arg("cmap") = blue_black_red,
+                    py::arg("show_scalar_bar") = false,
+                    py::arg("clim") = py::make_tuple(-absolute_maximum, absolute_maximum)
+                );
+
+                py::object mean_vector = coordinates_array.attr("mean")(1);
+
+                py::object cone_mesh = pyvista.attr("Cone")(
+                    py::arg("center") = mean_vector / py::float_(2.0),
+                    py::arg("direction") = -mean_vector,
+                    py::arg("height") = py::float_(std::cos(self.max_angle)),
+                    py::arg("resolution") = py::int_(100),
+                    py::arg("angle") = py::float_(self.max_angle * 180.0 / 3.14159265358979323846)
+                );
+
+                scene.attr("add_mesh")(
+                    cone_mesh,
+                    py::arg("color") = cone_color,
+                    py::arg("opacity") = 0.6
+                );
+
+                scene.attr("add_scalar_bar")(
+                    py::arg("mapper") = mapping.attr("mapper"),
+                    py::arg("title") = "Collecting Field Real Part"
+                );
+            },
+            py::arg("scene"),
+            py::arg("cone_color") = py::str("blue"),
+            py::arg("field_point_size") = 20.0
+        )
+        ;
 
     py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(module, "IntegratingSphere",
         R"pbdoc(
@@ -530,7 +666,67 @@ PYBIND11_MODULE(detector, module) {
             "print_properties",
             &IntegratingSphere::print_properties,
             R"pbdoc(
-            Print the properties of the IntegratingSphere detector.
+                Print the properties of the IntegratingSphere detector.
             )pbdoc"
-        );
+        )
+        .def(
+            "add_to_scene",
+            [](
+                const IntegratingSphere& self,
+                const py::object& scene,
+                const py::object& cone_color,
+                const double field_point_size = 20.0
+            ) {
+                py::module_ pyvista = py::module_::import("pyvista");
+                py::module_ numpy = py::module_::import("numpy");
+
+                const py::ssize_t sampling = static_cast<py::ssize_t>(self.sampling);
+
+                py::array_t<double> coordinates_array(
+                    py::array::ShapeContainer{
+                        static_cast<py::ssize_t>(3),
+                        sampling
+                    }
+                );
+
+                auto coordinates = coordinates_array.mutable_unchecked<2>();
+
+                for (py::ssize_t index = 0; index < sampling; ++index) {
+                    coordinates(0, index) = self.fibonacci_mesh.cartesian.x[index];
+                    coordinates(1, index) = self.fibonacci_mesh.cartesian.y[index];
+                    coordinates(2, index) = self.fibonacci_mesh.cartesian.z[index];
+                }
+
+                py::object points = pyvista.attr("wrap")(coordinates_array.attr("T"));
+
+                scene.attr("add_points")(
+                    points,
+                    py::arg("color") = "black",
+                    py::arg("point_size") = field_point_size,
+                    py::arg("render_points_as_spheres") = true
+                );
+
+                py::object mean_vector = coordinates_array.attr("mean")(1);
+                py::object center = mean_vector / py::float_(2.0);
+                py::object direction = numpy.attr("negative")(mean_vector);
+
+                py::object cone_mesh = pyvista.attr("Cone")(
+                    py::arg("center") = center,
+                    py::arg("direction") = direction,
+                    py::arg("height") = py::float_(std::cos(self.max_angle)),
+                    py::arg("resolution") = py::int_(100),
+                    py::arg("angle") = py::float_(self.max_angle * 180.0 / 3.14159265358979323846)
+                );
+
+                scene.attr("add_mesh")(
+                    cone_mesh,
+                    py::arg("color") = cone_color,
+                    py::arg("opacity") = 0.6
+                );
+            },
+            py::arg("scene"),
+            py::arg("cone_color") = py::str("blue"),
+            py::arg("field_point_size") = 20.0
+        )
+    ;
 }

@@ -6,7 +6,7 @@ import pyvista
 from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.units import ureg
-from PyMieSim.single.full_mesh import FullMesh # Necessary for loading the class, even if not directly used in this file
+from PyMieSim.mesh import FullMesh # Necessary for loading the class, even if not directly used in this file
 
 
 class Stokes():

@@ -186,6 +186,42 @@ void register_cylinder(py::module_& module) {
                     A list of b2n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the second mode of the spherical wave expansion.
             )pbdoc"
         )
+        .def(
+            "add_to_scene",
+            [](const InfiniteCylinder& self, const py::object& scene, py::kwargs kwargs) {
+                py::module_ pyvista = py::module_::import("pyvista");
+
+                py::object physical_cylinder = pyvista.attr("Cylinder")(
+                    py::arg("center") = py::make_tuple(0.0, 0.0, 0.0),
+                    py::arg("direction") = py::make_tuple(0.0, -1.0, 0.0),
+                    py::arg("radius") = py::float_(0.1),
+                    py::arg("height") = py::float_(2.0),
+                    py::arg("resolution") = 100
+                );
+
+                py::object unit_sphere = pyvista.attr("Sphere")(
+                    py::arg("radius") = py::float_(1.0),
+                    py::arg("center") = py::make_tuple(0.0, 0.0, 0.0),
+                    py::arg("theta_resolution") = 50,
+                    py::arg("phi_resolution") = 50
+                );
+
+                scene.attr("add_mesh")(physical_cylinder, **kwargs);
+
+                py::dict unit_sphere_kwargs;
+                unit_sphere_kwargs["opacity"] = py::float_(0.15);
+
+                if (kwargs.contains("color")) {
+                    unit_sphere_kwargs["color"] = kwargs["color"];
+                }
+                else {
+                    unit_sphere_kwargs["color"] = py::str("white");
+                }
+
+                scene.attr("add_mesh")(unit_sphere, **unit_sphere_kwargs);
+            },
+            py::arg("scene")
+        )
     ;
 
 }

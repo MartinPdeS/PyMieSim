@@ -67,16 +67,21 @@ class PyMieSimDataFrame(pd.DataFrame):
         if not isinstance(values, tuple):
             values = (values,)
 
+        units = self._units()
         parts = []
 
-        for p, v in zip(parameters, values):
+        for parameter_name, parameter_value in zip(parameters, values):
 
-            p = self._clean_parameter_name(p)
+            clean_name = self._clean_parameter_name(parameter_name)
 
-            if isinstance(v, (int, float)) and precision is not None:
-                v = f"{v:.{precision}f}"
+            unit = units.get(parameter_name, None)
+            if unit is not None:
+                clean_name = f"{clean_name} [{unit:~}]"
 
-            parts.append(f"{p}: {v}")
+            if isinstance(parameter_value, (int, float, np.integer, np.floating)) and precision is not None:
+                parameter_value = f"{parameter_value:.{precision}f}"
+
+            parts.append(f"{clean_name}: {parameter_value}")
 
         return " | ".join(parts)
 
@@ -170,14 +175,13 @@ class PyMieSimDataFrame(pd.DataFrame):
         for text in legend.get_texts():
 
             label = text.get_text()
-
             parts = []
 
             for item in label.split(" | "):
 
                 if ":" in item:
 
-                    name, value = item.split(":")
+                    name, value = item.split(":", 1)
                     name = name.strip()
                     value = value.strip()
 
@@ -207,7 +211,6 @@ class PyMieSimDataFrame(pd.DataFrame):
     # ---------------------------------------------------------
     # standard plotting
     # ---------------------------------------------------------
-
     @helper.post_mpl_plot
     def plot_standard(
         self,
@@ -218,6 +221,9 @@ class PyMieSimDataFrame(pd.DataFrame):
         y_tick_resolution: int | None = 1,
         **kwargs,
     ):
+        import warnings
+        import numpy as np
+
         y = [y] if isinstance(y, str) else y
         self._validate_column(x)
 
@@ -229,35 +235,141 @@ class PyMieSimDataFrame(pd.DataFrame):
             y = measures
 
         parameters = [
-            c for c in df.columns
-            if c not in ([x] + y)
-            and not df[c].isna().all()
-            and df[c].nunique(dropna=True) > 1
+            column for column in df.columns
+            if column not in ([x] + y)
+            and not df[column].isna().all()
+            and df[column].nunique(dropna=True) > 1
         ]
+
+        def _extract_scalar(value):
+            if hasattr(value, "magnitude"):
+                return value.magnitude
+            return value
+
+        x_warning_emitted = False
+        def _normalize_x_values(series):
+            nonlocal x_warning_emitted
+
+            raw_values = series.to_numpy()
+            numeric_values = []
+            has_nonzero_imaginary_part = False
+
+            for value in raw_values:
+                scalar_value = _extract_scalar(value)
+
+                if isinstance(scalar_value, complex) or np.iscomplexobj(scalar_value):
+                    if not np.isclose(np.imag(scalar_value), 0.0, atol=1e-15, rtol=0.0):
+                        has_nonzero_imaginary_part = True
+
+                    numeric_values.append(float(np.real(scalar_value)))
+                    continue
+
+                try:
+                    numeric_values.append(float(scalar_value))
+                except (TypeError, ValueError):
+                    categorical_labels = series.astype(str).to_numpy()
+                    categorical_positions = np.arange(len(categorical_labels), dtype=float)
+                    return categorical_positions, categorical_labels, False
+
+            if has_nonzero_imaginary_part and not x_warning_emitted:
+                warnings.warn(
+                    f"Column {series.name!r} contains complex values on the x axis with nonzero imaginary part. "
+                    "Using the real part for plotting.",
+                    UserWarning,
+                    stacklevel=3,
+                )
+                x_warning_emitted = True
+
+            return np.asarray(numeric_values, dtype=float), None, True
+
+        def _normalize_y_values(series):
+            raw_values = series.to_numpy()
+            numeric_values = []
+
+            for value in raw_values:
+                scalar_value = _extract_scalar(value)
+
+                if isinstance(scalar_value, complex) or np.iscomplexobj(scalar_value):
+                    numeric_values.append(float(np.abs(scalar_value)))
+                else:
+                    try:
+                        numeric_values.append(float(scalar_value))
+                    except (TypeError, ValueError) as error:
+                        raise TypeError(
+                            f"Column {series.name!r} could not be converted to real values for plotting."
+                        ) from error
+
+            return np.asarray(numeric_values, dtype=float)
+
+        def _compose_curve_label(parameter_label, measure_name):
+            clean_measure_name = self._clean_parameter_name(measure_name)
+
+            if len(y) == 1:
+                return parameter_label if parameter_label else clean_measure_name
+
+            if parameter_label:
+                return f"{clean_measure_name} | {parameter_label}"
+
+            return clean_measure_name
 
         figure, ax = self._create_figure()
 
-        groups = df.groupby(parameters) if parameters else [(None, df)]
+        groups = df.groupby(parameters, sort=False) if parameters else [(None, df)]
+
+        x_is_numeric = True
+        x_used_real_part = False
 
         for key, group in groups:
-            group = group.sort_values(x)
+            x_values, x_labels, group_x_is_numeric = _normalize_x_values(group[x])
 
-            label = self._format_parameter_label(
+            if group_x_is_numeric and x_labels is None:
+                sorting_index = np.argsort(x_values)
+                group = group.iloc[sorting_index]
+                x_values = x_values[sorting_index]
+
+                raw_x_values = group[x].to_numpy()
+                if any(
+                    isinstance(_extract_scalar(value), complex) or np.iscomplexobj(_extract_scalar(value))
+                    for value in raw_x_values
+                ):
+                    x_used_real_part = True
+            else:
+                x_is_numeric = False
+
+            parameter_label = self._format_parameter_label(
                 parameters,
                 key,
                 precision=legend_resolution
             )
 
             for measure in y:
+                y_values = _normalize_y_values(group[measure])
+
+                curve_label = _compose_curve_label(parameter_label, measure)
+
                 ax.plot(
-                    group[x].to_numpy(),
-                    group[measure].to_numpy(),
-                    label=label if label else measure,
+                    x_values,
+                    y_values,
+                    label=curve_label,
                     **kwargs,
                 )
 
-        ax.set_xlabel(self._axis_label(x))
-        ax.set_ylabel(self._axis_label(y[0]))
+            if x_labels is not None:
+                ax.set_xticks(x_values)
+                ax.set_xticklabels(x_labels, rotation=45, ha='right')
+
+        x_label = self._axis_label(x)
+
+        if len(y) == 1:
+            y_label = self._axis_label(y[0])
+        else:
+            y_label = "Measure"
+
+        if x_is_numeric and x_used_real_part:
+            x_label = f"Re({x_label})"
+
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
 
         ax.legend()
 
@@ -265,7 +377,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         self._format_legend(ax, legend_resolution)
 
         return figure
-
     # ---------------------------------------------------------
     # std plotting
     # ---------------------------------------------------------
@@ -298,20 +409,20 @@ class PyMieSimDataFrame(pd.DataFrame):
             if c not in ([x, std] + y)
         ]
 
-        grouped = df.groupby(parameters + [x])
+        grouped = df.groupby(parameters + [x], sort=False)
 
         mean = grouped.mean().reset_index()
         stdv = grouped.std().reset_index()
 
         figure, ax = self._create_figure()
 
-        groups = mean.groupby(parameters) if parameters else [(None, mean)]
+        groups = mean.groupby(parameters, sort=False) if parameters else [(None, mean)]
 
         for measure in y:
 
             for key, group_df in groups:
 
-                group_df = group_df.sort_values(x)
+                # group_df = group_df.sort_values(x)
 
                 if parameters:
                     mask = stdv[parameters].eq(group_df[parameters].iloc[0]).all(axis=1)

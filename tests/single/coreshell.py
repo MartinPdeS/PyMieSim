@@ -6,14 +6,19 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import Setup
+from PyMieSim.material import SellmeierMaterial, SellmeierMedium
+
+bk7 = SellmeierMaterial("BK7")
+
+water = SellmeierMedium("water")
 
 # Core, shell, and medium parameters
-core_refractive_index = [1.2 * ureg.RIU, 1.4 * ureg.RIU, 1.0 * ureg.RIU]
+core_refractive_index = [1.2 * ureg.RIU, bk7, 1.0 * ureg.RIU]
 shell_refractive_index = [1.8 * ureg.RIU, 1.1 * ureg.RIU, 1.7 * ureg.RIU]
-medium_refractive_index = [1.3 * ureg.RIU, 1.4 * ureg.RIU]
+medium_refractive_index = [1.3 * ureg.RIU, water]
 
 
 # Reusable fixture for Gaussian source

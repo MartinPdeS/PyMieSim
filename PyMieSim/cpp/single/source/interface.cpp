@@ -105,7 +105,69 @@ PYBIND11_MODULE(source, module)
                 numpy.ndarray
                     Complex array of shape ``(2,)``.
             )pbdoc"
-        );
+        )
+        .def(
+            "add_to_scene",
+            [](const BaseSource& self, const py::object& scene, py::kwargs kwargs) {
+                py::module_ pyvista = py::module_::import("pyvista");
+                py::module_ numpy = py::module_::import("numpy");
+
+                py::object Arrow = pyvista.attr("Arrow");
+
+                const std::complex<double> Ex = self.polarization.jones_vector[0];
+                const std::complex<double> Ey = self.polarization.jones_vector[1];
+
+                const double electric_x = std::real(Ex);
+                const double electric_y = std::real(Ey);
+
+                const double electric_norm = std::sqrt(
+                    electric_x * electric_x +
+                    electric_y * electric_y
+                );
+
+                const double normalized_electric_x = (electric_norm > 0.0) ? electric_x / electric_norm : 1.0;
+                const double normalized_electric_y = (electric_norm > 0.0) ? electric_y / electric_norm : 0.0;
+                const double normalized_electric_z = 0.0;
+
+                py::object k_arrow = Arrow(
+                    py::arg("start") = py::make_tuple(0.0, 0.0, -2.1),
+                    py::arg("direction") = py::make_tuple(0.0, 0.0, 1.0),
+                    py::arg("tip_length") = py::float_(0.2),
+                    py::arg("tip_radius") = py::float_(0.05),
+                    py::arg("shaft_radius") = py::float_(0.02)
+                );
+
+                py::object electric_arrow = Arrow(
+                    py::arg("start") = py::make_tuple(0.0, 0.0, -2.1),
+                    py::arg("direction") = py::make_tuple(
+                        normalized_electric_x,
+                        normalized_electric_y,
+                        normalized_electric_z
+                    ),
+                    py::arg("scale") = py::float_(0.8),
+                    py::arg("tip_length") = py::float_(0.25),
+                    py::arg("tip_radius") = py::float_(0.06),
+                    py::arg("shaft_radius") = py::float_(0.025)
+                );
+
+                py::dict k_kwargs;
+                k_kwargs["color"] = py::str("orange");
+                if (kwargs.contains("opacity")) {
+                    k_kwargs["opacity"] = kwargs["opacity"];
+                }
+
+                py::dict e_kwargs;
+                e_kwargs["color"] = py::str("deepskyblue");
+                if (kwargs.contains("opacity")) {
+                    e_kwargs["opacity"] = kwargs["opacity"];
+                }
+
+                scene.attr("add_mesh")(k_arrow, **k_kwargs);
+                scene.attr("add_mesh")(electric_arrow, **e_kwargs);
+            },
+            py::arg("scene")
+        )
+        ;
 
 
     py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(module, "PlaneWave",
@@ -298,6 +360,7 @@ PYBIND11_MODULE(source, module)
                 pint.Quantity
                     Optical power with units of watts.
             )pbdoc"
-        );
+        )
+        ;
 
 }

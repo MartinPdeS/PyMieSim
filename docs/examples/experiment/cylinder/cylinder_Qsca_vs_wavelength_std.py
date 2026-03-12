@@ -9,10 +9,10 @@ InfiniteCylinder: Qsca vs wavelength std
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
@@ -26,9 +26,8 @@ source = GaussianSet(
 )
 scatterer = InfiniteCylinderSet(
     diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-    material=[Material.silver],
-    medium_refractive_index=[1.0] * ureg.RIU,
-    source=source,
+    material=[1.4] * ureg.RIU,
+    medium=[1.0] * ureg.RIU,
 )
 
 experiment = Setup(scatterer=scatterer, source=source)

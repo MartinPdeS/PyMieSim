@@ -9,9 +9,11 @@ Sphere: Qsca vs index
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
+from PyMieSim.material import print_available, TabulatedMaterial
 
 polarization_set = PolarizationSet(
     angles=[30.0] * ureg.degree,
@@ -26,13 +28,12 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=[800.0] * ureg.nanometer,
-    refractive_index=np.linspace(1.3, 1.9, 150) * ureg.RIU,
-    medium_refractive_index=[1.0] * ureg.RIU,
-    source=source,
+    material=np.linspace(1.3, 1.9, 100) * ureg.RIU,
+    medium=[1.0] * ureg.RIU,
 )
 
 experiment = Setup(scatterer=scatterer, source=source)
 
 dataframe = experiment.get("Qsca")
 
-dataframe.plot(x="scatterer:refractive_index")
+dataframe.plot(x="scatterer:material")

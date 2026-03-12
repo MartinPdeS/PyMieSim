@@ -25,41 +25,40 @@ void InfiniteCylinder::compute_cross_section() {
 }
 
 double InfiniteCylinder::get_Qsca() const {
-    complex128 Qsca1=0, Qsca2=0;
+    double Qsca1 = 0.0;
+    double Qsca2 = 0.0;
 
-    for(size_t order = 1; order < max_order; order++)
-    {
-        Qsca1 +=  pow( std::abs(this->a1n[order]), 2 ) + pow( std::abs(this->b1n[order]), 2 ) ;
-        Qsca2 +=  pow( std::abs(this->a2n[order]), 2 ) + pow( std::abs(this->b2n[order]), 2 ) ;
+    for (size_t order = 1; order < max_order; ++order) {
+        Qsca1 += std::norm(this->a1n[order]) + std::norm(this->b1n[order]);
+        Qsca2 += std::norm(this->a2n[order]) + std::norm(this->b2n[order]);
     }
 
-    Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( std::abs(this->b1n[0]), 2 ) );
-    Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( std::abs(this->a2n[0]), 2 ) );
+    Qsca1 = 2.0 / size_parameter * (2.0 * Qsca1 + std::norm(this->b1n[0]));
+    Qsca2 = 2.0 / size_parameter * (2.0 * Qsca2 + std::norm(this->a2n[0]));
 
-    return process_polarization(Qsca1, Qsca2);
+    return this->process_polarization(Qsca1, Qsca2);
 }
 
 double InfiniteCylinder::get_Qext() const {
-    complex128 Qext1 = 0, Qext2 = 0;
+    double Qext1_sum = 0.0;
+    double Qext2_sum = 0.0;
 
-    for(size_t it = 1; it < max_order; ++it){
-        Qext1 += this->b1n[it];
-        Qext2 += this->a2n[it];
+    for (size_t order = 1; order < max_order; ++order) {
+        Qext1_sum += std::real(this->b1n[order]);
+        Qext2_sum += std::real(this->a2n[order]);
     }
 
-    Qext1 = 2. / size_parameter * std::real( this->b1n[0] + 2.0 * Qext1 );
-    Qext2 = 2. / size_parameter * std::real( this->a1n[0] + 2.0 * Qext2 );
+    const double Qext1 = 2.0 / size_parameter * (std::real(this->b1n[0]) + 2.0 * Qext1_sum);
+    const double Qext2 = 2.0 / size_parameter * (std::real(this->a2n[0]) + 2.0 * Qext2_sum);
 
     return this->process_polarization(Qext1, Qext2);
 }
 
+double InfiniteCylinder::process_polarization(const double value_0, const double value_1) const {
+    const double Ex_weight = std::norm(this->jones_vector[0]);
+    const double Ey_weight = std::norm(this->jones_vector[1]);
 
-double InfiniteCylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
-    complex128
-        Ex = this->jones_vector[0],
-        Ey = this->jones_vector[1];
-
-    return std::abs( value_1 ) * pow(std::abs(Ex), 2) + std::abs( value_0 ) * pow(std::abs(Ey), 2);
+    return value_1 * Ex_weight + value_0 * Ey_weight;
 }
 
 void InfiniteCylinder::compute_an_bn(const size_t max_order) {

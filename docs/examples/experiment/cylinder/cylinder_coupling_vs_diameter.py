@@ -8,9 +8,10 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 polarization_set = PolarizationSet(
@@ -26,9 +27,8 @@ source = GaussianSet(
 
 scatterer = InfiniteCylinderSet(
     diameter=np.linspace(100, 300, 200) * ureg.nanometer,
-    refractive_index=[1.4] * ureg.RIU,
-    medium_refractive_index=[1.0] * ureg.RIU,
-    source=source,
+    material=[1.4] * ureg.RIU,
+    medium=[1.0] * ureg.RIU,
 )
 
 detector = PhotodiodeSet(

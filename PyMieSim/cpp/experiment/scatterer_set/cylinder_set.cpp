@@ -5,8 +5,8 @@
 void InfiniteCylinderSet::update_shape() {
     this->shape = {
         diameter.size(),
-        property.size(),
-        medium_property.size()
+        material.size(),
+        medium.size()
     };
 
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
@@ -17,41 +17,38 @@ void InfiniteCylinderSet::validate_sequential_data(const size_t expected_size) c
     if (this->diameter.size() != expected_size)
         throw std::runtime_error("Error: Vector size mismatch in sequential computation. diameter has a different size than expected size.");
 
-    if (this->property.size() != expected_size)
-        throw std::runtime_error("Error: Vector size mismatch in sequential computation. property has a different size than expected size.");
+    if (this->material.size() != expected_size)
+        throw std::runtime_error("Error: Vector size mismatch in sequential computation. material has a different size than expected size.");
 
-    if (this->medium_property.size() != expected_size)
-        throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
+    if (this->medium.size() != expected_size)
+        throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium has a different size than expected size.");
 }
 
-InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const {
+InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index) const {
     return InfiniteCylinder(
         this->diameter[index],
-        this->property[index],
-        this->medium_property[index],
-        source
+        this->material[index],
+        this->medium[index]
     );
 }
 
-std::unique_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const {
+std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index_sequential(const size_t index) const {
     InfiniteCylinder scatterer(
         this->diameter[index],
-        this->property[index],
-        this->medium_property[index],
-        source
+        this->material[index],
+        this->medium[index]
     );
 
     return std::make_unique<InfiniteCylinder>(scatterer);
 }
 
-InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const {
+InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
     InfiniteCylinder scatterer(
         diameter[indices[0]],
-        property[indices[1]],
-        medium_property[indices[2]],
-        source
+        material[indices[1]],
+        medium[indices[2]]
     );
 
     scatterer.indices = indices;
@@ -60,14 +57,13 @@ InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_i
 }
 
 
-std::unique_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const {
+std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
     InfiniteCylinder scatterer = InfiniteCylinder(
         diameter[indices[0]],
-        property[indices[1]],
-        medium_property[indices[2]],
-        source
+        material[indices[1]],
+        medium[indices[2]]
     );
 
     scatterer.indices = indices;

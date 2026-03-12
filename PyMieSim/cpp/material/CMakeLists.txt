@@ -1,7 +1,7 @@
 # PyMieSim/cpp/single/material/CMakeLists.txt
 set(NAME "material")
 
-add_library("${NAME}" STATIC "material.cpp" "medium.h")
+add_library("${NAME}" STATIC "material.cpp")
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 target_link_libraries("${NAME}" PUBLIC pint)
 
@@ -11,7 +11,7 @@ target_link_libraries("interface_${NAME}" PUBLIC pybind11::module "${NAME}")
 
 install(
     TARGETS "${NAME}" "interface_${NAME}"
-    LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
-    RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
-    ARCHIVE DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
+    LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim"
+    RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim"
+    ARCHIVE DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim"
 )

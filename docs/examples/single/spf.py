@@ -9,7 +9,7 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import RightCircular
+from PyMieSim.polarization import RightCircular
 from PyMieSim.single import Setup
 
 polarization = RightCircular()

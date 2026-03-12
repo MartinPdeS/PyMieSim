@@ -1,4 +1,7 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+
 #include "./setup.cpp"
 #include <utils/numpy_interface.h>
 #include <utils/defines.h>

@@ -3,7 +3,6 @@
 
 #include <experiment/scatterer_set/base_set.h>
 #include <experiment/material_set/material_set.h>
-#include <experiment/material_set/medium_set.h>
 
 
 // InfiniteCylinder class inheriting from BaseSet
@@ -11,8 +10,8 @@ class InfiniteCylinderSet : public ScattererSet {
 public:
     inline static const std::vector<std::string> attributes = {
         "diameter",
-        "property",
-        "medium_property"
+        "material",
+        "medium"
     };
 
     inline static const std::vector<std::string> available_measure_list = {
@@ -37,17 +36,17 @@ public:
         "coupling",
     };
     std::vector<double> diameter;
-    MaterialSet property;
-    MediumSet medium_property;
+    MaterialSet material;
+    MediumSet medium;
 
     InfiniteCylinderSet() = default;
     InfiniteCylinderSet(
         const std::vector<double>& diameter,
-        const MaterialSet& property,
-        const MediumSet& medium_property,
+        const MaterialSet& material,
+        const MediumSet& medium,
         const bool is_sequential
     )
-        : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
+        : ScattererSet(is_sequential), diameter(diameter), material(material), medium(medium)
         {
             this->update_shape();
         }
@@ -56,12 +55,12 @@ public:
 
     void validate_sequential_data(const size_t expected_size) const override;
 
-    InfiniteCylinder get_scatterer_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const;
+    InfiniteCylinder get_scatterer_by_index_sequential(const size_t index) const;
 
-    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index, std::shared_ptr<BaseSource> source) const override;
+    std::shared_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index) const override;
 
-    InfiniteCylinder get_scatterer_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const;
+    InfiniteCylinder get_scatterer_by_index(const size_t flat_index) const;
 
 
-    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index, std::shared_ptr<BaseSource> source) const override;
+    std::shared_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index) const override;
 };

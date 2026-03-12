@@ -9,7 +9,7 @@ from MPSPlots.colormaps import blue_black_red
 from PyMieSim.single.scatterer import Sphere, CoreShell, InfiniteCylinder
 from PyMieSim.single.source import Gaussian, PlaneWave
 from PyMieSim.single.detector import Photodiode, CoherentMode, IntegratingSphere
-from PyMieSim.single.fibonacci import FibonacciMesh  # noqa: F401: need to register those class
+from PyMieSim.mesh import FibonacciMesh  # noqa: F401: need to register those class
 from PyMieSim.single.coordinates import Cartesian, Spherical  # noqa: F401: need to register those class
 
 PyVistaColor = Union[str, Tuple[float, float, float], Sequence[float]]
@@ -130,24 +130,24 @@ class SystemPlotter:
                 )
             handler(obj, active_scene)
 
-        if data is not None:
-            self._add_data(data=data, scene=active_scene)
+        # if data is not None:
+        #     self._add_data(data=data, scene=active_scene)
 
-        if add_context_sphere and self.context_sphere_radius > 0.0:
-            sphere = pv.Sphere(radius=float(self.context_sphere_radius))
-            active_scene.add_mesh(sphere, opacity=float(self.context_sphere_opacity))
+        # if add_context_sphere and self.context_sphere_radius > 0.0:
+        #     sphere = pv.Sphere(radius=float(self.context_sphere_radius))
+        #     active_scene.add_mesh(sphere, opacity=float(self.context_sphere_opacity))
 
-        active_scene.add_axes_at_origin(
-            zlabel="",
-            xlabel="",
-            ylabel="",
-            labels_off=not self.show_axis_label,
-        )
+        # active_scene.add_axes_at_origin(
+        #     zlabel="",
+        #     xlabel="",
+        #     ylabel="",
+        #     labels_off=not self.show_axis_label,
+        # )
 
-        if show:
-            active_scene.show()
+        # if show:
+        #     active_scene.show()
 
-        return active_scene
+        # return active_scene
 
     def _resolve_handler(self, obj: Any) -> Optional[Callable[[Any, pv.Plotter], None]]:
         # Resolve based on MRO so subclasses are handled without explicit registration.

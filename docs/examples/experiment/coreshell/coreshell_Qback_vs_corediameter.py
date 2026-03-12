@@ -11,10 +11,13 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import CoreShellSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import CoreShellSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import print_available, SellmeierMaterial, TabulatedMaterial, SellmeierMedium
+
+print_available()
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
@@ -28,12 +31,11 @@ source = GaussianSet(
 )
 
 scatterer = CoreShellSet(
-    core_diameter=numpy.geomspace(100, 600, 400) * ureg.nanometer,
+    core_diameter=numpy.geomspace(100, 900, 400) * ureg.nanometer,
     shell_thickness=[800] * ureg.nanometer,
-    core_material=[Material.silver],
-    shell_material=[Material.BK7],
-    medium_material=[Material.water],
-    source=source,
+    core_material=[TabulatedMaterial("silver")],
+    shell_material=[SellmeierMaterial("BK7")],
+    medium=[SellmeierMedium("water")],
 )
 
 experiment = Setup(scatterer=scatterer, source=source)

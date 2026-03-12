@@ -9,11 +9,14 @@ Sphere: Goniometer
 from PyMieSim.units import ureg
 import numpy
 
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import print_available, SellmeierMaterial
+
+print_available()
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -27,9 +30,8 @@ source = GaussianSet(
 )
 scatterer = SphereSet(
     diameter=[20] * ureg.nanometer,
-    material=[Material.BK7],
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    material=[SellmeierMaterial("BK7")],
+    medium=[1] * ureg.RIU,
 )
 
 detector = PhotodiodeSet(

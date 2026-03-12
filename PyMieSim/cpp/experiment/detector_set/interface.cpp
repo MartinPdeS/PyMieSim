@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
+#include <pybind11/complex.h>
 
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
@@ -380,8 +381,8 @@ PYBIND11_MODULE(detector_set, module) {
                 mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture) * ureg.attr("dimensionless");
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
-                mapping["detector:rotation"] = py::cast(self.rotation) * ureg.attr("radian");
                 mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
+                mapping["detector:rotation"] = py::cast(self.rotation) * ureg.attr("radian");
                 mapping["detector:medium"] = py::cast(self.medium) * ureg.attr("RIU");
                 return mapping;
             },

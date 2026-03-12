@@ -1,8 +1,7 @@
 #pragma once
 
 #include <single/scatterer/base_scatterer/base_scatterer.h>
-#include <single/material/material.h>
-#include <single/material/medium.h>
+#include <material/material.h>
 
 using complex128 = std::complex<double>;
 
@@ -40,7 +39,8 @@ class InfiniteCylinder: public BaseScatterer
         ) : BaseScatterer(_max_order, std::move(_medium)),
             diameter(_diameter),
             material(_material)
-        {}
+        {
+        }
 
         /**
          * @brief Constructs a InfiniteCylinder object with constant material.
@@ -175,7 +175,7 @@ class InfiniteCylinder: public BaseScatterer
          * @param value_1 The second polarization component.
          * @return The processed polarization value.
          */
-        double process_polarization(const complex128 value_0, const complex128 value_1) const;
+        double process_polarization(const double value_0, const double value_1) const;
 
         /**
          * @brief Computes the dn coefficients for the cylinder.

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <single/polarization/polarization.h>
+#include <polarization/polarization.h>
 
 using complex128 = std::complex<double>;
 

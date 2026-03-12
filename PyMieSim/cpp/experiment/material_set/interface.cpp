@@ -1,9 +1,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
+#include <pybind11/complex.h>
 
 #include <pint/pint.h>
 #include "./material_set.h"
-#include "./medium_set.h"
 
 namespace py = pybind11;
 

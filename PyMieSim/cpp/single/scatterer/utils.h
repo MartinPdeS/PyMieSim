@@ -2,8 +2,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
-#include <single/material/material.h>
-#include <single/material/medium.h>
+#include <material/material.h>
 
 namespace py = pybind11;
 
@@ -33,9 +32,7 @@ std::shared_ptr<BaseMaterial> parse_material_object(
 
     if (py::hasattr(material_object, "to")) {
         const complex128 refractive_index_value =
-            material_object.attr("to")(ureg.attr("RIU"))
-            .attr("magnitude")
-            .cast<complex128>();
+            material_object.attr("to")("RIU").attr("magnitude").cast<complex128>();
 
         return std::make_shared<ConstantMaterial>(refractive_index_value);
     }
@@ -62,9 +59,7 @@ std::shared_ptr<BaseMedium> parse_medium_object(
 
     if (py::hasattr(medium_object, "to")) {
         const double refractive_index_value =
-            medium_object.attr("to")(ureg.attr("RIU"))
-            .attr("magnitude")
-            .cast<double>();
+            medium_object.attr("to")("RIU").attr("magnitude").cast<double>();
 
         return std::make_shared<ConstantMedium>(refractive_index_value);
     }

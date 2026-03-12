@@ -13,6 +13,7 @@ from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.material_set import MaterialSet
+from PyMieSim.material import ConstantMaterial, ConstantMedium
 import PyMieSim
 
 
@@ -217,7 +218,7 @@ class Setup(SETUP):
             # Material sets
             # ----------------------------------------------------------
             if isinstance(param_values, MaterialSet):
-                values[key] = [repr(material) for material in param_values]
+                values[key] = [repr(material) if not isinstance(material, (ConstantMaterial, ConstantMedium)) else material.refractive_index.to("RIU").magnitude for material in param_values]
                 continue
 
             # ----------------------------------------------------------

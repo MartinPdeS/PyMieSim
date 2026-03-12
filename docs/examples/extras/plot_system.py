@@ -11,18 +11,17 @@ PyVista for rendering the 3D scene.
 This script is intended to be used in conjunction with the Read the Docs documentation.
 """
 
-from math import sqrt
 from PyMieSim.units import ureg
 
-from PyMieSim.single.scatterer import InfiniteCylinder
+from PyMieSim.single.scatterer import InfiniteCylinder, Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single import SystemPlotter
-from PyMieSim.single.representations import SPF
+from PyMieSim.single import Setup
 
 polarization_state = PolarizationState(
-    angle=0 * ureg.degree,  # Linear polarization at 0 degrees
+    angle=0 * ureg.degree,
 )
 
 source = Gaussian(
@@ -33,24 +32,40 @@ source = Gaussian(
 )
 
 scatterer = InfiniteCylinder(
-    diameter=7800 * ureg.nanometer,
-    source=source,
+    diameter=1800 * ureg.nanometer,
     medium=1.0 * ureg.RIU,
-    material=sqrt(1.5) * ureg.RIU,
+    material=1.5 * ureg.RIU,
 )
 
 detector = CoherentMode(
     mode_number="LP01",
     numerical_aperture=0.2 * ureg.AU,
     gamma_offset=0 * ureg.degree,
-    phi_offset=60 * ureg.degree,
+    phi_offset=30 * ureg.degree,
     rotation=0 * ureg.degree,
     polarization_filter=0 * ureg.degree,
 )
 
-spf = SPF(scatterer=scatterer)
+setup = Setup(
+    scatterer=scatterer,
+    source=source,
+    detector=detector,
+)
 
-plotter = SystemPlotter(show_axis_label=False)
+spf = setup.get_representation("spf", sampling=100)
 
-plotter.plot(source, scatterer, detector, data=spf)
+
+import pyvista as pv
+
+
+scene = pv.Plotter()
+
+scatterer.add_to_scene(scene, opacity=1.0, color="black")
+source.add_to_scene(scene)
+detector.add_to_scene(scene)
+
+scene.show()
+# plotter = SystemPlotter(show_axis_label=False)
+
+# plotter.plot(source, scatterer, detector)
 

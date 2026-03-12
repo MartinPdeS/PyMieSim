@@ -8,28 +8,30 @@ Sphere: Coupling vs wavelength
 import numpy as np
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentModeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import CoherentModeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import print_available, SellmeierMaterial
+
+print_available()
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
 )
 
 source = GaussianSet(
-    wavelength=np.linspace(950, 450, 200) * ureg.nanometer,
+    wavelength=np.linspace(950, 1050, 200) * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2] * ureg.AU,
 )
 
 scatterer = SphereSet(
-    diameter=np.linspace(100, 200, 10) * ureg.nanometer,
-    material=[Material.BK7],
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    diameter=np.linspace(100, 8000, 10) * ureg.nanometer,
+    material=[SellmeierMaterial("BK7")],
+    medium=[1] * ureg.RIU,
 )
 
 detector = CoherentModeSet(
@@ -40,6 +42,7 @@ detector = CoherentModeSet(
     polarization_filter=[0, 90] * ureg.degree,
     rotation=[0] * ureg.degree,
     sampling=[300],
+    medium=[1] * ureg.RIU,
 )
 
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)

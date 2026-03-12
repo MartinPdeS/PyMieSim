@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include <single/fibonacci/fibonacci.h>
+#include <mesh/fibonacci.h>
 
 /**
  * @brief Snell and Fresnel utilities for a planar interface between two real index media.

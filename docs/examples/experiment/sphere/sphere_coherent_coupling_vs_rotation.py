@@ -9,11 +9,14 @@ Sphere: Coherent mode field rotation
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentModeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import CoherentModeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import print_available, SellmeierMaterial
+
+print_available()
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -25,11 +28,11 @@ source = GaussianSet(
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2] * ureg.AU,
 )
+
 scatterer = SphereSet(
     diameter=[2000, 2300] * ureg.nanometer,
-    material=[Material.BK7],
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    material=[SellmeierMaterial("BK7")],
+    medium=[1] * ureg.RIU,
 )
 
 detector = CoherentModeSet(

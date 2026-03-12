@@ -7,13 +7,17 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import Setup
+from PyMieSim.material import SellmeierMaterial, SellmeierMedium
 
-# Define the core configurations for testing, now separated 'id' for clarity in tests
-materials = [1.2 * ureg.RIU, 1.6 * ureg.RIU]
-mediums = [1.1 * ureg.RIU, 1.4 * ureg.RIU]
+bk7 = SellmeierMaterial("BK7")
+
+water = SellmeierMedium("water")
+
+materials = [1.2 * ureg.RIU, bk7]
+mediums = [1.1 * ureg.RIU, water]
 
 
 @pytest.fixture()

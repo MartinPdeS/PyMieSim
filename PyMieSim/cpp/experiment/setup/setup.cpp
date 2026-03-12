@@ -36,15 +36,17 @@ Setup::get_coupling() {
         size_t j = (idx_flat / detector_set->total_combinations) % scatterer_set->total_combinations;
         size_t k = idx_flat % detector_set->total_combinations;
 
-        std::shared_ptr<BaseSource> source = source_set->get_source_by_index(i);
+        std::shared_ptr<BaseSource> source_ptr = source_set->get_source_by_index(i);
 
         std::shared_ptr<BaseDetector> detector = detector_set->get_detector_by_index(k);
 
-        std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set->get_scatterer_ptr_by_index(j, source);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set->get_scatterer_ptr_by_index(j);
+
+        scatterer_ptr->init(source_ptr);
 
         // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
-        size_t idx = flatten_multi_index(this->array_shape, source->indices, scatterer_ptr->indices, detector->indices);
-        output_array[idx] = detector->get_coupling(*scatterer_ptr);
+        size_t idx = flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
+        output_array[idx] = detector->get_coupling(scatterer_ptr, source_ptr);
     }
     debug_printf("get_scatterer_coupling: finished computation\n");
 
@@ -65,15 +67,17 @@ Setup::get_coupling_sequential() {
     #pragma omp parallel for
     for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
 
-        std::shared_ptr<BaseSource> source = this->source_set->get_source_by_index_sequential(idx);
+        std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index_sequential(idx);
 
-        std::unique_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx, source);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx);
 
         std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index_sequential(idx);
 
+        scatterer_ptr->init(source_ptr);
+
         // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
 
-        output_array[idx] = detector->get_coupling(*scatterer_ptr);
+        output_array[idx] = detector->get_coupling(scatterer_ptr, source_ptr);
     }
 
     return output_array;
@@ -114,14 +118,16 @@ Setup::get_farfields(
         size_t i = idx_flat / scatterer_set.total_combinations;  // source index
         size_t j = idx_flat % scatterer_set.total_combinations;  // scatterer index
 
-        std::shared_ptr<BaseSource> source = source_set.get_source_by_index(i);
-        std::unique_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j, std::move(source));
+        std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j);
+
+        scatterer_ptr->init(source_ptr);
 
         // Linear index over the head shape only
-        size_t idx_head = flatten_multi_index(head_shape, source->indices, scatterer_ptr->indices);
+        size_t idx_head = flatten_multi_index(head_shape, source_ptr->indices, scatterer_ptr->indices);
 
-        // Compute fields
-        auto [phi_field, theta_field] = scatterer_ptr->compute_unstructured_farfields(mesh, distance);
+        // Compute fieldsd
+        auto [phi_field, theta_field] = scatterer_ptr->get_unstructured_farfields(mesh, distance,std::move(source_ptr));
 
         // Sanity check in debug builds
         if (phi_field.size() != stride_channel || theta_field.size() != stride_channel) {
