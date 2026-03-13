@@ -4,12 +4,10 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import SystemPlotter
-from PyMieSim.single.representations import SPF
 from math import sqrt
-import matplotlib.pyplot as plt
+import pyvista as pv
 
 
 @patch("pyvista.Plotter.show")
@@ -28,7 +26,6 @@ def test_plot_system(mock_show):
 
     scatterer = InfiniteCylinder(
         diameter=780 * ureg.nanometer,
-        source=source,
         medium=1.0 * ureg.RIU,
         material=sqrt(1.5) * ureg.RIU,
     )
@@ -40,13 +37,15 @@ def test_plot_system(mock_show):
         polarization_filter=0 * ureg.degree,
         medium=1.0 * ureg.RIU
     )
-    spf = SPF(scatterer=scatterer)
 
-    plotter = SystemPlotter(show_axis_label=False)
+    scene = pv.Plotter()
 
-    plotter.plot(source, detector, data=spf)
+    scatterer.add_to_scene(scene)
+    source.add_to_scene(scene)
+    detector.add_to_scene(scene)
 
-    plt.close()
+    scene.show()
+
 
     mock_show.assert_called_once()
 

@@ -17,7 +17,7 @@ PYBIND11_MODULE(polarization_set, module) {
             py::init<>(
                 [](const py::object& angles) {
                     std::vector<double> angles_value = \
-                        cast_scalar_or_array_to_vector_double(angles.attr("to")("radian").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(angles.attr("to")("radian").attr("magnitude"));
                     return std::make_shared<PolarizationSet>(angles_value);
                 }
             ),

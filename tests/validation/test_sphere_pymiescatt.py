@@ -6,8 +6,9 @@ import numpy as np
 import pandas as pd
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
@@ -15,10 +16,10 @@ from PyMieSim.directories import validation_data_path
 @pytest.fixture
 def gaussian_source():
     return GaussianSet(
-        wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=PolarizationSet(angles=0 * ureg.degree),  # Polarization angle
-        optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
+        wavelength=[1000] * ureg.nanometer,
+        polarization=PolarizationSet(angles=0 * ureg.degree),
+        optical_power=[1] * ureg.watt,
+        numerical_aperture=[0.3] * ureg.AU,
     )
 
 
@@ -36,16 +37,13 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     Parameters:
         measure (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    index = (1.4 + 0.3j) * ureg.RIU
     diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
-    medium_indexes = [1.0] * ureg.RIU
 
     # Get data from PyMieSim
     scatterer = SphereSet(
         diameter=diameters,
-        refractive_index=index,
-        medium_refractive_index=medium_indexes,
-        source=gaussian_source,
+        material=[1.4 + 0.3j] * ureg.RIU,
+        medium=[1.0] * ureg.RIU,
     )
 
     experiment = Setup(scatterer=scatterer, source=gaussian_source)

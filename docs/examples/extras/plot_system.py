@@ -13,12 +13,12 @@ This script is intended to be used in conjunction with the Read the Docs documen
 
 from PyMieSim.units import ureg
 
-from PyMieSim.single.scatterer import InfiniteCylinder, Sphere
+from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import SystemPlotter
-from PyMieSim.single import Setup
+import pyvista as pv
+
 
 polarization_state = PolarizationState(
     angle=0 * ureg.degree,
@@ -46,26 +46,10 @@ detector = CoherentMode(
     polarization_filter=0 * ureg.degree,
 )
 
-setup = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector,
-)
-
-spf = setup.get_representation("spf", sampling=100)
-
-
-import pyvista as pv
-
-
 scene = pv.Plotter()
 
-scatterer.add_to_scene(scene, opacity=1.0, color="black")
+scatterer.add_to_scene(scene)
 source.add_to_scene(scene)
 detector.add_to_scene(scene)
 
 scene.show()
-# plotter = SystemPlotter(show_axis_label=False)
-
-# plotter.plot(source, scatterer, detector)
-

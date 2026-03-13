@@ -6,8 +6,9 @@ import numpy as np
 import pandas as pd
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.scatterer import CoreShellSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import CoreShellSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
@@ -27,10 +28,10 @@ PYMIESCATT_MEASURES = {
 @pytest.fixture
 def gaussian_source():
     return GaussianSet(
-        wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=PolarizationSet(angles=0 * ureg.degree),  # Polarization angle
-        optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationSet(angles=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
 
@@ -50,21 +51,20 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     measure : str
         The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    core_index = 1.4 + 0.3j * ureg.RIU
-    core_index = 1.4 + 0.3j * ureg.RIU
-    shell_index = 1.3 * ureg.RIU
+    core_index = [1.4 + 0.3j] * ureg.RIU
+    core_index = [1.4 + 0.3j] * ureg.RIU
+    shell_index = [1.3] * ureg.RIU
     core_diameters = np.geomspace(10, 6000, 80) * ureg.nanometer
-    shell_thickness = 600 * ureg.nanometer
+    shell_thickness = [300] * ureg.nanometer
     medium_indexes = [1.0] * ureg.RIU
 
     # Get data from PyMieSim
     scatterer = CoreShellSet(
         core_diameter=core_diameters,
-        core_refractive_index=core_index,
+        core_material=core_index,
         shell_thickness=shell_thickness,
-        shell_refractive_index=shell_index,
-        medium_refractive_index=medium_indexes,
-        source=gaussian_source,
+        shell_material=shell_index,
+        medium=medium_indexes,
     )
 
     experiment = Setup(scatterer=scatterer, source=gaussian_source)

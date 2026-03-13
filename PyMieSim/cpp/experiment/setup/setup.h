@@ -232,9 +232,11 @@ class Setup
 
             #pragma omp parallel for
             for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
-                std::shared_ptr<BaseSource> source = this->source_set->get_source_by_index_sequential(idx);
+                std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index_sequential(idx);
 
                 std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx);
+
+                scatterer_ptr->init(source_ptr);
 
                 output_array[idx] = std::invoke(function, *scatterer_ptr);
 

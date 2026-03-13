@@ -31,21 +31,21 @@ PYBIND11_MODULE(detector_set, module) {
                 ) {
                     std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
 
-                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector_double(NA.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(NA.attr("to")("dimensionless").attr("magnitude"));
 
-                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector_double(cache_NA.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_NA.attr("to")("dimensionless").attr("magnitude"));
 
-                    std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
+                    std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
 
-                    std::vector<double> gamma_offset_value = cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
+                    std::vector<double> gamma_offset_value = cast_scalar_or_array_to_vector<double>(gamma_offset.attr("to")("radian").attr("magnitude"));
 
                     std::vector<double> polarization_filter_value;
                     if (polarization_filter.is_none()) {
                         polarization_filter_value = std::vector<double>(sampling_value.size(), std::nan(""));
                     } else {
-                        polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
+                        polarization_filter_value = cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
-                    std::vector<double> medium_value = cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
+                    std::vector<double> medium_value = cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
                     return std::make_shared<PhotodiodeSet>(
                         sampling_value,
@@ -151,26 +151,26 @@ PYBIND11_MODULE(detector_set, module) {
                 std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
 
                 std::vector<double> numerical_aperture_value =
-                    cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
                 std::vector<double> cache_numerical_aperture_value =
-                    cast_scalar_or_array_to_vector_double(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
                 std::vector<double> phi_offset_value =
-                    cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
 
                 std::vector<double> gamma_offset_value =
-                    cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(gamma_offset.attr("to")("radian").attr("magnitude"));
 
                 std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
                 std::vector<double> polarization_filter_value;
                 if (polarization_filter.is_none()) {
                     polarization_filter_value = std::vector<double>{std::nan("")}; // broadcast later
                 } else {
                     polarization_filter_value =
-                        cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                 }
 
                 const size_t target_size = resolve_target_size(
@@ -244,24 +244,24 @@ PYBIND11_MODULE(detector_set, module) {
 
                     std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
 
-                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
-                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector_double(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
-                    std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
+                    std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
 
-                    std::vector<double> gamma_offset_value = cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
+                    std::vector<double> gamma_offset_value = cast_scalar_or_array_to_vector<double>(gamma_offset.attr("to")("radian").attr("magnitude"));
 
                     std::vector<double> polarization_filter_value;
                     if (polarization_filter.is_none()) {
                         polarization_filter_value = std::vector<double>(sampling_value.size(), std::nan(""));
                     } else {
-                        polarization_filter_value = cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
+                        polarization_filter_value = cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
 
-                    std::vector<double> medium_value = cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
+                    std::vector<double> medium_value = cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
-                    std::vector<double> rotation_value = cast_scalar_or_array_to_vector_double(rotation.attr("to")("radian").attr("magnitude"));
+                    std::vector<double> rotation_value = cast_scalar_or_array_to_vector<double>(rotation.attr("to")("radian").attr("magnitude"));
 
                     return std::make_shared<CoherentModeSet>(
                         mode_number_values,
@@ -412,30 +412,30 @@ PYBIND11_MODULE(detector_set, module) {
                 std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
 
                 std::vector<double> numerical_aperture_value =
-                    cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
                 std::vector<double> cache_numerical_aperture_value =
-                    cast_scalar_or_array_to_vector_double(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
                 std::vector<double> phi_offset_value =
-                    cast_scalar_or_array_to_vector_double(phi_offset.attr("to")("radian").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
 
                 std::vector<double> gamma_offset_value =
-                    cast_scalar_or_array_to_vector_double(gamma_offset.attr("to")("radian").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(gamma_offset.attr("to")("radian").attr("magnitude"));
 
                 std::vector<double> rotation_value =
-                    cast_scalar_or_array_to_vector_double(rotation.attr("to")("radian").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(rotation.attr("to")("radian").attr("magnitude"));
 
                 std::vector<double> polarization_filter_value;
                 if (polarization_filter.is_none()) {
                     polarization_filter_value = std::vector<double>{std::nan("")}; // broadcast later
                 } else {
                     polarization_filter_value =
-                        cast_scalar_or_array_to_vector_double(polarization_filter.attr("to")("radian").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                 }
 
                 std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector_double(medium.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
                 const size_t target_size = resolve_target_size_from_sizes(
                     total_size_value,

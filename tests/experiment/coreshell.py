@@ -4,19 +4,28 @@
 import pytest
 import numpy as np
 
-from PyOptik import Material
-from PyOptik.material.base_class import BaseMaterial
-
 from PyMieSim.units import ureg
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import CoreShellSet
-from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import CoreShellSet
+from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
+from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
-
-core_properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
-shell_properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
-medium_properties = [Material.water, 1.1 * ureg.RIU]
+core_properties = [
+    [TabulatedMaterial("silver")],
+    [SellmeierMaterial("fused_silica")],
+    [1.4] * ureg.RIU
+]
+shell_properties = [
+    [TabulatedMaterial("silver")],
+    [SellmeierMaterial("fused_silica")],
+    [1.4] * ureg.RIU
+]
+medium_properties = [
+    [SellmeierMedium("water")],
+    [1.1] * ureg.RIU
+]
 
 
 polarization_set = PolarizationSet(
@@ -41,14 +50,14 @@ sources = [gaussian_source, planewave_source]
 
 
 @pytest.mark.parametrize(
-    "medium_value",
-    [[m] for m in medium_properties],
+    "medium",
+    medium_properties,
     ids=[f"Medium:{m}" for m in medium_properties]
 )
 
 @pytest.mark.parametrize(
-    "core_value",
-    [[m] for m in core_properties],
+    "core_material",
+    core_properties,
     ids=[f"Core:{m}" for m in core_properties]
 )
 
@@ -59,8 +68,8 @@ sources = [gaussian_source, planewave_source]
 )
 
 @pytest.mark.parametrize(
-    "shell_value",
-    [[m] for m in shell_properties],
+    "shell_material",
+    shell_properties,
     ids=[f"Shell:{m}" for m in shell_properties]
 )
 
@@ -69,19 +78,16 @@ sources = [gaussian_source, planewave_source]
     CoreShellSet.available_measure_list
 )
 
-def test_measure(measure, source, core_value, shell_value, medium_value):
+def test_measure(measure, source, core_material, shell_material, medium):
     kwargs = {}
 
-    for key, value in zip(["core", "shell", "medium"], [core_value, shell_value, medium_value]):
-        if isinstance(value[0], BaseMaterial):
-            kwargs[f"{key}_material"] = value
-        else:
-            kwargs[f"{key}_refractive_index"] = [value[0].magnitude] * value[0].units
-
+    print(core_material, shell_material, medium)
     scatterer = CoreShellSet(
         core_diameter=np.linspace(800, 1000, 10) * ureg.nanometer,
         shell_thickness=[300] * ureg.nanometer,
-        source=source,
+        core_material=core_material,
+        shell_material=shell_material,
+        medium=medium,
         **kwargs
     )
 

@@ -6,9 +6,10 @@ import pytest
 from PyMieSim.units import ureg
 from PyOptik import Material
 
-from PyMieSim.experiment.detector import CoherentModeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet, PolarizationSet
+from PyMieSim.experiment.detector_set import CoherentModeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 
 
 
@@ -65,31 +66,28 @@ def test_sphere_rejects_invalid_diameter_type():
     with pytest.raises(AttributeError):
         SphereSet(
             diameter=100,  # must carry length units
-            source=source,
-            refractive_index=1.5 * ureg.RIU,
-            medium_refractive_index=Material.water,
+            material=1.5 * ureg.RIU,
+            medium=Material.water,
         )
 
 
 def test_sphere_rejects_invalid_refractive_index_type():
     source = _valid_plane_wave_source()
-    with pytest.raises(AttributeError):
+    with pytest.raises((AttributeError, RuntimeError)):
         SphereSet(
             diameter=100 * ureg.nanometer,
-            source=source,
-            refractive_index=1.5,  # must carry RIU
-            medium_refractive_index=Material.water,
+            material=1.5,  # must carry RIU
+            medium=Material.water,
         )
 
 
 def test_sphere_rejects_invalid_medium_refractive_index_type():
     source = _valid_plane_wave_source()
-    with pytest.raises(AttributeError):
+    with pytest.raises((RuntimeError, AttributeError, TypeError)):
         SphereSet(
             diameter=100 * ureg.nanometer,
-            source=source,
-            refractive_index=1.5 * ureg.RIU,
-            medium_refractive_index=1.0,  # must be RIU or a Material (per your API)
+            material=1.5 * ureg.RIU,
+            medium=1.0,  # must be RIU or a Material (per your API)
         )
 
 

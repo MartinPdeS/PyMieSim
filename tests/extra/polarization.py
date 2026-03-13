@@ -4,7 +4,7 @@
 import pytest
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.source import PolarizationSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 
 
 

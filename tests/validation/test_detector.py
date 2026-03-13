@@ -6,22 +6,7 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim import single, experiment
-
-
-@pytest.fixture
-def source_single():
-    """
-    Fixture to create a Gaussian light source for single scattering simulation.
-
-    Returns:
-        single.source.Gaussian: Gaussian light source for single scattering.
-    """
-    return single.source.Gaussian(
-        wavelength=1000 * ureg.nanometer,  # Wavelength in meters (e.g., 1 micron)
-        polarization=single.source.PolarizationState(angle=0 * ureg.degree),  # Polarization angle
-        optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
-    )
+from PyMieSim.polarization import PolarizationState
 
 
 @pytest.fixture
@@ -32,16 +17,16 @@ def source_experiment():
     Returns:
         experiment.source.Gaussian: Gaussian light source for experiment-based scattering.
     """
-    return experiment.source.GaussianSet(
-        wavelength=1000 * ureg.nanometer,
-        polarization=experiment.source.PolarizationSet(angles=0 * ureg.degree),
-        optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+    return experiment.source_set.GaussianSet(
+        wavelength=[1000] * ureg.nanometer,
+        polarization=experiment.polarization_set.PolarizationSet(angles=0 * ureg.degree),
+        optical_power=[1] * ureg.watt,
+        numerical_aperture=[0.3] * ureg.AU,
     )
 
 
 @pytest.fixture
-def scatterer_single(source_single):
+def scatterer_single():
     """
     Fixture to create a spherical scatterer for single scattering simulation.
 
@@ -52,15 +37,14 @@ def scatterer_single(source_single):
         single.scatterer.Sphere: Scatterer object for single scattering.
     """
     return single.scatterer.Sphere(
-        diameter=1000 * ureg.nanometer,  # Diameter of the sphere in meters
-        refractive_index=(1.5 + 0.5j) * ureg.RIU,  # Complex refractive index of the scatterer
-        source=source_single,  # Associated light source
-        medium_refractive_index=1 * ureg.RIU,  # Refractive index of the medium (e.g., air)
+        diameter=1000 * ureg.nanometer,
+        material =(1.5 + 0.5j) * ureg.RIU,
+        medium=1 * ureg.RIU,
     )
 
 
 @pytest.fixture
-def scatterer_experiment(source_experiment):
+def scatterer_experiment():
     """
     Fixture to create a spherical scatterer for experiment-based scattering.
 
@@ -70,15 +54,14 @@ def scatterer_experiment(source_experiment):
     Returns:
         experiment.scatterer.SphereSet: Scatterer object for experiment-based scattering.
     """
-    return experiment.scatterer.SphereSet(
+    return experiment.scatterer_set.SphereSet(
         diameter=[1000] * ureg.nanometer,
-        refractive_index=[(1.5 + 0.5j)] * ureg.RIU,
-        source=source_experiment,
-        medium_refractive_index=[1] * ureg.RIU,
+        material=[(1.5 + 0.5j)] * ureg.RIU,
+        medium=[1] * ureg.RIU,
     )
 
 
-def test_detector_single_polarization_filter(scatterer_single):
+def test_detector_single_polarization_filter():
     """
     Test the effect of a 0-ureg.degree and 180-ureg.degree polarization filter on a photodiode detector.
 
@@ -86,13 +69,26 @@ def test_detector_single_polarization_filter(scatterer_single):
         source_single (single.source.Gaussian): Gaussian light source for single scattering.
         scatterer_single (single.scatterer.Sphere): Spherical scatterer.
     """
+    scatterer_single = single.scatterer.Sphere(
+        diameter=1000 * ureg.nanometer,
+        material =(1.5 + 0.5j) * ureg.RIU,
+        medium=1 * ureg.RIU,
+    )
+
+    source_single = single.source.Gaussian(
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
+    )
+
     # Create two photodiode detectors with different polarization filters (0° and 180°)
     detector_0 = single.detector.Photodiode(
         numerical_aperture=0.1 * ureg.AU,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=0 * ureg.degree,
-        medium_refractive_index=1.0 * ureg.RIU
+        medium=1.0 * ureg.RIU
     )
 
     detector_180 = single.detector.Photodiode(
@@ -100,12 +96,25 @@ def test_detector_single_polarization_filter(scatterer_single):
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=180 * ureg.degree,
-        medium_refractive_index=1.0 * ureg.RIU
+        medium=1.0 * ureg.RIU
+    )
+
+    setup = single.Setup(
+        scatterer=scatterer_single,
+        source=source_single,
+        detector=detector_0
     )
 
     # Calculate the coupling for both detectors
-    coupling_0 = detector_0.get_coupling(scatterer_single)
-    coupling_180 = detector_180.get_coupling(scatterer_single)
+    coupling_0 = setup.get("coupling")
+
+    setup = single.Setup(
+        scatterer=scatterer_single,
+        source=source_single,
+        detector=detector_180
+    )
+
+    coupling_180 = setup.get("coupling")
 
     # Assert that the coupling values for 0° and 180° polarization are nearly equal
     assert np.isclose(
@@ -113,7 +122,7 @@ def test_detector_single_polarization_filter(scatterer_single):
     ), f"Mismatch in coupling values for 0° and 180° polarization: {coupling_0} vs {coupling_180}"
 
 
-def test_detector_single_rotation(scatterer_single):
+def test_detector_single_rotation():
     """
     Test the effect of 0-ureg.degree and 180-ureg.degree rotation on a coherent mode detector.
 
@@ -122,6 +131,18 @@ def test_detector_single_rotation(scatterer_single):
         scatterer_single (single.scatterer.Sphere): Spherical scatterer.
     """
     # Create two coherent mode detectors with different rotation angles (0° and 180°)
+    scatterer_single = single.scatterer.Sphere(
+        diameter=1000 * ureg.nanometer,
+        material =(1.5 + 0.5j) * ureg.RIU,
+        medium=1 * ureg.RIU,
+    )
+
+    source_single = single.source.Gaussian(
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
+    )
 
     rotation = 0 * ureg.degree
     detector_0 = single.detector.CoherentMode(
@@ -141,9 +162,22 @@ def test_detector_single_rotation(scatterer_single):
         sampling=3000
     )
 
+    setup = single.Setup(
+        scatterer=scatterer_single,
+        source=source_single,
+        detector=detector_0
+    )
+
     # Calculate the coupling for both detectors
-    coupling_0 = detector_0.get_coupling(scatterer_single)
-    coupling_180 = detector_180.get_coupling(scatterer_single)
+    coupling_0 = setup.get("coupling")
+
+    setup = single.Setup(
+        scatterer=scatterer_single,
+        source=source_single,
+        detector=detector_180
+    )
+
+    coupling_180 = setup.get("coupling")
 
     # Assert that the coupling values for 0° and 180° rotation are nearly equal
     assert np.isclose(
@@ -162,12 +196,12 @@ def test_detector_experiment_polarization_filter(
         scatterer_experiment (experiment.scatterer.Sphere): Spherical scatterer.
     """
     # Create a photodiode detector with two polarization filters (0° and 180°)
-    detector = experiment.detector.PhotodiodeSet(
-        numerical_aperture=0.1 * ureg.AU,
-        gamma_offset=0 * ureg.degree,
-        phi_offset=90 * ureg.degree,
+    detector = experiment.detector_set.PhotodiodeSet(
+        numerical_aperture=[0.1] * ureg.AU,
+        gamma_offset=[0] * ureg.degree,
+        phi_offset=[90] * ureg.degree,
         polarization_filter=[0, 180] * ureg.degree,  # List of polarization filters
-        sampling=100,  # Sampling points for the simulation
+        sampling=[100],  # Sampling points for the simulation
     )
 
     # Setup the experiment with the scatterer, detector, and source

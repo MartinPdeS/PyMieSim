@@ -4,8 +4,9 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.single.scatterer import Sphere, CoreShell
-from PyMieSim.single.source import Gaussian, PlaneWave, PolarizationState
-from PyMieSim.single.plottings import SystemPlotter
+from PyMieSim.single.source import Gaussian, PlaneWave
+from PyMieSim.polarization import PolarizationState
+from PyMieSim.single import Setup
 
 EPSILON0 = 8.854187817620389e-12 * ureg.farad / ureg.meter
 C0 = 299792458.0 * ureg.meter / ureg.second
@@ -19,9 +20,8 @@ def test_energy_flow_vs_coupling_sphere():
 
     scatterer = Sphere(
         diameter=550 * ureg.nanometer,
-        source=source,
-        refractive_index=1.5 * ureg.RIU,
-        medium_refractive_index=1.0 * ureg.RIU,
+        material=1.5 * ureg.RIU,
+        medium=1.0 * ureg.RIU,
     )
 
     # Define the detector (integrating sphere)
@@ -29,21 +29,29 @@ def test_energy_flow_vs_coupling_sphere():
         sampling=5_000,
     )
 
-    detector.print_properties(3)
+    print(f"\n\n omega: {detector.mesh.omega}, sampling * d_omega: {detector.mesh.sampling * detector.mesh.d_omega}")
 
-    print(f"\n\n omega: {detector._cpp_mesh.omega}, sampling * d_omega: {detector._cpp_mesh.sampling * detector._cpp_mesh.d_omega}")
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector
+    )
+
 
     # Calculate coupling and scattering efficiency (Qsca)
-    coupling = detector.get_coupling(scatterer=scatterer)
-    energy_flow = detector.get_energy_flow(scatterer)
+    coupling = setup.get("coupling")
 
-    n = scatterer.medium_refractive_index
+    energy_flow = detector.get_energy_flow(scatterer=scatterer, source=source)
+
+    n = scatterer.medium.refractive_index
 
     intensity = (n * EPSILON0 * C0 * abs(source.amplitude)**2).to("watt/meter**2")
 
-    scattered_power = (scatterer.Qsca * intensity * scatterer.cross_section).to("watt").to_compact()
+    print(setup.get("Qsca"), setup.get("cross_section"))
 
-    print("Qsca:", scatterer.Qsca)
+    scattered_power = (setup.get("Qsca") * intensity * setup.get("cross_section")).to("watt").to_compact()
+
+    print("Qsca:", setup.get("Qsca"))
     print("coupling:", coupling.to_compact())
     print("energy_flow:", energy_flow.to_compact())
     print("theory:", scattered_power)

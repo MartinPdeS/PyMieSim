@@ -4,8 +4,6 @@ Scatterer Footprint Calculation and Visualization
 
 This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim.
 """
-
-# Import necessary components from PyMieSim
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere

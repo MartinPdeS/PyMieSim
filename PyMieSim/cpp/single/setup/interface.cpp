@@ -7,6 +7,11 @@
 
 namespace py = pybind11;
 
+#define RETURN_PROPERTY_UNITS(name, units) \
+    if (property == #name) return py::float_(self.scatterer->get_##name()) * ureg.attr(#units);
+
+#define RETURN_PROPERTY(name) \
+    if (property == #name) return py::float_(self.scatterer->get_##name()) * ureg.attr("dimensionless");
 
 
 PYBIND11_MODULE(setup, module)
@@ -74,18 +79,58 @@ PYBIND11_MODULE(setup, module)
             )pbdoc"
         )
         .def("get",
-            &Setup::get,
-            py::arg("data_name"),
+            [ureg](const Setup& self, const std::string& property) {
+                RETURN_PROPERTY(Qsca)
+                RETURN_PROPERTY_UNITS(Csca, meter**2)
+
+                RETURN_PROPERTY(Qext)
+                RETURN_PROPERTY_UNITS(Cext, meter**2)
+
+                RETURN_PROPERTY(Qabs)
+                RETURN_PROPERTY_UNITS(Cabs, meter**2)
+
+                RETURN_PROPERTY(Qback)
+                RETURN_PROPERTY_UNITS(Cback, meter**2)
+
+                RETURN_PROPERTY(Qforward)
+                RETURN_PROPERTY_UNITS(Cforward, meter**2)
+
+                RETURN_PROPERTY(Qratio)
+                RETURN_PROPERTY_UNITS(Cratio, meter**2)
+
+                RETURN_PROPERTY(Qpr)
+                RETURN_PROPERTY_UNITS(Cpr, meter**2)
+
+                RETURN_PROPERTY(g)
+                if (property == "g_with_farfields") return py::float_(self.scatterer->get_g_with_farfields(self.source, 1000)) * ureg.attr("dimensionless");
+
+                RETURN_PROPERTY_UNITS(cross_section, meter**2)
+                RETURN_PROPERTY(size_parameter)
+
+                if (property == "coupling") {
+                    if (!self.detector) {
+                        throw std::logic_error("Detector is not defined in the setup. Coupling cannot be computed.");
+                    }
+                    return py::float_(self.detector->get_coupling(self.scatterer, self.source)) * ureg.attr("watt");
+
+                }
+
+                throw std::invalid_argument("Unknown data name: " + property);
+            },
+            py::arg("data"),
             R"pbdoc(
                 Retrieves specific data from the simulation results based on the provided data name.
+
                 Parameters
                 ----------
                 data_name : str
                     The name of the data to retrieve. Supported values include 'coupling', 'Qsca', 'Qext', 'Qback', 'Qforward', and 'g'.
-                Returns
+
+                    Returns
                 -------
                 float
                     The requested data value corresponding to the provided data name.
+
                 Raises
                 ------
                 ValueError
@@ -748,7 +793,7 @@ PYBIND11_MODULE(setup, module)
         },
         py::arg("representation_type")
     )
-        ;
+;
 
 
 }

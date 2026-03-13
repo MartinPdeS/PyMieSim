@@ -7,7 +7,7 @@ import pandas as pd
 
 from PyMieSim.units import ureg
 from PyMieSim.experiment._setup import Setup as SETUP
-from PyMieSim.experiment.scatterer_set import SphereSet#, InfiniteCylinderSet, CoreShellSet
+from PyMieSim.experiment.scatterer_set import SphereSet, InfiniteCylinderSet, CoreShellSet
 from PyMieSim.experiment.detector_set import PhotodiodeSet, CoherentModeSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
@@ -42,7 +42,7 @@ class Setup(SETUP):
 
     def __init__(
         self,
-        scatterer,#: Union[SphereSet, InfiniteCylinderSet, CoreShellSet],
+        scatterer: Union[SphereSet, InfiniteCylinderSet, CoreShellSet],
         source: Union[GaussianSet, PlaneWaveSet],
         detector: Optional[Union[PhotodiodeSet, CoherentModeSet]] = EmptyDetectorSet(),
     ):
@@ -159,7 +159,7 @@ class Setup(SETUP):
         arrays = []
 
         for measure in measures:
-            values = getattr(self, f"get_{measure}")()
+            values = self.get(measure)
 
             arrays.append(np.asarray(values))
 

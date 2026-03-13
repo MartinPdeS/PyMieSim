@@ -8,9 +8,9 @@ from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single.representations import Footprint
+from PyMieSim.single import Setup
 
 @patch("matplotlib.pyplot.show")
 def test_sphere_plottings(mock_show_plt):
@@ -32,7 +32,6 @@ def test_sphere_plottings(mock_show_plt):
     # Create a spherical scatterer
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        source=source,
         material=1.4 * ureg.RIU,
         medium=1.1 * ureg.RIU,
     )
@@ -46,8 +45,14 @@ def test_sphere_plottings(mock_show_plt):
         medium=1.0 * ureg.RIU
     )
 
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=detector,
+    )
+
     # Retrieve the footprint data for the scatterer
-    data = Footprint(scatterer=scatterer, detector=detector)
+    data = setup.get_representation("footprint")
 
     # Plot the data (mocked to avoid showing the plot during tests)
     data.plot()

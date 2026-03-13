@@ -34,6 +34,14 @@ PYBIND11_MODULE(material, module) {
 
     py::class_<BaseMaterial, std::shared_ptr<BaseMaterial>>(module, "BaseMaterial")
         .def(
+            "initialize",
+            [](BaseMaterial& self, const py::object& wavelength) {
+                return self.initialize(
+                    wavelength.attr("to")("meter").attr("magnitude").cast<double>()
+                );
+            }
+        )
+        .def(
             "get_refractive_index",
             [ureg](const BaseMaterial& self, const py::object& wavelength) {
                 const double wavelength_meter =

@@ -26,13 +26,13 @@ PYBIND11_MODULE(source_set, module) {
                     bool is_sequential
                 ) {
                     std::vector<double> wavelength_value = \
-                        cast_scalar_or_array_to_vector_double(wavelength.attr("to")("meter").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(wavelength.attr("to")("meter").attr("magnitude"));
 
                     std::vector<double> numerical_aperture_values = \
-                        cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
                     std::vector<double> optical_power_values = \
-                        cast_scalar_or_array_to_vector_double(optical_power.attr("to")("watt").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(optical_power.attr("to")("watt").attr("magnitude"));
 
                     return std::make_shared<GaussianSourceSet>(
                         wavelength_value,
@@ -114,13 +114,13 @@ PYBIND11_MODULE(source_set, module) {
                 const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
 
                 std::vector<double> wavelength_value =
-                    cast_scalar_or_array_to_vector_double(wavelength.attr("to")("meter").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(wavelength.attr("to")("meter").attr("magnitude"));
 
                 std::vector<double> numerical_aperture_values =
-                    cast_scalar_or_array_to_vector_double(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
 
                 std::vector<double> optical_power_values =
-                    cast_scalar_or_array_to_vector_double(optical_power.attr("to")("watt").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(optical_power.attr("to")("watt").attr("magnitude"));
 
                 const size_t target_size = resolve_target_size(
                     total_size_value,
@@ -193,10 +193,10 @@ PYBIND11_MODULE(source_set, module) {
                     bool is_sequential
                 ) {
                     std::vector<double> wavelength_value = \
-                        cast_scalar_or_array_to_vector_double(wavelength.attr("to")("meter").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(wavelength.attr("to")("meter").attr("magnitude"));
 
                     std::vector<double> amplitude_values = \
-                        cast_scalar_or_array_to_vector_double(amplitude.attr("to")("volt/meter").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(amplitude.attr("to")("volt/meter").attr("magnitude"));
 
                     return std::make_shared<PlaneWaveSourceSet>(
                         wavelength_value,
@@ -265,10 +265,10 @@ PYBIND11_MODULE(source_set, module) {
                 const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
 
                 std::vector<double> wavelength_value =
-                    cast_scalar_or_array_to_vector_double(wavelength.attr("to")("meter").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(wavelength.attr("to")("meter").attr("magnitude"));
 
                 std::vector<double> amplitude_values =
-                    cast_scalar_or_array_to_vector_double(amplitude.attr("to")("volt/meter").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(amplitude.attr("to")("volt/meter").attr("magnitude"));
 
                 const size_t target_size = resolve_target_size(
                     total_size_value,

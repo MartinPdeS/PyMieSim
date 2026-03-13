@@ -140,15 +140,16 @@ inline pybind11::array_t<T> vector_move_from_numpy(
 namespace py = pybind11;
 typedef std::complex<double> complex128;
 
-std::vector<double> cast_scalar_or_array_to_vector_double(const py::object& obj) {
+template <typename dtype>
+std::vector<dtype> cast_scalar_or_array_to_vector(const py::object& obj) {
 
     // If already iterable (NumPy array, list, tuple)
     if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
-        return obj.cast<std::vector<double>>();
+        return obj.cast<std::vector<dtype>>();
     }
 
     // Otherwise treat as scalar
-    return { obj.cast<double>() };
+    return { obj.cast<dtype>() };
 }
 
 std::vector<complex128> cast_scalar_or_array_to_vector_complex128(const py::object& obj) {

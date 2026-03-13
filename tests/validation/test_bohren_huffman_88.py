@@ -8,8 +8,9 @@ from PyMieSim.units import ureg
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
-from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 
@@ -37,7 +38,7 @@ def test_validation():
     )
 
     scatterer = InfiniteCylinderSet(
-        diameter=diameters, refractive_index=index, medium_refractive_index=medium_index, source=source
+        diameter=diameters, material=index, medium=medium_index
     )
 
     experiment = Setup(scatterer=scatterer, source=source)

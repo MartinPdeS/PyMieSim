@@ -15,54 +15,56 @@
 namespace py = pybind11;
 
 
-
-
-MaterialSet create_material_set_from_pyobject(const py::object& material, std::string material_name) {
-    if (py::isinstance<MaterialSet>(material)) {
-        return py::cast<MaterialSet>(material);
+#include <iostream>
+template <typename MaterialSetType, typename RefractiveIndexType, typename BaseClass>
+MaterialSetType create_material_set_from_pyobject(
+    const py::object& material_object,
+    const std::string& material_name
+) {
+    if (py::isinstance<MaterialSetType>(material_object)) {
+        return py::cast<MaterialSetType>(material_object);
     }
-    else if (py::hasattr(material, "units")) {
-        return MaterialSet(py::cast<std::vector<complex128>>(material));
-    }
-    else if (py::isinstance<py::sequence>(material) && !py::isinstance<py::str>(material)) {
-        std::vector<std::shared_ptr<BaseMaterial>> material_vector =
-            py::cast<std::vector<std::shared_ptr<BaseMaterial>>>(material);
 
-        return MaterialSet(material_vector);
-    }
-    else {
-        throw std::runtime_error(
-            "Invalid type for " + material_name + ". Expected MaterialSet, a quantity array, "
-            "or a sequence of Material instances."
+    if (py::hasattr(material_object, "units")) {
+        py::object magnitude_object = material_object.attr("to")("RIU").attr("magnitude");
+
+        if (
+            py::isinstance<py::float_>(magnitude_object) ||
+            py::isinstance<py::int_>(magnitude_object) ||
+            py::isinstance<complex128>(magnitude_object)
+        ) {
+            return MaterialSetType(
+                std::vector<RefractiveIndexType>{
+                    magnitude_object.cast<RefractiveIndexType>()
+                }
+            );
+        }
+
+        return MaterialSetType(
+            py::cast<std::vector<RefractiveIndexType>>(magnitude_object)
         );
     }
+
+    if (py::isinstance<py::sequence>(material_object) && !py::isinstance<py::str>(material_object)) {
+        try {
+            std::vector<std::shared_ptr<BaseClass>> material_vector =
+                py::cast<std::vector<std::shared_ptr<BaseClass>>>(material_object);
+
+            return MaterialSetType(material_vector);
+        }
+        catch (const py::cast_error&) {
+            throw std::runtime_error(
+                "Invalid type for " + material_name + ". Expected a MaterialSet, "
+                "a Pint quantity in RIU, or a sequence of Material instances."
+            );
+        }
+    }
+
+    throw std::runtime_error(
+        "Invalid type for " + material_name + ". Expected a MaterialSet, "
+        "a Pint quantity in RIU, or a sequence of Material instances."
+    );
 }
-
-MediumSet create_medium_set_from_pyobject(const py::object& material, std::string material_name) {
-    if (py::isinstance<MediumSet>(material)) {
-        return py::cast<MediumSet>(material);
-    }
-    else if (py::hasattr(material, "units")) {
-        return MediumSet(py::cast<std::vector<double>>(material));
-    }
-    else if (py::isinstance<py::sequence>(material) && !py::isinstance<py::str>(material)) {
-        std::vector<std::shared_ptr<BaseMedium>> medium_vector =
-            py::cast<std::vector<std::shared_ptr<BaseMedium>>>(material);
-
-        return MediumSet(medium_vector);
-    }
-    else {
-        throw std::runtime_error(
-            "Invalid type for " + material_name + ". Expected MediumSet, a quantity array, "
-            "or a sequence of Medium instances."
-        );
-    }
-}
-
-
-
-
-
 
 
 PYBIND11_MODULE(scatterer_set, module) {
@@ -83,14 +85,14 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
 
                     std::vector<double> diameter_value =
-                        cast_scalar_or_array_to_vector_double(
+                        cast_scalar_or_array_to_vector<double>(
                             diameter.attr("to")("meter").attr("magnitude")
                         );
 
                     return std::make_shared<SphereSet>(
                         diameter_value,
-                        create_material_set_from_pyobject(material, "material"),
-                        create_medium_set_from_pyobject(medium, "medium"),
+                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
+                        create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
                         false
                     );
                 }
@@ -162,61 +164,58 @@ PYBIND11_MODULE(scatterer_set, module) {
             "medium",
             &SphereSet::medium
         )
-        // .def_static(
-        //     "build_sequential",
-        //     [ureg](
-        //         const size_t& target_size,
-        //         const py::object& diameter,
-        //         const py::object& refractive_index,
-        //         const py::object& medium_refractive_index
-        //     ) {
-        //         std::vector<double> diameter_value =
-        //             cast_scalar_or_array_to_vector_double(diameter.attr("to")("meter").attr("magnitude"));
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const size_t& target_size,
+                const py::object& diameter,
+                const py::object& material,
+                const py::object& medium
+            ) {
+                std::vector<double> diameter_value =
+                    cast_scalar_or_array_to_vector<double>(diameter.attr("to")("meter").attr("magnitude"));
 
-        //         std::vector<complex128> refractive_index_value =
-        //             cast_scalar_or_array_to_vector_complex128(refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<complex128> material_value =
+                    cast_scalar_or_array_to_vector<complex128>(material.attr("to")("RIU").attr("magnitude"));
 
-        //         std::vector<double> medium_refractive_index_value =
-        //             cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<double> medium_value =
+                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
-        //         diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
-        //         refractive_index_value = broadcast_vector_complex128("refractive_index", refractive_index_value, target_size);
-        //         medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+                diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
+                material_value = broadcast_vector_complex128("material", material_value, target_size);
+                medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
-        //         ScattererProperties scatterer_properties(refractive_index_value);
-        //         MediumProperties medium(medium_refractive_index_value);
+                return std::make_shared<SphereSet>(
+                    diameter_value,
+                    MaterialSet(material_value),
+                    MediumSet(medium_value),
+                    true
+                );
+            },
+            py::arg("total_size"),
+            py::arg("diameter"),
+            py::arg("material"),
+            py::arg("medium"),
+            R"pdoc(
+                Construct a sequential SphereSet by broadcasting scalar or single element inputs.
 
-        //         return std::make_shared<SphereSet>(
-        //             diameter_value,
-        //             scatterer_properties,
-        //             medium,
-        //             true
-        //         );
-        //     },
-        //     py::arg("total_size"),
-        //     py::arg("diameter"),
-        //     py::arg("refractive_index"),
-        //     py::arg("medium_refractive_index"),
-        //     R"pdoc(
-        //         Construct a sequential SphereSet by broadcasting scalar or single element inputs.
+                Parameters
+                ----------
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the size of the diameter vector after conversion.
+                diameter : Quantity or array-like Quantity
+                    Diameter(s) of the spheres. Scalars or length 1 arrays broadcast to total_size.
+                material : List[BaseMaterial] | List[RefractiveIndex]
+                    Refractive index or indices of the spherical scatterers themselves.
+                medium : List, optional
+                    BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
-        //         Parameters
-        //         ----------
-        //         total_size : int or None
-        //             Target size for broadcasting. If None, uses the size of the diameter vector after conversion.
-        //         diameter : Quantity or array-like Quantity
-        //             Diameter(s) of the spheres. Scalars or length 1 arrays broadcast to total_size.
-        //         refractive_index : List[BaseMaterial] | List[RefractiveIndex]
-        //             Refractive index or indices of the spherical scatterers themselves.
-        //         medium_refractive_index : List, optional
-        //             BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
-
-        //         Returns
-        //         -------
-        //         SphereSet
-        //             Instance with is_sequential = True.
-        //     )pdoc"
-        // )
+                Returns
+                -------
+                SphereSet
+                    Instance with is_sequential = True.
+            )pdoc"
+        )
         ;
 
 
@@ -245,14 +244,14 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
 
                     std::vector<double> diameter_value =
-                        cast_scalar_or_array_to_vector_double(
+                        cast_scalar_or_array_to_vector<double>(
                             diameter.attr("to")("meter").attr("magnitude")
                         );
 
                     return std::make_shared<InfiniteCylinderSet>(
                         diameter_value,
-                        create_material_set_from_pyobject(material, "material"),
-                        create_medium_set_from_pyobject(medium, "medium"),
+                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
+                        create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
                         false
                     );
                 }
@@ -324,76 +323,59 @@ PYBIND11_MODULE(scatterer_set, module) {
             "medium",
             &InfiniteCylinderSet::medium
         )
-    //     .def_static(
-    //         "build_sequential",
-    //         [ureg](
-    //             const size_t& target_size,
-    //             const py::object& diameter,
-    //             const py::object& refractive_index,
-    //             const py::object& medium_refractive_index
-    //         ) {
-    //             std::vector<double> diameter_value =
-    //                 cast_scalar_or_array_to_vector_double(diameter.attr("to")("meter").attr("magnitude"));
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const size_t& target_size,
+                const py::object& diameter,
+                const py::object& material,
+                const py::object& medium
+            ) {
+                std::vector<double> diameter_value =
+                    cast_scalar_or_array_to_vector<double>(diameter.attr("to")("meter").attr("magnitude"));
 
-    //             std::vector<complex128> refractive_index_value =
-    //                 cast_scalar_or_array_to_vector_complex128(refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<complex128> material_value =
+                    cast_scalar_or_array_to_vector<complex128>(material.attr("to")("RIU").attr("magnitude"));
 
-    //             std::vector<double> medium_refractive_index_value =
-    //                 cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<double> medium_value =
+                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
-    //             diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
-    //             refractive_index_value = broadcast_vector_complex128("refractive_index", refractive_index_value, target_size);
-    //             medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+                diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
+                material_value = broadcast_vector_complex128("material", material_value, target_size);
+                medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
-    //             ScattererProperties scatterer_properties(refractive_index_value);
-    //             MediumProperties medium(medium_refractive_index_value);
+                return std::make_shared<InfiniteCylinderSet>(
+                    diameter_value,
+                    MaterialSet(material_value),
+                    MediumSet(medium_value),
+                    true
+                );
+            },
+            py::arg("total_size"),
+            py::arg("diameter"),
+            py::arg("material"),
+            py::arg("medium"),
+            R"pdoc(
+                Construct a sequential InfiniteCylinderSet by broadcasting scalar or single element inputs.
 
-    //             return std::make_shared<InfiniteCylinderSet>(
-    //                 diameter_value,
-    //                 scatterer_properties,
-    //                 medium,
-    //                 true
-    //             );
-    //         },
-    //         py::arg("total_size"),
-    //         py::arg("diameter"),
-    //         py::arg("refractive_index"),
-    //         py::arg("medium_refractive_index"),
-    //         R"pdoc(
-    //             Construct a sequential InfiniteCylinderSet by broadcasting scalar or single element inputs.
+                Parameters
+                ----------
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the size of the diameter vector after conversion.
+                diameter : Quantity or array-like Quantity
+                    Diameter(s) of the cylinders. Scalars or length 1 arrays broadcast to total_size.
+                material : List[BaseMaterial] | List[RefractiveIndex]
+                    Refractive index or indices of the cylindrical scatterers themselves.
+                medium : List, optional
+                    BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
-    //             Parameters
-    //             ----------
-    //             total_size : int or None
-    //                 Target size for broadcasting. If None, uses the size of the diameter vector after conversion.
-    //             diameter : Quantity or array-like Quantity
-    //                 Diameter(s) of the cylinders. Scalars or length 1 arrays broadcast to total_size.
-    //             refractive_index : List[BaseMaterial] | List[RefractiveIndex]
-    //                 Refractive index or indices of the cylindrical scatterers themselves.
-    //             medium_refractive_index : List, optional
-    //                 BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
-
-    //             Returns
-    //             -------
-    //             InfiniteCylinderSet
-    //                 Instance with is_sequential = True.
-    //         )pdoc"
-    //     )
+                Returns
+                -------
+                InfiniteCylinderSet
+                    Instance with is_sequential = True.
+            )pdoc"
+        )
         ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -410,21 +392,21 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
 
                     std::vector<double> core_diameter_value =
-                        cast_scalar_or_array_to_vector_double(
+                        cast_scalar_or_array_to_vector<double>(
                             core_diameter.attr("to")("meter").attr("magnitude")
                         );
 
                     std::vector<double> shell_thickness_value =
-                        cast_scalar_or_array_to_vector_double(
+                        cast_scalar_or_array_to_vector<double>(
                             shell_thickness.attr("to")("meter").attr("magnitude")
                         );
 
                     return std::make_shared<CoreShellSet>(
                         core_diameter_value,
                         shell_thickness_value,
-                        create_material_set_from_pyobject(core_material, "core_material"),
-                        create_material_set_from_pyobject(shell_material, "shell_material"),
-                        create_medium_set_from_pyobject(medium, "medium"),
+                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(core_material, "core_material"),
+                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(shell_material, "shell_material"),
+                        create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
                         false
                     );
                 }
@@ -487,7 +469,7 @@ PYBIND11_MODULE(scatterer_set, module) {
             },
             R"pdoc(
                 Generates a mapping of scatterer attributes to their corresponding values for the CoreShellSet instance.
-                The mapping includes keys such as 'scatterer:core_diameter', 'scatterer:shell_thickness', 'scatterer:core_refractive_index', 'scatterer:shell_refractive_index', and 'scatterer:medium_refractive_index'.
+                The mapping includes keys such as 'scatterer:core_diameter', 'scatterer:shell_thickness', 'scatterer:core_material', 'scatterer:shell_material', and 'scatterer:medium_refractive_index'.
             )pdoc"
         )
         .def_property_readonly(
@@ -514,76 +496,76 @@ PYBIND11_MODULE(scatterer_set, module) {
             "medium",
             &CoreShellSet::medium
         )
-    //     .def_static(
-    //         "build_sequential",
-    //         [ureg](
-    //             const size_t& target_size,
-    //             const py::object& core_diameter,
-    //             const py::object& shell_thickness,
-    //             const py::object& core_refractive_index,
-    //             const py::object& shell_refractive_index,
-    //             const py::object& medium_refractive_index
-    //         ) {
-    //             std::vector<double> core_diameter_value = \
-    //                 cast_scalar_or_array_to_vector_double(core_diameter.attr("to")("meter").attr("magnitude"));
+        .def_static(
+            "build_sequential",
+            [ureg](
+                const size_t& target_size,
+                const py::object& core_diameter,
+                const py::object& shell_thickness,
+                const py::object& core_material,
+                const py::object& shell_material,
+                const py::object& medium
+            ) {
+                std::vector<double> core_diameter_value = \
+                    cast_scalar_or_array_to_vector<double>(core_diameter.attr("to")("meter").attr("magnitude"));
 
-    //             std::vector<double> shell_thickness_value = \
-    //                 cast_scalar_or_array_to_vector_double(shell_thickness.attr("to")("meter").attr("magnitude"));
+                std::vector<double> shell_thickness_value = \
+                    cast_scalar_or_array_to_vector<double>(shell_thickness.attr("to")("meter").attr("magnitude"));
 
-    //             std::vector<complex128> core_refractive_index_value =
-    //                 cast_scalar_or_array_to_vector_complex128(core_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<complex128> core_material_value =
+                    cast_scalar_or_array_to_vector<complex128>(core_material.attr("to")("RIU").attr("magnitude"));
 
-    //             std::vector<complex128> shell_refractive_index_value =
-    //                 cast_scalar_or_array_to_vector_complex128(shell_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<complex128> shell_material_value =
+                    cast_scalar_or_array_to_vector<complex128>(shell_material.attr("to")("RIU").attr("magnitude"));
 
-    //             std::vector<double> medium_refractive_index_value =
-    //                 cast_scalar_or_array_to_vector_double(medium_refractive_index.attr("to")("RIU").attr("magnitude"));
+                std::vector<double> medium_value =
+                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
-    //             core_diameter_value = broadcast_vector_double("core_diameter", core_diameter_value, target_size);
-    //             shell_thickness_value = broadcast_vector_double("shell_thickness", shell_thickness_value, target_size);
-    //             core_refractive_index_value = broadcast_vector_complex128("core_refractive_index", core_refractive_index_value, target_size);
-    //             shell_refractive_index_value = broadcast_vector_complex128("shell_refractive_index", shell_refractive_index_value, target_size);
-    //             medium_refractive_index_value = broadcast_vector_double("medium_refractive_index", medium_refractive_index_value, target_size);
+                core_diameter_value = broadcast_vector_double("core_diameter", core_diameter_value, target_size);
+                shell_thickness_value = broadcast_vector_double("shell_thickness", shell_thickness_value, target_size);
+                core_material_value = broadcast_vector_complex128("core_material", core_material_value, target_size);
+                shell_material_value = broadcast_vector_complex128("shell_material", shell_material_value, target_size);
+                medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
-    //             return std::make_shared<CoreShellSet>(
-    //                 core_diameter_value,
-    //                 shell_thickness_value,
-    //                 core_refractive_index_value,
-    //                 shell_refractive_index_value,
-    //                 medium_refractive_index_value,
-    //                 true
-    //             );
-    //         },
-    //         py::arg("total_size"),
-    //         py::arg("core_diameter"),
-    //         py::arg("shell_thickness"),
-    //         py::arg("core_refractive_index"),
-    //         py::arg("shell_refractive_index"),
-    //         py::arg("medium_refractive_index"),
-    //         R"pdoc(
-    //             Construct a sequential CoreShellSet by broadcasting scalar or single element inputs.
+                return std::make_shared<CoreShellSet>(
+                    core_diameter_value,
+                    shell_thickness_value,
+                    MaterialSet(core_material_value),
+                    MaterialSet(shell_material_value),
+                    MediumSet(medium_value),
+                    true
+                );
+            },
+            py::arg("total_size"),
+            py::arg("core_diameter"),
+            py::arg("shell_thickness"),
+            py::arg("core_material"),
+            py::arg("shell_material"),
+            py::arg("medium"),
+            R"pdoc(
+                Construct a sequential CoreShellSet by broadcasting scalar or single element inputs.
 
-    //             Parameters
-    //             ----------
-    //             total_size : int or None
-    //                 Target size for broadcasting. If None, uses the size of the core_diameter vector after conversion.
-    //             core_diameter : Quantity or array-like Quantity
-    //                 Diameter(s) of the core. Scalars or length 1 arrays broadcast to total_size.
-    //             shell_thickness : Quantity or array-like Quantity
-    //                 Thickness(es) of the shell. Scalars or length 1 arrays broadcast to total_size.
-    //             core_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
-    //                 Refractive index or indices of the core.
-    //             shell_refractive_index : List[BaseMaterial] | List[RefractiveIndex]
-    //                 Refractive index or indices of the shell.
-    //             medium_refractive_index : List, optional
-    //                 BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
+                Parameters
+                ----------
+                total_size : int or None
+                    Target size for broadcasting. If None, uses the size of the core_diameter vector after conversion.
+                core_diameter : Quantity or array-like Quantity
+                    Diameter(s) of the core. Scalars or length 1 arrays broadcast to total_size.
+                shell_thickness : Quantity or array-like Quantity
+                    Thickness(es) of the shell. Scalars or length 1 arrays broadcast to total_size.
+                core_material : List[BaseMaterial] | List[RefractiveIndex]
+                    Refractive index or indices of the core.
+                shell_material : List[BaseMaterial] | List[RefractiveIndex]
+                    Refractive index or indices of the shell.
+                medium : List, optional
+                    BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
-    //             Returns
-    //             -------
-    //             CoreShellSet
-    //                 Instance with is_sequential = True.
-    //         )pdoc"
-    //     )
+                Returns
+                -------
+                CoreShellSet
+                    Instance with is_sequential = True.
+            )pdoc"
+        )
         ;
 }
 

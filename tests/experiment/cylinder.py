@@ -4,18 +4,24 @@
 import pytest
 import numpy as np
 
-from PyOptik import Material
-from PyOptik.material.base_class import BaseMaterial
-
 from PyMieSim.units import ureg
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-from PyMieSim.experiment.source import GaussianSet, PlaneWaveSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
+from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
 
-properties = [Material.silver, Material.fused_silica, 1.4 * ureg.RIU]
-medium_properties = [Material.water, 1.1 * ureg.RIU]
+properties = [
+    [TabulatedMaterial("silver")],
+    [SellmeierMaterial("fused_silica")],
+    [1.4] * ureg.RIU
+]
+medium_properties = [
+    [SellmeierMedium("water")],
+    [1.1] * ureg.RIU
+]
 
 measures = InfiniteCylinderSet.available_measure_list
 
@@ -38,42 +44,23 @@ planewave_source = PlaneWaveSet(
 sources = [gaussian_source, planewave_source]
 
 
-@pytest.mark.parametrize(
-    "medium_value",
-    [[m] for m in medium_properties],
+@pytest.mark.parametrize( "medium", medium_properties,
     ids=[f"Medium:{m}" for m in medium_properties],
 )
-
 @pytest.mark.parametrize(
     "source",
     sources,
     ids=[f"Source:{m.__class__.__name__}" for m in sources],
 )
-
-@pytest.mark.parametrize(
-    "refractive_index_value",
-    [[m] for m in properties],
+@pytest.mark.parametrize( "material", properties,
     ids=[f"Property:{m}" for m in properties],
 )
-
-@pytest.mark.parametrize(
-    "measure",
-    measures,
-)
-
-def test_measure(measure, source, medium_value, refractive_index_value):
-    kwargs = {}
-    for key, value in zip(["", "medium_"], [refractive_index_value, medium_value]):
-        if isinstance(value[0], BaseMaterial):
-            kwargs[f"{key}material"] = value
-        else:
-            kwargs[f"{key}refractive_index"] = [value[0].magnitude] * value[0].units
-
-
+@pytest.mark.parametrize("measure", measures)
+def test_measure(measure, source, medium, material):
     scatterer = InfiniteCylinderSet(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-        source=source,
-        **kwargs
+        material=material,
+        medium=medium
     )
 
     detector = PhotodiodeSet(

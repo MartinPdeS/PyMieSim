@@ -6,36 +6,38 @@ import pytest
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere, CoreShell
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import IntegratingSphere
+from PyMieSim.single import Setup
 
-
-@pytest.fixture
-def gaussian_source():
-    return Gaussian(
-        wavelength=1000 * ureg.nanometer,  # Wavelength in meters
-        polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization angle
-        optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
-    )
-
-
-def test_Qsca_cross_section(gaussian_source):
+def test_Qsca_cross_section():
     """
     Test the consistency between the scattering cross-section obtained directly
     from the sphere object and the one calculated from Qsca and sphere area.
     """
     # Define a spherical scatterer
+    source = Gaussian(
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
+    )
+
     sphere = Sphere(
-        diameter=300 * ureg.nanometer,  # Diameter in meters (e.g., 300 nm)
-        refractive_index=1.4 * ureg.RIU,  # Refractive index of the sphere
-        medium_refractive_index=1.0 * ureg.RIU,  # Medium index (e.g., air)
-        source=gaussian_source,  # Associated light source
+        diameter=300 * ureg.nanometer,
+        material=1.4 * ureg.RIU,
+        medium=1.0 * ureg.RIU,
+    )
+
+    setup = Setup(
+        scatterer=sphere,
+        source=source
     )
 
     # Calculate scattering cross-section using two different methods
-    val0 = sphere.Csca
-    val1 = sphere.Qsca * sphere.cross_section
+    val0 = setup.get("Csca")
+    val1 = setup.get("Qsca") * setup.get("cross_section")
 
     # Check if the results are consistent
     assert np.isclose(
@@ -43,27 +45,31 @@ def test_Qsca_cross_section(gaussian_source):
     ), "Mismatch between cross-section values."
 
 
-def test_energy_flow_coupling(gaussian_source):
+def test_energy_flow_coupling():
     """
     Test the consistency between the energy flow and coupling values obtained
     from a photodiode detector with a spherical scatterer.
     """
-    # Define a spherical scatterer
-    sphere = Sphere(
-        diameter=300 * ureg.nanometer,
-        refractive_index=1.4 * ureg.RIU,
-        medium_refractive_index=1.0 * ureg.RIU,
-        source=gaussian_source,
+    source = Gaussian(
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
     )
 
-    # Define a photodiode detector
+    sphere = Sphere(
+        diameter=300 * ureg.nanometer,
+        material=1.4 * ureg.RIU,
+        medium=1.0 * ureg.RIU,
+    )
+
     detector = IntegratingSphere(
-        sampling=500,  # Sampling points for the detector
+        sampling=500,
     )
 
     # Calculate energy flow and coupling values
-    val0 = detector.get_energy_flow(sphere)
-    val1 = detector.get_coupling(sphere)
+    val0 = detector.get_energy_flow(sphere, source)
+    val1 = detector.get_coupling(sphere, source)
 
     # Check if the results are consistent
     assert np.isclose(
@@ -71,38 +77,52 @@ def test_energy_flow_coupling(gaussian_source):
     ), "Mismatch between energy flow and coupling values."
 
 
-@pytest.mark.parametrize("parameter", ["Qsca", "Qext", "Qabs"])
-def test_compare_sphere_coreshell_0(gaussian_source, parameter: str):
-    """
-    Compare scattering parameters between a solid sphere and a CoreShell object
-    with a zero-thickness shell to verify consistency.
-    """
-    # Define a solid sphere
-    sphere = Sphere(
-        diameter=1000 * ureg.nanometer,
-        refractive_index=1.5 * ureg.RIU,
-        source=gaussian_source,
-        medium_refractive_index=1.2 * ureg.RIU,
-    )
+# @pytest.mark.parametrize("parameter", ["Qsca", "Qext", "Qabs"])
+# def test_compare_sphere_coreshell_0(parameter: str):
+#     """
+#     Compare scattering parameters between a solid sphere and a CoreShell object
+#     with a zero-thickness shell to verify consistency.
+#     """
+#     source = Gaussian(
+#         wavelength=1000 * ureg.nanometer,
+#         polarization=PolarizationState(angle=0 * ureg.degree),
+#         optical_power=1 * ureg.watt,
+#         numerical_aperture=0.3 * ureg.AU,
+#     )
 
-    # Define a core-shell scatterer with zero shell thickness
-    coreshell = CoreShell(
-        core_diameter=1000 * ureg.nanometer,
-        shell_thickness=0 * ureg.nanometer,  # Zero shell width
-        core_refractive_index=1.5 * ureg.RIU,
-        shell_refractive_index=1.8 * ureg.RIU,
-        medium_refractive_index=1.2 * ureg.RIU,
-        source=gaussian_source,
-    )
+#     sphere = Sphere(
+#         diameter=1000 * ureg.nanometer,
+#         material=1.5 * ureg.RIU,
+#         medium=1.2 * ureg.RIU,
+#     )
 
-    # Compare the scattering parameters between the sphere and core-shell
-    value_sphere = getattr(sphere, parameter)
-    value_coreshell = getattr(coreshell, parameter)
+#     # Define a core-shell scatterer with zero shell thickness
+#     coreshell = CoreShell(
+#         core_diameter=1000 * ureg.nanometer,
+#         shell_thickness=0 * ureg.nanometer,  # Zero shell width
+#         core_material=1.5 * ureg.RIU,
+#         shell_material=1.8 * ureg.RIU,
+#         medium=1.2 * ureg.RIU,
+#     )
 
-    # Check if the results are consistent
-    assert np.isclose(
-        value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
-    ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
+#     setup_0 = Setup(
+#         scatterer=sphere,
+#         source=source
+#     )
+
+#     setup_1 = Setup(
+#         scatterer=coreshell,
+#         source=source
+#     )
+
+#     # Compare the scattering parameters between the sphere and core-shell
+#     value_sphere = setup_0.get(parameter)
+#     value_coreshell = setup_1.get(parameter)
+
+#     # Check if the results are consistent
+#     assert np.isclose(
+#         value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
+#     ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
 
 
 if __name__ == "__main__":

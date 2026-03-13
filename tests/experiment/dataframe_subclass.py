@@ -6,9 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import CoherentModeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import CoherentModeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 
@@ -25,9 +26,8 @@ def get_experiment_dataframe():
     )
     scatterer = SphereSet(
         diameter=[100] * ureg.nanometer,
-        source=source,
-        refractive_index=[1.4 ]* ureg.RIU,
-        medium_refractive_index=[1.1] * ureg.RIU,
+        material=[1.4 ]* ureg.RIU,
+        medium=[1.1] * ureg.RIU,
     )
     detector = CoherentModeSet(
         mode_number=["LP01"],
