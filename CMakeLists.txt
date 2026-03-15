@@ -14,7 +14,6 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
 # --------------------- Set the output directory for libraries --------------------
 set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
 set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/binary")
-include_directories(${NAME} ${LOCAL_CXX_DIR})
 # --------------------- Set the output directory for libraries --------------------
 
 # --------------------- Platform-specific compiler and linker options --------------------
@@ -30,7 +29,6 @@ endif()
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("MinGW detected on Windows")
-    set(STATIC_LINK_OPTIONS "-static")
     add_compile_options(-fopenmp)
     add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
@@ -55,6 +53,8 @@ endif()
 find_package(OpenMP REQUIRED COMPONENTS CXX)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
+set(PYBIND11_FINDPYTHON ON)
+
 # Compiler and linker options
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow -Wmaybe-uninitialized")
