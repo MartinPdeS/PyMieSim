@@ -2,7 +2,7 @@
 set(NAME "mode_field")
 
 add_library("${NAME}" STATIC "${NAME}.cpp")
-set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+# set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 target_link_libraries("${NAME}" PUBLIC bessel_subroutine)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
