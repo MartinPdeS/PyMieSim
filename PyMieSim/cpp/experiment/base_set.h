@@ -10,7 +10,7 @@
 
 
 // Base class to reduce redundancy
-class BaseSet{
+class BaseSet {
     public:
         bool is_sequential;
         std::vector<size_t> shape = {1};
