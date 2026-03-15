@@ -2,20 +2,17 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                           |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
-|----------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
-| PyMieSim/experiment/dataframe\_subclass.py     |      165 |       25 |       52 |       10 |     82.95% |39->37, 57, 65, 76->79, 92-109, 126-127, 153->158, 158->exit, 168, 188-189, 228->231, 293->296, 317-318, 361-367, 371-373 |
-| PyMieSim/experiment/setup.py                   |       98 |        3 |       36 |        4 |     94.78% |130, 139->142, 260, 373 |
-| PyMieSim/experiment/utils.py                   |       32 |       32 |       14 |        0 |      0.00% |     1-127 |
-| PyMieSim/single/mesh.py                        |       38 |        7 |        0 |        0 |     81.58% |94, 106, 118, 130, 142-148 |
-| PyMieSim/single/plottings.py                   |      101 |       22 |       18 |        8 |     74.79% |126, 132->135, 135->139, 146->149, 155->153, 157, 175-176, 194-201, 225, 269-276, 300-333, 410-420, 446 |
-| PyMieSim/single/representations/base.py        |       32 |       22 |        2 |        0 |     29.41% |53-57, 83-105, 131-153 |
-| PyMieSim/single/representations/far\_fields.py |       58 |        2 |        8 |        1 |     95.45% |     78-79 |
-| PyMieSim/single/representations/near\_field.py |      156 |      137 |       42 |        0 |      9.60% |29-32, 49-62, 96-115, 134-143, 173-213, 231-251, 268-277, 286-324, 368-425 |
-| PyMieSim/single/representations/stokes.py      |       41 |        2 |        4 |        1 |     93.33% |     77-78 |
-| **TOTAL**                                      |  **834** |  **252** |  **180** |   **24** | **66.86%** |           |
+| Name                                          |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
+|---------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
+| PyMieSim/experiment/dataframe\_subclass.py    |      275 |       56 |      110 |       25 |     74.81% |38->36, 56, 64, 77->80, 80->83, 96-113, 157->162, 162->exit, 172, 191-192, 232->235, 247, 259-267, 271-272, 282-285, 302-304, 310, 332, 347, 361-362, 369, 372, 408-409, 423, 433-436, 448-451, 459, 522, 540-546, 550-552 |
+| PyMieSim/experiment/setup.py                  |       97 |        3 |       40 |        5 |     94.16% |104->107, 216, 242, 254, 317->311 |
+| PyMieSim/experiment/utils.py                  |       32 |       32 |       14 |        0 |      0.00% |     1-127 |
+| PyMieSim/single/\_mesh.py                     |       38 |       38 |        0 |        0 |      0.00% |     4-290 |
+| PyMieSim/single/representations/base.py       |       23 |       18 |        0 |        0 |     21.74% |47-69, 95-117 |
+| PyMieSim/single/representations/nearfields.py |      160 |      141 |       44 |        0 |      9.31% |29-32, 49-62, 96-115, 134-143, 173-216, 234-261, 278-287, 296-334, 378-435 |
+| **TOTAL**                                     |  **802** |  **288** |  **218** |   **30** | **61.57%** |           |
 
-6 files skipped due to complete coverage.
+7 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
