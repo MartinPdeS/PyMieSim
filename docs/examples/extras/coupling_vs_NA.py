@@ -54,7 +54,7 @@ single_scatterer = single.scatterer.Sphere(
     medium=1 * ureg.RIU,
 )
 
-setup = single.Setup(
+setup = single.setup.Setup(
     source=single_source,
     scatterer=single_scatterer
 )

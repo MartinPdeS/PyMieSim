@@ -10,7 +10,7 @@ from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.material import SellmeierMaterial
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 bk7 = SellmeierMaterial("BK7")
 

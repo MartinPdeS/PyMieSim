@@ -10,7 +10,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 

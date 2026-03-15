@@ -11,7 +11,7 @@ from PyMieSim.units import ureg
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 polarization = PolarizationState(angle=30 * ureg.degree)
 
