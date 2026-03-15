@@ -3,7 +3,7 @@ set(NAME "source_set")
 set(LIB_NAME "${NAME}_lib")
 
 add_library("${LIB_NAME}" STATIC "source_set.cpp")
-target_link_libraries("${LIB_NAME}" PUBLIC source)
+target_link_libraries("${LIB_NAME}" PUBLIC source_lib)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
