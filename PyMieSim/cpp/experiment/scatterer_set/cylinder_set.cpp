@@ -24,34 +24,38 @@ void InfiniteCylinderSet::validate_sequential_data(const size_t expected_size) c
         throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium has a different size than expected size.");
 }
 
-InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index) const {
-    return InfiniteCylinder(
+std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index) const {
+
+    std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(
         this->diameter[index],
         this->material[index],
         this->medium[index]
     );
+
+    return scatterer;
 }
 
 std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index_sequential(const size_t index) const {
-    InfiniteCylinder scatterer(
+
+    std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(
         this->diameter[index],
         this->material[index],
         this->medium[index]
     );
 
-    return std::make_unique<InfiniteCylinder>(scatterer);
+    return scatterer;
 }
 
-InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_index) const {
+std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
-    InfiniteCylinder scatterer(
+    std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(
         diameter[indices[0]],
         material[indices[1]],
         medium[indices[2]]
     );
 
-    scatterer.indices = indices;
+    scatterer->indices = indices;
 
     return scatterer;
 }
@@ -60,13 +64,13 @@ InfiniteCylinder InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_i
 std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
-    InfiniteCylinder scatterer = InfiniteCylinder(
+    std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(
         diameter[indices[0]],
         material[indices[1]],
         medium[indices[2]]
     );
 
-    scatterer.indices = indices;
+    scatterer->indices = indices;
 
-    return std::make_unique<InfiniteCylinder>(scatterer);
+    return scatterer;
 }

@@ -15,10 +15,10 @@ void CoreShellSet::update_shape() {
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
 }
 
-CoreShell CoreShellSet::get_scatterer_by_index(const size_t flat_index) const {
+std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = this->calculate_indices(flat_index);
 
-    CoreShell scatterer(
+    std::shared_ptr<CoreShell> scatterer = std::make_shared<CoreShell>(
         core_diameter[indices[0]],
         shell_thickness[indices[1]],
         core_material[indices[2]],
@@ -26,7 +26,7 @@ CoreShell CoreShellSet::get_scatterer_by_index(const size_t flat_index) const {
         medium[indices[4]]
     );
 
-    scatterer.indices = indices;
+    scatterer->indices = indices;
 
     return scatterer;
 }
@@ -34,7 +34,7 @@ CoreShell CoreShellSet::get_scatterer_by_index(const size_t flat_index) const {
 std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = this->calculate_indices(flat_index);
 
-    CoreShell scatterer(
+    std::shared_ptr<CoreShell> scatterer = std::make_shared<CoreShell>(
         core_diameter[indices[0]],
         shell_thickness[indices[1]],
         core_material[indices[2]],
@@ -42,9 +42,9 @@ std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index(const si
         medium[indices[4]]
     );
 
-    scatterer.indices = indices;
+    scatterer->indices = indices;
 
-    return std::make_unique<CoreShell>(scatterer);
+    return scatterer;
 }
 
 void CoreShellSet::validate_sequential_data(const size_t expected_size) const {
@@ -64,8 +64,9 @@ void CoreShellSet::validate_sequential_data(const size_t expected_size) const {
         throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium has a different size than expected size.");
 }
 
-CoreShell CoreShellSet::get_scatterer_by_index_sequential(const size_t index) const {
-    CoreShell scatterer(
+std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_by_index_sequential(const size_t index) const {
+
+    std::shared_ptr<CoreShell> scatterer = std::make_shared<CoreShell>(
         core_diameter[index],
         shell_thickness[index],
         core_material[index],
@@ -77,7 +78,7 @@ CoreShell CoreShellSet::get_scatterer_by_index_sequential(const size_t index) co
 }
 
 std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index_sequential(const size_t index) const {
-    CoreShell scatterer = CoreShell(
+    std::shared_ptr<CoreShell> scatterer = std::make_shared<CoreShell>(
         core_diameter[index],
         shell_thickness[index],
         core_material[index],
@@ -85,5 +86,5 @@ std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_ptr_by_index_sequenti
         medium[index]
     );
 
-    return std::make_unique<CoreShell>(scatterer);
+    return scatterer;
 }

@@ -19,35 +19,43 @@ void SphereSet::validate_sequential_data(const size_t expected_size) const {
     this->check_size(this->medium, expected_size, "medium");
 }
 
-Sphere SphereSet::get_scatterer_by_index_sequential(const size_t index) const {
-    return Sphere(
+std::shared_ptr<BaseScatterer>
+SphereSet::get_scatterer_by_index_sequential(const size_t index) const {
+
+    std::shared_ptr<Sphere> scatterer = std::make_shared<Sphere>(
         this->diameter[index],
         this->material[index],
         this->medium[index]
     );
+
+    return scatterer;
+
+
 }
 
 std::shared_ptr<BaseScatterer>
 SphereSet::get_scatterer_ptr_by_index_sequential(const size_t index) const {
-    Sphere scatterer(
+
+    std::shared_ptr<Sphere> scatterer = std::make_shared<Sphere>(
         this->diameter[index],
         this->material[index],
         this->medium[index]
     );
 
-    return std::make_shared<Sphere>(scatterer);
+    return scatterer;
 }
 
-Sphere SphereSet::get_scatterer_by_index(const size_t flat_index) const {
+std::shared_ptr<BaseScatterer>
+SphereSet::get_scatterer_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
-    Sphere scatterer(
+    std::shared_ptr<Sphere> scatterer = std::make_shared<Sphere>(
         this->diameter[indices[0]],
         this->material[indices[1]],
         this->medium[indices[2]]
     );
 
-    scatterer.indices = indices;
+    scatterer->indices = indices;
 
     return scatterer;
 }
@@ -55,13 +63,13 @@ Sphere SphereSet::get_scatterer_by_index(const size_t flat_index) const {
 std::shared_ptr<BaseScatterer> SphereSet::get_scatterer_ptr_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
-    Sphere scatterer(
+    std::shared_ptr<Sphere> scatterer = std::make_shared<Sphere>(
         this->diameter[indices[0]],
         this->material[indices[1]],
         this->medium[indices[2]]
     );
 
-    scatterer.indices = indices;
+    scatterer->indices = indices;
 
-    return std::make_unique<Sphere>(scatterer);
+    return scatterer;
 }

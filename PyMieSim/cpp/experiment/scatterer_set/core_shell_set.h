@@ -61,13 +61,13 @@ public:
 
     void update_shape() override;
 
-    CoreShell get_scatterer_by_index(const size_t flat_index) const;
+    std::shared_ptr<BaseScatterer> get_scatterer_by_index(const size_t flat_index) const;
 
     std::shared_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index) const override;
 
     void validate_sequential_data(const size_t expected_size) const override;
 
-    CoreShell get_scatterer_by_index_sequential(const size_t index) const;
+    std::shared_ptr<BaseScatterer> get_scatterer_by_index_sequential(const size_t index) const;
 
     std::shared_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index) const override;
 };
