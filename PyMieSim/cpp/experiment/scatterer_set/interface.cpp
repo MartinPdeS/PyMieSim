@@ -15,7 +15,6 @@
 namespace py = pybind11;
 
 
-#include <iostream>
 template <typename MaterialSetType, typename RefractiveIndexType, typename BaseClass>
 MaterialSetType create_material_set_from_pyobject(
     const py::object& material_object,

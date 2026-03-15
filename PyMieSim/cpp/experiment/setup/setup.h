@@ -182,7 +182,7 @@ class Setup
                     size_t j = flat_index % this->scatterer_set->total_combinations;
                     std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
 
-                    std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j);
+                    std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_by_index(j);
 
                     scatterer_ptr->init(source_ptr);
                     idx = this->flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices);
@@ -194,7 +194,7 @@ class Setup
                     long long k = flat_index % this->detector_set->total_combinations;
                     std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
 
-                    std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index(j);
+                    std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_by_index(j);
 
                     scatterer_ptr->init(source_ptr);
                     std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index(k);
@@ -235,7 +235,7 @@ class Setup
             for (long long idx = 0; idx < static_cast<long long>(full_size); ++idx) {
                 std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index_sequential(idx);
 
-                std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx);
+                std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_by_index_sequential(idx);
 
                 scatterer_ptr->init(source_ptr);
 

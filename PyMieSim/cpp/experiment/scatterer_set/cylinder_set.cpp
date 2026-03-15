@@ -35,33 +35,8 @@ std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_by_index_seque
     return scatterer;
 }
 
-std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index_sequential(const size_t index) const {
-
-    std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(
-        this->diameter[index],
-        this->material[index],
-        this->medium[index]
-    );
-
-    return scatterer;
-}
 
 std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_by_index(const size_t flat_index) const {
-    std::vector<size_t> indices = calculate_indices(flat_index);
-
-    std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(
-        diameter[indices[0]],
-        material[indices[1]],
-        medium[indices[2]]
-    );
-
-    scatterer->indices = indices;
-
-    return scatterer;
-}
-
-
-std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_ptr_by_index(const size_t flat_index) const {
     std::vector<size_t> indices = calculate_indices(flat_index);
 
     std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(

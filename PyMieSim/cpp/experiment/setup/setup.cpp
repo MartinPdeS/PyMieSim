@@ -66,7 +66,7 @@ Setup::get_coupling() {
 
         std::shared_ptr<BaseDetector> detector = detector_set->get_detector_by_index(k);
 
-        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set->get_scatterer_ptr_by_index(j);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set->get_scatterer_by_index(j);
 
         scatterer_ptr->init(source_ptr);
 
@@ -104,7 +104,7 @@ Setup::get_coupling_sequential() {
 
         std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index_sequential(idx);
 
-        std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_ptr_by_index_sequential(idx);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_by_index_sequential(idx);
 
         std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index_sequential(idx);
 
@@ -154,7 +154,7 @@ Setup::get_farfields(
         size_t j = idx_flat % scatterer_set.total_combinations;  // scatterer index
 
         std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
-        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index(j);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_by_index(j);
 
         scatterer_ptr->init(source_ptr);
 
