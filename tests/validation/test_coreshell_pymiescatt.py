@@ -67,7 +67,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
         medium=medium_indexes,
     )
 
-    experiment = Setup(scatterer=scatterer, source=gaussian_source)
+    experiment = Setup(scatterer_set=scatterer, source_set=gaussian_source)
 
     # Retrieve the specified measurement from the experiment
     pymiesim_data = experiment.get(measure, drop_unique_level=True)

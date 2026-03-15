@@ -3,9 +3,6 @@ Sphere: Qsca vs wavelength
 ==========================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 from PyMieSim.units import ureg
 
@@ -36,7 +33,7 @@ scatterer = SphereSet(
     medium=[1] * ureg.RIU,
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca", "Qpr", scale_unit=True)
 

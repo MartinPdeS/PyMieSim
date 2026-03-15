@@ -3,9 +3,6 @@ InfiniteCylinder: Qsca vs wavelength std
 ========================================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 from PyMieSim.units import ureg
 
@@ -30,7 +27,7 @@ scatterer = InfiniteCylinderSet(
     medium=[1.0] * ureg.RIU,
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca")
 

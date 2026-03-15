@@ -206,7 +206,7 @@ def test_detector_experiment_polarization_filter(
 
     # Setup the experiment with the scatterer, detector, and source
     setup = experiment.Setup(
-        scatterer=scatterer_experiment, detector=detector, source=source_experiment
+        scatterer_set=scatterer_experiment, detector_set=detector, source_set=source_experiment
     )
 
     # Get the coupling values for both polarization filters

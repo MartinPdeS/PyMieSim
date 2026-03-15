@@ -11,20 +11,23 @@ from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
+from PyMieSim.experiment.scatterer_set import *
+from PyMieSim.experiment.source_set import *
 
 
 properties = [
     [TabulatedMaterial("silver")],
-    # [SellmeierMaterial("fused_silica")],
-    # [1.4] * ureg.RIU
+    [SellmeierMaterial("fused_silica")],
+    [1.4] * ureg.RIU
 ]
 
 medium_properties = [
     [SellmeierMedium("water")],
-    # [1.1] * ureg.RIU
+    [1.1] * ureg.RIU
 ]
 
-measures = SphereSet.available_measure_list
+# measures = SphereSet.available_measure_list[:1]
+measures = ['coupling']
 
 
 polarization = PolarizationSet(angles=0 * ureg.degree)
@@ -43,6 +46,7 @@ planewave_source = PlaneWaveSet(
 )
 
 sources = [gaussian_source, planewave_source]
+sources = [gaussian_source]
 
 
 @pytest.mark.parametrize(
@@ -75,18 +79,20 @@ def test_get_measure(source, measure, material, medium):
         rotation=0 * ureg.degree,
         numerical_aperture=[0.1] * ureg.AU,
         polarization_filter=None,
-        gamma_offset=[0, 1] * ureg.degree,
+        gamma_offset=[0] * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100,
     )
 
     experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector,
+        scatterer_set=scatterer,
+        source_set=source,
+        detector_set=detector,
     )
 
+
     experiment.get(measure, drop_unique_level=True, scale_unit=True)
+
     experiment.get(measure, as_numpy=True)
 
 

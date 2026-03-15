@@ -240,7 +240,6 @@ class InfiniteCylinder: public BaseScatterer
             std::printf("%-16s | %.*e | %-6s\n", "size_parameter", precision, this->size_parameter, "");
             std::printf("%-16s | %.*e | %-6s\n", "radius",         precision, radius_m,            "m");
             std::printf("%-16s | %.*e | %-6s\n", "cross_section",  precision, cross_section_m2,    "m^2");
-            std::printf("%-16s | %.*e | %-6s\n", "g",              precision, this->get_g(),             "");
 
             std::printf("%-16s | %.*e | %-6s\n", "Qsca", precision, this->get_Qsca(), "");
             std::printf("%-16s | %.*e | %-6s\n", "Qext", precision, this->get_Qext(), "");

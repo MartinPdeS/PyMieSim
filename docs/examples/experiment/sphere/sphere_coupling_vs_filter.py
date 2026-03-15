@@ -2,9 +2,6 @@
 Sphere: Coupling vs polarization filter
 =======================================
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 from PyMieSim.units import ureg
 
@@ -42,7 +39,7 @@ detector = PhotodiodeSet(
     sampling=[500],
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

@@ -4,11 +4,10 @@ Hermite-Gauss 31 Mode Detector
 
 This example demonstrates the initialization and visualization of HG31 Mode detector using PyMieSim.
 """
-
+import pyvista as pv
 from PyMieSim.units import ureg
-
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import SystemPlotter
+
 
 detector = CoherentMode(
     mode_number="HG31",
@@ -19,5 +18,8 @@ detector = CoherentMode(
     rotation=0 * ureg.degree,
 )
 
-plotter = SystemPlotter()
-plotter.plot(detector)
+scene = pv.Plotter()
+
+detector.add_to_scene(scene)
+
+scene.show()

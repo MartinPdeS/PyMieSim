@@ -41,7 +41,7 @@ def test_validation():
         diameter=diameters, material=index, medium=medium_index
     )
 
-    experiment = Setup(scatterer=scatterer, source=source)
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
 
     csca_data =  experiment.get("Csca", as_numpy=True)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union, Optional, List, Dict, Iterable
+from typing import List, Dict, Iterable
 import numpy as np
 import pandas as pd
 
@@ -16,10 +16,6 @@ from PyMieSim.experiment.material_set import MaterialSet
 from PyMieSim.material import ConstantMaterial, ConstantMedium
 import PyMieSim
 
-
-class EmptyDetectorSet(PhotodiodeSet):
-    """Sentinel class used when no detector is provided."""
-    pass
 
 
 class Setup(SETUP):
@@ -39,30 +35,6 @@ class Setup(SETUP):
     Units are stored in ``DataFrame.attrs["units"]`` and the
     DataFrame itself only contains pure numerical values.
     """
-
-    def __init__(
-        self,
-        scatterer: Union[SphereSet, InfiniteCylinderSet, CoreShellSet],
-        source: Union[GaussianSet, PlaneWaveSet],
-        detector: Optional[Union[PhotodiodeSet, CoherentModeSet]] = EmptyDetectorSet(),
-    ):
-        """
-        Parameters
-        ----------
-        scatterer
-            Scatterer parameter set.
-        source
-            Optical source parameter set.
-        detector
-            Detector configuration set.
-        """
-        super().__init__(debug_mode=PyMieSim.debug_mode)
-
-        self.initialize(
-            scatterer_set=scatterer,
-            source_set=source,
-            detector_set=detector
-        )
 
     # ------------------------------------------------------------------
     # Sequential execution
@@ -122,9 +94,6 @@ class Setup(SETUP):
 
         measures = list(set(np.atleast_1d(measures)))
 
-        if "coupling" in measures and isinstance(self.detector_set, EmptyDetectorSet):
-            raise ValueError("Detector must be provided to compute coupling.")
-
         if as_numpy:
             return self._compute_measure_arrays(measures)
 
@@ -155,11 +124,10 @@ class Setup(SETUP):
         numpy.ndarray
             Computed values.
         """
-
         arrays = []
 
         for measure in measures:
-            values = self.get(measure)
+            values = getattr(self, f"get_{measure}")()
 
             arrays.append(np.asarray(values))
 
@@ -184,7 +152,7 @@ class Setup(SETUP):
         mappings.update(self.source_set.get_mapping())
         mappings.update(self.scatterer_set.get_mapping())
 
-        if not isinstance(self.detector_set, EmptyDetectorSet):
+        if self.detector_set is not None:
             mappings.update(self.detector_set.get_mapping())
 
         return mappings
@@ -367,13 +335,10 @@ class Setup(SETUP):
         pint.Unit
 
         """
-
         if measure.startswith("C"):
             return ureg.meter ** 2
 
         if measure.startswith("c"):
-            if isinstance(self.detector_set, EmptyDetectorSet):
-                raise ValueError("Detector required for coupling computation.")
             return ureg.watt
 
         return ureg.dimensionless

@@ -71,9 +71,9 @@ def test_measure(measure, source, medium, material):
     )
 
     experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector,
+        scatterer_set=scatterer,
+        source_set=source,
+        detector_set=detector,
     )
 
     experiment.get(measure, drop_unique_level=False)

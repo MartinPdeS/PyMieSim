@@ -33,8 +33,8 @@ def test_no_shell(metric):
         numerical_aperture=[0.3] * ureg.AU,
     )
 
-    experiment_sphere = Setup(scatterer=sphere, source=source)
-    experiment_core_shell = Setup(scatterer=coreshell, source=source)
+    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
 
     data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
     data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
@@ -44,97 +44,120 @@ def test_no_shell(metric):
     ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
 
 
-# @pytest.mark.parametrize("metric", ["Qsca", "Qext", "Qabs", "Qpr", "g"])
-# def test_shell_equal_core(metric, source):
-#     diameter_sphere = numpy.linspace(200, 1_000, 20) * ureg.nanometer
-#     diameter_core = numpy.linspace(100, 900, 20) * ureg.nanometer
+@pytest.mark.parametrize("metric", ["Qsca", "Qext", "Qabs", "Qpr", "g"])
+def test_shell_equal_core(metric):
+    diameter_sphere = numpy.linspace(200, 1_000, 20) * ureg.nanometer
+    diameter_core = numpy.linspace(100, 900, 20) * ureg.nanometer
 
-#     sphere = SphereSet(
-#         diameter=diameter_sphere,
-#         material=[1.5] * ureg.RIU,
-#         medium=[1.33] * ureg.RIU,
-#     )
+    source = GaussianSet(
+        wavelength=[750] * ureg.nanometer,
+        polarization=PolarizationSet(angles=30 * ureg.degree),
+        optical_power=[1] * ureg.watt,
+        numerical_aperture=[0.3] * ureg.AU,
+    )
 
-#     coreshell = CoreShellSet(
-#         core_diameter=diameter_core,
-#         shell_thickness=[100] * ureg.nanometer,
-#         core_material=[1.5] * ureg.RIU,
-#         shell_material=[1.5] * ureg.RIU,
-#         medium=[1.33] * ureg.RIU,
-#     )
+    sphere = SphereSet(
+        diameter=diameter_sphere,
+        material=[1.5] * ureg.RIU,
+        medium=[1.33] * ureg.RIU,
+    )
 
-#     experiment_sphere = Setup(scatterer=sphere, source=source)
-#     experiment_core_shell = Setup(scatterer=coreshell, source=source)
+    coreshell = CoreShellSet(
+        core_diameter=diameter_core,
+        shell_thickness=[50] * ureg.nanometer,
+        core_material=[1.5] * ureg.RIU,
+        shell_material=[1.5] * ureg.RIU,
+        medium=[1.33] * ureg.RIU,
+    )
 
-#     data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
-#     data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
+    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
 
-
-#     assert numpy.allclose(
-#         data_sphere, data_coreshell
-#     ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
-
-
-# @pytest.mark.parametrize("metric", ["Qsca", "Qext", "Qabs", "Qpr", "g"])
-# def test_only_shell(metric, source):
-#     diameter_sphere = numpy.linspace(200, 1_000, 20) * ureg.nanometer
-#     shell_thickness = numpy.linspace(100, 900, 20) * ureg.nanometer
-
-#     sphere = SphereSet(
-#         diameter=diameter_sphere,
-#         material=[1.5] * ureg.RIU,
-#         medium=[1.33] * ureg.RIU,
-#     )
-
-#     coreshell = CoreShellSet(
-#         core_diameter=[100] * ureg.nanometer,
-#         shell_thickness=shell_thickness,
-#         core_material=[1.5] * ureg.RIU,
-#         shell_material=[1.5] * ureg.RIU,
-#         medium=[1.33] * ureg.RIU,
-#     )
-
-#     experiment_sphere = Setup(scatterer=sphere, source=source)
-#     experiment_core_shell = Setup(scatterer=coreshell, source=source)
-
-#     data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
-#     data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
+    data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
+    data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
 
 
-#     assert numpy.allclose(
-#         data_sphere, data_coreshell
-#     ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
+    assert numpy.allclose(
+        data_sphere, data_coreshell
+    ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
 
 
-# @pytest.mark.parametrize("metric", ["Csca", "Cext", "Csca"])
-# def test_shell_is_medium(metric, source):
-#     diameter = numpy.linspace(400, 800, 100) * ureg.nanometer
+@pytest.mark.parametrize("metric", ["Qsca", "Qext", "Qabs", "Qpr", "g"])
+def test_only_shell(metric):
+    diameter_sphere = numpy.linspace(200, 1_000, 20) * ureg.nanometer
+    shell_thickness = numpy.linspace(50, 450, 20) * ureg.nanometer
 
-#     sphere = SphereSet(
-#         diameter=diameter,
-#         material=[1.5] * ureg.RIU,
-#         medium=[1.4] * ureg.RIU,
-#     )
+    source = GaussianSet(
+        wavelength=[750] * ureg.nanometer,
+        polarization=PolarizationSet(angles=30 * ureg.degree),
+        optical_power=[1] * ureg.watt,
+        numerical_aperture=[0.3] * ureg.AU,
+    )
 
-#     coreshell = CoreShellSet(
-#         core_diameter=diameter,
-#         shell_thickness=[500] * ureg.nanometer,
-#         core_material=[1.5] * ureg.RIU,
-#         shell_material=[1.4] * ureg.RIU,
-#         medium=[1.4] * ureg.RIU,
-#     )
 
-#     experiment_sphere = Setup(scatterer=sphere, source=source)
-#     experiment_core_shell = Setup(scatterer=coreshell, source=source)
+    sphere = SphereSet(
+        diameter=diameter_sphere,
+        material=[1.5] * ureg.RIU,
+        medium=[1.33] * ureg.RIU,
+    )
 
-#     data_sphere = experiment_sphere.get(metric, as_numpy=True)
-#     data_coreshell = (
-#         experiment_core_shell.get(metric, as_numpy=True)
-#     )
+    coreshell = CoreShellSet(
+        core_diameter=[100] * ureg.nanometer,
+        shell_thickness=shell_thickness,
+        core_material=[1.5] * ureg.RIU,
+        shell_material=[1.5] * ureg.RIU,
+        medium=[1.33] * ureg.RIU,
+    )
 
-#     assert numpy.allclose(
-#         data_sphere, data_coreshell
-#     ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
+    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
+
+    data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
+    data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
+
+
+    assert numpy.allclose(
+        data_sphere, data_coreshell
+    ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
+
+
+@pytest.mark.parametrize("metric", ["Csca", "Cext", "Csca"])
+def test_shell_is_medium(metric):
+    source = GaussianSet(
+        wavelength=[750] * ureg.nanometer,
+        polarization=PolarizationSet(angles=30 * ureg.degree),
+        optical_power=[1] * ureg.watt,
+        numerical_aperture=[0.3] * ureg.AU,
+    )
+
+
+    diameter = numpy.linspace(400, 800, 100) * ureg.nanometer
+
+    sphere = SphereSet(
+        diameter=diameter,
+        material=[1.5] * ureg.RIU,
+        medium=[1.4] * ureg.RIU,
+    )
+
+    coreshell = CoreShellSet(
+        core_diameter=diameter,
+        shell_thickness=[500] * ureg.nanometer,
+        core_material=[1.5] * ureg.RIU,
+        shell_material=[1.4] * ureg.RIU,
+        medium=[1.4] * ureg.RIU,
+    )
+
+    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
+
+    data_sphere = experiment_sphere.get(metric, as_numpy=True)
+    data_coreshell = (
+        experiment_core_shell.get(metric, as_numpy=True)
+    )
+
+    assert numpy.allclose(
+        data_sphere, data_coreshell
+    ), "Mismatch between the computed value for a SphereSet and a (no-shell) CoreShellSet."
 
 
 if __name__ == "__main__":

@@ -3,9 +3,6 @@ Sphere: Qsca vs index
 =====================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 from PyMieSim.units import ureg
 
@@ -13,7 +10,6 @@ from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyMieSim.material import print_available, TabulatedMaterial
 
 polarization_set = PolarizationSet(
     angles=[30.0] * ureg.degree,
@@ -32,7 +28,7 @@ scatterer = SphereSet(
     medium=[1.0] * ureg.RIU,
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca")
 

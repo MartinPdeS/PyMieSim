@@ -5,9 +5,9 @@ Photodiode Detector
 This example demonstrates the initialization and visualization of a Photodiode detector using PyMieSim.
 """
 
+import pyvista as pv
 from PyMieSim.units import ureg
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import SystemPlotter
 
 detector = Photodiode(
     numerical_aperture=0.3 * ureg.AU,
@@ -17,6 +17,8 @@ detector = Photodiode(
     phi_offset=0 * ureg.degree,
 )
 
-plotter = SystemPlotter()
+scene = pv.Plotter()
 
-plotter.plot(detector)
+detector.add_to_scene(scene)
+
+scene.show()

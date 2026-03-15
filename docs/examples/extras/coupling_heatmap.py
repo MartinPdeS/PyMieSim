@@ -46,7 +46,7 @@ detector = PhotodiodeSet(
     sampling=[400]
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 values = experiment.get("coupling", add_units=False, as_numpy=True)
 

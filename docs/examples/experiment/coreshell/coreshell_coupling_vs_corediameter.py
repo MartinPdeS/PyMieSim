@@ -42,7 +42,7 @@ detector = PhotodiodeSet(
     polarization_filter=[1] * ureg.degree,
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

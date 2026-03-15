@@ -65,8 +65,16 @@ PYBIND11_MODULE(_setup, module) {
 
     pybind11::class_<Setup>(module, "Setup")
         .def(
-            pybind11::init<bool>(),
-            pybind11::arg("debug_mode") = false,
+            py::init<
+                std::shared_ptr<ScattererSet>,
+                std::shared_ptr<BaseSourceSet>,
+                std::shared_ptr<BaseDetectorSet>,
+                bool
+            >(),
+            py::arg("scatterer_set"),
+            py::arg("source_set"),
+            py::arg("detector_set") = nullptr,
+            py::arg("debug_mode") = false,
             R"pbdoc(
                 Setup class for conducting Lorenz-Mie Theory (LMT) simulations.
 
@@ -86,8 +94,8 @@ PYBIND11_MODULE(_setup, module) {
         .def_readonly("debug_mode", &Setup::debug_mode)
         .def_readonly("array_shape", &Setup::array_shape)
         .def_readonly("total_iterations", &Setup::total_iterations)
-        .def("initialize", &Setup::initialize, pybind11::arg("scatterer_set"), pybind11::arg("source_set"), pybind11::arg("detector_set"))
-        .def("get_coupling_sequential",
+        .def(
+            "get_coupling_sequential",
             [](Setup& self) {
 
                 std::vector<double> coupling_array = self.get_coupling_sequential();
@@ -101,7 +109,8 @@ PYBIND11_MODULE(_setup, module) {
                     A numpy array containing the coupling coefficients.
             )pbdoc"
         )
-        .def("get_coupling",
+        .def(
+            "get_coupling",
             [](Setup& self) {
 
                 auto [coupling_array, coupling_shape] = self.get_coupling();
@@ -111,7 +120,8 @@ PYBIND11_MODULE(_setup, module) {
                 Retrieves the coupling power for a combination of scatterers, sources, and detectors.
             )pbdoc"
         )
-        .def("_get_farfields",
+        .def(
+            "_get_farfields",
             [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance){
 
                 auto [farfield_array, farfield_shape] = self.get_farfields(scatterer_set, source_set, mesh, distance);

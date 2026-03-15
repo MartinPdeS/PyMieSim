@@ -1,5 +1,12 @@
 #include "setup.h"
 
+void Setup::debug_printf(const char* format, ...) const {
+    if (!debug_mode) return;
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+}
 
 // Example: You can also add a class-wide debug_print method.
 void Setup::debug_print_state() const {
@@ -7,7 +14,7 @@ void Setup::debug_print_state() const {
     debug_printf("----- Setup Debug Info -----\n");
     debug_printf("SourceSet total combinations: %zu\n", source_set->total_combinations);
     debug_printf("ScattererSet total combinations: %zu\n", scatterer_set->total_combinations);
-    debug_printf("DetectorSet total combinations: %zu\n", detector_set->total_combinations);
+    if (detector_set) debug_printf("DetectorSet total combinations: %zu\n", detector_set->total_combinations);
     debug_printf("SourceSet shape: ");
     for (size_t dim : source_set->shape) {
         debug_printf("%zu ", dim);
@@ -18,16 +25,35 @@ void Setup::debug_print_state() const {
         debug_printf("%zu ", dim);
     }
     debug_printf("\n");
-    debug_printf("DetectorSet shape: ");
-    for (size_t dim : detector_set->shape) {
-        debug_printf("%zu ", dim);
+    if (detector_set) {
+        debug_printf("DetectorSet shape: ");
+        for (size_t dim : detector_set->shape) {
+            debug_printf("%zu ", dim);
+        }
+        debug_printf("\n");
     }
+    else {
+        debug_printf("DetectorSet: nullptr\n");
+    }
+    debug_printf("---------------------------------\n");
+
+
+
+
+
+
+
     debug_printf("\n---------------------------------\n");
 }
 
 
 std::tuple<std::vector<double>, std::vector<size_t>>
 Setup::get_coupling() {
+    if (!this->detector_set) {
+        throw std::runtime_error("A detector_set is required for coupling computations.");
+    }
+
+    this->pre_get();
     std::vector<double> output_array(total_iterations);
 
     #pragma omp parallel for
@@ -45,16 +71,25 @@ Setup::get_coupling() {
         scatterer_ptr->init(source_ptr);
 
         // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
-        size_t idx = flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
+        size_t idx = flatten_multi_index(
+            this->array_shape,
+            source_ptr->indices,
+            scatterer_ptr->indices,
+            detector->indices
+        );
+
         output_array[idx] = detector->get_coupling(scatterer_ptr, source_ptr);
     }
     debug_printf("get_scatterer_coupling: finished computation\n");
 
-    return std::make_tuple(std::move(output_array), std::move(this->array_shape));
+    return std::make_tuple(std::move(output_array), this->array_shape);
 }
 
 std::vector<double>
 Setup::get_coupling_sequential() {
+    if (!this->detector_set) {
+        throw std::runtime_error("A detector_set is required for coupling computations.");
+    }
 
     this->array_shape = {this->source_set->wavelength.size()};
     size_t full_size = this->source_set->wavelength.size();
@@ -127,7 +162,7 @@ Setup::get_farfields(
         size_t idx_head = flatten_multi_index(head_shape, source_ptr->indices, scatterer_ptr->indices);
 
         // Compute fieldsd
-        auto [phi_field, theta_field] = scatterer_ptr->get_unstructured_farfields(mesh, distance,std::move(source_ptr));
+        auto [phi_field, theta_field] = scatterer_ptr->get_unstructured_farfields(mesh, distance, source_ptr);
 
         // Sanity check in debug builds
         if (phi_field.size() != stride_channel || theta_field.size() != stride_channel) {

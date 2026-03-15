@@ -37,7 +37,7 @@ def get_experiment_dataframe():
         phi_offset=[0] * ureg.degree,
         sampling=[100],
     )
-    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
     # Get the measurement dataframe (assumed to be a PyMieSimDataFrame subclass)
     dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
     return dataframe

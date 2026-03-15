@@ -3,9 +3,6 @@ Sphere: Goniometer
 ==================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 from PyMieSim.units import ureg
 import numpy
 
@@ -42,7 +39,7 @@ detector = PhotodiodeSet(
     sampling=[400]
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

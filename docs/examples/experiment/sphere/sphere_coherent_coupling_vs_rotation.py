@@ -3,9 +3,6 @@ Sphere: Coherent mode field rotation
 ====================================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy
 from PyMieSim.units import ureg
 
@@ -45,7 +42,7 @@ detector = CoherentModeSet(
     polarization_filter=None,
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

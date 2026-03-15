@@ -49,8 +49,8 @@ def test_sequential_vs_standard_no_detector():
     )
 
     setup_standard = Setup(
-        scatterer=scatterer_standard,
-        source=source_standard
+        scatterer_set=scatterer_standard,
+        source_set=source_standard
     )
 
     data_standard = setup_standard.get("Qsca", as_numpy=True).squeeze()
@@ -72,8 +72,8 @@ def test_sequential_vs_standard_no_detector():
     )
 
     setup_sequential = Setup(
-        scatterer=scatterer_sequential,
-        source=source_sequential
+        scatterer_set=scatterer_sequential,
+        source_set=source_sequential
     )
 
     data_sequential = setup_sequential.get_sequential("Qsca").squeeze()
@@ -89,81 +89,81 @@ def test_sequential_vs_standard_no_detector():
     ), "Mismatch between sequential and standard computed data."
 
 
-# def test_sequential_vs_standard_detector():
-#     source_standard = GaussianSet(
-#         wavelength=WAVELENGTH,
-#         polarization=PolarizationSet(angles=POLARIZATION * ureg.degree),
-#         optical_power=OPTICAL_POWER,
-#         numerical_aperture=NA,
-#     )
+def test_sequential_vs_standard_detector():
+    source_standard = GaussianSet(
+        wavelength=WAVELENGTH,
+        polarization=PolarizationSet(angles=POLARIZATION * ureg.degree),
+        optical_power=OPTICAL_POWER,
+        numerical_aperture=NA,
+    )
 
-#     scatterer_standard = SphereSet(
-#         diameter=DIAMETER,
-#         material=PROPERTY,
-#         medium=MEDIUM_PROPERTY,
-#     )
+    scatterer_standard = SphereSet(
+        diameter=DIAMETER,
+        material=PROPERTY,
+        medium=MEDIUM_PROPERTY,
+    )
 
-#     detector_standard = PhotodiodeSet(
-#         phi_offset=PHI_OFFSET,
-#         gamma_offset=GAMMA_OFFSET,
-#         numerical_aperture=NA,
-#         cache_numerical_aperture=CACHE_NA,
-#         sampling=SAMPLING,
-#         polarization_filter=POLARIZATION_FILTER,
-#     )
+    detector_standard = PhotodiodeSet(
+        phi_offset=PHI_OFFSET,
+        gamma_offset=GAMMA_OFFSET,
+        numerical_aperture=NA,
+        cache_numerical_aperture=CACHE_NA,
+        sampling=SAMPLING,
+        polarization_filter=POLARIZATION_FILTER,
+    )
 
-#     setup_standard = Setup(
-#         scatterer=scatterer_standard,
-#         source=source_standard,
-#         detector=detector_standard
-#     )
+    setup_standard = Setup(
+        scatterer_set=scatterer_standard,
+        source_set=source_standard,
+        detector_set=detector_standard
+    )
 
-#     data_standard = setup_standard.get("coupling", as_numpy=True).squeeze()
+    data_standard = setup_standard.get("coupling", as_numpy=True).squeeze()
 
-#     assert data_standard is not None, "Error while running the standard get function."
+    assert data_standard is not None, "Error while running the standard get function."
 
 
-#     source_sequential = GaussianSet.build_sequential(
-#         wavelength=WAVELENGTH,
-#         polarization=PolarizationSet(angles=POLARIZATION * ONES * ureg.degree),
-#         optical_power=ONES * OPTICAL_POWER,
-#         numerical_aperture=ONES * NA,
-#     )
+    source_sequential = GaussianSet.build_sequential(
+        wavelength=WAVELENGTH,
+        polarization=PolarizationSet(angles=POLARIZATION * ONES * ureg.degree),
+        optical_power=ONES * OPTICAL_POWER,
+        numerical_aperture=ONES * NA,
+    )
 
-#     scatterer_sequential = SphereSet.build_sequential(
-#         total_size=SIZE,
-#         diameter=ONES * DIAMETER,
-#         material=ONES * PROPERTY,
-#         medium=ONES * MEDIUM_PROPERTY,
-#     )
+    scatterer_sequential = SphereSet.build_sequential(
+        total_size=SIZE,
+        diameter=ONES * DIAMETER,
+        material=ONES * PROPERTY,
+        medium=ONES * MEDIUM_PROPERTY,
+    )
 
-#     detector_sequential = PhotodiodeSet.build_sequential(
-#         phi_offset=ONES * PHI_OFFSET,
-#         gamma_offset=ONES * GAMMA_OFFSET,
-#         numerical_aperture=ONES * NA,
-#         cache_numerical_aperture=ONES * CACHE_NA,
-#         sampling=[SAMPLING] * SIZE,
-#         polarization_filter=ONES * POLARIZATION_FILTER,
-#         medium=ONES * MEDIUM_PROPERTY,
-#     )
+    detector_sequential = PhotodiodeSet.build_sequential(
+        phi_offset=ONES * PHI_OFFSET,
+        gamma_offset=ONES * GAMMA_OFFSET,
+        numerical_aperture=ONES * NA,
+        cache_numerical_aperture=ONES * CACHE_NA,
+        sampling=[SAMPLING] * SIZE,
+        polarization_filter=ONES * POLARIZATION_FILTER,
+        medium=ONES * MEDIUM_PROPERTY,
+    )
 
-#     setup_sequential = Setup(
-#         scatterer=scatterer_sequential,
-#         source=source_sequential,
-#         detector=detector_sequential,
-#     )
+    setup_sequential = Setup(
+        scatterer_set=scatterer_sequential,
+        source_set=source_sequential,
+        detector_set=detector_sequential,
+    )
 
-#     data_sequential = setup_sequential.get_sequential("coupling")
+    data_sequential = setup_sequential.get_sequential("coupling")
 
-#     assert data_sequential is not None, "Error while running the standard get function."
+    assert data_sequential is not None, "Error while running the standard get function."
 
-#     assert not numpy.any(
-#         data_sequential == 0
-#     ), "Zeros value retrieved in sequential data means error."
+    assert not numpy.any(
+        data_sequential == 0
+    ), "Zeros value retrieved in sequential data means error."
 
-#     assert numpy.all(
-#         data_sequential == data_standard
-#     ), "Mismatch between sequential and standard computed data."
+    assert numpy.all(
+        data_sequential == data_standard
+    ), "Mismatch between sequential and standard computed data."
 
 
 if __name__ == "__main__":

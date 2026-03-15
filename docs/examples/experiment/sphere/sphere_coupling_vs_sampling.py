@@ -3,9 +3,6 @@ Sphere: Coupling vs sampling
 ============================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy
 from PyMieSim.units import ureg
 
@@ -42,7 +39,7 @@ detector = PhotodiodeSet(
     sampling=[20, 40, 80, 160]
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

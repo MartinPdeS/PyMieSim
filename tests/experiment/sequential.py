@@ -51,7 +51,11 @@ def test_valid_experiment(mock_show):
         total_size=TOTAL_SIZE,
     )
 
-    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+    experiment = Setup(
+        scatterer_set=scatterer,
+        source_set=source,
+        detector_set=detector
+    )
 
     # This call should complete without raising an error.
     experiment.get_sequential(SphereSet.available_measure_list[0])

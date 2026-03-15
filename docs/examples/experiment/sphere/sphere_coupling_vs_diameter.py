@@ -3,9 +3,6 @@ Sphere: Coupling vs diameter
 ============================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy
 from PyMieSim.units import ureg
 
@@ -27,7 +24,6 @@ source = GaussianSet(
     numerical_aperture=[0.1] * ureg.AU,
 )
 
-
 scatterer = SphereSet(
     diameter=numpy.linspace(100, 10000, 600) * ureg.nanometer,
     material=[1.5] * ureg.RIU,
@@ -44,7 +40,7 @@ detector = CoherentModeSet(
     mean_coupling=True,
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
 

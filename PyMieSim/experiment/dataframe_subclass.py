@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 from matplotlib.ticker import FormatStrFormatter
 from MPSPlots import helper
-from PyMieSim.units import ureg
 
 
 class PyMieSimDataFrame(pd.DataFrame):
@@ -222,7 +221,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         **kwargs,
     ):
         import warnings
-        import numpy as np
 
         y = [y] if isinstance(y, str) else y
         self._validate_column(x)
@@ -233,6 +231,9 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         if y is None:
             y = measures
+
+        for measure in y:
+            self._validate_column(measure)
 
         parameters = [
             column for column in df.columns
@@ -246,10 +247,7 @@ class PyMieSimDataFrame(pd.DataFrame):
                 return value.magnitude
             return value
 
-        x_warning_emitted = False
-        def _normalize_x_values(series):
-            nonlocal x_warning_emitted
-
+        def _normalize_numeric_series(series, use_abs_for_complex=False, warn_on_complex_real_projection=False):
             raw_values = series.to_numpy()
             numeric_values = []
             has_nonzero_imaginary_part = False
@@ -258,48 +256,22 @@ class PyMieSimDataFrame(pd.DataFrame):
                 scalar_value = _extract_scalar(value)
 
                 if isinstance(scalar_value, complex) or np.iscomplexobj(scalar_value):
-                    if not np.isclose(np.imag(scalar_value), 0.0, atol=1e-15, rtol=0.0):
-                        has_nonzero_imaginary_part = True
-
-                    numeric_values.append(float(np.real(scalar_value)))
+                    if warn_on_complex_real_projection:
+                        if not np.isclose(np.imag(scalar_value), 0.0, atol=1e-15, rtol=0.0):
+                            has_nonzero_imaginary_part = True
+                        numeric_values.append(float(np.real(scalar_value)))
+                    elif use_abs_for_complex:
+                        numeric_values.append(float(np.abs(scalar_value)))
+                    else:
+                        numeric_values.append(float(np.real(scalar_value)))
                     continue
 
                 try:
                     numeric_values.append(float(scalar_value))
                 except (TypeError, ValueError):
-                    categorical_labels = series.astype(str).to_numpy()
-                    categorical_positions = np.arange(len(categorical_labels), dtype=float)
-                    return categorical_positions, categorical_labels, False
+                    return None, has_nonzero_imaginary_part
 
-            if has_nonzero_imaginary_part and not x_warning_emitted:
-                warnings.warn(
-                    f"Column {series.name!r} contains complex values on the x axis with nonzero imaginary part. "
-                    "Using the real part for plotting.",
-                    UserWarning,
-                    stacklevel=3,
-                )
-                x_warning_emitted = True
-
-            return np.asarray(numeric_values, dtype=float), None, True
-
-        def _normalize_y_values(series):
-            raw_values = series.to_numpy()
-            numeric_values = []
-
-            for value in raw_values:
-                scalar_value = _extract_scalar(value)
-
-                if isinstance(scalar_value, complex) or np.iscomplexobj(scalar_value):
-                    numeric_values.append(float(np.abs(scalar_value)))
-                else:
-                    try:
-                        numeric_values.append(float(scalar_value))
-                    except (TypeError, ValueError) as error:
-                        raise TypeError(
-                            f"Column {series.name!r} could not be converted to real values for plotting."
-                        ) from error
-
-            return np.asarray(numeric_values, dtype=float)
+            return np.asarray(numeric_values, dtype=float), has_nonzero_imaginary_part
 
         def _compose_curve_label(parameter_label, measure_name):
             clean_measure_name = self._clean_parameter_name(measure_name)
@@ -312,38 +284,69 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             return clean_measure_name
 
-        figure, ax = self._create_figure()
+        x_numeric_values, x_has_nonzero_imaginary_part = _normalize_numeric_series(
+            df[x],
+            warn_on_complex_real_projection=True,
+        )
 
-        groups = df.groupby(parameters, sort=False) if parameters else [(None, df)]
-
-        x_is_numeric = True
+        x_is_numeric = x_numeric_values is not None
         x_used_real_part = False
 
+        if x_is_numeric:
+            raw_x_values = df[x].to_numpy()
+            x_used_real_part = any(
+                isinstance(_extract_scalar(value), complex) or np.iscomplexobj(_extract_scalar(value))
+                for value in raw_x_values
+            )
+        else:
+            categorical_labels = df[x].astype(str)
+            unique_labels = pd.Index(categorical_labels).unique()
+            category_to_position = {
+                label: float(index)
+                for index, label in enumerate(unique_labels)
+            }
+
+        if x_has_nonzero_imaginary_part:
+            warnings.warn(
+                f"Column {x!r} contains complex values on the x axis with nonzero imaginary part. "
+                "Using the real part for plotting.",
+                UserWarning,
+                stacklevel=3,
+            )
+
+        figure, ax = self._create_figure()
+
+        groups = list(df.groupby(parameters, sort=False)) if parameters else [(None, df)]
+
         for key, group in groups:
-            x_values, x_labels, group_x_is_numeric = _normalize_x_values(group[x])
 
-            if group_x_is_numeric and x_labels is None:
-                sorting_index = np.argsort(x_values)
+            if x_is_numeric:
+                group_x_values, _ = _normalize_numeric_series(
+                    group[x],
+                    warn_on_complex_real_projection=True,
+                )
+                sorting_index = np.argsort(group_x_values)
                 group = group.iloc[sorting_index]
-                x_values = x_values[sorting_index]
-
-                raw_x_values = group[x].to_numpy()
-                if any(
-                    isinstance(_extract_scalar(value), complex) or np.iscomplexobj(_extract_scalar(value))
-                    for value in raw_x_values
-                ):
-                    x_used_real_part = True
+                x_values = group_x_values[sorting_index]
             else:
-                x_is_numeric = False
+                x_values = group[x].astype(str).map(category_to_position).to_numpy(dtype=float)
 
             parameter_label = self._format_parameter_label(
                 parameters,
                 key,
-                precision=legend_resolution
+                precision=legend_resolution,
             )
 
             for measure in y:
-                y_values = _normalize_y_values(group[measure])
+                y_values, _ = _normalize_numeric_series(
+                    group[measure],
+                    use_abs_for_complex=True,
+                )
+
+                if y_values is None:
+                    raise TypeError(
+                        f"Column {measure!r} could not be converted to real values for plotting."
+                    )
 
                 curve_label = _compose_curve_label(parameter_label, measure)
 
@@ -354,9 +357,9 @@ class PyMieSimDataFrame(pd.DataFrame):
                     **kwargs,
                 )
 
-            if x_labels is not None:
-                ax.set_xticks(x_values)
-                ax.set_xticklabels(x_labels, rotation=45, ha='right')
+        if not x_is_numeric:
+            ax.set_xticks(list(category_to_position.values()))
+            ax.set_xticklabels(list(category_to_position.keys()), rotation=45, ha='right')
 
         x_label = self._axis_label(x)
 
@@ -393,7 +396,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         y_tick_resolution: int = 4,
         **kwargs,
     ):
-
         self._validate_column(x)
         self._validate_column(std)
 
@@ -403,55 +405,121 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         if y is None:
             y = measures
+        elif isinstance(y, str):
+            y = [y]
+
+        for measure in y:
+            self._validate_column(measure)
 
         parameters = [
-            c for c in df.columns
-            if c not in ([x, std] + y)
+            column for column in df.columns
+            if column not in ([x, std] + y)
+            and not df[column].isna().all()
+            and df[column].nunique(dropna=True) > 1
         ]
 
-        grouped = df.groupby(parameters + [x], sort=False)
+        def _extract_scalar(value):
+            if hasattr(value, "magnitude"):
+                return value.magnitude
+            return value
 
-        mean = grouped.mean().reset_index()
-        stdv = grouped.std().reset_index()
+        def _to_real_array(series, use_abs_for_complex=False):
+            numeric_values = []
+
+            for value in series.to_numpy():
+                scalar_value = _extract_scalar(value)
+
+                if isinstance(scalar_value, complex) or np.iscomplexobj(scalar_value):
+                    if use_abs_for_complex:
+                        numeric_values.append(float(np.abs(scalar_value)))
+                    else:
+                        numeric_values.append(float(np.real(scalar_value)))
+                else:
+                    numeric_values.append(float(scalar_value))
+
+            return np.asarray(numeric_values, dtype=float)
+
+        def _compose_curve_label(parameter_label, measure_name):
+            clean_measure_name = self._clean_parameter_name(measure_name)
+
+            if len(y) == 1:
+                return parameter_label if parameter_label else clean_measure_name
+
+            if parameter_label:
+                return f"{clean_measure_name} | {parameter_label}"
+
+            return clean_measure_name
+
+        aggregated_rows = []
+
+        grouped = df.groupby(parameters + [x], sort=False, dropna=False)
+
+        for group_key, group_df in grouped:
+            if not isinstance(group_key, tuple):
+                group_key = (group_key,)
+
+            row = {}
+            key_names = parameters + [x]
+
+            for key_name, key_value in zip(key_names, group_key):
+                row[key_name] = key_value
+
+            row["_replicate_count"] = len(group_df)
+            row[f"{std}__mean"] = _to_real_array(group_df[std]).mean()
+            row[f"{std}__std"] = _to_real_array(group_df[std]).std(ddof=1) if len(group_df) > 1 else 0.0
+
+            for measure in y:
+                values = _to_real_array(group_df[measure], use_abs_for_complex=True)
+                row[f"{measure}__mean"] = values.mean()
+                row[f"{measure}__std"] = values.std(ddof=1) if len(values) > 1 else 0.0
+
+            aggregated_rows.append(row)
+
+        aggregated_df = pd.DataFrame(aggregated_rows)
 
         figure, ax = self._create_figure()
 
-        groups = mean.groupby(parameters, sort=False) if parameters else [(None, mean)]
+        grouped_curves = list(aggregated_df.groupby(parameters, sort=False, dropna=False)) if parameters else [(None, aggregated_df)]
 
-        for measure in y:
+        for key, group_df in grouped_curves:
+            x_values = _to_real_array(group_df[x])
+            sorting_index = np.argsort(x_values)
 
-            for key, group_df in groups:
+            group_df = group_df.iloc[sorting_index]
+            x_values = x_values[sorting_index]
 
-                # group_df = group_df.sort_values(x)
+            parameter_label = self._format_parameter_label(
+                parameters,
+                key,
+                precision=legend_resolution,
+            )
 
-                if parameters:
-                    mask = stdv[parameters].eq(group_df[parameters].iloc[0]).all(axis=1)
-                    std_group = stdv[mask]
-                else:
-                    std_group = stdv
+            for measure in y:
+                y_mean = group_df[f"{measure}__mean"].to_numpy(dtype=float)
+                y_std = group_df[f"{measure}__std"].to_numpy(dtype=float)
 
-                label = self._format_parameter_label(
-                    parameters,
-                    key,
-                    precision=legend_resolution
-                )
+                curve_label = _compose_curve_label(parameter_label, measure)
 
                 ax.plot(
-                    group_df[x],
-                    group_df[measure],
-                    label=label if label else measure,
+                    x_values,
+                    y_mean,
+                    label=curve_label,
                     **kwargs,
                 )
 
                 ax.fill_between(
-                    group_df[x],
-                    group_df[measure] - std_group[measure],
-                    group_df[measure] + std_group[measure],
+                    x_values,
+                    y_mean - y_std,
+                    y_mean + y_std,
                     alpha=alpha,
                 )
 
         ax.set_xlabel(self._axis_label(x))
-        ax.set_ylabel(self._axis_label(y[0]))
+
+        if len(y) == 1:
+            ax.set_ylabel(self._axis_label(y[0]))
+        else:
+            ax.set_ylabel("Measure")
 
         ax.legend()
 

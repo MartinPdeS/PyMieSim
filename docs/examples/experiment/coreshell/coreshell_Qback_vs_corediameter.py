@@ -38,7 +38,7 @@ scatterer = CoreShellSet(
     medium=[SellmeierMedium("water")],
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qback")
 

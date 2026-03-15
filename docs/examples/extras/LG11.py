@@ -5,10 +5,10 @@ Laguerre-Gauss 2-3 Mode Detector
 This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.
 """
 
+import pyvista as pv
 from PyMieSim.units import ureg
-
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import SystemPlotter
+
 
 detector = CoherentMode(
     mode_number="LG23",
@@ -19,5 +19,8 @@ detector = CoherentMode(
     phi_offset=40 * ureg.degree,
 )
 
-plotter = SystemPlotter()
-plotter.plot(detector)
+scene = pv.Plotter()
+
+detector.add_to_scene(scene)
+
+scene.show()

@@ -77,52 +77,52 @@ def test_energy_flow_coupling():
     ), "Mismatch between energy flow and coupling values."
 
 
-# @pytest.mark.parametrize("parameter", ["Qsca", "Qext", "Qabs"])
-# def test_compare_sphere_coreshell_0(parameter: str):
-#     """
-#     Compare scattering parameters between a solid sphere and a CoreShell object
-#     with a zero-thickness shell to verify consistency.
-#     """
-#     source = Gaussian(
-#         wavelength=1000 * ureg.nanometer,
-#         polarization=PolarizationState(angle=0 * ureg.degree),
-#         optical_power=1 * ureg.watt,
-#         numerical_aperture=0.3 * ureg.AU,
-#     )
+@pytest.mark.parametrize("parameter", ["Qsca", "Qext", "Qabs"])
+def test_compare_sphere_coreshell_0(parameter: str):
+    """
+    Compare scattering parameters between a solid sphere and a CoreShell object
+    with a zero-thickness shell to verify consistency.
+    """
+    source = Gaussian(
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
+    )
 
-#     sphere = Sphere(
-#         diameter=1000 * ureg.nanometer,
-#         material=1.5 * ureg.RIU,
-#         medium=1.2 * ureg.RIU,
-#     )
+    sphere = Sphere(
+        diameter=1000 * ureg.nanometer,
+        material=1.5 * ureg.RIU,
+        medium=1.2 * ureg.RIU,
+    )
 
-#     # Define a core-shell scatterer with zero shell thickness
-#     coreshell = CoreShell(
-#         core_diameter=1000 * ureg.nanometer,
-#         shell_thickness=0 * ureg.nanometer,  # Zero shell width
-#         core_material=1.5 * ureg.RIU,
-#         shell_material=1.8 * ureg.RIU,
-#         medium=1.2 * ureg.RIU,
-#     )
+    # Define a core-shell scatterer with zero shell thickness
+    coreshell = CoreShell(
+        core_diameter=1000 * ureg.nanometer,
+        shell_thickness=0 * ureg.nanometer,  # Zero shell width
+        core_material=1.5 * ureg.RIU,
+        shell_material=1.8 * ureg.RIU,
+        medium=1.2 * ureg.RIU,
+    )
 
-#     setup_0 = Setup(
-#         scatterer=sphere,
-#         source=source
-#     )
+    setup_0 = Setup(
+        scatterer=sphere,
+        source=source
+    )
 
-#     setup_1 = Setup(
-#         scatterer=coreshell,
-#         source=source
-#     )
+    setup_1 = Setup(
+        scatterer=coreshell,
+        source=source
+    )
 
-#     # Compare the scattering parameters between the sphere and core-shell
-#     value_sphere = setup_0.get(parameter)
-#     value_coreshell = setup_1.get(parameter)
+    # Compare the scattering parameters between the sphere and core-shell
+    value_sphere = setup_0.get(parameter)
+    value_coreshell = setup_1.get(parameter)
 
-#     # Check if the results are consistent
-#     assert np.isclose(
-#         value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
-#     ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
+    # Check if the results are consistent
+    assert np.isclose(
+        value_sphere, value_coreshell, atol=1e-12, rtol=1e-5
+    ), f"Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}"
 
 
 if __name__ == "__main__":

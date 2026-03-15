@@ -4,9 +4,6 @@ InfiniteCylinder: Goniometer
 
 This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 from PyMieSim.units import ureg
 
@@ -44,7 +41,7 @@ detector = PhotodiodeSet(
     polarization_filter=None,
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling", scale_unit=True)
 

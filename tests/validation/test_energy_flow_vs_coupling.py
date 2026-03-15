@@ -37,7 +37,6 @@ def test_energy_flow_vs_coupling_sphere():
         detector=detector
     )
 
-
     # Calculate coupling and scattering efficiency (Qsca)
     coupling = setup.get("coupling")
 
@@ -46,8 +45,6 @@ def test_energy_flow_vs_coupling_sphere():
     n = scatterer.medium.refractive_index
 
     intensity = (n * EPSILON0 * C0 * abs(source.amplitude)**2).to("watt/meter**2")
-
-    print(setup.get("Qsca"), setup.get("cross_section"))
 
     scattered_power = (setup.get("Qsca") * intensity * setup.get("cross_section")).to("watt").to_compact()
 

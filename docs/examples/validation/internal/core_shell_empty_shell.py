@@ -10,8 +10,9 @@ import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer import CoreShellSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import CoreShellSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 # Setup parameters
@@ -34,14 +35,13 @@ source = GaussianSet(
 scatterer = CoreShellSet(
     core_diameter=[300] * ureg.nanometer,
     shell_thickness=np.linspace(100, 300, 100) * ureg.nanometer,
-    core_refractive_index=[1.4] * ureg.RIU,
-    shell_refractive_index=[1.3] * ureg.RIU,
-    medium_refractive_index=[1.3] * ureg.RIU,
-    source=source,
+    core_material=[1.4] * ureg.RIU,
+    shell_material=[1.3] * ureg.RIU,
+    medium=[1.3] * ureg.RIU,
 )
 
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Csca")
 

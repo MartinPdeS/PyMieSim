@@ -81,7 +81,6 @@ sources = [gaussian_source, planewave_source]
 def test_measure(measure, source, core_material, shell_material, medium):
     kwargs = {}
 
-    print(core_material, shell_material, medium)
     scatterer = CoreShellSet(
         core_diameter=np.linspace(800, 1000, 10) * ureg.nanometer,
         shell_thickness=[300] * ureg.nanometer,
@@ -99,9 +98,9 @@ def test_measure(measure, source, core_material, shell_material, medium):
     )
 
     experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector
+        scatterer_set=scatterer,
+        source_set=source,
+        detector_set=detector
     )
 
     experiment.get(measure, drop_unique_level=False)

@@ -3,9 +3,6 @@ Sphere: Qsca vs diameter
 ========================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 
 from PyMieSim.units import ureg
@@ -37,7 +34,7 @@ scatterer = SphereSet(
     medium=MediumSet([1.33, 1.34, 1.5] * ureg.RIU),
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca", scale_unit=True)
 

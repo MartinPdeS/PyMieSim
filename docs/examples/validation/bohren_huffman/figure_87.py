@@ -12,8 +12,9 @@ from PyMieSim.units import ureg
 
 from PyMieSim.directories import validation_data_path
 
-from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 theoretical = numpy.genfromtxt(
@@ -32,14 +33,13 @@ source = GaussianSet(
 
 scatterer = InfiniteCylinderSet(
     diameter=diameter,
-    refractive_index=[1.55] * ureg.RIU,
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    material=[1.55] * ureg.RIU,
+    medium=[1] * ureg.RIU,
 )
 
 experiment = Setup(
-    scatterer=scatterer,
-    source=source,
+    scatterer_set=scatterer,
+    source_set=source,
 )
 
 values = experiment.get("Csca", as_numpy=True)
