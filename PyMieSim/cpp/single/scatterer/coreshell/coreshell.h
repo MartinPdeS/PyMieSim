@@ -60,6 +60,7 @@ class CoreShell: public BaseScatterer
         :   BaseScatterer(_max_order, std::move(_medium)),
             core_diameter(_core_diameter),
             shell_thickness(_shell_thickness),
+            total_diameter(_core_diameter + _shell_thickness),
             core_material(std::move(_core_material)),
             shell_material(std::move(_shell_material))
         {}
