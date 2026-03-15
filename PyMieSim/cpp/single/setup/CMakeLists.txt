@@ -1,14 +1,15 @@
 # PyMieSim/cpp/single/setup/CMakeLists.txt
-add_library(setup_single STATIC "setup.cpp")
-# set_target_properties(setup_single PROPERTIES OUTPUT_NAME setup)
-target_link_libraries(setup_single PUBLIC scatterer source detector)
+set(NAME "setup_single")
+add_library("${NAME}" STATIC "setup.cpp")
 
-pybind11_add_module("interface_setup_single" MODULE interface.cpp)
-set_target_properties("interface_setup_single" PROPERTIES OUTPUT_NAME setup)
-target_link_libraries("interface_setup_single" PUBLIC pybind11::module setup_single)
+target_link_libraries("${NAME}" PUBLIC scatterer source detector)
+
+pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
+set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+target_link_libraries("interface_${NAME}" PUBLIC pybind11::module "${NAME}")
 
 install(
-    TARGETS "setup_single" "interface_setup_single"
+    TARGETS "${NAME}" "interface_${NAME}"
     LIBRARY DESTINATION "PyMieSim/single"
     RUNTIME DESTINATION "PyMieSim/single"
     ARCHIVE DESTINATION "PyMieSim/single"
