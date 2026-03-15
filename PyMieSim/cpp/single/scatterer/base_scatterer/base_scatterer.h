@@ -201,7 +201,7 @@ public:
      * @param radius The radius of the scatterer.
      * @return A tuple containing the phi and theta fields.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
+    std::pair<std::vector<complex128>, std::vector<complex128>>
     get_unstructured_farfields(
         const std::vector<double>& phi,
         const std::vector<double>& theta,
@@ -215,7 +215,7 @@ public:
      * @param radius The radius of the scatterer.
      * @return A tuple containing the phi and theta fields.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
+    std::pair<std::vector<complex128>, std::vector<complex128>>
     get_unstructured_farfields(
         const FibonacciMesh& fibonacci_mesh,
         const double radius,
@@ -241,7 +241,7 @@ public:
      * @param max_order The maximum order of the coefficients to compute.
      * @return A tuple containing the pi and tau coefficients as vectors.
      */
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
+    std::pair<std::vector<complex128>, std::vector<complex128>>
     get_pi_tau(
         const double& mu,
         const size_t& max_order
@@ -425,7 +425,7 @@ public:
      *
      * @return A tuple containing the phi field, theta field, phi angles, and theta angles.
      */
-    std::tuple<std::vector<double>, FullSteradian>
+    std::pair<std::vector<double>, FullSteradian>
     get_structured_spf(
         std::shared_ptr<BaseSource> source,
         const size_t sampling,

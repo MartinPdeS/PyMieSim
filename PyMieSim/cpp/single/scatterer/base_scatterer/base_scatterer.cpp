@@ -59,7 +59,7 @@ BaseScatterer::get_structured_farfields(
     return std::make_tuple(phi_field, theta_field, mesh);
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
+std::pair<std::vector<complex128>, std::vector<complex128>>
 BaseScatterer::get_unstructured_farfields(
     const std::vector<double>& phi,
     const std::vector<double>& theta,
@@ -90,10 +90,10 @@ BaseScatterer::get_unstructured_farfields(
         theta_field.push_back(theta_field_point);
     }
 
-    return std::make_tuple(phi_field, theta_field);
+    return std::make_pair(phi_field, theta_field);
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
+std::pair<std::vector<complex128>, std::vector<complex128>>
 BaseScatterer::get_unstructured_farfields(
     const FibonacciMesh& fibonacci_mesh,
     const double radius,
@@ -173,7 +173,7 @@ BaseScatterer::get_pi_tau(double mu, size_t max_order, complex128 *pin, complex1
     }
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
+std::pair<std::vector<complex128>, std::vector<complex128>>
 BaseScatterer::get_pi_tau(const double& mu, const size_t& max_order) const {
     std::vector<complex128> pin, taun;
     pin.reserve(max_order);
@@ -191,10 +191,10 @@ BaseScatterer::get_pi_tau(const double& mu, const size_t& max_order) const {
         taun.push_back( ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1] );
     }
 
-    return std::make_tuple(pin, taun);
+    return std::make_pair(pin, taun);
 }
 
-std::tuple<std::vector<double>, FullSteradian>
+std::pair<std::vector<double>, FullSteradian>
 BaseScatterer::get_structured_spf(std::shared_ptr<BaseSource> source, const size_t sampling, const double radius) const
 {
     auto [phi_field, theta_field, full_mesh] = this->get_structured_farfields(
@@ -212,7 +212,7 @@ BaseScatterer::get_structured_spf(std::shared_ptr<BaseSource> source, const size
         spf.push_back( value );
     }
 
-    return std::make_tuple(std::move(spf), std::move(full_mesh));
+    return std::make_pair(std::move(spf), std::move(full_mesh));
 }
 
 std::vector<double> BaseScatterer::get_unstructured_spf(
@@ -440,8 +440,8 @@ BaseScatterer::compute_incident_nearfields(
 
     for (std::size_t point_index = 0; point_index < number_of_points; ++point_index) {
 
-        const double x_position = x[point_index];
-        const double y_position = y[point_index];
+        // const double x_position = x[point_index];
+        // const double y_position = y[point_index];
         const double z_position = z[point_index];
 
         // Plane wave consistent with your BH expansion assumptions: propagation along +z in the medium
