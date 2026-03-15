@@ -17,6 +17,10 @@ namespace py = pybind11;
 PYBIND11_MODULE(setup, module)
 {
     py::object ureg = get_shared_ureg();
+    py::module_::import("PyMieSim.single.detector");
+    py::module_::import("PyMieSim.single.source");
+    py::module_::import("PyMieSim.single.scatterer");
+    py::module_::import("PyMieSim.mesh");
 
     py::class_<Setup, std::shared_ptr<Setup>>(module,
         "Setup",
