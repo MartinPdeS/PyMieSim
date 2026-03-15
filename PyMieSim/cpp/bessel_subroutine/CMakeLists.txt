@@ -13,7 +13,7 @@ target_link_options(${NAME} PUBLIC ${STATIC_LINK_OPTIONS})
 
 install(
     TARGETS "${NAME}"
-    LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/binary"
-    RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/binary"
-    ARCHIVE DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/binary"
+    LIBRARY DESTINATION "PyMieSim/binary"
+    RUNTIME DESTINATION "PyMieSim/binary"
+    ARCHIVE DESTINATION "PyMieSim/binary"
 )
