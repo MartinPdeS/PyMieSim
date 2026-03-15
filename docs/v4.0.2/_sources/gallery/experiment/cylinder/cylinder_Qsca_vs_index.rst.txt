@@ -23,44 +23,7 @@ InfiniteCylinder: Qsca vs Index
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
-
-Importing the package dependencies: numpy, PyMieSim
-
-.. GENERATED FROM PYTHON SOURCE LINES 10-40
-
-.. code-block:: Python
-
-    import numpy as np
-    from PyMieSim.units import ureg
-
-    from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
-    from PyMieSim.experiment import Setup
-
-    polarization_set = PolarizationSet(
-        angles=[30.0] * ureg.degree,
-    )
-
-    source = GaussianSet(
-        wavelength=[500, 1000, 1500] * ureg.nanometer,  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
-        polarization=polarization_set,  # Polarization angle in ureg.degrees
-        optical_power=[1e-3] * ureg.watt,  # 1 milliureg.watt
-        numerical_aperture=[0.2] * ureg.AU,  # Numerical Aperture
-    )
-
-    scatterer = InfiniteCylinderSet(
-        diameter=[800] * ureg.nanometer,  # Fixed diameter of 800 nm
-        refractive_index=np.linspace(1.3, 1.9, 1500) * ureg.RIU,  # Refractive index ranging from 1.3 to 1.9
-        medium_refractive_index=[1.0] * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source,
-    )
-
-    experiment = Setup(scatterer=scatterer, source=source)
-
-    dataframe = experiment.get("Qsca", "Qext")
-
-    dataframe.plot(x="scatterer:refractive_index")
+.. GENERATED FROM PYTHON SOURCE LINES 7-37
 
 
 
@@ -74,19 +37,52 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
-      return math.isfinite(val)
-    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
-      return np.asarray(x, float)
 
     <Figure size 800x500 with 1 Axes>
 
 
 
 
+
+|
+
+.. code-block:: Python
+
+    import numpy as np
+    from PyMieSim.units import ureg
+
+    from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
+    from PyMieSim.experiment import Setup
+
+    polarization_set = PolarizationSet(
+        angles=[30.0] * ureg.degree,
+    )
+
+    source = GaussianSet(
+        wavelength=[500, 1000, 1500] * ureg.nanometer,
+        polarization=polarization_set,
+        optical_power=[1e-3] * ureg.watt,
+        numerical_aperture=[0.2] * ureg.AU,
+    )
+
+    scatterer = InfiniteCylinderSet(
+        diameter=[800] * ureg.nanometer,
+        material=np.linspace(1.3, 1.9, 1500) * ureg.RIU,
+        medium=[1.0] * ureg.RIU,
+    )
+
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
+
+    dataframe = experiment.get("Qsca", "Qext")
+
+    dataframe.plot(x="scatterer:material")
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.649 seconds)
+   **Total running time of the script:** (0 minutes 0.746 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_index.py:

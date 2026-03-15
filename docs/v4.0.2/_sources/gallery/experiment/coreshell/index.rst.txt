@@ -33,40 +33,6 @@ Examples of particles composed of a core and shell.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_a1_vs_corediameter_thumb.png
-    :alt:
-
-  :doc:`/gallery/experiment/coreshell/coreshell_a1_vs_corediameter`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">CoreShell: An vs Core Diameter</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_b1_vs_corediameter_thumb.png
-    :alt:
-
-  :doc:`/gallery/experiment/coreshell/coreshell_b1_vs_corediameter`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of core diameter for CoreShell scatterers using PyMieSim.">
 
 .. only:: html
@@ -110,8 +76,6 @@ Examples of particles composed of a core and shell.
    :hidden:
 
    /gallery/experiment/coreshell/coreshell_Qback_vs_corediameter
-   /gallery/experiment/coreshell/coreshell_a1_vs_corediameter
-   /gallery/experiment/coreshell/coreshell_b1_vs_corediameter
    /gallery/experiment/coreshell/coreshell_coupling_vs_corediameter
    /gallery/experiment/coreshell/coreshell_coupling_vs_na_cache
 

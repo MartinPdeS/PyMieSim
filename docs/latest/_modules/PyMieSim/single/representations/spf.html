@@ -459,17 +459,16 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span><span class="p">,</span> <span class="n">spherical_to_cartesian</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">spherical_to_cartesian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span> <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
 
 
 <div class="viewcode-block" id="SPF">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">():</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the scattering phase function (SPF) for the scatterer.</span>
@@ -516,36 +515,19 @@
 <span class="sd">    &gt;&gt;&gt; print(spf)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
-    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_full_farfields</span><span class="p">(</span>
-            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_spf</span><span class="p">(</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span>
+            <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">fields</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">compute_components</span><span class="p">()</span>
-
-<div class="viewcode-block" id="SPF.compute_components">
-<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF.compute_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the Scattering Phase Function (SPF) based on the electric field components (E_phi and E_theta).</span>
-
-<span class="sd">        The SPF is calculated as the square root of the sum of the squared magnitudes of the electric field components, representing</span>
-<span class="sd">        the total scattering intensity distribution as a function of angles.</span>
-
-<span class="sd">        The result is stored as the SPF attribute of the instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="SPF.plot">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">unit_size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+        <span class="n">unit_size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">),</span>
         <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
         <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
@@ -563,7 +545,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        unit_size : List[float]</span>
-<span class="sd">            The size of the plot window in pixels (width, height). Default is (400, 400).</span>
+<span class="sd">            The size of the plot window in pixels (width, height). Default is (800, 800).</span>
 <span class="sd">        background_color : str</span>
 <span class="sd">            The background color of the plot. Default is &#39;white&#39;.</span>
 <span class="sd">        show_edges : bool</span>
@@ -577,18 +559,14 @@
 <span class="sd">        show_axis_label : bool</span>
 <span class="sd">            If True, shows the axis labels. Default is False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Define the window size based on the unit size provided</span>
-        <span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># One subplot</span>
+        <span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-        <span class="c1"># Create a PyVista plotting scene with the specified theme and window size</span>
         <span class="n">scene</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span>
             <span class="n">theme</span><span class="o">=</span><span class="n">pyvista</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">DocumentTheme</span><span class="p">(),</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span>
         <span class="p">)</span>
 
-        <span class="c1"># Set the background color of the scene</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
 
-        <span class="c1"># Add the 3D axis-aligned plot to the scene using the specified settings</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_3d_ax</span><span class="p">(</span>
             <span class="n">scene</span><span class="o">=</span><span class="n">scene</span><span class="p">,</span>
             <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
@@ -597,13 +575,10 @@
             <span class="n">set_surface</span><span class="o">=</span><span class="n">set_surface</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Optionally add axis labels</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">add_axes_at_origin</span><span class="p">(</span><span class="n">labels_off</span><span class="o">=</span><span class="ow">not</span> <span class="n">show_axis_label</span><span class="p">)</span>
 
-        <span class="c1"># Add a scalar bar to the scene to represent the scattering phase function</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">add_scalar_bar</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapping</span><span class="o">.</span><span class="n">mapper</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Scattering Phase Function&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Display the scene</span>
         <span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
@@ -635,29 +610,19 @@
 <span class="sd">        opacity : float</span>
 <span class="sd">            The opacity of the surface mesh. Default is 1.0.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Create mesh grids for phi and theta</span>
-        <span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta_mesh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span>
+            <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="p">,</span>
+            <span class="n">phi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">theta</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="p">)</span>
 
-        <span class="c1"># Normalize the scattering phase function (SPF) for visualization</span>
-        <span class="n">scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
-
-        <span class="c1"># Determine the coordinates based on whether the surface represents the SPF or a unit sphere</span>
-        <span class="k">if</span> <span class="n">set_surface</span><span class="p">:</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">scalar</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_mesh</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span>
-                <span class="n">r</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">phi_mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_mesh</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Create a structured grid from the calculated coordinates</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 
-        <span class="c1"># Add the surface mesh to the scene</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
             <span class="n">mesh</span><span class="p">,</span>
             <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-            <span class="n">scalars</span><span class="o">=</span><span class="n">scalar</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">),</span>
-            <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
+            <span class="n">scalars</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
             <span class="n">style</span><span class="o">=</span><span class="s2">&quot;surface&quot;</span><span class="p">,</span>
             <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
             <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>

@@ -11,8 +11,9 @@ import matplotlib.pyplot as plt
 from PyMieSim.units import ureg
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
@@ -39,13 +40,12 @@ source = GaussianSet(
 # Setup scatterer
 scatterer = SphereSet(
     diameter=diameters,
-    refractive_index=[1.4] * ureg.RIU,
-    medium_refractive_index=[1.21] * ureg.RIU,
-    source=source
+    material=[1.4] * ureg.RIU,
+    medium=[1.21] * ureg.RIU,
 )
 
 # Define experiment setup
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 

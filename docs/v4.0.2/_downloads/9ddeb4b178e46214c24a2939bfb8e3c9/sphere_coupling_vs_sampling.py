@@ -3,17 +3,17 @@ Sphere: Coupling vs sampling
 ============================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import print_available, SellmeierMaterial, SellmeierMedium
+
+print_available()
 
 
 polarization_set = PolarizationSet(
@@ -28,9 +28,8 @@ source = GaussianSet(
 )
 scatterer = SphereSet(
     diameter=[5000] * ureg.nanometer,
-    material=[Material.BK7],
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    material=[SellmeierMaterial("BK7")],
+    medium=[SellmeierMedium("water")],
 )
 
 detector = PhotodiodeSet(
@@ -40,7 +39,7 @@ detector = PhotodiodeSet(
     sampling=[20, 40, 80, 160]
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

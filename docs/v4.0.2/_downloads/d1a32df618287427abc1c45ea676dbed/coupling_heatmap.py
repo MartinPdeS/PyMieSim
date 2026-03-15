@@ -12,14 +12,12 @@ import numpy
 from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-
-from PyOptik import Material
-import PyMieSim
-PyMieSim.debug_mode = True
+from PyMieSim.material import SellmeierMedium
 
 polarization_state = PolarizationSet(
     angles=[90] * ureg.degree,  # Linear polarization at 90 degrees
@@ -32,11 +30,12 @@ source = GaussianSet(
     numerical_aperture=[0.2] * ureg.AU,
 )
 
+material_values = numpy.linspace(1.3, 2.1, 100) * ureg.RIU
+
 scatterer = SphereSet(
     diameter=numpy.linspace(1, 2000, 100) * ureg.nanometer,
-    refractive_index=numpy.linspace(1.3, 2.1, 100) * ureg.RIU,
-    medium_material=[Material.water],
-    source=source
+    material=material_values,
+    medium=[SellmeierMedium("water")],
 )
 
 detector = PhotodiodeSet(
@@ -47,7 +46,7 @@ detector = PhotodiodeSet(
     sampling=[400]
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 values = experiment.get("coupling", add_units=False, as_numpy=True)
 
@@ -55,7 +54,7 @@ values = experiment.get("coupling", add_units=False, as_numpy=True)
 figure, ax = plt.subplots(1, 1)
 
 image = ax.pcolormesh(
-    scatterer.refractive_index.values,
+    material_values,
     scatterer.diameter,
     values,
     shading="auto"

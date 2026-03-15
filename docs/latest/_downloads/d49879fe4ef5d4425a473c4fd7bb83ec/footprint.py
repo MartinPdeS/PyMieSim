@@ -4,14 +4,13 @@ Scatterer Footprint Calculation and Visualization
 
 This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim.
 """
-
-# Import necessary components from PyMieSim
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single.source import Gaussian, PolarizationState
-from PyMieSim.single.representations import Footprint
+from PyMieSim.single.source import Gaussian
+from PyMieSim.polarization import PolarizationState
+from PyMieSim.single.setup import Setup
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 
@@ -24,9 +23,8 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=2 * ureg.micrometer,
-    source=source,
-    medium_refractive_index=1.0 * ureg.RIU,
-    refractive_index=1.8 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
+    material=1.8 * ureg.RIU,
 )
 
 detector = CoherentMode(
@@ -36,13 +34,15 @@ detector = CoherentMode(
     gamma_offset=0 * ureg.degree,
     phi_offset=0 * ureg.degree,
     rotation=0 * ureg.degree,
-    medium_refractive_index=1.0 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
 )
 
-footprint = Footprint(
+setup = Setup(
     scatterer=scatterer,
+    source=source,
     detector=detector,
-    sampling=100,
 )
+
+footprint = setup.get_representation("footprint", sampling=100)
 
 figure = footprint.plot()

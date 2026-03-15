@@ -21,45 +21,7 @@
 Sphere: Qsca vs wavelength
 ==========================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-9
-
-Importing the package dependencies: numpy, PyMieSim
-
-.. GENERATED FROM PYTHON SOURCE LINES 9-40
-
-.. code-block:: Python
-
-    import numpy as np
-    from PyMieSim.units import ureg
-
-    from PyMieSim.experiment.scatterer import SphereSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyOptik import MaterialBank
-
-    polarization_set = PolarizationSet(
-        angles=[0.0] * ureg.degree,
-    )
-
-    source = GaussianSet(
-        wavelength=np.linspace(400, 1000, 50) * ureg.nanometer,
-        polarization=polarization_set,
-        optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
-    )
-
-    scatterer = SphereSet(
-        diameter=[200] * ureg.nanometer,
-        material=[MaterialBank.BK7],
-        medium_refractive_index=[1] * ureg.RIU,
-        source=source,
-    )
-
-    experiment = Setup(scatterer=scatterer, source=source)
-
-    dataframe = experiment.get("Qsca", "Qpr", scale_unit=True)
-
-    dataframe.plot(x="source:wavelength")
+.. GENERATED FROM PYTHON SOURCE LINES 6-41
 
 
 
@@ -73,15 +35,128 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
+    +-----------------------+-----------------------+
+    | Sellmeier Materials   | Tabulated Materials   |
+    +=======================+=======================+
+    | SF11                  | pva                   |
+    +-----------------------+-----------------------+
+    | air                   | gold                  |
+    +-----------------------+-----------------------+
+    | test_sellmeier_file   | titanium              |
+    +-----------------------+-----------------------+
+    | soda_lime_glass       | zinc                  |
+    +-----------------------+-----------------------+
+    | crown                 | paladium              |
+    +-----------------------+-----------------------+
+    | BAK1                  | bismuth               |
+    +-----------------------+-----------------------+
+    | ZBLAN                 | polyetylene           |
+    +-----------------------+-----------------------+
+    | BAF10                 | aluminium             |
+    +-----------------------+-----------------------+
+    | pvc                   | silicon               |
+    +-----------------------+-----------------------+
+    | FK51A                 | sodium                |
+    +-----------------------+-----------------------+
+    | LASF9                 | calcium               |
+    +-----------------------+-----------------------+
+    | polystyren            | nickel                |
+    +-----------------------+-----------------------+
+    | SF10                  | test_tabulated_file   |
+    +-----------------------+-----------------------+
+    | fused_silica          | chromium              |
+    +-----------------------+-----------------------+
+    | germanium             | vanadium              |
+    +-----------------------+-----------------------+
+    | lithium_niobate       | tantalum              |
+    +-----------------------+-----------------------+
+    | water                 | magnesium             |
+    +-----------------------+-----------------------+
+    | SF5                   | example_tabulated     |
+    +-----------------------+-----------------------+
+    | BK7                   | copper                |
+    +-----------------------+-----------------------+
+    | argon                 | lead                  |
+    +-----------------------+-----------------------+
+    | ethanol               | iron                  |
+    +-----------------------+-----------------------+
+    | propanol              | tungsten              |
+    +-----------------------+-----------------------+
+    | ethylene              | silver                |
+    +-----------------------+-----------------------+
+    | acetylene             | rhodium               |
+    +-----------------------+-----------------------+
+    | cellulose             |                       |
+    +-----------------------+-----------------------+
+    | methane               |                       |
+    +-----------------------+-----------------------+
+    | flint                 |                       |
+    +-----------------------+-----------------------+
+    | acetone               |                       |
+    +-----------------------+-----------------------+
+    | polycarbonate         |                       |
+    +-----------------------+-----------------------+
+    | glycerol              |                       |
+    +-----------------------+-----------------------+
+    | ethane                |                       |
+    +-----------------------+-----------------------+
+    | polystyrene           |                       |
+    +-----------------------+-----------------------+
+    | example_sellmeier     |                       |
+    +-----------------------+-----------------------+
+    | methanol              |                       |
+    +-----------------------+-----------------------+
 
     <Figure size 800x500 with 1 Axes>
 
 
 
 
+
+|
+
+.. code-block:: Python
+
+    import numpy as np
+    from PyMieSim.units import ureg
+
+    from PyMieSim.experiment.scatterer_set import SphereSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
+    from PyMieSim.experiment import Setup
+    from PyMieSim.material import print_available, SellmeierMaterial
+
+    print_available()
+
+    polarization_set = PolarizationSet(
+        angles=[0.0] * ureg.degree,
+    )
+
+    source = GaussianSet(
+        wavelength=np.linspace(400, 1000, 50) * ureg.nanometer,
+        polarization=polarization_set,
+        optical_power=[1e-3] * ureg.watt,
+        numerical_aperture=[0.2] * ureg.AU,
+    )
+
+    bk7 = SellmeierMaterial("BK7")
+
+    scatterer = SphereSet(
+        diameter=[200] * ureg.nanometer,
+        material=[bk7],
+        medium=[1] * ureg.RIU,
+    )
+
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
+
+    dataframe = experiment.get("Qsca", "Qpr", scale_unit=True)
+
+    dataframe.plot(x="source:wavelength")
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.151 seconds)
+   **Total running time of the script:** (0 minutes 0.160 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_wavelength.py:

@@ -101,40 +101,6 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
-    :alt:
-
-  :doc:`/gallery/experiment/cylinder/cylinder_a11_vs_diameter`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: A1 Scattering Coefficient</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_b11_vs_diameter_thumb.png
-    :alt:
-
-  :doc:`/gallery/experiment/cylinder/cylinder_b11_vs_diameter`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">InfiniteCylinder: B1 Scattering Coefficient</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of diameter for cylindrical scatterers using PyMieSim.">
 
 .. only:: html
@@ -199,8 +165,6 @@ Examples demonstrating infinite cylindrical scatterers.
    /gallery/experiment/cylinder/cylinder_Qsca_vs_index
    /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength
    /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std
-   /gallery/experiment/cylinder/cylinder_a11_vs_diameter
-   /gallery/experiment/cylinder/cylinder_b11_vs_diameter
    /gallery/experiment/cylinder/cylinder_coupling_vs_diameter
    /gallery/experiment/cylinder/cylinder_coupling_vs_phioffset
    /gallery/experiment/cylinder/cylinder_coupling_vs_wavelength

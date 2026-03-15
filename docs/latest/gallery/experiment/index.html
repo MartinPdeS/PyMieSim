@@ -412,9 +412,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../single/index.html">Single Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../single/farfield.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/nearfields.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/properties.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/stokes.html">Stokes Parameters Computation</a></li>
@@ -423,8 +424,6 @@
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Experiment Module</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="coreshell/index.html">Core-Shell</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="coreshell/coreshell_Qback_vs_corediameter.html">CoreShell: Qback vs Core Diameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="coreshell/coreshell_a1_vs_corediameter.html">CoreShell: An vs Core Diameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="coreshell/coreshell_b1_vs_corediameter.html">CoreShell: B1 vs Core Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coreshell/coreshell_coupling_vs_corediameter.html">CoreShell: Coupling vs Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="coreshell/coreshell_coupling_vs_na_cache.html">CoreShell: Coupling vs Diameter</a></li>
 </ul>
@@ -435,8 +434,6 @@
 <li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_Qsca_vs_index.html">InfiniteCylinder: Qsca vs Index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_Qsca_vs_wavelength.html">InfiniteCylinder: Qsca vs Wavelength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_Qsca_vs_wavelength_std.html">InfiniteCylinder: Qsca vs wavelength std</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_a11_vs_diameter.html">InfiniteCylinder: A1 Scattering Coefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_b11_vs_diameter.html">InfiniteCylinder: B1 Scattering Coefficient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_coupling_vs_diameter.html">InfiniteCylinder: Coupling vs Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_coupling_vs_phioffset.html">InfiniteCylinder: Goniometer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cylinder/cylinder_coupling_vs_wavelength.html">InfiniteCylinder: Coupling vs Wavelength</a></li>
@@ -448,8 +445,6 @@
 <li class="toctree-l3"><a class="reference internal" href="sphere/sphere_Qsca_vs_index.html">Sphere: Qsca vs index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sphere/sphere_Qsca_vs_wavelength.html">Sphere: Qsca vs wavelength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sphere/sphere_Qsca_vs_wavelength_std.html">Sphere: Qsca vs wavelength STD</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sphere/sphere_a1_vs_diameter.html">Sphere: A1 scattering coefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sphere/sphere_b1_vs_diameter.html">Sphere: B1 scattering coefficient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sphere/sphere_coherent_coupling_vs_phioffset.html">Sphere: Coherent Goniometer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sphere/sphere_coherent_coupling_vs_rotation.html">Sphere: Coherent mode field rotation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sphere/sphere_coherent_coupling_vs_sampling.html">Sphere: coherent coupling vs sampling</a></li>
@@ -551,12 +546,6 @@ change across many configurations.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the backscattering efficiency (Qback) as functions of core diameter for CoreShell scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_coreshell_Qback_vs_corediameter_thumb.png" />
 <p><a class="reference internal" href="coreshell/coreshell_Qback_vs_corediameter.html"><span class="doc">CoreShell: Qback vs Core Diameter</span></a></p>
   <div class="sphx-glr-thumbnail-title">CoreShell: Qback vs Core Diameter</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_coreshell_a1_vs_corediameter_thumb.png" />
-<p><a class="reference internal" href="coreshell/coreshell_a1_vs_corediameter.html"><span class="doc">CoreShell: An vs Core Diameter</span></a></p>
-  <div class="sphx-glr-thumbnail-title">CoreShell: An vs Core Diameter</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_coreshell_b1_vs_corediameter_thumb.png" />
-<p><a class="reference internal" href="coreshell/coreshell_b1_vs_corediameter.html"><span class="doc">CoreShell: B1 vs Core Diameter</span></a></p>
-  <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of core diameter for CoreShell scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_coreshell_coupling_vs_corediameter_thumb.png" />
 <p><a class="reference internal" href="coreshell/coreshell_coupling_vs_corediameter.html"><span class="doc">CoreShell: Coupling vs Diameter</span></a></p>
   <div class="sphx-glr-thumbnail-title">CoreShell: Coupling vs Diameter</div>
@@ -582,12 +571,6 @@ change across many configurations.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="InfiniteCylinder: Qsca vs wavelength std"><img alt="" src="../../_images/sphx_glr_cylinder_Qsca_vs_wavelength_std_thumb.png" />
 <p><a class="reference internal" href="cylinder/cylinder_Qsca_vs_wavelength_std.html"><span class="doc">InfiniteCylinder: Qsca vs wavelength std</span></a></p>
   <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Qsca vs wavelength std</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_cylinder_a11_vs_diameter_thumb.png" />
-<p><a class="reference internal" href="cylinder/cylinder_a11_vs_diameter.html"><span class="doc">InfiniteCylinder: A1 Scattering Coefficient</span></a></p>
-  <div class="sphx-glr-thumbnail-title">InfiniteCylinder: A1 Scattering Coefficient</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_cylinder_b11_vs_diameter_thumb.png" />
-<p><a class="reference internal" href="cylinder/cylinder_b11_vs_diameter.html"><span class="doc">InfiniteCylinder: B1 Scattering Coefficient</span></a></p>
-  <div class="sphx-glr-thumbnail-title">InfiniteCylinder: B1 Scattering Coefficient</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of diameter for cylindrical scatterers using PyMieSim."><img alt="" src="../../_images/sphx_glr_cylinder_coupling_vs_diameter_thumb.png" />
 <p><a class="reference internal" href="cylinder/cylinder_coupling_vs_diameter.html"><span class="doc">InfiniteCylinder: Coupling vs Diameter</span></a></p>
   <div class="sphx-glr-thumbnail-title">InfiniteCylinder: Coupling vs Diameter</div>
@@ -616,12 +599,6 @@ change across many configurations.</p>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength STD"><img alt="" src="../../_images/sphx_glr_sphere_Qsca_vs_wavelength_std_thumb.png" />
 <p><a class="reference internal" href="sphere/sphere_Qsca_vs_wavelength_std.html"><span class="doc">Sphere: Qsca vs wavelength STD</span></a></p>
   <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength STD</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: A1 scattering coefficient"><img alt="" src="../../_images/sphx_glr_sphere_a1_vs_diameter_thumb.png" />
-<p><a class="reference internal" href="sphere/sphere_a1_vs_diameter.html"><span class="doc">Sphere: A1 scattering coefficient</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Sphere: A1 scattering coefficient</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: B1 scattering coefficient"><img alt="" src="../../_images/sphx_glr_sphere_b1_vs_diameter_thumb.png" />
-<p><a class="reference internal" href="sphere/sphere_b1_vs_diameter.html"><span class="doc">Sphere: B1 scattering coefficient</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Sphere: B1 scattering coefficient</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coherent Goniometer"><img alt="" src="../../_images/sphx_glr_sphere_coherent_coupling_vs_phioffset_thumb.png" />
 <p><a class="reference internal" href="sphere/sphere_coherent_coupling_vs_phioffset.html"><span class="doc">Sphere: Coherent Goniometer</span></a></p>
   <div class="sphx-glr-thumbnail-title">Sphere: Coherent Goniometer</div>

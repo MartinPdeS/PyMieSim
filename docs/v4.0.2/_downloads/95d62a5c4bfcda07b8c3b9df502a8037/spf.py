@@ -5,13 +5,12 @@ SPF Computation
 This example demonstrates the computation and visualization of the Scattering Phase Function (SPF) using PyMieSim.
 """
 
-# %%
-# Importing the package: PyMieSim
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import CoreShell
-from PyMieSim.single.source import Gaussian, RightCircular
-from PyMieSim.single.representations import SPF
+from PyMieSim.single.source import Gaussian
+from PyMieSim.polarization import RightCircular
+from PyMieSim.single.setup import Setup
 
 polarization = RightCircular()
 
@@ -25,13 +24,16 @@ source = Gaussian(
 scatterer = CoreShell(
     core_diameter=500 * ureg.nanometer,
     shell_thickness=400 * ureg.nanometer,
-    source=source,
-    core_refractive_index=1.4 * ureg.RIU,
-    shell_refractive_index=1.8 * ureg.RIU,
-    medium_refractive_index=1.0 * ureg.RIU,
+    core_material=1.4 * ureg.RIU,
+    shell_material=1.8 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
 )
 
+setup = Setup(
+    scatterer=scatterer,
+    source=source,
+)
 
-spf = SPF(scatterer=scatterer, sampling=300)
+spf = setup.get_representation("spf", sampling=100)
 
 figure = spf.plot()

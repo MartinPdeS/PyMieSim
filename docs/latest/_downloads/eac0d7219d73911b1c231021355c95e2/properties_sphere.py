@@ -6,7 +6,8 @@ Samples Properties
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
+from PyMieSim.single.source import Gaussian
+from PyMieSim.polarization import PolarizationState
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 
@@ -19,9 +20,10 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=800 * ureg.nanometer,
-    source=source,
-    refractive_index=1.4 * ureg.RIU,
-    medium_refractive_index=1.0 * ureg.RIU,
+    material=1.4 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
 )
+
+scatterer.init(source)
 
 scatterer.print_properties(4)

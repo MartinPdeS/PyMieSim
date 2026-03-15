@@ -412,9 +412,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../single/index.html">Single Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../single/farfield.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/nearfields.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/properties.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/stokes.html">Stokes Parameters Computation</a></li>
@@ -423,8 +424,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../experiment/coreshell/index.html">Core-Shell</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_Qback_vs_corediameter.html">CoreShell: Qback vs Core Diameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_a1_vs_corediameter.html">CoreShell: An vs Core Diameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_b1_vs_corediameter.html">CoreShell: B1 vs Core Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_coupling_vs_corediameter.html">CoreShell: Coupling vs Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_coupling_vs_na_cache.html">CoreShell: Coupling vs Diameter</a></li>
 </ul>
@@ -435,8 +434,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_Qsca_vs_index.html">InfiniteCylinder: Qsca vs Index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_Qsca_vs_wavelength.html">InfiniteCylinder: Qsca vs Wavelength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_Qsca_vs_wavelength_std.html">InfiniteCylinder: Qsca vs wavelength std</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_a11_vs_diameter.html">InfiniteCylinder: A1 Scattering Coefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_b11_vs_diameter.html">InfiniteCylinder: B1 Scattering Coefficient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_coupling_vs_diameter.html">InfiniteCylinder: Coupling vs Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_coupling_vs_phioffset.html">InfiniteCylinder: Goniometer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_coupling_vs_wavelength.html">InfiniteCylinder: Coupling vs Wavelength</a></li>
@@ -448,8 +445,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_Qsca_vs_index.html">Sphere: Qsca vs index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_Qsca_vs_wavelength.html">Sphere: Qsca vs wavelength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_Qsca_vs_wavelength_std.html">Sphere: Qsca vs wavelength STD</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_a1_vs_diameter.html">Sphere: A1 scattering coefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_b1_vs_diameter.html">Sphere: B1 scattering coefficient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_coherent_coupling_vs_phioffset.html">Sphere: Coherent Goniometer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_coherent_coupling_vs_rotation.html">Sphere: Coherent mode field rotation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_coherent_coupling_vs_sampling.html">Sphere: coherent coupling vs sampling</a></li>
@@ -553,7 +548,8 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationState</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
 
 <span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 
@@ -566,10 +562,11 @@ to download the full example code.</p>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">800</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium_refractive_index</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">scatterer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
 <span class="n">scatterer</span><span class="o">.</span><span class="n">print_properties</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>

@@ -5,15 +5,14 @@ Stokes Parameters Computation
 This example demonstrates the computation and visualization of the Stokes parameters using PyMieSim.
 """
 
-# %%
-# Importing the package: PyMieSim
 from PyMieSim.units import ureg
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian, PolarizationState
-from PyMieSim.single.representations import Stokes
+from PyMieSim.single.source import Gaussian
+from PyMieSim.polarization import PolarizationState
+from PyMieSim.single.setup import Setup
 
-polarization_state = PolarizationState(angle=10 * ureg.degree)
+polarization_state = PolarizationState(angle=0 * ureg.degree)
 
 source = Gaussian(
     wavelength=750 * ureg.nanometer,
@@ -23,12 +22,16 @@ source = Gaussian(
 )
 
 scatterer = Sphere(
-    diameter=300 * ureg.nanometer,
-    source=source,
-    medium_refractive_index=1.0 * ureg.RIU,
-    refractive_index=1.4 * ureg.RIU,
+    diameter=600 * ureg.nanometer,
+    medium=1.0 * ureg.RIU,
+    material=1.4 * ureg.RIU,
 )
 
-stokes = Stokes(scatterer=scatterer, sampling=100)
+setup = Setup(
+    scatterer=scatterer,
+    source=source,
+)
+
+stokes = setup.get_representation("stokes", sampling=100)
 
 figure = stokes.plot()

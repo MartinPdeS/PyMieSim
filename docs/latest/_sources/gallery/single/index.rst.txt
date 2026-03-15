@@ -23,10 +23,10 @@ interaction can be studied in detail.
 
 .. only:: html
 
-  .. image:: /gallery/single/images/thumb/sphx_glr_farfield_thumb.png
+  .. image:: /gallery/single/images/thumb/sphx_glr_farfields_thumb.png
     :alt:
 
-  :doc:`/gallery/single/farfield`
+  :doc:`/gallery/single/farfields`
 
 .. raw:: html
 
@@ -57,14 +57,31 @@ interaction can be studied in detail.
 
 .. only:: html
 
-  .. image:: /gallery/single/images/thumb/sphx_glr_nearfield_thumb.png
+  .. image:: /gallery/single/images/thumb/sphx_glr_nearfields_thumb.png
     :alt:
 
-  :doc:`/gallery/single/nearfield`
+  :doc:`/gallery/single/nearfields`
 
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Near-Fields Computation and Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/single/images/thumb/sphx_glr_properties_thumb.png
+    :alt:
+
+  :doc:`/gallery/single/properties`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
     </div>
 
 
@@ -129,9 +146,10 @@ interaction can be studied in detail.
 .. toctree::
    :hidden:
 
-   /gallery/single/farfield
+   /gallery/single/farfields
    /gallery/single/footprint
-   /gallery/single/nearfield
+   /gallery/single/nearfields
+   /gallery/single/properties
    /gallery/single/s1s2
    /gallery/single/spf
    /gallery/single/stokes

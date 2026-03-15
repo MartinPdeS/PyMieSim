@@ -11,7 +11,9 @@ from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import PlaneWave, PolarizationState
+from PyMieSim.single.source import PlaneWave
+from PyMieSim.single.setup import Setup
+from PyMieSim.polarization import PolarizationState
 
 # %%
 # Create a simple plane wave source
@@ -23,15 +25,19 @@ source = PlaneWave(
 
 scatterer = Sphere(
     diameter=200 * ureg.nanometer,
-    refractive_index=1.5 * ureg.RIU,
-    medium_refractive_index=1.0 * ureg.RIU,
-    source=source,
+    material=1.5 * ureg.RIU,
+    medium=1.0 * ureg.RIU,
+)
+
+setup = Setup(
+    scatterer=scatterer,
+    source=source
 )
 
 phi = np.linspace(0, np.pi, 150) * ureg.radian
 theta = np.linspace(0, np.pi / 2, 150) * ureg.radian
 
-E_para, E_perp = scatterer.get_farfields(phi=phi, theta=theta, distance=1 * ureg.meter)
+E_para, E_perp = setup.get_farfields(phi=phi, theta=theta, distance=1 * ureg.meter)
 
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
@@ -51,7 +57,7 @@ plt.show()
 
 # %%
 # S1 and S2 scattering amplitudes
-S1, S2 = scatterer.get_s1s2(phi=phi)
+S1, S2 = setup.get_s1s2(angles=phi)
 
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)
@@ -71,7 +77,7 @@ plt.show()
 
 # %%
 # Stokes parameters
-I, Q, U, V = scatterer.get_stokes_parameters(phi=phi, theta=theta, distance=1 * ureg.meter )
+I, Q, U, V = setup.get_stokes(phi=phi, theta=theta, distance=1 * ureg.meter )
 
 plt.figure(figsize=(10, 5))
 plt.subplot(2, 2, 1)

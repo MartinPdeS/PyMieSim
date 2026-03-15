@@ -4,17 +4,16 @@ Integrating sphere
 
 This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.
 """
-
-# %%
-# Importing the package: PyMieSim
-from PyMieSim.units import ureg
-
+import pyvista as pv
 from PyMieSim.single.detector import IntegratingSphere
-from PyMieSim.single import SystemPlotter
+
 
 detector = IntegratingSphere(
-    sampling=500 * ureg.AU,  # Number of sampling points
+    sampling=500,
 )
 
-plotter = SystemPlotter()
-plotter.plot(detector)
+scene = pv.Plotter()
+
+detector.add_to_scene(scene)
+
+scene.show()

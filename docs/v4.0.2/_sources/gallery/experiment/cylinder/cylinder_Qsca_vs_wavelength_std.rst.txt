@@ -21,44 +21,7 @@
 InfiniteCylinder: Qsca vs wavelength std
 ========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-9
-
-Importing the package dependencies: numpy, PyMieSim
-
-.. GENERATED FROM PYTHON SOURCE LINES 9-39
-
-.. code-block:: Python
-
-    import numpy as np
-    from PyMieSim.units import ureg
-
-    from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyOptik import Material
-
-    polarization_set = PolarizationSet(
-        angles=[0.0] * ureg.degree,
-    )
-
-    source = GaussianSet(
-        wavelength=np.linspace(200, 1800, 300) * ureg.nanometer,
-        polarization=polarization_set,
-        optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
-    )
-    scatterer = InfiniteCylinderSet(
-        diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-        material=[Material.silver],
-        medium_refractive_index=[1.0] * ureg.RIU,
-        source=source,
-    )
-
-    experiment = Setup(scatterer=scatterer, source=source)
-
-    dataframe = experiment.get("Qsca")
-
-    dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+.. GENERATED FROM PYTHON SOURCE LINES 6-35
 
 
 
@@ -78,9 +41,45 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
+
+|
+
+.. code-block:: Python
+
+    import numpy as np
+    from PyMieSim.units import ureg
+
+    from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
+    from PyMieSim.experiment import Setup
+
+    polarization_set = PolarizationSet(
+        angles=[0.0] * ureg.degree,
+    )
+
+    source = GaussianSet(
+        wavelength=np.linspace(200, 1800, 300) * ureg.nanometer,
+        polarization=polarization_set,
+        optical_power=[1] * ureg.watt,
+        numerical_aperture=[0.2] * ureg.AU,
+    )
+    scatterer = InfiniteCylinderSet(
+        diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
+        material=[1.4] * ureg.RIU,
+        medium=[1.0] * ureg.RIU,
+    )
+
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
+
+    dataframe = experiment.get("Qsca")
+
+    dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.394 seconds)
+   **Total running time of the script:** (0 minutes 0.510 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py:

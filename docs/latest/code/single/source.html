@@ -495,6 +495,11 @@
 <p>Monochromatic plane wave source.</p>
 <p>This source models a spatially uniform incident field with a specified
 wavelength, polarization, and electric field amplitude.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.add_to_scene">
+<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.single.source.BaseSource</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.add_to_scene" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.amplitude">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.amplitude" title="Link to this definition">#</a></dt>
@@ -566,6 +571,11 @@ wavelength, polarization, numerical aperture, and optical power.</p>
 <p class="rubric">Notes</p>
 <p>The numerical_aperture is treated as dimensionless and is used to derive the beam waist and
 related quantities in the C++ implementation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.add_to_scene">
+<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.single.source.BaseSource</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.add_to_scene" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.amplitude">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amplitude</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.amplitude" title="Link to this definition">#</a></dt>
@@ -723,6 +733,7 @@ related quantities in the C++ implementation.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave"><code class="docutils literal notranslate"><span class="pre">PlaneWave</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.add_to_scene"><code class="docutils literal notranslate"><span class="pre">PlaneWave.add_to_scene()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.amplitude"><code class="docutils literal notranslate"><span class="pre">PlaneWave.amplitude</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.polarization"><code class="docutils literal notranslate"><span class="pre">PlaneWave.polarization</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.PlaneWave.wavelength"><code class="docutils literal notranslate"><span class="pre">PlaneWave.wavelength</span></code></a></li>
@@ -730,6 +741,7 @@ related quantities in the C++ implementation.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian"><code class="docutils literal notranslate"><span class="pre">Gaussian</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.add_to_scene"><code class="docutils literal notranslate"><span class="pre">Gaussian.add_to_scene()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.amplitude"><code class="docutils literal notranslate"><span class="pre">Gaussian.amplitude</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.area"><code class="docutils literal notranslate"><span class="pre">Gaussian.area</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.source.Gaussian.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">Gaussian.numerical_aperture</span></code></a></li>

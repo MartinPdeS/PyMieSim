@@ -23,40 +23,7 @@ S1 S2 Function Computation
 
 This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
-
-Importing the package: PyMieSim
-
-.. GENERATED FROM PYTHON SOURCE LINES 10-36
-
-.. code-block:: Python
-
-    from PyMieSim.units import ureg
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.source import Gaussian, PolarizationState
-    from PyMieSim.single.representations import S1S2
-
-    polarization_state = PolarizationState(angle=0 * ureg.degree)
-
-    source = Gaussian(
-        wavelength=450 * ureg.nanometer,
-        polarization=polarization_state,
-        optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
-    )
-
-    scatterer = Sphere(
-        diameter=6 * ureg.nanometer,
-        source=source,
-        medium_refractive_index=1.0 * ureg.RIU,
-        refractive_index=1.4 * ureg.RIU,
-    )
-
-    scatterer.Qsca
-
-    s1s2 = S1S2(scatterer=scatterer, sampling=200)  # Specify the number of sampling points
-
-    figure = s1s2.plot()
+.. GENERATED FROM PYTHON SOURCE LINES 7-40
 
 
 
@@ -69,10 +36,46 @@ Importing the package: PyMieSim
 
 
 
+.. code-block:: Python
+
+
+    from PyMieSim.units import ureg
+    from PyMieSim.single.scatterer import InfiniteCylinder
+    from PyMieSim.single.source import Gaussian
+    from PyMieSim.polarization import PolarizationState
+    from PyMieSim.material import SellmeierMaterial
+    from PyMieSim.single.setup import Setup
+
+    bk7 = SellmeierMaterial("BK7")
+
+    polarization_state = PolarizationState(angle=0 * ureg.degree)
+
+    source = Gaussian(
+        wavelength=450 * ureg.nanometer,
+        polarization=polarization_state,
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3 * ureg.AU,
+    )
+
+    scatterer = InfiniteCylinder(
+        diameter=6 * ureg.nanometer,
+        medium=1.0 * ureg.RIU,
+        material=bk7,
+    )
+
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+    )
+
+    s1s2 = setup.get_representation("s1s2", sampling=200)
+
+    figure = s1s2.plot()
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.234 seconds)
+   **Total running time of the script:** (0 minutes 0.263 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:

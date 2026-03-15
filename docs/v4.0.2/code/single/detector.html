@@ -491,126 +491,16 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BASE_DETECTOR</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
 <p>Photodiode for Lorenz-Mie scattering simulations.</p>
-<p>This class wraps a C++ Photodiode that samples the scattered field
-according to numerical aperture, orientation offsets, polarization
-filtering, and optional coherent or mean coupling strategies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sampling</strong> (<em>int</em>) – Number of sample points on the detector’s angular mesh.</p></li>
-<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture of the detector; controls the angular acceptance.</p></li>
-<li><p><strong>cache_numerical_aperture</strong> (<em>float</em>) – Cached numerical_aperture threshold for fast lookup (set equal to <cite>numerical_aperture</cite> to disable).</p></li>
-<li><p><strong>phi_offset</strong> (<em>float</em>) – Azimuthal angle offset (radians) for detector orientation.</p></li>
-<li><p><strong>gamma_offset</strong> (<em>float</em>) – Polar angle offset (radians) for detector orientation.</p></li>
-<li><p><strong>polarization_filter</strong> (<em>float</em>) – Degree or type of polarization filtering applied.</p></li>
-<li><p><strong>medium_refractive_index</strong> (<em>float</em><em>, </em><em>optional</em>) – Refractive index of the surrounding medium. Default is 1.0.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.scalar_field">
-<span class="sig-name descname"><span class="pre">scalar_field</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.scalar_field" title="Link to this definition">#</a></dt>
-<dd><p>The detected scalar field (intensity) sampled on the angular mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.numerical_aperture">
-<span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.numerical_aperture" title="Link to this definition">#</a></dt>
-<dd><p>Numerical aperture exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Dimensionless]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.sampling" title="Link to this definition">#</a></dt>
-<dd><p>Sampling count exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.phi_offset">
-<span class="sig-name descname"><span class="pre">phi_offset</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.phi_offset" title="Link to this definition">#</a></dt>
-<dd><p>Azimuthal offset exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.gamma_offset">
-<span class="sig-name descname"><span class="pre">gamma_offset</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
-<dd><p>Polar offset exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.polarization_filter">
-<span class="sig-name descname"><span class="pre">polarization_filter</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.polarization_filter" title="Link to this definition">#</a></dt>
-<dd><p>Polarization filter setting exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.mesh" title="Link to this definition">#</a></dt>
-<dd><p>Underlying Fibonacci mesh of angles used by the detector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.max_angle">
-<span class="sig-name descname"><span class="pre">max_angle</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.max_angle" title="Link to this definition">#</a></dt>
-<dd><p>Maximum polar angle in the mesh (radians).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.min_angle">
-<span class="sig-name descname"><span class="pre">min_angle</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.min_angle" title="Link to this definition">#</a></dt>
-<dd><p>Minimum polar angle in the mesh (radians); zero if no cache.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.add_to_scene">
+<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="pre">PyMieSim.single.detector.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cone_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_point_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.add_to_scene" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.binary.interface_single.Photodiode"><span class="pre">PyMieSim.binary.interface_single.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.print_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="pre">PyMieSim.single.detector.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.print_properties" title="Link to this definition">#</a></dt>
 <dd><p>Print the properties of the Photodiode detector.</p>
 </dd></dl>
 
@@ -619,147 +509,23 @@ filtering, and optional coherent or mean coupling strategies.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BASE_DETECTOR</span></code></p>
-<p>Photodiode for Lorenz-Mie scattering simulations.</p>
-<p>This class wraps a C++ Photodiode that samples the scattered field
-according to numerical aperture, orientation offsets, polarization
-filtering, and optional coherent or mean coupling strategies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mode_number</strong> (<em>str</em>) – Identifier for the detector mode (e.g. ‘0’, ‘1’, …).</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Number of sample points on the detector’s angular mesh.</p></li>
-<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture of the detector; controls the angular acceptance.</p></li>
-<li><p><strong>cache_numerical_aperture</strong> (<em>float</em>) – Cached numerical aperture threshold for fast lookup (set equal to <cite>numerical_aperture</cite> to disable).</p></li>
-<li><p><strong>phi_offset</strong> (<em>float</em>) – Azimuthal angle offset (radians) for detector orientation.</p></li>
-<li><p><strong>gamma_offset</strong> (<em>float</em>) – Polar angle offset (radians) for detector orientation.</p></li>
-<li><p><strong>polarization_filter</strong> (<em>float</em>) – Degree or type of polarization filtering applied.</p></li>
-<li><p><strong>rotation</strong> (<em>float</em>) – Rotation angle (radians) of the detector’s field-of-view.</p></li>
-<li><p><strong>mean_coupling</strong> (<em>bool</em>) – If true, uses mean coupling; if false, uses point coupling.</p></li>
-<li><p><strong>medium_refractive_index</strong> (<em>float</em><em>, </em><em>optional</em>) – Refractive index of the surrounding medium. Default is 1.0.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.scalar_field">
-<span class="sig-name descname"><span class="pre">scalar_field</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.scalar_field" title="Link to this definition">#</a></dt>
-<dd><p>The detected scalar field (intensity) sampled on the angular mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.numerical_aperture">
-<span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.numerical_aperture" title="Link to this definition">#</a></dt>
-<dd><p>Numerical aperture exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Dimensionless]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.sampling" title="Link to this definition">#</a></dt>
-<dd><p>Sampling count exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.phi_offset">
-<span class="sig-name descname"><span class="pre">phi_offset</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.phi_offset" title="Link to this definition">#</a></dt>
-<dd><p>Azimuthal offset exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.gamma_offset">
-<span class="sig-name descname"><span class="pre">gamma_offset</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.gamma_offset" title="Link to this definition">#</a></dt>
-<dd><p>Polar offset exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.polarization_filter">
-<span class="sig-name descname"><span class="pre">polarization_filter</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.polarization_filter" title="Link to this definition">#</a></dt>
-<dd><p>Polarization filter setting exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.rotation">
-<span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.rotation" title="Link to this definition">#</a></dt>
-<dd><p>Rotation angle exposed as a read-only property.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.mesh" title="Link to this definition">#</a></dt>
-<dd><p>Underlying Fibonacci mesh of angles used by the detector.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.max_angle">
-<span class="sig-name descname"><span class="pre">max_angle</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.max_angle" title="Link to this definition">#</a></dt>
-<dd><p>Maximum polar angle in the mesh (radians).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.min_angle">
-<span class="sig-name descname"><span class="pre">min_angle</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.min_angle" title="Link to this definition">#</a></dt>
-<dd><p>Minimum polar angle in the mesh (radians); zero if no cache.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float[Angle]</p>
-</dd>
-</dl>
-</dd></dl>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
+<p>CoherentMode detector for Lorenz-Mie scattering simulations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.add_to_scene">
+<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="pre">PyMieSim.single.detector.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cone_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_point_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.add_to_scene" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.binary.interface_single.CoherentMode"><span class="pre">PyMieSim.binary.interface_single.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.print_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="pre">PyMieSim.single.detector.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.print_properties" title="Link to this definition">#</a></dt>
 <dd><p>Print the properties of the CoherentMode detector.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id0">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
-<dd><p>Rotation angle of the detector’s field-of-view.</p>
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.rotation">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.rotation" title="Link to this definition">#</a></dt>
+<dd><p>Rotation angle of the detector’s field of view.</p>
 </dd></dl>
 
 </dd></dl>
@@ -790,31 +556,14 @@ filtering, and optional coherent or mean coupling strategies.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode"><code class="docutils literal notranslate"><span class="pre">Photodiode</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.scalar_field"><code class="docutils literal notranslate"><span class="pre">Photodiode.scalar_field</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">Photodiode.numerical_aperture</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.sampling"><code class="docutils literal notranslate"><span class="pre">Photodiode.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.phi_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.phi_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.gamma_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.polarization_filter"><code class="docutils literal notranslate"><span class="pre">Photodiode.polarization_filter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mesh"><code class="docutils literal notranslate"><span class="pre">Photodiode.mesh</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.max_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.max_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.min_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.min_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.add_to_scene"><code class="docutils literal notranslate"><span class="pre">Photodiode.add_to_scene()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.print_properties"><code class="docutils literal notranslate"><span class="pre">Photodiode.print_properties()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode"><code class="docutils literal notranslate"><span class="pre">CoherentMode</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.scalar_field"><code class="docutils literal notranslate"><span class="pre">CoherentMode.scalar_field</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.numerical_aperture"><code class="docutils literal notranslate"><span class="pre">CoherentMode.numerical_aperture</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.sampling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.phi_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.phi_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.gamma_offset</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.polarization_filter"><code class="docutils literal notranslate"><span class="pre">CoherentMode.polarization_filter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.rotation"><code class="docutils literal notranslate"><span class="pre">CoherentMode.rotation</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mesh"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mesh</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.max_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.max_angle</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.min_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.min_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.add_to_scene"><code class="docutils literal notranslate"><span class="pre">CoherentMode.add_to_scene()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.print_properties"><code class="docutils literal notranslate"><span class="pre">CoherentMode.print_properties()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">CoherentMode.rotation</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.rotation"><code class="docutils literal notranslate"><span class="pre">CoherentMode.rotation</span></code></a></li>
 </ul>
 </li>
 </ul>

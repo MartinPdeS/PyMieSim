@@ -3,16 +3,16 @@ Sphere: coherent coupling vs sampling
 =====================================
 
 """
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
 import numpy
 from PyMieSim.units import ureg
-from PyMieSim.experiment.detector import CoherentModeSet
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import CoherentModeSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import print_available, SellmeierMaterial
+
+print_available()
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -25,23 +25,22 @@ source = GaussianSet(
     numerical_aperture=[0.2] * ureg.AU,
 )
 scatterer = SphereSet(
-    diameter=[100] * ureg.nanometer,
-    material=[Material.BK7],
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source,
+    diameter=[1000] * ureg.nanometer,
+    material=[SellmeierMaterial("BK7")],
+    medium=[1] * ureg.RIU,
 )
 
 detector = CoherentModeSet(
     mode_number=["LP01"],
     rotation=[0] * ureg.degree,
     numerical_aperture=[0.1] * ureg.AU,
-    phi_offset=numpy.linspace(-20, 20, 200) * ureg.degree,
+    phi_offset=numpy.linspace(-80, 80, 200) * ureg.degree,
     gamma_offset=[0] * ureg.degree,
-    sampling=[10, 20, 40, 80, 160, 500],
+    sampling=[10, 20, 40, 80, 160],
     polarization_filter=[0] * ureg.degree,
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

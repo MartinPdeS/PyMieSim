@@ -23,45 +23,7 @@ InfiniteCylinder: Qsca vs Wavelength
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of wavelength for cylindrical scatterers using PyMieSim, considering cylinders with different diameters and refractive indices.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
-
-Importing the package dependencies: numpy, PyMieSim
-
-.. GENERATED FROM PYTHON SOURCE LINES 10-41
-
-.. code-block:: Python
-
-    import numpy as np
-    from PyMieSim.units import ureg
-
-    from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
-    from PyMieSim.experiment import Setup
-
-    polarization_state = PolarizationSet(
-        angles=0 * ureg.degree,  # Linear polarization angle in radians
-    )
-
-    source = GaussianSet(
-        wavelength=np.linspace(400, 1000, 150)
-        * ureg.nanometer,  # Wavelengths ranging from 400 nm to 1000 nm
-        polarization=polarization_state,
-        optical_power=[1e-3] * ureg.watt,  # 1 milliureg.watt
-        numerical_aperture=[0.2] * ureg.AU,  # Numerical Aperture
-    )
-
-    scatterer = InfiniteCylinderSet(
-        diameter=[200, 150] * ureg.nanometer,  # Array of diameters: 200 nm, 150 nm, 100 nm
-        refractive_index=[2, 3, 4] * ureg.RIU,  # Array of refractive indices: 2, 3, 4
-        medium_refractive_index=[1] * ureg.RIU,  # Refractive index of the surrounding medium
-        source=source,
-    )
-
-    experiment = Setup(scatterer=scatterer, source=source)
-
-    dataframe = experiment.get("Qsca")
-
-    dataframe.plot(x="source:wavelength", std="scatterer:refractive_index")
+.. GENERATED FROM PYTHON SOURCE LINES 7-38
 
 
 
@@ -75,17 +37,53 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/pandas/core/groupby/ops.py:231: ComplexWarning: Casting complex values to real discards the imaginary part
-      values = ensure_float64(values)
 
     <Figure size 800x500 with 1 Axes>
 
 
 
 
+
+|
+
+.. code-block:: Python
+
+    import numpy as np
+    from PyMieSim.units import ureg
+
+    from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
+    from PyMieSim.experiment import Setup
+
+    polarization_state = PolarizationSet(
+        angles=0 * ureg.degree,
+    )
+
+    source = GaussianSet(
+        wavelength=np.linspace(400, 1000, 150)
+        * ureg.nanometer,
+        polarization=polarization_state,
+        optical_power=[1e-3] * ureg.watt,
+        numerical_aperture=[0.2] * ureg.AU,
+    )
+
+    scatterer = InfiniteCylinderSet(
+        diameter=[200, 150] * ureg.nanometer,
+        material=[2, 3, 4] * ureg.RIU,
+        medium=[1] * ureg.RIU,
+    )
+
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
+
+    dataframe = experiment.get("Qsca")
+
+    dataframe.plot(x="source:wavelength", std="scatterer:material")
+
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.200 seconds)
+   **Total running time of the script:** (0 minutes 0.313 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py:

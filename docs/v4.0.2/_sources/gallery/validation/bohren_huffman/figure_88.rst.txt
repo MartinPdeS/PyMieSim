@@ -55,8 +55,9 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
 
     # PyMieSim imports
     from PyMieSim.directories import validation_data_path
-    from PyMieSim.experiment.scatterer import InfiniteCylinderSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+    from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
     from PyMieSim.experiment import Setup
 
     # Load theoretical data
@@ -87,13 +88,12 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
     # Setup cylindrical scatterers
     scatterer = InfiniteCylinderSet(
         diameter=diameters,
-        refractive_index=[1.55] * ureg.RIU,
-        medium_refractive_index=[1.335] * ureg.RIU,
-        source=source
+        material=[1.55] * ureg.RIU,
+        medium=[1.335] * ureg.RIU,
     )
 
     # Create experimental setup
-    experiment = Setup(scatterer=scatterer, source=source)
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
 
     # Compute PyMieSim scattering cross section data
     csca_data = experiment.get("Csca", as_numpy=True)
@@ -144,7 +144,7 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.398 seconds)
+   **Total running time of the script:** (0 minutes 0.409 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_88.py:

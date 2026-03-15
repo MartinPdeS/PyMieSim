@@ -1,7 +1,7 @@
 Representation
 ==============
 
-.. autoclass:: PyMieSim.single.representations.FarField
+.. autoclass:: PyMieSim.single.representations.FarFields
     :inherited-members:
 
 .. autoclass:: PyMieSim.single.representations.Stokes
@@ -14,4 +14,7 @@ Representation
     :inherited-members:
 
 .. autoclass:: PyMieSim.single.representations.Footprint
+    :inherited-members:
+
+.. autoclass:: PyMieSim.single.representations.NeareFields
     :inherited-members:

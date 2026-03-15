@@ -52,11 +52,12 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     import numpy
     from PyMieSim.units import ureg
 
-    from PyMieSim.experiment.detector import PhotodiodeSet
-    from PyMieSim.experiment.scatterer import CoreShellSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+    from PyMieSim.experiment.detector_set import PhotodiodeSet
+    from PyMieSim.experiment.scatterer_set import CoreShellSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
     from PyMieSim.experiment import Setup
-    from PyOptik import Material
+    from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
     polarization_set = PolarizationSet(
         angles=[90.0] * ureg.degree,
@@ -72,10 +73,9 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     scatterer = CoreShellSet(
         core_diameter=numpy.geomspace(100, 600, 400) * ureg.nanometer,
         shell_thickness=[800] * ureg.nanometer,
-        core_material=[Material.silver],
-        shell_material=[Material.BK7],
-        medium_refractive_index=[1] * ureg.RIU,
-        source=source,
+        core_material=[TabulatedMaterial("silver")],
+        shell_material=[SellmeierMaterial("BK7")],
+        medium=[SellmeierMedium("water")],
     )
 
     detector = PhotodiodeSet(
@@ -86,7 +86,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
         polarization_filter=[1] * ureg.degree,
     )
 
-    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     dataframe = experiment.get("coupling")
 
@@ -95,7 +95,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.216 seconds)
+   **Total running time of the script:** (0 minutes 0.244 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py:

@@ -459,20 +459,16 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span><span class="p">,</span> <span class="n">spherical_to_cartesian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span> <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
 
 
 <div class="viewcode-block" id="Stokes">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Stokes</span><span class="p">():</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.</span>
@@ -521,54 +517,15 @@
 <span class="sd">    &gt;&gt;&gt; print(stokes_params.I, stokes_params.Q, stokes_params.U, stokes_params.V)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
-    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_full_farfields</span><span class="p">(</span>
-            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_stokes</span><span class="p">(</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">fields</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">compute_components</span><span class="p">()</span>
-
-<div class="viewcode-block" id="Stokes.get_colormap_limits">
-<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes.get_colormap_limits">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_colormap_limits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">symmetric</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">symmetric</span><span class="p">:</span>
-            <span class="n">max_abs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">scalar</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-            <span class="k">return</span> <span class="p">[</span><span class="o">-</span><span class="n">max_abs</span><span class="p">,</span> <span class="n">max_abs</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div>
-
-
-<div class="viewcode-block" id="Stokes.compute_components">
-<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes.compute_components">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Computes the Stokes parameters (I, Q, U, V) based on the electric field components (E_phi and E_theta).</span>
-
-<span class="sd">        The method calculates the normalized intensity (I), linear polarizations (Q and U), and circular polarization (V) of the light</span>
-<span class="sd">        scattered by the particle, using the electric field components in spherical coordinates.</span>
-
-<span class="sd">        The Stokes parameters are calculated using the following formulas:</span>
-
-<span class="sd">        .. math:</span>
-<span class="sd">            - I = |E_phi|^2 + |E_theta|^2</span>
-<span class="sd">            - Q = |E_phi|^2 - |E_theta|^2</span>
-<span class="sd">            - U = 2 * Re{E_phi * E_theta*}</span>
-<span class="sd">            - V = -2 * Im{E_phi * E_theta*}</span>
-
-<span class="sd">        The results are stored as attributes of the instance: I, Q, U, and V.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">intensity</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">intensity</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>  <span class="c1"># noqa: E741</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">intensity</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">U</span> <span class="o">=</span> <span class="p">(</span><span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()))</span> <span class="o">/</span> <span class="n">intensity</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()))</span> <span class="o">/</span> <span class="n">intensity</span></div>
-
 
 <div class="viewcode-block" id="Stokes.plot">
 <a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Stokes.plot">[docs]</a>
@@ -579,7 +536,6 @@
         <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">blue_black_red</span><span class="p">,</span>
         <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-        <span class="n">symmetric_colormap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -597,15 +553,10 @@
 <span class="sd">            The colormap to use for scalar mapping. Default is &#39;blue_black_red&#39;.</span>
 <span class="sd">        opacity : float</span>
 <span class="sd">            The opacity of the mesh. Default is 1.0.</span>
-<span class="sd">        symmetric_colormap : bool</span>
-<span class="sd">            If True, the colormap will be symmetric around zero. Default is False.</span>
 <span class="sd">        show_axis_label : bool</span>
 <span class="sd">            If True, shows the axis labels. Default is False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta_mesh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span>
-            <span class="n">r</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">phi_mesh</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_mesh</span>
-        <span class="p">)</span>
+        <span class="n">cartesian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">to_cartesian</span><span class="p">()</span>
 
         <span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Four subplots horizontally</span>
 
@@ -617,13 +568,13 @@
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
             <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">])</span>
         <span class="p">):</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
-            <span class="n">mesh</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
-            <span class="n">scene</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-
-            <span class="n">colormap_limits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_colormap_limits</span><span class="p">(</span>
-                <span class="n">scalar</span><span class="o">=</span><span class="n">field</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="n">symmetric_colormap</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">mesh</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span>
+                <span class="n">cartesian</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="n">cartesian</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="n">cartesian</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
             <span class="p">)</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
 
             <span class="n">mapping</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
                 <span class="n">mesh</span><span class="p">,</span>
@@ -632,7 +583,6 @@
                 <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
                 <span class="n">style</span><span class="o">=</span><span class="s2">&quot;surface&quot;</span><span class="p">,</span>
                 <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
-                <span class="n">clim</span><span class="o">=</span><span class="n">colormap_limits</span><span class="p">,</span>
                 <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 

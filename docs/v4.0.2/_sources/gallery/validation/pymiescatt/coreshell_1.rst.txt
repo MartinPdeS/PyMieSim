@@ -44,8 +44,9 @@ Core-Shell Particles: 1
     from PyMieSim.units import ureg
 
     # PyMieSim imports
-    from PyMieSim.experiment.scatterer import CoreShellSet
-    from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+    from PyMieSim.experiment.scatterer_set import CoreShellSet
+    from PyMieSim.experiment.source_set import GaussianSet
+    from PyMieSim.experiment.polarization_set import PolarizationSet
     from PyMieSim.experiment import Setup
     from PyMieSim.directories import validation_data_path
 
@@ -57,7 +58,7 @@ Core-Shell Particles: 1
     medium_index = 1.0 * ureg.RIU
     core_index = 1.5 * ureg.RIU
     shell_index = 1.4 * ureg.RIU
-    shell_thickness = 1200 * ureg.nanometer  # Shell width in meters
+    shell_thickness = 600 * ureg.nanometer  # Shell width in meters
     core_diameters = np.geomspace(10, 500, 400) * ureg.nanometer  # Core diameters in meters
 
     # Configure the Gaussian source
@@ -72,14 +73,13 @@ Core-Shell Particles: 1
     scatterer = CoreShellSet(
         core_diameter=core_diameters,
         shell_thickness=shell_thickness,
-        core_refractive_index=[1.5] * ureg.RIU,
-        shell_refractive_index=[1.4] * ureg.RIU,
-        medium_refractive_index=[1.0] * ureg.RIU,
-        source=source,
+        core_material=[1.5] * ureg.RIU,
+        shell_material=[1.4] * ureg.RIU,
+        medium=[1.0] * ureg.RIU,
     )
 
     # Create experimental setup
-    experiment = Setup(scatterer=scatterer, source=source)
+    experiment = Setup(scatterer_set=scatterer, source_set=source)
 
     comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 
@@ -124,7 +124,7 @@ Core-Shell Particles: 1
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.466 seconds)
+   **Total running time of the script:** (0 minutes 0.471 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_coreshell_1.py:

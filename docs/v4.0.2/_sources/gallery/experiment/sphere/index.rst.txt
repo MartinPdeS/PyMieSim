@@ -101,40 +101,6 @@ Examples focused on spherical scatterers.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: A1 scattering coefficient">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_a1_vs_diameter_thumb.png
-    :alt:
-
-  :doc:`/gallery/experiment/sphere/sphere_a1_vs_diameter`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: A1 scattering coefficient</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: B1 scattering coefficient">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_b1_vs_diameter_thumb.png
-    :alt:
-
-  :doc:`/gallery/experiment/sphere/sphere_b1_vs_diameter`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: B1 scattering coefficient</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coherent Goniometer">
 
 .. only:: html
@@ -284,8 +250,6 @@ Examples focused on spherical scatterers.
    /gallery/experiment/sphere/sphere_Qsca_vs_index
    /gallery/experiment/sphere/sphere_Qsca_vs_wavelength
    /gallery/experiment/sphere/sphere_Qsca_vs_wavelength_std
-   /gallery/experiment/sphere/sphere_a1_vs_diameter
-   /gallery/experiment/sphere/sphere_b1_vs_diameter
    /gallery/experiment/sphere/sphere_coherent_coupling_vs_phioffset
    /gallery/experiment/sphere/sphere_coherent_coupling_vs_rotation
    /gallery/experiment/sphere/sphere_coherent_coupling_vs_sampling

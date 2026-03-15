@@ -10,11 +10,12 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 import numpy
 from PyMieSim.units import ureg
 
-from PyMieSim.experiment.detector import PhotodiodeSet
-from PyMieSim.experiment.scatterer import CoreShellSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.detector_set import PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import CoreShellSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -30,10 +31,9 @@ source = GaussianSet(
 scatterer = CoreShellSet(
     core_diameter=[1000, 1250, 1500] * ureg.nanometer,
     shell_thickness=[800] * ureg.nanometer,
-    core_material=[Material.silver],
-    shell_material=[Material.BK7],
-    medium_refractive_index=[1.] * ureg.RIU,
-    source=source,
+    core_material=[TabulatedMaterial("silver")],
+    shell_material=[SellmeierMaterial("BK7")],
+    medium=[SellmeierMedium("water")],
 )
 
 detector = PhotodiodeSet(
@@ -45,7 +45,7 @@ detector = PhotodiodeSet(
     polarization_filter=[1] * ureg.degree,
 )
 
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

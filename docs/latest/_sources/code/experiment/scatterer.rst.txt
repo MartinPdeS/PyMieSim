@@ -3,14 +3,14 @@
 Scatterers
 ==========
 
-.. autoclass:: PyMieSim.experiment.scatterer.SphereSet
+.. autoclass:: PyMieSim.experiment.scatterer_set.SphereSet
     :members:
     :inherited-members:
 
-.. autoclass:: PyMieSim.experiment.scatterer.InfiniteCylinderSet
+.. autoclass:: PyMieSim.experiment.scatterer_set.InfiniteCylinderSet
     :members:
     :inherited-members:
 
-.. autoclass:: PyMieSim.experiment.scatterer.CoreShellSet
+.. autoclass:: PyMieSim.experiment.scatterer_set.CoreShellSet
     :members:
     :inherited-members:

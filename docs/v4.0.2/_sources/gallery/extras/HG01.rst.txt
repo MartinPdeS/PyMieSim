@@ -23,30 +23,7 @@ Hermite-Gauss 01 Mode Detector
 
 This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
-
-Importing the package: PyMieSim
-
-.. GENERATED FROM PYTHON SOURCE LINES 10-26
-
-.. code-block:: Python
-
-    from PyMieSim.units import ureg
-
-    from PyMieSim.single.detector import CoherentMode
-    from PyMieSim.single import SystemPlotter
-
-    detector = CoherentMode(
-        mode_number="HG01",  # Specifying LP01 mode
-        sampling=500 * ureg.AU,  # Number of sampling points
-        numerical_aperture=0.5 * ureg.AU,  # Numerical Aperture
-        rotation=0 * ureg.degree,  # Rotation angle
-        gamma_offset=0 * ureg.degree,  # Gamma offset
-        phi_offset=40 * ureg.degree,  # Phi offset in degrees
-    )
-
-    plotter = SystemPlotter()
-    plotter.plot(detector)
+.. GENERATED FROM PYTHON SOURCE LINES 7-24
 
 
 
@@ -56,19 +33,33 @@ Importing the package: PyMieSim
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <pyvista.plotting.plotter.Plotter object at 0x7f427c94d410>
 
 
 
+.. code-block:: Python
+
+    import pyvista as pv
+    from PyMieSim.units import ureg
+    from PyMieSim.single.detector import CoherentMode
+
+    detector = CoherentMode(
+        mode_number="HG01",
+        sampling=500 * ureg.AU,
+        numerical_aperture=0.5 * ureg.AU,
+        rotation=0 * ureg.degree,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=40 * ureg.degree,
+    )
+
+    scene = pv.Plotter()
+
+    detector.add_to_scene(scene)
+
+    scene.show()
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.528 seconds)
+   **Total running time of the script:** (0 minutes 0.527 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_HG01.py:

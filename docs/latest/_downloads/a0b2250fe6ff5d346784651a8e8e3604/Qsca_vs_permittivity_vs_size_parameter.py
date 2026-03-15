@@ -14,8 +14,9 @@ import numpy
 from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment.scatterer import SphereSet
-from PyMieSim.experiment.source import GaussianSet, PolarizationSet
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 polarization_state = PolarizationSet(
@@ -38,12 +39,11 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=diameter,
-    refractive_index=index,
-    medium_refractive_index=[1] * ureg.RIU,
-    source=source
+    material=index,
+    medium=1 * ureg.RIU
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 data = experiment.get("Qsca", as_numpy=True)
 

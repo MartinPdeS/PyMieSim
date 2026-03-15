@@ -412,9 +412,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../single/index.html">Single Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../single/farfield.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../single/nearfield.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/nearfields.html">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/properties.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/stokes.html">Stokes Parameters Computation</a></li>
@@ -423,8 +424,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../experiment/coreshell/index.html">Core-Shell</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_Qback_vs_corediameter.html">CoreShell: Qback vs Core Diameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_a1_vs_corediameter.html">CoreShell: An vs Core Diameter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_b1_vs_corediameter.html">CoreShell: B1 vs Core Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_coupling_vs_corediameter.html">CoreShell: Coupling vs Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/coreshell/coreshell_coupling_vs_na_cache.html">CoreShell: Coupling vs Diameter</a></li>
 </ul>
@@ -435,8 +434,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_Qsca_vs_index.html">InfiniteCylinder: Qsca vs Index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_Qsca_vs_wavelength.html">InfiniteCylinder: Qsca vs Wavelength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_Qsca_vs_wavelength_std.html">InfiniteCylinder: Qsca vs wavelength std</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_a11_vs_diameter.html">InfiniteCylinder: A1 Scattering Coefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_b11_vs_diameter.html">InfiniteCylinder: B1 Scattering Coefficient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_coupling_vs_diameter.html">InfiniteCylinder: Coupling vs Diameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_coupling_vs_phioffset.html">InfiniteCylinder: Goniometer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/cylinder/cylinder_coupling_vs_wavelength.html">InfiniteCylinder: Coupling vs Wavelength</a></li>
@@ -448,8 +445,6 @@
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_Qsca_vs_index.html">Sphere: Qsca vs index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_Qsca_vs_wavelength.html">Sphere: Qsca vs wavelength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_Qsca_vs_wavelength_std.html">Sphere: Qsca vs wavelength STD</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_a1_vs_diameter.html">Sphere: A1 scattering coefficient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_b1_vs_diameter.html">Sphere: B1 scattering coefficient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_coherent_coupling_vs_phioffset.html">Sphere: Coherent Goniometer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_coherent_coupling_vs_rotation.html">Sphere: Coherent mode field rotation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../experiment/sphere/sphere_coherent_coupling_vs_sampling.html">Sphere: coherent coupling vs sampling</a></li>
@@ -559,8 +554,9 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SphereSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSet</span><span class="p">,</span> <span class="n">PolarizationSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">SphereSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.polarization_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationSet</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 
 <span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationSet</span><span class="p">(</span>
@@ -583,12 +579,11 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span>
-    <span class="n">refractive_index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
-    <span class="n">medium_refractive_index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+    <span class="n">material</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">medium</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>
 <span class="p">)</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="n">as_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -606,7 +601,7 @@ of a sphere as a function of the permittivity and the size parameter.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_Qsca_vs_permittivity_vs_size_parameter_001.png" srcset="../../_images/sphx_glr_Qsca_vs_permittivity_vs_size_parameter_001.png" alt="Scattering efficiency of a sphere" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.680 seconds)</p>
+<img src="../../_images/sphx_glr_Qsca_vs_permittivity_vs_size_parameter_001.png" srcset="../../_images/sphx_glr_Qsca_vs_permittivity_vs_size_parameter_001.png" alt="Scattering efficiency of a sphere" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.673 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-qsca-vs-permittivity-vs-size-parameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/278e93fb2ffb5f85ac8940be2ddb4edf/Qsca_vs_permittivity_vs_size_parameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Qsca_vs_permittivity_vs_size_parameter.ipynb</span></code></a></p>

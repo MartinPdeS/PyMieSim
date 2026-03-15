@@ -490,8 +490,8 @@
   <section id="representation">
 <h1>Representation<a class="headerlink" href="#representation" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FarField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/far_fields.html#FarField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarField" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FarFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/farfields.html#FarFields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Compute the far-field scattering pattern for the scatterer.</p>
 <p>The far fields describe the behavior of the scattered electromagnetic waves at a large distance from the scatterer, where the waves can be approximated as planar.
@@ -513,14 +513,14 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
 <li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
-<li><p><strong>scatterer</strong> (<em>object</em>)</p></li>
+<li><p><strong>setup</strong> (<em>object</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">representations.FarField</a></p>
+<dd class="field-odd"><p>representations.FarField</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -528,16 +528,9 @@ The computed far fields represent the scattered electric field components in the
 <li><p>The far-field approximation assumes that the distance from the scatterer is large enough that the curvature of the wavefronts can be neglected, and the fields can be treated as planar.</p></li>
 <li><p>This method is useful for determining the angular distribution of the scattered light, which is critical in applications such as radar cross-section analysis, optical scattering experiments, and remote sensing.</p></li>
 </ul>
-<p class="rubric">Example</p>
-<p>You can use this method to compute the far-field scattering pattern of a spherical scatterer, which is essential in understanding how the scatterer redirects light in the far field.</p>
-<p>Example usage:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">farfield</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_farfield</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">farfield</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="n">farfield</span><span class="o">.</span><span class="n">E_theta</span><span class="p">)</span>
-</pre></div>
-</div>
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.add_phi_vector_to_3d_plot">
-<span class="sig-name descname"><span class="pre">add_phi_vector_to_3d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/far_fields.html#FarField.add_phi_vector_to_3d_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarField.add_phi_vector_to_3d_plot" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot">
+<span class="sig-name descname"><span class="pre">add_phi_vector_to_3d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/farfields.html#FarFields.add_phi_vector_to_3d_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot" title="Link to this definition">#</a></dt>
 <dd><p>Adds a vector field to the 3D plot, representing vectors in the phi direction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -556,8 +549,8 @@ The computed far fields represent the scattered electric field components in the
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.add_theta_vector_to_3d_plot">
-<span class="sig-name descname"><span class="pre">add_theta_vector_to_3d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/far_fields.html#FarField.add_theta_vector_to_3d_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarField.add_theta_vector_to_3d_plot" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot">
+<span class="sig-name descname"><span class="pre">add_theta_vector_to_3d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/farfields.html#FarFields.add_theta_vector_to_3d_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot" title="Link to this definition">#</a></dt>
 <dd><p>Adds a vector field to the 3D plot, representing vectors in the theta direction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -575,27 +568,9 @@ The computed far fields represent the scattered electric field components in the
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Quantity(1.0,</span> <span class="pre">'meter')&gt;</span></em><a class="headerlink" href="#PyMieSim.single.representations.FarField.distance" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.get_colormap_limits">
-<span class="sig-name descname"><span class="pre">get_colormap_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scalar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/far_fields.html#FarField.get_colormap_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarField.get_colormap_limits" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scalar</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>ndarray</em></a>)</p></li>
-<li><p><strong>symmetric</strong> (<em>bool</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">400)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric_colormap=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/far_fields.html#FarField.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarField.plot" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">400)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/farfields.html#FarFields.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.plot" title="Link to this definition">#</a></dt>
 <dd><p>Visualizes the Far field (in phi and theta vector projections) on a 3D plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -605,7 +580,6 @@ The computed far fields represent the scattered electric field components in the
 <li><p><strong>show_edges</strong> (<em>bool</em>) – If True, displays the edges of the mesh. Default is False.</p></li>
 <li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for scalar mapping. Default is ‘blue_black_red’.</p></li>
 <li><p><strong>opacity</strong> (<em>float</em>) – The opacity of the mesh. Default is 1.0.</p></li>
-<li><p><strong>symmetric_colormap</strong> (<em>bool</em>) – If True, the colormap will be symmetric around zero. Default is False.</p></li>
 <li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, shows the axis labels. Default is False.</p></li>
 </ul>
 </dd>
@@ -615,21 +589,11 @@ The computed far fields represent the scattered electric field components in the
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#PyMieSim.single.representations.FarField.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.FarField.scatterer">
-<span class="sig-name descname"><span class="pre">scatterer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PyMieSim.single.representations.FarField.scatterer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stokes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/stokes.html#Stokes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stokes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/stokes.html#Stokes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.</p>
 <p>The Stokes parameters provide a complete description of the polarization state of electromagnetic radiation, and are defined as follows:</p>
@@ -651,7 +615,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
 <li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
-<li><p><strong>scatterer</strong> (<em>object</em>)</p></li>
+<li><p><strong>setup</strong> (<em>object</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -674,36 +638,8 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.compute_components">
-<span class="sig-name descname"><span class="pre">compute_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/stokes.html#Stokes.compute_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.compute_components" title="Link to this definition">#</a></dt>
-<dd><p>Computes the Stokes parameters (I, Q, U, V) based on the electric field components (E_phi and E_theta).</p>
-<p>The method calculates the normalized intensity (I), linear polarizations (Q and U), and circular polarization (V) of the light
-scattered by the particle, using the electric field components in spherical coordinates.</p>
-<p>The Stokes parameters are calculated using the following formulas:</p>
-<p>The results are stored as attributes of the instance: I, Q, U, and V.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.get_colormap_limits">
-<span class="sig-name descname"><span class="pre">get_colormap_limits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scalar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/stokes.html#Stokes.get_colormap_limits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.get_colormap_limits" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scalar</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)"><em>ndarray</em></a>)</p></li>
-<li><p><strong>symmetric</strong> (<em>bool</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">400)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric_colormap=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/stokes.html#Stokes.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">400)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/stokes.html#Stokes.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.plot" title="Link to this definition">#</a></dt>
 <dd><p>Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -713,7 +649,6 @@ scattered by the particle, using the electric field components in spherical coor
 <li><p><strong>show_edges</strong> (<em>bool</em>) – If True, displays the edges of the mesh. Default is False.</p></li>
 <li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for scalar mapping. Default is ‘blue_black_red’.</p></li>
 <li><p><strong>opacity</strong> (<em>float</em>) – The opacity of the mesh. Default is 1.0.</p></li>
-<li><p><strong>symmetric_colormap</strong> (<em>bool</em>) – If True, the colormap will be symmetric around zero. Default is False.</p></li>
 <li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, shows the axis labels. Default is False.</p></li>
 </ul>
 </dd>
@@ -723,21 +658,11 @@ scattered by the particle, using the electric field components in spherical coor
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#PyMieSim.single.representations.Stokes.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.scatterer">
-<span class="sig-name descname"><span class="pre">scatterer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PyMieSim.single.representations.Stokes.scatterer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.SPF">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SPF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/spf.html#SPF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SPF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/spf.html#SPF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Compute the scattering phase function (SPF) for the scatterer.</p>
 <p>The scattering phase function describes how the intensity of scattered light varies as a function of the scattering angles ( theta ) (polar) and ( phi ) (azimuthal). It is a key quantity in light scattering, as it characterizes the angular distribution of scattered light.</p>
@@ -756,7 +681,6 @@ scattered by the particle, using the electric field components in spherical coor
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
 <li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
-<li><p><strong>scatterer</strong> (<em>object</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -779,22 +703,8 @@ scattered by the particle, using the electric field components in spherical coor
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.compute_components">
-<span class="sig-name descname"><span class="pre">compute_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/spf.html#SPF.compute_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF.compute_components" title="Link to this definition">#</a></dt>
-<dd><p>Computes the Scattering Phase Function (SPF) based on the electric field components (E_phi and E_theta).</p>
-<p>The SPF is calculated as the square root of the sum of the squared magnitudes of the electric field components, representing
-the total scattering intensity distribution as a function of angles.</p>
-<p>The result is stored as the SPF attribute of the instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(400,</span> <span class="pre">400)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/spf.html#SPF.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(800,</span> <span class="pre">800)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/spf.html#SPF.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF.plot" title="Link to this definition">#</a></dt>
 <dd><p>Visualizes the scattering phase function on a 3D plot.</p>
 <p>This method creates a 3D visualization of the scattering phase function (SPF). It allows customization
 of the plot’s appearance, including the colormap, mesh opacity, and whether or not to display mesh edges
@@ -802,7 +712,7 @@ and axis labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>unit_size</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The size of the plot window in pixels (width, height). Default is (400, 400).</p></li>
+<li><p><strong>unit_size</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The size of the plot window in pixels (width, height). Default is (800, 800).</p></li>
 <li><p><strong>background_color</strong> (<em>str</em>) – The background color of the plot. Default is ‘white’.</p></li>
 <li><p><strong>show_edges</strong> (<em>bool</em>) – If True, displays the edges of the mesh. Default is False.</p></li>
 <li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for scalar mapping. Default is ‘viridis’.</p></li>
@@ -817,21 +727,11 @@ and axis labels.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#PyMieSim.single.representations.SPF.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.scatterer">
-<span class="sig-name descname"><span class="pre">scatterer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PyMieSim.single.representations.SPF.scatterer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.S1S2">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">S1S2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/s1s2.html#S1S2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.S1S2" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">S1S2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/s1s2.html#S1S2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.S1S2" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.</p>
 <p>The S1 and S2 parameters represent the scattering amplitudes for perpendicular and parallel polarizations of light, respectively. These parameters are fundamental in Mie theory, which describes the scattering of electromagnetic waves by spherical particles.</p>
@@ -851,7 +751,6 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
 <li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
-<li><p><strong>scatterer</strong> (<em>object</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -879,14 +778,6 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dd><p>Plots the S1 and S2 Stokes parameters on polar plots.</p>
 <p>The method generates two polar plots: one for the absolute values of the S1 parameter and another
 for the S2 parameter, filling the area between the radial axis and the parameter values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>This method does not return a value. It displays the polar plots.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
 <section id="extra-parameters">
 <h2>Extra Parameters<a class="headerlink" href="#extra-parameters" title="Link to this heading">#</a></h2>
 <dl class="simple">
@@ -922,23 +813,18 @@ for the S2 parameter, filling the area between the radial axis and the parameter
 </dd>
 </dl>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.S1S2.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#PyMieSim.single.representations.S1S2.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.S1S2.scatterer">
-<span class="sig-name descname"><span class="pre">scatterer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PyMieSim.single.representations.S1S2.scatterer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/footprint.html#Footprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/footprint.html#Footprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Compute the footprint of the scattered light coupling with the detector.</p>
 <p>The footprint represents the spatial distribution of the scattered light as it couples with the detector.
@@ -960,7 +846,7 @@ This is important for understanding how the scattered light interacts with the d
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>detector</strong> (<em>GenericDetector</em>) – The detector object that defines the capturing field and geometry. This object provides information about the detector’s configuration, including its numerical aperture, position, and sensitivity.</p></li>
-<li><p><strong>scatterer</strong> (<em>object</em>)</p></li>
+<li><p><strong>setup</strong> (<em>object</em>)</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>)</p></li>
 <li><p><strong>padding_factor</strong> (<em>int</em>)</p></li>
 </ul>
@@ -994,11 +880,6 @@ using a Fourier transform to project the far-field onto the detector plane.</p>
 <p>Warning: this function do not currently take account of the cache block on the detector.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.detector">
-<span class="sig-name descname"><span class="pre">detector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PyMieSim.single.representations.Footprint.detector" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.get_fourier_component">
 <span class="sig-name descname"><span class="pre">get_fourier_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scalar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/footprint.html#Footprint.get_fourier_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint.get_fourier_component" title="Link to this definition">#</a></dt>
@@ -1030,11 +911,6 @@ of the light in the detector plane, providing insights into the spatial characte
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.padding_factor">
-<span class="sig-name descname"><span class="pre">padding_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#PyMieSim.single.representations.Footprint.padding_factor" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gray'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/footprint.html#Footprint.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint.plot" title="Link to this definition">#</a></dt>
@@ -1050,16 +926,6 @@ offset distances in micrometers, and the colormap depicting the mapping values.<
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">200</span></em><a class="headerlink" href="#PyMieSim.single.representations.Footprint.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.scatterer">
-<span class="sig-name descname"><span class="pre">scatterer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PyMieSim.single.representations.Footprint.scatterer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -1088,45 +954,28 @@ offset distances in micrometers, and the colormap depicting the mapping values.<
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField"><code class="docutils literal notranslate"><span class="pre">FarField</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.add_phi_vector_to_3d_plot"><code class="docutils literal notranslate"><span class="pre">FarField.add_phi_vector_to_3d_plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.add_theta_vector_to_3d_plot"><code class="docutils literal notranslate"><span class="pre">FarField.add_theta_vector_to_3d_plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.distance"><code class="docutils literal notranslate"><span class="pre">FarField.distance</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.get_colormap_limits"><code class="docutils literal notranslate"><span class="pre">FarField.get_colormap_limits()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.plot"><code class="docutils literal notranslate"><span class="pre">FarField.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.sampling"><code class="docutils literal notranslate"><span class="pre">FarField.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarField.scatterer"><code class="docutils literal notranslate"><span class="pre">FarField.scatterer</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields"><code class="docutils literal notranslate"><span class="pre">FarFields</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot"><code class="docutils literal notranslate"><span class="pre">FarFields.add_phi_vector_to_3d_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot"><code class="docutils literal notranslate"><span class="pre">FarFields.add_theta_vector_to_3d_plot()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.plot"><code class="docutils literal notranslate"><span class="pre">FarFields.plot()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes"><code class="docutils literal notranslate"><span class="pre">Stokes</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.compute_components"><code class="docutils literal notranslate"><span class="pre">Stokes.compute_components()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.get_colormap_limits"><code class="docutils literal notranslate"><span class="pre">Stokes.get_colormap_limits()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.plot"><code class="docutils literal notranslate"><span class="pre">Stokes.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.sampling"><code class="docutils literal notranslate"><span class="pre">Stokes.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.scatterer"><code class="docutils literal notranslate"><span class="pre">Stokes.scatterer</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF"><code class="docutils literal notranslate"><span class="pre">SPF</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.compute_components"><code class="docutils literal notranslate"><span class="pre">SPF.compute_components()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.plot"><code class="docutils literal notranslate"><span class="pre">SPF.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.sampling"><code class="docutils literal notranslate"><span class="pre">SPF.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.scatterer"><code class="docutils literal notranslate"><span class="pre">SPF.scatterer</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2"><code class="docutils literal notranslate"><span class="pre">S1S2</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.plot"><code class="docutils literal notranslate"><span class="pre">S1S2.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.sampling"><code class="docutils literal notranslate"><span class="pre">S1S2.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.scatterer"><code class="docutils literal notranslate"><span class="pre">S1S2.scatterer</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint"><code class="docutils literal notranslate"><span class="pre">Footprint</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.compute_footprint"><code class="docutils literal notranslate"><span class="pre">Footprint.compute_footprint()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.detector"><code class="docutils literal notranslate"><span class="pre">Footprint.detector</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.get_fourier_component"><code class="docutils literal notranslate"><span class="pre">Footprint.get_fourier_component()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.padding_factor"><code class="docutils literal notranslate"><span class="pre">Footprint.padding_factor</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.plot"><code class="docutils literal notranslate"><span class="pre">Footprint.plot()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.sampling"><code class="docutils literal notranslate"><span class="pre">Footprint.sampling</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.scatterer"><code class="docutils literal notranslate"><span class="pre">Footprint.scatterer</span></code></a></li>
 </ul>
 </li>
 </ul>
