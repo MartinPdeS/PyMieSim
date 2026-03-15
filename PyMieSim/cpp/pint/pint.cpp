@@ -5,47 +5,50 @@
 
 namespace py = pybind11;
 
-
-class UnitRegistrySingleton {
-public:
-    static UnitRegistrySingleton& instance() {
-        static UnitRegistrySingleton singleton_instance;
-        return singleton_instance;
-    }
-
-    UnitRegistrySingleton(const UnitRegistrySingleton&) = delete;
-    UnitRegistrySingleton& operator=(const UnitRegistrySingleton&) = delete;
-
-    void set_ureg(py::object ureg_object) {
-        py::gil_scoped_acquire gil;
-
-        std::call_once(initialization_flag, [this, ureg_object = std::move(ureg_object)]() mutable {
-            ureg = std::move(ureg_object);
-            if (ureg.is_none()) {
-                throw std::runtime_error("UnitRegistrySingleton.set_ureg: ureg is None.");
-            }
-        });
-    }
-
-    py::object get_ureg() const {
-        py::gil_scoped_acquire gil;
-
-        if (ureg.is_none()) {
-            throw std::runtime_error("UnitRegistrySingleton.get_ureg: ureg not initialized.");
+namespace {
+    class __attribute__((visibility("hidden"))) UnitRegistrySingleton {
+    public:
+        static UnitRegistrySingleton& instance() {
+            static UnitRegistrySingleton singleton_instance;
+            return singleton_instance;
         }
-        return ureg;
-    }
 
-    bool is_initialized() const {
-        py::gil_scoped_acquire gil;
-        return !ureg.is_none();
-    }
+        UnitRegistrySingleton(const UnitRegistrySingleton&) = delete;
+        UnitRegistrySingleton& operator=(const UnitRegistrySingleton&) = delete;
 
-private:
-    UnitRegistrySingleton() = default;
-    mutable std::once_flag initialization_flag;
-    py::object ureg = py::none();
-};
+        void set_ureg(py::object ureg_object) {
+            py::gil_scoped_acquire gil;
+
+            std::call_once(initialization_flag, [this, ureg_object = std::move(ureg_object)]() mutable {
+                if (ureg_object.is_none()) {
+                    throw std::runtime_error("UnitRegistrySingleton.set_ureg: ureg is None.");
+                }
+                ureg = std::move(ureg_object);
+            });
+
+
+        }
+
+        py::object get_ureg() const {
+            py::gil_scoped_acquire gil;
+
+            if (ureg.is_none()) {
+                throw std::runtime_error("UnitRegistrySingleton.get_ureg: ureg not initialized.");
+            }
+            return ureg;
+        }
+
+        bool is_initialized() const {
+            py::gil_scoped_acquire gil;
+            return !ureg.is_none();
+        }
+
+    private:
+        UnitRegistrySingleton() = default;
+        mutable std::once_flag initialization_flag;
+        py::object ureg = py::none();
+    };
+}
 
 
 py::object get_shared_ureg() {
@@ -64,6 +67,7 @@ py::object get_shared_ureg() {
     UnitRegistrySingleton::instance().set_ureg(ureg);
     return ureg;
 }
+
 
 
 double to_meters_strict(py::handle value) {

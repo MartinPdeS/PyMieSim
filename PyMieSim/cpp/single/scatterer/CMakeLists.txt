@@ -10,7 +10,7 @@ add_library(
     "coreshell/coreshell.cpp"
 )
 set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
-target_link_libraries("${NAME}" PUBLIC pybind11::module pint coordinates mode_field mesh)
+target_link_libraries("${NAME}" PUBLIC OpenMP::OpenMP_CXX pint coordinates mode_field mesh)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
