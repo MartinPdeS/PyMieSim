@@ -9,8 +9,6 @@ add_library(${NAME} STATIC
 )
 target_link_options(${NAME} PUBLIC ${STATIC_LINK_OPTIONS})
 
-# set_property(GLOBAL APPEND PROPERTY PYMIESIM_TARGETS ${NAME})
-
 install(
     TARGETS "${NAME}"
     LIBRARY DESTINATION "PyMieSim/binary"

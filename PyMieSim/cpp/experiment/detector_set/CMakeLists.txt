@@ -2,7 +2,7 @@
 set(NAME "detector_set")
 
 add_library("${NAME}" STATIC "detector_set.cpp")
-set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+# set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 target_link_libraries("${NAME}" PUBLIC detector)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)

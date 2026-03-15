@@ -2,7 +2,7 @@
 set(NAME "mesh")
 
 add_library("${NAME}" STATIC "fibonacci.cpp" "full_mesh.cpp")
-set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+# set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 target_link_libraries("${NAME}" PUBLIC pint coordinates)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)

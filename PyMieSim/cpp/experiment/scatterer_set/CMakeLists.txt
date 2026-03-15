@@ -2,7 +2,7 @@
 set(NAME "scatterer_set")
 
 add_library("${NAME}" STATIC "sphere_set.cpp" "cylinder_set.cpp" "core_shell_set.cpp")
-set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+# set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
 target_link_libraries("${NAME}" PUBLIC scatterer)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
