@@ -110,11 +110,12 @@ BaseScatterer::get_unstructured_farfields(
 
 
 std::vector<complex128>
-BaseScatterer::compute_dn(double nmx, complex128 z)  const { //Page 127 of BH
+BaseScatterer::compute_dn(size_t nmx, complex128 z) const { // Page 127 of BH
     std::vector<complex128> Dn(nmx, 0.0);
 
-    for (double n = nmx - 1.; n > 1.; n--)
-        Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
+    for (size_t n = nmx - 1; n > 1; --n) {
+        Dn[n - 1] = static_cast<double>(n) / z - (1.0 / (Dn[n] + static_cast<double>(n) / z));
+    }
 
     return Dn;
 }
@@ -256,9 +257,9 @@ BaseScatterer::get_structured_total_nearfields(
     const std::string& field_type,
     std::shared_ptr<BaseSource> source
 ) {
-    const size_t number_of_x_points = x_range.size();
-    const size_t number_of_y_points = y_range.size();
-    const size_t number_of_z_points = z_range.size();
+    const int number_of_x_points = x_range.size();
+    const int number_of_y_points = y_range.size();
+    const int number_of_z_points = z_range.size();
 
     if (number_of_x_points == 0 || number_of_y_points == 0 || number_of_z_points == 0) {
         throw std::runtime_error("x_range, y_range, and z_range must all be non empty.");
@@ -281,9 +282,9 @@ BaseScatterer::get_structured_total_nearfields(
     std::vector<double> z_coords(total_number_of_points);
 
     #pragma omp parallel for collapse(3)
-    for (size_t x_index = 0; x_index < number_of_x_points; ++x_index) {
-        for (size_t y_index = 0; y_index < number_of_y_points; ++y_index) {
-            for (size_t z_index = 0; z_index < number_of_z_points; ++z_index) {
+    for (int x_index = 0; x_index < number_of_x_points; ++x_index) {
+        for (int y_index = 0; y_index < number_of_y_points; ++y_index) {
+            for (int z_index = 0; z_index < number_of_z_points; ++z_index) {
                 const size_t linear_index =
                     x_index * (number_of_y_points * number_of_z_points) +
                     y_index * number_of_z_points +

@@ -53,8 +53,8 @@ void ModeField::normalize_fields(std::vector<complex128> &field) const {
 [[nodiscard]] std::vector<complex128>
 ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords) const {
 
-   size_t azimuthal_number = mode_id.number_0;
-   size_t radial_number = mode_id.number_1;
+   unsigned int azimuthal_number = static_cast<unsigned int>(mode_id.number_0);
+   unsigned int radial_number = static_cast<unsigned int>(mode_id.number_1);
 
    std::vector<complex128> field(x_coords.size());
 
@@ -64,7 +64,14 @@ ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double
    std::vector<double> rj0(radial_number), rj1(radial_number), ry0(radial_number), ry1(radial_number);
 
    // Calculate Bessel zeros for the radial and azimuthal components
-   Special_::compute_bessel_zeros(azimuthal_number, radial_number, &rj0[0], &rj1[0], &ry0[0], &ry1[0]);
+   Special_::compute_bessel_zeros(
+      azimuthal_number,
+      radial_number,
+      &rj0[0],
+      &rj1[0],
+      &ry0[0],
+      &ry1[0]
+   );
 
    double x, y, r, phi, azimuthal_part;
 

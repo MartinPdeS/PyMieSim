@@ -274,7 +274,7 @@ public:
      * @param z The complex refractive index.
      * @return A vector of dn coefficients.
      */
-    std::vector<complex128> compute_dn(double nmx, complex128 z) const;
+    std::vector<complex128> compute_dn(size_t nmx, complex128 z) const;
 
     /**
      * @brief Computes near-field electromagnetic fields using internal coefficients cn and dn.
