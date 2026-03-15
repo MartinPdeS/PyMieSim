@@ -80,55 +80,6 @@ class FibonacciMesh(FIBONACCIMESH):
 
         self.compute_vector_field()
 
-    # ---------------------- Property Methods ----------------------
-    @property
-    def theta(self) -> Angle:
-        """
-        Returns the polar angles (theta) of the mesh in radians.
-
-        Returns
-        -------
-        units.Quantity
-            The polar angles in radians.
-        """
-        return self.spherical.theta * ureg.radian
-
-    @property
-    def phi(self) -> Angle:
-        """
-        Returns the azimuthal angles (phi) of the mesh in radians.
-
-        Returns
-        -------
-        units.Quantity
-            The azimuthal angles in radians.
-        """
-        return self.spherical.phi * ureg.radian
-
-    @property
-    def d_omega(self) -> Angle:
-        """
-        Returns the solid angle (d_omega) of the mesh in steradians.
-
-        Returns
-        -------
-        units.Quantity
-            The solid angle in steradians.
-        """
-        return self.spherical._cpp_d_omega * ureg.steradian
-
-    @property
-    def omega(self) -> Angle:
-        """
-        Returns the solid angle (omega) of the mesh in steradians.
-
-        Returns
-        -------
-        units.Quantity
-            The solid angle in steradians.
-        """
-        return self.spherical._cpp_omega * ureg.steradian
-
     # ---------------------- Additional Methods ----------------------
     def get_axis_vector(self) -> numpy.ndarray:
         """
