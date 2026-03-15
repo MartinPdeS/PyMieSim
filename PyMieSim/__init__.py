@@ -16,9 +16,10 @@ from TypedUnit import ureg
 interface_pint.set_ureg(ureg)
 
 
-from PyMieSim.single import detector as _
-from PyMieSim.single import scatterer as _
-from PyMieSim.single import source as _
-from PyMieSim.single import setup as _
-from PyMieSim.mesh import *
-from PyMieSim.material import *
+import PyMieSim.single.detector as _
+import PyMieSim.single.scatterer as _
+import PyMieSim.single.source as _
+import PyMieSim.single.setup as _
+import PyMieSim.mesh as _
+import PyMieSim.coordinates as _
+import PyMieSim.material as _
