@@ -6,8 +6,6 @@
 #include "single/detector/detector.h"
 #include "single/source/source.h"
 
-#include <pint/pint.h>
-
 
 // Base class to reduce redundancy
 class BaseSet {
