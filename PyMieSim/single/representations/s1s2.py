@@ -69,13 +69,7 @@ class S1S2():
 
         The method generates two polar plots: one for the absolute values of the S1 parameter and another
         for the S2 parameter, filling the area between the radial axis and the parameter values.
-
-        Returns
-        -------
-        None
-            This method does not return a value. It displays the polar plots.
         """
-        # Plot for S1 parameter
         axes[0].set(title=r"S$_1$ parameter")
         axes[0].fill_between(
             self.phi,
