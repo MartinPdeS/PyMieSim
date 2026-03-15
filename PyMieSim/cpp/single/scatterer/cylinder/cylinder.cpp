@@ -167,7 +167,7 @@ InfiniteCylinder::compute_s1s2(const std::vector<double> &phi) const{
         }
     }
 
-    return std::make_tuple(std::move(T1), std::move(T2));
+    return std::make_pair(std::move(T1), std::move(T2));
 }
 
 

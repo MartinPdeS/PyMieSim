@@ -205,7 +205,7 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
         S2.push_back(S2_temp);
     }
 
-    return std::make_tuple(std::move(S1), std::move(S2));
+    return std::make_pair(std::move(S1), std::move(S2));
 }
 
 std::vector<complex128>
