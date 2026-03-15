@@ -9,7 +9,7 @@ target_link_libraries("interface_setup_single" PUBLIC pybind11::module setup_sin
 
 install(
     TARGETS "setup_single" "interface_setup_single"
-    LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
-    RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
-    ARCHIVE DESTINATION "${CMAKE_SOURCE_DIR}/PyMieSim/single"
+    LIBRARY DESTINATION "PyMieSim/single"
+    RUNTIME DESTINATION "PyMieSim/single"
+    ARCHIVE DESTINATION "PyMieSim/single"
 )
