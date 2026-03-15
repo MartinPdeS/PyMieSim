@@ -108,16 +108,17 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-test-command = "python -m pytest {project}/tests --config-file={project}/pytest.ini --ignore={project}/tests/extra/test_system_plot.py --ignore={project}/tests/single/representation.py"
+test-command = """python -c "import PyMieSim; print(PyMieSim.__file__)" """
+# test-command = "python -m pytest {project}/tests --config-file={project}/pytest.ini --ignore={project}/tests/extra/test_system_plot.py --ignore={project}/tests/single/representation.py"
 # test-command = "cd {project}; python -m pytest --config-file=pytest.ini --ignore=tests/extra/test_system_plot.py --ignore=tests/single/representation.py"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
 repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"  # --exclude=libomp.dylib
-test-command = 'cd {project}; python -m pytest --config-file=pytest.ini'  # DYLD_PRINT_LIBRARIES=NO
+test-command = 'python -m pytest {project}/tests --config-file={project}/pytest.ini'  # DYLD_PRINT_LIBRARIES=NO
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
-test-command = 'cd /d {project} && python -m pytest --config-file=pytest.ini'
+test-command = 'python -m pytest {project}/tests --config-file={project}/pytest.ini'

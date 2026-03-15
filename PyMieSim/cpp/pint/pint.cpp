@@ -6,7 +6,7 @@
 namespace py = pybind11;
 
 namespace {
-    class __attribute__((visibility("hidden"))) UnitRegistrySingleton {
+    class UnitRegistrySingleton {
     public:
         static UnitRegistrySingleton& instance() {
             static UnitRegistrySingleton singleton_instance;
