@@ -1,17 +1,15 @@
 # PyMieSim/cpp/single/detector/CMakeLists.txt
 set(NAME "detector")
 
-add_library("${NAME}" STATIC "detector.cpp")
-set_target_properties("${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
-target_link_libraries("${NAME}" PUBLIC pint mode_field scatterer mesh optical_interface)
+add_library("${NAME}_lib" STATIC "detector.cpp")
+target_link_libraries("${NAME}_lib" PUBLIC pint mode_field scatterer mesh optical_interface)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
-target_link_libraries("interface_${NAME}" PUBLIC pybind11::module "${NAME}")
+target_link_libraries("interface_${NAME}" PUBLIC pybind11::module "${NAME}_lib")
 
 install(
-    TARGETS "${NAME}" "interface_${NAME}"
+    TARGETS "interface_${NAME}"
     LIBRARY DESTINATION "PyMieSim/single"
     RUNTIME DESTINATION "PyMieSim/single"
-    ARCHIVE DESTINATION "PyMieSim/single"
 )

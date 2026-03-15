@@ -22,3 +22,9 @@ directory = htmlcov
 
 [xml]
 output = coverage.xml
+
+[paths]
+source =
+    PyMieSim
+    /home/runner/work/PyMieSim/PyMieSim/PyMieSim
+    /github/workspace/PyMieSim
