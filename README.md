@@ -9,7 +9,7 @@
 | PyMieSim/experiment/utils.py                  |       32 |       32 |       14 |        0 |      0.00% |     1-127 |
 | PyMieSim/single/\_mesh.py                     |       26 |       26 |        0 |        0 |      0.00% |     4-241 |
 | PyMieSim/single/representations/nearfields.py |      160 |      141 |       44 |        0 |      9.31% |29-32, 49-62, 96-115, 134-143, 173-216, 234-261, 278-287, 296-334, 378-435 |
-| **TOTAL**                                     |  **767** |  **258** |  **218** |   **30** | **63.25%** |           |
+| **TOTAL**                                     |  **769** |  **258** |  **218** |   **30** | **63.32%** |           |
 
 7 files skipped due to complete coverage.
 
