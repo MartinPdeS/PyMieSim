@@ -195,11 +195,11 @@ class InfiniteCylinder: public BaseScatterer
          * @return A vector of complex128 values representing the near-field electromagnetic fields.
          */
         std::vector<complex128> get_total_nearfields(
-            const std::vector<double>& x,
-            const std::vector<double>& y,
-            const std::vector<double>& z,
-            const std::string& field_type,
-            const std::shared_ptr<BaseSource>& source
+            const std::vector<double>&,
+            const std::vector<double>&,
+            const std::vector<double>&,
+            const std::string&,
+            const std::shared_ptr<BaseSource>&
         ) override {
             throw std::logic_error{"Function not implemented!"};
             return std::vector<complex128>{};
@@ -214,11 +214,11 @@ class InfiniteCylinder: public BaseScatterer
          * @return A vector of complex128 values representing the scattered near-field electromagnetic fields.
          */
         std::vector<complex128> get_scattered_nearfields(
-            const std::vector<double>& x,
-            const std::vector<double>& y,
-            const std::vector<double>& z,
-            const std::string& field_type,
-            const std::shared_ptr<BaseSource>& source
+            const std::vector<double>&,
+            const std::vector<double>&,
+            const std::vector<double>&,
+            const std::string&,
+            const std::shared_ptr<BaseSource>&
         ) override {
             throw std::logic_error{"Function not implemented!"};
             return std::vector<complex128>{};

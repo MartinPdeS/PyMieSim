@@ -86,8 +86,8 @@ void Sphere::compute_cn_dn(size_t _max_order) {
     b1x.push_back( +sin(x) / x );
     y1x.push_back( -cos(x) / x );
 
-    for (double i = nmx; i > 1; i--)
-        Cnx[i-2] = i - z * z / (Cnx[i - 1] + i);
+    for (size_t index = nmx; index > 1; index--)
+        Cnx[index-2] = static_cast<double>(index) - z * z / (Cnx[index - 1] + static_cast<double>(index));
 
     for (size_t order = 0; order < _max_order; order++) {
         Cnn.push_back(Cnx[order]);
