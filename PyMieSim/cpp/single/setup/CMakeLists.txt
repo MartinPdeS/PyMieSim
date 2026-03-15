@@ -2,7 +2,7 @@
 set(NAME "setup_single")
 add_library("${NAME}" STATIC "setup.cpp")
 
-target_link_libraries("${NAME}" PUBLIC scatterer_lib sourcelib detectorlib)
+target_link_libraries("${NAME}" PUBLIC scatterer_lib source_lib detector_lib)
 
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
