@@ -10,7 +10,7 @@ except ImportError:
 
 debug_mode = False
 
-from PyMieSim.binary import interface_pint
+from PyMieSim.pint import interface_pint
 from TypedUnit import ureg
 
 interface_pint.set_ureg(ureg)
