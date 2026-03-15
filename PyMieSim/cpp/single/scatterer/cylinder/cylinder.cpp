@@ -154,7 +154,7 @@ void InfiniteCylinder::compute_cn_dn(const size_t max_order) {
 }
 
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
+std::pair<std::vector<complex128>, std::vector<complex128>>
 InfiniteCylinder::compute_s1s2(const std::vector<double> &phi) const{
     std::vector<complex128> T1(phi.size()), T2(phi.size());
 

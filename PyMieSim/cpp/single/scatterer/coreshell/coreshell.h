@@ -308,7 +308,7 @@ class CoreShell: public BaseScatterer
          * @param phi A vector of angles in radians at which to compute the scattering amplitudes.
          * @return A tuple containing two vectors: S1 and S2, which are the scattering amplitudes.
          */
-        std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
+        std::pair<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
 
         /**
          * @brief Computes the near-field electromagnetic fields for a sphere.

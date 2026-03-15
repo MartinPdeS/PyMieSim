@@ -32,7 +32,7 @@ public:
     virtual void compute_cn_dn(const size_t max_order = 0) = 0;
     virtual void compute_an_bn(const size_t max_order = 0) = 0;
 
-    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const = 0;
+    virtual std::pair<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const = 0;
     virtual double get_Qsca() const {throw std::logic_error{"Function not implementend!"};};
     virtual double get_Qext() const {throw std::logic_error{"Function not implementend!"};};
     virtual double get_Qback() const {throw std::logic_error{"Function not implementend!"};};

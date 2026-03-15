@@ -229,7 +229,7 @@ double CoreShell::get_g() const {
     return value * 4.0 / (this->get_Qsca() * this->size_parameter_squared);
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
+std::pair<std::vector<complex128>, std::vector<complex128>>
 CoreShell::compute_s1s2(const std::vector<double>& phi) const {
     std::vector<complex128> S1;
     std::vector<complex128> S2;

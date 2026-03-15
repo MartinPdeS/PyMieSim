@@ -179,7 +179,7 @@ double Sphere::get_g() const {
 }
 
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
+std::pair<std::vector<complex128>, std::vector<complex128>>
 Sphere::compute_s1s2(const std::vector<double> &phi) const {
     std::vector<complex128> S1, S2;
 
