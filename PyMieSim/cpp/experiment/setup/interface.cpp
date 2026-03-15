@@ -122,28 +122,22 @@ PYBIND11_MODULE(_setup, module) {
         )
         .def(
             "_get_farfields",
-            [](Setup& self, const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance){
+            [](Setup& self, const FibonacciMesh& mesh, const double distance){
 
-                auto [farfield_array, farfield_shape] = self.get_farfields(scatterer_set, source_set, mesh, distance);
+                auto [farfield_array, farfield_shape] = self.get_farfields(mesh, distance);
                 return vector_move_from_numpy(farfield_array, farfield_shape);
             },
-            pybind11::arg("scatterer_set"),
-            pybind11::arg("source_set"),
             pybind11::arg("mesh"),
-            pybind11::arg("distance") = 1,
+            pybind11::arg("distance") = 1.0,
             R"pbdoc(
                 Retrieves the far-field patterns for a combination of scatterers and sources on a Fibonacci mesh.
 
                 Parameters
                 ----------
-                scatterer_set : ScattererSet
-                    The set of scatterers.
-                source_set : BaseSourceSet
-                    The set of sources.
                 mesh : FibonacciMesh
                     The Fibonacci mesh for far-field sampling.
                 distance : float, optional
-                    The distance at which to compute the far-fields. Default is 1.
+                    The distance at which to compute the far-fields. Default is 1.0.
 
                 Returns
                 -------

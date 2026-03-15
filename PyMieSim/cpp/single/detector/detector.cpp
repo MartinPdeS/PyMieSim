@@ -179,7 +179,7 @@ void Photodiode::initialize()
 
     this->snell_interface.set_media(
         this->scatterer_medium_refractive_index,
-        this->detector_medium_refractive_index
+        this->medium->get_refractive_index()
     );
 
     double theta_s_max = 0.0;
@@ -332,7 +332,7 @@ void CoherentMode::initialize()
 
     this->snell_interface.set_media(
         this->scatterer_medium_refractive_index,
-        this->detector_medium_refractive_index
+        this->medium->get_refractive_index()
     );
 
     double theta_s_max = 0.0;
@@ -530,7 +530,7 @@ void IntegratingSphere::initialize()
     // Cache Fresnel coefficients on the 4π mesh if you want interface weighting
     this->snell_interface.set_media(
         this->scatterer_medium_refractive_index,
-        this->detector_medium_refractive_index
+        this->medium->get_refractive_index()
     );
 
     this->snell_interface.compute_fresnel_amplitude_transmission_on_mesh(

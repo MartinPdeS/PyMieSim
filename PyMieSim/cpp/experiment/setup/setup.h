@@ -146,7 +146,6 @@ class Setup
             if (debug_mode)
                 this->debug_print_state();
 
-            // if (this->detector_set->is_empty) {
             if (!this->detector_set) {
                 this->array_shape = this->concatenate_vector(this->source_set->shape, this->scatterer_set->shape);
                 this->total_iterations = this->source_set->total_combinations * this->scatterer_set->total_combinations;
@@ -266,13 +265,11 @@ class Setup
 
         /**
          * @brief Computes the far-field patterns for given scatterers, sources, and a Fibonacci mesh.
-         * @param scatterer_set The set of scatterers.
-         * @param source_set The set of sources.
          * @param mesh The Fibonacci mesh for far-field sampling.
          * @param distance The distance at which to compute the far-fields (default is 1).
          * @return A tuple containing a numpy array of far-field patterns and the shape of the array.
          */
         std::tuple<std::vector<complex128>, std::vector<std::size_t>>
-        get_farfields(const ScattererSet& scatterer_set, const BaseSourceSet& source_set, const FibonacciMesh& mesh, const double distance = 1);
+        get_farfields(const FibonacciMesh& mesh, const double distance = 1);
 
 };

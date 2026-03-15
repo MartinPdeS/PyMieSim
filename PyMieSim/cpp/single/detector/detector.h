@@ -29,7 +29,6 @@ public:
     double gamma_offset = 0.0;
     double polarization_filter = 0.0;
     std::shared_ptr<BaseMedium> medium;
-    std::shared_ptr<BaseSource> source;
     bool mean_coupling = true;
 
 
@@ -58,7 +57,6 @@ public:
         const double _gamma_offset,
         const double _polarization_filter,
         std::shared_ptr<BaseMedium> _medium,
-        std::shared_ptr<BaseSource> _source,
         const bool _mean_coupling)
     :   sampling(_sampling),
         numerical_aperture(_numerical_aperture),
@@ -67,15 +65,15 @@ public:
         gamma_offset(_gamma_offset),
         polarization_filter(_polarization_filter),
         medium(std::move(_medium)),
-        source(std::move(_source)),
         mean_coupling(_mean_coupling)
     {}
 
     // Media refractive indices for interface calculations
     double scatterer_medium_refractive_index = 1.0; // n_s
 
-    // Detector medium refractive index
-    double detector_medium_refractive_index  = 1.0; // n_d
+    void init(const std::shared_ptr<BaseSource> source) {
+        this->medium->initialize(source->wavelength);
+    }
 
     /**
      * @brief Computes the coupling coefficient for a given scatterer.
@@ -164,8 +162,8 @@ public:
         printf("  Gamma Offset (radians): %.*f\n", precision, this->gamma_offset);
         printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
         printf("  Medium Refractive Index: %.*f\n", precision, this->medium->get_refractive_index());
-        printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
-        printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
+        // printf("  Scatterer Medium Refractive Index: %.*f\n", precision, this->scatterer_medium_refractive_index);
+        // printf("  Detector Medium Refractive Index: %.*f\n", precision, this->detector_medium_refractive_index);
     }
 
 private:
@@ -189,17 +187,16 @@ public:
         const double _phi_offset,
         const double _gamma_offset,
         const double _polarization_filter,
-        const std::shared_ptr<BaseMedium> _medium)
-    :   BaseDetector(
-            _sampling,
-            _numerical_aperture,
-            _cache_numerical_aperture,
-            _phi_offset,
-            _gamma_offset,
-            _polarization_filter,
-            std::move(_medium),
-            nullptr,
-            false
+        const std::shared_ptr<BaseMedium> _medium
+    ) :  BaseDetector(
+         _sampling,
+        _numerical_aperture,
+        _cache_numerical_aperture,
+        _phi_offset,
+        _gamma_offset,
+        _polarization_filter,
+        std::move(_medium),
+        false
         ),
         mode_number("NC00")
     {
@@ -214,8 +211,8 @@ public:
         const double _phi_offset,
         const double _gamma_offset,
         const double _polarization_filter,
-        const double _medium)
-    :   BaseDetector(
+        const double _medium
+    ) :  BaseDetector(
             _sampling,
             _numerical_aperture,
             _cache_numerical_aperture,
@@ -223,7 +220,6 @@ public:
             _gamma_offset,
             _polarization_filter,
             std::make_shared<ConstantMedium>(_medium),
-            nullptr,
             false
         ),
         mode_number("NC00")
@@ -319,7 +315,6 @@ public:
             _gamma_offset,
             _polarization_filter,
             std::move(_medium),
-            nullptr,
             _mean_coupling
         ),
         mode_number(_mode_number),
@@ -348,7 +343,6 @@ public:
             _gamma_offset,
             _polarization_filter,
             std::make_shared<ConstantMedium>(_medium),
-            nullptr,
             _mean_coupling
         ),
         mode_number(_mode_number),
@@ -443,7 +437,6 @@ public:
             0.0,  /* gamma_offset */
             _polarization_filter,
             std::make_shared<ConstantMedium>(1.0),  /* medium */
-            nullptr,
             false
         )
     {

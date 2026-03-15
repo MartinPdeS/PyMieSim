@@ -2,6 +2,7 @@
 
 #include "experiment/base_set.h"
 #include "single/detector/detector.h"
+#include <experiment/material_set/material_set.h>
 
 class BaseDetectorSet : public BaseSet
 {
@@ -47,7 +48,7 @@ class PhotodiodeSet : public BaseDetectorSet
         std::vector<double> phi_offset;
         std::vector<double> gamma_offset;
         std::vector<double> polarization_filter;
-        std::vector<double> medium;
+        std::shared_ptr<MediumSet> medium;
 
         PhotodiodeSet() = default;
 
@@ -58,7 +59,7 @@ class PhotodiodeSet : public BaseDetectorSet
             const std::vector<double> &phi_offset,
             const std::vector<double> &gamma_offset,
             const std::vector<double> &polarization_filter,
-            const std::vector<double> &medium,
+            std::shared_ptr<MediumSet> medium,
             const bool is_sequential
         );
 
@@ -94,7 +95,7 @@ class CoherentModeSet : public BaseDetectorSet
         std::vector<double> gamma_offset;
         std::vector<double> polarization_filter;
         std::vector<double> rotation;
-        std::vector<double> medium;
+        std::shared_ptr<MediumSet> medium;
         bool coherent;
         bool mean_coupling;
 
@@ -109,7 +110,7 @@ class CoherentModeSet : public BaseDetectorSet
             const std::vector<double> &gamma_offset,
             const std::vector<double> &polarization_filter,
             const std::vector<double> &rotation,
-            const std::vector<double> &medium,
+            std::shared_ptr<MediumSet> medium,
             const bool &mean_coupling,
             const bool is_sequential
         );

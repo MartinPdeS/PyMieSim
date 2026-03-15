@@ -10,7 +10,7 @@ from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyMieSim.material import print_available, SellmeierMaterial
+from PyMieSim.material import print_available, SellmeierMaterial, SellmeierMedium
 
 print_available()
 
@@ -39,7 +39,7 @@ detector = CoherentModeSet(
     polarization_filter=[0, 90] * ureg.degree,
     rotation=[0] * ureg.degree,
     sampling=[300],
-    medium=[1] * ureg.RIU,
+    medium=SellmeierMedium("water")
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)

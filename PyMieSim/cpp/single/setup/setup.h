@@ -34,7 +34,7 @@ class Setup
         {
             scatterer->init(source, 0);  // max_order = 0 for automatic selection
             if (detector)
-                detector->source = source;
+                detector->init(source);
         }
 
         double get(const std::string& data_name) const {

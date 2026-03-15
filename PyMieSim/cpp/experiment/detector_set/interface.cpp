@@ -6,6 +6,8 @@
 #include <utils/numpy_interface.h>
 #include "./detector_set.h"
 #include <experiment/sequential_broadcast.h>
+#include <experiment/utils_set.h>
+#include <experiment/material_set/material_set.h>
 
 namespace py = pybind11;
 
@@ -45,7 +47,6 @@ PYBIND11_MODULE(detector_set, module) {
                     } else {
                         polarization_filter_value = cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
-                    std::vector<double> medium_value = cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
 
                     return std::make_shared<PhotodiodeSet>(
                         sampling_value,
@@ -54,7 +55,7 @@ PYBIND11_MODULE(detector_set, module) {
                         phi_offset_value,
                         gamma_offset_value,
                         polarization_filter_value,
-                        medium_value,
+                        std::make_shared<MediumSet>(create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium")),
                         is_sequential
                     );
                 }
@@ -162,9 +163,6 @@ PYBIND11_MODULE(detector_set, module) {
                 std::vector<double> gamma_offset_value =
                     cast_scalar_or_array_to_vector<double>(gamma_offset.attr("to")("radian").attr("magnitude"));
 
-                std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
-
                 std::vector<double> polarization_filter_value;
                 if (polarization_filter.is_none()) {
                     polarization_filter_value = std::vector<double>{std::nan("")}; // broadcast later
@@ -182,7 +180,7 @@ PYBIND11_MODULE(detector_set, module) {
                         {"phi_offset", phi_offset_value},
                         {"gamma_offset", gamma_offset_value},
                         {"polarization_filter", polarization_filter_value},
-                        {"medium", medium_value}
+                        // {"medium", medium}
                     }
                 );
 
@@ -192,7 +190,6 @@ PYBIND11_MODULE(detector_set, module) {
                 phi_offset_value = broadcast_vector_double("phi_offset", phi_offset_value, target_size);
                 gamma_offset_value = broadcast_vector_double("gamma_offset", gamma_offset_value, target_size);
                 polarization_filter_value = broadcast_vector_double("polarization_filter", polarization_filter_value, target_size);
-                medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
                 return std::make_shared<PhotodiodeSet>(
                     sampling_value,
@@ -201,7 +198,7 @@ PYBIND11_MODULE(detector_set, module) {
                     phi_offset_value,
                     gamma_offset_value,
                     polarization_filter_value,
-                    medium_value,
+                    std::make_shared<MediumSet>(create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium")),
                     true
                 );
             },
@@ -259,8 +256,6 @@ PYBIND11_MODULE(detector_set, module) {
                         polarization_filter_value = cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                     }
 
-                    std::vector<double> medium_value = cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
-
                     std::vector<double> rotation_value = cast_scalar_or_array_to_vector<double>(rotation.attr("to")("radian").attr("magnitude"));
 
                     return std::make_shared<CoherentModeSet>(
@@ -272,7 +267,7 @@ PYBIND11_MODULE(detector_set, module) {
                         gamma_offset_value,
                         polarization_filter_value,
                         rotation_value,
-                        medium_value,
+                        std::make_shared<MediumSet>(create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium")),
                         mean_coupling,
                         is_sequential
                     );
@@ -434,9 +429,6 @@ PYBIND11_MODULE(detector_set, module) {
                         cast_scalar_or_array_to_vector<double>(polarization_filter.attr("to")("radian").attr("magnitude"));
                 }
 
-                std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
-
                 const size_t target_size = resolve_target_size_from_sizes(
                     total_size_value,
                     {
@@ -448,7 +440,7 @@ PYBIND11_MODULE(detector_set, module) {
                         {"gamma_offset", gamma_offset_value.size()},
                         {"rotation", rotation_value.size()},
                         {"polarization_filter", polarization_filter_value.size()},
-                        {"medium", medium_value.size()}
+                        // {"medium", medium_value.size()}
                     }
                 );
 
@@ -460,7 +452,7 @@ PYBIND11_MODULE(detector_set, module) {
                 gamma_offset_value = broadcast_vector_double("gamma_offset", gamma_offset_value, target_size);
                 rotation_value = broadcast_vector_double("rotation", rotation_value, target_size);
                 polarization_filter_value = broadcast_vector_double("polarization_filter", polarization_filter_value, target_size);
-                medium_value = broadcast_vector_double("medium", medium_value, target_size);
+                // medium_value = broadcast_vector_double("medium", medium_value, target_size);
 
                 return std::make_shared<CoherentModeSet>(
                     mode_number_values,
@@ -471,7 +463,7 @@ PYBIND11_MODULE(detector_set, module) {
                     gamma_offset_value,
                     polarization_filter_value,
                     rotation_value,
-                    medium_value,
+                    std::make_shared<MediumSet>(create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium")),
                     mean_coupling,
                     true
                 );

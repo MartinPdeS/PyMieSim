@@ -36,13 +36,6 @@ void Setup::debug_print_state() const {
         debug_printf("DetectorSet: nullptr\n");
     }
     debug_printf("---------------------------------\n");
-
-
-
-
-
-
-
     debug_printf("\n---------------------------------\n");
 }
 
@@ -64,21 +57,22 @@ Setup::get_coupling() {
 
         std::shared_ptr<BaseSource> source_ptr = source_set->get_source_by_index(i);
 
-        std::shared_ptr<BaseDetector> detector = detector_set->get_detector_by_index(k);
+        std::shared_ptr<BaseDetector> detector_ptr = detector_set->get_detector_by_index(k);
 
         std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set->get_scatterer_by_index(j);
 
         scatterer_ptr->init(source_ptr);
+        detector_ptr->init(source_ptr);
+        detector_ptr->scatterer_medium_refractive_index = scatterer_ptr->medium->get_refractive_index();
 
-        // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
         size_t idx = flatten_multi_index(
             this->array_shape,
             source_ptr->indices,
             scatterer_ptr->indices,
-            detector->indices
+            detector_ptr->indices
         );
 
-        output_array[idx] = detector->get_coupling(scatterer_ptr, source_ptr);
+        output_array[idx] = detector_ptr->get_coupling(scatterer_ptr, source_ptr);
     }
     debug_printf("get_scatterer_coupling: finished computation\n");
 
@@ -106,13 +100,14 @@ Setup::get_coupling_sequential() {
 
         std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_by_index_sequential(idx);
 
-        std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index_sequential(idx);
+        std::shared_ptr<BaseDetector> detector_ptr = this->detector_set->get_detector_by_index_sequential(idx);
 
         scatterer_ptr->init(source_ptr);
 
-        // detector->scatterer_medium_refractive_index = scatterer_ptr->medium_refractive_index;
+        detector_ptr->init(source_ptr);
+        detector_ptr->scatterer_medium_refractive_index = scatterer_ptr->medium->get_refractive_index();
 
-        output_array[idx] = detector->get_coupling(scatterer_ptr, source_ptr);
+        output_array[idx] = detector_ptr->get_coupling(scatterer_ptr, source_ptr);
     }
 
     return output_array;
@@ -121,21 +116,22 @@ Setup::get_coupling_sequential() {
 
 std::tuple<std::vector<complex128>, std::vector<size_t>>
 Setup::get_farfields(
-    const ScattererSet& scatterer_set,
-    const BaseSourceSet& source_set,
     const FibonacciMesh& mesh,
     const double distance
 )
 {
     // Head shape for indexing the source and scatterer grid only
-    std::vector<size_t> head_shape = concatenate_vector(source_set.shape, scatterer_set.shape);
+    std::vector<size_t> head_shape = concatenate_vector(
+        this->source_set->shape,
+        this->scatterer_set->shape
+    );
 
     // Full output shape: [..., 2, sampling]
     std::vector<size_t> array_shape = head_shape;
     array_shape.push_back(2);                       // channel: 0 -> theta, 1 -> phi
-    array_shape.push_back(mesh.sampling);       // samples along the mesh
+    array_shape.push_back(mesh.sampling);           // samples along the mesh
 
-    const size_t total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
+    const size_t total_iterations = this->source_set->total_combinations * this->scatterer_set->total_combinations;
     const size_t stride_channel   = mesh.sampling;      // size of one trace
     const size_t stride_block     = 2 * stride_channel;     // theta + phi per combo
 
@@ -150,16 +146,20 @@ Setup::get_farfields(
 
     #pragma omp parallel for
     for (long long idx_flat = 0; idx_flat < static_cast<long long>(total_iterations); ++idx_flat) {
-        size_t i = idx_flat / scatterer_set.total_combinations;  // source index
-        size_t j = idx_flat % scatterer_set.total_combinations;  // scatterer index
+        size_t i = idx_flat / this->scatterer_set->total_combinations;  // source index
+        size_t j = idx_flat % this->scatterer_set->total_combinations;  // scatterer index
 
-        std::shared_ptr<BaseSource> source_ptr = source_set.get_source_by_index(i);
-        std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set.get_scatterer_by_index(j);
+        std::shared_ptr<BaseSource> source_ptr = this->source_set->get_source_by_index(i);
+        std::shared_ptr<BaseScatterer> scatterer_ptr = this->scatterer_set->get_scatterer_by_index(j);
 
         scatterer_ptr->init(source_ptr);
 
         // Linear index over the head shape only
-        size_t idx_head = flatten_multi_index(head_shape, source_ptr->indices, scatterer_ptr->indices);
+        size_t idx_head = flatten_multi_index(
+            head_shape,
+            source_ptr->indices,
+            scatterer_ptr->indices
+        );
 
         // Compute fieldsd
         auto [phi_field, theta_field] = scatterer_ptr->get_unstructured_farfields(mesh, distance, source_ptr);

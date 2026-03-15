@@ -62,15 +62,14 @@ public:
      * @throws std::invalid_argument if any refractive index is not strictly positive.
      */
     void set_media(
-        double scatterer_medium_refractive_index,
-        double detector_medium_refractive_index)
+        double _scatterer_medium_refractive_index,
+        double _detector_medium_refractive_index)
     {
-        if (scatterer_medium_refractive_index <= 0.0 || detector_medium_refractive_index <= 0.0) {
+        if (_scatterer_medium_refractive_index <= 0.0 || _detector_medium_refractive_index <= 0.0)
             throw std::invalid_argument("refractive indices must be positive.");
-        }
 
-        this->scatterer_medium_refractive_index = scatterer_medium_refractive_index;
-        this->detector_medium_refractive_index = detector_medium_refractive_index;
+        this->scatterer_medium_refractive_index = _scatterer_medium_refractive_index;
+        this->detector_medium_refractive_index = _detector_medium_refractive_index;
     }
 
     /**
