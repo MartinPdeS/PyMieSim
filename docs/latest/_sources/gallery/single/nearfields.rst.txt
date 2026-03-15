@@ -38,7 +38,7 @@ This example demonstrates the process of computing and visualizing the far-field
  .. code-block:: none
 
     Computing scattered near field component: Ex
-    /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/PyMieSim/single/representations/nearfields.py:259: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+    /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/PyMieSim/single/representations/nearfields.py:259: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
       fields[component] = numpy.asarray(values).reshape(self.X.shape)
 
     <Figure size 1200x600 with 4 Axes>
@@ -95,7 +95,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.761 seconds)
+   **Total running time of the script:** (0 minutes 0.677 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfields.py:

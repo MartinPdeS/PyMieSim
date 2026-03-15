@@ -59,7 +59,7 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.519 seconds)
+   **Total running time of the script:** (0 minutes 0.486 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_HG01.py:
