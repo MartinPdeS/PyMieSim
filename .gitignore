@@ -23,6 +23,7 @@
 !CMakeLists.txt
 !.coveragerc
 !pytest.ini
+!makefile
 
 # But ignore docs/build inside docs and code
 docs/build/

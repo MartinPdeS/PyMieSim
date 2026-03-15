@@ -11,7 +11,7 @@ target_link_libraries("interface_${NAME}" PUBLIC pybind11::module "${NAME}")
 
 install(
     TARGETS "${NAME}" "interface_${NAME}"
-    LIBRARY DESTINATION "experiment"
-    RUNTIME DESTINATION "experiment"
-    ARCHIVE DESTINATION "experiment"
+    LIBRARY DESTINATION "PyMieSim/experiment"
+    RUNTIME DESTINATION "PyMieSim/experiment"
+    ARCHIVE DESTINATION "PyMieSim/experiment"
 )

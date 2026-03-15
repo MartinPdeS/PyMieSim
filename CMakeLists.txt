@@ -131,11 +131,11 @@ add_subdirectory(PyMieSim/cpp/experiment/detector_set)
 add_subdirectory(PyMieSim/cpp/experiment/setup)
 # ----------------- collect subdirectories --------------------
 
-get_property(PYMIESIM_TARGETS GLOBAL PROPERTY PYMIESIM_TARGETS)
+# get_property(PYMIESIM_TARGETS GLOBAL PROPERTY PYMIESIM_TARGETS)
 
-install(
-    TARGETS ${PYMIESIM_TARGETS}
-    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
-    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
-    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
-)
+# install(
+#     TARGETS ${PYMIESIM_TARGETS}
+#     LIBRARY DESTINATION ${LOCAL_BIN_DIR}
+#     ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
+#     RUNTIME DESTINATION ${LOCAL_BIN_DIR}
+# )
