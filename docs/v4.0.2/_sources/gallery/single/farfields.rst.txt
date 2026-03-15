@@ -23,7 +23,7 @@ Far-Fields Computation and Visualization
 
 This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-42
+.. GENERATED FROM PYTHON SOURCE LINES 7-40
 
 
 
@@ -44,8 +44,6 @@ This example demonstrates the process of computing and visualizing the far-field
     from PyMieSim.polarization import PolarizationState
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.setup import Setup
-
-
     from PyMieSim.material import SellmeierMaterial
 
     material = SellmeierMaterial("BK7")
@@ -77,7 +75,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.118 seconds)
+   **Total running time of the script:** (0 minutes 9.813 seconds)
 
 
 .. _sphx_glr_download_gallery_single_farfields.py:

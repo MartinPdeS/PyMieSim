@@ -10,8 +10,6 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.setup import Setup
-
-
 from PyMieSim.material import SellmeierMaterial
 
 material = SellmeierMaterial("BK7")
