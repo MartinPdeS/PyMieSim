@@ -11,6 +11,7 @@ public:
 
     explicit BaseConstant(const RefractiveIndexType& refractive_index)
         : constant_refractive_index(refractive_index) {
+            this->refractive_index = refractive_index;
             this->is_initialized = true;
         }
 

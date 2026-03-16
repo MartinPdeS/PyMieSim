@@ -20,16 +20,13 @@ def test_energy_flow_vs_coupling_sphere():
 
     scatterer = Sphere(
         diameter=550 * ureg.nanometer,
-        material=1.5 * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=1.5,
+        medium=1.0,
     )
 
-    # Define the detector (integrating sphere)
     detector = IntegratingSphere(
         sampling=5_000,
     )
-
-    print(f"\n\n omega: {detector.mesh.omega}, sampling * d_omega: {detector.mesh.sampling * detector.mesh.d_omega}")
 
     setup = Setup(
         scatterer=scatterer,
@@ -79,7 +76,7 @@ def _test_energy_flow_vs_coupling_cylinder():
         wavelength=750 * ureg.nanometer,  # 750 nm
         polarization=PolarizationState(angle=30 * ureg.degree),  # Polarization in ureg.degrees
         optical_power=1 * ureg.watt,  # Power in ureg.watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical Aperture
+        numerical_aperture=0.3,  # Numerical Aperture
     )
 
     # Define the scatterer (sphere)
@@ -87,9 +84,9 @@ def _test_energy_flow_vs_coupling_cylinder():
         core_diameter=1500 * ureg.nanometer,  # 1500 nm diameter
         shell_thickness=200 * ureg.nanometer,
         source=source,
-        core_refractive_index=1.8 * ureg.RIU,  # Refractive index
-        shell_refractive_index=1.5 * ureg.RIU,  # Refractive index
-        medium_refractive_index=1.0 * ureg.RIU,  # Medium is water
+        core_refractive_index=1.8,  # Refractive index
+        shell_refractive_index=1.5,  # Refractive index
+        medium_refractive_index=1.0,  # Medium is water
     )
 
     # Define the detector (integrating sphere)

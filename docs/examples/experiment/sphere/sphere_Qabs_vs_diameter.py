@@ -22,7 +22,7 @@ source = GaussianSet(
     wavelength=[400, 700] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 silver = TabulatedMaterial("silver")
@@ -30,7 +30,7 @@ silver = TabulatedMaterial("silver")
 scatterer = SphereSet(
     diameter=np.linspace(1, 800, 300) * ureg.nanometer,
     material=[silver],
-    medium=[1] * ureg.RIU,
+    medium=[1],
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source)

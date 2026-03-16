@@ -26,7 +26,7 @@ def test_sphere_plottings(mock_show_plt):
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     # Create a spherical scatterer
@@ -38,7 +38,7 @@ def test_sphere_plottings(mock_show_plt):
 
     # Create a photodiode detector
     detector = Photodiode(
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         phi_offset=0 * ureg.degree,
         gamma_offset=0 * ureg.degree,
         polarization_filter=0 * ureg.degree,

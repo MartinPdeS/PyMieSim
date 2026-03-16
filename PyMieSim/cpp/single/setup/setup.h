@@ -7,11 +7,14 @@
 #include <memory>
 #include <cstdarg>
 #include <cstdio>
-#include "single/scatterer/sphere/sphere.h"
-#include "single/scatterer/cylinder/cylinder.h"
-#include "single/scatterer/coreshell/coreshell.h"
-#include "single/source/source.h"
-#include "single/detector/detector.h"
+#include <single/scatterer/sphere/sphere.h>
+#include <single/scatterer/cylinder/cylinder.h>
+#include <single/scatterer/coreshell/coreshell.h>
+#include <single/source/source.h>
+
+#include <single/detector/photodiode.h>
+#include <single/detector/coherent_mode.h>
+#include <single/detector/integrating_sphere.h>
 
 #include <utils/constants.h>
 
@@ -33,8 +36,11 @@ class Setup
             : source(_source), scatterer(_scatterer), detector(_detector), debug_mode(_debug_mode)
         {
             scatterer->init(source, 0);  // max_order = 0 for automatic selection
-            if (detector)
-                detector->init(source);
+            if (detector) {
+                detector->initialize_mesh(scatterer);
+                detector->medium->initialize(source->wavelength);
+            }
+
         }
 
         double get(const std::string& data_name) const {

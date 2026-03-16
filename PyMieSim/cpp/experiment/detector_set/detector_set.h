@@ -1,8 +1,11 @@
 #pragma once
 
-#include "experiment/base_set.h"
-#include "single/detector/detector.h"
+#include <experiment/base_set.h>
 #include <experiment/material_set/material_set.h>
+
+#include <single/detector/photodiode.h>
+#include <single/detector/coherent_mode.h>
+#include <single/detector/integrating_sphere.h>
 
 class BaseDetectorSet : public BaseSet
 {

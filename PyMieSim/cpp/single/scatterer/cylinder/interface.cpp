@@ -18,7 +18,7 @@ void register_cylinder(py::module_& module) {
                 const py::object& medium,
                 std::size_t max_order
             ) {
-                double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                double diameter_meter = diameter.attr("to")("meter").attr("magnitude").cast<double>();
 
                 const std::shared_ptr<BaseMaterial> parsed_material =
                     parse_material_object(material, ureg);

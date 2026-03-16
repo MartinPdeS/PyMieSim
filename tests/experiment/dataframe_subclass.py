@@ -22,7 +22,7 @@ def get_experiment_dataframe():
         wavelength=np.linspace(600, 1000, 50) * ureg.nanometer,
         polarization=PolarizationSet(0 * ureg.degree),
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
     scatterer = SphereSet(
         diameter=[100] * ureg.nanometer,
@@ -32,7 +32,7 @@ def get_experiment_dataframe():
     detector = CoherentModeSet(
         mode_number=["LP01"],
         rotation=[0] * ureg.degree,
-        numerical_aperture=[0.1, 0.2] * ureg.AU,
+        numerical_aperture=[0.1, 0.2],
         gamma_offset=[0] * ureg.degree,
         phi_offset=[0] * ureg.degree,
         sampling=[100],

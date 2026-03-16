@@ -48,7 +48,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -57,8 +57,7 @@ PYBIND11_MODULE(material, module) {
     py::class_<ConstantMaterial, BaseMaterial, std::shared_ptr<ConstantMaterial>>(module, "ConstantMaterial")
         .def(
             py::init([ureg](const py::object& refractive_index) {
-                const complex128 refractive_index_value =
-                    refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<complex128>();
+                const complex128 refractive_index_value = refractive_index.cast<complex128>();
 
                 return std::make_shared<ConstantMaterial>(refractive_index_value);
             }),
@@ -68,7 +67,7 @@ PYBIND11_MODULE(material, module) {
             "refractive_index",
             [ureg](const ConstantMaterial& self) {
                 py::object magnitude = py::cast(self.constant_refractive_index);
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             }
         )
         .def(
@@ -78,7 +77,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -151,8 +150,7 @@ PYBIND11_MODULE(material, module) {
                 const std::vector<double> wavelength_values =
                     wavelengths.attr("to")("meter").attr("magnitude").cast<std::vector<double>>();
 
-                const std::vector<complex128> refractive_index_values =
-                    refractive_indices.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<std::vector<complex128>>();
+                const std::vector<complex128> refractive_index_values = refractive_indices.cast<std::vector<complex128>>();
 
                 return std::make_shared<TabulatedMaterial>(
                     name,
@@ -178,7 +176,7 @@ PYBIND11_MODULE(material, module) {
             "refractive_indices",
             [ureg](const TabulatedMaterial& self) {
                 py::object magnitude = py::cast(self.refractive_indices);
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             }
         )
         .def_readonly("allow_extrapolation", &TabulatedMaterial::allow_extrapolation)
@@ -189,7 +187,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -265,7 +263,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -279,13 +277,21 @@ PYBIND11_MODULE(material, module) {
 
     py::class_<BaseMedium, std::shared_ptr<BaseMedium>>(module, "BaseMedium")
         .def(
+            "initialize",
+            [](BaseMedium& self, const py::object& wavelength) {
+                return self.initialize(
+                    wavelength.attr("to")("meter").attr("magnitude").cast<double>()
+                );
+            }
+        )
+        .def(
             "get_refractive_index",
             [ureg](const BaseMedium& self, const py::object& wavelength) {
                 const double wavelength_meter =
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -294,8 +300,7 @@ PYBIND11_MODULE(material, module) {
     py::class_<ConstantMedium, BaseMedium, std::shared_ptr<ConstantMedium>>(module, "ConstantMedium")
         .def(
             py::init([ureg](const py::object& refractive_index) {
-                const double refractive_index_value =
-                    refractive_index.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<double>();
+                const double refractive_index_value = refractive_index.cast<double>();
 
                 return std::make_shared<ConstantMedium>(refractive_index_value);
             }),
@@ -305,7 +310,7 @@ PYBIND11_MODULE(material, module) {
             "refractive_index",
             [ureg](const ConstantMedium& self) {
                 py::object magnitude = py::cast(self.constant_refractive_index);
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             }
         )
         .def(
@@ -315,7 +320,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -340,8 +345,7 @@ PYBIND11_MODULE(material, module) {
                 const std::vector<double> wavelength_values =
                     wavelengths.attr("to")("meter").attr("magnitude").cast<std::vector<double>>();
 
-                const std::vector<double> refractive_index_values =
-                    refractive_indices.attr("to")(ureg.attr("RIU")).attr("magnitude").cast<std::vector<double>>();
+                const std::vector<double> refractive_index_values = refractive_indices.cast<std::vector<double>>();
 
                 return std::make_shared<TabulatedMedium>(
                     name,
@@ -367,7 +371,7 @@ PYBIND11_MODULE(material, module) {
             "refractive_indices",
             [ureg](const TabulatedMedium& self) {
                 py::object magnitude = py::cast(self.refractive_indices);
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             }
         )
         .def_readonly("allow_extrapolation", &TabulatedMedium::allow_extrapolation)
@@ -378,7 +382,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )
@@ -454,7 +458,7 @@ PYBIND11_MODULE(material, module) {
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
-                return magnitude * ureg.attr("RIU");
+                return magnitude;
             },
             py::arg("wavelength")
         )

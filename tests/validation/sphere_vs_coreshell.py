@@ -14,23 +14,23 @@ def test_no_shell(metric):
 
     sphere = SphereSet(
         diameter=diameter,
-        material=1.5 * ureg.RIU,
-        medium=1.33 * ureg.RIU,
+        material=1.5,
+        medium=1.33,
     )
 
     coreshell = CoreShellSet(
         core_diameter=diameter,
         shell_thickness=0 * ureg.nanometer,
-        core_material=1.5 * ureg.RIU,
-        shell_material=1.6 * ureg.RIU,
-        medium=1.33 * ureg.RIU,
+        core_material=1.5,
+        shell_material=1.6,
+        medium=1.33,
     )
 
     source = GaussianSet(
         wavelength=[750] * ureg.nanometer,
         polarization=PolarizationSet(angles=30 * ureg.degree),
         optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.3] * ureg.AU,
+        numerical_aperture=[0.3],
     )
 
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
@@ -53,21 +53,21 @@ def test_shell_equal_core(metric):
         wavelength=[750] * ureg.nanometer,
         polarization=PolarizationSet(angles=30 * ureg.degree),
         optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.3] * ureg.AU,
+        numerical_aperture=[0.3],
     )
 
     sphere = SphereSet(
         diameter=diameter_sphere,
-        material=[1.5] * ureg.RIU,
-        medium=[1.33] * ureg.RIU,
+        material=[1.5],
+        medium=[1.33],
     )
 
     coreshell = CoreShellSet(
         core_diameter=diameter_core,
         shell_thickness=[50] * ureg.nanometer,
-        core_material=[1.5] * ureg.RIU,
-        shell_material=[1.5] * ureg.RIU,
-        medium=[1.33] * ureg.RIU,
+        core_material=[1.5],
+        shell_material=[1.5],
+        medium=[1.33],
     )
 
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
@@ -91,22 +91,22 @@ def test_only_shell(metric):
         wavelength=[750] * ureg.nanometer,
         polarization=PolarizationSet(angles=30 * ureg.degree),
         optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.3] * ureg.AU,
+        numerical_aperture=[0.3],
     )
 
 
     sphere = SphereSet(
         diameter=diameter_sphere,
-        material=[1.5] * ureg.RIU,
-        medium=[1.33] * ureg.RIU,
+        material=[1.5],
+        medium=[1.33],
     )
 
     coreshell = CoreShellSet(
         core_diameter=[100] * ureg.nanometer,
         shell_thickness=shell_thickness,
-        core_material=[1.5] * ureg.RIU,
-        shell_material=[1.5] * ureg.RIU,
-        medium=[1.33] * ureg.RIU,
+        core_material=[1.5],
+        shell_material=[1.5],
+        medium=[1.33],
     )
 
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
@@ -127,7 +127,7 @@ def test_shell_is_medium(metric):
         wavelength=[750] * ureg.nanometer,
         polarization=PolarizationSet(angles=30 * ureg.degree),
         optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.3] * ureg.AU,
+        numerical_aperture=[0.3],
     )
 
 
@@ -135,16 +135,16 @@ def test_shell_is_medium(metric):
 
     sphere = SphereSet(
         diameter=diameter,
-        material=[1.5] * ureg.RIU,
-        medium=[1.4] * ureg.RIU,
+        material=[1.5],
+        medium=[1.4],
     )
 
     coreshell = CoreShellSet(
         core_diameter=diameter,
         shell_thickness=[500] * ureg.nanometer,
-        core_material=[1.5] * ureg.RIU,
-        shell_material=[1.4] * ureg.RIU,
-        medium=[1.4] * ureg.RIU,
+        core_material=[1.5],
+        shell_material=[1.4],
+        medium=[1.4],
     )
 
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)

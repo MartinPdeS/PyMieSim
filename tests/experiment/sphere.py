@@ -26,9 +26,7 @@ medium_properties = [
     [1.1] * ureg.RIU
 ]
 
-# measures = SphereSet.available_measure_list[:1]
-measures = ['coupling']
-
+measures = SphereSet.available_measure_list
 
 polarization = PolarizationSet(angles=0 * ureg.degree)
 
@@ -36,7 +34,7 @@ gaussian_source = GaussianSet(
     wavelength=np.linspace(600, 1000, 15) * ureg.nanometer,
     polarization=polarization,
     optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    numerical_aperture=0.2,
 )
 
 planewave_source = PlaneWaveSet(
@@ -77,8 +75,7 @@ def test_get_measure(source, measure, material, medium):
     detector = CoherentModeSet(
         mode_number="LP01",
         rotation=0 * ureg.degree,
-        numerical_aperture=[0.1] * ureg.AU,
-        polarization_filter=None,
+        numerical_aperture=[0.1],
         gamma_offset=[0] * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100,

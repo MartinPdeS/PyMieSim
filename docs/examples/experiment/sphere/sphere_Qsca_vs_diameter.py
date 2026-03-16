@@ -23,7 +23,7 @@ source = GaussianSet(
     wavelength=[405] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 polystyrene = SellmeierMaterial("polystyrene")
@@ -31,7 +31,7 @@ polystyrene = SellmeierMaterial("polystyrene")
 scatterer = SphereSet(
     diameter=np.linspace(10, 1000, 150) * ureg.nanometer,
     material=MaterialSet([polystyrene]),
-    medium=MediumSet([1.33, 1.34, 1.5] * ureg.RIU),
+    medium=MediumSet([1.33, 1.34, 1.5]),
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source)

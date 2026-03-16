@@ -23,18 +23,18 @@ source = GaussianSet(
     wavelength=[1200] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 scatterer = SphereSet(
     diameter=[2000, 2300] * ureg.nanometer,
     material=[SellmeierMaterial("BK7")],
-    medium=[1] * ureg.RIU,
+    medium=[1],
 )
 
 detector = CoherentModeSet(
     mode_number="HG11",
-    numerical_aperture=[0.05] * ureg.AU,
+    numerical_aperture=[0.05],
     phi_offset=[0] * ureg.degree,
     gamma_offset=[20] * ureg.degree,
     sampling=[400],

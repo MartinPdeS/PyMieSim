@@ -1,11 +1,7 @@
 #pragma once
 
-#include "single/scatterer/sphere/sphere.h"
-#include "single/scatterer/cylinder/cylinder.h"
-#include "single/scatterer/coreshell/coreshell.h"
-#include "single/detector/detector.h"
-#include "single/source/source.h"
-
+#include <vector>     // For std::vector
+#include <stdexcept>  // For std::runtime_error
 
 // Base class to reduce redundancy
 class BaseSet {

@@ -5,6 +5,9 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 
+namespace py = pybind11;
+typedef std::complex<double> complex128;
+
 
 template <typename T>
 std::vector<size_t> get_stride(const std::vector<size_t>& dimensions)
@@ -136,10 +139,6 @@ inline pybind11::array_t<T> vector_move_from_numpy(
     return out;
 }
 
-
-namespace py = pybind11;
-typedef std::complex<double> complex128;
-
 template <typename dtype>
 std::vector<dtype> cast_scalar_or_array_to_vector(const py::object& obj) {
 
@@ -150,38 +149,4 @@ std::vector<dtype> cast_scalar_or_array_to_vector(const py::object& obj) {
 
     // Otherwise treat as scalar
     return { obj.cast<dtype>() };
-}
-
-std::vector<complex128> cast_scalar_or_array_to_vector_complex128(const py::object& obj) {
-
-    // If already iterable (NumPy array, list, tuple)
-    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
-        return obj.cast<std::vector<complex128>>();
-    }
-
-    // Otherwise treat as scalar
-    return { obj.cast<complex128>() };
-}
-
-
-std::vector<unsigned> cast_scalar_or_array_to_vector_unsigned(const py::object& obj) {
-
-    // If already iterable (NumPy array, list, tuple)
-    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
-        return obj.cast<std::vector<unsigned>>();
-    }
-
-    // Otherwise treat as scalar
-    return { obj.cast<unsigned>() };
-}
-
-std::vector<std::string> cast_scalar_or_array_to_vector_string(const py::object& obj) {
-
-    // If already iterable (NumPy array, list, tuple)
-    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
-        return obj.cast<std::vector<std::string>>();
-    }
-
-    // Otherwise treat as scalar
-    return { obj.cast<std::string>() };
 }

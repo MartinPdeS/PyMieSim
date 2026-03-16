@@ -10,9 +10,9 @@ from PyMieSim.single.detector import Photodiode
 @pytest.mark.parametrize(
     "optical_power, numerical_aperture, polarization, wavelength",
     [
-        (1, 0.1 * ureg.AU, 0 * ureg.degree, 1550 * ureg.nanometer),
-        (1 * ureg.watt, 0.1 * ureg.AU, 0, 1550 * ureg.nanometer),
-        (1 * ureg.watt, 0.1 * ureg.AU, 0 * ureg.degree, 1550),
+        (1, 0.1, 0 * ureg.degree, 1550 * ureg.nanometer),
+        (1 * ureg.watt, 0.1, 0, 1550 * ureg.nanometer),
+        (1 * ureg.watt, 0.1, 0 * ureg.degree, 1550),
     ],
 )
 def test_invalid_gaussian_initialization(optical_power, numerical_aperture, polarization, wavelength):
@@ -28,8 +28,8 @@ def test_invalid_gaussian_initialization(optical_power, numerical_aperture, pola
 def test_invalid_sphere_initialization():
     with pytest.raises(Exception):
         Sphere(
-            medium=1.0 * ureg.RIU,
-            material=1.5 * ureg.RIU,
+            medium=1.0,
+            material=1.5,
             diameter=100,
         )
 
@@ -37,8 +37,8 @@ def test_invalid_sphere_initialization():
 @pytest.mark.parametrize(
     "numerical_aperture, sampling, gamma_offset, phi_offset, polarization_filter",
     [
-        (0.2 * ureg.AU, 30, 0, 0 * ureg.degree, None),
-        (0.2 * ureg.AU, 30, 0 * ureg.degree, 0, None),
+        (0.2, 30, 0, 0 * ureg.degree, None),
+        (0.2, 30, 0 * ureg.degree, 0, None),
     ],
 )
 def test_invalid_photodiode_initialization(
@@ -51,7 +51,7 @@ def test_invalid_photodiode_initialization(
             gamma_offset=gamma_offset,
             phi_offset=phi_offset,
             polarization_filter=polarization_filter,
-            medium=1.0 * ureg.RIU
+            medium=1.0
         )
 
 

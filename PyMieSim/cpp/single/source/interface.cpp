@@ -253,16 +253,13 @@ PYBIND11_MODULE(source, module)
                 const double wavelength_meter =
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>();
 
-                const double numerical_aperture_value =
-                    numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
-
                 const double optical_power_watt =
                     optical_power.attr("to")("watt").attr("magnitude").cast<double>();
 
                 return std::make_shared<Gaussian>(
                     wavelength_meter,
                     polarization,
-                    numerical_aperture_value,
+                    numerical_aperture.cast<double>(),
                     optical_power_watt
                 );
             }),
@@ -335,8 +332,8 @@ PYBIND11_MODULE(source, module)
         )
         .def_property_readonly(
             "numerical_aperture",
-            [ureg](const Gaussian& self) {
-                return (py::float_(self.numerical_aperture) * ureg.attr("dimensionless")).attr("to_compact")();
+            [](const Gaussian& self) {
+                return py::float_(self.numerical_aperture);
             },
             R"pbdoc(
                 Numerical aperture.

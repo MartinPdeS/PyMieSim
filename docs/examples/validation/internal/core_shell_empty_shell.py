@@ -17,7 +17,7 @@ from PyMieSim.experiment import Setup
 
 # Setup parameters
 scatterer_diameter = 0.3 * ureg.micrometer  # Diameter of the scatterer in meters
-scatterer_index = 1.4 * ureg.RIU  # Refractive index of the scatterer
+scatterer_index = 1.4  # Refractive index of the scatterer
 source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
 polarization_set = PolarizationSet(
@@ -29,15 +29,15 @@ source = GaussianSet(
     wavelength=[1200] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 scatterer = CoreShellSet(
     core_diameter=[300] * ureg.nanometer,
     shell_thickness=np.linspace(100, 300, 100) * ureg.nanometer,
-    core_material=[1.4] * ureg.RIU,
-    shell_material=[1.3] * ureg.RIU,
-    medium=[1.3] * ureg.RIU,
+    core_material=[1.4],
+    shell_material=[1.3],
+    medium=[1.3],
 )
 
 

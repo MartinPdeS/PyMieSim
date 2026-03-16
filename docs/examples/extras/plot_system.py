@@ -28,18 +28,18 @@ source = Gaussian(
     wavelength=1550 * ureg.nanometer,
     polarization=polarization_state,
     optical_power=1 * ureg.watt,
-    numerical_aperture=0.3 * ureg.AU,
+    numerical_aperture=0.3,
 )
 
 scatterer = InfiniteCylinder(
     diameter=1800 * ureg.nanometer,
-    medium=1.0 * ureg.RIU,
-    material=1.5 * ureg.RIU,
+    medium=1.0,
+    material=1.5,
 )
 
 detector = CoherentMode(
     mode_number="LP01",
-    numerical_aperture=0.2 * ureg.AU,
+    numerical_aperture=0.2,
     gamma_offset=0 * ureg.degree,
     phi_offset=30 * ureg.degree,
     rotation=0 * ureg.degree,

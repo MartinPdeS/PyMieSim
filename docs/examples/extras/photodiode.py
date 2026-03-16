@@ -10,9 +10,9 @@ from PyMieSim.units import ureg
 from PyMieSim.single.detector import Photodiode
 
 detector = Photodiode(
-    numerical_aperture=0.3 * ureg.AU,
-    cache_numerical_aperture=0.2 * ureg.AU,
-    sampling=500 * ureg.AU,
+    numerical_aperture=0.3,
+    cache_numerical_aperture=0.2,
+    sampling=500,
     gamma_offset=45 * ureg.degree,
     phi_offset=0 * ureg.degree,
 )

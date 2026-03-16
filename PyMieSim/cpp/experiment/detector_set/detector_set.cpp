@@ -139,6 +139,7 @@ void CoherentModeSet::update_shape() {
 std::shared_ptr<BaseDetector>
 CoherentModeSet::get_detector_by_index(long long flat_index) const {
     std::vector<size_t> indices = this->calculate_indices(flat_index);
+
     std::shared_ptr<CoherentMode> detector = std::make_shared<CoherentMode>(
         this->mode_numbers[indices[0]],
         this->sampling[indices[1]],

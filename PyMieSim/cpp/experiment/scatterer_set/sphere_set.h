@@ -1,14 +1,9 @@
 #pragma once
 
+#include <single/scatterer/sphere/sphere.h>
 #include <experiment/scatterer_set/base_set.h>
 #include <experiment/material_set/material_set.h>
 
-
-
-
-
-
-// Sphere class inheriting from BaseSet
 class SphereSet : public ScattererSet
 {
 public:

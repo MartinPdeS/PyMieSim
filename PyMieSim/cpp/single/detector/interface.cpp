@@ -1,9 +1,11 @@
 #include <pybind11/pybind11.h>
-#include "./detector.h"
-
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
 #include <single/scatterer/utils.h>
+
+#include <single/detector/photodiode.h>
+#include <single/detector/coherent_mode.h>
+#include <single/detector/integrating_sphere.h>
 
 
 namespace py = pybind11;
@@ -19,10 +21,19 @@ PYBIND11_MODULE(detector, module) {
     )pbdoc";
 
     py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BaseDetector")
+        .def_readwrite(
+            "medium",
+            &BaseDetector::medium,
+            R"pbdoc(
+                The medium in which the detector is immersed.
+
+                This property is crucial for accurately modeling the interaction of light with the detector, as it affects the refractive index and, consequently, the behavior of light at the interface between the detector and its surroundings.
+            )pbdoc"
+        )
         .def_property_readonly(
             "numerical_aperture",
             [ureg](BaseDetector& self) {
-                return py::float_(self.numerical_aperture) * ureg.attr("dimensionless");
+                return py::float_(self.numerical_aperture);
             },
             R"pbdoc(
             Numerical aperture of the detector.
@@ -58,6 +69,14 @@ PYBIND11_MODULE(detector, module) {
             R"pbdoc(
             Returns the minimum angle of the detector in radians.
             This is used to determine the angular coverage of the detector.
+            )pbdoc"
+        )
+        .def(
+            "initialize_mesh",
+            &BaseDetector::initialize_mesh,
+            py::arg("scatterer"),
+            R"pbdoc(
+                Initialize the detector mesh based on the scatterer properties.
             )pbdoc"
         )
         .def_property(
@@ -288,18 +307,18 @@ PYBIND11_MODULE(detector, module) {
         .def(
             py::init(
                 [ureg](
-                    py::object numerical_aperture,
-                    py::object phi_offset,
-                    py::object gamma_offset,
-                    py::object medium,
-                    py::object polarization_filter,
-                    py::object cache_numerical_aperture,
+                    const py::object& numerical_aperture,
+                    const py::object& phi_offset,
+                    const py::object& gamma_offset,
+                    const py::object& medium,
+                    const py::object& polarization_filter,
+                    const py::object& cache_numerical_aperture,
                     std::size_t sampling
                 ) {
-                    double numerical_aperture_value = numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
+                    double numerical_aperture_value = numerical_aperture.cast<double>();
                     double phi_offset_value = phi_offset.attr("to")("radian").attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")("radian").attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.cast<double>();
 
                     double polarization_filter_value;
                     if (polarization_filter.is(py::none())) {
@@ -340,7 +359,7 @@ PYBIND11_MODULE(detector, module) {
             py::arg("gamma_offset"),
             py::arg("medium") = py::none(),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
-            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("dimensionless"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = 200,
             R"pbdoc(
             Photodiode class representing a photodiode with a coherent light coupling mechanism.
@@ -367,7 +386,7 @@ PYBIND11_MODULE(detector, module) {
             "print_properties",
             &Photodiode::print_properties,
             R"pbdoc(
-            Print the properties of the Photodiode detector.
+                Print the properties of the Photodiode detector.
             )pbdoc"
         )
         .def(
@@ -450,11 +469,11 @@ PYBIND11_MODULE(detector, module) {
                     py::object mean_coupling,
                     std::size_t sampling
                 ) {
-                    double numerical_aperture_value = numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
+                    double numerical_aperture_value = numerical_aperture.cast<double>();
                     double phi_offset_value = phi_offset.attr("to")("radian").attr("magnitude").cast<double>();
                     double gamma_offset_value = gamma_offset.attr("to")("radian").attr("magnitude").cast<double>();
                     double rotation_value = rotation.attr("to")("radian").attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude").cast<double>();
+                    double cache_numerical_aperture_value = cache_numerical_aperture.cast<double>();
                     bool mean_coupling_value = mean_coupling.cast<bool>();
 
                     double polarization_filter_value;
@@ -501,7 +520,7 @@ PYBIND11_MODULE(detector, module) {
             py::arg("gamma_offset"),
             py::arg("rotation"),
             py::arg("medium") = py::none(),
-            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("dimensionless"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
             py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
@@ -623,16 +642,10 @@ PYBIND11_MODULE(detector, module) {
         )
         ;
 
-    py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(module, "IntegratingSphere",
-        R"pbdoc(
-        IntegratingSphere detector.
-
-        4π incoherent power collector.
-        )pbdoc"
-    )
+    py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(module, "IntegratingSphere")
         .def(
             py::init(
-                [ureg](
+                [](
                     py::object polarization_filter,
                     std::size_t sampling
                 ) {
@@ -640,7 +653,7 @@ PYBIND11_MODULE(detector, module) {
                     if (polarization_filter.is(py::none())) {
                         polarization_filter_value = std::nan("");
                     } else {
-                        polarization_filter_value = polarization_filter.attr("to")(ureg.attr("radian")).attr("magnitude").cast<double>();
+                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
                     }
 
                     return std::make_shared<IntegratingSphere>(

@@ -80,14 +80,12 @@ class Footprint():
         n_point = complex(self.sampling)
 
         phi, theta = numpy.mgrid[
-            -max_angle.to("radian")
-            .magnitude : max_angle.to("radian")
-            .magnitude : n_point,
+            -max_angle.to("radian").magnitude : max_angle.to("radian").magnitude : n_point,
             0 : numpy.pi : n_point,
         ]
 
         max_distance_direct_space = 1 / (
-            numpy.sin(max_angle) * self.setup.source.wavenumber_vacuum / (2 * numpy.pi)
+            numpy.sin(max_angle.to("radian").magnitude) * self.setup.source.wavenumber_vacuum / (2 * numpy.pi)
         )
 
         x = y = (

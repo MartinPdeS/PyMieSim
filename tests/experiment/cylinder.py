@@ -32,7 +32,7 @@ gaussian_source = GaussianSet(
     wavelength=np.linspace(600, 1000, 15) * ureg.nanometer,
     polarization=polarization,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 planewave_source = PlaneWaveSet(
@@ -64,7 +64,7 @@ def test_measure(measure, source, medium, material):
     )
 
     detector = PhotodiodeSet(
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
         gamma_offset=[0] * ureg.degree,
         phi_offset=[0] * ureg.degree,
         sampling=[100],

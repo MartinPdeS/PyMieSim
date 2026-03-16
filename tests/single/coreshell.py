@@ -16,9 +16,9 @@ bk7 = SellmeierMaterial("BK7")
 water = SellmeierMedium("water")
 
 # Core, shell, and medium parameters
-core_refractive_index = [1.2 * ureg.RIU, bk7, 1.0 * ureg.RIU]
-shell_refractive_index = [1.8 * ureg.RIU, 1.1 * ureg.RIU, 1.7 * ureg.RIU]
-medium_refractive_index = [1.3 * ureg.RIU, water]
+core_refractive_index = [1.2, bk7, 1.0]
+shell_refractive_index = [1.8, 1.1, 1.7]
+medium_refractive_index = [1.3, water]
 
 
 # Reusable fixture for Gaussian source
@@ -28,7 +28,7 @@ def source():
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
 
@@ -45,7 +45,7 @@ def source():
 @pytest.mark.parametrize("attribute", CoreShell.property_names + ["coupling"])
 def test_coupling(attribute, core_material, shell_material, medium, source):
     detector = Photodiode(
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         medium=medium

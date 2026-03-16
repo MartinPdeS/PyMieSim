@@ -4,11 +4,6 @@
 #include <memory>
 #include <cstdarg>    // For va_list, va_start, va_end
 #include <cstdio>     // For printf, vprintf
-#include <single/scatterer/sphere/sphere.h>
-#include <single/scatterer/cylinder/cylinder.h>
-#include <single/scatterer/coreshell/coreshell.h>
-#include <single/source/source.h>
-#include <single/detector/detector.h>
 
 #include <experiment/source_set/source_set.h>
 #include <experiment/scatterer_set/sphere_set.h>

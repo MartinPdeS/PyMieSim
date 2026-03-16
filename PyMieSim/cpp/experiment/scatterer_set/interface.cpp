@@ -123,11 +123,9 @@ PYBIND11_MODULE(scatterer_set, module) {
                 std::vector<double> diameter_value =
                     cast_scalar_or_array_to_vector<double>(diameter.attr("to")("meter").attr("magnitude"));
 
-                std::vector<complex128> material_value =
-                    cast_scalar_or_array_to_vector<complex128>(material.attr("to")("RIU").attr("magnitude"));
+                std::vector<complex128> material_value = cast_scalar_or_array_to_vector<complex128>(material);
 
-                std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
+                std::vector<double> medium_value = cast_scalar_or_array_to_vector<double>(medium);
 
                 diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
                 material_value = broadcast_vector_complex128("material", material_value, target_size);
@@ -283,10 +281,10 @@ PYBIND11_MODULE(scatterer_set, module) {
                     cast_scalar_or_array_to_vector<double>(diameter.attr("to")("meter").attr("magnitude"));
 
                 std::vector<complex128> material_value =
-                    cast_scalar_or_array_to_vector<complex128>(material.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<complex128>(material);
 
                 std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(medium);
 
                 diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
                 material_value = broadcast_vector_complex128("material", material_value, target_size);
@@ -461,13 +459,13 @@ PYBIND11_MODULE(scatterer_set, module) {
                     cast_scalar_or_array_to_vector<double>(shell_thickness.attr("to")("meter").attr("magnitude"));
 
                 std::vector<complex128> core_material_value =
-                    cast_scalar_or_array_to_vector<complex128>(core_material.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<complex128>(core_material);
 
                 std::vector<complex128> shell_material_value =
-                    cast_scalar_or_array_to_vector<complex128>(shell_material.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<complex128>(shell_material);
 
                 std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium.attr("to")("RIU").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(medium);
 
                 core_diameter_value = broadcast_vector_double("core_diameter", core_diameter_value, target_size);
                 shell_thickness_value = broadcast_vector_double("shell_thickness", shell_thickness_value, target_size);

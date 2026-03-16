@@ -1,0 +1,13 @@
+{
+	"revision" : 0,
+	"rules" : 
+	[
+		{
+			"outputs" : [],
+			"primary-output" : "PyMieSim/cpp/bessel_subroutine/CMakeFiles/bessel_subroutine.dir/zbesh.for.o",
+			"provides" : [],
+			"requires" : []
+		}
+	],
+	"version" : 0
+}

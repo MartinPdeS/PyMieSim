@@ -23,10 +23,10 @@ def test_validation():
     wavelength = 632.8 * ureg.nanometer
     polarization_values = PolarizationSet(angles=[0, 90] * ureg.degree)
     optical_power = 1e-3 * ureg.watt
-    NA = 0.2 * ureg.AU
+    NA = 0.2
     diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
-    index = 1.55 * ureg.RIU
-    medium_index = 1.335 * ureg.RIU
+    index = 1.55
+    medium_index = 1.335
 
     volumes = np.pi * (diameters / 2) ** 2
 

@@ -20,10 +20,10 @@ from PyMieSim.directories import validation_data_path
 
 # Define parameters
 wavelength = 632.8 * ureg.nanometer  # Wavelength of the source in meters
-index = (1.4 + 0.2j) * ureg.RIU  # Refractive index of the sphere
-medium_index = 1.2 * ureg.RIU  # Refractive index of the medium
+index = (1.4 + 0.2j)  # Refractive index of the sphere
+medium_index = 1.2  # Refractive index of the medium
 optical_power = 1 * ureg.watt  # Power of the light source in watts
-NA = 0.2 * ureg.AU  # Numerical aperture
+NA = 0.2  # Numerical aperture
 diameters = (
     np.geomspace(10, 6_000, 800) * ureg.nanometer
 )  # Diameters from 10 nm to 6 μm
@@ -33,14 +33,14 @@ source = GaussianSet(
     wavelength=[632.8] * ureg.nanometer,
     polarization=PolarizationSet(angles=0 * ureg.degree),
     optical_power=[1] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 # Setup spherical scatterer
 scatterer = SphereSet(
     diameter=diameters,
-    material=[(1.4 + 0.2j)] * ureg.RIU,
-    medium=[1.2] * ureg.RIU,
+    material=[(1.4 + 0.2j)],
+    medium=[1.2],
 )
 
 # Create experimental setup

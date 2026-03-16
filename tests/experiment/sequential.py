@@ -4,14 +4,16 @@
 import pytest
 import numpy as np
 from unittest.mock import patch
+
 from PyMieSim.units import ureg
 
+from PyMieSim.material import SellmeierMaterial, SellmeierMedium
 from PyMieSim.experiment.detector_set import CoherentModeSet
 from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyOptik import Material
+
 
 TOTAL_SIZE = 5
 
@@ -29,22 +31,23 @@ def test_valid_experiment(mock_show):
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=1e-3 * ureg.watt,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         total_size=TOTAL_SIZE,
     )
 
     scatterer = SphereSet.build_sequential(
         diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-        material=1.4 * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=1.4,
+        medium=1.0,
         total_size=TOTAL_SIZE,
     )
 
     detector = CoherentModeSet.build_sequential(
         mode_number="LP01",
         rotation=0 * ureg.degree,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         polarization_filter=np.nan * ureg.degree,
+        medium=1.0,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100,
@@ -67,11 +70,11 @@ def test_invalid_medium_refractive_index():
 
     When medium_refractive_index is defined using Material.water, the configuration should be rejected.
     """
-    with pytest.raises(AttributeError):
+    with pytest.raises((AttributeError, RuntimeError)):
         SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-            material=1.4 * ureg.RIU,
-            medium=Material.water,  # This should trigger an error
+            material=1.4,
+            medium=SellmeierMedium("water"),  # This should trigger an error
             total_size=TOTAL_SIZE,
         )
 
@@ -82,11 +85,11 @@ def test_invalid_refractive_index():
 
     When refractive_index is defined using Material.water, the configuration should be rejected.
     """
-    with pytest.raises(AttributeError):
+    with pytest.raises((AttributeError, RuntimeError)):
         SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-            material=Material.water,  # This should trigger an error
-            medium=1.0 * ureg.RIU,
+            material=SellmeierMaterial("water"),  # This should trigger an error
+            medium=1.0,
             total_size=TOTAL_SIZE,
         )
 
@@ -100,8 +103,8 @@ def test_parameter_broadcasting():
     """
     scatterer = SphereSet.build_sequential(
         diameter=500 * ureg.nanometer,  # Scalar value
-        material=1.5 * ureg.RIU,  # Scalar value
-        medium=1.2 * ureg.RIU,  # Scalar value
+        material=1.5,  # Scalar value
+        medium=1.2,  # Scalar value
         total_size=TOTAL_SIZE,
     )
 
@@ -123,8 +126,8 @@ def test_broadcasted_values():
 
     scatterer = SphereSet.build_sequential(
         diameter=value,
-        material=1.6 * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=1.6,
+        medium=1.0,
         total_size=TOTAL_SIZE,
     )
 

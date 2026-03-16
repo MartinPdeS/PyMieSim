@@ -18,24 +18,23 @@ PYBIND11_MODULE(detector_set, module) {
     py::class_<BaseDetectorSet, std::shared_ptr<BaseDetectorSet>>(module, "BaseDetectorSet");
 
     py::class_<PhotodiodeSet, BaseDetectorSet, std::shared_ptr<PhotodiodeSet>>(module, "PhotodiodeSet")
-        .def(py::init<>())
         .def(
             py::init(
                 [ureg](
-                    const py::object& NA,
+                    const py::object& numerical_aperture,
                     const py::object& phi_offset,
                     const py::object& gamma_offset,
                     const py::object& sampling,
-                    const py::object& cache_NA,
+                    const py::object& cache_numerical_aperture,
                     const py::object& polarization_filter,
                     const py::object& medium,
                     bool is_sequential
                 ) {
-                    std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
+                    std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector<unsigned>(sampling);
 
-                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(NA.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(numerical_aperture);
 
-                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_NA.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_numerical_aperture);
 
                     std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
 
@@ -64,9 +63,9 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("sampling") = py::int_(200),
-            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = ConstantMedium(1.0),
             py::arg("is_sequential") = false,
             R"pdoc(
                 Initializes a detector set with scalar fields, numerical aperture, offsets, filters, angle, coherence, and coupling type.
@@ -96,13 +95,13 @@ PYBIND11_MODULE(detector_set, module) {
         .def_property_readonly(
             "numerical_aperture",
             [ureg](const PhotodiodeSet& self) {
-                return py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
+                return py::cast(self.numerical_aperture);
             }
         )
         .def_property_readonly(
             "cache_numerical_aperture",
             [ureg](const PhotodiodeSet& self) {
-                return py::cast(self.cache_numerical_aperture) * ureg.attr("dimensionless");
+                return py::cast(self.cache_numerical_aperture);
             }
         )
         .def_property_readonly(
@@ -122,12 +121,12 @@ PYBIND11_MODULE(detector_set, module) {
             [ureg](const PhotodiodeSet& self) {
                 py::dict mapping;
                 mapping["detector:sampling"] = py::cast(self.sampling);
-                mapping["detector:NA"] = py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
-                mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture) * ureg.attr("dimensionless");
+                mapping["detector:NA"] = py::cast(self.numerical_aperture);
+                mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture);
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
                 mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
-                mapping["detector:medium"] = py::cast(self.medium) * ureg.attr("RIU");
+                mapping["detector:medium"] = self.medium;
                 return mapping;
             },
             R"pdoc(
@@ -149,13 +148,11 @@ PYBIND11_MODULE(detector_set, module) {
             ) {
                 const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
 
-                std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
+                std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector<unsigned>(sampling);
 
-                std::vector<double> numerical_aperture_value =
-                    cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(numerical_aperture);
 
-                std::vector<double> cache_numerical_aperture_value =
-                    cast_scalar_or_array_to_vector<double>(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                std::vector<double> cache_numerical_aperture_value =cast_scalar_or_array_to_vector<double>(cache_numerical_aperture);
 
                 std::vector<double> phi_offset_value =
                     cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
@@ -207,9 +204,9 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("sampling") = py::int_(200),
-            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = ConstantMedium(1.0),
             R"pdoc(
                 Construct a sequential PhotodiodeSet by broadcasting scalar or single element inputs.
 
@@ -221,7 +218,6 @@ PYBIND11_MODULE(detector_set, module) {
 
 
     py::class_<CoherentModeSet, BaseDetectorSet, std::shared_ptr<CoherentModeSet>>(module, "CoherentModeSet")
-        .def(py::init<>())
         .def(
             py::init(
                 [ureg](
@@ -237,13 +233,13 @@ PYBIND11_MODULE(detector_set, module) {
                     const bool& mean_coupling,
                     bool is_sequential
                 ) {
-                    std::vector<std::string> mode_number_values = cast_scalar_or_array_to_vector_string(mode_number);
+                    std::vector<std::string> mode_number_values = cast_scalar_or_array_to_vector<std::string>(mode_number);
 
-                    std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
+                    std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector<unsigned>(sampling);
 
-                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(numerical_aperture);
 
-                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_numerical_aperture);
 
                     std::vector<double> phi_offset_value = cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
 
@@ -278,10 +274,10 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("rotation"),
-            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = py::int_(200),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = ConstantMedium(1.0),
             py::arg("mean_coupling") = false,
             py::arg("is_sequential") = false,
             R"pdoc(
@@ -321,13 +317,13 @@ PYBIND11_MODULE(detector_set, module) {
         .def_property_readonly(
             "numerical_aperture",
             [ureg](const CoherentModeSet& self) {
-                return py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
+                return py::cast(self.numerical_aperture);
             }
         )
         .def_property_readonly(
             "cache_numerical_aperture",
             [ureg](const CoherentModeSet& self) {
-                return py::cast(self.cache_numerical_aperture) * ureg.attr("dimensionless");
+                return py::cast(self.cache_numerical_aperture);
             }
         )
         .def_property_readonly(
@@ -355,7 +351,7 @@ PYBIND11_MODULE(detector_set, module) {
                 if (std::isnan(self.polarization_filter[0])) {
                     output = py::none();
                 } else {
-                    output = py::cast(self.polarization_filter) * ureg.attr("dimensionless");
+                    output = py::cast(self.polarization_filter);
                 }
                 return output;
             }
@@ -363,7 +359,7 @@ PYBIND11_MODULE(detector_set, module) {
         .def_property_readonly(
             "medium",
             [ureg](const CoherentModeSet& self) {
-                return py::cast(self.medium) * ureg.attr("RIU");
+                return self.medium;
             }
         )
         .def(
@@ -372,13 +368,13 @@ PYBIND11_MODULE(detector_set, module) {
                 py::dict mapping;
                 mapping["detector:mode_number"] = py::cast(self.mode_numbers);
                 mapping["detector:sampling"] = py::cast(self.sampling);
-                mapping["detector:NA"] = py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
-                mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture) * ureg.attr("dimensionless");
+                mapping["detector:NA"] = py::cast(self.numerical_aperture);
+                mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture);
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
                 mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
                 mapping["detector:rotation"] = py::cast(self.rotation) * ureg.attr("radian");
-                mapping["detector:medium"] = py::cast(self.medium) * ureg.attr("RIU");
+                mapping["detector:medium"] = self.medium;
                 return mapping;
             },
             R"pdoc(
@@ -403,14 +399,12 @@ PYBIND11_MODULE(detector_set, module) {
             ) {
                 const std::optional<size_t> total_size_value = parse_optional_total_size(total_size);
 
-                std::vector<std::string> mode_number_values = cast_scalar_or_array_to_vector_string(mode_number);
-                std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector_unsigned(sampling);
+                std::vector<std::string> mode_number_values = cast_scalar_or_array_to_vector<std::string>(mode_number);
+                std::vector<unsigned> sampling_value = cast_scalar_or_array_to_vector<unsigned>(sampling);
 
-                std::vector<double> numerical_aperture_value =
-                    cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                std::vector<double> numerical_aperture_value = cast_scalar_or_array_to_vector<double>(numerical_aperture);
 
-                std::vector<double> cache_numerical_aperture_value =
-                    cast_scalar_or_array_to_vector<double>(cache_numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                std::vector<double> cache_numerical_aperture_value = cast_scalar_or_array_to_vector<double>(cache_numerical_aperture);
 
                 std::vector<double> phi_offset_value =
                     cast_scalar_or_array_to_vector<double>(phi_offset.attr("to")("radian").attr("magnitude"));
@@ -474,10 +468,10 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("rotation"),
-            py::arg("cache_numerical_aperture") = py::float_(0.0) * ureg.attr("radian"),
+            py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = py::int_(200),
             py::arg("polarization_filter") = py::none(),
-            py::arg("medium") = py::float_(1.0) * ureg.attr("RIU"),
+            py::arg("medium") = ConstantMedium(1.0),
             py::arg("mean_coupling") = false,
             R"pdoc(
                 Construct a sequential CoherentModeSet by broadcasting scalar or single element inputs.

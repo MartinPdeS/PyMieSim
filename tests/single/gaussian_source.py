@@ -10,7 +10,7 @@ def test_gaussian_initialization():
     # Test with UnitPolarizationAngle
     gaussian1 = Gaussian(
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         polarization=PolarizationState(angle=0 * ureg.degree),
         wavelength=1550 * ureg.nanometer,
     )
@@ -21,7 +21,7 @@ def test_gaussian_initialization():
     # Test with scalar polarization
     gaussian2 = Gaussian(
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         polarization=PolarizationState(angle=0 * ureg.degree),
         wavelength=1550 * ureg.nanometer,
     )
@@ -35,7 +35,7 @@ def gaussian_source():
     """Fixture to create a Gaussian source with predefined parameters."""
     return Gaussian(
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         polarization=PolarizationState(angle=0 * ureg.degree),
         wavelength=1550 * ureg.nanometer,
     )

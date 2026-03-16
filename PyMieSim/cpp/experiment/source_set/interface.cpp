@@ -29,7 +29,7 @@ PYBIND11_MODULE(source_set, module) {
                         cast_scalar_or_array_to_vector<double>(wavelength.attr("to")("meter").attr("magnitude"));
 
                     std::vector<double> numerical_aperture_values = \
-                        cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                        cast_scalar_or_array_to_vector<double>(numerical_aperture);
 
                     std::vector<double> optical_power_values = \
                         cast_scalar_or_array_to_vector<double>(optical_power.attr("to")("watt").attr("magnitude"));
@@ -76,7 +76,7 @@ PYBIND11_MODULE(source_set, module) {
         .def_property_readonly(
             "numerical_aperture",
             [ureg](const GaussianSourceSet& self) {
-                return (py::cast(self.numerical_aperture) * ureg.attr("dimensionless"));
+                return (py::cast(self.numerical_aperture));
             },
             "Returns the numerical apertures of the Gaussian source set as a NumPy array with appropriate units."
         )
@@ -93,7 +93,7 @@ PYBIND11_MODULE(source_set, module) {
                 py::dict mapping;
                 mapping["source:wavelength"] = py::cast(self.wavelength) * ureg.attr("meter");
                 mapping["source:polarization"] = py::cast(self.polarization);
-                mapping["source:numerical_aperture"] = py::cast(self.numerical_aperture) * ureg.attr("dimensionless");
+                mapping["source:numerical_aperture"] = py::cast(self.numerical_aperture);
                 mapping["source:optical_power"] = py::cast(self.optical_power) * ureg.attr("watt");
                 return mapping;
             },
@@ -117,7 +117,7 @@ PYBIND11_MODULE(source_set, module) {
                     cast_scalar_or_array_to_vector<double>(wavelength.attr("to")("meter").attr("magnitude"));
 
                 std::vector<double> numerical_aperture_values =
-                    cast_scalar_or_array_to_vector<double>(numerical_aperture.attr("to")("dimensionless").attr("magnitude"));
+                    cast_scalar_or_array_to_vector<double>(numerical_aperture);
 
                 std::vector<double> optical_power_values =
                     cast_scalar_or_array_to_vector<double>(optical_power.attr("to")("watt").attr("magnitude"));

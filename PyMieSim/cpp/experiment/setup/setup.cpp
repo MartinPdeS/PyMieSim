@@ -62,8 +62,7 @@ Setup::get_coupling() {
         std::shared_ptr<BaseScatterer> scatterer_ptr = scatterer_set->get_scatterer_by_index(j);
 
         scatterer_ptr->init(source_ptr);
-        detector_ptr->init(source_ptr);
-        detector_ptr->scatterer_medium_refractive_index = scatterer_ptr->medium->get_refractive_index();
+        detector_ptr->medium->initialize(source_ptr->wavelength);
 
         size_t idx = flatten_multi_index(
             this->array_shape,
@@ -104,8 +103,7 @@ Setup::get_coupling_sequential() {
 
         scatterer_ptr->init(source_ptr);
 
-        detector_ptr->init(source_ptr);
-        detector_ptr->scatterer_medium_refractive_index = scatterer_ptr->medium->get_refractive_index();
+        detector_ptr->medium->initialize(source_ptr->wavelength);
 
         output_array[idx] = detector_ptr->get_coupling(scatterer_ptr, source_ptr);
     }
@@ -161,7 +159,7 @@ Setup::get_farfields(
             scatterer_ptr->indices
         );
 
-        // Compute fieldsd
+        // Compute fields
         auto [phi_field, theta_field] = scatterer_ptr->get_unstructured_farfields(mesh, distance, source_ptr);
 
         // Sanity check in debug builds

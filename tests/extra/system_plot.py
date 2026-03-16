@@ -21,22 +21,28 @@ def test_plot_system(mock_show):
         wavelength=1550 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     scatterer = InfiniteCylinder(
         diameter=780 * ureg.nanometer,
-        medium=1.0 * ureg.RIU,
-        material=sqrt(1.5) * ureg.RIU,
+        medium=1.0,
+        material=1.5,
     )
 
+    scatterer.material.initialize(source.wavelength)
+    scatterer.medium.initialize(source.wavelength)
+
     detector = Photodiode(
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         gamma_offset=90 * ureg.degree,
         phi_offset=0 * ureg.degree,
         polarization_filter=0 * ureg.degree,
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
+
+    detector.medium.initialize(source.wavelength)
+    detector.initialize_mesh(scatterer)
 
     scene = pv.Plotter()
 

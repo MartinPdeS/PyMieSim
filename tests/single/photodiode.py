@@ -15,7 +15,7 @@ def source():
         wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
         polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization value
         optical_power=1 * ureg.watt,  # Optical power in ureg.watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3,  # Numerical aperture
     )
 
 
@@ -24,8 +24,8 @@ def setup_scatterer():
     """Fixture to create a scatterer using the Gaussian source defined above."""
     return Sphere(
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
-        material=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        material=1.4,  # Refractive index of the scatterer
+        medium=1.0,  # Refractive index of the surrounding medium
     )
 
 
@@ -33,11 +33,11 @@ def setup_scatterer():
 def photodiode():
     """Test the Photodiode detector with various sampling rates."""
     return Photodiode(
-        numerical_aperture=0.2 * ureg.AU,  # Numerical aperture of the detector
+        numerical_aperture=0.2,  # Numerical aperture of the detector
         sampling=30,  # Field sampling
         gamma_offset=0 * ureg.degree,  # Gamma offset
         phi_offset=0 * ureg.degree,  # Phi offset
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
 
 
@@ -59,11 +59,11 @@ def test_photodiode_sampling(photodiode, source, setup_scatterer):
 def test_fails_initialization():
     with pytest.raises(Exception):
         Photodiode(
-            numerical_aperture=0.2 * ureg.AU,
-            block_numerical_aperture=0.3 * ureg.AU,
+            numerical_aperture=0.2,
+            block_numerical_aperture=0.3,
             gamma_offset=0 * ureg.degree,
             phi_offset=0 * ureg.degree,
-            medium=1.0 * ureg.RIU
+            medium=1.0
         )
 
 

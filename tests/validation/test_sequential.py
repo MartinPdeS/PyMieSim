@@ -17,11 +17,11 @@ ONES = numpy.ones(SIZE)
 WAVELENGTH = numpy.linspace(600, 1000, SIZE) * ureg.nanometer
 POLARIZATION = 0
 OPTICAL_POWER = 1e-3 * ureg.watt
-NA = 0.2 * ureg.AU
+NA = 0.2
 
 DIAMETER = 1400 * ureg.nanometer
-PROPERTY = 1.4 * ureg.RIU
-MEDIUM_PROPERTY = 1.1 * ureg.RIU
+PROPERTY = 1.4
+MEDIUM_PROPERTY = 1.1
 
 
 CACHE_NA = 0.2 * NA

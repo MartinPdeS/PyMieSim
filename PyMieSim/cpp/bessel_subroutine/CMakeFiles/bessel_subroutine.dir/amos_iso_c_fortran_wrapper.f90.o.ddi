@@ -1,0 +1,18 @@
+{
+	"revision" : 0,
+	"rules" : 
+	[
+		{
+			"outputs" : [],
+			"primary-output" : "PyMieSim/cpp/bessel_subroutine/CMakeFiles/bessel_subroutine.dir/amos_iso_c_fortran_wrapper.f90.o",
+			"provides" : [],
+			"requires" : 
+			[
+				{
+					"logical-name" : "iso_c_binding.mod"
+				}
+			]
+		}
+	],
+	"version" : 0
+}

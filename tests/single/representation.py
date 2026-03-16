@@ -16,8 +16,6 @@ from PyMieSim.single import Setup
 representation_list = ["farfields", "stokes", "spf", "s1s2", "footprint"]
 
 
-
-# Parametrized test for plotting functions
 @patch("pyvista.Plotter.show")
 @patch("matplotlib.pyplot.show")
 @pytest.mark.parametrize("representation", representation_list)
@@ -27,21 +25,21 @@ def test_plottings(mock_show_plt, mock_show_pyvista, representation):
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        medium=1.0 * ureg.RIU,
-        material=1.4 * ureg.RIU,
+        medium=1.0,
+        material=1.4
     )
 
     detector = Photodiode(
         sampling=100,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
 
     setup = Setup(

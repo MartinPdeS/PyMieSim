@@ -19,13 +19,13 @@ def test_photodiode_with_sampling(sampling):
         wavelength=750 * ureg.nanometer,  # Wavelength of the source in meters
         polarization=PolarizationState(angle=0 * ureg.degree),  # Polarization value
         optical_power=1 * ureg.watt,  # Optical power in watts
-        numerical_aperture=0.3 * ureg.AU,  # Numerical aperture
+        numerical_aperture=0.3,  # Numerical aperture
     )
 
     scatterer =  Sphere(
         diameter=100 * ureg.nanometer,  # Diameter of the scatterer in meters
-        material=1.4 * ureg.RIU,  # Refractive index of the scatterer
-        medium=1.0 * ureg.RIU,  # Refractive index of the surrounding medium
+        material=1.4,  # Refractive index of the scatterer
+        medium=1.0,  # Refractive index of the surrounding medium
     )
 
     detector = IntegratingSphere(sampling=sampling)

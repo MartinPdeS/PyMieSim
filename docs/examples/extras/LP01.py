@@ -12,8 +12,8 @@ from PyMieSim.single.detector import CoherentMode
 
 detector = CoherentMode(
     mode_number="LP01",
-    sampling=500 * ureg.AU,
-    numerical_aperture=1.0 * ureg.AU,
+    sampling=500,
+    numerical_aperture=1.0,
     gamma_offset=90 * ureg.degree,
     rotation=0 * ureg.degree,
     phi_offset=0 * ureg.degree,

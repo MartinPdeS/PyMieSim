@@ -186,7 +186,7 @@ class Setup(SETUP):
             # Material sets
             # ----------------------------------------------------------
             if isinstance(param_values, MaterialSet):
-                values[key] = [repr(material) if not isinstance(material, (ConstantMaterial, ConstantMedium)) else material.refractive_index.to("RIU").magnitude for material in param_values]
+                values[key] = [repr(material) if not isinstance(material, (ConstantMaterial, ConstantMedium)) else material for material in param_values]
                 continue
 
             # ----------------------------------------------------------

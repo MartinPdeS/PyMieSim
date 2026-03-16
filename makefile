@@ -17,12 +17,15 @@ build:
 install:
 	cmake --install $(BUILD_DIR)
 
+uninstall:
+	$(PYTHON) -m pip uninstall -y PyMieSim
+
 quick: configure build install
 
 rebuild: configure build install
 
 editable:
-	$(PYTHON) -m pip install -e . --no-build-isolation
+	$(PYTHON) -m pip install --no-build-isolation -Cbuild-dir=build -Ceditable.rebuild=false -Ceditable.mode=inplace -e .
 
 clean:
 	rm -rf $(BUILD_DIR)

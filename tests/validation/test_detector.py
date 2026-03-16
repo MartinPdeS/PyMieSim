@@ -21,7 +21,7 @@ def source_experiment():
         wavelength=[1000] * ureg.nanometer,
         polarization=experiment.polarization_set.PolarizationSet(angles=0 * ureg.degree),
         optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.3] * ureg.AU,
+        numerical_aperture=[0.3],
     )
 
 
@@ -38,8 +38,8 @@ def scatterer_single():
     """
     return single.scatterer.Sphere(
         diameter=1000 * ureg.nanometer,
-        material =(1.5 + 0.5j) * ureg.RIU,
-        medium=1 * ureg.RIU,
+        material =(1.5 + 0.5j),
+        medium=1,
     )
 
 
@@ -56,8 +56,8 @@ def scatterer_experiment():
     """
     return experiment.scatterer_set.SphereSet(
         diameter=[1000] * ureg.nanometer,
-        material=[(1.5 + 0.5j)] * ureg.RIU,
-        medium=[1] * ureg.RIU,
+        material=[(1.5 + 0.5j)],
+        medium=[1],
     )
 
 
@@ -71,32 +71,32 @@ def test_detector_single_polarization_filter():
     """
     scatterer_single = single.scatterer.Sphere(
         diameter=1000 * ureg.nanometer,
-        material =(1.5 + 0.5j) * ureg.RIU,
-        medium=1 * ureg.RIU,
+        material =(1.5 + 0.5j),
+        medium=1,
     )
 
     source_single = single.source.Gaussian(
         wavelength=1000 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     # Create two photodiode detectors with different polarization filters (0° and 180°)
     detector_0 = single.detector.Photodiode(
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=0 * ureg.degree,
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
 
     detector_180 = single.detector.Photodiode(
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         gamma_offset=0 * ureg.degree,
         phi_offset=90 * ureg.degree,
         polarization_filter=180 * ureg.degree,
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
 
     setup = single.Setup(
@@ -133,21 +133,21 @@ def test_detector_single_rotation():
     # Create two coherent mode detectors with different rotation angles (0° and 180°)
     scatterer_single = single.scatterer.Sphere(
         diameter=1000 * ureg.nanometer,
-        material =(1.5 + 0.5j) * ureg.RIU,
-        medium=1 * ureg.RIU,
+        material =(1.5 + 0.5j),
+        medium=1,
     )
 
     source_single = single.source.Gaussian(
         wavelength=1000 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     rotation = 0 * ureg.degree
     detector_0 = single.detector.CoherentMode(
         mode_number="LP11",
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         gamma_offset=0 * ureg.degree,
         phi_offset=40 * ureg.degree,
         rotation=rotation,
@@ -155,7 +155,7 @@ def test_detector_single_rotation():
     )
     detector_180 = single.detector.CoherentMode(
         mode_number="LP11",
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
         gamma_offset=0 * ureg.degree,
         phi_offset=40 * ureg.degree,
         rotation=rotation + 180 * ureg.degree,
@@ -197,7 +197,7 @@ def test_detector_experiment_polarization_filter(
     """
     # Create a photodiode detector with two polarization filters (0° and 180°)
     detector = experiment.detector_set.PhotodiodeSet(
-        numerical_aperture=[0.1] * ureg.AU,
+        numerical_aperture=[0.1],
         gamma_offset=[0] * ureg.degree,
         phi_offset=[90] * ureg.degree,
         polarization_filter=[0, 180] * ureg.degree,  # List of polarization filters

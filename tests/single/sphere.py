@@ -16,8 +16,8 @@ bk7 = SellmeierMaterial("BK7")
 
 water = SellmeierMedium("water")
 
-materials = [1.2 * ureg.RIU, bk7]
-mediums = [1.1 * ureg.RIU, water]
+materials = [1.2, bk7]
+mediums = [1.1, water]
 
 
 @pytest.fixture()
@@ -26,7 +26,7 @@ def source():
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
 
@@ -38,10 +38,10 @@ def source():
 def test_sphere_attribute(attribute, material, medium, source):
     detector = Photodiode(
         sampling=100,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
 
     scatterer = Sphere(

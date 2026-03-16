@@ -21,13 +21,13 @@ def test_Qsca_cross_section():
         wavelength=1000 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     sphere = Sphere(
         diameter=300 * ureg.nanometer,
-        material=1.4 * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=1.4,
+        medium=1.0,
     )
 
     setup = Setup(
@@ -54,13 +54,13 @@ def test_energy_flow_coupling():
         wavelength=1000 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     sphere = Sphere(
         diameter=300 * ureg.nanometer,
-        material=1.4 * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=1.4,
+        medium=1.0,
     )
 
     detector = IntegratingSphere(
@@ -87,22 +87,22 @@ def test_compare_sphere_coreshell_0(parameter: str):
         wavelength=1000 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     sphere = Sphere(
         diameter=1000 * ureg.nanometer,
-        material=1.5 * ureg.RIU,
-        medium=1.2 * ureg.RIU,
+        material=1.5,
+        medium=1.2,
     )
 
     # Define a core-shell scatterer with zero shell thickness
     coreshell = CoreShell(
         core_diameter=1000 * ureg.nanometer,
         shell_thickness=0 * ureg.nanometer,  # Zero shell width
-        core_material=1.5 * ureg.RIU,
-        shell_material=1.8 * ureg.RIU,
-        medium=1.2 * ureg.RIU,
+        core_material=1.5,
+        shell_material=1.8,
+        medium=1.2,
     )
 
     setup_0 = Setup(

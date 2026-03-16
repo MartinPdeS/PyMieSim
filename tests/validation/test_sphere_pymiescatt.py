@@ -19,7 +19,7 @@ def gaussian_source():
         wavelength=[1000] * ureg.nanometer,
         polarization=PolarizationSet(angles=0 * ureg.degree),
         optical_power=[1] * ureg.watt,
-        numerical_aperture=[0.3] * ureg.AU,
+        numerical_aperture=[0.3],
     )
 
 
@@ -42,8 +42,8 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     # Get data from PyMieSim
     scatterer = SphereSet(
         diameter=diameters,
-        material=[1.4 + 0.3j] * ureg.RIU,
-        medium=[1.0] * ureg.RIU,
+        material=[1.4 + 0.3j],
+        medium=[1.0],
     )
 
     experiment = Setup(scatterer_set=scatterer, source_set=gaussian_source)

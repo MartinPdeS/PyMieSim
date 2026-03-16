@@ -25,7 +25,7 @@ polarization_state = PolarizationSet(
 
 permitivity = numpy.linspace(-10, 50, 400)
 
-index = numpy.sqrt(permitivity.astype(complex)) * ureg.RIU
+index = numpy.sqrt(permitivity.astype(complex))
 
 diameter = numpy.linspace(1, 200, 400) * ureg.nanometer
 
@@ -33,14 +33,14 @@ source = GaussianSet(
     wavelength=[400] * ureg.nanometer,
     polarization=polarization_state,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 
 scatterer = SphereSet(
     diameter=diameter,
     material=index,
-    medium=1 * ureg.RIU
+    medium=1
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source)

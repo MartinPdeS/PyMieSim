@@ -1,4 +1,6 @@
-#include "detector.h"
+#include <single/detector/photodiode.h>
+#include <single/detector/coherent_mode.h>
+#include <single/detector/integrating_sphere.h>
 
 
 std::vector<double> BaseDetector::get_poynting_field(
@@ -171,14 +173,17 @@ void BaseDetector::apply_interface_transmission_to_fields(
 }
 
 
-// ------------------------- Initialization Function -------------------------
-void Photodiode::initialize()
-{
-    this->parse_mode(this->mode_number);
-    this->mode_field = ModeField(this->mode_id);
+
+
+
+
+// ------------------------- Photodiode -------------------------
+// --------------------------------------------------------------
+void Photodiode::initialize_mesh(const std::shared_ptr<BaseScatterer> scatterer) {
+    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
 
     this->snell_interface.set_media(
-        this->scatterer_medium_refractive_index,
+        scatterer->medium->get_refractive_index(),
         this->medium->get_refractive_index()
     );
 
@@ -192,6 +197,7 @@ void Photodiode::initialize()
         theta_s_min
     );
 
+
     this->max_angle = theta_s_max;
     this->min_angle = theta_s_min;
 
@@ -201,7 +207,7 @@ void Photodiode::initialize()
         this->min_angle,
         this->phi_offset,
         this->gamma_offset,
-        0  /* rotation */
+        0 // rotation
     );
 
     this->scalar_field = this->mode_field.get_unstructured(
@@ -217,9 +223,6 @@ void Photodiode::initialize()
 }
 
 
-
-
-// ------------------------- Utils Functions -------------------------
 std::tuple<std::vector<complex128>, std::vector<complex128>>
 Photodiode::get_projected_farfields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
 {
@@ -245,7 +248,6 @@ Photodiode::get_projected_farfields(const std::vector<complex128> &theta_field, 
 
 }
 
-
 void Photodiode::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
 {
     for (size_t i=0; i<field0.size(); i++) {
@@ -267,7 +269,6 @@ void Photodiode::apply_polarization_filter(T &coupling_theta, T &coupling_phi, d
     coupling_theta *= theta_polarization_filtering;
     coupling_phi *= phi_polarization_filtering;
 }
-
 
 std::vector<complex128> Photodiode::get_structured_scalarfield(const size_t sampling) const {
     // Define the spatial extent (adjust as needed)
@@ -304,9 +305,13 @@ std::vector<complex128> Photodiode::get_structured_scalarfield(const size_t samp
     return output;
 }
 
+double Photodiode::get_coupling(
+    std::shared_ptr<BaseScatterer> scatterer,
+    std::shared_ptr<BaseSource> source
+) {
 
-// ------------------------- Coupling Function -------------------------
-double Photodiode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const {
+    this->initialize_mesh(scatterer);
+
     auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     // this->apply_interface_transmission_to_fields(theta_field, phi_field);
@@ -325,13 +330,68 @@ double Photodiode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::s
     );
 }
 
-void CoherentMode::initialize()
-{
-    this->parse_mode(this->mode_number);
-    this->mode_field = ModeField(this->mode_id);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------- Coherent Mode ----------------------
+// --------------------------------------------------------------
+void CoherentMode::initialize_mesh(const std::shared_ptr<BaseScatterer> scatterer) {
+
+    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
+
 
     this->snell_interface.set_media(
-        this->scatterer_medium_refractive_index,
+        scatterer->medium->get_refractive_index(),
         this->medium->get_refractive_index()
     );
 
@@ -344,6 +404,7 @@ void CoherentMode::initialize()
         theta_s_max,
         theta_s_min
     );
+
 
     this->max_angle = theta_s_max;
     this->min_angle = theta_s_min;
@@ -370,7 +431,6 @@ void CoherentMode::initialize()
 }
 
 
-// ------------------------- Utils Functions -------------------------
 std::tuple<std::vector<complex128>, std::vector<complex128>>
 CoherentMode::get_projected_farfields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
 {
@@ -457,12 +517,14 @@ std::vector<complex128> CoherentMode::get_structured_scalarfield(const size_t sa
 }
 
 // ------------------------- Coupling Function -------------------------
-double CoherentMode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const {
+double CoherentMode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) {
+    this->initialize_mesh(scatterer);
+
     return this->mean_coupling ? this->get_coupling_mean(scatterer, source) : this->get_coupling_point(scatterer, source);
 }
 
 
-double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
+double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source)
 {
     auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
@@ -486,7 +548,7 @@ double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer,
 }
 
 
-double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
+double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source)
 {
     auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
@@ -510,10 +572,27 @@ double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ------------------------- Integrating Sphere -------------------------
 // ----------------------------------------------------------------------
-void IntegratingSphere::initialize()
+void IntegratingSphere::initialize_mesh(const std::shared_ptr<BaseScatterer> scatterer)
 {
+    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
+
     // 4π acceptance: theta in [0, pi]
     this->max_angle = Constants::PI;
     this->min_angle = 0.0;
@@ -524,12 +603,12 @@ void IntegratingSphere::initialize()
         this->min_angle,
         this->phi_offset,
         this->gamma_offset,
-        0.0 /* rotation */
+        0  // rotation
     );
 
     // Cache Fresnel coefficients on the 4π mesh if you want interface weighting
     this->snell_interface.set_media(
-        this->scatterer_medium_refractive_index,
+        this->medium->get_refractive_index(),
         this->medium->get_refractive_index()
     );
 
@@ -540,13 +619,17 @@ void IntegratingSphere::initialize()
     );
 }
 
+
+
 std::vector<complex128> IntegratingSphere::get_structured_scalarfield(const size_t sampling) const
 {
     return std::vector<complex128>(sampling * sampling, complex128(1.0, 0.0));
 }
 
-double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) const
+double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source)
 {
+    this->initialize_mesh(scatterer);
+
     auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
     double coupling = 0.0;

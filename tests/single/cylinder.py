@@ -15,8 +15,8 @@ bk7 = SellmeierMaterial("BK7")
 
 water = SellmeierMedium("water")
 
-materials = [1.5 * ureg.RIU, bk7]
-mediums = [1.3 * ureg.RIU, water]
+materials = [1.5, bk7]
+mediums = [1.3, water]
 
 @pytest.fixture()
 def source():
@@ -24,7 +24,7 @@ def source():
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
 
@@ -35,7 +35,7 @@ def source():
 @pytest.mark.parametrize("attribute", InfiniteCylinder.property_names + ["coupling"])
 def test_cylinder_coupling(attribute, material, medium, source):
     detector = Photodiode(
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         medium=medium
@@ -45,7 +45,7 @@ def test_cylinder_coupling(attribute, material, medium, source):
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     scatterer = InfiniteCylinder(

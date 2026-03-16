@@ -31,7 +31,7 @@ def gaussian_source():
         wavelength=1000 * ureg.nanometer,
         polarization=PolarizationSet(angles=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
 
@@ -51,12 +51,12 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     measure : str
         The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    core_index = [1.4 + 0.3j] * ureg.RIU
-    core_index = [1.4 + 0.3j] * ureg.RIU
-    shell_index = [1.3] * ureg.RIU
+    core_index = [1.4 + 0.3j]
+    core_index = [1.4 + 0.3j]
+    shell_index = [1.3]
     core_diameters = np.geomspace(10, 6000, 80) * ureg.nanometer
     shell_thickness = [300] * ureg.nanometer
-    medium_indexes = [1.0] * ureg.RIU
+    medium_indexes = [1.0]
 
     # Get data from PyMieSim
     scatterer = CoreShellSet(

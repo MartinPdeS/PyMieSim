@@ -1,0 +1,7 @@
+ninja_dyndep_version = 1.0
+build PyMieSim/cpp/bessel_subroutine/CMakeFiles/bessel_subroutine.dir/amos_iso_c_fortran_wrapper.f90.o: dyndep
+
+build PyMieSim/cpp/bessel_subroutine/CMakeFiles/bessel_subroutine.dir/machine.for.o: dyndep
+
+build PyMieSim/cpp/bessel_subroutine/CMakeFiles/bessel_subroutine.dir/zbesh.for.o: dyndep
+

@@ -1,11 +1,10 @@
 #pragma once
 
-
+#include <single/scatterer/cylinder/cylinder.h>
 #include <experiment/scatterer_set/base_set.h>
 #include <experiment/material_set/material_set.h>
 
 
-// InfiniteCylinder class inheriting from BaseSet
 class InfiniteCylinderSet : public ScattererSet {
 public:
     inline static const std::vector<std::string> attributes = {

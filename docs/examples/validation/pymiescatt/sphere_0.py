@@ -22,9 +22,9 @@ from PyMieSim.directories import validation_data_path
 wavelength = 632.8 * ureg.nanometer  # Wavelength of the light source in meters
 polarization = PolarizationSet(angles=0 * ureg.degree)
 optical_power = 1e-3 * ureg.watt  # Power in watts
-NA = 0.2 * ureg.AU  # Numerical aperture
-medium_index = 1.21 * ureg.RIU
-index = 1.4 * ureg.RIU
+NA = 0.2  # Numerical aperture
+medium_index = 1.21
+index = 1.4
 diameters = (
     np.geomspace(10, 1_000, 50) * ureg.nanometer
 )  # Geometric space for diameters
@@ -34,14 +34,14 @@ source = GaussianSet(
     wavelength=[632.8] * ureg.nanometer,
     polarization=polarization,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 # Setup scatterer
 scatterer = SphereSet(
     diameter=diameters,
-    material=[1.4] * ureg.RIU,
-    medium=[1.21] * ureg.RIU,
+    material=[1.4],
+    medium=[1.21],
 )
 
 # Define experiment setup

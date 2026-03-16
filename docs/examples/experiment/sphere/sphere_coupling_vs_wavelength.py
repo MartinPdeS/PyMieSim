@@ -22,24 +22,24 @@ source = GaussianSet(
     wavelength=np.linspace(950, 1050, 200) * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 scatterer = SphereSet(
-    diameter=np.linspace(100, 8000, 10) * ureg.nanometer,
+    diameter=np.linspace(1400, 1500, 10) * ureg.nanometer,
     material=[SellmeierMaterial("BK7")],
-    medium=[1] * ureg.RIU,
+    medium=[1],
 )
 
 detector = CoherentModeSet(
     mode_number=["LP11"],
-    numerical_aperture=[0.05, 0.01] * ureg.AU,
+    numerical_aperture=[0.05, 0.03],
     phi_offset=[-180] * ureg.degree,
     gamma_offset=[0] * ureg.degree,
     polarization_filter=[0, 90] * ureg.degree,
     rotation=[0] * ureg.degree,
     sampling=[300],
-    medium=SellmeierMedium("water")
+    medium=[SellmeierMedium("water")]
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)

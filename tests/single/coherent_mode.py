@@ -19,18 +19,18 @@ def test_lp_modes(mode_number):
         wavelength=750 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        material=1.4 * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=1.4,
+        medium=1.0,
     )
 
     detector = CoherentMode(
         mode_number=mode_number,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
         sampling=100,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
