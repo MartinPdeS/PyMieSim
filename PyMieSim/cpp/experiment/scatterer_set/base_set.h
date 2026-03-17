@@ -3,9 +3,6 @@
 #include <memory>
 #include <cstddef>
 #include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 #include <experiment/base_set.h>
 #include <single/scatterer/base_scatterer/base_scatterer.h>
 #include <material/material.h>

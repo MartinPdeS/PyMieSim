@@ -2,6 +2,7 @@
 
 #include <vector>     // For std::vector
 #include <stdexcept>  // For std::runtime_error
+#include <string>       // For std::string
 
 // Base class to reduce redundancy
 class BaseSet {
