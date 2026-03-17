@@ -138,15 +138,3 @@ inline pybind11::array_t<T> vector_move_from_numpy(
     }
     return out;
 }
-
-template <typename dtype>
-std::vector<dtype> cast_scalar_or_array_to_vector(const py::object& obj) {
-
-    // If already iterable (NumPy array, list, tuple)
-    if (py::isinstance<py::sequence>(obj) && !py::isinstance<py::str>(obj)) {
-        return obj.cast<std::vector<dtype>>();
-    }
-
-    // Otherwise treat as scalar
-    return { obj.cast<dtype>() };
-}

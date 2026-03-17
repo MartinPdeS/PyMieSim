@@ -20,7 +20,7 @@ def test_fail_init_linear():
     """
     Test fail of initialization of Linear polarization.
     """
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         PolarizationSet(angles=[50, 20])
 
 

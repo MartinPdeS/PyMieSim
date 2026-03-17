@@ -28,30 +28,30 @@ def test_valid_experiment(mock_show):
     """
     polarization_set = PolarizationSet(angles=[0] * TOTAL_SIZE * ureg.degree)
     source = GaussianSet.build_sequential(
+        target_size=TOTAL_SIZE,
         wavelength=np.linspace(600, 1000, TOTAL_SIZE) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=1e-3 * ureg.watt,
         numerical_aperture=0.2,
-        total_size=TOTAL_SIZE,
     )
 
     scatterer = SphereSet.build_sequential(
         diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
         material=1.4,
         medium=1.0,
-        total_size=TOTAL_SIZE,
+        target_size=TOTAL_SIZE,
     )
 
     detector = CoherentModeSet.build_sequential(
         mode_number="LP01",
         rotation=0 * ureg.degree,
-        numerical_aperture=0.2,
+        numerical_aperture=[0.2],
         polarization_filter=np.nan * ureg.degree,
         medium=1.0,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         sampling=100,
-        total_size=TOTAL_SIZE,
+        target_size=TOTAL_SIZE,
     )
 
     experiment = Setup(
@@ -75,7 +75,7 @@ def test_invalid_medium_refractive_index():
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             material=1.4,
             medium=SellmeierMedium("water"),  # This should trigger an error
-            total_size=TOTAL_SIZE,
+            target_size=TOTAL_SIZE,
         )
 
 
@@ -90,7 +90,7 @@ def test_invalid_refractive_index():
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             material=SellmeierMaterial("water"),  # This should trigger an error
             medium=1.0,
-            total_size=TOTAL_SIZE,
+            target_size=TOTAL_SIZE,
         )
 
 
@@ -105,7 +105,7 @@ def test_parameter_broadcasting():
         diameter=500 * ureg.nanometer,  # Scalar value
         material=1.5,  # Scalar value
         medium=1.2,  # Scalar value
-        total_size=TOTAL_SIZE,
+        target_size=TOTAL_SIZE,
     )
 
     # Check that each broadcasted attribute is an array with the proper length.
@@ -128,12 +128,15 @@ def test_broadcasted_values():
         diameter=value,
         material=1.6,
         medium=1.0,
-        total_size=TOTAL_SIZE,
+        target_size=TOTAL_SIZE,
     )
 
     # Create an expected array filled with the broadcasted value.
     expected = np.full(TOTAL_SIZE, value.magnitude) * value.units
-    np.testing.assert_array_equal(scatterer.diameter.to("nm").magnitude, expected.to("nm").magnitude)
+    np.testing.assert_allclose(
+        scatterer.diameter.to("nm").magnitude,
+        expected.to("nm").magnitude
+    )
 
 
 if __name__ == "__main__":

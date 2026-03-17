@@ -58,6 +58,7 @@ def test_sequential_vs_standard_no_detector():
     assert setup_standard is not None, "Error while running the standard get function."
 
     source_sequential = GaussianSet.build_sequential(
+        target_size=SIZE,
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
@@ -65,7 +66,7 @@ def test_sequential_vs_standard_no_detector():
     )
 
     scatterer_sequential = SphereSet.build_sequential(
-        total_size=SIZE,
+        target_size=SIZE,
         diameter=ONES * DIAMETER,
         material=ONES * PROPERTY,
         medium=ONES * MEDIUM_PROPERTY,
@@ -124,6 +125,7 @@ def test_sequential_vs_standard_detector():
 
 
     source_sequential = GaussianSet.build_sequential(
+        target_size=SIZE,
         wavelength=WAVELENGTH,
         polarization=PolarizationSet(angles=POLARIZATION * ONES * ureg.degree),
         optical_power=ONES * OPTICAL_POWER,
@@ -131,13 +133,14 @@ def test_sequential_vs_standard_detector():
     )
 
     scatterer_sequential = SphereSet.build_sequential(
-        total_size=SIZE,
+        target_size=SIZE,
         diameter=ONES * DIAMETER,
         material=ONES * PROPERTY,
         medium=ONES * MEDIUM_PROPERTY,
     )
 
     detector_sequential = PhotodiodeSet.build_sequential(
+        target_size=SIZE,
         phi_offset=ONES * PHI_OFFSET,
         gamma_offset=ONES * GAMMA_OFFSET,
         numerical_aperture=ONES * NA,

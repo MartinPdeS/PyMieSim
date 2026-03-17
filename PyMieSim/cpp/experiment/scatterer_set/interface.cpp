@@ -5,12 +5,12 @@
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
 #include <experiment/source_set/source_set.h>
-#include <experiment/sequential_broadcast.h>
 #include "./base_set.h"
 #include "./sphere_set.h"
 #include "./cylinder_set.h"
 #include "./core_shell_set.h"
-#include <experiment/utils_set.h>
+#include <utils/casting.h>
+#include <experiment/utils.h>
 
 
 namespace py = pybind11;
@@ -26,22 +26,16 @@ PYBIND11_MODULE(scatterer_set, module) {
     py::class_<SphereSet, ScattererSet, std::shared_ptr<SphereSet>>(module, "SphereSet")
         .def(
             py::init(
-                [ureg](
+                [](
                     const py::object& diameter,
                     const py::object& material,
                     const py::object& medium
                 ) {
-
-                    std::vector<double> diameter_value =
-                        cast_scalar_or_array_to_vector<double>(
-                            diameter.attr("to")("meter").attr("magnitude")
-                        );
-
                     return std::make_shared<SphereSet>(
-                        diameter_value,
-                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
-                        create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
-                        false
+                        Casting::cast_py_to_vector<double>(diameter, "meter"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
+                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
+                        false // is_sequential = false
                     );
                 }
             ),
@@ -114,31 +108,42 @@ PYBIND11_MODULE(scatterer_set, module) {
         )
         .def_static(
             "build_sequential",
-            [ureg](
+            [](
                 const size_t& target_size,
                 const py::object& diameter,
                 const py::object& material,
                 const py::object& medium
             ) {
-                std::vector<double> diameter_value =
-                    cast_scalar_or_array_to_vector<double>(diameter.attr("to")("meter").attr("magnitude"));
+                std::vector<double> diameter_values =
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "diameter",
+                        diameter,
+                        target_size,
+                        "meter"
+                    );
 
-                std::vector<complex128> material_value = cast_scalar_or_array_to_vector<complex128>(material);
+                std::vector<complex128> material_values =
+                    Casting::cast_py_to_broadcasted_vector<complex128>(
+                        "material",
+                        material,
+                        target_size
+                    );
 
-                std::vector<double> medium_value = cast_scalar_or_array_to_vector<double>(medium);
-
-                diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
-                material_value = broadcast_vector_complex128("material", material_value, target_size);
-                medium_value = broadcast_vector_double("medium", medium_value, target_size);
+                std::vector<double> medium_values =
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "medium",
+                        medium,
+                        target_size
+                    );
 
                 return std::make_shared<SphereSet>(
-                    diameter_value,
-                    MaterialSet(material_value),
-                    MediumSet(medium_value),
-                    true
+                    diameter_values,
+                    MaterialSet(material_values),
+                    MediumSet(medium_values),
+                    true  // is_sequential = true
                 );
             },
-            py::arg("total_size"),
+            py::arg("target_size"),
             py::arg("diameter"),
             py::arg("material"),
             py::arg("medium"),
@@ -147,10 +152,10 @@ PYBIND11_MODULE(scatterer_set, module) {
 
                 Parameters
                 ----------
-                total_size : int or None
+                target_size : int
                     Target size for broadcasting. If None, uses the size of the diameter vector after conversion.
                 diameter : Quantity or array-like Quantity
-                    Diameter(s) of the spheres. Scalars or length 1 arrays broadcast to total_size.
+                    Diameter(s) of the spheres. Scalars or length 1 arrays broadcast to target_size.
                 material : List[BaseMaterial] | List[RefractiveIndex]
                     Refractive index or indices of the spherical scatterers themselves.
                 medium : List, optional
@@ -188,17 +193,11 @@ PYBIND11_MODULE(scatterer_set, module) {
                     const py::object& material,
                     const py::object& medium
                 ) {
-
-                    std::vector<double> diameter_value =
-                        cast_scalar_or_array_to_vector<double>(
-                            diameter.attr("to")("meter").attr("magnitude")
-                        );
-
                     return std::make_shared<InfiniteCylinderSet>(
-                        diameter_value,
-                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
-                        create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
-                        false
+                        Casting::cast_py_to_vector<double>(diameter, "meter"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
+                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
+                        false  // is_sequential = false
                     );
                 }
             ),
@@ -278,26 +277,35 @@ PYBIND11_MODULE(scatterer_set, module) {
                 const py::object& medium
             ) {
                 std::vector<double> diameter_value =
-                    cast_scalar_or_array_to_vector<double>(diameter.attr("to")("meter").attr("magnitude"));
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "diameter",
+                        diameter,
+                        target_size,
+                        "meter"
+                    );
 
                 std::vector<complex128> material_value =
-                    cast_scalar_or_array_to_vector<complex128>(material);
+                    Casting::cast_py_to_broadcasted_vector<complex128>(
+                        "material",
+                        material,
+                        target_size
+                    );
 
                 std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium);
-
-                diameter_value = broadcast_vector_double("diameter", diameter_value, target_size);
-                material_value = broadcast_vector_complex128("material", material_value, target_size);
-                medium_value = broadcast_vector_double("medium", medium_value, target_size);
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "medium",
+                        medium,
+                        target_size
+                    );
 
                 return std::make_shared<InfiniteCylinderSet>(
                     diameter_value,
                     MaterialSet(material_value),
                     MediumSet(medium_value),
-                    true
+                    true  // is_sequential = true
                 );
             },
-            py::arg("total_size"),
+            py::arg("target_size"),
             py::arg("diameter"),
             py::arg("material"),
             py::arg("medium"),
@@ -306,10 +314,10 @@ PYBIND11_MODULE(scatterer_set, module) {
 
                 Parameters
                 ----------
-                total_size : int or None
+                target_size : int or None
                     Target size for broadcasting. If None, uses the size of the diameter vector after conversion.
                 diameter : Quantity or array-like Quantity
-                    Diameter(s) of the cylinders. Scalars or length 1 arrays broadcast to total_size.
+                    Diameter(s) of the cylinders. Scalars or length 1 arrays broadcast to target_size.
                 material : List[BaseMaterial] | List[RefractiveIndex]
                     Refractive index or indices of the cylindrical scatterers themselves.
                 medium : List, optional
@@ -336,24 +344,13 @@ PYBIND11_MODULE(scatterer_set, module) {
                     const py::object& shell_material,
                     const py::object& medium
                 ) {
-
-                    std::vector<double> core_diameter_value =
-                        cast_scalar_or_array_to_vector<double>(
-                            core_diameter.attr("to")("meter").attr("magnitude")
-                        );
-
-                    std::vector<double> shell_thickness_value =
-                        cast_scalar_or_array_to_vector<double>(
-                            shell_thickness.attr("to")("meter").attr("magnitude")
-                        );
-
                     return std::make_shared<CoreShellSet>(
-                        core_diameter_value,
-                        shell_thickness_value,
-                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(core_material, "core_material"),
-                        create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(shell_material, "shell_material"),
-                        create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
-                        false
+                        Casting::cast_py_to_vector<double>(core_diameter, "meter"),
+                        Casting::cast_py_to_vector<double>(shell_thickness, "meter"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(core_material, "core_material"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(shell_material, "shell_material"),
+                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
+                        false  // is_sequential = false
                     );
                 }
             ),
@@ -452,26 +449,42 @@ PYBIND11_MODULE(scatterer_set, module) {
                 const py::object& shell_material,
                 const py::object& medium
             ) {
-                std::vector<double> core_diameter_value = \
-                    cast_scalar_or_array_to_vector<double>(core_diameter.attr("to")("meter").attr("magnitude"));
+                std::vector<double> core_diameter_value =
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "core_diameter",
+                        core_diameter,
+                        target_size,
+                        "meter"
+                    );
 
-                std::vector<double> shell_thickness_value = \
-                    cast_scalar_or_array_to_vector<double>(shell_thickness.attr("to")("meter").attr("magnitude"));
+                std::vector<double> shell_thickness_value =
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "shell_thickness",
+                        shell_thickness,
+                        target_size,
+                        "meter"
+                    );
 
                 std::vector<complex128> core_material_value =
-                    cast_scalar_or_array_to_vector<complex128>(core_material);
+                    Casting::cast_py_to_broadcasted_vector<complex128>(
+                        "core_material",
+                        core_material,
+                        target_size
+                    );
 
                 std::vector<complex128> shell_material_value =
-                    cast_scalar_or_array_to_vector<complex128>(shell_material);
+                    Casting::cast_py_to_broadcasted_vector<complex128>(
+                        "shell_material",
+                        shell_material,
+                        target_size
+                    );
 
                 std::vector<double> medium_value =
-                    cast_scalar_or_array_to_vector<double>(medium);
-
-                core_diameter_value = broadcast_vector_double("core_diameter", core_diameter_value, target_size);
-                shell_thickness_value = broadcast_vector_double("shell_thickness", shell_thickness_value, target_size);
-                core_material_value = broadcast_vector_complex128("core_material", core_material_value, target_size);
-                shell_material_value = broadcast_vector_complex128("shell_material", shell_material_value, target_size);
-                medium_value = broadcast_vector_double("medium", medium_value, target_size);
+                    Casting::cast_py_to_broadcasted_vector<double>(
+                        "medium",
+                        medium,
+                        target_size
+                    );
 
                 return std::make_shared<CoreShellSet>(
                     core_diameter_value,
@@ -479,10 +492,10 @@ PYBIND11_MODULE(scatterer_set, module) {
                     MaterialSet(core_material_value),
                     MaterialSet(shell_material_value),
                     MediumSet(medium_value),
-                    true
+                    true  // is_sequential = true
                 );
             },
-            py::arg("total_size"),
+            py::arg("target_size"),
             py::arg("core_diameter"),
             py::arg("shell_thickness"),
             py::arg("core_material"),
@@ -493,12 +506,12 @@ PYBIND11_MODULE(scatterer_set, module) {
 
                 Parameters
                 ----------
-                total_size : int or None
+                target_size : int or None
                     Target size for broadcasting. If None, uses the size of the core_diameter vector after conversion.
                 core_diameter : Quantity or array-like Quantity
-                    Diameter(s) of the core. Scalars or length 1 arrays broadcast to total_size.
+                    Diameter(s) of the core. Scalars or length 1 arrays broadcast to target_size.
                 shell_thickness : Quantity or array-like Quantity
-                    Thickness(es) of the shell. Scalars or length 1 arrays broadcast to total_size.
+                    Thickness(es) of the shell. Scalars or length 1 arrays broadcast to target_size.
                 core_material : List[BaseMaterial] | List[RefractiveIndex]
                     Refractive index or indices of the core.
                 shell_material : List[BaseMaterial] | List[RefractiveIndex]

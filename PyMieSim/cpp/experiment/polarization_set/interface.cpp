@@ -5,6 +5,7 @@
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
 #include "./polarization_set.h"
+#include <utils/casting.h>
 
 using complex128 = std::complex<double>;
 namespace py = pybind11;
@@ -17,7 +18,7 @@ PYBIND11_MODULE(polarization_set, module) {
             py::init<>(
                 [](const py::object& angles) {
                     std::vector<double> angles_value = \
-                        cast_scalar_or_array_to_vector<double>(angles.attr("to")("radian").attr("magnitude"));
+                        Casting::cast_py_to_vector<double>(angles, "radian");
                     return std::make_shared<PolarizationSet>(angles_value);
                 }
             ),

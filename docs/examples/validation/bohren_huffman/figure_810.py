@@ -14,7 +14,6 @@ from PyMieSim.directories import validation_data_path
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.representations import S1S2
 from PyMieSim.single import Setup
 
 theoretical = numpy.genfromtxt(

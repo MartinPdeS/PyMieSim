@@ -18,15 +18,15 @@ from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
 # Define parameters
-wavelength = 600 * ureg.nanometer  # Light source wavelength in meters
+wavelength = 600 * ureg.nanometer
 polarization = PolarizationSet(angles=0 * ureg.degree)
-optical_power = 1 * ureg.watt  # Optical power in watts
-NA = 0.2  # Numerical aperture
+optical_power = 1 * ureg.watt
+NA = 0.2
 medium_index = 1.0
 core_index = 1.5
 shell_index = 1.4
-shell_thickness = 600 * ureg.nanometer  # Shell width in meters
-core_diameters = np.geomspace(10, 500, 400) * ureg.nanometer  # Core diameters in meters
+shell_thickness = 600 * ureg.nanometer
+core_diameters = np.geomspace(10, 500, 400) * ureg.nanometer
 
 # Configure the Gaussian source
 source = GaussianSet(

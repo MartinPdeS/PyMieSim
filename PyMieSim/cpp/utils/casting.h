@@ -1,0 +1,135 @@
+#pragma once
+
+#include <vector>
+#include <string>
+#include <stdexcept>
+#include <sstream>
+
+#include <pybind11/pybind11.h>
+#include <pybind11/complex.h>
+#include <pybind11/stl.h>
+
+namespace py = pybind11;
+using complex128 = std::complex<double>;
+
+namespace Casting {
+
+
+    template <typename dtype>
+    std::vector<dtype> cast_py_to_vector(
+        const py::object& object,
+        const std::string& units = ""
+    ) {
+        if (!units.empty()) {
+            try {
+                return cast_py_to_vector<dtype>(object.attr("to")(units).attr("magnitude"));
+            }
+            catch (const py::error_already_set&) {
+                std::ostringstream oss;
+                oss << "Failed to convert object to '" << units << "'. Ensure the object has compatible units using PyMieSim.units.ureg." << units << "!";
+                throw std::invalid_argument(oss.str());
+            }
+        }
+
+
+        if (py::isinstance<py::sequence>(object) && !py::isinstance<py::str>(object))
+            return object.cast<std::vector<dtype>>();
+
+        return {object.cast<dtype>()};
+    }
+
+    template <typename dtype>
+    std::vector<dtype> cast_py_to_broadcasted_vector(
+        const std::string& name,
+        const py::object& object,
+        const size_t target_size,
+        const std::string& units = ""
+    ) {
+        if (target_size == 0) {
+            std::ostringstream oss;
+            oss << "Parameter '" << name << "' cannot be broadcast because target_size is 0.";
+            throw std::invalid_argument(oss.str());
+        }
+
+        std::vector<dtype> values = cast_py_to_vector<dtype>(object, units);
+
+        if (values.empty()) {
+            std::ostringstream oss;
+            oss << "Parameter '" << name << "' is empty. Provide a scalar or a non empty array.";
+            throw std::invalid_argument(oss.str());
+        }
+
+        if (values.size() == 1) {
+            return std::vector<dtype>(target_size, values[0]);
+        }
+
+        if (values.size() != target_size) {
+            std::ostringstream oss;
+            oss << "Inconsistent sizes: '" << name << "' has size " << values.size() << " but expected 1 or " << target_size << ".";
+            throw std::invalid_argument(oss.str());
+        }
+
+        return values;
+    }
+
+    template <typename MaterialSetType, typename RefractiveIndexType, typename BaseClass>
+    MaterialSetType create_material_set_from_pyobject(
+        const py::object& material_object,
+        const std::string& material_name
+    ) {
+        if (py::isinstance<MaterialSetType>(material_object)) {
+            return py::cast<MaterialSetType>(material_object);
+        }
+
+        if (py::isinstance<BaseClass>(material_object)) {
+            return MaterialSetType(
+                std::vector<std::shared_ptr<BaseClass>>{
+                    py::cast<std::shared_ptr<BaseClass>>(material_object)
+                }
+            );
+        }
+
+        if (
+            py::isinstance<py::float_>(material_object) ||
+            py::isinstance<py::int_>(material_object) ||
+            py::isinstance<complex128>(material_object)
+        ) {
+            return MaterialSetType(
+                std::vector<RefractiveIndexType>{
+                    material_object.cast<RefractiveIndexType>()
+                }
+            );
+        }
+
+        if (py::isinstance<py::sequence>(material_object) && !py::isinstance<py::str>(material_object)) {
+            try {
+                return MaterialSetType(
+                    py::cast<std::vector<RefractiveIndexType>>(material_object)
+                );
+            }
+            catch (const py::cast_error&) {
+            }
+
+            try {
+                return MaterialSetType(
+                    py::cast<std::vector<std::shared_ptr<BaseClass>>>(material_object)
+                );
+            }
+            catch (const py::cast_error&) {
+            }
+
+            throw std::runtime_error(
+                "Invalid type for " + material_name + ". Expected a MaterialSet, "
+                "a scalar refractive index, a sequence of refractive indices, "
+                "a Material instance, or a sequence of Material instances."
+            );
+        }
+
+        throw std::runtime_error(
+            "Invalid type for " + material_name + ". Expected a MaterialSet, "
+            "a scalar refractive index, a sequence of refractive indices, "
+            "a Material instance, or a sequence of Material instances."
+        );
+    }
+
+}

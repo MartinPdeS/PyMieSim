@@ -14,7 +14,7 @@ from PyMieSim.experiment.polarization_set import PolarizationSet
 
 
 def test_gaussian_rejects_invalid_wavelength_type():
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         GaussianSet(
             wavelength=100,  # must carry units
             polarization=PolarizationSet(angles=0 * ureg.degree),
@@ -24,7 +24,7 @@ def test_gaussian_rejects_invalid_wavelength_type():
 
 
 def test_gaussian_rejects_invalid_optical_power_units():
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         GaussianSet(
             wavelength=100 * ureg.nanometer,
             polarization=PolarizationSet(angles=0 * ureg.degree),
@@ -52,7 +52,7 @@ def _valid_plane_wave_source():
 
 def test_sphere_rejects_invalid_diameter_type():
     source = _valid_plane_wave_source()
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         SphereSet(
             diameter=100,  # must carry length units
             material=1.5 * ureg.RIU,
@@ -94,7 +94,7 @@ def test_coherent_mode_rejects_invalid_mode_string():
 
 
 def test_coherent_mode_rejects_rotation_without_units():
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         CoherentModeSet(
             mode_number="LP01",
             rotation=0,  # must carry degree
@@ -107,7 +107,7 @@ def test_coherent_mode_rejects_rotation_without_units():
 
 
 def test_coherent_mode_rejects_polarization_filter_wrong_type():
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
@@ -120,7 +120,7 @@ def test_coherent_mode_rejects_polarization_filter_wrong_type():
 
 
 def test_coherent_mode_rejects_gamma_offset_without_units():
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
@@ -133,7 +133,7 @@ def test_coherent_mode_rejects_gamma_offset_without_units():
 
 
 def test_coherent_mode_rejects_phi_offset_without_units():
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError):
         CoherentModeSet(
             mode_number="LP01",
             rotation=0 * ureg.degree,
