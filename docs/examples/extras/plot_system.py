@@ -18,7 +18,6 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single import Setup
-import pyvista as pv
 
 
 polarization_state = PolarizationState(

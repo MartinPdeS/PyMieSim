@@ -8,8 +8,6 @@ scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.
 """
 
-# %%
-# Importing the package: PyMieSim
 import numpy
 from PyMieSim.units import ureg
 import matplotlib.pyplot as plt
@@ -20,7 +18,7 @@ from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
 
 polarization_state = PolarizationSet(
-    angles=90 * ureg.degree,  # Linear polarization at 90 degrees
+    angles=90 * ureg.degree,
 )
 
 permitivity = numpy.linspace(-10, 50, 400)
@@ -36,11 +34,10 @@ source = GaussianSet(
     numerical_aperture=[0.2],
 )
 
-
 scatterer = SphereSet(
     diameter=diameter,
     material=index,
-    medium=1
+    medium=[1]
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source)

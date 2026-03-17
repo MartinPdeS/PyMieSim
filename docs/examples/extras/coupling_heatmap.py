@@ -20,12 +20,12 @@ from PyMieSim.experiment import Setup
 from PyMieSim.material import SellmeierMedium
 
 polarization_state = PolarizationSet(
-    angles=[90] * ureg.degree,  # Linear polarization at 90 degrees
+    angles=[90] * ureg.degree,
 )
 
 source = GaussianSet(
     wavelength=[400] * ureg.nanometer,
-    polarization=polarization_state,  # Linear polarization at 90 degrees
+    polarization=polarization_state,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
 )

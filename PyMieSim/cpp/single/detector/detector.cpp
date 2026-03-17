@@ -389,7 +389,6 @@ void CoherentMode::initialize_mesh(const std::shared_ptr<BaseScatterer> scattere
 
     // this->apply_interface_transmission_to_fields(theta_field, phi_field);
 
-
     this->snell_interface.set_media(
         scatterer->medium->get_refractive_index(),
         this->medium->get_refractive_index()

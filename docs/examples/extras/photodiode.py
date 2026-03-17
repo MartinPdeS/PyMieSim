@@ -5,20 +5,41 @@ Photodiode Detector
 This example demonstrates the initialization and visualization of a Photodiode detector using PyMieSim.
 """
 
-import pyvista as pv
 from PyMieSim.units import ureg
-from PyMieSim.single.detector import Photodiode
 
-detector = Photodiode(
-    numerical_aperture=0.3,
-    cache_numerical_aperture=0.2,
-    sampling=500,
-    gamma_offset=45 * ureg.degree,
-    phi_offset=0 * ureg.degree,
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
+from PyMieSim.polarization import PolarizationState
+from PyMieSim.single.detector import Photodiode
+from PyMieSim.single import Setup
+
+
+polarization_state = PolarizationState(
+    angle=0 * ureg.degree,
 )
 
-scene = pv.Plotter()
+source = Gaussian(
+    wavelength=1550 * ureg.nanometer,
+    polarization=polarization_state,
+    optical_power=1 * ureg.watt,
+    numerical_aperture=0.3,
+)
 
-detector.add_to_scene(scene)
+scatterer = Sphere(
+    diameter=1800 * ureg.nanometer,
+    medium=1.0,
+    material=1.5,
+)
 
-scene.show()
+detector = Photodiode(
+    numerical_aperture=0.2,
+    gamma_offset=0 * ureg.degree,
+    phi_offset=30 * ureg.degree,
+    polarization_filter=0 * ureg.degree,
+    medium=3,
+)
+
+setup = Setup(scatterer=scatterer, source=source, detector=detector)
+
+setup.plot_system()
+

@@ -9,7 +9,7 @@ from PyMieSim.material import SellmeierMaterial
 
 from PyMieSim import experiment
 from PyMieSim import single
-from PyMieSim.polarization import PolarizationState
+from PyMieSim.polarization import PolarizationState, RightCircular
 
 source = experiment.source_set.GaussianSet(
     wavelength=[500] * ureg.nanometer,
