@@ -17,6 +17,7 @@ from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
+from PyMieSim.single import Setup
 import pyvista as pv
 
 
@@ -44,12 +45,9 @@ detector = CoherentMode(
     phi_offset=30 * ureg.degree,
     rotation=0 * ureg.degree,
     polarization_filter=0 * ureg.degree,
+    medium=1.0,
 )
 
-scene = pv.Plotter()
+setup = Setup(scatterer=scatterer, source=source, detector=detector)
 
-scatterer.add_to_scene(scene)
-source.add_to_scene(scene)
-detector.add_to_scene(scene)
-
-scene.show()
+setup.plot_system()

@@ -82,9 +82,29 @@ PYBIND11_MODULE(scatterer_set, module) {
             "get_mapping",
             [ureg](const SphereSet& self) {
                 py::dict mapping;
+
+                py::list material_values;
+                for (size_t i = 0; i < self.material.size(); ++i) {
+                    const auto& material = self.material[i];
+
+                    if (auto constant_material = std::dynamic_pointer_cast<ConstantMaterial>(material)) {
+                        material_values.append(py::cast(constant_material->refractive_index));
+                    }
+                    else if (auto sellmeier_material = std::dynamic_pointer_cast<SellmeierMaterial>(material)) {
+                        material_values.append(py::cast(sellmeier_material->name));
+                    }
+                    else {
+                        material_values.append(py::cast(material->refractive_index));
+                    }
+                }
+
+                py::array_t<double> medium_refractive_indices_array(self.medium.size());
+                for (size_t i = 0; i < self.medium.size(); ++i)
+                    medium_refractive_indices_array.mutable_at(i) = self.medium[i]->refractive_index;
+
                 mapping["scatterer:diameter"] = py::cast(self.diameter) * ureg.attr("meter");
-                mapping["scatterer:material"] = self.material;
-                mapping["scatterer:medium"] = self.medium;
+                mapping["scatterer:material"] = material_values;
+                mapping["scatterer:medium"] = medium_refractive_indices_array;
                 return mapping;
             },
             R"pdoc(

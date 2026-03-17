@@ -78,6 +78,19 @@ class PyMieSimDataFrame(pd.DataFrame):
             if unit is not None:
                 clean_name = f"{clean_name} [{unit:~}]"
 
+            if isinstance(parameter_value, (ConstantMaterial, ConstantMedium)):
+                parameter_value = parameter_value.refractive_index
+
+            elif hasattr(parameter_value, "name"):
+                parameter_value = parameter_value.name
+
+            elif hasattr(parameter_value, "magnitude"):
+                parameter_value = parameter_value.magnitude
+
+            if isinstance(parameter_value, complex):
+                if np.isclose(parameter_value.imag, 0.0, atol=1e-15, rtol=0.0):
+                    parameter_value = parameter_value.real
+
             if isinstance(parameter_value, (int, float, np.integer, np.floating)) and precision is not None:
                 parameter_value = f"{parameter_value:.{precision}f}"
 
@@ -244,8 +257,15 @@ class PyMieSimDataFrame(pd.DataFrame):
         ]
 
         def _extract_scalar(value):
+            if isinstance(value, (ConstantMaterial, ConstantMedium)):
+                return value.refractive_index
+
+            if hasattr(value, "name"):
+                return value.name
+
             if hasattr(value, "magnitude"):
                 return value.magnitude
+
             return value
 
         def _normalize_numeric_series(series, use_abs_for_complex=False, warn_on_complex_real_projection=False):
@@ -274,6 +294,9 @@ class PyMieSimDataFrame(pd.DataFrame):
 
             return np.asarray(numeric_values, dtype=float), has_nonzero_imaginary_part
 
+        def _normalize_categorical_series(series):
+            return series.map(lambda value: str(_extract_scalar(value)))
+
         def _compose_curve_label(parameter_label, measure_name):
             clean_measure_name = self._clean_parameter_name(measure_name)
 
@@ -300,7 +323,7 @@ class PyMieSimDataFrame(pd.DataFrame):
                 for value in raw_x_values
             )
         else:
-            categorical_labels = df[x].astype(str)
+            categorical_labels = _normalize_categorical_series(df[x])
             unique_labels = pd.Index(categorical_labels).unique()
             category_to_position = {
                 label: float(index)
@@ -317,7 +340,7 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         figure, ax = self._create_figure()
 
-        groups = list(df.groupby(parameters, sort=False)) if parameters else [(None, df)]
+        groups = list(df.groupby(parameters, sort=False, dropna=False)) if parameters else [(None, df)]
 
         for key, group in groups:
 
@@ -330,7 +353,8 @@ class PyMieSimDataFrame(pd.DataFrame):
                 group = group.iloc[sorting_index]
                 x_values = group_x_values[sorting_index]
             else:
-                x_values = group[x].astype(str).map(category_to_position).to_numpy(dtype=float)
+                group_labels = _normalize_categorical_series(group[x])
+                x_values = group_labels.map(category_to_position).to_numpy(dtype=float)
 
             parameter_label = self._format_parameter_label(
                 parameters,
@@ -377,7 +401,11 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         ax.legend()
 
-        self._apply_axis_resolution(ax, x_tick_resolution, y_tick_resolution)
+        if x_is_numeric:
+            self._apply_axis_resolution(ax, x_tick_resolution, y_tick_resolution)
+        else:
+            self._apply_axis_resolution(ax, None, y_tick_resolution)
+
         self._format_legend(ax, legend_resolution)
 
         return figure
@@ -397,6 +425,8 @@ class PyMieSimDataFrame(pd.DataFrame):
         y_tick_resolution: int = 4,
         **kwargs,
     ):
+        import warnings
+
         self._validate_column(x)
         self._validate_column(std)
 
@@ -420,25 +450,43 @@ class PyMieSimDataFrame(pd.DataFrame):
         ]
 
         def _extract_scalar(value):
+            if isinstance(value, (ConstantMaterial, ConstantMedium)):
+                return value.refractive_index
+
+            if hasattr(value, "name"):
+                return value.name
+
             if hasattr(value, "magnitude"):
                 return value.magnitude
+
             return value
 
-        def _to_real_array(series, use_abs_for_complex=False):
+        def _to_real_array(series, use_abs_for_complex=False, warn_on_complex_real_projection=False):
             numeric_values = []
+            has_nonzero_imaginary_part = False
 
             for value in series.to_numpy():
                 scalar_value = _extract_scalar(value)
 
                 if isinstance(scalar_value, complex) or np.iscomplexobj(scalar_value):
-                    if use_abs_for_complex:
+                    if warn_on_complex_real_projection:
+                        if not np.isclose(np.imag(scalar_value), 0.0, atol=1e-15, rtol=0.0):
+                            has_nonzero_imaginary_part = True
+                        numeric_values.append(float(np.real(scalar_value)))
+                    elif use_abs_for_complex:
                         numeric_values.append(float(np.abs(scalar_value)))
                     else:
                         numeric_values.append(float(np.real(scalar_value)))
                 else:
-                    numeric_values.append(float(scalar_value))
+                    try:
+                        numeric_values.append(float(scalar_value))
+                    except (TypeError, ValueError):
+                        return None, has_nonzero_imaginary_part
 
-            return np.asarray(numeric_values, dtype=float)
+            return np.asarray(numeric_values, dtype=float), has_nonzero_imaginary_part
+
+        def _to_categorical_series(series):
+            return series.map(lambda value: str(_extract_scalar(value)))
 
         def _compose_curve_label(parameter_label, measure_name):
             clean_measure_name = self._clean_parameter_name(measure_name)
@@ -450,6 +498,36 @@ class PyMieSimDataFrame(pd.DataFrame):
                 return f"{clean_measure_name} | {parameter_label}"
 
             return clean_measure_name
+
+        x_numeric_values, x_has_nonzero_imaginary_part = _to_real_array(
+            df[x],
+            warn_on_complex_real_projection=True,
+        )
+
+        x_is_numeric = x_numeric_values is not None
+        x_used_real_part = False
+
+        if x_is_numeric:
+            raw_x_values = df[x].to_numpy()
+            x_used_real_part = any(
+                isinstance(_extract_scalar(value), complex) or np.iscomplexobj(_extract_scalar(value))
+                for value in raw_x_values
+            )
+        else:
+            categorical_labels = _to_categorical_series(df[x])
+            unique_labels = pd.Index(categorical_labels).unique()
+            category_to_position = {
+                label: float(index)
+                for index, label in enumerate(unique_labels)
+            }
+
+        if x_has_nonzero_imaginary_part:
+            warnings.warn(
+                f"Column {x!r} contains complex values on the x axis with nonzero imaginary part. "
+                "Using the real part for plotting.",
+                UserWarning,
+                stacklevel=3,
+            )
 
         aggregated_rows = []
 
@@ -466,11 +544,13 @@ class PyMieSimDataFrame(pd.DataFrame):
                 row[key_name] = key_value
 
             row["_replicate_count"] = len(group_df)
-            row[f"{std}__mean"] = _to_real_array(group_df[std]).mean()
-            row[f"{std}__std"] = _to_real_array(group_df[std]).std(ddof=1) if len(group_df) > 1 else 0.0
+
+            std_values, _ = _to_real_array(group_df[std], use_abs_for_complex=False)
+            row[f"{std}__mean"] = std_values.mean()
+            row[f"{std}__std"] = std_values.std(ddof=1) if len(group_df) > 1 else 0.0
 
             for measure in y:
-                values = _to_real_array(group_df[measure], use_abs_for_complex=True)
+                values, _ = _to_real_array(group_df[measure], use_abs_for_complex=True)
                 row[f"{measure}__mean"] = values.mean()
                 row[f"{measure}__std"] = values.std(ddof=1) if len(values) > 1 else 0.0
 
@@ -483,11 +563,18 @@ class PyMieSimDataFrame(pd.DataFrame):
         grouped_curves = list(aggregated_df.groupby(parameters, sort=False, dropna=False)) if parameters else [(None, aggregated_df)]
 
         for key, group_df in grouped_curves:
-            x_values = _to_real_array(group_df[x])
-            sorting_index = np.argsort(x_values)
+            if x_is_numeric:
+                x_values, _ = _to_real_array(
+                    group_df[x],
+                    warn_on_complex_real_projection=True,
+                )
+                sorting_index = np.argsort(x_values)
 
-            group_df = group_df.iloc[sorting_index]
-            x_values = x_values[sorting_index]
+                group_df = group_df.iloc[sorting_index]
+                x_values = x_values[sorting_index]
+            else:
+                group_labels = _to_categorical_series(group_df[x])
+                x_values = group_labels.map(category_to_position).to_numpy(dtype=float)
 
             parameter_label = self._format_parameter_label(
                 parameters,
@@ -515,16 +602,30 @@ class PyMieSimDataFrame(pd.DataFrame):
                     alpha=alpha,
                 )
 
-        ax.set_xlabel(self._axis_label(x))
+        if not x_is_numeric:
+            ax.set_xticks(list(category_to_position.values()))
+            ax.set_xticklabels(list(category_to_position.keys()), rotation=45, ha='right')
+
+        x_label = self._axis_label(x)
 
         if len(y) == 1:
-            ax.set_ylabel(self._axis_label(y[0]))
+            y_label = self._axis_label(y[0])
         else:
-            ax.set_ylabel("Measure")
+            y_label = "Measure"
+
+        if x_is_numeric and x_used_real_part:
+            x_label = f"Re({x_label})"
+
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
 
         ax.legend()
 
-        self._apply_axis_resolution(ax, x_tick_resolution, y_tick_resolution)
+        if x_is_numeric:
+            self._apply_axis_resolution(ax, x_tick_resolution, y_tick_resolution)
+        else:
+            self._apply_axis_resolution(ax, None, y_tick_resolution)
+
         self._format_legend(ax, legend_resolution)
 
         return figure
