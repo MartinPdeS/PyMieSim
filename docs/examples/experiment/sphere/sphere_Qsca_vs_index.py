@@ -32,4 +32,6 @@ experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca")
 
-dataframe.plot(x="scatterer:material")
+print(dataframe["scatterer:material"].values[0].__class__)
+
+# dataframe.plot(x="scatterer:material")

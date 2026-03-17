@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from matplotlib.ticker import FormatStrFormatter
 from MPSPlots import helper
+from PyMieSim.material import ConstantMaterial, ConstantMedium
 
 
 class PyMieSimDataFrame(pd.DataFrame):

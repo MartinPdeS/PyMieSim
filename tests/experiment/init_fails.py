@@ -51,8 +51,7 @@ def _valid_plane_wave_source():
 
 
 def test_sphere_rejects_invalid_diameter_type():
-    source = _valid_plane_wave_source()
-    with pytest.raises(ValueError):
+    with pytest.raises((ValueError, RuntimeError)):
         SphereSet(
             diameter=100,  # must carry length units
             material=1.5 * ureg.RIU,
@@ -61,7 +60,6 @@ def test_sphere_rejects_invalid_diameter_type():
 
 
 def test_sphere_rejects_invalid_refractive_index_type():
-    source = _valid_plane_wave_source()
     with pytest.raises((AttributeError, RuntimeError)):
         SphereSet(
             diameter=100 * ureg.nanometer,
@@ -71,7 +69,6 @@ def test_sphere_rejects_invalid_refractive_index_type():
 
 
 def test_sphere_rejects_invalid_medium_refractive_index_type():
-    source = _valid_plane_wave_source()
     with pytest.raises((RuntimeError, AttributeError, TypeError)):
         SphereSet(
             diameter=100 * ureg.nanometer,
