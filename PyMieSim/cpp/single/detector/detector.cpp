@@ -1,7 +1,6 @@
 #include <single/detector/photodiode.h>
 #include <single/detector/coherent_mode.h>
 #include <single/detector/integrating_sphere.h>
-#include <single/utils.h>
 
 
 std::vector<double> BaseDetector::get_poynting_field(
