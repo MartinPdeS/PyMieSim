@@ -804,21 +804,16 @@ PYBIND11_MODULE(setup, module)
             py::module_ pv = py::module_::import("pyvista");
             py::object plotter = pv.attr("Plotter")();
 
-            py::object source = py::cast(self.source);
-            py::object scatterer = py::cast(self.scatterer);
-
-            source.attr("add_to_scene")(plotter);
+            py::cast(self.source).attr("add_to_scene")(plotter);
 
             self.scatterer->init(self.source);
 
-            scatterer.attr("add_to_scene")(plotter);
+            py::cast(self.scatterer).attr("add_to_scene")(plotter);
 
             if (self.detector) {
-                py::object detector = py::cast(self.detector);
-
                 self.detector->medium->initialize(self.source->wavelength);
-                detector.attr("initialize_mesh")(scatterer);
-                detector.attr("add_to_scene")(plotter);
+                self.detector->initialize_mesh(self.scatterer);
+                py::cast(self.detector).attr("add_to_scene")(plotter);
             }
 
             plotter.attr("show")();

@@ -32,6 +32,4 @@ experiment = Setup(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca")
 
-
-
 dataframe.plot(x="scatterer:material")

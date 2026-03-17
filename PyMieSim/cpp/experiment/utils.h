@@ -6,63 +6,26 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
+#include <experiment/material_set/material_set.h>
 
-namespace Validation
-{
-    struct NamedSize
-    {
-        std::string name;
-        std::size_t size;
-    };
 
-    template<typename T>
-    std::size_t get_object_size(const T& object)
-    {
-        return static_cast<std::size_t>(object.size());
-    }
+template<typename SetType>
+py::list get_materialset_representation(const SetType& objects) {
+    py::list values;
 
-    template<typename T, std::size_t N>
-    std::size_t get_object_size(const T (&)[N])
-    {
-        return N;
-    }
+    for (size_t i = 0; i < objects.size(); ++i) {
+        py::object object = py::cast(objects[i]);
 
-    inline void validate_same_non_zero_size(const std::vector<NamedSize>& objects)
-    {
-        if (objects.empty()) {
-            throw std::invalid_argument("No objects were provided for size validation.");
+        if (py::hasattr(object, "name")) {
+            values.append(object.attr("name"));
         }
-
-        const std::size_t reference_size = objects.front().size;
-
-        for (const auto& object : objects) {
-            if (object.size == 0) {
-                throw std::invalid_argument(
-                    "Object '" + object.name + "' has size 0."
-                );
-            }
-        }
-
-        for (const auto& object : objects) {
-            if (object.size != reference_size) {
-                std::ostringstream message;
-                message << "Objects do not have matching sizes: ";
-
-                for (std::size_t index = 0; index < objects.size(); ++index) {
-                    if (index > 0) {
-                        message << ", ";
-                    }
-
-                    message
-                        << objects[index].name
-                        << "="
-                        << objects[index].size;
-                }
-
-                throw std::invalid_argument(message.str());
-            }
+        else {
+            values.append(py::cast(objects[i]->refractive_index));
         }
     }
+
+    return values;
 }
-
-

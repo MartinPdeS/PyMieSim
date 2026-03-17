@@ -8,7 +8,7 @@ PhotodiodeSet::PhotodiodeSet(
     const std::vector<double> &phi_offset,
     const std::vector<double> &gamma_offset,
     const std::vector<double> &polarization_filter,
-    std::shared_ptr<MediumSet> medium_set,
+    const MediumSet &medium_set,
     const bool is_sequential
 )
 :   sampling(sampling),
@@ -32,7 +32,7 @@ void PhotodiodeSet::update_shape() {
         phi_offset.size(),
         gamma_offset.size(),
         polarization_filter.size(),
-        medium->size()
+        medium.size()
     };
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
 }
@@ -48,7 +48,7 @@ PhotodiodeSet::get_detector_by_index(long long flat_index) const {
         this->phi_offset[indices[3]],
         this->gamma_offset[indices[4]],
         this->polarization_filter[indices[5]],
-        (*this->medium)[indices[6]]
+        this->medium[indices[6]]
     );
 
     detector->indices = indices;
@@ -77,7 +77,7 @@ PhotodiodeSet::get_detector_by_index_sequential(size_t index) const {
         this->phi_offset[index],
         this->gamma_offset[index],
         this->polarization_filter[index],
-        (*this->medium)[index]
+        this->medium[index]
     );
     detector->indices = {index};
     return detector;
@@ -96,7 +96,7 @@ CoherentModeSet::CoherentModeSet(
     const std::vector<double> &gamma_offset,
     const std::vector<double> &polarization_filter,
     const std::vector<double> &rotation,
-    std::shared_ptr<MediumSet> medium_set,
+    const MediumSet &medium_set,
     const bool &mean_coupling,
     const bool is_sequential
 )
@@ -131,7 +131,7 @@ void CoherentModeSet::update_shape() {
         gamma_offset.size(),
         polarization_filter.size(),
         rotation.size(),
-        medium->size()
+        medium.size()
     };
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
 }
@@ -150,7 +150,7 @@ CoherentModeSet::get_detector_by_index(long long flat_index) const {
         this->polarization_filter[indices[6]],
         this->rotation[indices[7]],
         this->mean_coupling,
-        (*this->medium)[indices[8]]
+        this->medium[indices[8]]
     );
 
     detector->indices = indices;
@@ -184,7 +184,7 @@ CoherentModeSet::get_detector_by_index_sequential(size_t index) const {
         this->polarization_filter[index],
         this->rotation[index],
         this->mean_coupling,
-        (*this->medium)[index]
+        this->medium[index]
     );
 
     detector->indices = {index};

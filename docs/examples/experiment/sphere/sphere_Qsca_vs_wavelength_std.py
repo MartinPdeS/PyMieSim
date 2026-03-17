@@ -30,7 +30,7 @@ gold = TabulatedMaterial("gold")
 
 scatterer = SphereSet(
     diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-    material=[silver, gold],
+    material=[silver, gold, 1.4],
     medium=[1],
 )
 

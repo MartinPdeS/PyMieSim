@@ -132,4 +132,86 @@ namespace Casting {
         );
     }
 
+
+
+
+
+
+
+
+
+    template <typename MaterialSetType, typename RefractiveIndexType, typename BaseClass, typename ConstantClass>
+    MaterialSetType create_material_set_from_pyobject(
+        const py::object& material_object,
+        const std::string& material_name
+    ) {
+        if (py::isinstance<MaterialSetType>(material_object)) {
+            return py::cast<MaterialSetType>(material_object);
+        }
+
+        if (py::isinstance<BaseClass>(material_object)) {
+            return MaterialSetType(
+                std::vector<std::shared_ptr<BaseClass>>{
+                    py::cast<std::shared_ptr<BaseClass>>(material_object)
+                }
+            );
+        }
+
+        if (
+            py::isinstance<py::float_>(material_object) ||
+            py::isinstance<py::int_>(material_object) ||
+            py::isinstance<complex128>(material_object)
+        ) {
+            return MaterialSetType(
+                std::vector<std::shared_ptr<BaseClass>>{
+                    std::make_shared<ConstantClass>(
+                        material_object.cast<RefractiveIndexType>()
+                    )
+                }
+            );
+        }
+
+        if (py::isinstance<py::sequence>(material_object) && !py::isinstance<py::str>(material_object)) {
+            py::sequence material_sequence = py::reinterpret_borrow<py::sequence>(material_object);
+
+            std::vector<std::shared_ptr<BaseClass>> materials;
+            materials.reserve(py::len(material_sequence));
+
+            for (size_t i = 0; i < py::len(material_sequence); ++i) {
+                py::object item = py::reinterpret_borrow<py::object>(material_sequence[i]);
+
+                if (py::isinstance<BaseClass>(item)) {
+                    materials.push_back(py::cast<std::shared_ptr<BaseClass>>(item));
+                    continue;
+                }
+
+                if (
+                    py::isinstance<py::float_>(item) ||
+                    py::isinstance<py::int_>(item) ||
+                    py::isinstance<complex128>(item)
+                ) {
+                    materials.push_back(
+                        std::make_shared<ConstantClass>(
+                            item.cast<RefractiveIndexType>()
+                        )
+                    );
+                    continue;
+                }
+
+                throw std::runtime_error(
+                    "Invalid item in " + material_name + " sequence at index " + std::to_string(i) +
+                    ". Expected a scalar refractive index or a Material instance."
+                );
+            }
+
+            return MaterialSetType(materials);
+        }
+
+        throw std::runtime_error(
+            "Invalid type for " + material_name + ". Expected a MaterialSet, "
+            "a scalar refractive index, a sequence of refractive indices, "
+            "a Material instance, or a sequence mixing refractive indices and Material instances."
+        );
+    }
+
 }

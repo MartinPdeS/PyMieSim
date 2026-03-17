@@ -33,8 +33,8 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
                     return std::make_shared<SphereSet>(
                         Casting::cast_py_to_vector<double>(diameter, "meter"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(material, "material"),
+                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false // is_sequential = false
                     );
                 }
@@ -83,28 +83,13 @@ PYBIND11_MODULE(scatterer_set, module) {
             [ureg](const SphereSet& self) {
                 py::dict mapping;
 
-                py::list material_values;
-                for (size_t i = 0; i < self.material.size(); ++i) {
-                    const auto& material = self.material[i];
+                py::list material_values = get_materialset_representation<MaterialSet>(self.material);
 
-                    if (auto constant_material = std::dynamic_pointer_cast<ConstantMaterial>(material)) {
-                        material_values.append(py::cast(constant_material->refractive_index));
-                    }
-                    else if (auto sellmeier_material = std::dynamic_pointer_cast<SellmeierMaterial>(material)) {
-                        material_values.append(py::cast(sellmeier_material->name));
-                    }
-                    else {
-                        material_values.append(py::cast(material->refractive_index));
-                    }
-                }
-
-                py::array_t<double> medium_refractive_indices_array(self.medium.size());
-                for (size_t i = 0; i < self.medium.size(); ++i)
-                    medium_refractive_indices_array.mutable_at(i) = self.medium[i]->refractive_index;
+                py::list medium_values = get_materialset_representation<MediumSet>(self.medium);
 
                 mapping["scatterer:diameter"] = py::cast(self.diameter) * ureg.attr("meter");
                 mapping["scatterer:material"] = material_values;
-                mapping["scatterer:medium"] = medium_refractive_indices_array;
+                mapping["scatterer:medium"] = medium_values;
                 return mapping;
             },
             R"pdoc(
@@ -215,8 +200,8 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
                     return std::make_shared<InfiniteCylinderSet>(
                         Casting::cast_py_to_vector<double>(diameter, "meter"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(material, "material"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(material, "material"),
+                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false  // is_sequential = false
                     );
                 }
@@ -264,9 +249,14 @@ PYBIND11_MODULE(scatterer_set, module) {
             "get_mapping",
             [ureg](const InfiniteCylinderSet& self) {
                 py::dict mapping;
+
+                py::list material_values = get_materialset_representation<MaterialSet>(self.material);
+
+                py::list medium_values = get_materialset_representation<MediumSet>(self.medium);
+
                 mapping["scatterer:diameter"] = py::cast(self.diameter) * ureg.attr("meter");
-                mapping["scatterer:material"] = self.material;
-                mapping["scatterer:medium"] = self.medium;
+                mapping["scatterer:material"] = material_values;
+                mapping["scatterer:medium"] = medium_values;
                 return mapping;
             },
             R"pdoc(
@@ -367,9 +357,9 @@ PYBIND11_MODULE(scatterer_set, module) {
                     return std::make_shared<CoreShellSet>(
                         Casting::cast_py_to_vector<double>(core_diameter, "meter"),
                         Casting::cast_py_to_vector<double>(shell_thickness, "meter"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(core_material, "core_material"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial>(shell_material, "shell_material"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium>(medium, "medium"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(core_material, "core_material"),
+                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(shell_material, "shell_material"),
+                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false  // is_sequential = false
                     );
                 }
@@ -423,16 +413,21 @@ PYBIND11_MODULE(scatterer_set, module) {
             "get_mapping",
             [ureg](const CoreShellSet& self) {
                 py::dict mapping;
+
+                py::list core_material_values = get_materialset_representation<MaterialSet>(self.core_material);
+                py::list shell_material_values = get_materialset_representation<MaterialSet>(self.shell_material);
+                py::list medium_values = get_materialset_representation<MediumSet>(self.medium);
+
                 mapping["scatterer:core_diameter"] = py::cast(self.core_diameter) * ureg.attr("meter");
                 mapping["scatterer:shell_thickness"] = py::cast(self.shell_thickness) * ureg.attr("meter");
-                mapping["scatterer:core_material"] = self.core_material;
-                mapping["scatterer:shell_material"] = self.shell_material;
-                mapping["scatterer:medium"] = self.medium;
+                mapping["scatterer:core_material"] = core_material_values;
+                mapping["scatterer:shell_material"] = shell_material_values;
+                mapping["scatterer:medium"] = medium_values;
                 return mapping;
             },
             R"pdoc(
                 Generates a mapping of scatterer attributes to their corresponding values for the CoreShellSet instance.
-                The mapping includes keys such as 'scatterer:core_diameter', 'scatterer:shell_thickness', 'scatterer:core_material', 'scatterer:shell_material', and 'scatterer:medium_refractive_index'.
+                The mapping includes keys such as 'scatterer:core_diameter', 'scatterer:shell_thickness', 'scatterer:core_material', 'scatterer:shell_material', and 'scatterer:medium'.
             )pdoc"
         )
         .def_property_readonly(
