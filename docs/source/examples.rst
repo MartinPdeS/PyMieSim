@@ -36,6 +36,7 @@ users through practical implementations.
 
    .. grid-item-card:: Experiment
       :link: /gallery/experiment/index
+      :link-type: doc
       :text-align: center
 
       End to end tutorials with realistic workflows.
