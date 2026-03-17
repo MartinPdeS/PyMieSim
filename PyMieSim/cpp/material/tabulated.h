@@ -27,6 +27,15 @@ public:
         this->validate_input_data();
     }
 
+    std::shared_ptr<Base<RefractiveIndexType>> clone() const override {
+        return std::make_shared<BaseTabulated<RefractiveIndexType>>(
+            this->name,
+            this->wavelengths,
+            this->refractive_indices,
+            this->allow_extrapolation
+        );
+    }
+
 protected:
     RefractiveIndexType compute_refractive_index(const double wavelength) const override {
         this->validate_query_preconditions();

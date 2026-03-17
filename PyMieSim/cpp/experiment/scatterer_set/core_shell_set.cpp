@@ -18,9 +18,9 @@ std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_by_index(const size_t
     std::shared_ptr<CoreShell> scatterer = std::make_shared<CoreShell>(
         core_diameter[indices[0]],
         shell_thickness[indices[1]],
-        core_material[indices[2]],
-        shell_material[indices[3]],
-        medium[indices[4]]
+        core_material[indices[2]]->clone(),
+        shell_material[indices[3]]->clone(),
+        medium[indices[4]]->clone()
     );
 
     scatterer->indices = indices;
@@ -51,9 +51,9 @@ std::shared_ptr<BaseScatterer> CoreShellSet::get_scatterer_by_index_sequential(c
     std::shared_ptr<CoreShell> scatterer = std::make_shared<CoreShell>(
         core_diameter[index],
         shell_thickness[index],
-        core_material[index],
-        shell_material[index],
-        medium[index]
+        core_material[index]->clone(),
+        shell_material[index]->clone(),
+        medium[index]->clone()
     );
 
     return scatterer;

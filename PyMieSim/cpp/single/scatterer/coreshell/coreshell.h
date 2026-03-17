@@ -352,7 +352,7 @@ class CoreShell: public BaseScatterer
         void apply_medium();
 
     public:
-        void print_properties(int precision) const
+        void print_properties(int precision) const override
         {
             // Table header
             std::printf("\n");

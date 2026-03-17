@@ -24,8 +24,8 @@ SphereSet::get_scatterer_by_index_sequential(const size_t index) const {
 
     std::shared_ptr<Sphere> scatterer = std::make_shared<Sphere>(
         this->diameter[index],
-        this->material[index],
-        this->medium[index]
+        this->material[index]->clone(),
+        this->medium[index]->clone()
     );
 
     return scatterer;
@@ -39,8 +39,8 @@ SphereSet::get_scatterer_by_index(const size_t flat_index) const {
 
     std::shared_ptr<Sphere> scatterer = std::make_shared<Sphere>(
         this->diameter[indices[0]],
-        this->material[indices[1]],
-        this->medium[indices[2]]
+        this->material[indices[1]]->clone(),
+        this->medium[indices[2]]->clone()
     );
 
     scatterer->indices = indices;

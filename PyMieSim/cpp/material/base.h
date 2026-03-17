@@ -34,6 +34,8 @@ public:
         return this->compute_refractive_index(wavelength);
     }
 
+    virtual std::shared_ptr<Base<RefractiveIndexType>> clone() const = 0;
+
 public:
     RefractiveIndexType refractive_index;
     bool is_initialized = false;

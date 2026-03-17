@@ -19,7 +19,7 @@ polarization_set = PolarizationSet(
 )
 
 source = GaussianSet(
-    wavelength=np.linspace(200, 1800, 300) * ureg.nanometer,
+    wavelength=np.linspace(200, 1800, 200) * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
@@ -39,3 +39,4 @@ experiment = Setup(scatterer_set=scatterer, source_set=source)
 dataframe = experiment.get("Qsca")
 
 dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+

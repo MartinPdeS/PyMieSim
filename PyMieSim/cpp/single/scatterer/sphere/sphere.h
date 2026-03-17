@@ -203,7 +203,7 @@ class Sphere: public BaseScatterer
         ) override;
 
     public:
-        void print_properties(int precision) const
+        void print_properties(int precision) const override
         {
             const double radius_m = 0.5 * this->diameter;
             const double volume_m3 = (4.0 / 3.0) * Constants::PI * std::pow(radius_m, 3);
@@ -211,15 +211,20 @@ class Sphere: public BaseScatterer
 
             // Header
             std::printf("\n");
+            std::printf("Scatterer Type: Sphere\n");
             std::printf("%-16s | %.*e | %-6s\n", "property", precision, 0.0, "unit");
             std::printf("-----------------|--------------------|------\n");
 
             // Geometry
             std::printf("%-16s | %.*e | %-6s\n", "size_parameter", precision, this->size_parameter, "");
             std::printf("%-16s | %.*e | %-6s\n", "radius",         precision, radius_m,            "m");
+            std::printf("%-16s | %.*e | %-6s\n", "RI real",        precision, this->material->get_refractive_index().real(), "");
+            std::printf("%-16s | %.*e | %-6s\n", "RI imag",        precision, this->material->get_refractive_index().imag(), "");
+            std::printf("%-16s | %.*e | %-6s\n", "medium RI",      precision, this->medium->get_refractive_index(), "");
+
             std::printf("%-16s | %.*e | %-6s\n", "volume",         precision, volume_m3,           "m^3");
             std::printf("%-16s | %.*e | %-6s\n", "cross_section",  precision, cross_section_m2,    "m^2");
-            std::printf("%-16s | %.*e | %-6s\n", "g",              precision, this->get_g(),             "");
+            std::printf("%-16s | %.*e | %-6s\n", "g",              precision, this->get_g(),          "");
 
             // Efficiencies (dimensionless)
             std::printf("%-16s | %.*e | %-6s\n", "Qsca",   precision, this->get_Qsca(),   "");

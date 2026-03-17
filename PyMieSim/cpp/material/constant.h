@@ -15,6 +15,10 @@ public:
             this->is_initialized = true;
         }
 
+    std::shared_ptr<Base<RefractiveIndexType>> clone() const override {
+        return std::make_shared<BaseConstant<RefractiveIndexType>>(this->constant_refractive_index);
+    }
+
 protected:
     RefractiveIndexType compute_refractive_index(const double wavelength) const override {
         (void)wavelength;

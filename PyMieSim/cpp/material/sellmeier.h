@@ -38,6 +38,16 @@ public:
         this->validate_input_data();
     }
 
+    std::shared_ptr<Base<RefractiveIndexType>> clone() const override {
+        return std::make_shared<BaseSellmeier<RefractiveIndexType>>(
+            this->name,
+            this->coefficients,
+            this->formula_type,
+            this->wavelength_bound,
+            this->allow_extrapolation
+        );
+    }
+
 protected:
     RefractiveIndexType compute_refractive_index(const double wavelength) const override {
         this->validate_input_data();

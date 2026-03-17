@@ -180,6 +180,10 @@ class Setup
 
                     scatterer_ptr->init(source_ptr);
                     idx = this->flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices);
+
+                    if (debug_mode) {
+                        scatterer_ptr->print_properties(3);
+                    }
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 } else {
                     // 3D case: source, scatterer, and detector
@@ -193,6 +197,10 @@ class Setup
                     scatterer_ptr->init(source_ptr);
                     std::shared_ptr<BaseDetector> detector = this->detector_set->get_detector_by_index(k);
                     idx = this->flatten_multi_index(this->array_shape, source_ptr->indices, scatterer_ptr->indices, detector->indices);
+
+                    if (debug_mode) {
+                        scatterer_ptr->print_properties(3);
+                    }
 
                     output_array[idx] = std::invoke(function, *scatterer_ptr);
                 }

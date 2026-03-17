@@ -57,6 +57,8 @@ public:
 
     double get_size_parameter() const {return this->size_parameter;};
 
+    virtual void print_properties(int precision) const = 0;
+
     /**
      * @brief Computes the asymmetry factor g using the fields at a given sampling.
      * @param sampling The number of sampling points to use for the computation.

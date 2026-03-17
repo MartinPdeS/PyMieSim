@@ -225,7 +225,7 @@ class InfiniteCylinder: public BaseScatterer
         };
 
     public:
-        void print_properties(int precision) const
+        void print_properties(int precision) const override
         {
             const double radius_m = 0.5 * this->diameter;
 
