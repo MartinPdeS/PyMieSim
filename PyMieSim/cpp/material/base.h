@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cstddef>
+#include <memory>
 
 using complex128 = std::complex<double>;
 
