@@ -35,3 +35,4 @@ docs/source/gallery/
 *.so*
 *.a*
 *cmake_install.cmake
+*.dir
