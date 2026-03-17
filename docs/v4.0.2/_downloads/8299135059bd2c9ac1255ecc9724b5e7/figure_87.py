@@ -28,13 +28,13 @@ source = GaussianSet(
     wavelength=[632.8] * ureg.nanometer,
     polarization=PolarizationSet(angles=[0, 90] * ureg.degree),
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 scatterer = InfiniteCylinderSet(
     diameter=diameter,
-    material=[1.55] * ureg.RIU,
-    medium=[1] * ureg.RIU,
+    material=[1.55],
+    medium=[1],
 )
 
 experiment = Setup(

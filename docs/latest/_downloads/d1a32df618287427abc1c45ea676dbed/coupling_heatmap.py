@@ -20,17 +20,17 @@ from PyMieSim.experiment import Setup
 from PyMieSim.material import SellmeierMedium
 
 polarization_state = PolarizationSet(
-    angles=[90] * ureg.degree,  # Linear polarization at 90 degrees
+    angles=[90] * ureg.degree,
 )
 
 source = GaussianSet(
     wavelength=[400] * ureg.nanometer,
-    polarization=polarization_state,  # Linear polarization at 90 degrees
+    polarization=polarization_state,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
-material_values = numpy.linspace(1.3, 2.1, 100) * ureg.RIU
+material_values = numpy.linspace(1.3, 2.1, 100)
 
 scatterer = SphereSet(
     diameter=numpy.linspace(1, 2000, 100) * ureg.nanometer,
@@ -40,7 +40,7 @@ scatterer = SphereSet(
 
 detector = PhotodiodeSet(
     polarization_filter=[0] * ureg.degree,
-    numerical_aperture=[0.3] * ureg.RIU,
+    numerical_aperture=[0.3],
     phi_offset=[0] * ureg.degree,
     gamma_offset=[0] * ureg.degree,
     sampling=[400]

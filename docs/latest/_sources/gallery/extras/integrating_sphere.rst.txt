@@ -23,7 +23,7 @@ Integrating sphere
 
 This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-20
+.. GENERATED FROM PYTHON SOURCE LINES 7-40
 
 
 
@@ -38,24 +38,44 @@ This example demonstrates the initialization and visualization of an Integrating
 
 .. code-block:: Python
 
-    import pyvista as pv
+    from PyMieSim.units import ureg
+
+    from PyMieSim.single.scatterer import Sphere
+    from PyMieSim.single.source import Gaussian
+    from PyMieSim.polarization import PolarizationState
     from PyMieSim.single.detector import IntegratingSphere
+    from PyMieSim.single import Setup
 
 
-    detector = IntegratingSphere(
-        sampling=500,
+    polarization_state = PolarizationState(
+        angle=0 * ureg.degree,
     )
 
-    scene = pv.Plotter()
+    source = Gaussian(
+        wavelength=1550 * ureg.nanometer,
+        polarization=polarization_state,
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3,
+    )
 
-    detector.add_to_scene(scene)
+    scatterer = Sphere(
+        diameter=1800 * ureg.nanometer,
+        medium=1.0,
+        material=1.5,
+    )
 
-    scene.show()
+    detector = IntegratingSphere(
+        sampling=200,
+    )
+
+    setup = Setup(scatterer=scatterer, source=source, detector=detector)
+
+    setup.plot_system()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.245 seconds)
+   **Total running time of the script:** (0 minutes 0.292 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_integrating_sphere.py:

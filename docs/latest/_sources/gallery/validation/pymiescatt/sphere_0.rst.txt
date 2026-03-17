@@ -55,9 +55,9 @@ Sphere Particles: 0
     wavelength = 632.8 * ureg.nanometer  # Wavelength of the light source in meters
     polarization = PolarizationSet(angles=0 * ureg.degree)
     optical_power = 1e-3 * ureg.watt  # Power in watts
-    NA = 0.2 * ureg.AU  # Numerical aperture
-    medium_index = 1.21 * ureg.RIU
-    index = 1.4 * ureg.RIU
+    NA = 0.2  # Numerical aperture
+    medium_index = 1.21
+    index = 1.4
     diameters = (
         np.geomspace(10, 1_000, 50) * ureg.nanometer
     )  # Geometric space for diameters
@@ -67,14 +67,14 @@ Sphere Particles: 0
         wavelength=[632.8] * ureg.nanometer,
         polarization=polarization,
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
 
     # Setup scatterer
     scatterer = SphereSet(
         diameter=diameters,
-        material=[1.4] * ureg.RIU,
-        medium=[1.21] * ureg.RIU,
+        material=[1.4],
+        medium=[1.21],
     )
 
     # Define experiment setup
@@ -124,7 +124,7 @@ Sphere Particles: 0
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.246 seconds)
+   **Total running time of the script:** (0 minutes 0.284 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_sphere_0.py:

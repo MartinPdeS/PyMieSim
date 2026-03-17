@@ -557,13 +557,13 @@ to download the full example code.</p>
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">750</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_state</span><span class="p">,</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">InfiniteCylinder</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="p">(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.33</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="p">(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">),</span>
+    <span class="n">medium</span><span class="o">=</span><span class="mf">1.33</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>

@@ -52,23 +52,23 @@ This example demonstrates how to compute and visualize the footprint of a scatte
         wavelength=1 * ureg.micrometer,
         polarization=polarization_state,
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     scatterer = Sphere(
         diameter=2 * ureg.micrometer,
-        medium=1.0 * ureg.RIU,
-        material=1.8 * ureg.RIU,
+        medium=1.0,
+        material=1.8,
     )
 
     detector = CoherentMode(
         mode_number="HG02",
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
         sampling=200,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
         rotation=0 * ureg.degree,
-        medium=1.0 * ureg.RIU,
+        medium=1.0,
     )
 
     setup = Setup(
@@ -84,7 +84,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.470 seconds)
+   **Total running time of the script:** (0 minutes 0.518 seconds)
 
 
 .. _sphx_glr_download_gallery_single_footprint.py:

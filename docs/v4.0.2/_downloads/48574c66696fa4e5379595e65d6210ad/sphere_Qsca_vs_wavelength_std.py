@@ -19,10 +19,10 @@ polarization_set = PolarizationSet(
 )
 
 source = GaussianSet(
-    wavelength=np.linspace(200, 1800, 300) * ureg.nanometer,
+    wavelength=np.linspace(200, 1800, 200) * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 silver = TabulatedMaterial("silver")
@@ -30,8 +30,8 @@ gold = TabulatedMaterial("gold")
 
 scatterer = SphereSet(
     diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-    material=[silver, gold],
-    medium=[1] * ureg.RIU,
+    material=[silver, gold, 1.4],
+    medium=[1],
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source)
@@ -39,3 +39,4 @@ experiment = Setup(scatterer_set=scatterer, source_set=source)
 dataframe = experiment.get("Qsca")
 
 dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+

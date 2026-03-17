@@ -52,13 +52,13 @@ This example demonstrates the computation and visualization of the Stokes parame
         wavelength=750 * ureg.nanometer,
         polarization=polarization_state,
         optical_power=1 * ureg.watt,
-        numerical_aperture=0.3 * ureg.AU,
+        numerical_aperture=0.3,
     )
 
     scatterer = Sphere(
         diameter=600 * ureg.nanometer,
-        medium=1.0 * ureg.RIU,
-        material=1.4 * ureg.RIU,
+        medium=1.0,
+        material=1.4,
     )
 
     setup = Setup(
@@ -73,7 +73,7 @@ This example demonstrates the computation and visualization of the Stokes parame
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.291 seconds)
+   **Total running time of the script:** (0 minutes 0.285 seconds)
 
 
 .. _sphx_glr_download_gallery_single_stokes.py:

@@ -18,15 +18,15 @@ source = Gaussian(
     wavelength=1000 * ureg.nanometer,
     polarization=polarization,
     optical_power=1 * ureg.watt,
-    numerical_aperture=0.3 * ureg.AU,
+    numerical_aperture=0.3,
 )
 
 scatterer = CoreShell(
     core_diameter=500 * ureg.nanometer,
     shell_thickness=400 * ureg.nanometer,
-    core_material=1.4 * ureg.RIU,
-    shell_material=1.8 * ureg.RIU,
-    medium=1.0 * ureg.RIU,
+    core_material=1.4,
+    shell_material=1.8,
+    medium=1.0,
 )
 
 setup = Setup(

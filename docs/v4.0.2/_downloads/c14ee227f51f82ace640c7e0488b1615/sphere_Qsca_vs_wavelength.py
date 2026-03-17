@@ -22,7 +22,7 @@ source = GaussianSet(
     wavelength=np.linspace(400, 1000, 50) * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 bk7 = SellmeierMaterial("BK7")
@@ -30,7 +30,7 @@ bk7 = SellmeierMaterial("BK7")
 scatterer = SphereSet(
     diameter=[200] * ureg.nanometer,
     material=[bk7],
-    medium=[1] * ureg.RIU,
+    medium=[1],
 )
 
 experiment = Setup(scatterer_set=scatterer, source_set=source)

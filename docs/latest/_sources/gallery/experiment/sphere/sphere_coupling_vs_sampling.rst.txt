@@ -21,7 +21,7 @@
 Sphere: Coupling vs sampling
 ============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-47
+.. GENERATED FROM PYTHON SOURCE LINES 6-50
 
 
 
@@ -127,6 +127,7 @@ Sphere: Coupling vs sampling
     from PyMieSim.experiment import Setup
     from PyMieSim.material import print_available, SellmeierMaterial, SellmeierMedium
 
+
     print_available()
 
 
@@ -138,8 +139,9 @@ Sphere: Coupling vs sampling
         wavelength=[400] * ureg.nanometer,
         polarization=polarization_set,
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
+
     scatterer = SphereSet(
         diameter=[5000] * ureg.nanometer,
         material=[SellmeierMaterial("BK7")],
@@ -147,10 +149,11 @@ Sphere: Coupling vs sampling
     )
 
     detector = PhotodiodeSet(
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
         phi_offset=numpy.linspace(-20, 20, 400) * ureg.degree,
         gamma_offset=[0] * ureg.degree,
-        sampling=[20, 40, 80, 160]
+        sampling=[20, 40, 80, 160],
+        medium=[1.0],
     )
 
     experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
@@ -162,7 +165,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.250 seconds)
+   **Total running time of the script:** (0 minutes 0.452 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_sampling.py:

@@ -20,13 +20,13 @@ source = Gaussian(
     wavelength=1000 * ureg.nanometer,
     polarization=polarization,
     optical_power=1 * ureg.watt,
-    numerical_aperture=0.3 * ureg.AU,
+    numerical_aperture=0.3,
 )
 
 scatterer = Sphere(
     diameter=1500 * ureg.nanometer,
     material=material,
-    medium=1.0 * ureg.RIU,
+    medium=1.0,
 )
 
 setup = Setup(

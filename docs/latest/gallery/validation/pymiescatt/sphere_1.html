@@ -515,10 +515,10 @@ to download the full example code.</p>
 
 <span class="c1"># Define parameters</span>
 <span class="n">wavelength</span> <span class="o">=</span> <span class="mf">632.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>  <span class="c1"># Wavelength of the source in meters</span>
-<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.2</span><span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>  <span class="c1"># Refractive index of the sphere</span>
-<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span>  <span class="c1"># Refractive index of the medium</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.2</span><span class="n">j</span><span class="p">)</span>  <span class="c1"># Refractive index of the sphere</span>
+<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.2</span>  <span class="c1"># Refractive index of the medium</span>
 <span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>  <span class="c1"># Power of the light source in watts</span>
-<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span>  <span class="c1"># Numerical aperture</span>
+<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># Numerical aperture</span>
 <span class="n">diameters</span> <span class="o">=</span> <span class="p">(</span>
     <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6_000</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
 <span class="p">)</span>  <span class="c1"># Diameters from 10 nm to 6 μm</span>
@@ -528,14 +528,14 @@ to download the full example code.</p>
     <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mf">632.8</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="c1"># Setup spherical scatterer</span>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="n">diameters</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.2</span><span class="n">j</span><span class="p">)]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">0.2</span><span class="n">j</span><span class="p">)],</span>
+    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="c1"># Create experimental setup</span>
@@ -585,7 +585,7 @@ to download the full example code.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.451 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.489 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-sphere-1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/dd2190af52ca72481cbdc76871e5dec1/sphere_1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_1.ipynb</span></code></a></p>

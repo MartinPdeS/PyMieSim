@@ -21,7 +21,7 @@
 Sphere: Qsca vs wavelength STD
 ==============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-42
+.. GENERATED FROM PYTHON SOURCE LINES 6-43
 
 
 
@@ -133,10 +133,10 @@ Sphere: Qsca vs wavelength STD
     )
 
     source = GaussianSet(
-        wavelength=np.linspace(200, 1800, 300) * ureg.nanometer,
+        wavelength=np.linspace(200, 1800, 200) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
 
     silver = TabulatedMaterial("silver")
@@ -144,8 +144,8 @@ Sphere: Qsca vs wavelength STD
 
     scatterer = SphereSet(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
-        material=[silver, gold],
-        medium=[1] * ureg.RIU,
+        material=[silver, gold, 1.4],
+        medium=[1],
     )
 
     experiment = Setup(scatterer_set=scatterer, source_set=source)
@@ -155,9 +155,10 @@ Sphere: Qsca vs wavelength STD
     dataframe.plot(x="source:wavelength", std="scatterer:diameter")
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.490 seconds)
+   **Total running time of the script:** (0 minutes 0.573 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_wavelength_std.py:

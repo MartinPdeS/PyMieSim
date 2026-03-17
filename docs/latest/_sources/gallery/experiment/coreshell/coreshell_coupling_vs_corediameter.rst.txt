@@ -67,7 +67,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
         wavelength=[1.2] * ureg.micrometer,
         polarization=polarization_set,
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
 
     scatterer = CoreShellSet(
@@ -79,7 +79,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     )
 
     detector = PhotodiodeSet(
-        numerical_aperture=[0.1] * ureg.AU,
+        numerical_aperture=[0.1],
         phi_offset=[-180.0] * ureg.degree,
         gamma_offset=[0.0] * ureg.degree,
         sampling=[600],
@@ -95,7 +95,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.223 seconds)
+   **Total running time of the script:** (0 minutes 0.246 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py:

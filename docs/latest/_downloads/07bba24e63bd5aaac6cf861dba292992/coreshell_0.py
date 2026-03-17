@@ -21,10 +21,10 @@ from PyMieSim.directories import validation_data_path
 wavelength = 600 * ureg.nanometer  # Light source wavelength in meters
 polarization = PolarizationSet(angles=0 * ureg.degree)
 optical_power = 1 * ureg.watt  # Power in watts
-NA = 0.2 * ureg.AU  # Numerical aperture
-medium_index = 1.0 * ureg.RIU
-core_index = 1.5 * ureg.RIU
-shell_index = 1.4 * ureg.RIU
+NA = 0.2  # Numerical aperture
+medium_index = 1.0
+core_index = 1.5
+shell_index = 1.4
 shell_thickness = 600 * ureg.nanometer  # Shell width in meters
 core_diameters = np.geomspace(10, 500, 40) * ureg.nanometer  # Core diameters in meters
 
@@ -33,16 +33,16 @@ source = GaussianSet(
     wavelength=[600] * ureg.nanometer,
     polarization=polarization,
     optical_power=[1] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU
+    numerical_aperture=[0.2]
 )
 
 # Setup scatterer
 scatterer = CoreShellSet(
     core_diameter=core_diameters,
     shell_thickness=[300] * ureg.nanometer,
-    core_material=[1.5] * ureg.RIU,
-    shell_material=[1.4] * ureg.RIU,
-    medium=[1.0] * ureg.RIU,
+    core_material=[1.5],
+    shell_material=[1.4],
+    medium=[1.0],
 )
 
 # Define experiment setup

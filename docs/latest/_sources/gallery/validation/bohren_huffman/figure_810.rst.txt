@@ -25,7 +25,7 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.10
 
 Importing the dependencies: numpy, matplotlib, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-70
+.. GENERATED FROM PYTHON SOURCE LINES 9-69
 
 .. code-block:: Python
 
@@ -37,7 +37,6 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
     from PyMieSim.single.source import Gaussian
     from PyMieSim.polarization import PolarizationState
     from PyMieSim.single.scatterer import InfiniteCylinder
-    from PyMieSim.single.representations import S1S2
     from PyMieSim.single import Setup
 
     theoretical = numpy.genfromtxt(
@@ -53,13 +52,13 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
         wavelength=470 * ureg.nanometer,
         polarization=polarization_state,
         optical_power=1e-3 * ureg.watt,
-        numerical_aperture=0.1 * ureg.AU,
+        numerical_aperture=0.1,
     )
 
     scatterer = InfiniteCylinder(
         diameter=3000 * ureg.nanometer,
-        material=(1.0 + 0.07j) * ureg.RIU,
-        medium=1.0 * ureg.RIU,
+        material=(1.0 + 0.07j),
+        medium=1.0,
     )
 
     setup = Setup(
@@ -105,7 +104,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.264 seconds)
+   **Total running time of the script:** (0 minutes 0.313 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_810.py:

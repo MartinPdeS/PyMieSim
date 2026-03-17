@@ -11,24 +11,24 @@ from PyMieSim.polarization import PolarizationState
 
 # Setup parameters
 scatterer_diameter = 0.3 * ureg.micrometer  # Diameter of the scatterer in meters
-scatterer_index = 1.4 * ureg.RIU  # Refractive index of the scatterer
+scatterer_index = 1.4  # Refractive index of the scatterer
 source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
 source = experiment.source_set.GaussianSet(
     wavelength=[1.2] * ureg.micrometer,
     polarization=experiment.polarization_set.PolarizationSet(angles=[0, 90] * ureg.degree),
     optical_power=[1] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 scatterer = experiment.scatterer_set.SphereSet(
     diameter=scatterer_diameter,
     material=scatterer_index,
-    medium=[1.0] * ureg.RIU,
+    medium=[1.0],
 )
 
 detector = experiment.detector_set.PhotodiodeSet(
-    numerical_aperture=[0.1] * ureg.AU,
+    numerical_aperture=[0.1],
     phi_offset=np.linspace(-180, 180, 100) * ureg.degree,
     gamma_offset=[0.0] * ureg.degree,
     sampling=[1000]
@@ -47,13 +47,13 @@ single_source = single.source.Gaussian(
     wavelength=source_wavelength,
     polarization=PolarizationState(angle=90 * ureg.degree),
     optical_power=1 * ureg.watt,
-    numerical_aperture=0.2 * ureg.AU,
+    numerical_aperture=0.2,
 )
 
 single_scatterer = single.scatterer.Sphere(
     diameter=scatterer_diameter,
     material=scatterer_index,
-    medium=1.0 * ureg.RIU,
+    medium=1.0,
 )
 
 single_setup = single.setup.Setup(

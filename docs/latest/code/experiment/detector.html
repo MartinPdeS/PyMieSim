@@ -492,6 +492,10 @@
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PhotodiodeSet</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetectorSet</span></code></p>
+<p>Set of photodiode detectors.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">PhotodiodeSet</span></code> stores one or more intensity based detectors
+defined by their numerical aperture, angular offsets, sampling,
+optional polarization filtering, and surrounding medium.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.attributes">
 <span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['sampling',</span> <span class="pre">'numerical_aperture',</span> <span class="pre">'cache_numerical_aperture',</span> <span class="pre">'phi_offset',</span> <span class="pre">'gamma_offset',</span> <span class="pre">'polarization_filter',</span> <span class="pre">'medium']</span></em><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.attributes" title="Link to this definition">#</a></dt>
@@ -499,10 +503,34 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.build_sequential">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'radian')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'refractive_index_unit')&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.detector_set.PhotodiodeSet" title="PyMieSim.experiment.detector_set.PhotodiodeSet"><span class="pre">PyMieSim.experiment.detector_set.PhotodiodeSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.build_sequential" title="Link to this definition">#</a></dt>
-<dd><p>Construct a sequential PhotodiodeSet by broadcasting scalar or single element inputs.</p>
-<dl class="simple">
-<dt>total_size<span class="classifier">int or None</span></dt><dd><p>Target size for broadcasting. If None, uses the maximum size among all provided parameters.</p>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.detector_set.PhotodiodeSet" title="PyMieSim.experiment.detector_set.PhotodiodeSet"><span class="pre">PyMieSim.experiment.detector_set.PhotodiodeSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Build a sequential photodiode detector set.</p>
+<p>Scalar inputs or length one arrays are broadcast to
+<code class="docutils literal notranslate"><span class="pre">target_size</span></code>. Any non scalar input must already have length
+<code class="docutils literal notranslate"><span class="pre">target_size</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_size</strong> (<em>int</em>) – Number of detectors in the sequential set.</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em><em> or </em><em>array-like</em><em> of </em><em>float</em>) – Numerical aperture of each detector.</p></li>
+<li><p><strong>phi_offset</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em>) – Azimuthal offset of each detector.</p></li>
+<li><p><strong>gamma_offset</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em>) – Polar offset of each detector.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em> or </em><em>array-like</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Number of angular sampling points used to evaluate each
+detector. Default is <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p></li>
+<li><p><strong>cache_numerical_aperture</strong> (<em>float</em><em> or </em><em>array-like</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Numerical aperture used for cached field evaluation.
+Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>polarization_filter</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em><em>, </em><em>optional</em>) – Polarization analyzer angle. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the filter is
+disabled for all detectors.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em>, </em><em>MediumSet</em><em>, </em><em>float</em><em>, or </em><em>array-like</em><em>, </em><em>optional</em>) – Surrounding medium. This can be provided either as medium
+objects or as refractive index values. Default is
+<code class="docutils literal notranslate"><span class="pre">ConstantMedium(1.0)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detector set with <code class="docutils literal notranslate"><span class="pre">is_sequential</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.experiment.detector_set.PhotodiodeSet" title="PyMieSim.experiment.detector_set.PhotodiodeSet">PhotodiodeSet</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -510,34 +538,41 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.cache_numerical_aperture">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cache_numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.cache_numerical_aperture" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Cached numerical aperture associated with each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.gamma_offset">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gamma_offset</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.gamma_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Polar offset of each detector.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.get_mapping">
 <span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.detector_set.PhotodiodeSet" title="PyMieSim.experiment.detector_set.PhotodiodeSet"><span class="pre">PyMieSim.experiment.detector_set.PhotodiodeSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.get_mapping" title="Link to this definition">#</a></dt>
-<dd><p>Generates a mapping of detector attributes to their corresponding values for the PhotodiodeSet instance.
-The mapping includes keys such as ‘detector:sampling’, ‘detector:NA’, ‘detector:cache_NA’, ‘detector:phi_offset’, ‘detector:gamma_offset’, ‘detector:polarization_filter’, and ‘detector:medium’.</p>
+<dd><p>Return detector parameters as a dictionary.</p>
+<p>The returned mapping is formatted for PyMieSim parameter tracking
+and dataframe generation. Keys follow the
+<code class="docutils literal notranslate"><span class="pre">detector:&lt;parameter_name&gt;</span></code> convention.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.numerical_aperture">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.numerical_aperture" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Numerical aperture of each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.phi_offset">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phi_offset</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.phi_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Azimuthal offset of each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.PhotodiodeSet.sampling">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.PhotodiodeSet.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sampling point count for each detector.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -545,6 +580,11 @@ The mapping includes keys such as ‘detector:sampling’, ‘detector:NA’, �
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentModeSet</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetectorSet</span></code></p>
+<p>Set of coherent mode detectors.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">CoherentModeSet</span></code> stores one or more detectors used for
+coherent mode coupling calculations. Each detector is defined by its
+mode label, numerical aperture, angular offsets, rotation, optional
+polarization filtering, and surrounding medium.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.attributes">
 <span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['mode_numbers',</span> <span class="pre">'sampling',</span> <span class="pre">'numerical_aperture',</span> <span class="pre">'cache_numerical_aperture',</span> <span class="pre">'phi_offset',</span> <span class="pre">'gamma_offset',</span> <span class="pre">'polarization_filter',</span> <span class="pre">'rotation',</span> <span class="pre">'medium']</span></em><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.attributes" title="Link to this definition">#</a></dt>
@@ -552,10 +592,38 @@ The mapping includes keys such as ‘detector:sampling’, ‘detector:NA’, �
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.build_sequential">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">total_size:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_number:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'radian')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'refractive_index_unit')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.detector_set.CoherentModeSet" title="PyMieSim.experiment.detector_set.CoherentModeSet"><span class="pre">PyMieSim.experiment.detector_set.CoherentModeSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.build_sequential" title="Link to this definition">#</a></dt>
-<dd><p>Construct a sequential CoherentModeSet by broadcasting scalar or single element inputs.</p>
-<dl class="simple">
-<dt>total_size<span class="classifier">int or None</span></dt><dd><p>Target size for broadcasting. If None, uses the maximum size among all provided parameters.</p>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_sequential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.experiment.detector_set.CoherentModeSet" title="PyMieSim.experiment.detector_set.CoherentModeSet"><span class="pre">PyMieSim.experiment.detector_set.CoherentModeSet</span></a></span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.build_sequential" title="Link to this definition">#</a></dt>
+<dd><p>Build a sequential coherent mode detector set.</p>
+<p>Scalar inputs or length one arrays are broadcast to
+<code class="docutils literal notranslate"><span class="pre">target_size</span></code>. Any non scalar input must already have length
+<code class="docutils literal notranslate"><span class="pre">target_size</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_size</strong> (<em>int</em>) – Number of detectors in the sequential set.</p></li>
+<li><p><strong>mode_number</strong> (<em>str</em><em> or </em><em>array-like</em><em> of </em><em>str</em>) – Mode label or labels defining the collected coherent mode.</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em><em> or </em><em>array-like</em><em> of </em><em>float</em>) – Numerical aperture of each detector.</p></li>
+<li><p><strong>phi_offset</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em>) – Azimuthal offset of each detector.</p></li>
+<li><p><strong>gamma_offset</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em>) – Polar offset of each detector.</p></li>
+<li><p><strong>rotation</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em>) – Rotation of the detector mode basis.</p></li>
+<li><p><strong>cache_numerical_aperture</strong> (<em>float</em><em> or </em><em>array-like</em><em> of </em><em>float</em><em>, </em><em>optional</em>) – Numerical aperture used for cached field evaluation.
+Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em> or </em><em>array-like</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Number of angular sampling points used to evaluate each
+detector. Default is <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p></li>
+<li><p><strong>polarization_filter</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em><em>, </em><em>optional</em>) – Polarization analyzer angle. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the filter is
+disabled for all detectors.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em>, </em><em>MediumSet</em><em>, </em><em>float</em><em>, or </em><em>array-like</em><em>, </em><em>optional</em>) – Surrounding medium. This can be provided either as medium
+objects or as refractive index values. Default is
+<code class="docutils literal notranslate"><span class="pre">ConstantMedium(1.0)</span></code>.</p></li>
+<li><p><strong>mean_coupling</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use mean coupling rather than mode resolved
+coupling. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detector set with <code class="docutils literal notranslate"><span class="pre">is_sequential</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.experiment.detector_set.CoherentModeSet" title="PyMieSim.experiment.detector_set.CoherentModeSet">CoherentModeSet</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -563,64 +631,79 @@ The mapping includes keys such as ‘detector:sampling’, ‘detector:NA’, �
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.cache_numerical_aperture">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cache_numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.cache_numerical_aperture" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Cached numerical aperture associated with each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.coherent">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coherent</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.coherent" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Flag indicating that this detector set performs coherent
+detection.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.gamma_offset">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gamma_offset</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.gamma_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Polar offset of each detector.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.get_mapping">
 <span class="sig-name descname"><span class="pre">get_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.experiment.detector_set.CoherentModeSet" title="PyMieSim.experiment.detector_set.CoherentModeSet"><span class="pre">PyMieSim.experiment.detector_set.CoherentModeSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.get_mapping" title="Link to this definition">#</a></dt>
-<dd><p>Generates a mapping of detector attributes to their corresponding values for the CoherentModeSet instance.
-The mapping includes keys such as ‘detector:mode_number’, ‘detector:sampling’, ‘detector:NA’, ‘detector:cache_NA’, ‘detector:phi_offset’, ‘detector:gamma_offset’, ‘detector:polarization_filter’, ‘detector:rotation’, ‘detector:medium’, and ‘detector:mean_coupling’.</p>
+<dd><p>Return detector parameters as a dictionary.</p>
+<p>The returned mapping is formatted for PyMieSim parameter tracking
+and dataframe generation. Keys follow the
+<code class="docutils literal notranslate"><span class="pre">detector:&lt;parameter_name&gt;</span></code> convention.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.mean_coupling">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean_coupling</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.mean_coupling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Whether mean coupling is used.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.medium">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">medium</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.medium" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Surrounding medium associated with the detector set.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.mode_numbers">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_numbers</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.mode_numbers" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Mode labels associated with each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.numerical_aperture">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">numerical_aperture</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.numerical_aperture" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Numerical aperture of each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.phi_offset">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">phi_offset</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.phi_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Azimuthal offset of each detector.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.polarization_filter">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">polarization_filter</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.polarization_filter" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Polarization filter angle for each detector.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> when no polarization filter is defined.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.rotation">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.rotation" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Rotation of the detector mode basis.</p>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.experiment.detector_set.CoherentModeSet.sampling">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.experiment.detector_set.CoherentModeSet.sampling" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Sampling point count for each detector.</p>
+</dd></dl>
 
 </dd></dl>
 

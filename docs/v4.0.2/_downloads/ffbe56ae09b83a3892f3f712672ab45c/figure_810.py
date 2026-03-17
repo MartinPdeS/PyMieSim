@@ -14,7 +14,6 @@ from PyMieSim.directories import validation_data_path
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.representations import S1S2
 from PyMieSim.single import Setup
 
 theoretical = numpy.genfromtxt(
@@ -30,13 +29,13 @@ source = Gaussian(
     wavelength=470 * ureg.nanometer,
     polarization=polarization_state,
     optical_power=1e-3 * ureg.watt,
-    numerical_aperture=0.1 * ureg.AU,
+    numerical_aperture=0.1,
 )
 
 scatterer = InfiniteCylinder(
     diameter=3000 * ureg.nanometer,
-    material=(1.0 + 0.07j) * ureg.RIU,
-    medium=1.0 * ureg.RIU,
+    material=(1.0 + 0.07j),
+    medium=1.0,
 )
 
 setup = Setup(

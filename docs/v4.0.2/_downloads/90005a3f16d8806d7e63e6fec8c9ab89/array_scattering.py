@@ -25,8 +25,8 @@ source = PlaneWave(
 
 scatterer = Sphere(
     diameter=200 * ureg.nanometer,
-    material=1.5 * ureg.RIU,
-    medium=1.0 * ureg.RIU,
+    material=1.5,
+    medium=1.0,
 )
 
 setup = Setup(

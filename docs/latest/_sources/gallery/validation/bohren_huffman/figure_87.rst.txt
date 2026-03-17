@@ -51,13 +51,13 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
         wavelength=[632.8] * ureg.nanometer,
         polarization=PolarizationSet(angles=[0, 90] * ureg.degree),
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
 
     scatterer = InfiniteCylinderSet(
         diameter=diameter,
-        material=[1.55] * ureg.RIU,
-        medium=[1] * ureg.RIU,
+        material=[1.55],
+        medium=[1],
     )
 
     experiment = Setup(
@@ -97,7 +97,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.324 seconds)
+   **Total running time of the script:** (0 minutes 0.344 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_87.py:

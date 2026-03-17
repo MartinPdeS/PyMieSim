@@ -27,7 +27,7 @@ source = GaussianSet(
     wavelength=[800, 900, 1000] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
-    numerical_aperture=[0.2] * ureg.AU,
+    numerical_aperture=[0.2],
 )
 
 scatterer = CoreShellSet(

@@ -139,17 +139,17 @@ This example demonstrates how to use a goniometer setup to measure and visualize
         wavelength=[1200] * ureg.nanometer,
         polarization=polarization_set,
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
 
     scatterer = InfiniteCylinderSet(
         diameter=[2000] * ureg.nanometer,
         material=[SellmeierMaterial("BK7")],
-        medium=[1] * ureg.RIU,
+        medium=[1],
     )
 
     detector = PhotodiodeSet(
-        numerical_aperture=[0.5, 0.3, 0.1, 0.05] * ureg.AU,
+        numerical_aperture=[0.5, 0.3, 0.1, 0.05],
         phi_offset=np.linspace(-180, 180, 200) * ureg.degree,
         gamma_offset=[0] * ureg.degree,
         sampling=[400],
@@ -165,7 +165,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.324 seconds)
+   **Total running time of the script:** (0 minutes 0.349 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:

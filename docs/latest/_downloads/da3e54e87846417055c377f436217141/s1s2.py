@@ -20,12 +20,12 @@ source = Gaussian(
     wavelength=450 * ureg.nanometer,
     polarization=polarization_state,
     optical_power=1 * ureg.watt,
-    numerical_aperture=0.3 * ureg.AU,
+    numerical_aperture=0.3,
 )
 
 scatterer = InfiniteCylinder(
     diameter=6 * ureg.nanometer,
-    medium=1.0 * ureg.RIU,
+    medium=1.0,
     material=bk7,
 )
 

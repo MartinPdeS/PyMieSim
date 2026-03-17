@@ -53,23 +53,23 @@ Sphere: Coupling vs numerical aperture
 
     from PyMieSim import experiment
     from PyMieSim import single
-    from PyMieSim.polarization import PolarizationState
+    from PyMieSim.polarization import PolarizationState, RightCircular
 
     source = experiment.source_set.GaussianSet(
         wavelength=[500] * ureg.nanometer,
         polarization=experiment.polarization_set.PolarizationSet(angles=[0] * ureg.degree),
         optical_power=[1e-3] * ureg.watt,
-        numerical_aperture=[0.2] * ureg.AU,
+        numerical_aperture=[0.2],
     )
 
     scatterer = experiment.scatterer_set.SphereSet(
         diameter=[500e-9] * ureg.meter,
         material=[SellmeierMaterial("BK7")],
-        medium=[1] * ureg.RIU,
+        medium=[1],
     )
 
     detector = experiment.detector_set.PhotodiodeSet(
-        numerical_aperture=np.linspace(0.1, 1, 150) * ureg.AU,
+        numerical_aperture=np.linspace(0.1, 1, 150),
         phi_offset=[0] * ureg.degree,
         gamma_offset=[0, 10] * ureg.degree,
         sampling=[2000]
@@ -89,13 +89,13 @@ Sphere: Coupling vs numerical aperture
         wavelength=950 * ureg.nanometer,
         polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1e-3 * ureg.watt,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
     )
 
     single_scatterer = single.scatterer.Sphere(
         diameter=500 * ureg.nanometer,
-        material=1.5 * ureg.RIU,
-        medium=1 * ureg.RIU,
+        material=1.5,
+        medium=1,
     )
 
     setup = single.setup.Setup(
@@ -108,7 +108,7 @@ Sphere: Coupling vs numerical aperture
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.298 seconds)
+   **Total running time of the script:** (0 minutes 0.314 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_coupling_vs_NA.py:
