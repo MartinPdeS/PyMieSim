@@ -21,7 +21,7 @@ void InfiniteCylinderSet::validate_sequential_data(const size_t expected_size) c
         throw std::runtime_error("Error: Vector size mismatch in sequential computation. material has a different size than expected size.");
 
     if (this->medium.size() != expected_size)
-        throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium has a different size than expected size.");
+        throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium has a different size than expected size. ");
 }
 
 std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index) const {
