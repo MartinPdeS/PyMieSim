@@ -2,7 +2,6 @@ name: Update version_switcher.json
 
 on:
   workflow_dispatch:
-  workflow_call:
 
 permissions:
   contents: write
