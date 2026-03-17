@@ -1,21 +1,25 @@
 name: Update version_switcher.json
 
 on:
-  push:
-    branches:
-      - documentation_page   # or gh-pages, or main, whatever branch holds docs
+  workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: write
+
+concurrency:
+  group: update-version-switcher
+  cancel-in-progress: false
 
 jobs:
   update-version-switcher:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout documentation branch
         uses: actions/checkout@v4
         with:
+          ref: documentation_page
           persist-credentials: true
           fetch-depth: 0
 
@@ -44,4 +48,6 @@ jobs:
 
           git add version_switcher.json
           git commit -m "Update version_switcher.json [skip ci]"
-          git push
+
+          git pull --rebase origin documentation_page
+          git push origin HEAD:documentation_page
