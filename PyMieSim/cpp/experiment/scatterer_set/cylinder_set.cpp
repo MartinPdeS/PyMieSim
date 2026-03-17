@@ -12,18 +12,6 @@ void InfiniteCylinderSet::update_shape() {
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
 }
 
-void InfiniteCylinderSet::validate_sequential_data(const size_t expected_size) const {
-    // Check each vector's size and throw an error with the specific vector name if sizes don't match
-    if (this->diameter.size() != expected_size)
-        throw std::runtime_error("Error: Vector size mismatch in sequential computation. diameter has a different size than expected size.");
-
-    if (this->material.size() != expected_size)
-        throw std::runtime_error("Error: Vector size mismatch in sequential computation. material has a different size than expected size.");
-
-    if (this->medium.size() != expected_size)
-        throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium has a different size than expected size. ");
-}
-
 std::shared_ptr<BaseScatterer> InfiniteCylinderSet::get_scatterer_by_index_sequential(const size_t index) const {
 
     std::shared_ptr<InfiniteCylinder> scatterer = std::make_shared<InfiniteCylinder>(

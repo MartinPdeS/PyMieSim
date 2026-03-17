@@ -21,15 +21,15 @@ public:
      */
 
     IntegratingSphere(
-        const size_t _sampling,
-        const double _polarization_filter)
+        const size_t sampling,
+        const PolarizationState& polarization_filter)
     :   BaseDetector(
-            _sampling,
+            sampling,
             0.0,  /* numerical_aperture */
             0.0,  /* cache_numerical_aperture */
             0.0,  /* phi_offset */
             0.0,  /* gamma_offset */
-            _polarization_filter,
+            polarization_filter,
             std::make_shared<ConstantMedium>(1.0),  /* medium */
             false
         )

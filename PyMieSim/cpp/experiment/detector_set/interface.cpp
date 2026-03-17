@@ -44,7 +44,7 @@ PYBIND11_MODULE(detector_set, module) {
     )
         .def(
             py::init(
-                [ureg](
+                [](
                     const py::object& numerical_aperture,
                     const py::object& phi_offset,
                     const py::object& gamma_offset,
@@ -53,19 +53,13 @@ PYBIND11_MODULE(detector_set, module) {
                     const py::object& polarization_filter,
                     const py::object& medium
                 ) {
-                    std::vector<double> polarization_filter_value;
-                    if (polarization_filter.is_none())
-                        polarization_filter_value = std::vector<double>(1, std::numeric_limits<double>::quiet_NaN());
-                    else
-                        polarization_filter_value = Casting::cast_py_to_vector<double>(polarization_filter, "radian");
-
                     return std::make_shared<PhotodiodeSet>(
                         Casting::cast_py_to_vector<unsigned>(sampling),
                         Casting::cast_py_to_vector<double>(numerical_aperture),
                         Casting::cast_py_to_vector<double>(cache_numerical_aperture),
                         Casting::cast_py_to_vector<double>(phi_offset, "radian"),
                         Casting::cast_py_to_vector<double>(gamma_offset, "radian"),
-                        polarization_filter_value,
+                        Casting::cast_py_to_polarization_set(polarization_filter),
                         Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false
                     );
@@ -169,8 +163,8 @@ PYBIND11_MODULE(detector_set, module) {
                 mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture);
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
-                mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
-                mapping["detector:medium"] = self.medium;
+                mapping["detector:polarization_filter"] = get_polarizationset_representation(self.polarization_filter_set);
+                mapping["detector:medium"] = get_materialset_representation<MediumSet>(self.medium);
                 return mapping;
             },
             R"pdoc(
@@ -230,30 +224,13 @@ PYBIND11_MODULE(detector_set, module) {
                         "radian"
                     );
 
-                std::vector<double> polarization_filter_value;
-                if (polarization_filter.is_none()) {
-                    polarization_filter_value = std::vector<double>(
-                        target_size,
-                        std::numeric_limits<double>::quiet_NaN()
-                    );
-                }
-                else {
-                    polarization_filter_value =
-                        Casting::cast_py_to_broadcasted_vector<double>(
-                            "polarization_filter",
-                            polarization_filter,
-                            target_size,
-                            "radian"
-                        );
-                }
-
                 return std::make_shared<PhotodiodeSet>(
                     sampling_value,
                     numerical_aperture_value,
                     cache_numerical_aperture_value,
                     phi_offset_value,
                     gamma_offset_value,
-                    polarization_filter_value,
+                    Casting::cast_py_to_polarization_set(polarization_filter, target_size),
                     Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                     true
                 );
@@ -332,13 +309,6 @@ PYBIND11_MODULE(detector_set, module) {
                     const py::object& medium,
                     const bool& mean_coupling
                 ) {
-                    std::vector<double> polarization_filter_value;
-                    if (polarization_filter.is_none())
-                        polarization_filter_value = std::vector<double>(1, std::numeric_limits<double>::quiet_NaN());
-                    else
-                        polarization_filter_value = Casting::cast_py_to_vector<double>(polarization_filter, "radian");
-
-
                     return std::make_shared<CoherentModeSet>(
                         Casting::cast_py_to_vector<std::string>(mode_number),
                         Casting::cast_py_to_vector<unsigned>(sampling),
@@ -346,7 +316,7 @@ PYBIND11_MODULE(detector_set, module) {
                         Casting::cast_py_to_vector<double>(cache_numerical_aperture),
                         Casting::cast_py_to_vector<double>(phi_offset, "radian"),
                         Casting::cast_py_to_vector<double>(gamma_offset, "radian"),
-                        polarization_filter_value,
+                        Casting::cast_py_to_polarization_set(polarization_filter),
                         Casting::cast_py_to_vector<double>(rotation, "radian"),
                         Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         mean_coupling,
@@ -484,18 +454,9 @@ PYBIND11_MODULE(detector_set, module) {
                 Rotation of the detector mode basis.
             )pdoc"
         )
-        .def_property_readonly(
+        .def_readonly(
             "polarization_filter",
-            [ureg](const CoherentModeSet& self) {
-                py::object output;
-                if (std::isnan(self.polarization_filter[0])) {
-                    output = py::none();
-                }
-                else {
-                    output = py::cast(self.polarization_filter);
-                }
-                return output;
-            },
+            &CoherentModeSet::polarization_filter_set,
             R"pdoc(
                 Polarization filter angle for each detector.
 
@@ -521,9 +482,9 @@ PYBIND11_MODULE(detector_set, module) {
                 mapping["detector:cache_NA"] = py::cast(self.cache_numerical_aperture);
                 mapping["detector:phi_offset"] = py::cast(self.phi_offset) * ureg.attr("radian");
                 mapping["detector:gamma_offset"] = py::cast(self.gamma_offset) * ureg.attr("radian");
-                mapping["detector:polarization_filter"] = py::cast(self.polarization_filter) * ureg.attr("radian");
+                mapping["detector:polarization_filter"] = get_polarizationset_representation(self.polarization_filter_set);
                 mapping["detector:rotation"] = py::cast(self.rotation) * ureg.attr("radian");
-                mapping["detector:medium"] = self.medium;
+                mapping["detector:medium"] = get_materialset_representation<MediumSet>(self.medium);
                 return mapping;
             },
             R"pdoc(
@@ -601,22 +562,8 @@ PYBIND11_MODULE(detector_set, module) {
                         "radian"
                     );
 
-                std::vector<double> polarization_filter_value;
-                if (polarization_filter.is_none()) {
-                    polarization_filter_value = std::vector<double>(
-                        target_size,
-                        std::numeric_limits<double>::quiet_NaN()
-                    );
-                }
-                else {
-                    polarization_filter_value =
-                        Casting::cast_py_to_broadcasted_vector<double>(
-                            "polarization_filter",
-                            polarization_filter,
-                            target_size,
-                            "radian"
-                        );
-                }
+                PolarizationSet polarization_filter_set =
+                    Casting::cast_py_to_polarization_set(polarization_filter, target_size);
 
                 return std::make_shared<CoherentModeSet>(
                     mode_number_values,
@@ -625,7 +572,7 @@ PYBIND11_MODULE(detector_set, module) {
                     cache_numerical_aperture_value,
                     phi_offset_value,
                     gamma_offset_value,
-                    polarization_filter_value,
+                    polarization_filter_set,
                     rotation_value,
                     Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                     mean_coupling,

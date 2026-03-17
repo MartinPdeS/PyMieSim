@@ -32,12 +32,11 @@ SAMPLING = 100
 ROTATION = 0 * ureg.degree
 
 
-
-
 def test_sequential_vs_standard_no_detector():
+    polarization_set = PolarizationSet(angles=0 * ureg.degree)
     source_standard = GaussianSet(
         wavelength=WAVELENGTH,
-        polarization=PolarizationSet(angles=0 * ureg.degree),
+        polarization=polarization_set,
         optical_power=OPTICAL_POWER,
         numerical_aperture=NA,
     )
@@ -93,7 +92,7 @@ def test_sequential_vs_standard_no_detector():
 def test_sequential_vs_standard_detector():
     source_standard = GaussianSet(
         wavelength=WAVELENGTH,
-        polarization=PolarizationSet(angles=POLARIZATION * ureg.degree),
+        polarization=0 * ureg.degree,
         optical_power=OPTICAL_POWER,
         numerical_aperture=NA,
     )
@@ -110,7 +109,7 @@ def test_sequential_vs_standard_detector():
         numerical_aperture=NA,
         cache_numerical_aperture=CACHE_NA,
         sampling=SAMPLING,
-        polarization_filter=POLARIZATION_FILTER,
+        polarization_filter=0 * ureg.degree
     )
 
     setup_standard = Setup(

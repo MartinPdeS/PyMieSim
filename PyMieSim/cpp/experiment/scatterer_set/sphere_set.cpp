@@ -13,12 +13,6 @@ void SphereSet::update_shape() {
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
 }
 
-void SphereSet::validate_sequential_data(const size_t expected_size) const {
-    this->check_size(this->diameter, expected_size, "diameter");
-    this->check_size(this->material, expected_size, "material");
-    this->check_size(this->medium, expected_size, "medium");
-}
-
 std::shared_ptr<BaseScatterer>
 SphereSet::get_scatterer_by_index_sequential(const size_t index) const {
 

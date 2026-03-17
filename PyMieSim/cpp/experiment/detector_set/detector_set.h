@@ -1,5 +1,6 @@
 #pragma once
 
+#include <experiment/polarization_set/polarization_set.h>
 #include <experiment/base_set.h>
 #include <experiment/material_set/material_set.h>
 
@@ -24,12 +25,6 @@ class BaseDetectorSet : public BaseSet
          * @return The corresponding Photodiode detector configuration.
          */
         virtual std::shared_ptr<BaseDetector> get_detector_by_index_sequential(size_t index) const = 0;
-
-        /**
-         * @brief Validates the sizes of the sequential data vectors.
-         * @param expected_size The expected size for each vector.
-         */
-        virtual void validate_sequential_data(const size_t expected_size) const = 0;
 };
 
 class PhotodiodeSet : public BaseDetectorSet
@@ -50,7 +45,7 @@ class PhotodiodeSet : public BaseDetectorSet
         std::vector<double> cache_numerical_aperture;
         std::vector<double> phi_offset;
         std::vector<double> gamma_offset;
-        std::vector<double> polarization_filter;
+        PolarizationSet polarization_filter_set;
         MediumSet medium;
 
         PhotodiodeSet() = default;
@@ -61,7 +56,7 @@ class PhotodiodeSet : public BaseDetectorSet
             const std::vector<double> &cache_numerical_aperture,
             const std::vector<double> &phi_offset,
             const std::vector<double> &gamma_offset,
-            const std::vector<double> &polarization_filter,
+            const PolarizationSet &polarization_filter_set,
             const MediumSet &medium,
             const bool is_sequential
         );
@@ -69,8 +64,6 @@ class PhotodiodeSet : public BaseDetectorSet
         void update_shape() override;
 
         std::shared_ptr<BaseDetector> get_detector_by_index(long long flat_index) const override;
-
-        void validate_sequential_data(const size_t expected_size) const override;
 
         std::shared_ptr<BaseDetector> get_detector_by_index_sequential(size_t index) const override;
 };
@@ -96,7 +89,7 @@ class CoherentModeSet : public BaseDetectorSet
         std::vector<double> cache_numerical_aperture;
         std::vector<double> phi_offset;
         std::vector<double> gamma_offset;
-        std::vector<double> polarization_filter;
+        PolarizationSet polarization_filter_set;
         std::vector<double> rotation;
         MediumSet medium;
         bool coherent;
@@ -111,7 +104,7 @@ class CoherentModeSet : public BaseDetectorSet
             const std::vector<double> &cache_numerical_aperture,
             const std::vector<double> &phi_offset,
             const std::vector<double> &gamma_offset,
-            const std::vector<double> &polarization_filter,
+            const PolarizationSet &polarization_filter_set,
             const std::vector<double> &rotation,
             const MediumSet &medium,
             const bool &mean_coupling,
@@ -121,8 +114,6 @@ class CoherentModeSet : public BaseDetectorSet
         void update_shape() override;
 
         std::shared_ptr<BaseDetector> get_detector_by_index(long long flat_index) const override;
-
-        void validate_sequential_data(const size_t expected_size) const override;
 
         std::shared_ptr<BaseDetector> get_detector_by_index_sequential(size_t index) const override;
 };

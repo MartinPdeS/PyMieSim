@@ -7,6 +7,7 @@
 #include <experiment/utils.h>
 #include <experiment/source_set/source_set.h>
 #include <utils/casting.h>
+#include <experiment/utils.h>
 
 namespace py = pybind11;
 
@@ -21,10 +22,9 @@ PYBIND11_MODULE(source_set, module) {
             py::init(
                 [ureg](
                     const py::object& wavelength,
-                    const std::shared_ptr<PolarizationSet>& polarization,
+                    const py::object& polarization,
                     const py::object& numerical_aperture,
-                    const py::object& optical_power,
-                    bool is_sequential
+                    const py::object& optical_power
                 ) {
                     std::vector<double> wavelength_value = Casting::cast_py_to_vector<double>(wavelength, "meter");
 
@@ -34,10 +34,10 @@ PYBIND11_MODULE(source_set, module) {
 
                     return std::make_shared<GaussianSourceSet>(
                         wavelength_value,
-                        polarization,
+                        Casting::cast_py_to_polarization_set(polarization),
                         numerical_aperture_values,
                         optical_power_values,
-                        is_sequential
+                        false  // is_sequential
                     );
                 }
             ),
@@ -45,7 +45,6 @@ PYBIND11_MODULE(source_set, module) {
             py::arg("polarization"),
             py::arg("numerical_aperture"),
             py::arg("optical_power"),
-            py::arg("is_sequential") = false,
             R"pdoc(
                 Initializes a Gaussian source set with specific wavelengths, polarization, numerical apertures, and optical powers.
 
@@ -59,11 +58,12 @@ PYBIND11_MODULE(source_set, module) {
                     Numerical aperture(s) of the Gaussian source. Can be a single value or an array of values for multiple sources.
                 optical_power : float or array-like
                     Optical power(s) of the Gaussian source. Can be a single value or an array of values for multiple sources.
-                is_sequential : bool, optional
-                    Indicates whether the source set should be treated as sequential (default is False). If True, each index corresponds to a specific combination of parameters; if False, all combinations are generated from the provided parameter arrays.
             )pdoc"
         )
-        .def_readonly("attributes", &GaussianSourceSet::attributes)
+        .def_readonly(
+            "attributes",
+            &GaussianSourceSet::attributes
+        )
         .def_property_readonly(
             "wavelength",
             [ureg](const GaussianSourceSet& self) {
@@ -90,7 +90,7 @@ PYBIND11_MODULE(source_set, module) {
             [ureg](const GaussianSourceSet& self) {
                 py::dict mapping;
                 mapping["source:wavelength"] = py::cast(self.wavelength) * ureg.attr("meter");
-                mapping["source:polarization"] = py::cast(self.polarization);
+                mapping["source:polarization"] = get_polarizationset_representation(self.polarization);
                 mapping["source:numerical_aperture"] = py::cast(self.numerical_aperture);
                 mapping["source:optical_power"] = py::cast(self.optical_power) * ureg.attr("watt");
                 return mapping;
@@ -105,7 +105,7 @@ PYBIND11_MODULE(source_set, module) {
             [ureg](
                 const size_t& target_size,
                 const py::object& wavelength,
-                const std::shared_ptr<PolarizationSet>& polarization,
+                const py::object& polarization,
                 const py::object& numerical_aperture,
                 const py::object& optical_power
             ) {
@@ -132,23 +132,12 @@ PYBIND11_MODULE(source_set, module) {
                         "watt"
                     );
 
-                const size_t polarization_size = polarization ? polarization->number_of_states() : 0;
-                if (polarization_size == 0) {
-                    throw std::invalid_argument("polarization is null or has zero states.");
-                }
-                if (!(polarization_size == 1 || polarization_size == target_size)) {
-                    std::ostringstream oss;
-                    oss << "Inconsistent sizes: 'polarization' has number_of_states " << polarization_size
-                        << " but expected 1 or " << target_size << ".";
-                    throw std::invalid_argument(oss.str());
-                }
-
                 return std::make_shared<GaussianSourceSet>(
                     wavelength_value,
-                    polarization,
+                    Casting::cast_py_to_polarization_set(polarization, target_size),
                     numerical_aperture_values,
                     optical_power_values,
-                    true
+                    true // is_sequential
                 );
             },
             py::arg("target_size") = py::none(),
@@ -185,9 +174,8 @@ PYBIND11_MODULE(source_set, module) {
             py::init(
                 [](
                     const py::object& wavelength,
-                    const std::shared_ptr<PolarizationSet>& polarization,
-                    const py::object& amplitude,
-                    bool is_sequential
+                    const py::object& polarization,
+                    const py::object& amplitude
                 ) {
                     std::vector<double> wavelength_value = \
                         Casting::cast_py_to_vector<double>(wavelength, "meter");
@@ -197,16 +185,15 @@ PYBIND11_MODULE(source_set, module) {
 
                     return std::make_shared<PlaneWaveSourceSet>(
                         wavelength_value,
-                        polarization,
+                        Casting::cast_py_to_polarization_set(polarization),
                         amplitude_values,
-                        is_sequential
+                        false  // is_sequential = false
                     );
                 }
             ),
             py::arg("wavelength"),
             py::arg("polarization"),
             py::arg("amplitude"),
-            py::arg("is_sequential") = false,
             R"pdoc(
                 Initializes a plane wave source set with specific wavelengths, polarization, and amplitudes.
 
@@ -218,11 +205,12 @@ PYBIND11_MODULE(source_set, module) {
                     Polarization(s) of the plane wave source. Can be a single value or an array of values for multiple sources.
                 amplitude : float or array-like
                     Amplitude(s) of the plane wave source. Can be a single value or an array of values for multiple sources.
-                is_sequential : bool, optional
-                    Indicates whether the source set should be treated as sequential (default is False). If True, each index corresponds to a specific combination of parameters; if False, all combinations are generated from the provided parameter arrays.
             )pdoc"
         )
-        .def_readonly("attributes", &PlaneWaveSourceSet::attributes)
+        .def_readonly(
+            "attributes",
+            &PlaneWaveSourceSet::attributes
+        )
         .def_property_readonly(
             "wavelength",
             [ureg](const PlaneWaveSourceSet& self) {
@@ -242,7 +230,7 @@ PYBIND11_MODULE(source_set, module) {
             [ureg](const PlaneWaveSourceSet& self) {
                 py::dict mapping;
                 mapping["source:wavelength"] = py::cast(self.wavelength) * ureg.attr("meter");
-                mapping["source:polarization"] = py::cast(self.polarization);
+                mapping["source:polarization"] = get_polarizationset_representation(self.polarization);
                 mapping["source:amplitude"] = py::cast(self.amplitude) * ureg.attr("volt/meter");
                 return mapping;
             },
@@ -256,7 +244,7 @@ PYBIND11_MODULE(source_set, module) {
             [ureg](
                 const size_t& target_size,
                 const py::object& wavelength,
-                const std::shared_ptr<PolarizationSet>& polarization,
+                const py::object& polarization,
                 const py::object& amplitude
             ) {
                 std::vector<double> wavelength_value =
@@ -275,20 +263,9 @@ PYBIND11_MODULE(source_set, module) {
                         "volt/meter"
                     );
 
-                const size_t polarization_size = polarization ? polarization->number_of_states() : 0;
-                if (polarization_size == 0) {
-                    throw std::invalid_argument("polarization is null or has zero states.");
-                }
-                if (!(polarization_size == 1 || polarization_size == target_size)) {
-                    std::ostringstream oss;
-                    oss << "Inconsistent sizes: 'polarization' has number_of_states " << polarization_size
-                        << " but expected 1 or " << target_size << ".";
-                    throw std::invalid_argument(oss.str());
-                }
-
                 return std::make_shared<PlaneWaveSourceSet>(
                     wavelength_value,
-                    polarization,
+                    Casting::cast_py_to_polarization_set(polarization, target_size),
                     amplitude_values,
                     true  // is_sequential = true
                 );

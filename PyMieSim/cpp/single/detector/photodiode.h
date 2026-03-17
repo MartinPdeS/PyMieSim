@@ -17,17 +17,18 @@ public:
         const double& cache_numerical_aperture,
         const double& phi_offset,
         const double& gamma_offset,
-        const double& polarization_filter,
+        const PolarizationState& polarization_filter,
         const std::shared_ptr<BaseMedium> medium
     ) :  BaseDetector(
-        sampling,
-        numerical_aperture,
-        cache_numerical_aperture,
-        phi_offset,
-        gamma_offset,
-        polarization_filter,
-        std::move(medium),
-        false)
+            sampling,
+            numerical_aperture,
+            cache_numerical_aperture,
+            phi_offset,
+            gamma_offset,
+            polarization_filter,
+            std::move(medium),
+            false
+        )
     {
         this->parse_mode("NC00");
         this->mode_field = ModeField(this->mode_id);
@@ -39,7 +40,7 @@ public:
         const double& cache_numerical_aperture,
         const double& phi_offset,
         const double& gamma_offset,
-        const double& polarization_filter,
+        const PolarizationState& polarization_filter,
         const double medium
     ) :  Photodiode(
             sampling,
@@ -106,5 +107,5 @@ public:
      * @param coupling_phi The coupling coefficient for the phi direction.
      * @param polarization_filter The polarization filter value.
      */
-    template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
+    template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi) const;
 };

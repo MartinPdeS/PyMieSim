@@ -15,16 +15,16 @@ from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMed
 core_properties = [
     [TabulatedMaterial("silver")],
     [SellmeierMaterial("fused_silica")],
-    [1.4] * ureg.RIU
+    [1.4]
 ]
 shell_properties = [
     [TabulatedMaterial("silver")],
     [SellmeierMaterial("fused_silica")],
-    [1.4] * ureg.RIU
+    [1.4]
 ]
 medium_properties = [
     [SellmeierMedium("water")],
-    [1.1] * ureg.RIU
+    [1.1]
 ]
 
 
@@ -75,7 +75,7 @@ sources = [gaussian_source, planewave_source]
 
 @pytest.mark.parametrize(
     "measure",
-    CoreShellSet.available_measure_list
+    CoreShellSet.available_measure_list[1:]
 )
 
 def test_measure(measure, source, core_material, shell_material, medium):

@@ -14,6 +14,8 @@
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
 #include "./source.h"
+#include <single/utils.h>
+#include <utils/casting.h>
 
 namespace py = pybind11;
 
@@ -23,30 +25,32 @@ PYBIND11_MODULE(source, module)
     module.doc() = "Source bindings for PyMieSim.";
 
     py::class_<BaseSource, std::shared_ptr<BaseSource>>(module, "BaseSource",
-    R"pbdoc(
-        Base class for optical excitation sources.
-
-        A ``BaseSource`` defines the incident field that illuminates a scatterer.
-        Concrete sources provide the wavelength, electric field amplitude, and
-        polarization state.
-
-        Notes
-        -----
-        Units are returned as Pint quantities using the shared unit registry.
-        Polarization is represented internally as a Jones vector with shape ``(N, 2)``,
-        stored as complex values.
-    )pbdoc")
-        .def(py::init<>(),
         R"pbdoc(
-            Construct a source base instance.
+            Base class for optical excitation sources.
+
+            A ``BaseSource`` defines the incident field that illuminates a scatterer.
+            Concrete sources provide the wavelength, electric field amplitude, and
+            polarization state.
 
             Notes
             -----
-            This constructor is primarily used for binding completeness.
-            In user code, you typically instantiate a concrete source such as
-            :class:`~PyMieSim.single.source.PlaneWave` or
-            :class:`~PyMieSim.single.source.Gaussian`.
-        )pbdoc")
+            Units are returned as Pint quantities using the shared unit registry.
+            Polarization is represented internally as a Jones vector with shape ``(N, 2)``,
+            stored as complex values.
+        )pbdoc"
+        )
+        .def(py::init<>(),
+            R"pbdoc(
+                Construct a source base instance.
+
+                Notes
+                -----
+                This constructor is primarily used for binding completeness.
+                In user code, you typically instantiate a concrete source such as
+                :class:`~PyMieSim.single.source.PlaneWave` or
+                :class:`~PyMieSim.single.source.Gaussian`.
+            )pbdoc"
+        )
         .def_property_readonly(
             "wavelength",
             [ureg](const BaseSource& self) {
@@ -178,21 +182,15 @@ PYBIND11_MODULE(source, module)
             wavelength, polarization, and electric field amplitude.
         )pbdoc")
         .def(
-            py::init([ureg](
-                py::object wavelength,
-                PolarizationState polarization,
-                py::object amplitude
+            py::init([](
+                const py::object& wavelength,
+                const py::object& polarization,
+                const py::object& amplitude
             ) {
-                const double wavelength_meter =
-                    wavelength.attr("to")("meter").attr("magnitude").cast<double>();
-
-                const double amplitude_v_per_m =
-                    amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>();
-
                 return std::make_shared<Planewave>(
-                    wavelength_meter,
-                    polarization,
-                    amplitude_v_per_m
+                    wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
+                    Casting::cast_py_to_polarization_state(polarization),
+                    amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>()
                 );
             }),
             py::arg("wavelength"),
@@ -244,23 +242,17 @@ PYBIND11_MODULE(source, module)
         )pbdoc"
         )
         .def(
-            py::init([ureg](
-                py::object wavelength,
-                PolarizationState polarization,
-                py::object numerical_aperture,
-                py::object optical_power
+            py::init([](
+                const py::object& wavelength,
+                const py::object& polarization,
+                const py::object& numerical_aperture,
+                const py::object& optical_power
             ) {
-                const double wavelength_meter =
-                    wavelength.attr("to")("meter").attr("magnitude").cast<double>();
-
-                const double optical_power_watt =
-                    optical_power.attr("to")("watt").attr("magnitude").cast<double>();
-
                 return std::make_shared<Gaussian>(
-                    wavelength_meter,
-                    polarization,
+                    wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
+                    Casting::cast_py_to_polarization_state(polarization),
                     numerical_aperture.cast<double>(),
-                    optical_power_watt
+                    optical_power.attr("to")("watt").attr("magnitude").cast<double>()
                 );
             }),
             py::arg("wavelength"),

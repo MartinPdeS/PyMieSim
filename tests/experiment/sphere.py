@@ -18,12 +18,12 @@ from PyMieSim.experiment.source_set import *
 properties = [
     [TabulatedMaterial("silver")],
     [SellmeierMaterial("fused_silica")],
-    [1.4] * ureg.RIU
+    [1.4]
 ]
 
 medium_properties = [
     [SellmeierMedium("water")],
-    [1.1] * ureg.RIU
+    [1.1]
 ]
 
 measures = SphereSet.available_measure_list

@@ -7,7 +7,7 @@ PhotodiodeSet::PhotodiodeSet(
     const std::vector<double> &cache_numerical_aperture,
     const std::vector<double> &phi_offset,
     const std::vector<double> &gamma_offset,
-    const std::vector<double> &polarization_filter,
+    const PolarizationSet &polarization_filter_set,
     const MediumSet &medium_set,
     const bool is_sequential
 )
@@ -16,7 +16,7 @@ PhotodiodeSet::PhotodiodeSet(
     cache_numerical_aperture(cache_numerical_aperture),
     phi_offset(phi_offset),
     gamma_offset(gamma_offset),
-    polarization_filter(polarization_filter),
+    polarization_filter_set(polarization_filter_set),
     medium(medium_set)
     {
         this->is_sequential = is_sequential;
@@ -31,7 +31,7 @@ void PhotodiodeSet::update_shape() {
         cache_numerical_aperture.size(),
         phi_offset.size(),
         gamma_offset.size(),
-        polarization_filter.size(),
+        polarization_filter_set.number_of_states(),
         medium.size()
     };
     total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
@@ -47,25 +47,13 @@ PhotodiodeSet::get_detector_by_index(long long flat_index) const {
         this->cache_numerical_aperture[indices[2]],
         this->phi_offset[indices[3]],
         this->gamma_offset[indices[4]],
-        this->polarization_filter[indices[5]],
+        this->polarization_filter_set.polarization_states[indices[5]],
         this->medium[indices[6]]
     );
 
     detector->indices = indices;
 
     return detector;
-}
-
-void PhotodiodeSet::validate_sequential_data(const size_t expected_size) const {
-    // Check each vector's size and throw an error with the specific vector name if sizes don't match
-    this->check_size(this->sampling, expected_size, "sampling");
-    this->check_size(this->numerical_aperture, expected_size, "numerical_aperture");
-    this->check_size(this->cache_numerical_aperture, expected_size, "cache_numerical_aperture");
-
-    this->check_size(this->phi_offset, expected_size, "phi_offset");
-    this->check_size(this->gamma_offset, expected_size, "gamma_offset");
-    this->check_size(this->polarization_filter, expected_size, "polarization_filter");
-    // this->check_size(*this->medium, expected_size, "medium");
 }
 
 std::shared_ptr<BaseDetector>
@@ -76,7 +64,7 @@ PhotodiodeSet::get_detector_by_index_sequential(size_t index) const {
         this->cache_numerical_aperture[index],
         this->phi_offset[index],
         this->gamma_offset[index],
-        this->polarization_filter[index],
+        this->polarization_filter_set.polarization_states[index],
         this->medium[index]
     );
     detector->indices = {index};
@@ -94,7 +82,7 @@ CoherentModeSet::CoherentModeSet(
     const std::vector<double> &cache_numerical_aperture,
     const std::vector<double> &phi_offset,
     const std::vector<double> &gamma_offset,
-    const std::vector<double> &polarization_filter,
+    const PolarizationSet &polarization_filter_set,
     const std::vector<double> &rotation,
     const MediumSet &medium_set,
     const bool &mean_coupling,
@@ -106,7 +94,7 @@ CoherentModeSet::CoherentModeSet(
     cache_numerical_aperture(cache_numerical_aperture),
     phi_offset(phi_offset),
     gamma_offset(gamma_offset),
-    polarization_filter(polarization_filter),
+    polarization_filter_set(polarization_filter_set),
     rotation(rotation),
     medium(medium_set),
     mean_coupling(mean_coupling)
@@ -129,7 +117,7 @@ void CoherentModeSet::update_shape() {
         cache_numerical_aperture.size(),
         phi_offset.size(),
         gamma_offset.size(),
-        polarization_filter.size(),
+        polarization_filter_set.number_of_states(),
         rotation.size(),
         medium.size()
     };
@@ -147,7 +135,7 @@ CoherentModeSet::get_detector_by_index(long long flat_index) const {
         this->cache_numerical_aperture[indices[3]],
         this->phi_offset[indices[4]],
         this->gamma_offset[indices[5]],
-        this->polarization_filter[indices[6]],
+        this->polarization_filter_set.polarization_states[indices[6]],
         this->rotation[indices[7]],
         this->mean_coupling,
         this->medium[indices[8]]
@@ -156,20 +144,6 @@ CoherentModeSet::get_detector_by_index(long long flat_index) const {
     detector->indices = indices;
 
     return detector;
-}
-
-void CoherentModeSet::validate_sequential_data(const size_t expected_size) const {
-    // Check each vector's size and throw an error with the specific vector name if sizes don't match
-    this->check_size(this->mode_numbers, expected_size, "mode_numbers");
-    this->check_size(this->sampling, expected_size, "sampling");
-    this->check_size(this->numerical_aperture, expected_size, "numerical_aperture");
-    this->check_size(this->cache_numerical_aperture, expected_size, "cache_numerical_aperture");
-
-    this->check_size(this->phi_offset, expected_size, "phi_offset");
-    this->check_size(this->gamma_offset, expected_size, "gamma_offset");
-    this->check_size(this->polarization_filter, expected_size, "polarization_filter");
-    this->check_size(this->rotation, expected_size, "rotation");
-    // this->check_size(this->medium, expected_size, "medium");
 }
 
 std::shared_ptr<BaseDetector>
@@ -181,7 +155,7 @@ CoherentModeSet::get_detector_by_index_sequential(size_t index) const {
         this->cache_numerical_aperture[index],
         this->phi_offset[index],
         this->gamma_offset[index],
-        this->polarization_filter[index],
+        this->polarization_filter_set.polarization_states[index],
         this->rotation[index],
         this->mean_coupling,
         this->medium[index]

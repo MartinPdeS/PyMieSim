@@ -16,11 +16,11 @@ from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMed
 properties = [
     [TabulatedMaterial("silver")],
     [SellmeierMaterial("fused_silica")],
-    [1.4] * ureg.RIU
+    [1.4]
 ]
 medium_properties = [
     [SellmeierMedium("water")],
-    [1.1] * ureg.RIU
+    [1.1]
 ]
 
 measures = InfiniteCylinderSet.available_measure_list

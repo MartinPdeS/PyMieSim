@@ -26,8 +26,8 @@ def get_experiment_dataframe():
     )
     scatterer = SphereSet(
         diameter=[100] * ureg.nanometer,
-        material=[1.4 ]* ureg.RIU,
-        medium=[1.1] * ureg.RIU,
+        material=[1.4 ],
+        medium=[1.1],
     )
     detector = CoherentModeSet(
         mode_number=["LP01"],

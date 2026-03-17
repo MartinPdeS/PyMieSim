@@ -29,9 +29,16 @@ public:
                 throw std::invalid_argument("Polarization angles must be finite values.");
             }
             polarization_states.emplace_back(angle);
-
         }
+    }
 
+    PolarizationSet(const PolarizationState& polarization_state) {
+        this->polarization_states.push_back(polarization_state);
+    }
+
+    size_t size() const
+    {
+        return this->polarization_states.size();
     }
 
     /**

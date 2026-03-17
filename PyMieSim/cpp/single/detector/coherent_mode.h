@@ -18,7 +18,7 @@ public:
         const double _cache_numerical_aperture,
         const double _phi_offset,
         const double _gamma_offset,
-        const double _polarization_filter,
+        const PolarizationState& _polarization_filter,
         const double _rotation,
         const bool _mean_coupling,
         const std::shared_ptr<BaseMedium> _medium
@@ -47,7 +47,7 @@ public:
         const double _cache_numerical_aperture,
         const double _phi_offset,
         const double _gamma_offset,
-        const double _polarization_filter,
+        const PolarizationState& _polarization_filter,
         const double _rotation,
         const bool _mean_coupling,
         const double _medium
@@ -121,6 +121,6 @@ private:
      * @param coupling_phi The coupling coefficient for the phi direction.
      * @param polarization_filter The polarization filter value.
      */
-    template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
+    template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi) const;
 };
 

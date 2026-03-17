@@ -82,14 +82,9 @@ PYBIND11_MODULE(scatterer_set, module) {
             "get_mapping",
             [ureg](const SphereSet& self) {
                 py::dict mapping;
-
-                py::list material_values = get_materialset_representation<MaterialSet>(self.material);
-
-                py::list medium_values = get_materialset_representation<MediumSet>(self.medium);
-
                 mapping["scatterer:diameter"] = py::cast(self.diameter) * ureg.attr("meter");
-                mapping["scatterer:material"] = material_values;
-                mapping["scatterer:medium"] = medium_values;
+                mapping["scatterer:material"] =  get_materialset_representation<MaterialSet>(self.material);
+                mapping["scatterer:medium"] = get_materialset_representation<MediumSet>(self.medium);
                 return mapping;
             },
             R"pdoc(
@@ -249,14 +244,9 @@ PYBIND11_MODULE(scatterer_set, module) {
             "get_mapping",
             [ureg](const InfiniteCylinderSet& self) {
                 py::dict mapping;
-
-                py::list material_values = get_materialset_representation<MaterialSet>(self.material);
-
-                py::list medium_values = get_materialset_representation<MediumSet>(self.medium);
-
                 mapping["scatterer:diameter"] = py::cast(self.diameter) * ureg.attr("meter");
-                mapping["scatterer:material"] = material_values;
-                mapping["scatterer:medium"] = medium_values;
+                mapping["scatterer:material"] = get_materialset_representation<MaterialSet>(self.material);
+                mapping["scatterer:medium"] = get_materialset_representation<MediumSet>(self.medium);
                 return mapping;
             },
             R"pdoc(
@@ -413,16 +403,11 @@ PYBIND11_MODULE(scatterer_set, module) {
             "get_mapping",
             [ureg](const CoreShellSet& self) {
                 py::dict mapping;
-
-                py::list core_material_values = get_materialset_representation<MaterialSet>(self.core_material);
-                py::list shell_material_values = get_materialset_representation<MaterialSet>(self.shell_material);
-                py::list medium_values = get_materialset_representation<MediumSet>(self.medium);
-
                 mapping["scatterer:core_diameter"] = py::cast(self.core_diameter) * ureg.attr("meter");
                 mapping["scatterer:shell_thickness"] = py::cast(self.shell_thickness) * ureg.attr("meter");
-                mapping["scatterer:core_material"] = core_material_values;
-                mapping["scatterer:shell_material"] = shell_material_values;
-                mapping["scatterer:medium"] = medium_values;
+                mapping["scatterer:core_material"] = get_materialset_representation<MaterialSet>(self.core_material);
+                mapping["scatterer:shell_material"] = get_materialset_representation<MaterialSet>(self.shell_material);
+                mapping["scatterer:medium"] = get_materialset_representation<MediumSet>(self.medium);
                 return mapping;
             },
             R"pdoc(

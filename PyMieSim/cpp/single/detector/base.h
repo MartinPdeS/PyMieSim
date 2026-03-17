@@ -27,7 +27,7 @@ public:
     double cache_numerical_aperture = 0.0;
     double phi_offset = 0.0;
     double gamma_offset = 0.0;
-    double polarization_filter = 0.0;
+    PolarizationState polarization_filter;
     std::shared_ptr<BaseMedium> medium;
     bool mean_coupling = true;
 
@@ -56,7 +56,7 @@ public:
         const double _cache_numerical_aperture,
         const double _phi_offset,
         const double _gamma_offset,
-        const double _polarization_filter,
+        const PolarizationState polarization_filter,
         std::shared_ptr<BaseMedium> _medium,
         const bool _mean_coupling)
     :   sampling(_sampling),
@@ -64,7 +64,7 @@ public:
         cache_numerical_aperture(_cache_numerical_aperture),
         phi_offset(_phi_offset),
         gamma_offset(_gamma_offset),
-        polarization_filter(_polarization_filter),
+        polarization_filter(polarization_filter),
         medium(std::move(_medium)),
         mean_coupling(_mean_coupling)
     {}
@@ -162,7 +162,7 @@ public:
         printf("  Cache Numerical Aperture: %.*f\n", precision, this->cache_numerical_aperture);
         printf("  Phi Offset (radians): %.*f\n", precision, this->phi_offset);
         printf("  Gamma Offset (radians): %.*f\n", precision, this->gamma_offset);
-        printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter);
+        printf("  Polarization Filter: %.*f\n", precision, this->polarization_filter.angle);
     }
 
 private:

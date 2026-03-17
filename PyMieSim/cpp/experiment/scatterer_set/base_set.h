@@ -18,7 +18,6 @@ public:
     ScattererSet() = default;
     ScattererSet(const bool is_sequential) : BaseSet(is_sequential) {}
 
-    virtual void validate_sequential_data(const size_t expected_size) const = 0;
     virtual std::shared_ptr<BaseScatterer> get_scatterer_by_index_sequential(const size_t index) const = 0;
     virtual std::shared_ptr<BaseScatterer> get_scatterer_by_index(const size_t flat_index) const = 0;
 

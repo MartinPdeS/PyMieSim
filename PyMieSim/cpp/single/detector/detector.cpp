@@ -1,6 +1,7 @@
 #include <single/detector/photodiode.h>
 #include <single/detector/coherent_mode.h>
 #include <single/detector/integrating_sphere.h>
+#include <single/utils.h>
 
 
 std::vector<double> BaseDetector::get_poynting_field(
@@ -257,14 +258,15 @@ void Photodiode::apply_scalar_field(std::vector<complex128> &field0, std::vector
 }
 
 template <typename T> inline
-void Photodiode::apply_polarization_filter(T &coupling_theta, T &coupling_phi, double polarization_filter) const
+void Photodiode::apply_polarization_filter(T &coupling_theta, T &coupling_phi) const
 {
-    if (std::isnan(polarization_filter))
+    if (this->polarization_filter.is_empty)
         return;
 
     double
-        theta_polarization_filtering  = pow( sin(polarization_filter), 2 ),
-        phi_polarization_filtering    = pow( cos(polarization_filter), 2 );
+        phi_polarization_filtering    = std::norm(this->polarization_filter.jones_vector[0]),
+        theta_polarization_filtering  = std::norm(this->polarization_filter.jones_vector[1]);
+
 
     coupling_theta *= theta_polarization_filtering;
     coupling_phi *= phi_polarization_filtering;
@@ -319,7 +321,7 @@ double Photodiode::get_coupling(
     double coupling_theta = this->get_norm2_squared(theta_field);
     double coupling_phi   = this->get_norm2_squared(phi_field);
 
-    this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
+    this->apply_polarization_filter(coupling_theta, coupling_phi);
 
     return (
         scatterer->medium->get_refractive_index() *
@@ -465,15 +467,14 @@ void CoherentMode::apply_scalar_field(std::vector<complex128> &field0, std::vect
 }
 
 template <typename T> inline
-void CoherentMode::apply_polarization_filter(T &coupling_theta, T &coupling_phi, double polarization_filter) const
+void CoherentMode::apply_polarization_filter(T &coupling_theta, T &coupling_phi) const
 {
-
-    if (std::isnan(this->polarization_filter))
+    if (this->polarization_filter.is_empty)
         return;
 
     double
-        theta_polarization_filtering  = pow( sin(polarization_filter), 2 ),
-        phi_polarization_filtering    = pow( cos(polarization_filter), 2 );
+        phi_polarization_filtering    = std::norm(this->polarization_filter.jones_vector[0]),
+        theta_polarization_filtering  = std::norm(this->polarization_filter.jones_vector[1]);
 
     coupling_theta *= theta_polarization_filtering;
     coupling_phi *= phi_polarization_filtering;
@@ -534,7 +535,7 @@ double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer,
     double coupling_theta = this->get_norm2_squared(horizontal_projection);
     double coupling_phi   = this->get_norm2_squared(vertical_projection);
 
-    this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
+    this->apply_polarization_filter(coupling_theta, coupling_phi);
 
     return (
         0.5 *
@@ -558,7 +559,7 @@ double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer
     double coupling_theta = this->get_norm1_squared(horizontal_projection);
     double coupling_phi   = this->get_norm1_squared(vertical_projection);
 
-    this->apply_polarization_filter(coupling_theta, coupling_phi, this->polarization_filter);
+    this->apply_polarization_filter(coupling_theta, coupling_phi);
 
     return (
         scatterer->medium->get_refractive_index() *
@@ -637,9 +638,10 @@ double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer,
         coupling += std::norm(theta_field[i]) + std::norm(phi_field[i]);
     }
 
-    if (!std::isnan(this->polarization_filter)) {
-        const double theta_w = std::pow(std::sin(this->polarization_filter), 2);
-        const double phi_w   = std::pow(std::cos(this->polarization_filter), 2);
+    if (!this->polarization_filter.is_empty) {
+        printf("Applying filter");
+        const double phi_w   = std::norm(this->polarization_filter.jones_vector[0]);
+        const double theta_w = std::norm(this->polarization_filter.jones_vector[1]);
 
         double sum_theta = 0.0;
         double sum_phi   = 0.0;
@@ -649,6 +651,8 @@ double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer,
         }
         coupling = theta_w * sum_theta + phi_w * sum_phi;
     }
+
+    printf("Raw coupling (before interface and constants): %e\n", coupling);
     return (
         scatterer->medium->get_refractive_index() *
         Constants::EPSILON0 *

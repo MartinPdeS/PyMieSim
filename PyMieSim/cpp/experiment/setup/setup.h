@@ -227,8 +227,7 @@ class Setup
 
             this->array_shape = {this->source_set->wavelength.size()};
             size_t full_size = this->source_set->wavelength.size();
-            this->scatterer_set->validate_sequential_data(full_size);
-            this->source_set->validate_sequential_data(full_size);
+
             debug_printf("get_scatterer_data_sequential: full_size = %zu\n", full_size);
 
             std::vector<double> output_array(full_size);

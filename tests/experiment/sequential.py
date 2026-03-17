@@ -46,7 +46,6 @@ def test_valid_experiment(mock_show):
         mode_number="LP01",
         rotation=0 * ureg.degree,
         numerical_aperture=[0.2],
-        polarization_filter=np.nan * ureg.degree,
         medium=1.0,
         gamma_offset=0 * ureg.degree,
         phi_offset=0 * ureg.degree,
@@ -70,7 +69,7 @@ def test_invalid_medium_refractive_index():
 
     When medium_refractive_index is defined using Material.water, the configuration should be rejected.
     """
-    with pytest.raises((AttributeError, RuntimeError)):
+    with pytest.raises((AttributeError, RuntimeError, ValueError)):
         SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             material=1.4,
@@ -85,7 +84,7 @@ def test_invalid_refractive_index():
 
     When refractive_index is defined using Material.water, the configuration should be rejected.
     """
-    with pytest.raises((AttributeError, RuntimeError)):
+    with pytest.raises((AttributeError, RuntimeError, ValueError)):
         SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             material=SellmeierMaterial("water"),  # This should trigger an error

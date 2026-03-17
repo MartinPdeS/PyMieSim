@@ -33,7 +33,7 @@ def test_gaussian_rejects_invalid_optical_power_units():
         )
 
 def test_gaussian_rejects_invalid_polarization_type():
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         GaussianSet(
             wavelength=100 * ureg.nanometer,
             polarization=0,  # must carry degree
@@ -54,7 +54,7 @@ def test_sphere_rejects_invalid_diameter_type():
     with pytest.raises((ValueError, RuntimeError)):
         SphereSet(
             diameter=100,  # must carry length units
-            material=1.5 * ureg.RIU,
+            material=1.5,
             medium=Material.water,
         )
 
@@ -69,11 +69,11 @@ def test_sphere_rejects_invalid_refractive_index_type():
 
 
 def test_sphere_rejects_invalid_medium_refractive_index_type():
-    with pytest.raises((RuntimeError, AttributeError, TypeError)):
+    with pytest.raises(TypeError):
         SphereSet(
             diameter=100 * ureg.nanometer,
-            material=1.5 * ureg.RIU,
-            medium=1.0,  # must be RIU or a Material (per your API)
+            material=1.5,
+            medium=1.0 * ureg.RIU,  # must be RIU or a Material (per your API)
         )
 
 

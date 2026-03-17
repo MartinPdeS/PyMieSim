@@ -6,7 +6,7 @@
 #include <single/detector/photodiode.h>
 #include <single/detector/coherent_mode.h>
 #include <single/detector/integrating_sphere.h>
-
+#include <single/utils.h>
 
 namespace py = pybind11;
 
@@ -245,7 +245,7 @@ PYBIND11_MODULE(detector, module) {
         .def_property_readonly(
             "polarization_filter",
             [ureg](BaseDetector& self) {
-                return py::float_(self.polarization_filter) * ureg.attr("radian");
+                return py::cast(self.polarization_filter);
             },
             R"pbdoc(
             Polarization filter setting.
@@ -313,19 +313,9 @@ PYBIND11_MODULE(detector, module) {
                     const py::object& medium,
                     const py::object& polarization_filter,
                     const py::object& cache_numerical_aperture,
-                    std::size_t sampling
+                    const std::size_t sampling
                 ) {
                     double numerical_aperture_value = numerical_aperture.cast<double>();
-                    double phi_offset_value = phi_offset.attr("to")("radian").attr("magnitude").cast<double>();
-                    double gamma_offset_value = gamma_offset.attr("to")("radian").attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.cast<double>();
-
-                    double polarization_filter_value;
-                    if (polarization_filter.is(py::none())) {
-                        polarization_filter_value = std::nan("");
-                    } else {
-                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
-                    }
 
                     std::shared_ptr<BaseMedium> parsed_medium;
                     if (medium.is(py::none()))
@@ -333,23 +323,13 @@ PYBIND11_MODULE(detector, module) {
                     else
                         parsed_medium = parse_medium_object(medium, ureg);
 
-                    if (numerical_aperture_value < 0.0) {
-                        throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
-                    }
-
-                    if (numerical_aperture_value > 0.342) {
-                        std::printf(
-                            "Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n"
-                        );
-                    }
-
                     return std::make_shared<Photodiode>(
                         sampling,
                         numerical_aperture_value,
-                        cache_numerical_aperture_value,
-                        phi_offset_value,
-                        gamma_offset_value,
-                        polarization_filter_value,
+                        cache_numerical_aperture.cast<double>(),
+                        phi_offset.attr("to")("radian").attr("magnitude").cast<double>(),
+                        gamma_offset.attr("to")("radian").attr("magnitude").cast<double>(),
+                        get_polarization_filter_state(polarization_filter),
                         std::move(parsed_medium)
                     );
                 }
@@ -358,7 +338,7 @@ PYBIND11_MODULE(detector, module) {
             py::arg("phi_offset"),
             py::arg("gamma_offset"),
             py::arg("medium") = py::none(),
-            py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = 200,
             R"pbdoc(
@@ -458,30 +438,18 @@ PYBIND11_MODULE(detector, module) {
         .def(
             py::init(
                 [ureg](
-                    std::string mode_number,
-                    py::object numerical_aperture,
-                    py::object phi_offset,
-                    py::object gamma_offset,
-                    py::object rotation,
-                    py::object medium,
-                    py::object cache_numerical_aperture,
-                    py::object polarization_filter,
-                    py::object mean_coupling,
-                    std::size_t sampling
+                    const std::string& mode_number,
+                    const py::object& numerical_aperture,
+                    const py::object& phi_offset,
+                    const py::object& gamma_offset,
+                    const py::object& rotation,
+                    const py::object& medium,
+                    const py::object& cache_numerical_aperture,
+                    const py::object& polarization_filter,
+                    const py::object& mean_coupling,
+                    const std::size_t& sampling
                 ) {
                     double numerical_aperture_value = numerical_aperture.cast<double>();
-                    double phi_offset_value = phi_offset.attr("to")("radian").attr("magnitude").cast<double>();
-                    double gamma_offset_value = gamma_offset.attr("to")("radian").attr("magnitude").cast<double>();
-                    double rotation_value = rotation.attr("to")("radian").attr("magnitude").cast<double>();
-                    double cache_numerical_aperture_value = cache_numerical_aperture.cast<double>();
-                    bool mean_coupling_value = mean_coupling.cast<bool>();
-
-                    double polarization_filter_value;
-                    if (polarization_filter.is(py::none())) {
-                        polarization_filter_value = std::nan("");
-                    } else {
-                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
-                    }
 
                     std::shared_ptr<BaseMedium> parsed_medium;
                     if (medium.is(py::none()))
@@ -504,12 +472,12 @@ PYBIND11_MODULE(detector, module) {
                         mode_number,
                         sampling,
                         numerical_aperture_value,
-                        cache_numerical_aperture_value,
-                        phi_offset_value,
-                        gamma_offset_value,
-                        polarization_filter_value,
-                        rotation_value,
-                        mean_coupling_value,
+                        cache_numerical_aperture.cast<double>(),
+                        phi_offset.attr("to")("radian").attr("magnitude").cast<double>(),
+                        gamma_offset.attr("to")("radian").attr("magnitude").cast<double>(),
+                        get_polarization_filter_state(polarization_filter),
+                        rotation.attr("to")("radian").attr("magnitude").cast<double>(),
+                        mean_coupling.cast<bool>(),
                         std::move(parsed_medium)
                     );
                 }
@@ -521,7 +489,7 @@ PYBIND11_MODULE(detector, module) {
             py::arg("rotation"),
             py::arg("medium") = py::none(),
             py::arg("cache_numerical_aperture") = py::float_(0.0),
-            py::arg("polarization_filter") = py::float_(std::nan("")) * ureg.attr("degree"),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
             R"pbdoc(
@@ -646,23 +614,16 @@ PYBIND11_MODULE(detector, module) {
         .def(
             py::init(
                 [](
-                    py::object polarization_filter,
-                    std::size_t sampling
+                    const py::object& polarization_filter,
+                    const std::size_t& sampling
                 ) {
-                    double polarization_filter_value;
-                    if (polarization_filter.is(py::none())) {
-                        polarization_filter_value = std::nan("");
-                    } else {
-                        polarization_filter_value = polarization_filter.attr("to")("radian").attr("magnitude").cast<double>();
-                    }
-
                     return std::make_shared<IntegratingSphere>(
                         sampling,
-                        polarization_filter_value
+                        get_polarization_filter_state(polarization_filter)
                     );
                 }
             ),
-            py::arg("polarization_filter") = py::none(),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("sampling") = 400,
             R"pbdoc(
             Construct an IntegratingSphere detector.

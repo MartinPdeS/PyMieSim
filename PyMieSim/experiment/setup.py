@@ -14,7 +14,6 @@ from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.material_set import MaterialSet
 from PyMieSim.material import ConstantMaterial, ConstantMedium
-import PyMieSim
 
 
 
@@ -183,31 +182,10 @@ class Setup(SETUP):
                 continue
 
             # ----------------------------------------------------------
-            # Material sets
-            # ----------------------------------------------------------
-            if isinstance(param_values, MaterialSet):
-                values[key] = [repr(material) if not isinstance(material, (ConstantMaterial, ConstantMedium)) else material for material in param_values]
-                continue
-
-            # ----------------------------------------------------------
-            # Polarization sets
-            # ----------------------------------------------------------
-            if isinstance(param_values, PolarizationSet):
-                values[key] = [repr(polarization) for polarization in param_values]
-                continue
-
-            # ----------------------------------------------------------
             # Standard iterable parameters
             # ----------------------------------------------------------
             if isinstance(param_values, (list, tuple, np.ndarray)):
                 values[key] = list(param_values)
-                continue
-
-            # ----------------------------------------------------------
-            # Generic iterable fallback for custom pybind11 containers
-            # ----------------------------------------------------------
-            if hasattr(param_values, "__len__") and hasattr(param_values, "__getitem__"):
-                values[key] = [repr(param_values[index]) for index in range(len(param_values))]
                 continue
 
             # ----------------------------------------------------------
@@ -252,14 +230,16 @@ class Setup(SETUP):
 
             if len(axis_values) != axis_size:
                 raise ValueError(
-                    f"Parameter '{parameter_name}' has length {len(axis_values)} "
-                    f"but corresponding setup axis has size {axis_size}."
+                    f"Parameter '{parameter_name}' has length {len(axis_values)} but corresponding setup axis has size {axis_size}."
                 )
 
             if drop_unique_level and axis_size == 1:
                 continue
 
-            reshaped = np.asarray(axis_values, dtype=object).reshape(
+            axis_object_array = np.empty(axis_size, dtype=object)
+            axis_object_array[:] = list(axis_values)
+
+            reshaped = axis_object_array.reshape(
                 [axis_size if i == axis_index else 1 for i in range(len(self.array_shape))]
             )
 
