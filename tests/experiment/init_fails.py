@@ -69,11 +69,11 @@ def test_sphere_rejects_invalid_refractive_index_type():
 
 
 def test_sphere_rejects_invalid_medium_refractive_index_type():
-    with pytest.raises(TypeError):
+    with pytest.raises(RuntimeError):
         SphereSet(
             diameter=100 * ureg.nanometer,
             material=1.5,
-            medium=1.0 * ureg.RIU,  # must be RIU or a Material (per your API)
+            medium=1.0 * ureg.RIU,  # must be RIU or a Material
         )
 
 
