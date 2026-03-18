@@ -16,5 +16,5 @@ Representation
 .. autoclass:: PyMieSim.single.representations.Footprint
     :inherited-members:
 
-.. autoclass:: PyMieSim.single.representations.NeareFields
+.. autoclass:: PyMieSim.single.representations.NearFields
     :inherited-members:

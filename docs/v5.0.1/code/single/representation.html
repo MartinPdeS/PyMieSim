@@ -929,6 +929,117 @@ offset distances in micrometers, and the colormap depicting the mapping values.<
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.NearFields">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NearFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/nearfields.html#NearFields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.NearFields" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Near field visualization for a scatterer.</p>
+<p>This class samples fields over an arbitrary plane defined by an origin and a normal.
+All coordinates are kept as unit aware objects because the C++ wrapper accepts units.</p>
+<section id="important-concept">
+<h2>Important concept<a class="headerlink" href="#important-concept" title="Link to this heading">#</a></h2>
+<p>The plot is parameterized by two in plane coordinates (u, v):</p>
+<blockquote>
+<div><p>r(u, v) = r0 + u * u_hat + v * v_hat</p>
+</div></blockquote>
+<p>The ranges u_range and v_range define the sampled extent in that plane.
+These replace the old idea of x_range and y_range, because the plane is not necessarily a z slice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param scatterer<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Object exposing compute_total_nearfields, compute_incident_nearfields, compute_scattered_nearfields.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.NearFields.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*field_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type='scattered'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_origin=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_normal=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent_scale=2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figure_size=(6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">6)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/representations/nearfields.html#NearFields.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.NearFields.plot" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Plot near fields over a specified plane.</p>
+<dl class="simple">
+<dt>field_components</dt><dd><p>List of field components to plot, for example Ex:real, <a href="#id6"><span class="problematic" id="id7">|E|</span></a>:abs.</p>
+</dd>
+<dt>type</dt><dd><p>Type of field to compute: total, incident, or scattered.</p>
+</dd>
+<dt>sampling</dt><dd><p>Number of points along each in plane direction (u and v).</p>
+</dd>
+<dt>plane_origin</dt><dd><p>Origin of the sampling plane in 3D space. If None, defaults to (0, 0, z).</p>
+</dd>
+<dt>plane_normal</dt><dd><p>Normal vector of the sampling plane. If None, defaults to (0, 0, 1).</p>
+</dd>
+<dt>u_range</dt><dd><p>Range of plane coordinate u along u_hat. If None, inferred from scatterer diameter and extent_scale.</p>
+</dd>
+<dt>v_range</dt><dd><p>Range of plane coordinate v along v_hat. If None, inferred from scatterer diameter and extent_scale.</p>
+</dd>
+<dt>extent_scale</dt><dd><p>Scaling factor applied to the default extent derived from the scatterer radius.</p>
+</dd>
+<dt>colormap</dt><dd><p>Colormap to use for plotting.</p>
+</dd>
+<dt>figure_size</dt><dd><p>Size of the matplotlib figure.</p>
+</dd>
+<dt>show_scatterer_outline</dt><dd><p>If True, draw the intersection circle of the sphere with the plane.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id3">
+<h3>Extra Parameters<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id4"><span class="problematic" id="id5">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_components</strong> (<em>str</em>)</p></li>
+<li><p><strong>type</strong> (<em>str</em>)</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>)</p></li>
+<li><p><strong>plane_origin</strong> (<em>Sequence</em><em>[</em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>plane_normal</strong> (<em>Sequence</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>u_range</strong> (<em>Tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>v_range</strong> (<em>Tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>extent_scale</strong> (<em>float</em>)</p></li>
+<li><p><strong>colormap</strong> (<em>str</em>)</p></li>
+<li><p><strong>figure_size</strong> (<em>tuple</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>setup</strong> (<em>object</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -976,6 +1087,10 @@ offset distances in micrometers, and the colormap depicting the mapping values.<
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.compute_footprint"><code class="docutils literal notranslate"><span class="pre">Footprint.compute_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.get_fourier_component"><code class="docutils literal notranslate"><span class="pre">Footprint.get_fourier_component()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.plot"><code class="docutils literal notranslate"><span class="pre">Footprint.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.NearFields"><code class="docutils literal notranslate"><span class="pre">NearFields</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.NearFields.plot"><code class="docutils literal notranslate"><span class="pre">NearFields.plot()</span></code></a></li>
 </ul>
 </li>
 </ul>
