@@ -109,7 +109,7 @@ def test_sequential_vs_standard_detector():
         numerical_aperture=NA,
         cache_numerical_aperture=CACHE_NA,
         sampling=SAMPLING,
-        polarization_filter=0 * ureg.degree
+        polarization_filter=0 * ureg.degree,
     )
 
     setup_standard = Setup(
@@ -146,7 +146,7 @@ def test_sequential_vs_standard_detector():
         cache_numerical_aperture=ONES * CACHE_NA,
         sampling=[SAMPLING] * SIZE,
         polarization_filter=ONES * POLARIZATION_FILTER,
-        medium=ONES * MEDIUM_PROPERTY,
+        medium=ONES,
     )
 
     setup_sequential = Setup(

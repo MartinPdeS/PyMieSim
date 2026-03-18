@@ -389,7 +389,11 @@ namespace Material {
                 );
             }
 
-            if (py::isinstance<py::list>(material_object) || py::isinstance<py::tuple>(material_object)) {
+            if (
+                py::isinstance<py::list>(material_object) ||
+                py::isinstance<py::tuple>(material_object) ||
+                py::isinstance<py::array>(material_object)
+            ) {
                 py::sequence material_sequence = py::reinterpret_borrow<py::sequence>(material_object);
 
                 if (py::len(material_sequence) == 0) {
@@ -449,7 +453,6 @@ namespace Material {
             );
         }
 
-
         template <typename MaterialSetType, typename RefractiveIndexType, typename BaseClass, typename ConstantClass>
         MaterialSetType create_material_set_from_pyobject(
             const py::object& material_object,
@@ -481,7 +484,11 @@ namespace Material {
                 );
             }
 
-            if (py::isinstance<py::sequence>(material_object) && !py::isinstance<py::str>(material_object)) {
+            if (
+                py::isinstance<py::list>(material_object) ||
+                py::isinstance<py::tuple>(material_object) ||
+                py::isinstance<py::array>(material_object)
+            ) {
                 py::sequence material_sequence = py::reinterpret_borrow<py::sequence>(material_object);
 
                 std::vector<std::shared_ptr<BaseClass>> materials;
@@ -523,7 +530,6 @@ namespace Material {
                 "a Material instance, or a sequence mixing refractive indices and Material instances."
             );
         }
-
 
     }
 }
