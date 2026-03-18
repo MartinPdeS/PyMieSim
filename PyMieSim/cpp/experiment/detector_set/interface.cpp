@@ -59,8 +59,8 @@ PYBIND11_MODULE(detector_set, module) {
                         Casting::cast_py_to_vector<double>(cache_numerical_aperture),
                         Casting::cast_py_to_vector<double>(phi_offset, "radian"),
                         Casting::cast_py_to_vector<double>(gamma_offset, "radian"),
-                        Casting::cast_py_to_polarization_set(polarization_filter),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                        Casting::Polarization::cast_py_to_polarization_set(polarization_filter),
+                        Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false
                     );
                 }
@@ -70,7 +70,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("gamma_offset"),
             py::arg("sampling") = py::int_(200),
             py::arg("cache_numerical_aperture") = py::float_(0.0),
-            py::arg("polarization_filter") = py::none(),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("medium") = ConstantMedium(1.0),
             R"pdoc(
                 Initialize a photodiode detector set.
@@ -224,14 +224,27 @@ PYBIND11_MODULE(detector_set, module) {
                         "radian"
                     );
 
+                PolarizationSet polarization_filter_set =
+                    Casting::Polarization::cast_py_to_polarization_set(
+                        polarization_filter,
+                        target_size
+                );
+
+                MediumSet medium_set =
+                    Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(
+                        medium,
+                        "medium",
+                        target_size
+                );
+
                 return std::make_shared<PhotodiodeSet>(
                     sampling_value,
                     numerical_aperture_value,
                     cache_numerical_aperture_value,
                     phi_offset_value,
                     gamma_offset_value,
-                    Casting::cast_py_to_polarization_set(polarization_filter, target_size),
-                    Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                    polarization_filter_set,
+                    medium_set,
                     true
                 );
             },
@@ -241,7 +254,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("gamma_offset"),
             py::arg("sampling") = py::int_(200),
             py::arg("cache_numerical_aperture") = py::float_(0.0),
-            py::arg("polarization_filter") = py::none(),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("medium") = ConstantMedium(1.0),
             R"pdoc(
                 Build a sequential photodiode detector set.
@@ -316,9 +329,9 @@ PYBIND11_MODULE(detector_set, module) {
                         Casting::cast_py_to_vector<double>(cache_numerical_aperture),
                         Casting::cast_py_to_vector<double>(phi_offset, "radian"),
                         Casting::cast_py_to_vector<double>(gamma_offset, "radian"),
-                        Casting::cast_py_to_polarization_set(polarization_filter),
+                        Casting::Polarization::cast_py_to_polarization_set(polarization_filter),
                         Casting::cast_py_to_vector<double>(rotation, "radian"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                        Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         mean_coupling,
                         false
                     );
@@ -331,7 +344,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("rotation"),
             py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = py::int_(200),
-            py::arg("polarization_filter") = py::none(),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("medium") = ConstantMedium(1.0),
             py::arg("mean_coupling") = false,
             R"pdoc(
@@ -563,7 +576,17 @@ PYBIND11_MODULE(detector_set, module) {
                     );
 
                 PolarizationSet polarization_filter_set =
-                    Casting::cast_py_to_polarization_set(polarization_filter, target_size);
+                    Casting::Polarization::cast_py_to_polarization_set(
+                        polarization_filter,
+                        target_size
+                );
+
+                MediumSet medium_set =
+                    Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(
+                        medium,
+                        "medium",
+                        target_size
+                );
 
                 return std::make_shared<CoherentModeSet>(
                     mode_number_values,
@@ -574,7 +597,7 @@ PYBIND11_MODULE(detector_set, module) {
                     gamma_offset_value,
                     polarization_filter_set,
                     rotation_value,
-                    Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                    medium_set,
                     mean_coupling,
                     true
                 );
@@ -587,7 +610,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("rotation"),
             py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = py::int_(200),
-            py::arg("polarization_filter") = py::none(),
+            py::arg("polarization_filter") = PolarizationState(),
             py::arg("medium") = ConstantMedium(1.0),
             py::arg("mean_coupling") = false,
             R"pdoc(

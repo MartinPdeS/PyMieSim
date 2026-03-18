@@ -26,17 +26,11 @@ PYBIND11_MODULE(source_set, module) {
                     const py::object& numerical_aperture,
                     const py::object& optical_power
                 ) {
-                    std::vector<double> wavelength_value = Casting::cast_py_to_vector<double>(wavelength, "meter");
-
-                    std::vector<double> numerical_aperture_values = Casting::cast_py_to_vector<double>(numerical_aperture);
-
-                    std::vector<double> optical_power_values = Casting::cast_py_to_vector<double>(optical_power, "watt");
-
                     return std::make_shared<GaussianSourceSet>(
-                        wavelength_value,
-                        Casting::cast_py_to_polarization_set(polarization),
-                        numerical_aperture_values,
-                        optical_power_values,
+                        Casting::cast_py_to_vector<double>(wavelength, "meter"),
+                        Casting::Polarization::cast_py_to_polarization_set(polarization),
+                        Casting::cast_py_to_vector<double>(numerical_aperture),
+                        Casting::cast_py_to_vector<double>(optical_power, "watt"),
                         false  // is_sequential
                     );
                 }
@@ -132,15 +126,21 @@ PYBIND11_MODULE(source_set, module) {
                         "watt"
                     );
 
+                PolarizationSet polarization_set =
+                    Casting::Polarization::cast_py_to_polarization_set(
+                        polarization,
+                        target_size
+                    );
+
                 return std::make_shared<GaussianSourceSet>(
                     wavelength_value,
-                    Casting::cast_py_to_polarization_set(polarization, target_size),
+                    polarization_set,
                     numerical_aperture_values,
                     optical_power_values,
                     true // is_sequential
                 );
             },
-            py::arg("target_size") = py::none(),
+            py::arg("target_size"),
             py::arg("wavelength"),
             py::arg("polarization"),
             py::arg("numerical_aperture"),
@@ -177,16 +177,10 @@ PYBIND11_MODULE(source_set, module) {
                     const py::object& polarization,
                     const py::object& amplitude
                 ) {
-                    std::vector<double> wavelength_value = \
-                        Casting::cast_py_to_vector<double>(wavelength, "meter");
-
-                    std::vector<double> amplitude_values = \
-                        Casting::cast_py_to_vector<double>(amplitude, "volt/meter");
-
                     return std::make_shared<PlaneWaveSourceSet>(
-                        wavelength_value,
-                        Casting::cast_py_to_polarization_set(polarization),
-                        amplitude_values,
+                        Casting::cast_py_to_vector<double>(wavelength, "meter"),
+                        Casting::Polarization::cast_py_to_polarization_set(polarization),
+                        Casting::cast_py_to_vector<double>(amplitude, "volt/meter"),
                         false  // is_sequential = false
                     );
                 }
@@ -241,7 +235,7 @@ PYBIND11_MODULE(source_set, module) {
         )
         .def_static(
             "build_sequential",
-            [ureg](
+            [](
                 const size_t& target_size,
                 const py::object& wavelength,
                 const py::object& polarization,
@@ -263,14 +257,20 @@ PYBIND11_MODULE(source_set, module) {
                         "volt/meter"
                     );
 
+                PolarizationSet polarization_set =
+                    Casting::Polarization::cast_py_to_polarization_set(
+                        polarization,
+                        target_size
+                    );
+
                 return std::make_shared<PlaneWaveSourceSet>(
                     wavelength_value,
-                    Casting::cast_py_to_polarization_set(polarization, target_size),
+                    polarization_set,
                     amplitude_values,
                     true  // is_sequential = true
                 );
             },
-            py::arg("total_size") = py::none(),
+            py::arg("target_size"),
             py::arg("wavelength"),
             py::arg("polarization"),
             py::arg("amplitude"),
@@ -279,12 +279,12 @@ PYBIND11_MODULE(source_set, module) {
 
                 Parameters
                 ----------
-                total_size : int or None
-                    Target size for broadcasting. If None, uses the maximum size among wavelength and amplitude.
+                target_size : int
+                    Target size for broadcasting.
                 wavelength : Quantity or array-like Quantity
-                    Wavelength(s). Scalars or length 1 arrays broadcast to total_size.
+                    Wavelength(s). Scalars or length 1 arrays broadcast to target_size.
                 polarization : PolarizationSet
-                    Must have number_of_states equal to 1 or total_size.
+                    Must have number_of_states equal to 1 or target_size.
                 amplitude : Quantity or array-like Quantity
                     Amplitude(s). Scalars or length 1 arrays broadcast to total_size.
 

@@ -1,12 +1,13 @@
 #include <pybind11/pybind11.h>
 #include <pint/pint.h>
-#include <utils/numpy_interface.h>
-#include <single/scatterer/utils.h>
 
+#include <utils/numpy_interface.h>
+#include <utils/casting.h>
+
+#include <single/scatterer/utils.h>
 #include <single/detector/photodiode.h>
 #include <single/detector/coherent_mode.h>
 #include <single/detector/integrating_sphere.h>
-#include <single/utils.h>
 
 namespace py = pybind11;
 
@@ -329,7 +330,7 @@ PYBIND11_MODULE(detector, module) {
                         cache_numerical_aperture.cast<double>(),
                         phi_offset.attr("to")("radian").attr("magnitude").cast<double>(),
                         gamma_offset.attr("to")("radian").attr("magnitude").cast<double>(),
-                        get_polarization_filter_state(polarization_filter),
+                        Casting::Polarization::cast_py_to_polarization_state(polarization_filter),
                         std::move(parsed_medium)
                     );
                 }
@@ -475,7 +476,7 @@ PYBIND11_MODULE(detector, module) {
                         cache_numerical_aperture.cast<double>(),
                         phi_offset.attr("to")("radian").attr("magnitude").cast<double>(),
                         gamma_offset.attr("to")("radian").attr("magnitude").cast<double>(),
-                        get_polarization_filter_state(polarization_filter),
+                        Casting::Polarization::cast_py_to_polarization_state(polarization_filter),
                         rotation.attr("to")("radian").attr("magnitude").cast<double>(),
                         mean_coupling.cast<bool>(),
                         std::move(parsed_medium)
@@ -619,7 +620,7 @@ PYBIND11_MODULE(detector, module) {
                 ) {
                     return std::make_shared<IntegratingSphere>(
                         sampling,
-                        get_polarization_filter_state(polarization_filter)
+                        Casting::Polarization::cast_py_to_polarization_state(polarization_filter)
                     );
                 }
             ),

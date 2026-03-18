@@ -13,9 +13,8 @@
 
 #include <pint/pint.h>
 #include <utils/numpy_interface.h>
-#include "./source.h"
-#include <single/utils.h>
 #include <utils/casting.h>
+#include "./source.h"
 
 namespace py = pybind11;
 
@@ -189,7 +188,7 @@ PYBIND11_MODULE(source, module)
             ) {
                 return std::make_shared<Planewave>(
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
-                    Casting::cast_py_to_polarization_state(polarization),
+                    Casting::Polarization::cast_py_to_polarization_state(polarization),
                     amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>()
                 );
             }),
@@ -250,7 +249,7 @@ PYBIND11_MODULE(source, module)
             ) {
                 return std::make_shared<Gaussian>(
                     wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
-                    Casting::cast_py_to_polarization_state(polarization),
+                    Casting::Polarization::cast_py_to_polarization_state(polarization),
                     numerical_aperture.cast<double>(),
                     optical_power.attr("to")("watt").attr("magnitude").cast<double>()
                 );

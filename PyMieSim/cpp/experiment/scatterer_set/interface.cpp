@@ -33,8 +33,8 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
                     return std::make_shared<SphereSet>(
                         Casting::cast_py_to_vector<double>(diameter, "meter"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(material, "material"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                        Casting::Material::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(material, "material"),
+                        Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false // is_sequential = false
                     );
                 }
@@ -195,8 +195,8 @@ PYBIND11_MODULE(scatterer_set, module) {
                 ) {
                     return std::make_shared<InfiniteCylinderSet>(
                         Casting::cast_py_to_vector<double>(diameter, "meter"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(material, "material"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                        Casting::Material::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(material, "material"),
+                        Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false  // is_sequential = false
                     );
                 }
@@ -347,9 +347,9 @@ PYBIND11_MODULE(scatterer_set, module) {
                     return std::make_shared<CoreShellSet>(
                         Casting::cast_py_to_vector<double>(core_diameter, "meter"),
                         Casting::cast_py_to_vector<double>(shell_thickness, "meter"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(core_material, "core_material"),
-                        Casting::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(shell_material, "shell_material"),
-                        Casting::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                        Casting::Material::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(core_material, "core_material"),
+                        Casting::Material::create_material_set_from_pyobject<MaterialSet, complex128, BaseMaterial, ConstantMaterial>(shell_material, "shell_material"),
+                        Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
                         false  // is_sequential = false
                     );
                 }
