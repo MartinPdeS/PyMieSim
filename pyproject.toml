@@ -61,7 +61,6 @@ dependencies = [
     "numpy ==2.2.6",
     "matplotlib ==3.10.8",
     "pydantic >=2.9.2,<2.13.0",
-    "pint-pandas ~=0.6",
     "pandas ~=2.3.0",
     "tabulate ~=0.9",
     "pyvista ==0.47.0",
