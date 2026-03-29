@@ -40,73 +40,73 @@ This example demonstrates how to use a goniometer setup to measure and visualize
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | SF11                  | pva                   |
+    | water                 | nickel                |
     +-----------------------+-----------------------+
-    | air                   | gold                  |
+    | ZBLAN                 | sodium                |
     +-----------------------+-----------------------+
-    | test_sellmeier_file   | titanium              |
+    | polystyren            | zinc                  |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | zinc                  |
+    | BK7                   | test_tabulated_file   |
     +-----------------------+-----------------------+
-    | crown                 | paladium              |
+    | BAK1                  | tungsten              |
     +-----------------------+-----------------------+
-    | BAK1                  | bismuth               |
+    | polystyrene           | copper                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | polyetylene           |
+    | fused_silica          | silicon               |
     +-----------------------+-----------------------+
-    | BAF10                 | aluminium             |
+    | FK51A                 | lead                  |
     +-----------------------+-----------------------+
-    | pvc                   | silicon               |
+    | acetone               | tantalum              |
     +-----------------------+-----------------------+
-    | FK51A                 | sodium                |
+    | SF11                  | calcium               |
     +-----------------------+-----------------------+
-    | LASF9                 | calcium               |
+    | cellulose             | bismuth               |
     +-----------------------+-----------------------+
-    | polystyren            | nickel                |
+    | crown                 | polyetylene           |
     +-----------------------+-----------------------+
-    | SF10                  | test_tabulated_file   |
+    | propanol              | magnesium             |
     +-----------------------+-----------------------+
-    | fused_silica          | chromium              |
+    | SF10                  | rhodium               |
     +-----------------------+-----------------------+
-    | germanium             | vanadium              |
+    | LASF9                 | silver                |
     +-----------------------+-----------------------+
-    | lithium_niobate       | tantalum              |
+    | ethylene              | example_tabulated     |
     +-----------------------+-----------------------+
-    | water                 | magnesium             |
+    | ethane                | chromium              |
     +-----------------------+-----------------------+
-    | SF5                   | example_tabulated     |
+    | pvc                   | titanium              |
     +-----------------------+-----------------------+
-    | BK7                   | copper                |
+    | soda_lime_glass       | pva                   |
     +-----------------------+-----------------------+
-    | argon                 | lead                  |
+    | methane               | paladium              |
     +-----------------------+-----------------------+
-    | ethanol               | iron                  |
+    | polycarbonate         | aluminium             |
     +-----------------------+-----------------------+
-    | propanol              | tungsten              |
+    | germanium             | gold                  |
     +-----------------------+-----------------------+
-    | ethylene              | silver                |
+    | BAF10                 | iron                  |
     +-----------------------+-----------------------+
-    | acetylene             | rhodium               |
+    | SF5                   | vanadium              |
     +-----------------------+-----------------------+
-    | cellulose             |                       |
-    +-----------------------+-----------------------+
-    | methane               |                       |
-    +-----------------------+-----------------------+
-    | flint                 |                       |
-    +-----------------------+-----------------------+
-    | acetone               |                       |
-    +-----------------------+-----------------------+
-    | polycarbonate         |                       |
-    +-----------------------+-----------------------+
-    | glycerol              |                       |
-    +-----------------------+-----------------------+
-    | ethane                |                       |
-    +-----------------------+-----------------------+
-    | polystyrene           |                       |
+    | acetylene             |                       |
     +-----------------------+-----------------------+
     | example_sellmeier     |                       |
     +-----------------------+-----------------------+
+    | flint                 |                       |
+    +-----------------------+-----------------------+
+    | lithium_niobate       |                       |
+    +-----------------------+-----------------------+
+    | air                   |                       |
+    +-----------------------+-----------------------+
+    | argon                 |                       |
+    +-----------------------+-----------------------+
+    | ethanol               |                       |
+    +-----------------------+-----------------------+
+    | glycerol              |                       |
+    +-----------------------+-----------------------+
     | methanol              |                       |
+    +-----------------------+-----------------------+
+    | test_sellmeier_file   |                       |
     +-----------------------+-----------------------+
 
     <Figure size 800x500 with 1 Axes>
@@ -165,7 +165,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.349 seconds)
+   **Total running time of the script:** (0 minutes 0.358 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:
