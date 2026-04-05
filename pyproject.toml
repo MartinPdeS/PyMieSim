@@ -57,7 +57,7 @@ dependencies = [
     "TypedUnit",
     "MPSPlots",
     "PyOptik",
-    "setuptools_scm[toml] >=8,<10",
+    "setuptools_scm[toml] >=8,<11",
     "numpy ==2.2.6",
     "matplotlib ==3.10.8",
     "pydantic >=2.9.2,<2.13.0",
