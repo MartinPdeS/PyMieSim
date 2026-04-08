@@ -75,7 +75,7 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.260 seconds)
+   **Total running time of the script:** (0 minutes 0.180 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:
