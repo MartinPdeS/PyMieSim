@@ -412,6 +412,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../single/index.html">Single Module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../single/coupling.html">Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/nearfields.html">Near-Fields Computation and Visualization</a></li>
@@ -551,73 +552,73 @@ to download the full example code.</p>
 <img src="../../../_images/sphx_glr_sphere_Qsca_vs_wavelength_001.png" srcset="../../../_images/sphx_glr_sphere_Qsca_vs_wavelength_001.png" alt="sphere Qsca vs wavelength" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>+-----------------------+-----------------------+
 | Sellmeier Materials   | Tabulated Materials   |
 +=======================+=======================+
-| water                 | nickel                |
+| BAK1                  | copper                |
 +-----------------------+-----------------------+
-| ZBLAN                 | sodium                |
+| BK7                   | paladium              |
 +-----------------------+-----------------------+
-| polystyren            | zinc                  |
-+-----------------------+-----------------------+
-| BK7                   | test_tabulated_file   |
-+-----------------------+-----------------------+
-| BAK1                  | tungsten              |
-+-----------------------+-----------------------+
-| polystyrene           | copper                |
-+-----------------------+-----------------------+
-| fused_silica          | silicon               |
-+-----------------------+-----------------------+
-| FK51A                 | lead                  |
-+-----------------------+-----------------------+
-| acetone               | tantalum              |
-+-----------------------+-----------------------+
-| SF11                  | calcium               |
-+-----------------------+-----------------------+
-| cellulose             | bismuth               |
-+-----------------------+-----------------------+
-| crown                 | polyetylene           |
-+-----------------------+-----------------------+
-| propanol              | magnesium             |
-+-----------------------+-----------------------+
-| SF10                  | rhodium               |
-+-----------------------+-----------------------+
-| LASF9                 | silver                |
+| lithium_niobate       | calcium               |
 +-----------------------+-----------------------+
 | ethylene              | example_tabulated     |
 +-----------------------+-----------------------+
-| ethane                | chromium              |
+| acetylene             | bismuth               |
 +-----------------------+-----------------------+
 | pvc                   | titanium              |
 +-----------------------+-----------------------+
-| soda_lime_glass       | pva                   |
+| soda_lime_glass       | aluminium             |
 +-----------------------+-----------------------+
-| methane               | paladium              |
+| fused_silica          | silicon               |
 +-----------------------+-----------------------+
-| polycarbonate         | aluminium             |
+| example_sellmeier     | magnesium             |
 +-----------------------+-----------------------+
-| germanium             | gold                  |
+| methanol              | tungsten              |
 +-----------------------+-----------------------+
-| BAF10                 | iron                  |
+| crown                 | rhodium               |
 +-----------------------+-----------------------+
-| SF5                   | vanadium              |
+| methane               | lead                  |
 +-----------------------+-----------------------+
-| acetylene             |                       |
+| LASF9                 | polyetylene           |
 +-----------------------+-----------------------+
-| example_sellmeier     |                       |
+| argon                 | sodium                |
 +-----------------------+-----------------------+
-| flint                 |                       |
+| propanol              | gold                  |
 +-----------------------+-----------------------+
-| lithium_niobate       |                       |
+| polycarbonate         | iron                  |
 +-----------------------+-----------------------+
-| air                   |                       |
+| ZBLAN                 | zinc                  |
 +-----------------------+-----------------------+
-| argon                 |                       |
+| germanium             | test_tabulated_file   |
 +-----------------------+-----------------------+
-| ethanol               |                       |
+| ethane                | silver                |
++-----------------------+-----------------------+
+| SF5                   | tantalum              |
++-----------------------+-----------------------+
+| air                   | nickel                |
++-----------------------+-----------------------+
+| FK51A                 | chromium              |
++-----------------------+-----------------------+
+| polystyrene           | vanadium              |
++-----------------------+-----------------------+
+| ethanol               | pva                   |
++-----------------------+-----------------------+
+| acetone               |                       |
 +-----------------------+-----------------------+
 | glycerol              |                       |
 +-----------------------+-----------------------+
-| methanol              |                       |
+| SF10                  |                       |
++-----------------------+-----------------------+
+| flint                 |                       |
++-----------------------+-----------------------+
+| BAF10                 |                       |
++-----------------------+-----------------------+
+| water                 |                       |
++-----------------------+-----------------------+
+| cellulose             |                       |
 +-----------------------+-----------------------+
 | test_sellmeier_file   |                       |
++-----------------------+-----------------------+
+| polystyren            |                       |
++-----------------------+-----------------------+
+| SF11                  |                       |
 +-----------------------+-----------------------+
 
 &lt;Figure size 800x500 with 1 Axes&gt;
@@ -663,7 +664,7 @@ to download the full example code.</p>
 <span class="n">dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.137 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.155 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-sphere-qsca-vs-wavelength-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/5674efd4f4534bdb0f6397ec8d8ebdbd/sphere_Qsca_vs_wavelength.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_Qsca_vs_wavelength.ipynb</span></code></a></p>
