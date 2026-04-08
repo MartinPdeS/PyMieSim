@@ -1,6 +1,6 @@
 package:
   name: pymiesim
-  version: "{{ GIT_DESCRIBE_TAG }}"
+  version: {{ GIT_DESCRIBE_TAG }}
 
 source:
   git_url: https://github.com/MartinPdeS/PyMieSim.git
@@ -75,9 +75,10 @@ test:
     - pytest-json-report ==1.5
     - coverage ==7.6
   commands:
-    - python -m pytest
+    - python -m pytest --config-file=./pytest.ini
   source_files:
     - tests
+    - pytest.ini
 
 extra:
   recipe-maintainers:
