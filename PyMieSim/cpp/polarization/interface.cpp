@@ -13,12 +13,14 @@ PYBIND11_MODULE(polarization, module)
 {
     py::object ureg = get_shared_ureg();
 
-    py::class_<PolarizationState, std::shared_ptr<PolarizationState>>(module, "PolarizationState",
-        R"pbdoc(
-            Polarization state binding for PyMieSim.
-            This class represents the polarization state of the source in PyMieSim.
-            It can be initialized either with a Jones vector or with an angle in radians.
-        )pbdoc"
+    py::class_<PolarizationState, std::shared_ptr<PolarizationState>>(
+            module,
+            "PolarizationState",
+            R"pbdoc(
+                Polarization state binding for PyMieSim.
+                This class represents the polarization state of the source in PyMieSim.
+                It can be initialized either with a Jones vector or with an angle in radians.
+            )pbdoc"
         )
         .def(
             py::init(
@@ -32,13 +34,20 @@ PYBIND11_MODULE(polarization, module)
                 The Jones vector should be a list or array of two complex numbers representing the x and y components of the electric field, respectively.
                 Example:
                 polarization = PolarizationState(jones_vector=[1+0j, 0+1j])
-             )pbdoc"
+
+                Parameters
+                ----------
+                jones_vector : list or numpy.ndarray
+                    A list or array of two complex numbers representing the x and y components of the electric field
+            )pbdoc"
         )
-        .def(py::init<>(
-            [](const py::object &angle) {
-                double angle_radian = angle.attr("to")("radian").attr("magnitude").cast<double>();
-                return std::make_shared<PolarizationState>(angle_radian);
-            }),
+        .def(
+            py::init(
+                [](const py::object &angle) {
+                    double angle_radian = angle.attr("to")("radian").attr("magnitude").cast<double>();
+                    return std::make_shared<PolarizationState>(angle_radian);
+                }
+            ),
             py::arg("angle"),
             R"pbdoc(
                 Initializes the polarization state using an angle in radians.
@@ -48,8 +57,8 @@ PYBIND11_MODULE(polarization, module)
                 Parameters
                 ----------
                 angle : pint.Quantity
-                        The angle in radians representing the orientation of the polarization. It can be provided as a pint
-             )pbdoc"
+                        The angle in radians representing the orientation of the polarization. It can be provided as a pint.Quantity object.
+            )pbdoc"
         )
         ;
 

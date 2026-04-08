@@ -11,7 +11,15 @@ namespace py = pybind11;
 void register_sphere(py::module_& module) {
     py::object ureg = get_shared_ureg();
 
-    py::class_<Sphere, BaseScatterer, std::shared_ptr<Sphere>>(module, "Sphere")
+    py::class_<Sphere, BaseScatterer, std::shared_ptr<Sphere>>(
+            module,
+            "Sphere",
+            R"pbdoc(
+                A class representing a spherical scatterer, defined by its diameter, material, and surrounding medium.
+
+                The Sphere class provides methods to compute the scattering coefficients based on Mie theory, as well as properties to access its physical and optical characteristics.
+            )pbdoc"
+        )
         .def(
             py::init([ureg](
                 const py::object& diameter,
@@ -39,7 +47,7 @@ void register_sphere(py::module_& module) {
             py::arg("medium"),
             py::arg("max_order") = 0,
             R"pbdoc(
-                Constructor for SPHERE, initializing it with physical and optical properties.
+                Constructor for Sphere, initializing it with physical and optical properties.
 
                 Parameters
                 ----------
@@ -96,12 +104,9 @@ void register_sphere(py::module_& module) {
             },
             "Volume of the sphere."
         )
-        .def_property("an",
+        .def_property_readonly(
+            "an",
             [ureg](Sphere& self) {return vector_as_numpy_view(self, self.an);},
-            [ureg](Sphere& self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr)
-            {
-                vector_assign_from_numpy(self.an, arr);
-            },
             R"pbdoc(
                 Returns :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
@@ -121,12 +126,9 @@ void register_sphere(py::module_& module) {
                     A list of 'an' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
         )
-        .def_property("bn",
+        .def_property_readonly(
+            "bn",
             [ureg](Sphere& self) {return vector_as_numpy_view(self, self.bn);},
-            [ureg](Sphere& self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr)
-            {
-                vector_assign_from_numpy(self.bn, arr);
-            },
             R"pbdoc(
                 Returns :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
@@ -145,12 +147,9 @@ void register_sphere(py::module_& module) {
                     A list of 'bn' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
         )
-        .def_property("cn",
+        .def_property_readonly(
+            "cn",
             [ureg](Sphere& self) {return vector_as_numpy_view(self, self.cn);},
-            [ureg](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                vector_assign_from_numpy(self.cn, arr);
-            },
             R"pbdoc(
                 For future purpose only!
                 Returns :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
@@ -170,12 +169,9 @@ void register_sphere(py::module_& module) {
                     A list of 'cn' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
         )
-        .def_property("dn",
+        .def_property_readonly(
+            "dn",
             [ureg](Sphere& self) {return vector_as_numpy_view(self, self.dn);},
-            [ureg](Sphere& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                vector_assign_from_numpy(self.dn, arr);
-            },
             R"pbdoc(
                 For future purpose only!
                 Returns :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
@@ -228,7 +224,19 @@ void register_sphere(py::module_& module) {
 
                 scene.attr("add_mesh")(unit_sphere, **unit_sphere_kwargs);
             },
-            py::arg("scene")
+            py::arg("scene"),
+            R"pbdoc(
+                Adds the sphere to a given PyVista scene for visualization.
+
+                This method creates a physical representation of the sphere based on its diameter and adds it to the provided PyVista scene. It also adds a unit sphere for reference, which can be customized in appearance using keyword arguments.
+
+                Parameters
+                ----------
+                scene : pyvista.Plotter
+                    The PyVista Plotter object to which the sphere will be added.
+                **kwargs
+                    Additional keyword arguments to customize the appearance of the physical sphere and the unit sphere. For example, you can specify 'color' to set the color of both spheres, and 'opacity' to set their transparency.
+            )pbdoc"
         )
         ;
 }

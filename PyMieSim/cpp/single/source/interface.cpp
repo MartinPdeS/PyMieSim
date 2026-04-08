@@ -98,15 +98,12 @@ PYBIND11_MODULE(source, module)
             "polarization",
             &BaseSource::polarization,
             R"pbdoc(
-                Convenience Jones vector.
-
-                Returns the first row of :attr:`polarization_element` as a vector
-                ``[Ex, Ey]``.
+                Polarization state.
 
                 Returns
                 -------
-                numpy.ndarray
-                    Complex array of shape ``(2,)``.
+                PolarizationState
+                    Polarization state of the source, represented as a Jones vector with shape (1, 2) of complex values.
             )pbdoc"
         )
         .def(
@@ -168,30 +165,52 @@ PYBIND11_MODULE(source, module)
                 scene.attr("add_mesh")(k_arrow, **k_kwargs);
                 scene.attr("add_mesh")(electric_arrow, **e_kwargs);
             },
-            py::arg("scene")
+            py::arg("scene"),
+                R"pbdoc(
+                    Add a visual representation of the source to a PyVista scene.
+
+                    This method adds arrows to the scene to represent the direction of
+                    propagation (k vector) and the electric field polarization.
+
+                    Parameters
+                    ----------
+                    scene : pyvista.Plotter
+                        The PyVista scene to which the source visualization will be added.
+                    **kwargs
+                        Additional keyword arguments passed to the PyVista add_mesh method for styling.
+
+                    Notes
+                    -----
+                    This method is intended for visualization purposes and does not affect the physical properties of the source.
+                )pbdoc"
         )
         ;
 
 
-    py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(module, "PlaneWave",
-        R"pbdoc(
-            Monochromatic plane wave source.
+    py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(
+            module,
+            "PlaneWave",
+            R"pbdoc(
+                Monochromatic plane wave source.
 
-            This source models a spatially uniform incident field with a specified
-            wavelength, polarization, and electric field amplitude.
-        )pbdoc")
+                This source models a spatially uniform incident field with a specified
+                wavelength, polarization, and electric field amplitude.
+            )pbdoc"
+        )
         .def(
-            py::init([](
-                const py::object& wavelength,
-                const py::object& polarization,
-                const py::object& amplitude
-            ) {
-                return std::make_shared<Planewave>(
-                    wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
-                    Casting::Polarization::cast_py_to_polarization_state(polarization),
-                    amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>()
-                );
-            }),
+            py::init(
+                [](
+                    const py::object& wavelength,
+                    const py::object& polarization,
+                    const py::object& amplitude
+                ) {
+                    return std::make_shared<Planewave>(
+                        wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
+                        Casting::Polarization::cast_py_to_polarization_state(polarization),
+                        amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>()
+                    );
+                }
+            ),
             py::arg("wavelength"),
             py::arg("polarization"),
             py::arg("amplitude"),
@@ -214,31 +233,24 @@ PYBIND11_MODULE(source, module)
                     ``(N, 2)`` of complex values.
                 amplitude : pint.Quantity
                     Electric field amplitude. Must be convertible to V/m.
-
-                Returns
-                -------
-                PlaneWave
-                    Configured plane wave source.
-
-                Notes
-                -----
-                The incident field phase convention follows the C++ implementation.
             )pbdoc"
         );
 
 
-    py::class_<Gaussian, BaseSource, std::shared_ptr<Gaussian>>(module, "Gaussian",
-        R"pbdoc(
-            Monochromatic Gaussian beam source.
+    py::class_<Gaussian, BaseSource, std::shared_ptr<Gaussian>>(
+            module,
+            "Gaussian",
+            R"pbdoc(
+                Monochromatic Gaussian beam source.
 
-            This source models a diffraction limited Gaussian beam characterized by its
-            wavelength, polarization, numerical aperture, and optical power.
+                This source models a diffraction limited Gaussian beam characterized by its
+                wavelength, polarization, numerical aperture, and optical power.
 
-            Notes
-            -----
-            The numerical_aperture is treated as dimensionless and is used to derive the beam waist and
-            related quantities in the C++ implementation.
-        )pbdoc"
+                Notes
+                -----
+                The numerical_aperture is treated as dimensionless and is used to derive the beam waist and
+                related quantities in the C++ implementation.
+            )pbdoc"
         )
         .def(
             py::init([](
@@ -272,11 +284,6 @@ PYBIND11_MODULE(source, module)
                     Numerical aperture. Must be convertible to a dimensionless quantity.
                 optical_power : pint.Quantity
                     Optical power. Must be convertible to watts.
-
-                Returns
-                -------
-                Gaussian
-                    Configured Gaussian source.
             )pbdoc"
         )
         .def_property_readonly(

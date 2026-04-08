@@ -9,40 +9,50 @@ namespace py = pybind11;
 void register_coreshell(py::module_& module) {
     py::object ureg = get_shared_ureg();
 
-    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(module, "CoreShell")
+    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(
+            module,
+            "CoreShell",
+            R"pbdoc(
+                A class representing a core-shell scatterer, defined by its core diameter, shell thickness, core material, shell material, and surrounding medium.
+
+                The CoreShell class provides methods to compute the scattering coefficients based on Mie theory for core-shell particles, as well as properties to access its physical and optical characteristics.
+            )pbdoc"
+        )
         .def(
-            py::init([ureg](
-                py::object core_diameter,
-                py::object shell_thickness,
-                const py::object& core_material,
-                const py::object& shell_material,
-                const py::object& medium,
-                int max_order = 0
-            ) {
-                double core_diameter_meter =
-                    core_diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+            py::init(
+                [ureg](
+                    py::object core_diameter,
+                    py::object shell_thickness,
+                    const py::object& core_material,
+                    const py::object& shell_material,
+                    const py::object& medium,
+                    int max_order = 0
+                ) {
+                    double core_diameter_meter =
+                        core_diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                double shell_thickness_meter =
-                    shell_thickness.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                    double shell_thickness_meter =
+                        shell_thickness.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                const std::shared_ptr<BaseMaterial> parsed_core_material =
-                    parse_material_object(core_material, ureg);
+                    const std::shared_ptr<BaseMaterial> parsed_core_material =
+                        parse_material_object(core_material, ureg);
 
-                const std::shared_ptr<BaseMaterial> parsed_shell_material =
-                    parse_material_object(shell_material, ureg);
+                    const std::shared_ptr<BaseMaterial> parsed_shell_material =
+                        parse_material_object(shell_material, ureg);
 
-                const std::shared_ptr<BaseMedium> parsed_medium =
-                    parse_medium_object(medium, ureg);
+                    const std::shared_ptr<BaseMedium> parsed_medium =
+                        parse_medium_object(medium, ureg);
 
-                return std::make_shared<CoreShell>(
-                    core_diameter_meter,
-                    shell_thickness_meter,
-                    std::move(parsed_core_material),
-                    std::move(parsed_shell_material),
-                    std::move(parsed_medium),
-                    max_order
-                );
-            }),
+                    return std::make_shared<CoreShell>(
+                        core_diameter_meter,
+                        shell_thickness_meter,
+                        std::move(parsed_core_material),
+                        std::move(parsed_shell_material),
+                        std::move(parsed_medium),
+                        max_order
+                    );
+                }
+            ),
             py::arg("core_diameter"),
             py::arg("shell_thickness"),
             py::arg("core_material"),
@@ -120,12 +130,9 @@ void register_coreshell(py::module_& module) {
             },
             "Volume of the core-shell scatterer."
         )
-        .def_property("an",
+        .def_property_readonly(
+            "an",
             [ureg](CoreShell& self) {return vector_as_numpy_view(self, self.an);},
-            [ureg](CoreShell& self,
-               py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                vector_assign_from_numpy(self.an, arr);
-            },
             R"pbdoc(
                 Returns the 'an' scattering coefficients.
 
@@ -169,12 +176,9 @@ void register_coreshell(py::module_& module) {
                     A list of 'an' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
         )
-        .def_property("bn",
+        .def_property_readonly(
+            "bn",
             [ureg](CoreShell& self) {return vector_as_numpy_view(self, self.bn);},
-            [ureg](CoreShell& self,
-                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                    vector_assign_from_numpy(self.bn, arr);
-            },
             R"pbdoc(
                 Returns the 'bn' scattering coefficients.
 
@@ -219,12 +223,9 @@ void register_coreshell(py::module_& module) {
                     A list of 'bn' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
         )
-        .def_property("cn",
+        .def_property_readonly(
+            "cn",
             [ureg](CoreShell& self) {return vector_as_numpy_view(self, self.cn);},
-            [ureg](CoreShell& self,
-                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                    vector_assign_from_numpy(self.cn, arr);
-            },
             R"pbdoc(
                 Returns the 'cn' scattering coefficients.
 
@@ -234,12 +235,9 @@ void register_coreshell(py::module_& module) {
                     A list of 'cn' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
         )
-        .def_property("dn",
+        .def_property_readonly(
+            "dn",
             [ureg](CoreShell& self) {return vector_as_numpy_view(self, self.dn);},
-            [ureg](CoreShell& self,
-                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                    vector_assign_from_numpy(self.dn, arr);
-            },
             R"pbdoc(
                 Returns the 'dn' scattering coefficients.
 
@@ -248,24 +246,6 @@ void register_coreshell(py::module_& module) {
                 list
                     A list of 'dn' scattering coefficients used in the spherical wave expansion.
             )pbdoc"
-        )
-        .def(
-            "add_to_scene",
-            [](const CoreShell& self, py::object& scene, const py::kwargs& kwargs = py::dict()) {
-                py::module_ pv = py::module_::import("pyvista");
-                py::object sphere = pv.attr("Sphere");
-
-
-                py::kwargs sphere_kwargs = py::kwargs();
-                sphere_kwargs["radius"] = self.core_diameter / 2.0 + self.shell_thickness;
-                sphere_kwargs["center"] = py::make_tuple(0, 0, 0);
-                sphere_kwargs["theta_resolution"] = 50;
-                sphere_kwargs["phi_resolution"] = 50;
-
-                py::object py_sphere = sphere(**sphere_kwargs);
-                scene.attr("add_mesh")(py_sphere, **kwargs);
-
-            }
         )
         .def(
             "add_to_scene",
@@ -300,7 +280,17 @@ void register_coreshell(py::module_& module) {
 
                 scene.attr("add_mesh")(unit_sphere, **unit_sphere_kwargs);
             },
-            py::arg("scene")
+            py::arg("scene"),
+                R"pbdoc(
+                    Adds the core-shell scatterer to a given PyVista scene for visualization.
+
+                    Parameters
+                    ----------
+                    scene : pyvista.Plotter
+                        The PyVista Plotter object to which the core-shell scatterer will be added.
+                    **kwargs
+                        Additional keyword arguments to customize the appearance of the scatterer in the scene (e.g., color, opacity).
+                )pbdoc"
         )
         ;
 }

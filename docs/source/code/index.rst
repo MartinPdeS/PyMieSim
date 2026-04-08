@@ -16,8 +16,10 @@ Each module contains a variety of classes and methods that can be customized to 
     :maxdepth: 1
     :caption: Code Structure
 
-    single/index.rst
-    experiment/index.rst
+    single.rst
+    experiment.rst
+    material.rst
+    polarization.rst
 
 Classes and Components
 ----------------------
@@ -30,8 +32,3 @@ Classes and Components
 
 - **Experiment**: A class that brings together the source, scatterer, and detector, creating a complete experimental setup for optical scattering simulations.
 
-Inheritance Structure
----------------------
-
-Each class in PyMieSim inherits relevant attributes and methods from parent classes, allowing for a flexible and modular design.
-This structure ensures that users can easily extend the functionality of individual components without rewriting the core logic of the package.
