@@ -547,7 +547,9 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="coupling">
 <span id="sphx-glr-gallery-single-coupling-py"></span><h1>Coupling<a class="headerlink" href="#coupling" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the process of computing the coupling efficiency of a scatterer to a detector using PyMieSim.</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.02842503068262091 watt
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Side coupling: 0.00671894873114585 watt
+ Forward coupling: 2.2586562867587188 watt
+ Ratio: 0.2974754844522124 dimensionless %
 </pre></div>
 </div>
 <div class="line-block">
@@ -557,7 +559,7 @@ to download the full example code.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">IntegratingSphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 
 
@@ -576,25 +578,44 @@ to download the full example code.</p>
     <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">45</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">45</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-<span class="p">)</span>
 
+
+
+
+<span class="c1"># First detector</span>
+<span class="n">side_detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">1000</span>
+<span class="p">)</span>
 
 <span class="n">setup</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span>
     <span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="n">detector</span><span class="o">=</span><span class="n">detector</span>
+    <span class="n">detector</span><span class="o">=</span><span class="n">side_detector</span>
 <span class="p">)</span>
 
-<span class="n">value</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
+<span class="n">side_coupling</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># Second detector</span>
+<span class="n">forward_detector</span> <span class="o">=</span> <span class="n">IntegratingSphere</span><span class="p">(</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">1000</span>
+<span class="p">)</span>
+
+<span class="n">setup</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span>
+    <span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">detector</span><span class="o">=</span><span class="n">forward_detector</span>
+<span class="p">)</span>
+
+<span class="n">forward_coupling</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Side coupling: </span><span class="si">{</span><span class="n">side_coupling</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Forward coupling: </span><span class="si">{</span><span class="n">forward_coupling</span><span class="si">}</span><span class="s2">  </span><span class="se">\n</span><span class="s2"> Ratio: </span><span class="si">{</span><span class="n">side_coupling</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">forward_coupling</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.044 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.041 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-coupling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c42441fb1776a745411c3f016d333946/coupling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coupling.ipynb</span></code></a></p>

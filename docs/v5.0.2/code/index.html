@@ -60,7 +60,7 @@
     <link rel="icon" href="../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Single module" href="single/index.html" />
+    <link rel="next" title="Single module" href="single.html" />
     <link rel="prev" title="Sphere Particles: 1" href="../gallery/validation/pymiescatt/sphere_1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -411,19 +411,10 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="list-caption"><li class="toctree-l0 has-children"><details><summary><p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="single/index.html">Single module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="single/source.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="single/scatterer.html">Scatterers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="single/detector.html">Detectors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="single/representation.html">Representation</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="experiment/index.html">Experiment module</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="experiment/source.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="experiment/scatterer.html">Scatterers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="experiment/detector.html">Detectors</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="single.html">Single module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">Experiment module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="material.html">Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polarization.html">Polarization</a></li>
 </ul></details></li></ul></div>
 </nav></div>
     </div>
@@ -493,8 +484,10 @@ This overview serves as a guide for understanding how the package is organized a
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="single/index.html">Single module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="experiment/index.html">Experiment module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="single.html">Single module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment.html">Experiment module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="material.html">Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polarization.html">Polarization</a></li>
 </ul>
 </div>
 <section id="classes-and-components">
@@ -505,11 +498,6 @@ This overview serves as a guide for understanding how the package is organized a
 <li><p><strong>Detector</strong>: Captures the scattered light and measures properties like intensity, polarization, and phase. The detector can be placed at different angles or configured to capture light from specific regions around the scatterer.</p></li>
 <li><p><strong>Experiment</strong>: A class that brings together the source, scatterer, and detector, creating a complete experimental setup for optical scattering simulations.</p></li>
 </ul>
-</section>
-<section id="inheritance-structure">
-<h2>Inheritance Structure<a class="headerlink" href="#inheritance-structure" title="Link to this heading">#</a></h2>
-<p>Each class in PyMieSim inherits relevant attributes and methods from parent classes, allowing for a flexible and modular design.
-This structure ensures that users can easily extend the functionality of individual components without rewriting the core logic of the package.</p>
 </section>
 </section>
 
@@ -537,7 +525,6 @@ This structure ensures that users can easily extend the functionality of individ
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-and-components">Classes and Components</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-structure">Inheritance Structure</a></li>
 </ul>
   </nav></div>
 

@@ -23,7 +23,7 @@ Coupling
 
 This example demonstrates the process of computing the coupling efficiency of a scatterer to a detector using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-47
+.. GENERATED FROM PYTHON SOURCE LINES 7-66
 
 
 
@@ -32,7 +32,9 @@ This example demonstrates the process of computing the coupling efficiency of a 
 
  .. code-block:: none
 
-    0.02842503068262091 watt
+    Side coupling: 0.00671894873114585 watt 
+     Forward coupling: 2.2586562867587188 watt  
+     Ratio: 0.2974754844522124 dimensionless %
 
 
 
@@ -48,7 +50,7 @@ This example demonstrates the process of computing the coupling efficiency of a 
     from PyMieSim.single.source import Gaussian
     from PyMieSim.polarization import PolarizationState
     from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.detector import Photodiode
+    from PyMieSim.single.detector import Photodiode, IntegratingSphere
     from PyMieSim.single.setup import Setup
 
 
@@ -67,27 +69,46 @@ This example demonstrates the process of computing the coupling efficiency of a 
         medium=1.0,
     )
 
-    detector = Photodiode(
-        numerical_aperture=0.3,
-        phi_offset=45 * ureg.degree,
-        gamma_offset=45 * ureg.degree,
-    )
 
+
+
+
+    # First detector
+    side_detector = Photodiode(
+        numerical_aperture=0.3,
+        phi_offset=90 * ureg.degree,
+        gamma_offset=0 * ureg.degree,
+        sampling=1000
+    )
 
     setup = Setup(
         scatterer=scatterer,
         source=source,
-        detector=detector
+        detector=side_detector
     )
 
-    value = setup.get("coupling")
+    side_coupling = setup.get("coupling")
 
-    print(value)
+
+    # Second detector
+    forward_detector = IntegratingSphere(
+        sampling=1000
+    )
+
+    setup = Setup(
+        scatterer=scatterer,
+        source=source,
+        detector=forward_detector
+    )
+
+    forward_coupling = setup.get("coupling")
+
+    print(f"Side coupling: {side_coupling} \n Forward coupling: {forward_coupling}  \n Ratio: {side_coupling / forward_coupling * 100} %")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.044 seconds)
+   **Total running time of the script:** (0 minutes 0.041 seconds)
 
 
 .. _sphx_glr_download_gallery_single_coupling.py:
