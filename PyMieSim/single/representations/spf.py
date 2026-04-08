@@ -148,7 +148,7 @@ class SPF():
             The opacity of the surface mesh. Default is 1.0.
         """
         x, y, z = spherical_to_cartesian(
-            r=self.SPF,
+            r=self.SPF / self.SPF.max() if set_surface else 1.0,
             phi=self.mesh.spherical_mesh.phi.to("radian").magnitude,
             theta=self.mesh.spherical_mesh.theta.to("radian").magnitude
         )
