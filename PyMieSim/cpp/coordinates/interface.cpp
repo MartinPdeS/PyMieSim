@@ -22,19 +22,8 @@ PYBIND11_MODULE(coordinates, module)
         )
         .def_property_readonly(
             "x",
-            [ureg](const Cartesian& self) {
-                const pybind11::ssize_t number_of_rows = self.shape[0];
-                const pybind11::ssize_t number_of_columns = self.shape[1];
-
-                return pybind11::array_t<double>(
-                    {number_of_rows, number_of_columns},
-                    {
-                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
-                        static_cast<pybind11::ssize_t>(sizeof(double))
-                    },
-                    self.x.data(),
-                    pybind11::cast(self)
-                ) * ureg("meter");
+            [ureg](const Cartesian& self) -> pybind11::object {
+                return pybind11::cast(self.x) * ureg("meter");
             },
             R"pbdoc(
                 Returns x coordinates of points on the Cartesian mesh as a NumPy array.
@@ -43,19 +32,8 @@ PYBIND11_MODULE(coordinates, module)
         )
         .def_property_readonly(
             "y",
-            [ureg](const Cartesian& self) {
-                const pybind11::ssize_t number_of_rows = self.shape[0];
-                const pybind11::ssize_t number_of_columns = self.shape[1];
-
-                return pybind11::array_t<double>(
-                    {number_of_rows, number_of_columns},
-                    {
-                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
-                        static_cast<pybind11::ssize_t>(sizeof(double))
-                    },
-                    self.y.data(),
-                    pybind11::cast(self)
-                ) * ureg("meter");
+            [ureg](const Cartesian& self) -> pybind11::object {
+                return pybind11::cast(self.y) * ureg("meter");
             },
             R"pbdoc(
                 Returns y coordinates of points on the Cartesian mesh as a NumPy array.
@@ -64,19 +42,8 @@ PYBIND11_MODULE(coordinates, module)
         )
         .def_property_readonly(
             "z",
-            [ureg](const Cartesian& self) {
-                const pybind11::ssize_t number_of_rows = self.shape[0];
-                const pybind11::ssize_t number_of_columns = self.shape[1];
-
-                return pybind11::array_t<double>(
-                    {number_of_rows, number_of_columns},
-                    {
-                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
-                        static_cast<pybind11::ssize_t>(sizeof(double))
-                    },
-                    self.z.data(),
-                    pybind11::cast(self)
-                ) * ureg("meter");
+            [ureg](const Cartesian& self) -> pybind11::object {
+                return pybind11::cast(self.z) * ureg("meter");
             },
             R"pbdoc(
                 Returns z coordinates of points on the Cartesian mesh as a NumPy array.
