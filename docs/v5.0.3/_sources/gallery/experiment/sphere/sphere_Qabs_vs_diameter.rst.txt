@@ -38,73 +38,73 @@ Sphere: Qabs vs diameter
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | BAK1                  | copper                |
+    | germanium             | tantalum              |
     +-----------------------+-----------------------+
-    | BK7                   | paladium              |
+    | acetone               | iron                  |
     +-----------------------+-----------------------+
-    | lithium_niobate       | calcium               |
+    | cellulose             | vanadium              |
     +-----------------------+-----------------------+
-    | ethylene              | example_tabulated     |
+    | BAK1                  | test_tabulated_file   |
     +-----------------------+-----------------------+
-    | acetylene             | bismuth               |
+    | flint                 | chromium              |
     +-----------------------+-----------------------+
-    | pvc                   | titanium              |
+    | SF5                   | gold                  |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | aluminium             |
+    | methane               | bismuth               |
     +-----------------------+-----------------------+
-    | fused_silica          | silicon               |
+    | ZBLAN                 | rhodium               |
     +-----------------------+-----------------------+
-    | example_sellmeier     | magnesium             |
+    | ethylene              | paladium              |
     +-----------------------+-----------------------+
-    | methanol              | tungsten              |
+    | pvc                   | example_tabulated     |
     +-----------------------+-----------------------+
-    | crown                 | rhodium               |
+    | lithium_niobate       | lead                  |
     +-----------------------+-----------------------+
-    | methane               | lead                  |
+    | test_sellmeier_file   | polyetylene           |
     +-----------------------+-----------------------+
-    | LASF9                 | polyetylene           |
+    | BK7                   | zinc                  |
     +-----------------------+-----------------------+
-    | argon                 | sodium                |
+    | glycerol              | sodium                |
     +-----------------------+-----------------------+
-    | propanol              | gold                  |
+    | methanol              | silver                |
     +-----------------------+-----------------------+
-    | polycarbonate         | iron                  |
+    | propanol              | pva                   |
     +-----------------------+-----------------------+
-    | ZBLAN                 | zinc                  |
+    | FK51A                 | copper                |
     +-----------------------+-----------------------+
-    | germanium             | test_tabulated_file   |
+    | example_sellmeier     | titanium              |
     +-----------------------+-----------------------+
-    | ethane                | silver                |
+    | ethanol               | aluminium             |
     +-----------------------+-----------------------+
-    | SF5                   | tantalum              |
+    | BAF10                 | nickel                |
     +-----------------------+-----------------------+
-    | air                   | nickel                |
+    | soda_lime_glass       | silicon               |
     +-----------------------+-----------------------+
-    | FK51A                 | chromium              |
+    | SF11                  | calcium               |
     +-----------------------+-----------------------+
-    | polystyrene           | vanadium              |
+    | ethane                | tungsten              |
     +-----------------------+-----------------------+
-    | ethanol               | pva                   |
-    +-----------------------+-----------------------+
-    | acetone               |                       |
-    +-----------------------+-----------------------+
-    | glycerol              |                       |
-    +-----------------------+-----------------------+
-    | SF10                  |                       |
-    +-----------------------+-----------------------+
-    | flint                 |                       |
-    +-----------------------+-----------------------+
-    | BAF10                 |                       |
+    | polystyrene           | magnesium             |
     +-----------------------+-----------------------+
     | water                 |                       |
     +-----------------------+-----------------------+
-    | cellulose             |                       |
+    | argon                 |                       |
     +-----------------------+-----------------------+
-    | test_sellmeier_file   |                       |
+    | SF10                  |                       |
+    +-----------------------+-----------------------+
+    | LASF9                 |                       |
+    +-----------------------+-----------------------+
+    | acetylene             |                       |
+    +-----------------------+-----------------------+
+    | polycarbonate         |                       |
+    +-----------------------+-----------------------+
+    | crown                 |                       |
+    +-----------------------+-----------------------+
+    | fused_silica          |                       |
+    +-----------------------+-----------------------+
+    | air                   |                       |
     +-----------------------+-----------------------+
     | polystyren            |                       |
-    +-----------------------+-----------------------+
-    | SF11                  |                       |
     +-----------------------+-----------------------+
 
     <Figure size 800x500 with 1 Axes>
@@ -156,7 +156,7 @@ Sphere: Qabs vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.200 seconds)
+   **Total running time of the script:** (0 minutes 0.199 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py:
