@@ -8,10 +8,13 @@
 | PyMieSim/experiment/setup.py                  |       89 |        3 |       34 |        5 |     93.50% |103-\>106, 194, 220, 232, 297-\>291 |
 | PyMieSim/experiment/utils.py                  |       32 |       32 |       14 |        0 |      0.00% |     1-127 |
 | PyMieSim/single/\_mesh.py                     |       26 |       26 |        0 |        0 |      0.00% |     4-241 |
+| PyMieSim/single/representations/farfields.py  |      207 |       95 |       60 |       18 |     50.19% |193-204, 268-300, 324-336, 370-382, 453-\>exit, 481-500, 525-542, 566-585, 614-653, 670-696, 776, 796, 799, 802-813, 822, 827, 833, 840, 847-857, 870-\>873, 874, 895-897, 911-\>exit, 929-935, 952-956, 987, 1010 |
 | PyMieSim/single/representations/nearfields.py |      160 |      141 |       44 |        0 |      9.31% |29-32, 49-62, 96-115, 134-143, 173-216, 234-261, 278-287, 296-334, 378-435 |
-| **TOTAL**                                     |  **819** |  **290** |  **248** |   **44** | **61.20%** |           |
+| PyMieSim/single/representations/spf.py        |      101 |       26 |       32 |       12 |     65.41% |178, 182, 236, 241, 246, 252, 260-277, 291, 310-312, 329-\>exit, 350, 366-376 |
+| PyMieSim/single/representations/stokes.py     |       94 |       10 |       24 |       10 |     83.05% |248-\>exit, 280, 301, 306, 312, 327, 348-350, 367-\>exit, 399, 417 |
+| **TOTAL**                                     | **1124** |  **421** |  **356** |   **84** | **58.58%** |           |
 
-7 files skipped due to complete coverage.
+4 files skipped due to complete coverage.
 
 
 ## Setup coverage badge
