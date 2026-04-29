@@ -1,22 +1,21 @@
 *
 
-Unignore the docs directory
-!docs/
-
-!docs/latest
-!docs/latest/**
-!docs/latest/**/*
-
-!docs/v*
-!docs/v*/**
-!docs/v*/**/*
-!update_version_switcher.py
-
-
-!.nojekyll
-!index.html
-!version_switcher.json
+# Keep repository control files.
 !.gitignore
-!.git
+!.nojekyll
+
+# Keep GitHub Actions or repository automation if this branch stores them.
 !.github/
 !.github/**
+
+# Keep root Pages files.
+!index.html
+!version_switcher.json
+!update_version_switcher.py
+
+# Keep documentation payload.
+!docs/
+!docs/latest/
+!docs/latest/**
+!docs/v*/
+!docs/v*/**
