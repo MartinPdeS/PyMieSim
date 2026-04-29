@@ -16,10 +16,9 @@ from PyMieSim.single import Setup
 representation_list = ["farfields", "stokes", "spf", "s1s2", "footprint"]
 
 
-@patch("pyvista.Plotter.show")
 @patch("matplotlib.pyplot.show")
 @pytest.mark.parametrize("representation", representation_list)
-def test_plottings(mock_show_plt, mock_show_pyvista, representation):
+def test_plottings(mock_show_plt, representation):
 
     source = Gaussian(
         wavelength=750 * ureg.nanometer,

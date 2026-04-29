@@ -12,7 +12,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.setup import Setup
 from PyMieSim.material import SellmeierMaterial
 
-material = SellmeierMaterial("BK7")
+# material = SellmeierMaterial("BK7")
 
 polarization = PolarizationState(angle=30 * ureg.degree)
 
@@ -25,7 +25,7 @@ source = Gaussian(
 
 scatterer = Sphere(
     diameter=1500 * ureg.nanometer,
-    material=material,
+    material=1.4,
     medium=1.0,
 )
 
@@ -36,4 +36,11 @@ setup = Setup(
 
 far_fields = setup.get_representation("farfields", sampling=100)
 
-figure = far_fields.plot()
+## Visualize the far-fields: phi_real component
+figure = far_fields.plot("phi_real")
+
+## Visualize the far-fields: phi_imag component
+figure = far_fields.plot("phi_imag")
+
+## Visualize the far-fields: phi_magnitude component
+figure = far_fields.plot("phi_magnitude")

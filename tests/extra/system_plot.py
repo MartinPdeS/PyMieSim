@@ -6,11 +6,9 @@ from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
-from math import sqrt
-import pyvista as pv
+import matplotlib.pyplot as plt
 
-
-@patch("pyvista.Plotter.show")
+@patch("matplotlib.pyplot.show")
 def test_plot_system(mock_show):
     """
     Test the plot_system function to ensure it can plot a source, scatterer, and detector
@@ -44,15 +42,14 @@ def test_plot_system(mock_show):
     detector.medium.initialize(source.wavelength)
     detector.initialize_mesh(scatterer)
 
-    scene = pv.Plotter()
+    figure = plt.figure()
+    ax = figure.add_subplot(111, projection="3d")
 
-    scatterer.add_to_scene(scene)
-    source.add_to_scene(scene)
-    detector.add_to_scene(scene)
+    scatterer._add_to_ax(ax)
+    source._add_to_ax(ax)
+    detector._add_to_ax(ax)
 
-    scene.show()
-
-
+    plt.show()
     mock_show.assert_called_once()
 
 

@@ -1,168 +1,379 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import List
-import pyvista
+from typing import Sequence
+
+import matplotlib.pyplot as pyplot
+import numpy
+from matplotlib import cm
+from matplotlib import colors
 
 from PyMieSim.units import ureg
 from PyMieSim.utils import spherical_to_cartesian
-from PyMieSim.mesh import FullMesh # Necessary for loading the class, even if not directly used in this file
+from PyMieSim.mesh import FullMesh  # Necessary for loading the class, even if not directly used in this file
 
 
-class SPF():
+class SPF:
     r"""
-    Compute the scattering phase function (SPF) for the scatterer.
+    Scattering phase function representation.
 
-    The scattering phase function describes how the intensity of scattered light varies as a function of the scattering angles \( \theta \) (polar) and \( \phi \) (azimuthal). It is a key quantity in light scattering, as it characterizes the angular distribution of scattered light.
+    The scattering phase function describes how the scattered intensity varies
+    as a function of the scattering direction around the particle.
 
-    The scattering phase function is computed as:
-
-    .. math::
-        \text{SPF} = \sqrt{ E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2 }
-
-    Where:
-
-    - :math:`E_{\parallel}`: The parallel component of the scattered electric field.
-    - :math:`E_{\perp}`: The perpendicular component of the scattered electric field.
-    - :math:`\phi` and :math:`\theta`: The azimuthal and polar angles, respectively, which describe the angular position of the scattered light.
-
-    The SPF combines the intensity contributions from both polarization components to describe the total scattered intensity in different directions.
+    The SPF is sampled on the backend spherical mesh and can be rendered either
+    as a normalized radial surface or as an intensity map on a unit sphere.
 
     Parameters
     ----------
+    setup : object
+        Single scatterer setup object exposing ``get_spf``.
+    sampling : int, optional
+        Number of angular samples used in each spherical mesh direction.
+
+    Attributes
+    ----------
+    setup : object
+        Simulation setup used to compute the scattering phase function.
     sampling : int
-        The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.
-    distance : Length, optional
-        The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.
-
-    Returns
-    -------
-    representations.SPF
-        An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.
-
-    Notes
-    -----
-    - The scattering phase function is a critical quantity in the study of light scattering, as it provides insight into the directionality of the scattered light. It is commonly used in fields like atmospheric optics, biomedical imaging, and remote sensing.
-    - The `sampling` parameter controls the angular resolution of the SPF. Higher sampling values yield more detailed scattering patterns, especially important when capturing small angular features.
-
-    Example
-    -------
-    You can use this method to compute the scattering phase function of a spherical scatterer, helping to understand the angular distribution of light scattered by the particle.
-
-    Example usage:
-
-    >>> spf = scatterer.get_spf(sampling=500)
-    >>> print(spf)
-
+        Angular sampling used for the structured SPF mesh.
+    SPF : numpy.ndarray
+        Scattering phase function sampled on the spherical mesh.
+    mesh : object
+        Full spherical mesh returned by the backend.
     """
-    def __init__(self, setup, sampling: int = 200):
+
+    def __init__(
+        self,
+        setup,
+        sampling: int = 200,
+    ) -> None:
         self.setup = setup
         self.sampling = sampling
+
         self.SPF, self.mesh = self.setup.get_spf(
             sampling=self.sampling,
-            distance=1.0 * ureg.meter
+            distance=1.0 * ureg.meter,
         )
 
     def plot(
         self,
-        unit_size: List[float] = (800, 800),
+        unit_size: Sequence[float] = (5.0, 5.0),
         background_color: str = "white",
         show_edges: bool = False,
-        colormap: str = "viridis",
+        edge_color: str = "black",
+        colormap="viridis",
         opacity: float = 1.0,
         set_surface: bool = True,
         show_axis_label: bool = False,
-    ) -> None:
-        """
-        Visualizes the scattering phase function on a 3D plot.
-
-        This method creates a 3D visualization of the scattering phase function (SPF). It allows customization
-        of the plot's appearance, including the colormap, mesh opacity, and whether or not to display mesh edges
-        and axis labels.
+        scale: str = "linear",
+        percentile_clip: float | None = None,
+        surface_linewidth: float = 0.1,
+        surface_antialiased: bool = False,
+        elevation: float = 25.0,
+        azimuth: float = 35.0,
+    ):
+        r"""
+        Plot the scattering phase function on a Matplotlib 3D surface.
 
         Parameters
         ----------
-        unit_size : List[float]
-            The size of the plot window in pixels (width, height). Default is (800, 800).
-        background_color : str
-            The background color of the plot. Default is 'white'.
-        show_edges : bool
-            If True, displays the edges of the mesh. Default is False.
-        colormap : str
-            The colormap to use for scalar mapping. Default is 'viridis'.
-        opacity : float
-            The opacity of the mesh. Default is 1.0.
-        set_surface : bool
-            If True, the surface represents the scaled SPF; if False, a unit sphere is used. Default is True.
-        show_axis_label : bool
-            If True, shows the axis labels. Default is False.
-        """
-        window_size = (unit_size[1], unit_size[0])
+        unit_size : Sequence[float], optional
+            Figure size in inches, given as ``(width, height)``.
+        background_color : str, optional
+            Figure and axis background color.
+        show_edges : bool, optional
+            If ``True``, draw surface mesh edges. Edges are also drawn
+            automatically when ``surface_linewidth`` is greater than zero.
+        edge_color : str, optional
+            Color used for surface mesh edges.
+        colormap : str or matplotlib.colors.Colormap, optional
+            Colormap used for the SPF intensity values.
+        opacity : float, optional
+            Surface opacity.
+        set_surface : bool, optional
+            If ``True``, the surface radius is proportional to the normalized
+            SPF intensity. If ``False``, the SPF intensity is drawn on a unit sphere.
+        show_axis_label : bool, optional
+            If ``True``, display Cartesian axis labels, ticks, and panes.
+            If ``False``, hide the axis frame.
+        scale : str, optional
+            Color scaling. Supported values are ``"linear"`` and ``"log"``.
+        percentile_clip : float, optional
+            If provided, the upper color limit is clipped to this percentile of
+            the finite positive values.
+        surface_linewidth : float, optional
+            Line width used for surface edges. Values greater than zero enable
+            mesh edges even if ``show_edges`` is ``False``.
+        surface_antialiased : bool, optional
+            Matplotlib antialiasing flag for surfaces.
+        elevation : float, optional
+            Matplotlib 3D view elevation angle in degrees.
+        azimuth : float, optional
+            Matplotlib 3D view azimuth angle in degrees.
 
-        scene = pyvista.Plotter(
-            theme=pyvista.themes.DocumentTheme(), window_size=window_size
+        Returns
+        -------
+        matplotlib.figure.Figure
+            Matplotlib figure containing the SPF visualization.
+        """
+        figure = pyplot.figure(
+            figsize=(unit_size[0], unit_size[1]),
+            facecolor=background_color,
         )
 
-        scene.set_background(background_color)
+        ax = figure.add_subplot(1, 1, 1, projection="3d")
 
-        mapping = self._add_to_3d_ax(
-            scene=scene,
+        self._add_to_3d_ax(
+            ax=ax,
+            set_surface=set_surface,
+            show_edges=show_edges,
+            edge_color=edge_color,
             colormap=colormap,
             opacity=opacity,
-            show_edges=show_edges,
-            set_surface=set_surface,
+            scale=scale,
+            percentile_clip=percentile_clip,
+            surface_linewidth=surface_linewidth,
+            surface_antialiased=surface_antialiased,
         )
 
-        scene.add_axes_at_origin(labels_off=not show_axis_label)
+        self._format_3d_axis(
+            ax=ax,
+            background_color=background_color,
+            show_axis_label=show_axis_label,
+            elevation=elevation,
+            azimuth=azimuth,
+        )
 
-        scene.add_scalar_bar(mapper=mapping.mapper, title="Scattering Phase Function")
+        figure.tight_layout()
+        pyplot.show()
 
-        scene.show()
+        return figure
 
     def _add_to_3d_ax(
         self,
-        scene: pyvista.Plotter,
-        set_surface: bool = False,
+        ax,
+        set_surface: bool = True,
         show_edges: bool = False,
-        colormap: str = "viridis",
+        edge_color: str = "black",
+        colormap="viridis",
         opacity: float = 1.0,
+        scale: str = "linear",
+        percentile_clip: float | None = None,
+        surface_linewidth: float = 0.0,
+        surface_antialiased: bool = False,
+    ) -> None:
+        r"""
+        Add the SPF surface to a Matplotlib 3D axis.
+
+        The surface geometry follows the scattering phase function if
+        ``set_surface`` is ``True``. In all cases, the surface colors are linked
+        to the SPF intensity itself.
+        """
+        intensity = self._spf_array()
+
+        if set_surface:
+            maximum_intensity = numpy.nanmax(intensity)
+
+            if not numpy.isfinite(maximum_intensity) or maximum_intensity <= 0.0:
+                radius = numpy.ones_like(intensity)
+            else:
+                radius = intensity / maximum_intensity
+        else:
+            radius = numpy.ones_like(intensity)
+
+        x_coordinates, y_coordinates, z_coordinates = spherical_to_cartesian(
+            r=radius,
+            phi=self.mesh.spherical_mesh.phi.to("radian").magnitude,
+            theta=self.mesh.spherical_mesh.theta.to("radian").magnitude,
+        )
+
+        x_coordinates = self._as_square_array(x_coordinates)
+        y_coordinates = self._as_square_array(y_coordinates)
+        z_coordinates = self._as_square_array(z_coordinates)
+
+        intensity = self._as_square_array(intensity)
+
+        colormap_object = self._resolve_colormap(colormap)
+
+        normalization = self._get_normalization(
+            intensity=intensity,
+            scale=scale,
+            percentile_clip=percentile_clip,
+        )
+
+        facecolors = colormap_object(normalization(intensity))
+        facecolors[..., -1] = opacity
+
+        draw_edges = show_edges or surface_linewidth > 0.0
+        effective_edge_color = edge_color if draw_edges else "none"
+        effective_linewidth = surface_linewidth if draw_edges else 0.0
+
+        ax.plot_surface(
+            x_coordinates,
+            y_coordinates,
+            z_coordinates,
+            facecolors=facecolors,
+            rstride=1,
+            cstride=1,
+            linewidth=effective_linewidth,
+            edgecolor=effective_edge_color,
+            antialiased=surface_antialiased,
+            shade=False,
+        )
+
+    def _get_normalization(
+        self,
+        intensity: numpy.ndarray,
+        scale: str,
+        percentile_clip: float | None,
+    ):
+        """
+        Build the Matplotlib normalization for the SPF intensity values.
+        """
+        finite_values = intensity[numpy.isfinite(intensity)]
+
+        if finite_values.size == 0:
+            return colors.Normalize(vmin=0.0, vmax=1.0)
+
+        non_negative_values = finite_values[finite_values >= 0.0]
+
+        if non_negative_values.size == 0:
+            return colors.Normalize(vmin=0.0, vmax=1.0)
+
+        upper_limit = numpy.nanmax(non_negative_values)
+
+        if percentile_clip is not None:
+            upper_limit = numpy.nanpercentile(
+                non_negative_values,
+                percentile_clip,
+            )
+
+        if not numpy.isfinite(upper_limit) or upper_limit <= 0.0:
+            upper_limit = 1.0
+
+        if scale == "linear":
+            return colors.Normalize(
+                vmin=0.0,
+                vmax=upper_limit,
+            )
+
+        if scale == "log":
+            strictly_positive_values = non_negative_values[non_negative_values > 0.0]
+
+            if strictly_positive_values.size == 0:
+                return colors.Normalize(vmin=0.0, vmax=upper_limit)
+
+            lower_limit = numpy.nanmax(strictly_positive_values) * 1e-6
+            lower_limit = max(lower_limit, numpy.nanmin(strictly_positive_values))
+
+            if lower_limit >= upper_limit:
+                lower_limit = upper_limit * 1e-6
+
+            return colors.LogNorm(
+                vmin=lower_limit,
+                vmax=upper_limit,
+            )
+
+        raise ValueError(
+            "Invalid SPF scale. Expected 'linear' or 'log'."
+        )
+
+    def _resolve_colormap(
+        self,
+        colormap,
+    ):
+        """
+        Return a Matplotlib colormap object.
+        """
+        if isinstance(colormap, str):
+            return cm.get_cmap(colormap)
+
+        return colormap
+
+    def _format_3d_axis(
+        self,
+        ax,
+        background_color: str,
+        show_axis_label: bool,
+        elevation: float,
+        azimuth: float,
     ) -> None:
         """
-        Adds a 3D surface plot to the provided PyVista scene based on the scattering phase function (SPF).
-
-        This method generates a 3D surface plot of the SPF using spherical coordinates, and adds it to the scene.
-        The surface can either represent the actual SPF or a normalized unit sphere, depending on the `set_surface` flag.
-        The appearance of the surface can be customized using various parameters.
-
-        Parameters
-        ----------
-        scene : pyvista.Plotter
-            The PyVista plotting scene where the surface will be added.
-        set_surface : bool
-            If True, the surface will represent the scaled SPF; if False, a unit sphere is used. Default is True.
-        show_edges : bool
-            If True, edges of the mesh will be displayed. Default is False.
-        colormap : str
-            The colormap to use for visualizing the scalar field. Default is 'viridis'.
-        opacity : float
-            The opacity of the surface mesh. Default is 1.0.
+        Apply common formatting to the 3D axis.
         """
-        x, y, z = spherical_to_cartesian(
-            r=self.SPF / self.SPF.max() if set_surface else 1.0,
-            phi=self.mesh.spherical_mesh.phi.to("radian").magnitude,
-            theta=self.mesh.spherical_mesh.theta.to("radian").magnitude
+        ax.set_facecolor(background_color)
+        ax.view_init(elev=elevation, azim=azimuth)
+
+        self._set_equal_axis_limits(ax)
+
+        if show_axis_label:
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
+            ax.set_zlabel("z")
+        else:
+            ax.set_axis_off()
+
+    def _set_equal_axis_limits(
+        self,
+        ax,
+    ) -> None:
+        """
+        Set symmetric equal limits on a Matplotlib 3D axis.
+        """
+        axis_limit = 1.15
+
+        ax.set_xlim(-axis_limit, axis_limit)
+        ax.set_ylim(-axis_limit, axis_limit)
+        ax.set_zlim(-axis_limit, axis_limit)
+
+        if hasattr(ax, "set_box_aspect"):
+            ax.set_box_aspect((1.0, 1.0, 1.0))
+
+    def _spf_array(
+        self,
+    ) -> numpy.ndarray:
+        """
+        Return the SPF as a square NumPy array.
+        """
+        return self._as_square_array(
+            self._quantity_to_magnitude_array(self.SPF)
         )
 
-        mesh = pyvista.StructuredGrid(x, y, z)
+    def _quantity_to_magnitude_array(
+        self,
+        value,
+    ) -> numpy.ndarray:
+        """
+        Convert a Pint quantity or array like object to a NumPy array.
+        """
+        if hasattr(value, "magnitude"):
+            return numpy.asarray(value.magnitude)
 
-        mapping = scene.add_mesh(
-            mesh,
-            cmap=colormap,
-            scalars=self.SPF.T.flatten(),
-            opacity=1.0,
-            style="surface",
-            show_edges=show_edges,
-            show_scalar_bar=False,
+        return numpy.asarray(value)
+
+    def _as_square_array(
+        self,
+        value,
+    ) -> numpy.ndarray:
+        """
+        Return a two dimensional square array compatible with surface plotting.
+        """
+        array = numpy.asarray(value)
+
+        if array.ndim == 2:
+            return array
+
+        flat_array = array.ravel()
+        expected_size = self.sampling * self.sampling
+
+        if flat_array.size != expected_size:
+            raise ValueError(
+                "Cannot reshape array to the structured SPF mesh. "
+                f"Expected {expected_size} values from sampling={self.sampling}, "
+                f"but received {flat_array.size}."
+            )
+
+        return flat_array.reshape(
+            (self.sampling, self.sampling),
+            order="F",
         )
-
-        return mapping

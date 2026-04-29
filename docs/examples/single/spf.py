@@ -24,7 +24,7 @@ source = Gaussian(
 
 
 scatterer = CoreShell(
-    core_diameter=100 * ureg.nanometer,
+    core_diameter=300 * ureg.nanometer,
     shell_thickness=10 * ureg.nanometer,
     core_material=1.48,
     shell_material=1.38,
@@ -36,6 +36,6 @@ setup = Setup(
     source=source,
 )
 
-spf = setup.get_representation("farfields", sampling=100)
+spf = setup.get_representation("spf", sampling=100)
 
 figure = spf.plot()

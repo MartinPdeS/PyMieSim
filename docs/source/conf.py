@@ -13,14 +13,6 @@ from PyMieSim.directories import doc_css_path
 package_name = "PyMieSim"
 version = PyMieSim.__version__
 
-try:
-    import pyvista
-
-    if sys.platform in ["linux", "linux2"]:
-        pyvista.start_xvfb()  # Works only on linux system!
-except ImportError:
-    print("Could not load pyvista library for 3D rendering")
-
 current_dir = Path(".")
 
 sys.path.append(str(current_dir.resolve()))
@@ -43,7 +35,6 @@ author = "Martin Poinsinet de Sivry-Houle"
 
 extensions = [
     "sphinx.ext.mathjax",
-    "pyvista.ext.plot_directive",
     "sphinx_gallery.gen_gallery",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
@@ -78,7 +69,7 @@ examples_files = [
 sphinx_gallery_conf = {
     "examples_dirs": ["../examples/" + f for f in examples_files],
     "gallery_dirs": ["gallery/" + f for f in examples_files],
-    "image_scrapers": ("matplotlib", "pyvista"),
+    "image_scrapers": ("matplotlib"),
     "ignore_pattern": "/__",
     "filename_pattern": r"\.py",
     "plot_gallery": True,

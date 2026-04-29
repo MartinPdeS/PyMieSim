@@ -63,7 +63,6 @@ dependencies = [
     "pydantic >=2.9.2,<2.13.0",
     "pandas ~=2.3.0",
     "tabulate ~=0.9",
-    "pyvista ==0.47.0",
 ]
 
 keywords = [

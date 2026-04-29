@@ -797,27 +797,109 @@ PYBIND11_MODULE(setup, module)
         },
         py::arg("representation_type")
     )
-
     .def(
         "plot_system",
-        [](const Setup& self) {
-            py::module_ pv = py::module_::import("pyvista");
-            py::object plotter = pv.attr("Plotter")();
+        [](
+            const Setup& self,
+            const bool show_axes,
+            const bool show_colorbar,
+            const bool show_detector_cone,
+            const bool show_unit_sphere,
+            const double figure_size
+        ) {
+            py::module_ pyplot = py::module_::import("matplotlib.pyplot");
 
-            py::cast(self.source).attr("add_to_scene")(plotter);
+            py::object figure = pyplot.attr("figure")(
+                py::arg("figsize") = py::make_tuple(figure_size, figure_size)
+            );
+
+            py::object ax = figure.attr("add_subplot")(
+                py::int_(111),
+                py::arg("projection") = py::str("3d")
+            );
+
+            py::cast(self.source).attr("_add_to_ax")(
+                ax,
+                py::arg("show_axes") = show_axes
+            );
 
             self.scatterer->init(self.source);
 
-            py::cast(self.scatterer).attr("add_to_scene")(plotter);
+            py::cast(self.scatterer).attr("_add_to_ax")(
+                ax,
+                py::arg("show_axes") = show_axes,
+                py::arg("show_unit_sphere") = show_unit_sphere
+            );
 
             if (self.detector) {
                 self.detector->medium->initialize(self.source->wavelength);
                 self.detector->initialize_mesh(self.scatterer);
-                py::cast(self.detector).attr("add_to_scene")(plotter);
+
+                py::object detector_object = py::cast(self.detector);
+
+                if (py::hasattr(detector_object, "_add_to_ax")) {
+                    py::dict detector_kwargs;
+                    detector_kwargs["show_axes"] = py::bool_(show_axes);
+
+                    if (py::hasattr(detector_object, "mode_field")) {
+                        detector_kwargs["show_colorbar"] = py::bool_(show_colorbar);
+                        detector_kwargs["show_cone"] = py::bool_(show_detector_cone);
+                    }
+                    else {
+                        detector_kwargs["show_cone"] = py::bool_(show_detector_cone);
+                    }
+
+                    detector_object.attr("_add_to_ax")(ax, **detector_kwargs);
+                }
             }
 
-            plotter.attr("show")();
-        }
+            figure.attr("tight_layout")();
+            pyplot.attr("show")();
+
+            return figure;
+        },
+        py::arg("show_axes") = false,
+        py::arg("show_colorbar") = true,
+        py::arg("show_detector_cone") = true,
+        py::arg("show_unit_sphere") = true,
+        py::arg("figure_size") = 7.0,
+        R"pbdoc(
+            Plot the full single-scatterer optical system using Matplotlib.
+
+            The plot includes the incident source, the scatterer, and the detector
+            geometry when a detector is defined. The source is drawn using its
+            propagation and polarization vectors. The scatterer is drawn using its
+            normalized Matplotlib representation. The detector is initialized for
+            the current scatterer and source before being drawn.
+
+            Parameters
+            ----------
+            show_axes : bool, optional
+                If ``True``, display Cartesian axis labels, ticks, and panes.
+                If ``False``, hide the Matplotlib 3D axis frame after setting
+                the plotting limits.
+            show_colorbar : bool, optional
+                If ``True``, show the detector colorbar when the detector supports
+                field-colored plotting, such as ``CoherentMode``.
+            show_detector_cone : bool, optional
+                If ``True``, draw the detector collection cone when supported.
+            show_unit_sphere : bool, optional
+                If ``True``, draw the transparent unit sphere for scatterer
+                angular reference when supported.
+            figure_size : float, optional
+                Width and height of the Matplotlib figure in inches.
+
+            Returns
+            -------
+            matplotlib.figure.Figure
+                Matplotlib figure containing the system visualization.
+
+            Notes
+            -----
+            This method replaces the previous PyVista-based visualization path.
+            It uses the private ``_add_to_ax`` helpers exposed by source,
+            scatterer, and detector bindings.
+        )pbdoc"
     )
 ;
 

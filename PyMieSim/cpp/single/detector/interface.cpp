@@ -1,75 +1,312 @@
+#include <algorithm>
+#include <cmath>
+#include <complex>
+#include <memory>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+#include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
+
 #include <pint/pint.h>
 
-#include <utils/numpy_interface.h>
 #include <utils/casting.h>
+#include <utils/numpy_interface.h>
 
 #include <single/scatterer/utils.h>
 #include <single/detector/photodiode.h>
 #include <single/detector/coherent_mode.h>
 #include <single/detector/integrating_sphere.h>
 
+
 namespace py = pybind11;
+
 
 PYBIND11_MODULE(detector, module) {
     py::object ureg = get_shared_ureg();
 
     module.doc() = R"pbdoc(
-        Photodiode binding for PyMieSim.
+        Detector bindings for PyMieSim.
 
-        Provides a `BaseDetector` class to compute coupling to scatterers
-        and expose the detected field distribution.
+        This module exposes detector classes used to compute optical coupling
+        between Lorenz Mie scatterers and detector geometries. It includes
+        photodiode, coherent mode, and integrating sphere detectors.
+
+        The plotting helpers use Matplotlib axes directly through private
+        ``_add_to_ax`` methods. Figure creation, styling, and public plotting
+        APIs should remain controlled from the Python layer.
     )pbdoc";
+
+    auto ensure_matplotlib_3d_axis = [](
+        const py::object& ax
+    ) -> void {
+        if (!py::hasattr(ax, "get_zlim")) {
+            throw std::runtime_error(
+                "Detector plotting requires a Matplotlib 3D axis. "
+                "Create it with: figure.add_subplot(111, projection=\"3d\")."
+            );
+        }
+    };
+
+    auto numpy_array_from_vector = [](
+        const std::vector<double>& values
+    ) -> py::array_t<double> {
+        py::array_t<double> array(
+            static_cast<py::ssize_t>(values.size())
+        );
+
+        auto mutable_array = array.mutable_unchecked<1>();
+
+        for (py::ssize_t index = 0; index < static_cast<py::ssize_t>(values.size()); ++index) {
+            mutable_array(index) = values[static_cast<std::size_t>(index)];
+        }
+
+        return array;
+    };
+
+    auto numpy_surface_from_vector = [](
+        const std::vector<double>& values,
+        const std::size_t radial_sampling,
+        const std::size_t angular_sampling
+    ) -> py::array_t<double> {
+        py::array_t<double> array(
+            py::array::ShapeContainer{
+                static_cast<py::ssize_t>(radial_sampling),
+                static_cast<py::ssize_t>(angular_sampling)
+            }
+        );
+
+        auto mutable_array = array.mutable_unchecked<2>();
+
+        for (std::size_t radial_index = 0; radial_index < radial_sampling; ++radial_index) {
+            for (std::size_t angular_index = 0; angular_index < angular_sampling; ++angular_index) {
+                const std::size_t flat_index = radial_index * angular_sampling + angular_index;
+
+                mutable_array(
+                    static_cast<py::ssize_t>(radial_index),
+                    static_cast<py::ssize_t>(angular_index)
+                ) = values[flat_index];
+            }
+        }
+
+        return array;
+    };
+
+    auto set_detector_axis_limits = [](
+        const py::object& ax,
+        const bool show_axes
+    ) -> void {
+        ax.attr("set_xlim")(-1.0, 1.0);
+        ax.attr("set_ylim")(-1.0, 1.0);
+        ax.attr("set_zlim")(-1.0, 1.0);
+
+        if (py::hasattr(ax, "set_box_aspect")) {
+            ax.attr("set_box_aspect")(py::make_tuple(1.0, 1.0, 1.0));
+        }
+
+        if (show_axes) {
+            ax.attr("set_xlabel")("x");
+            ax.attr("set_ylabel")("y");
+            ax.attr("set_zlabel")("z");
+        } else {
+            ax.attr("set_axis_off")();
+        }
+    };
+
+    auto add_collection_cone_to_ax = [
+        numpy_surface_from_vector
+    ](
+        const BaseDetector& detector,
+        const py::object& ax,
+        const py::object& cone_color,
+        const double cone_alpha,
+        const std::size_t cone_angular_sampling,
+        const std::size_t cone_radial_sampling
+    ) -> void {
+        const BaseDetector::CollectionConeSurface cone_surface =
+            detector.get_collection_cone_surface(
+                cone_angular_sampling,
+                cone_radial_sampling
+            );
+
+        const std::size_t angular_sampling = cone_surface.angular_sampling;
+        const std::size_t rim_offset =
+            (cone_surface.radial_sampling - 1) * angular_sampling;
+
+        std::vector<double> lateral_x(2 * angular_sampling, 0.0);
+        std::vector<double> lateral_y(2 * angular_sampling, 0.0);
+        std::vector<double> lateral_z(2 * angular_sampling, 0.0);
+
+        for (std::size_t angular_index = 0; angular_index < angular_sampling; ++angular_index) {
+            const std::size_t rim_index = rim_offset + angular_index;
+            const std::size_t lateral_index = angular_sampling + angular_index;
+
+            lateral_x[lateral_index] = cone_surface.x[rim_index];
+            lateral_y[lateral_index] = cone_surface.y[rim_index];
+            lateral_z[lateral_index] = cone_surface.z[rim_index];
+        }
+
+        ax.attr("plot_surface")(
+            numpy_surface_from_vector(lateral_x, 2, angular_sampling),
+            numpy_surface_from_vector(lateral_y, 2, angular_sampling),
+            numpy_surface_from_vector(lateral_z, 2, angular_sampling),
+            py::arg("color") = cone_color,
+            py::arg("alpha") = cone_alpha,
+            py::arg("linewidth") = 0.0,
+            py::arg("edgecolor") = py::str("none"),
+            py::arg("shade") = false,
+            py::arg("antialiased") = false,
+            py::arg("zorder") = 0
+        );
+    };
+
+    auto add_detector_points_to_ax = [
+        numpy_array_from_vector
+    ](
+        const BaseDetector& detector,
+        const py::object& ax,
+        const py::object& color,
+        const double field_point_size,
+        const double point_radial_offset
+    ) -> py::object {
+        const BaseDetector::CartesianCoordinateVectors coordinates =
+            detector.get_cartesian_coordinate_vectors();
+
+        std::vector<double> x_values = coordinates.x;
+        std::vector<double> y_values = coordinates.y;
+        std::vector<double> z_values = coordinates.z;
+
+        for (std::size_t index = 0; index < x_values.size(); ++index) {
+            x_values[index] *= point_radial_offset;
+            y_values[index] *= point_radial_offset;
+            z_values[index] *= point_radial_offset;
+        }
+
+        py::array_t<double> x_array = numpy_array_from_vector(x_values);
+        py::array_t<double> y_array = numpy_array_from_vector(y_values);
+        py::array_t<double> z_array = numpy_array_from_vector(z_values);
+
+        return ax.attr("scatter")(
+            x_array,
+            y_array,
+            py::arg("zs") = z_array,
+            py::arg("c") = color,
+            py::arg("s") = field_point_size,
+            py::arg("depthshade") = false,
+            py::arg("zorder") = 10
+        );
+    };
+
+    auto add_colored_detector_points_to_ax = [
+        numpy_array_from_vector
+    ](
+        const BaseDetector& detector,
+        const py::object& ax,
+        const std::vector<double>& scalar_values,
+        const double field_point_size,
+        const double point_radial_offset,
+        const py::object& colormap,
+        const double color_minimum,
+        const double color_maximum
+    ) -> py::object {
+        const BaseDetector::CartesianCoordinateVectors coordinates =
+            detector.get_cartesian_coordinate_vectors();
+
+        std::vector<double> x_values = coordinates.x;
+        std::vector<double> y_values = coordinates.y;
+        std::vector<double> z_values = coordinates.z;
+
+        for (std::size_t index = 0; index < x_values.size(); ++index) {
+            x_values[index] *= point_radial_offset;
+            y_values[index] *= point_radial_offset;
+            z_values[index] *= point_radial_offset;
+        }
+
+        py::array_t<double> x_array = numpy_array_from_vector(x_values);
+        py::array_t<double> y_array = numpy_array_from_vector(y_values);
+        py::array_t<double> z_array = numpy_array_from_vector(z_values);
+        py::array_t<double> scalar_array = numpy_array_from_vector(scalar_values);
+
+        return ax.attr("scatter")(
+            x_array,
+            y_array,
+            py::arg("zs") = z_array,
+            py::arg("c") = scalar_array,
+            py::arg("s") = field_point_size,
+            py::arg("cmap") = colormap,
+            py::arg("vmin") = color_minimum,
+            py::arg("vmax") = color_maximum,
+            py::arg("depthshade") = false,
+            py::arg("zorder") = 10
+        );
+    };
 
     py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BaseDetector")
         .def_readwrite(
             "medium",
             &BaseDetector::medium,
             R"pbdoc(
-                The medium in which the detector is immersed.
+                Medium in which the detector is immersed.
 
-                This property is crucial for accurately modeling the interaction of light with the detector, as it affects the refractive index and, consequently, the behavior of light at the interface between the detector and its surroundings.
+                The medium determines the refractive index surrounding the
+                detector and is used when computing angular collection and
+                interface transmission effects.
             )pbdoc"
         )
         .def_property_readonly(
             "numerical_aperture",
-            [ureg](BaseDetector& self) {
+            [](
+                BaseDetector& self
+            ) {
                 return py::float_(self.numerical_aperture);
             },
             R"pbdoc(
-            Numerical aperture of the detector.
+                Numerical aperture of the detector.
 
-            Controls the angular extent of collected light.
+                Controls the angular extent of the collected scattered field.
             )pbdoc"
         )
         .def_readonly(
             "mesh",
             &BaseDetector::fibonacci_mesh,
             R"pbdoc(
-                The Fibonacci angular mesh used for sampling.
+                Fibonacci angular mesh used by the detector.
 
-                Provided as a NumPy array of shape (sampling, 2) containing
-                (gamma, phi) pairs.
+                The mesh defines the angular directions on which detector fields
+                and coupling integrals are sampled.
             )pbdoc"
         )
         .def_property_readonly(
             "max_angle",
-            [ureg](BaseDetector& self) {
+            [ureg](
+                BaseDetector& self
+            ) {
                 return py::float_(self.max_angle) * ureg.attr("radian");
             },
             R"pbdoc(
-            Returns the maximum angle of the detector in radians.
-            This is used to determine the angular coverage of the detector.
+                Maximum detector collection angle.
+
+                Returns
+                -------
+                pint.Quantity
+                    Maximum collection angle in radians.
             )pbdoc"
         )
         .def_property_readonly(
             "min_angle",
-            [ureg](BaseDetector& self) {
+            [ureg](
+                BaseDetector& self
+            ) {
                 return py::float_(self.min_angle) * ureg.attr("radian");
             },
             R"pbdoc(
-            Returns the minimum angle of the detector in radians.
-            This is used to determine the angular coverage of the detector.
+                Minimum detector collection angle.
+
+                Returns
+                -------
+                pint.Quantity
+                    Minimum collection angle in radians.
             )pbdoc"
         )
         .def(
@@ -77,32 +314,63 @@ PYBIND11_MODULE(detector, module) {
             &BaseDetector::initialize_mesh,
             py::arg("scatterer"),
             R"pbdoc(
-                Initialize the detector mesh based on the scatterer properties.
+                Initialize the detector mesh for a scatterer.
+
+                Parameters
+                ----------
+                scatterer : BaseScatterer
+                    Scatterer used to configure detector dependent angular
+                    quantities.
             )pbdoc"
         )
         .def_property(
             "scalar_field",
-            [ureg](BaseDetector& self) {
+            [](
+                BaseDetector& self
+            ) {
                 return vector_as_numpy_view(self, self.scalar_field);
             },
-            [ureg](BaseDetector& self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> arr) {
-                vector_assign_from_numpy(self.scalar_field, arr);
+            [](
+                BaseDetector& self,
+                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array
+            ) {
+                vector_assign_from_numpy(self.scalar_field, array);
             },
             R"pbdoc(
-                Complex far field samples as numpy.complex128, shape (N,)
-                Getter returns a zero copy view tied to the detector lifetime
-                Setter accepts any 1D array castable to complex128
+                Complex detector scalar field samples.
+
+                The getter returns a zero copy NumPy view tied to the detector
+                lifetime. The setter accepts any one dimensional array castable to
+                ``numpy.complex128``.
+
+                Returns
+                -------
+                numpy.ndarray
+                    Complex array with shape ``(sampling,)``.
             )pbdoc"
         )
         .def(
             "get_structured_scalarfield",
-            [ureg](BaseDetector& self, size_t sampling) {
+            [](
+                BaseDetector& self,
+                const size_t sampling
+            ) {
                 std::vector<complex128> vector = self.get_structured_scalarfield(sampling);
                 return vector_move_from_numpy(std::move(vector), {sampling, sampling});
             },
             py::arg("sampling"),
             R"pbdoc(
-                NumPy array of shape (sampling, 2) with columns [gamma, phi].
+                Compute a structured representation of the scalar field.
+
+                Parameters
+                ----------
+                sampling : int
+                    Number of samples per structured angular dimension.
+
+                Returns
+                -------
+                numpy.ndarray
+                    Complex scalar field array with shape ``(sampling, sampling)``.
             )pbdoc"
         )
         .def(
@@ -113,54 +381,41 @@ PYBIND11_MODULE(detector, module) {
                 const py::object& distance,
                 std::shared_ptr<BaseSource> source
             ) {
-                double distance_value = distance.attr("to")("meter").attr("magnitude").cast<double>();
+                const double distance_value = distance.attr("to")("meter").attr("magnitude").cast<double>();
 
-                std::vector<double> vector = self.get_poynting_field(scatterer, source, distance_value);
-                py::array_t<double> array = vector_move_from_numpy(std::move(vector), {vector.size()});
+                std::vector<double> vector = self.get_poynting_field(
+                    scatterer,
+                    source,
+                    distance_value
+                );
+
+                py::array_t<double> array = vector_move_from_numpy(
+                    std::move(vector),
+                    {vector.size()}
+                );
+
                 return (array * ureg.attr("watt/meter**2")).attr("to_compact")();
             },
             py::arg("scatterer"),
             py::arg("distance") = 1.0,
             py::arg("source"),
             R"pbdoc(
-                Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
-
-                The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:
-
-                .. math::
-                    \vec{S} = \epsilon_0 c^2 \, \vec{E} \times \vec{B}
-
-                Where:
-
-                - \( \vec{S} \): Poynting vector (W/m²)
-                - \( \epsilon_0 \): Permittivity of free space (F/m)
-                - \( c \): Speed of light in vacuum (m/s)
-                - \( \vec{E} \): Electric field vector (V/m)
-                - \( \vec{B} \): Magnetic field vector (T)
-
-                The cross product of the electric and magnetic field vectors results in the Poynting vector, which represents the flow of electromagnetic energy in space.
+                Compute the sampled Poynting field magnitude.
 
                 Parameters
                 ----------
                 scatterer : BaseScatterer
-                    An instance of a PyMieSim scatterer (e.g., SPHERE or CYLINDER).
-                distance : float, optional
-                    Distance from the scatterer to the detector (default is 1).
+                    Scatterer that produces the scattered field.
+                distance : pint.Quantity
+                    Observation distance from the scatterer.
+                source : BaseSource
+                    Incident source illuminating the scatterer.
 
                 Returns
                 -------
-                numpy.ndarray
-                    A 2D array of shape (sampling, sampling) containing the Poynting vector magnitudes.
-
-                Notes
-                -----
-                The Poynting vector is computed over a 3D mesh of voxels that cover the entire solid angle of \( 4\pi \) steradians. This method calculates the local energy flux at each voxel and returns the norm, which represents the magnitude of energy flow at each point in space around the scatterer.
-
-                The Poynting vector is fundamental in understanding how energy is transmitted through space in the form of electromagnetic waves.
-
-                Example
-                -------
-                This method is used to assess the distribution of energy around a scatterer. The total energy flow can be obtained by integrating the Poynting vector over the surface enclosing the scatterer.
+                pint.Quantity
+                    Poynting field magnitude sampled on the detector mesh, with
+                    units of watts per square meter.
             )pbdoc"
         )
         .def(
@@ -170,103 +425,89 @@ PYBIND11_MODULE(detector, module) {
                 std::shared_ptr<BaseScatterer> scatterer,
                 std::shared_ptr<BaseSource> source
             ) {
-                double energy_flow = self.get_energy_flow(scatterer, source);
+                const double energy_flow = self.get_energy_flow(scatterer, source);
                 return (py::float_(energy_flow) * ureg.attr("watt")).attr("to_compact")();
             },
             py::arg("scatterer"),
             py::arg("source"),
             R"pbdoc(
-            Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.
+                Compute the total radiated energy flow sampled by the detector.
 
-            The energy flow is computed using the following relationship between the scattered energy and the incident intensity:
+                Parameters
+                ----------
+                scatterer : BaseScatterer
+                    Scatterer that produces the scattered field.
+                source : BaseSource
+                    Incident source illuminating the scatterer.
 
-            .. math::
-                W_a &= \sigma_{sca} \cdot I_{inc} \\[10pt]
-                P &= \int_{A} I \, dA \\[10pt]
-                I &= \frac{c n \epsilon_0}{2} \, |E|^2
-
-            Where:
-
-            - \( W_a \): Energy flow (W)
-            - \( \sigma_{sca} \): Scattering cross section (m²)
-            - \( I_{inc} \): Incident intensity (W/m²)
-            - \( P \): Radiated power (W)
-            - \( I \): Energy density (W/m²)
-            - \( c \): Speed of light in vacuum (m/s)
-            - \( n \): Refractive index of the surrounding medium
-            - \( \epsilon_0 \): Permittivity of free space (F/m)
-            - \( E \): Electric field (V/m)
-
-            The total power is computed by integrating the intensity over the surface area of the scatterer.
-
-            Parameters
-            ----------
-            scatterer : BaseScatterer
-                The scatterer object, which contains information about the scattering properties of the particle, such as geometry and material.
-            source : BaseSource
-                The source object, which contains information about the incident light, such as intensity and polarization.
-
-            Returns
-            -------
-            Quantity
-                The total energy flow (radiated power) from the scatterer, expressed in watts.
-
-            Notes
-            -----
-            This method computes the energy flow by calculating the Poynting vector and summing it over the surface mesh of the scatterer.
+                Returns
+                -------
+                pint.Quantity
+                    Total energy flow in watts.
             )pbdoc"
         )
         .def_readonly(
             "sampling",
             &BaseDetector::sampling,
             R"pbdoc(
-            Number of samples per full angular sweep.
-
-            Determines resolution of the detected field.
+                Number of angular samples used by the detector mesh.
             )pbdoc"
         )
         .def_property_readonly(
             "phi_offset",
-            [ureg](BaseDetector& self) {
+            [ureg](
+                BaseDetector& self
+            ) {
                 return py::float_(self.phi_offset) * ureg.attr("radian");
             },
             R"pbdoc(
-            Azimuthal offset angle for detector orientation.
+                Azimuthal orientation offset of the detector.
+
+                Returns
+                -------
+                pint.Quantity
+                    Azimuthal offset in radians.
             )pbdoc"
         )
         .def_property_readonly(
             "gamma_offset",
-            [ureg](BaseDetector& self) {
+            [ureg](
+                BaseDetector& self
+            ) {
                 return py::float_(self.gamma_offset) * ureg.attr("radian");
             },
             R"pbdoc(
-            Polar offset angle for detector orientation.
+                Polar orientation offset of the detector.
+
+                Returns
+                -------
+                pint.Quantity
+                    Polar offset in radians.
             )pbdoc"
         )
         .def_property_readonly(
             "polarization_filter",
-            [ureg](BaseDetector& self) {
+            [](
+                BaseDetector& self
+            ) {
                 return py::cast(self.polarization_filter);
             },
             R"pbdoc(
-            Polarization filter setting.
-            Specifies any linear or circular filter applied to the signal.
+                Polarization filter applied before coupling evaluation.
             )pbdoc"
         )
         .def_readonly(
             "mode_field",
             &BaseDetector::mode_field,
             R"pbdoc(
-                ModeField instance representing the detector's mode.
-                Contains methods for field computation and projections.
+                Mode field associated with coherent detector calculations.
             )pbdoc"
         )
         .def_readonly(
             "mode_id",
             &BaseDetector::mode_id,
             R"pbdoc(
-                ModeID instance representing the detector's mode identifier.
-                Contains family and number information for the mode.
+                Identifier of the detector mode family and order.
             )pbdoc"
         )
         .def(
@@ -276,33 +517,37 @@ PYBIND11_MODULE(detector, module) {
                 std::shared_ptr<BaseScatterer> scatterer,
                 std::shared_ptr<BaseSource> source
             ) {
-                double coupling = self.get_coupling(scatterer, source);
+                const double coupling = self.get_coupling(scatterer, source);
                 return (py::float_(coupling) * ureg.attr("watt")).attr("to_compact")();
             },
             py::arg("scatterer"),
             py::arg("source"),
             R"pbdoc(
-            Compute the light coupling between the detector and a scatterer.
+                Compute optical power coupled into the detector.
 
-            The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer.
+                Parameters
+                ----------
+                scatterer : BaseScatterer
+                    Scatterer producing the scattered field.
+                source : BaseSource
+                    Incident source illuminating the scatterer.
 
-            Parameters
-            ----------
-            scatterer : BaseScatterer
-                The scatterer object that interacts with the incident light, producing the scattered field.
-            source : BaseSource
-                The source object that defines the properties of the incident light, such as intensity and polarization.
-
-            Returns
-            -------
-            Quantity
-                The power coupling between the detector and the scatterer, expressed in watts.
+                Returns
+                -------
+                pint.Quantity
+                    Coupled optical power in watts.
             )pbdoc"
         );
 
-    py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(module, "Photodiode",
+    py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(
+        module,
+        "Photodiode",
         R"pbdoc(
-            Photodiode for Lorenz-Mie scattering simulations.
+            Photodiode detector for Lorenz Mie scattering simulations.
+
+            A photodiode integrates the scattered power over an angular
+            collection aperture defined by its numerical aperture, orientation,
+            optional obscuration cache, and polarization filter.
         )pbdoc"
     )
         .def(
@@ -316,13 +561,15 @@ PYBIND11_MODULE(detector, module) {
                     const py::object& cache_numerical_aperture,
                     const std::size_t sampling
                 ) {
-                    double numerical_aperture_value = numerical_aperture.cast<double>();
+                    const double numerical_aperture_value = numerical_aperture.cast<double>();
 
                     std::shared_ptr<BaseMedium> parsed_medium;
-                    if (medium.is(py::none()))
+
+                    if (medium.is(py::none())) {
                         parsed_medium = std::make_shared<ConstantMedium>(1.0);
-                    else
+                    } else {
                         parsed_medium = parse_medium_object(medium, ureg);
+                    }
 
                     return std::make_shared<Photodiode>(
                         sampling,
@@ -343,97 +590,141 @@ PYBIND11_MODULE(detector, module) {
             py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("sampling") = 200,
             R"pbdoc(
-            Photodiode class representing a photodiode with a coherent light coupling mechanism.
+                Construct a photodiode detector.
 
-            Parameters
-            ----------
-            numerical_aperture : Dimensionless
-                Numerical aperture of the imaging system.
-            gamma_offset : Angle
-                Angle offset of the detector in the direction perpendicular to polarization.
-            phi_offset : Angle
-                Angle offset of the detector in the direction parallel to polarization.
-            sampling : int
-                Sampling rate of the far field distribution. Default is 200.
-            polarization_filter : Optional[Angle]
-                Angle of the polarization filter in front of the detector.
-            cache_numerical_aperture : Optional[Dimensionless]
-                Numerical aperture of the detector cache. Default is 0.
-            medium : BaseMedium or float[RefractiveIndex]
-                The medium in which the detector operates. Default is vacuum or air.
+                Parameters
+                ----------
+                numerical_aperture : float
+                    Numerical aperture defining the detector collection angle.
+                phi_offset : pint.Quantity
+                    Azimuthal orientation offset.
+                gamma_offset : pint.Quantity
+                    Polar orientation offset.
+                medium : BaseMedium or float, optional
+                    Surrounding medium. If ``None``, a constant refractive index
+                    of 1.0 is used.
+                polarization_filter : PolarizationState, optional
+                    Polarization filter applied before detection.
+                cache_numerical_aperture : float, optional
+                    Numerical aperture of the central obscuration cache.
+                sampling : int, optional
+                    Number of angular samples on the detector mesh.
             )pbdoc"
         )
         .def(
             "print_properties",
             &Photodiode::print_properties,
+            py::arg("precision") = 4,
             R"pbdoc(
-                Print the properties of the Photodiode detector.
+                Print photodiode properties.
+
+                Parameters
+                ----------
+                precision : int, optional
+                    Number of decimal places used for floating point values.
             )pbdoc"
         )
         .def(
-            "add_to_scene",
-            [](
+            "_add_to_ax",
+            [
+                ensure_matplotlib_3d_axis,
+                add_detector_points_to_ax,
+                add_collection_cone_to_ax,
+                set_detector_axis_limits
+            ](
                 const Photodiode& self,
-                const py::object& scene,
+                const py::object& ax,
                 const py::object& cone_color,
-                const double field_point_size = 20.0
-            ) {
-                py::module_ pyvista = py::module_::import("pyvista");
-                py::module_ numpy = py::module_::import("numpy");
+                const double field_point_size,
+                const double point_radial_offset,
+                const double cone_alpha,
+                const bool show_cone,
+                const bool show_axes,
+                const std::size_t cone_angular_sampling,
+                const std::size_t cone_radial_sampling
+            ) -> void {
+                ensure_matplotlib_3d_axis(ax);
 
-                const py::ssize_t sampling = static_cast<py::ssize_t>(self.sampling);
-
-                py::array_t<double> coordinates_array(
-                    py::array::ShapeContainer{
-                        static_cast<py::ssize_t>(3),
-                        sampling
-                    }
-                );
-
-                auto coordinates = coordinates_array.mutable_unchecked<2>();
-
-                for (py::ssize_t index = 0; index < sampling; ++index) {
-                    coordinates(0, index) = self.fibonacci_mesh.cartesian.x[index];
-                    coordinates(1, index) = self.fibonacci_mesh.cartesian.y[index];
-                    coordinates(2, index) = self.fibonacci_mesh.cartesian.z[index];
+                if (show_cone) {
+                    add_collection_cone_to_ax(
+                        self,
+                        ax,
+                        cone_color,
+                        cone_alpha,
+                        cone_angular_sampling,
+                        cone_radial_sampling
+                    );
                 }
 
-                py::object points = pyvista.attr("wrap")(coordinates_array.attr("T"));
-
-                scene.attr("add_points")(
-                    points,
-                    py::arg("color") = "black",
-                    py::arg("point_size") = field_point_size,
-                    py::arg("render_points_as_spheres") = true
+                add_detector_points_to_ax(
+                    self,
+                    ax,
+                    py::str("black"),
+                    field_point_size,
+                    point_radial_offset
                 );
 
-                py::object mean_vector = coordinates_array.attr("mean")(1);
-                py::object center = mean_vector / py::float_(2.0);
-                py::object direction = numpy.attr("negative")(mean_vector);
-
-                py::object cone_mesh = pyvista.attr("Cone")(
-                    py::arg("center") = center,
-                    py::arg("direction") = direction,
-                    py::arg("height") = py::float_(std::cos(self.max_angle)),
-                    py::arg("resolution") = py::int_(100),
-                    py::arg("angle") = py::float_(self.max_angle * 180.0 / 3.14159265358979323846)
-                );
-
-                scene.attr("add_mesh")(
-                    cone_mesh,
-                    py::arg("color") = cone_color,
-                    py::arg("opacity") = 0.6
-                );
+                set_detector_axis_limits(ax, show_axes);
             },
-            py::arg("scene"),
-            py::arg("cone_color") = py::str("blue"),
-            py::arg("field_point_size") = 20.0
-        )
-        ;
+            py::arg("ax"),
+            py::arg("cone_color") = py::str("red"),
+            py::arg("field_point_size") = 20.0,
+            py::arg("point_radial_offset") = 1.025,
+            py::arg("cone_alpha") = 0.20,
+            py::arg("show_cone") = true,
+            py::arg("show_axes") = false,
+            py::arg("cone_angular_sampling") = 24,
+            py::arg("cone_radial_sampling") = 12,
+            R"pbdoc(
+                Add the photodiode detector geometry to a Matplotlib 3D axis.
 
-    py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(module, "CoherentMode",
+                This private helper draws the detector angular sampling directions
+                as points on the unit sphere and, optionally, draws a translucent
+                lateral collection cone representing the angular aperture. The
+                circular base of the cone is not drawn.
+
+                Parameters
+                ----------
+                ax : matplotlib.axes.Axes
+                    Matplotlib axis created with ``projection="3d"``.
+                cone_color : str or tuple, optional
+                    Matplotlib color used for the collection cone.
+                field_point_size : float, optional
+                    Marker size used for detector sampling points.
+                point_radial_offset : float, optional
+                    Multiplicative radial offset applied to detector sampling
+                    points for visualization. Values slightly above 1 place the
+                    points just outside the collection cone surface.
+                cone_alpha : float, optional
+                    Transparency of the collection cone.
+                show_cone : bool, optional
+                    If ``True``, draw the collection cone.
+                show_axes : bool, optional
+                    If ``True``, display Cartesian axis labels, ticks, and panes.
+                    If ``False``, hide the Matplotlib 3D axis frame after setting
+                    the plotting limits.
+                cone_angular_sampling : int, optional
+                    Number of angular samples used to draw the cone surface.
+                cone_radial_sampling : int, optional
+                    Number of radial samples used to generate the cone geometry.
+
+                Notes
+                -----
+                This method replaces the previous PyVista based ``add_to_scene``
+                method. It operates on an existing Matplotlib axis so the Python
+                plotting layer remains responsible for figure creation and style.
+            )pbdoc"
+        );
+
+    py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(
+        module,
+        "CoherentMode",
         R"pbdoc(
-            CoherentMode detector for Lorenz-Mie scattering simulations.
+            Coherent mode detector for Lorenz Mie scattering simulations.
+
+            A coherent mode detector projects the scattered field onto a specified
+            collecting mode and can account for orientation, rotation, numerical
+            aperture, obscuration cache, and polarization filtering.
         )pbdoc"
     )
         .def(
@@ -450,22 +741,23 @@ PYBIND11_MODULE(detector, module) {
                     const py::object& mean_coupling,
                     const std::size_t& sampling
                 ) {
-                    double numerical_aperture_value = numerical_aperture.cast<double>();
+                    const double numerical_aperture_value = numerical_aperture.cast<double>();
 
                     std::shared_ptr<BaseMedium> parsed_medium;
-                    if (medium.is(py::none()))
-                        parsed_medium = std::make_shared<ConstantMedium>(1.0);
-                    else
-                        parsed_medium = parse_medium_object(medium, ureg);
 
+                    if (medium.is(py::none())) {
+                        parsed_medium = std::make_shared<ConstantMedium>(1.0);
+                    } else {
+                        parsed_medium = parse_medium_object(medium, ureg);
+                    }
 
                     if (numerical_aperture_value < 0.0) {
-                        throw std::runtime_error("Numerical aperture (NA) must be non-negative.");
+                        throw std::runtime_error("Numerical aperture must be non negative.");
                     }
 
                     if (numerical_aperture_value > 0.342) {
                         std::printf(
-                            "Warning: Numerical aperture (NA) exceeds 0.342 for coherent detectors, which is not recommended for paraxial approximation to hold.\n"
+                            "Warning: numerical aperture exceeds 0.342 for coherent detectors, which may violate the paraxial approximation.\n"
                         );
                     }
 
@@ -494,124 +786,209 @@ PYBIND11_MODULE(detector, module) {
             py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
             R"pbdoc(
-            CoherentMode class representing a photodiode with a coherent light coupling mechanism.
+                Construct a coherent mode detector.
 
-            Parameters
-            ----------
-            numerical_aperture : Dimensionless
-                Numerical aperture of the imaging system.
-            gamma_offset : Angle
-                Angle offset of the detector in the direction perpendicular to polarization.
-            phi_offset : Angle
-                Angle offset of the detector in the direction parallel to polarization.
-            rotation : Angle
-                Rotation angle of the detector field of view.
-            sampling : int
-                Sampling rate of the far field distribution. Default is 200.
-            polarization_filter : Optional[Angle]
-                Angle of the polarization filter in front of the detector.
-            cache_numerical_aperture : Optional[Dimensionless]
-                Numerical aperture of the detector cache. Default is 0.
-            mean_coupling : bool
-                Indicates if the coupling mechanism is point wise or mean wise.
-            medium : BaseMedium or float[RefractiveIndex]
-                The medium in which the detector operates. Default is vacuum or air.
+                Parameters
+                ----------
+                mode_number : str
+                    Mode identifier, for example ``"LP01"`` or ``"HG12"``.
+                numerical_aperture : float
+                    Numerical aperture defining the angular collection region.
+                phi_offset : pint.Quantity
+                    Azimuthal orientation offset.
+                gamma_offset : pint.Quantity
+                    Polar orientation offset.
+                rotation : pint.Quantity
+                    Rotation of the detector mode field.
+                medium : BaseMedium or float, optional
+                    Surrounding medium. If ``None``, a constant refractive index
+                    of 1.0 is used.
+                cache_numerical_aperture : float, optional
+                    Numerical aperture of the central obscuration cache.
+                polarization_filter : PolarizationState, optional
+                    Polarization filter applied before coherent projection.
+                mean_coupling : bool, optional
+                    If ``True``, use mean coupling behavior where supported by
+                    the detector implementation.
+                sampling : int, optional
+                    Number of angular samples on the detector mesh.
             )pbdoc"
         )
         .def_property_readonly(
             "rotation",
-            [ureg](CoherentMode& self) {
+            [ureg](
+                CoherentMode& self
+            ) {
                 return py::float_(self.rotation) * ureg.attr("radian");
             },
             R"pbdoc(
-                Rotation angle of the detector's field of view.
+                Rotation angle of the coherent mode field.
+
+                Returns
+                -------
+                pint.Quantity
+                    Rotation angle in radians.
             )pbdoc"
         )
         .def(
             "print_properties",
             &CoherentMode::print_properties,
+            py::arg("precision") = 4,
             R"pbdoc(
-            Print the properties of the CoherentMode detector.
+                Print coherent mode detector properties.
+
+                Parameters
+                ----------
+                precision : int, optional
+                    Number of decimal places used for floating point values.
             )pbdoc"
         )
         .def(
-            "add_to_scene",
-            [](const CoherentMode& self,
-            const py::object& scene,
-            const py::object& cone_color = py::str("blue"),
-            const double field_point_size = 20.0) -> void
-            {
-                py::module_ numpy = py::module_::import("numpy");
-                py::module_ pyvista = py::module_::import("pyvista");
-                py::object blue_black_red = py::module_::import("MPSPlots.colormaps").attr("blue_black_red");
+            "_add_to_ax",
+            [
+                ensure_matplotlib_3d_axis,
+                add_colored_detector_points_to_ax,
+                add_collection_cone_to_ax,
+                set_detector_axis_limits
+            ](
+                const CoherentMode& self,
+                const py::object& ax,
+                const py::object& cone_color,
+                const double field_point_size,
+                const double point_radial_offset,
+                const double cone_alpha,
+                const bool show_cone,
+                const bool show_colorbar,
+                const bool show_axes,
+                const std::size_t cone_angular_sampling,
+                const std::size_t cone_radial_sampling
+            ) -> void {
+                ensure_matplotlib_3d_axis(ax);
 
-                const py::ssize_t sampling = static_cast<py::ssize_t>(self.sampling);
+                py::object blue_black_red =
+                    py::module_::import("MPSPlots.colormaps").attr("blue_black_red");
 
-                py::array_t<double> coordinates_array(
-                    py::array::ShapeContainer{
-                        static_cast<py::ssize_t>(3),
-                        static_cast<py::ssize_t>(sampling)
-                    }
+                std::vector<double> scalar_field_real_values;
+                scalar_field_real_values.resize(self.sampling, 0.0);
+
+                double absolute_maximum = 0.0;
+
+                const std::size_t common_size = std::min(
+                    self.scalar_field.size(),
+                    static_cast<std::size_t>(self.sampling)
                 );
 
-                auto coordinates = coordinates_array.mutable_unchecked<2>();
+                for (std::size_t index = 0; index < common_size; ++index) {
+                    const double value = self.scalar_field[index].real();
 
-                for (py::ssize_t index = 0; index < sampling; ++index) {
-                    coordinates(0, index) = self.fibonacci_mesh.cartesian.x[index];
-                    coordinates(1, index) = self.fibonacci_mesh.cartesian.y[index];
-                    coordinates(2, index) = self.fibonacci_mesh.cartesian.z[index];
+                    scalar_field_real_values[index] = value;
+                    absolute_maximum = std::max(absolute_maximum, std::abs(value));
                 }
 
-                py::object points = pyvista.attr("wrap")(coordinates_array.attr("T"));
-
-                py::array scalar_field_array = py::cast(self.scalar_field);
-                py::object scalar_field_real = numpy.attr("asarray")(scalar_field_array).attr("real");
-
-                py::ssize_t scalar_field_size = scalar_field_real.attr("size").cast<py::ssize_t>();
-
-                double absolute_maximum = 1.0;
-                if (scalar_field_size > 0) {
-                    absolute_maximum = numpy.attr("abs")(scalar_field_real).attr("max")().cast<double>();
+                if (absolute_maximum <= 0.0) {
+                    absolute_maximum = 1.0;
                 }
 
-                py::object mapping = scene.attr("add_points")(
-                    points,
-                    py::arg("scalars") = scalar_field_real,
-                    py::arg("point_size") = field_point_size,
-                    py::arg("render_points_as_spheres") = true,
-                    py::arg("cmap") = blue_black_red,
-                    py::arg("show_scalar_bar") = false,
-                    py::arg("clim") = py::make_tuple(-absolute_maximum, absolute_maximum)
+                if (show_cone) {
+                    add_collection_cone_to_ax(
+                        self,
+                        ax,
+                        cone_color,
+                        cone_alpha,
+                        cone_angular_sampling,
+                        cone_radial_sampling
+                    );
+                }
+
+                py::object scatter = add_colored_detector_points_to_ax(
+                    self,
+                    ax,
+                    scalar_field_real_values,
+                    field_point_size,
+                    point_radial_offset,
+                    blue_black_red,
+                    -absolute_maximum,
+                    absolute_maximum
                 );
 
-                py::object mean_vector = coordinates_array.attr("mean")(1);
+                if (show_colorbar) {
+                    ax.attr("figure").attr("colorbar")(
+                        scatter,
+                        py::arg("ax") = ax,
+                        py::arg("label") = "Collecting field real part"
+                    );
+                }
 
-                py::object cone_mesh = pyvista.attr("Cone")(
-                    py::arg("center") = mean_vector / py::float_(2.0),
-                    py::arg("direction") = -mean_vector,
-                    py::arg("height") = py::float_(std::cos(self.max_angle)),
-                    py::arg("resolution") = py::int_(100),
-                    py::arg("angle") = py::float_(self.max_angle * 180.0 / 3.14159265358979323846)
-                );
-
-                scene.attr("add_mesh")(
-                    cone_mesh,
-                    py::arg("color") = cone_color,
-                    py::arg("opacity") = 0.6
-                );
-
-                scene.attr("add_scalar_bar")(
-                    py::arg("mapper") = mapping.attr("mapper"),
-                    py::arg("title") = "Collecting Field Real Part"
-                );
+                set_detector_axis_limits(ax, show_axes);
             },
-            py::arg("scene"),
-            py::arg("cone_color") = py::str("blue"),
-            py::arg("field_point_size") = 20.0
-        )
-        ;
+            py::arg("ax"),
+            py::arg("cone_color") = py::str("red"),
+            py::arg("field_point_size") = 20.0,
+            py::arg("point_radial_offset") = 1.025,
+            py::arg("cone_alpha") = 0.20,
+            py::arg("show_cone") = true,
+            py::arg("show_colorbar") = true,
+            py::arg("show_axes") = false,
+            py::arg("cone_angular_sampling") = 96,
+            py::arg("cone_radial_sampling") = 16,
+            R"pbdoc(
+                Add the coherent detector mode to a Matplotlib 3D axis.
 
-    py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(module, "IntegratingSphere")
+                This private helper draws the detector angular sampling directions
+                on the unit sphere and colors each point by the real part of the
+                coherent collecting field. The color scale is centered on zero so
+                positive and negative field regions are displayed symmetrically.
+                The collection cone is drawn before the points, and the points are
+                radially offset for visualization so they remain visible above the
+                cone surface.
+
+                Parameters
+                ----------
+                ax : matplotlib.axes.Axes
+                    Matplotlib axis created with ``projection="3d"``.
+                cone_color : str or tuple, optional
+                    Matplotlib color used for the collection cone.
+                field_point_size : float, optional
+                    Marker size used for detector sampling points.
+                point_radial_offset : float, optional
+                    Multiplicative radial offset applied to detector sampling
+                    points for visualization. Values slightly above 1 place the
+                    points just outside the collection cone surface.
+                cone_alpha : float, optional
+                    Transparency of the collection cone.
+                show_cone : bool, optional
+                    If ``True``, draw the lateral collection cone.
+                show_colorbar : bool, optional
+                    If ``True``, add a colorbar for the real part of the
+                    collecting field.
+                show_axes : bool, optional
+                    If ``True``, display Cartesian axis labels, ticks, and panes.
+                    If ``False``, hide the Matplotlib 3D axis frame after setting
+                    the plotting limits.
+                cone_angular_sampling : int, optional
+                    Number of angular samples used to draw the cone surface.
+                cone_radial_sampling : int, optional
+                    Number of radial samples used to generate the cone geometry.
+
+                Notes
+                -----
+                This method replaces the previous PyVista based ``add_to_scene``
+                method. It uses ``MPSPlots.colormaps.blue_black_red`` as the
+                diverging colormap for the real part of the coherent collecting
+                field.
+            )pbdoc"
+        );
+
+    py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(
+        module,
+        "IntegratingSphere",
+        R"pbdoc(
+            Integrating sphere detector for Lorenz Mie scattering simulations.
+
+            The integrating sphere represents full angular collection over the
+            detector mesh, optionally with polarization filtering.
+        )pbdoc"
+    )
         .def(
             py::init(
                 [](
@@ -627,81 +1004,85 @@ PYBIND11_MODULE(detector, module) {
             py::arg("polarization_filter") = PolarizationState(),
             py::arg("sampling") = 400,
             R"pbdoc(
-            Construct an IntegratingSphere detector.
+                Construct an integrating sphere detector.
 
-            Parameters
-            ----------
-            polarization_filter : Optional[Angle]
-                Polarization filter angle. If None, no polarization filtering is applied.
-            sampling : int
-                Number of angular samples on the Fibonacci mesh.
+                Parameters
+                ----------
+                polarization_filter : PolarizationState, optional
+                    Polarization filter applied before detection.
+                sampling : int, optional
+                    Number of angular samples on the detector mesh.
             )pbdoc"
         )
         .def(
             "print_properties",
             &IntegratingSphere::print_properties,
+            py::arg("precision") = 4,
             R"pbdoc(
-                Print the properties of the IntegratingSphere detector.
+                Print integrating sphere detector properties.
+
+                Parameters
+                ----------
+                precision : int, optional
+                    Number of decimal places used for floating point values.
             )pbdoc"
         )
         .def(
-            "add_to_scene",
-            [](
+            "_add_to_ax",
+            [
+                ensure_matplotlib_3d_axis,
+                add_detector_points_to_ax,
+                set_detector_axis_limits
+            ](
                 const IntegratingSphere& self,
-                const py::object& scene,
-                const py::object& cone_color,
-                const double field_point_size = 20.0
-            ) {
-                py::module_ pyvista = py::module_::import("pyvista");
-                py::module_ numpy = py::module_::import("numpy");
+                const py::object& ax,
+                const double field_point_size,
+                const double point_radial_offset,
+                const bool show_axes
+            ) -> void {
+                ensure_matplotlib_3d_axis(ax);
 
-                const py::ssize_t sampling = static_cast<py::ssize_t>(self.sampling);
-
-                py::array_t<double> coordinates_array(
-                    py::array::ShapeContainer{
-                        static_cast<py::ssize_t>(3),
-                        sampling
-                    }
+                add_detector_points_to_ax(
+                    self,
+                    ax,
+                    py::str("black"),
+                    field_point_size,
+                    point_radial_offset
                 );
 
-                auto coordinates = coordinates_array.mutable_unchecked<2>();
-
-                for (py::ssize_t index = 0; index < sampling; ++index) {
-                    coordinates(0, index) = self.fibonacci_mesh.cartesian.x[index];
-                    coordinates(1, index) = self.fibonacci_mesh.cartesian.y[index];
-                    coordinates(2, index) = self.fibonacci_mesh.cartesian.z[index];
-                }
-
-                py::object points = pyvista.attr("wrap")(coordinates_array.attr("T"));
-
-                scene.attr("add_points")(
-                    points,
-                    py::arg("color") = "black",
-                    py::arg("point_size") = field_point_size,
-                    py::arg("render_points_as_spheres") = true
-                );
-
-                py::object mean_vector = coordinates_array.attr("mean")(1);
-                py::object center = mean_vector / py::float_(2.0);
-                py::object direction = numpy.attr("negative")(mean_vector);
-
-                py::object cone_mesh = pyvista.attr("Cone")(
-                    py::arg("center") = center,
-                    py::arg("direction") = direction,
-                    py::arg("height") = py::float_(std::cos(self.max_angle)),
-                    py::arg("resolution") = py::int_(100),
-                    py::arg("angle") = py::float_(self.max_angle * 180.0 / 3.14159265358979323846)
-                );
-
-                scene.attr("add_mesh")(
-                    cone_mesh,
-                    py::arg("color") = cone_color,
-                    py::arg("opacity") = 0.6
-                );
+                set_detector_axis_limits(ax, show_axes);
             },
-            py::arg("scene"),
-            py::arg("cone_color") = py::str("blue"),
-            py::arg("field_point_size") = 20.0
-        )
-    ;
+            py::arg("ax"),
+            py::arg("field_point_size") = 20.0,
+            py::arg("point_radial_offset") = 1.025,
+            py::arg("show_axes") = false,
+            R"pbdoc(
+                Add the integrating sphere angular mesh to a Matplotlib 3D axis.
+
+                This private helper draws the angular sampling directions of the
+                integrating sphere as points on the unit sphere. No collection
+                cone is drawn because the integrating sphere represents full
+                angular collection.
+
+                Parameters
+                ----------
+                ax : matplotlib.axes.Axes
+                    Matplotlib axis created with ``projection="3d"``.
+                field_point_size : float, optional
+                    Marker size used for detector sampling points.
+                point_radial_offset : float, optional
+                    Multiplicative radial offset applied to detector sampling
+                    points for visualization.
+                show_axes : bool, optional
+                    If ``True``, display Cartesian axis labels, ticks, and panes.
+                    If ``False``, hide the Matplotlib 3D axis frame after setting
+                    the plotting limits.
+
+                Notes
+                -----
+                This method replaces the previous PyVista based ``add_to_scene``
+                method. It operates on an existing Matplotlib axis so the Python
+                plotting layer remains responsible for figure creation and style.
+            )pbdoc"
+        );
 }
