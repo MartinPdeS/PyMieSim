@@ -43,4 +43,4 @@ figure = far_fields.plot("phi_real")
 figure = far_fields.plot("phi_imag")
 
 ## Visualize the far-fields: phi_magnitude component
-figure = far_fields.plot("phi_magnitude")
+figure = far_fields.plot("phi_intensity")

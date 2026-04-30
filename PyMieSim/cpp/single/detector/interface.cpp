@@ -1038,7 +1038,8 @@ PYBIND11_MODULE(detector, module) {
                 const py::object& ax,
                 const double field_point_size,
                 const double point_radial_offset,
-                const bool show_axes
+                const bool show_axes,
+                const bool show_cone
             ) -> void {
                 ensure_matplotlib_3d_axis(ax);
 
@@ -1056,6 +1057,7 @@ PYBIND11_MODULE(detector, module) {
             py::arg("field_point_size") = 20.0,
             py::arg("point_radial_offset") = 1.025,
             py::arg("show_axes") = false,
+            py::arg("show_cone") = false,
             R"pbdoc(
                 Add the integrating sphere angular mesh to a Matplotlib 3D axis.
 
@@ -1077,6 +1079,9 @@ PYBIND11_MODULE(detector, module) {
                     If ``True``, display Cartesian axis labels, ticks, and panes.
                     If ``False``, hide the Matplotlib 3D axis frame after setting
                     the plotting limits.
+                show_cone : bool, optional
+                    Ignored for this detector type since the integrating sphere
+                    represents full angular collection.
 
                 Notes
                 -----

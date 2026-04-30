@@ -860,7 +860,7 @@ PYBIND11_MODULE(setup, module)
         },
         py::arg("show_axes") = false,
         py::arg("show_colorbar") = true,
-        py::arg("show_detector_cone") = true,
+        py::arg("show_detector_cone") = false,
         py::arg("show_unit_sphere") = true,
         py::arg("figure_size") = 7.0,
         R"pbdoc(
