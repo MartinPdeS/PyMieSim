@@ -33,8 +33,18 @@ This example demonstrates the initialization and visualization of an LP02 Mode d
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
 
 
+    <Figure size 700x700 with 2 Axes>
+
+
+
+
+
+|
 
 .. code-block:: Python
 
@@ -81,7 +91,7 @@ This example demonstrates the initialization and visualization of an LP02 Mode d
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.215 seconds)
+   **Total running time of the script:** (0 minutes 0.221 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_LP02.py:

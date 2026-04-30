@@ -23,14 +23,33 @@ Far-Fields Computation and Visualization
 
 This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-40
+.. GENERATED FROM PYTHON SOURCE LINES 7-47
 
 
 
-.. image-sg:: /gallery/single/images/sphx_glr_farfields_001.png
-   :alt: farfields
-   :srcset: /gallery/single/images/sphx_glr_farfields_001.png
-   :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image-sg:: /gallery/single/images/sphx_glr_farfields_001.png
+         :alt: $\operatorname{Re}(E_\phi)$
+         :srcset: /gallery/single/images/sphx_glr_farfields_001.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /gallery/single/images/sphx_glr_farfields_002.png
+         :alt: $\operatorname{Im}(E_\phi)$
+         :srcset: /gallery/single/images/sphx_glr_farfields_002.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /gallery/single/images/sphx_glr_farfields_003.png
+         :alt: $|E_\phi|^2$
+         :srcset: /gallery/single/images/sphx_glr_farfields_003.png
+         :class: sphx-glr-multi-img
 
 
 
@@ -46,7 +65,7 @@ This example demonstrates the process of computing and visualizing the far-field
     from PyMieSim.single.setup import Setup
     from PyMieSim.material import SellmeierMaterial
 
-    material = SellmeierMaterial("BK7")
+    # material = SellmeierMaterial("BK7")
 
     polarization = PolarizationState(angle=30 * ureg.degree)
 
@@ -59,7 +78,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
     scatterer = Sphere(
         diameter=1500 * ureg.nanometer,
-        material=material,
+        material=1.4,
         medium=1.0,
     )
 
@@ -70,12 +89,19 @@ This example demonstrates the process of computing and visualizing the far-field
 
     far_fields = setup.get_representation("farfields", sampling=100)
 
-    figure = far_fields.plot()
+    ## Visualize the far-fields: phi_real component
+    figure = far_fields.plot("phi_real")
+
+    ## Visualize the far-fields: phi_imag component
+    figure = far_fields.plot("phi_imag")
+
+    ## Visualize the far-fields: phi_magnitude component
+    figure = far_fields.plot("phi_intensity")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.380 seconds)
+   **Total running time of the script:** (0 minutes 4.265 seconds)
 
 
 .. _sphx_glr_download_gallery_single_farfields.py:

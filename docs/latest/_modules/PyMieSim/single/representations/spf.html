@@ -459,176 +459,387 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyplot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colors</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">spherical_to_cartesian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span> <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span>  <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
 
 
 <div class="viewcode-block" id="SPF">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.SPF">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the scattering phase function (SPF) for the scatterer.</span>
+<span class="sd">    Scattering phase function representation.</span>
 
-<span class="sd">    The scattering phase function describes how the intensity of scattered light varies as a function of the scattering angles \( \theta \) (polar) and \( \phi \) (azimuthal). It is a key quantity in light scattering, as it characterizes the angular distribution of scattered light.</span>
+<span class="sd">    The scattering phase function describes how the scattered intensity varies</span>
+<span class="sd">    as a function of the scattering direction around the particle.</span>
 
-<span class="sd">    The scattering phase function is computed as:</span>
-
-<span class="sd">    .. math::</span>
-<span class="sd">        \text{SPF} = \sqrt{ E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2 }</span>
-
-<span class="sd">    Where:</span>
-
-<span class="sd">    - :math:`E_{\parallel}`: The parallel component of the scattered electric field.</span>
-<span class="sd">    - :math:`E_{\perp}`: The perpendicular component of the scattered electric field.</span>
-<span class="sd">    - :math:`\phi` and :math:`\theta`: The azimuthal and polar angles, respectively, which describe the angular position of the scattered light.</span>
-
-<span class="sd">    The SPF combines the intensity contributions from both polarization components to describe the total scattered intensity in different directions.</span>
+<span class="sd">    The SPF is sampled on the backend spherical mesh and can be rendered either</span>
+<span class="sd">    as a normalized radial surface or as an intensity map on a unit sphere.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    setup : object</span>
+<span class="sd">        Single scatterer setup object exposing ``get_spf``.</span>
+<span class="sd">    sampling : int, optional</span>
+<span class="sd">        Number of angular samples used in each spherical mesh direction.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    setup : object</span>
+<span class="sd">        Simulation setup used to compute the scattering phase function.</span>
 <span class="sd">    sampling : int</span>
-<span class="sd">        The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</span>
-<span class="sd">    distance : Length, optional</span>
-<span class="sd">        The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    representations.SPF</span>
-<span class="sd">        An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    - The scattering phase function is a critical quantity in the study of light scattering, as it provides insight into the directionality of the scattered light. It is commonly used in fields like atmospheric optics, biomedical imaging, and remote sensing.</span>
-<span class="sd">    - The `sampling` parameter controls the angular resolution of the SPF. Higher sampling values yield more detailed scattering patterns, especially important when capturing small angular features.</span>
-
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
-<span class="sd">    You can use this method to compute the scattering phase function of a spherical scatterer, helping to understand the angular distribution of light scattered by the particle.</span>
-
-<span class="sd">    Example usage:</span>
-
-<span class="sd">    &gt;&gt;&gt; spf = scatterer.get_spf(sampling=500)</span>
-<span class="sd">    &gt;&gt;&gt; print(spf)</span>
-
+<span class="sd">        Angular sampling used for the structured SPF mesh.</span>
+<span class="sd">    SPF : numpy.ndarray</span>
+<span class="sd">        Scattering phase function sampled on the spherical mesh.</span>
+<span class="sd">    mesh : object</span>
+<span class="sd">        Full spherical mesh returned by the backend.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">setup</span><span class="p">,</span>
+        <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_spf</span><span class="p">(</span>
             <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span>
-            <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
+            <span class="n">distance</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="SPF.plot">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.SPF.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">unit_size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">),</span>
+        <span class="n">unit_size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
         <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
         <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+        <span class="n">edge_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
         <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">set_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Visualizes the scattering phase function on a 3D plot.</span>
-
-<span class="sd">        This method creates a 3D visualization of the scattering phase function (SPF). It allows customization</span>
-<span class="sd">        of the plot&#39;s appearance, including the colormap, mesh opacity, and whether or not to display mesh edges</span>
-<span class="sd">        and axis labels.</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">surface_linewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">surface_antialiased</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">elevation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">25.0</span><span class="p">,</span>
+        <span class="n">azimuth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">35.0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the scattering phase function on a Matplotlib 3D surface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        unit_size : List[float]</span>
-<span class="sd">            The size of the plot window in pixels (width, height). Default is (800, 800).</span>
-<span class="sd">        background_color : str</span>
-<span class="sd">            The background color of the plot. Default is &#39;white&#39;.</span>
-<span class="sd">        show_edges : bool</span>
-<span class="sd">            If True, displays the edges of the mesh. Default is False.</span>
-<span class="sd">        colormap : str</span>
-<span class="sd">            The colormap to use for scalar mapping. Default is &#39;viridis&#39;.</span>
-<span class="sd">        opacity : float</span>
-<span class="sd">            The opacity of the mesh. Default is 1.0.</span>
-<span class="sd">        set_surface : bool</span>
-<span class="sd">            If True, the surface represents the scaled SPF; if False, a unit sphere is used. Default is True.</span>
-<span class="sd">        show_axis_label : bool</span>
-<span class="sd">            If True, shows the axis labels. Default is False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="sd">        unit_size : Sequence[float], optional</span>
+<span class="sd">            Figure size in inches, given as ``(width, height)``.</span>
+<span class="sd">        background_color : str, optional</span>
+<span class="sd">            Figure and axis background color.</span>
+<span class="sd">        show_edges : bool, optional</span>
+<span class="sd">            If ``True``, draw surface mesh edges. Edges are also drawn</span>
+<span class="sd">            automatically when ``surface_linewidth`` is greater than zero.</span>
+<span class="sd">        edge_color : str, optional</span>
+<span class="sd">            Color used for surface mesh edges.</span>
+<span class="sd">        colormap : str or matplotlib.colors.Colormap, optional</span>
+<span class="sd">            Colormap used for the SPF intensity values.</span>
+<span class="sd">        opacity : float, optional</span>
+<span class="sd">            Surface opacity.</span>
+<span class="sd">        set_surface : bool, optional</span>
+<span class="sd">            If ``True``, the surface radius is proportional to the normalized</span>
+<span class="sd">            SPF intensity. If ``False``, the SPF intensity is drawn on a unit sphere.</span>
+<span class="sd">        show_axis_label : bool, optional</span>
+<span class="sd">            If ``True``, display Cartesian axis labels, ticks, and panes.</span>
+<span class="sd">            If ``False``, hide the axis frame.</span>
+<span class="sd">        scale : str, optional</span>
+<span class="sd">            Color scaling. Supported values are ``&quot;linear&quot;`` and ``&quot;log&quot;``.</span>
+<span class="sd">        percentile_clip : float, optional</span>
+<span class="sd">            If provided, the upper color limit is clipped to this percentile of</span>
+<span class="sd">            the finite positive values.</span>
+<span class="sd">        surface_linewidth : float, optional</span>
+<span class="sd">            Line width used for surface edges. Values greater than zero enable</span>
+<span class="sd">            mesh edges even if ``show_edges`` is ``False``.</span>
+<span class="sd">        surface_antialiased : bool, optional</span>
+<span class="sd">            Matplotlib antialiasing flag for surfaces.</span>
+<span class="sd">        elevation : float, optional</span>
+<span class="sd">            Matplotlib 3D view elevation angle in degrees.</span>
+<span class="sd">        azimuth : float, optional</span>
+<span class="sd">            Matplotlib 3D view azimuth angle in degrees.</span>
 
-        <span class="n">scene</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span>
-            <span class="n">theme</span><span class="o">=</span><span class="n">pyvista</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">DocumentTheme</span><span class="p">(),</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.figure.Figure</span>
+<span class="sd">            Matplotlib figure containing the SPF visualization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">scene</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
 
-        <span class="n">mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_3d_ax</span><span class="p">(</span>
-            <span class="n">scene</span><span class="o">=</span><span class="n">scene</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_3d_ax</span><span class="p">(</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+            <span class="n">set_surface</span><span class="o">=</span><span class="n">set_surface</span><span class="p">,</span>
+            <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="n">edge_color</span><span class="p">,</span>
             <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
             <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
-            <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
-            <span class="n">set_surface</span><span class="o">=</span><span class="n">set_surface</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+            <span class="n">percentile_clip</span><span class="o">=</span><span class="n">percentile_clip</span><span class="p">,</span>
+            <span class="n">surface_linewidth</span><span class="o">=</span><span class="n">surface_linewidth</span><span class="p">,</span>
+            <span class="n">surface_antialiased</span><span class="o">=</span><span class="n">surface_antialiased</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">scene</span><span class="o">.</span><span class="n">add_axes_at_origin</span><span class="p">(</span><span class="n">labels_off</span><span class="o">=</span><span class="ow">not</span> <span class="n">show_axis_label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_format_3d_axis</span><span class="p">(</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+            <span class="n">background_color</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
+            <span class="n">show_axis_label</span><span class="o">=</span><span class="n">show_axis_label</span><span class="p">,</span>
+            <span class="n">elevation</span><span class="o">=</span><span class="n">elevation</span><span class="p">,</span>
+            <span class="n">azimuth</span><span class="o">=</span><span class="n">azimuth</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="n">scene</span><span class="o">.</span><span class="n">add_scalar_bar</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapping</span><span class="o">.</span><span class="n">mapper</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Scattering Phase Function&quot;</span><span class="p">)</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-        <span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">figure</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_3d_ax</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">scene</span><span class="p">:</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">,</span>
-        <span class="n">set_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">set_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+        <span class="n">edge_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
         <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">surface_linewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">surface_antialiased</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the SPF surface to a Matplotlib 3D axis.</span>
+
+<span class="sd">        The surface geometry follows the scattering phase function if</span>
+<span class="sd">        ``set_surface`` is ``True``. In all cases, the surface colors are linked</span>
+<span class="sd">        to the SPF intensity itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spf_array</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">set_surface</span><span class="p">:</span>
+            <span class="n">maximum_intensity</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">maximum_intensity</span><span class="p">)</span> <span class="ow">or</span> <span class="n">maximum_intensity</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">intensity</span> <span class="o">/</span> <span class="n">maximum_intensity</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+
+        <span class="n">x_coordinates</span><span class="p">,</span> <span class="n">y_coordinates</span><span class="p">,</span> <span class="n">z_coordinates</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span>
+            <span class="n">r</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+            <span class="n">phi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">theta</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">x_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span><span class="n">x_coordinates</span><span class="p">)</span>
+        <span class="n">y_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span><span class="n">y_coordinates</span><span class="p">)</span>
+        <span class="n">z_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span><span class="n">z_coordinates</span><span class="p">)</span>
+
+        <span class="n">intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+
+        <span class="n">colormap_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_colormap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+
+        <span class="n">normalization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_normalization</span><span class="p">(</span>
+            <span class="n">intensity</span><span class="o">=</span><span class="n">intensity</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+            <span class="n">percentile_clip</span><span class="o">=</span><span class="n">percentile_clip</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">facecolors</span> <span class="o">=</span> <span class="n">colormap_object</span><span class="p">(</span><span class="n">normalization</span><span class="p">(</span><span class="n">intensity</span><span class="p">))</span>
+        <span class="n">facecolors</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">opacity</span>
+
+        <span class="n">draw_edges</span> <span class="o">=</span> <span class="n">show_edges</span> <span class="ow">or</span> <span class="n">surface_linewidth</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+        <span class="n">effective_edge_color</span> <span class="o">=</span> <span class="n">edge_color</span> <span class="k">if</span> <span class="n">draw_edges</span> <span class="k">else</span> <span class="s2">&quot;none&quot;</span>
+        <span class="n">effective_linewidth</span> <span class="o">=</span> <span class="n">surface_linewidth</span> <span class="k">if</span> <span class="n">draw_edges</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span>
+            <span class="n">x_coordinates</span><span class="p">,</span>
+            <span class="n">y_coordinates</span><span class="p">,</span>
+            <span class="n">z_coordinates</span><span class="p">,</span>
+            <span class="n">facecolors</span><span class="o">=</span><span class="n">facecolors</span><span class="p">,</span>
+            <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="n">effective_linewidth</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="n">effective_edge_color</span><span class="p">,</span>
+            <span class="n">antialiased</span><span class="o">=</span><span class="n">surface_antialiased</span><span class="p">,</span>
+            <span class="n">shade</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_normalization</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">intensity</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build the Matplotlib normalization for the SPF intensity values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">finite_values</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">intensity</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">finite_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="n">non_negative_values</span> <span class="o">=</span> <span class="n">finite_values</span><span class="p">[</span><span class="n">finite_values</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">non_negative_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="n">upper_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">non_negative_values</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">percentile_clip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upper_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span>
+                <span class="n">non_negative_values</span><span class="p">,</span>
+                <span class="n">percentile_clip</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">upper_limit</span><span class="p">)</span> <span class="ow">or</span> <span class="n">upper_limit</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">upper_limit</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
+                <span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+            <span class="n">strictly_positive_values</span> <span class="o">=</span> <span class="n">non_negative_values</span><span class="p">[</span><span class="n">non_negative_values</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">strictly_positive_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">)</span>
+
+            <span class="n">lower_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">strictly_positive_values</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
+            <span class="n">lower_limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lower_limit</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">strictly_positive_values</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">lower_limit</span> <span class="o">&gt;=</span> <span class="n">upper_limit</span><span class="p">:</span>
+                <span class="n">lower_limit</span> <span class="o">=</span> <span class="n">upper_limit</span> <span class="o">*</span> <span class="mf">1e-6</span>
+
+            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span>
+                <span class="n">vmin</span><span class="o">=</span><span class="n">lower_limit</span><span class="p">,</span>
+                <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid SPF scale. Expected &#39;linear&#39; or &#39;log&#39;.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_colormap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a Matplotlib colormap object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">colormap</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_3d_axis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">elevation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">azimuth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds a 3D surface plot to the provided PyVista scene based on the scattering phase function (SPF).</span>
-
-<span class="sd">        This method generates a 3D surface plot of the SPF using spherical coordinates, and adds it to the scene.</span>
-<span class="sd">        The surface can either represent the actual SPF or a normalized unit sphere, depending on the `set_surface` flag.</span>
-<span class="sd">        The appearance of the surface can be customized using various parameters.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        scene : pyvista.Plotter</span>
-<span class="sd">            The PyVista plotting scene where the surface will be added.</span>
-<span class="sd">        set_surface : bool</span>
-<span class="sd">            If True, the surface will represent the scaled SPF; if False, a unit sphere is used. Default is True.</span>
-<span class="sd">        show_edges : bool</span>
-<span class="sd">            If True, edges of the mesh will be displayed. Default is False.</span>
-<span class="sd">        colormap : str</span>
-<span class="sd">            The colormap to use for visualizing the scalar field. Default is &#39;viridis&#39;.</span>
-<span class="sd">        opacity : float</span>
-<span class="sd">            The opacity of the surface mesh. Default is 1.0.</span>
+<span class="sd">        Apply common formatting to the 3D axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span>
-            <span class="n">r</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SPF</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">if</span> <span class="n">set_surface</span> <span class="k">else</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="n">phi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">theta</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">theta</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="n">elevation</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="n">azimuth</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_equal_axis_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show_axis_label</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_equal_axis_limits</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set symmetric equal limits on a Matplotlib 3D axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis_limit</span> <span class="o">=</span> <span class="mf">1.15</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;set_box_aspect&quot;</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_spf_array</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the SPF as a square NumPy array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_to_magnitude_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="p">)</span>
         <span class="p">)</span>
 
-        <span class="n">mesh</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_quantity_to_magnitude_array</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a Pint quantity or array like object to a NumPy array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
 
-        <span class="n">mapping</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
-            <span class="n">mesh</span><span class="p">,</span>
-            <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-            <span class="n">scalars</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
-            <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;surface&quot;</span><span class="p">,</span>
-            <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
-            <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mapping</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_as_square_array</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a two dimensional square array compatible with surface plotting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">array</span>
+
+        <span class="n">flat_array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">expected_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span>
+
+        <span class="k">if</span> <span class="n">flat_array</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">expected_size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot reshape array to the structured SPF mesh. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">expected_size</span><span class="si">}</span><span class="s2"> values from sampling=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but received </span><span class="si">{</span><span class="n">flat_array</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">flat_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">),</span>
+            <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 

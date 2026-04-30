@@ -480,16 +480,17 @@
 <section id="module-PyMieSim.single.source">
 <span id="sources"></span><h2>Sources<a class="headerlink" href="#module-PyMieSim.single.source" title="Link to this heading">#</a></h2>
 <p>Source bindings for PyMieSim.</p>
+<p>This module exposes optical excitation sources used by the single
+scatterer simulation API. Plotting helpers use Matplotlib 3D axes through
+private <code class="docutils literal notranslate"><span class="pre">_add_to_ax</span></code> methods. Figure creation, styling, and public
+visualization APIs should remain controlled by the Python layer.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Gaussian</span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
 <p>Monochromatic Gaussian beam source.</p>
-<p>This source models a diffraction limited Gaussian beam characterized by its
-wavelength, polarization, numerical aperture, and optical power.</p>
-<p class="rubric">Notes</p>
-<p>The numerical_aperture is treated as dimensionless and is used to derive the beam waist and
-related quantities in the C++ implementation.</p>
+<p>This source models a diffraction limited Gaussian beam characterized
+by wavelength, polarization, numerical aperture, and optical power.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.source.Gaussian.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="pre">PyMieSim.single.source.Gaussian</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.source.Gaussian.__init__" title="Link to this definition">#</a></dt>
@@ -498,9 +499,10 @@ related quantities in the C++ implementation.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Wavelength in vacuum. Must be convertible to meters.</p></li>
-<li><p><strong>polarization</strong> (<em>object</em>) – Polarization specification. See <a class="reference internal" href="#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWave</span></code></a>
-for accepted formats.</p></li>
-<li><p><strong>numerical_aperture</strong> (<em>pint.Quantity</em>) – Numerical aperture. Must be convertible to a dimensionless quantity.</p></li>
+<li><p><strong>polarization</strong> (<em>object</em>) – Polarization specification. See
+<a class="reference internal" href="#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWave</span></code></a> for accepted
+formats.</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Dimensionless numerical aperture.</p></li>
 <li><p><strong>optical_power</strong> (<em>pint.Quantity</em>) – Optical power. Must be convertible to watts.</p></li>
 </ul>
 </dd>
@@ -530,7 +532,7 @@ for accepted formats.</p></li>
 <dd class="field-odd"><p>Dimensionless numerical aperture.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pint.Quantity</p>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -584,8 +586,8 @@ for accepted formats.</p></li>
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlaneWave</span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></p>
 <p>Monochromatic plane wave source.</p>
-<p>This source models a spatially uniform incident field with a specified
-wavelength, polarization, and electric field amplitude.</p>
+<p>This source models a spatially uniform incident field with a
+specified wavelength, polarization, and electric field amplitude.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.source.PlaneWave.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="pre">PyMieSim.single.source.PlaneWave</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.source.PlaneWave.__init__" title="Link to this definition">#</a></dt>
@@ -594,16 +596,9 @@ wavelength, polarization, and electric field amplitude.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Wavelength in vacuum. Must be convertible to meters.</p></li>
-<li><p><strong>polarization</strong> (<em>object</em>) – <p>Polarization specification. Accepted inputs are:</p>
-<ul>
-<li><p>A bound C++ <code class="docutils literal notranslate"><span class="pre">JonesVector</span></code> instance.</p></li>
-<li><p>A <code class="docutils literal notranslate"><span class="pre">PyMieSim.single.polarization.BasePolarization</span></code> instance.</p></li>
-<li><p>Any object accepted by <code class="docutils literal notranslate"><span class="pre">PyMieSim.single.polarization.Linear(...)</span></code></p></li>
-</ul>
-<p>(it will be converted to a linear polarization).</p>
-<p>The polarization is internally stored as a Jones matrix with shape
-<code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code> of complex values.</p>
-</p></li>
+<li><p><strong>polarization</strong> (<em>object</em>) – Polarization specification. Accepted inputs include bound
+C++ Jones vector objects, PyMieSim polarization objects, or
+any object accepted by the linear polarization constructor.</p></li>
 <li><p><strong>amplitude</strong> (<em>pint.Quantity</em>) – Electric field amplitude. Must be convertible to V/m.</p></li>
 </ul>
 </dd>
@@ -621,81 +616,48 @@ wavelength, polarization, and electric field amplitude.</p>
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoreShell</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></p>
-<p>A class representing a core-shell scatterer, defined by its core diameter, shell thickness, core material, shell material, and surrounding medium.</p>
-<p>The CoreShell class provides methods to compute the scattering coefficients based on Mie theory for core-shell particles, as well as properties to access its physical and optical characteristics.</p>
+<p>Core shell spherical scatterer for Lorenz Mie simulations.</p>
+<p>The particle is defined by a spherical core, a concentric shell,
+their respective optical materials, and the surrounding medium. It
+exposes the Mie coefficients and geometric properties required by the
+PyMieSim scattering engine.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.CoreShell" title="PyMieSim.single.scatterer.CoreShell"><span class="pre">PyMieSim.single.scatterer.CoreShell</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_thickness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell_material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Constructor for CORESHELL, initializing it with physical and optical properties.</p>
+<dd><p>Construct a core shell spherical scatterer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>core_diameter</strong> (<em>float</em>) – The diameter of the core of the spherical shell.</p></li>
-<li><p><strong>shell_thickness</strong> (<em>float</em>) – The thickness of the shell surrounding the core.</p></li>
-<li><p><strong>core_material</strong> (<em>BaseMaterial</em>) – The material of the core.</p></li>
-<li><p><strong>shell_material</strong> (<em>BaseMaterial</em>) – The material of the shell.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em>) – The surrounding medium of the core-shell scatterer.</p></li>
-<li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum order of the scattering coefficients to compute. If set to 0, it will</p></li>
+<li><p><strong>core_diameter</strong> (<em>pint.Quantity</em>) – Diameter of the spherical core. The value is converted
+internally to meters.</p></li>
+<li><p><strong>shell_thickness</strong> (<em>pint.Quantity</em>) – Thickness of the shell surrounding the core. The value is
+converted internally to meters.</p></li>
+<li><p><strong>core_material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Core material model, or a constant complex refractive index.</p></li>
+<li><p><strong>shell_material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Shell material model, or a constant complex refractive index.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive index.</p></li>
+<li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum multipole order used in the Mie expansion. If zero,
+the implementation chooses an appropriate truncation order.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.add_to_scene">
-<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.CoreShell" title="PyMieSim.single.scatterer.CoreShell"><span class="pre">PyMieSim.single.scatterer.CoreShell</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.add_to_scene" title="Link to this definition">#</a></dt>
-<dd><p>Adds the core-shell scatterer to a given PyVista scene for visualization.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scene</strong> (<em>pyvista.Plotter</em>) – The PyVista Plotter object to which the core-shell scatterer will be added.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments to customize the appearance of the scatterer in the scene (e.g., color, opacity).</p></li>
-</ul>
-</dd>
-</dl>
+<p class="rubric">Notes</p>
+<p>The external particle radius is
+<code class="docutils literal notranslate"><span class="pre">core_diameter</span> <span class="pre">/</span> <span class="pre">2</span> <span class="pre">+</span> <span class="pre">shell_thickness</span></code>. The plotting helper uses
+normalized display radii and does not draw the particle at its
+physical nanometer scale.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.an">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">an</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.an" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ‘an’ scattering coefficients.</p>
-<div class="math notranslate nohighlight">
-\[a_n = \frac{
-    \Psi_n (y)
-    \left[ \dot{\Psi}_n (\tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\tilde{m}_{2} y) \right]
-    -
-    \tilde{m}_{2} \dot{\Psi}_n (y)
-    \left[ \Psi_n (\tilde{m}_{2} y) - A_n (x) \xi_n (\tilde{m}_{2} y) \right]
-}{
-    \xi_n (y)
-    \left[ \dot{\Psi}_n (\tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\tilde{m}_{2} y) \right]
-    -
-    \tilde{m}_{2} \dot{\xi}_n (y)
-    \left[ \Psi_n (\tilde{m}_{2} y) - A_n (x) \xi_n (\tilde{m}_{2} y) \right]
-}\]</div>
-<p>with:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}A_n = \frac{
-    \tilde{m}_{2}  \Psi_n       (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
-    \tilde{m}_{1}  \dot{\Psi}_n (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
-}{
-    \tilde{m}_{2}  \xi_n        (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
-    \tilde{m}_{1}  \dot{\xi}_n  (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
-}
-\\
-B_n = \frac{
-    \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\psi}_n (\tilde{m}_{2} x) -
-    \tilde{m}_{1}  \psi_n  (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
-}{
-    \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\xi}_n  (\tilde{m}_{2} x) -
-    \tilde{m}_{1}  \xi_n   (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
-}\end{split}\]</div>
+<dd><p>Electric type external Mie coefficients (a_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘an’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the external scattering
+coefficients (a_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -703,45 +665,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.bn">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.bn" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ‘bn’ scattering coefficients.</p>
-<div class="math notranslate nohighlight">
-\[b_n = \frac{
-    \tilde{m}_{2}
-    \Psi_n (y)
-    \left[ \dot{\Psi}_n  (\tilde{m}_{2} y) - B_n (x) \dot{\xi}_n  (\tilde{m}_{2} y) \right]
-    -
-    \dot{\Psi}_n (y)
-    \left[ \Psi_n (\tilde{m}_{2} y) - B_n (x) \xi_n  (\tilde{m}_{2} y) \right]
-}{
-    \tilde{m}_{2}
-    \xi_n (y)
-    \left[ \dot{\Psi}_n  (\tilde{m}_{2} y) - A_n (x) \dot{\xi}_n  (\tilde{m}_{2} y) \right] -
-    \dot{\xi}_n (y)
-    \left[ \Psi_n (\tilde{m}_{2} y) - B_n (x) \xi_n (\tilde{m}_{2} y) \right]
-}\]</div>
-<p>with:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}A_n = \frac{
-    \tilde{m}_{2}  \Psi_n       (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
-    \tilde{m}_{1}  \dot{\Psi}_n (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
-}{
-    \tilde{m}_{2}  \xi_n        (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
-    \tilde{m}_{1}  \dot{\xi}_n  (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
-}
-\\
-B_n = \frac{
-    \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\psi}_n (\tilde{m}_{2} x) -
-    \tilde{m}_{1}  \psi_n  (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
-}{
-    \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\xi}_n  (\tilde{m}_{2} x) -
-    \tilde{m}_{1}  \xi_n   (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
-}\end{split}\]</div>
+<dd><p>Magnetic type external Mie coefficients (b_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘bn’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the external scattering
+coefficients (b_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -749,13 +680,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.cn">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.cn" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ‘cn’ scattering coefficients.</p>
+<dd><p>Electric type internal Mie coefficients (c_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘cn’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the internal coefficients
+(c_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -763,25 +695,34 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.core_diameter">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">core_diameter</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_diameter" title="Link to this definition">#</a></dt>
-<dd><p>Diameter of the core shell.</p>
+<dd><p>Diameter of the core.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Core diameter expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.core_material">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">core_material</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_material" title="Link to this definition">#</a></dt>
-<dd><p>Material of the core shell.</p>
+<dd><p>Material model of the core.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.dn">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.dn" title="Link to this definition">#</a></dt>
-<dd><p>Returns the ‘dn’ scattering coefficients.</p>
+<dd><p>Magnetic type internal Mie coefficients (d_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘dn’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the internal coefficients
+(d_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -789,7 +730,7 @@ B_n = \frac{
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.print_properties">
 <span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.CoreShell" title="PyMieSim.single.scatterer.CoreShell"><span class="pre">PyMieSim.single.scatterer.CoreShell</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.print_properties" title="Link to this definition">#</a></dt>
-<dd><p>Prints the properties of the core-shell scatterer.</p>
+<dd><p>Print the core shell scatterer properties to standard output.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -800,25 +741,49 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.radius">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.radius" title="Link to this definition">#</a></dt>
-<dd><p>Overall radius of the core-shell scatterer.</p>
+<dd><p>Outer radius of the core shell particle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Outer radius expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.shell_material">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shell_material</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.shell_material" title="Link to this definition">#</a></dt>
-<dd><p>Material of the shell.</p>
+<dd><p>Material model of the shell.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.shell_thickness">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shell_thickness</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.shell_thickness" title="Link to this definition">#</a></dt>
 <dd><p>Thickness of the shell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Shell thickness expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.volume">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.volume" title="Link to this definition">#</a></dt>
-<dd><p>Volume of the core-shell scatterer.</p>
+<dd><p>Shell volume excluding the core volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Shell volume expressed as a compact cubic length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -827,42 +792,47 @@ B_n = \frac{
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InfiniteCylinder</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></p>
-<p>A class representing an infinite cylindrical scatterer, defined by its diameter, material, and surrounding medium.</p>
-<p>The InfiniteCylinder class provides methods to compute the scattering coefficients based on Mie theory for cylinders, as well as properties to access its physical and optical characteristics.</p>
+<p>Infinite cylindrical scatterer for Lorenz Mie simulations.</p>
+<p>The cylinder is defined by its diameter, material, surrounding
+medium, and optional maximum expansion order. It exposes the
+cylindrical scattering coefficients and basic geometric properties
+used by the PyMieSim scattering engine.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="pre">PyMieSim.single.scatterer.InfiniteCylinder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Constructor for InfiniteCylinder, initializing it with physical and optical properties.</p>
+<dd><p>Construct an infinite cylindrical scatterer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diameter</strong> (<em>float</em>) – The diameter of the cylinder.</p></li>
-<li><p><strong>material</strong> (<em>BaseMaterial</em>) – The material of the cylinder.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em>) – The surrounding medium of the cylinder.</p></li>
-<li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum order of the scattering coefficients to compute (default is 0, which means it will be determined automatically based on the size parameter).</p></li>
+<li><p><strong>diameter</strong> (<em>pint.Quantity</em>) – Cylinder diameter. The value is converted internally to
+meters.</p></li>
+<li><p><strong>material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Cylinder material model, or a constant complex refractive
+index.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive
+index.</p></li>
+<li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum expansion order used in the cylindrical Mie
+calculation. If zero, the implementation chooses an
+appropriate truncation order.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The cylinder is infinite in the scattering model. The plotting
+helper draws a finite cylinder only as a normalized visual
+representation.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.a1n">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">a1n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.a1n" title="Link to this definition">#</a></dt>
-<dd><p>Returns <span class="math notranslate nohighlight">\(a_{1n}\)</span> coefficient as defined in ref[5]:</p>
-<div class="math notranslate nohighlight">
-\[a_{1n} = \frac{
-    m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x)
-}{
-    m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
-<span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
+<dd><p>Cylindrical scattering coefficients (a_{1n}).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of a1n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the first mode of the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the (a_{1n})
+coefficients.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -870,36 +840,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.a2n">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">a2n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.a2n" title="Link to this definition">#</a></dt>
-<dd><p>Returns <span class="math notranslate nohighlight">\(a_{2n}\)</span> coefficient as defined in ref[5]:</p>
-<div class="math notranslate nohighlight">
-\[a_{2n} = \frac{
-    m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x)
-}{
-    m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
-<span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
+<dd><p>Cylindrical scattering coefficients (a_{2n}).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of a2n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the second mode of the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the (a_{2n})
+coefficients.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.add_to_scene">
-<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="pre">PyMieSim.single.scatterer.InfiniteCylinder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.add_to_scene" title="Link to this definition">#</a></dt>
-<dd><p>Adds a visual representation of the infinite cylinder to a given PyVista scene.</p>
-<p>This method creates a physical representation of the infinite cylinder using PyVista’s Cylinder mesh and adds it to the provided scene. Additionally, it adds a semi-transparent unit sphere at the origin to help visualize the scale of the cylinder.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scene</strong> (<em>pyvista.Plotter</em>) – The PyVista scene (Plotter) to which the cylinder will be added.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments that can be passed to customize the appearance of the cylinder in the scene (e.g., color, opacity).</p></li>
-</ul>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -907,21 +855,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.b1n">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b1n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.b1n" title="Link to this definition">#</a></dt>
-<dd><p>Returns <span class="math notranslate nohighlight">\(b_{1n}\)</span> coefficient as defined in ref[5]:</p>
-<div class="math notranslate nohighlight">
-\[b_{1n} = \frac{
-    m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x)
-}{
-    m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
-<span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
+<dd><p>Cylindrical scattering coefficients (b_{1n}).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of b1n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the first mode of the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the (b_{1n})
+coefficients.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -929,21 +870,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.b2n">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b2n</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.b2n" title="Link to this definition">#</a></dt>
-<dd><p>Returns <span class="math notranslate nohighlight">\(b_{2n}\)</span> coefficient as defined in ref[5]:</p>
-<div class="math notranslate nohighlight">
-\[b_{2n} = \frac{
-    m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x)
-}{
-    m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
-<span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
+<dd><p>Cylindrical scattering coefficients (b_{2n}).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of b2n scattering coefficients for the cylinder. These coefficients describe the scattering behavior of the cylinder in the second mode of the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the (b_{2n})
+coefficients.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -951,25 +885,33 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.diameter">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diameter</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.diameter" title="Link to this definition">#</a></dt>
-<dd><p>Diameter of the cylinder.</p>
+<dd><p>Cylinder diameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Diameter expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.material">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">material</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.material" title="Link to this definition">#</a></dt>
-<dd><p>Material of the cylinder.</p>
+<dd><p>Material model of the cylinder.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.medium">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">medium</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.medium" title="Link to this definition">#</a></dt>
-<dd><p>Medium of the cylinder.</p>
+<dd><p>Medium surrounding the cylinder.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.print_properties">
 <span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="pre">PyMieSim.single.scatterer.InfiniteCylinder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.print_properties" title="Link to this definition">#</a></dt>
-<dd><p>Prints the properties of the cylinder.</p>
+<dd><p>Print the cylinder properties to standard output.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -980,7 +922,15 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.radius">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.radius" title="Link to this definition">#</a></dt>
-<dd><p>Radius of the cylinder.</p>
+<dd><p>Cylinder radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Radius expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -989,59 +939,43 @@ B_n = \frac{
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sphere</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></p>
-<p>A class representing a spherical scatterer, defined by its diameter, material, and surrounding medium.</p>
-<p>The Sphere class provides methods to compute the scattering coefficients based on Mie theory, as well as properties to access its physical and optical characteristics.</p>
+<p>Spherical scatterer for Lorenz Mie simulations.</p>
+<p>The sphere is defined by its diameter, material, surrounding medium,
+and optional maximum multipole order. It exposes the Mie scattering
+coefficients and basic geometric properties used by the PyMieSim
+scattering engine.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="pre">PyMieSim.single.scatterer.Sphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Constructor for Sphere, initializing it with physical and optical properties.</p>
+<dd><p>Construct a spherical scatterer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diameter</strong> (<em>float</em><em>[</em><em>Length</em><em>]</em>) – The diameter of the sphere.</p></li>
-<li><p><strong>material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – The material of the sphere, or a constant complex refractive index.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – The surrounding medium, or a constant real refractive index.</p></li>
-<li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum order of spherical harmonics to use in the scattering calculation. Default is 0.</p></li>
+<li><p><strong>diameter</strong> (<em>pint.Quantity</em>) – Sphere diameter. The value is converted internally to meters.</p></li>
+<li><p><strong>material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Sphere material model, or a constant complex refractive index.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive index.</p></li>
+<li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum multipole order used in the Mie expansion. If zero,
+the implementation chooses an appropriate truncation order.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.add_to_scene">
-<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="pre">PyMieSim.single.scatterer.Sphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.add_to_scene" title="Link to this definition">#</a></dt>
-<dd><p>Adds the sphere to a given PyVista scene for visualization.</p>
-<p>This method creates a physical representation of the sphere based on its diameter and adds it to the provided PyVista scene. It also adds a unit sphere for reference, which can be customized in appearance using keyword arguments.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scene</strong> (<em>pyvista.Plotter</em>) – The PyVista Plotter object to which the sphere will be added.</p></li>
-<li><p><strong>**kwargs</strong> – Additional keyword arguments to customize the appearance of the physical sphere and the unit sphere. For example, you can specify ‘color’ to set the color of both spheres, and ‘opacity’ to set their transparency.</p></li>
-</ul>
-</dd>
-</dl>
+<p class="rubric">Notes</p>
+<p>The material and medium may be dispersive objects or constant
+refractive indices, depending on the Python object passed to the
+constructor.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.an">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">an</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.an" title="Link to this definition">#</a></dt>
-<dd><p>III.88 of B&amp;B:</p>
-<div class="math notranslate nohighlight">
-\[a_n = \frac{
-    \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)
-}{
-    \mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
+<dd><p>Electric type external Mie coefficients (a_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘an’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the external scattering
+coefficients (a_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1049,23 +983,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.bn">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.bn" title="Link to this definition">#</a></dt>
-<dd><p>III.89 of B&amp;B:</p>
-<div class="math notranslate nohighlight">
-\[b_n = \frac{
-    \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)
-}{
-    \mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
+<dd><p>Magnetic type external Mie coefficients (b_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘bn’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the external scattering
+coefficients (b_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1073,21 +998,14 @@ B_n = \frac{
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.cn">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cn" title="Link to this definition">#</a></dt>
-<dd><p>For future purpose only!
-Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as defined in Eq:III.90 of B&amp;B:</p>
-<div class="math notranslate nohighlight">
-\[c_n = \frac{
-    \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]
-}{
-    \mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
+<dd><p>Electric type internal Mie coefficients (c_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘cn’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the internal coefficients
+(c_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1095,27 +1013,28 @@ Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.diameter">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diameter</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.diameter" title="Link to this definition">#</a></dt>
-<dd><p>Diameter of the sphere.</p>
+<dd><p>Sphere diameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Diameter expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.dn">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dn</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.dn" title="Link to this definition">#</a></dt>
-<dd><p>For future purpose only!
-Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as defined in Eq:III.91 of B&amp;B:</p>
-<div class="math notranslate nohighlight">
-\[d_n = \frac{
-    \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]
-}{
-    \mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)
-}\]</div>
-<p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
+<dd><p>Magnetic type internal Mie coefficients (d_n).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of ‘dn’ scattering coefficients used in the spherical wave expansion.</p>
+<dd class="field-odd"><p>Zero copy complex array containing the internal coefficients
+(d_n).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1123,7 +1042,7 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.material">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">material</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.material" title="Link to this definition">#</a></dt>
-<dd><p>Material of the sphere.</p>
+<dd><p>Material model of the sphere.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1135,7 +1054,7 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.print_properties">
 <span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="pre">PyMieSim.single.scatterer.Sphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.print_properties" title="Link to this definition">#</a></dt>
-<dd><p>Prints the properties of the sphere.</p>
+<dd><p>Print the sphere properties to standard output.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1146,13 +1065,29 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.radius">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.radius" title="Link to this definition">#</a></dt>
-<dd><p>Radius of the sphere.</p>
+<dd><p>Sphere radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Radius expressed as a compact length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.volume">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.volume" title="Link to this definition">#</a></dt>
-<dd><p>Volume of the sphere.</p>
+<dd><p>Sphere volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Volume expressed as a compact cubic length unit.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1160,50 +1095,68 @@ Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 </section>
 <section id="module-PyMieSim.single.detector">
 <span id="detectors"></span><h2>Detectors<a class="headerlink" href="#module-PyMieSim.single.detector" title="Link to this heading">#</a></h2>
-<p>Photodiode binding for PyMieSim.</p>
-<p>Provides a <cite>BaseDetector</cite> class to compute coupling to scatterers
-and expose the detected field distribution.</p>
+<p>Detector bindings for PyMieSim.</p>
+<p>This module exposes detector classes used to compute optical coupling
+between Lorenz Mie scatterers and detector geometries. It includes
+photodiode, coherent mode, and integrating sphere detectors.</p>
+<p>The plotting helpers use Matplotlib axes directly through private
+<code class="docutils literal notranslate"><span class="pre">_add_to_ax</span></code> methods. Figure creation, styling, and public plotting
+APIs should remain controlled from the Python layer.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
-<p>CoherentMode detector for Lorenz-Mie scattering simulations.</p>
+<p>Coherent mode detector for Lorenz Mie scattering simulations.</p>
+<p>A coherent mode detector projects the scattered field onto a specified
+collecting mode and can account for orientation, rotation, numerical
+aperture, obscuration cache, and polarization filtering.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">PyMieSim.single.detector.CoherentMode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_number:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;PyMieSim.polarization.PolarizationState</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fc4fc6c59f0&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">typing.SupportsInt</span> <span class="pre">|</span> <span class="pre">typing.SupportsIndex</span> <span class="pre">=</span> <span class="pre">200</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.__init__" title="Link to this definition">#</a></dt>
-<dd><p>CoherentMode class representing a photodiode with a coherent light coupling mechanism.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">PyMieSim.single.detector.CoherentMode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_number:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;PyMieSim.polarization.PolarizationState</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f8f692c8b30&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">typing.SupportsInt</span> <span class="pre">|</span> <span class="pre">typing.SupportsIndex</span> <span class="pre">=</span> <span class="pre">200</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Construct a coherent mode detector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>numerical_aperture</strong> (<em>Dimensionless</em>) – Numerical aperture of the imaging system.</p></li>
-<li><p><strong>gamma_offset</strong> (<em>Angle</em>) – Angle offset of the detector in the direction perpendicular to polarization.</p></li>
-<li><p><strong>phi_offset</strong> (<em>Angle</em>) – Angle offset of the detector in the direction parallel to polarization.</p></li>
-<li><p><strong>rotation</strong> (<em>Angle</em>) – Rotation angle of the detector field of view.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Sampling rate of the far field distribution. Default is 200.</p></li>
-<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Angle</em><em>]</em>) – Angle of the polarization filter in front of the detector.</p></li>
-<li><p><strong>cache_numerical_aperture</strong> (<em>Optional</em><em>[</em><em>Dimensionless</em><em>]</em>) – Numerical aperture of the detector cache. Default is 0.</p></li>
-<li><p><strong>mean_coupling</strong> (<em>bool</em>) – Indicates if the coupling mechanism is point wise or mean wise.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – The medium in which the detector operates. Default is vacuum or air.</p></li>
+<li><p><strong>mode_number</strong> (<em>str</em>) – Mode identifier, for example <code class="docutils literal notranslate"><span class="pre">&quot;LP01&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;HG12&quot;</span></code>.</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture defining the angular collection region.</p></li>
+<li><p><strong>phi_offset</strong> (<em>pint.Quantity</em>) – Azimuthal orientation offset.</p></li>
+<li><p><strong>gamma_offset</strong> (<em>pint.Quantity</em>) – Polar orientation offset.</p></li>
+<li><p><strong>rotation</strong> (<em>pint.Quantity</em>) – Rotation of the detector mode field.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Surrounding medium. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant refractive index
+of 1.0 is used.</p></li>
+<li><p><strong>cache_numerical_aperture</strong> (<em>float</em><em>, </em><em>optional</em>) – Numerical aperture of the central obscuration cache.</p></li>
+<li><p><strong>polarization_filter</strong> (<a class="reference internal" href="polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.polarization.PolarizationState"><em>PolarizationState</em></a><em>, </em><em>optional</em>) – Polarization filter applied before coherent projection.</p></li>
+<li><p><strong>mean_coupling</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use mean coupling behavior where supported by
+the detector implementation.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples on the detector mesh.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.add_to_scene">
-<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="pre">PyMieSim.single.detector.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cone_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_point_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.add_to_scene" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="pre">PyMieSim.single.detector.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.print_properties" title="Link to this definition">#</a></dt>
-<dd><p>Print the properties of the CoherentMode detector.</p>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="pre">PyMieSim.single.detector.CoherentMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.print_properties" title="Link to this definition">#</a></dt>
+<dd><p>Print coherent mode detector properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of decimal places used for floating point values.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.rotation">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotation</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.rotation" title="Link to this definition">#</a></dt>
-<dd><p>Rotation angle of the detector’s field of view.</p>
+<dd><p>Rotation angle of the coherent mode field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Rotation angle in radians.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1212,29 +1165,32 @@ and expose the detected field distribution.</p>
 <dt class="sig sig-object py" id="PyMieSim.single.detector.IntegratingSphere">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IntegratingSphere</span></span><a class="headerlink" href="#PyMieSim.single.detector.IntegratingSphere" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
+<p>Integrating sphere detector for Lorenz Mie scattering simulations.</p>
+<p>The integrating sphere represents full angular collection over the
+detector mesh, optionally with polarization filtering.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.IntegratingSphere.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">PyMieSim.single.detector.IntegratingSphere</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;PyMieSim.polarization.PolarizationState</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fc4fc6c5fb0&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">typing.SupportsInt</span> <span class="pre">|</span> <span class="pre">typing.SupportsIndex</span> <span class="pre">=</span> <span class="pre">400</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.IntegratingSphere.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Construct an IntegratingSphere detector.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">PyMieSim.single.detector.IntegratingSphere</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;PyMieSim.polarization.PolarizationState</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f8f6adc4bf0&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">typing.SupportsInt</span> <span class="pre">|</span> <span class="pre">typing.SupportsIndex</span> <span class="pre">=</span> <span class="pre">400</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.IntegratingSphere.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Construct an integrating sphere detector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Angle</em><em>]</em>) – Polarization filter angle. If None, no polarization filtering is applied.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Number of angular samples on the Fibonacci mesh.</p></li>
+<li><p><strong>polarization_filter</strong> (<a class="reference internal" href="polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.polarization.PolarizationState"><em>PolarizationState</em></a><em>, </em><em>optional</em>) – Polarization filter applied before detection.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples on the detector mesh.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.IntegratingSphere.add_to_scene">
-<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.IntegratingSphere" title="PyMieSim.single.detector.IntegratingSphere"><span class="pre">PyMieSim.single.detector.IntegratingSphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cone_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_point_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.IntegratingSphere.add_to_scene" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.IntegratingSphere.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.IntegratingSphere" title="PyMieSim.single.detector.IntegratingSphere"><span class="pre">PyMieSim.single.detector.IntegratingSphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.IntegratingSphere.print_properties" title="Link to this definition">#</a></dt>
-<dd><p>Print the properties of the IntegratingSphere detector.</p>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.IntegratingSphere" title="PyMieSim.single.detector.IntegratingSphere"><span class="pre">PyMieSim.single.detector.IntegratingSphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.IntegratingSphere.print_properties" title="Link to this definition">#</a></dt>
+<dd><p>Print integrating sphere detector properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of decimal places used for floating point values.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1243,35 +1199,39 @@ and expose the detected field distribution.</p>
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
-<p>Photodiode for Lorenz-Mie scattering simulations.</p>
+<p>Photodiode detector for Lorenz Mie scattering simulations.</p>
+<p>A photodiode integrates the scattered power over an angular
+collection aperture defined by its numerical aperture, orientation,
+optional obscuration cache, and polarization filter.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">PyMieSim.single.detector.Photodiode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;PyMieSim.polarization.PolarizationState</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fc4fc6c5130&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">typing.SupportsInt</span> <span class="pre">|</span> <span class="pre">typing.SupportsIndex</span> <span class="pre">=</span> <span class="pre">200</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Photodiode class representing a photodiode with a coherent light coupling mechanism.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self:</span> <span class="pre">PyMieSim.single.detector.Photodiode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_aperture:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">&lt;PyMieSim.polarization.PolarizationState</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f8f692c8670&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_numerical_aperture:</span> <span class="pre">object</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">typing.SupportsInt</span> <span class="pre">|</span> <span class="pre">typing.SupportsIndex</span> <span class="pre">=</span> <span class="pre">200</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Construct a photodiode detector.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>numerical_aperture</strong> (<em>Dimensionless</em>) – Numerical aperture of the imaging system.</p></li>
-<li><p><strong>gamma_offset</strong> (<em>Angle</em>) – Angle offset of the detector in the direction perpendicular to polarization.</p></li>
-<li><p><strong>phi_offset</strong> (<em>Angle</em>) – Angle offset of the detector in the direction parallel to polarization.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Sampling rate of the far field distribution. Default is 200.</p></li>
-<li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Angle</em><em>]</em>) – Angle of the polarization filter in front of the detector.</p></li>
-<li><p><strong>cache_numerical_aperture</strong> (<em>Optional</em><em>[</em><em>Dimensionless</em><em>]</em>) – Numerical aperture of the detector cache. Default is 0.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – The medium in which the detector operates. Default is vacuum or air.</p></li>
+<li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture defining the detector collection angle.</p></li>
+<li><p><strong>phi_offset</strong> (<em>pint.Quantity</em>) – Azimuthal orientation offset.</p></li>
+<li><p><strong>gamma_offset</strong> (<em>pint.Quantity</em>) – Polar orientation offset.</p></li>
+<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Surrounding medium. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant refractive index
+of 1.0 is used.</p></li>
+<li><p><strong>polarization_filter</strong> (<a class="reference internal" href="polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.polarization.PolarizationState"><em>PolarizationState</em></a><em>, </em><em>optional</em>) – Polarization filter applied before detection.</p></li>
+<li><p><strong>cache_numerical_aperture</strong> (<em>float</em><em>, </em><em>optional</em>) – Numerical aperture of the central obscuration cache.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples on the detector mesh.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.add_to_scene">
-<span class="sig-name descname"><span class="pre">add_to_scene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="pre">PyMieSim.single.detector.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">scene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cone_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_point_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.add_to_scene" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="pre">PyMieSim.single.detector.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.print_properties" title="Link to this definition">#</a></dt>
-<dd><p>Print the properties of the Photodiode detector.</p>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="pre">PyMieSim.single.detector.Photodiode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.print_properties" title="Link to this definition">#</a></dt>
+<dd><p>Print photodiode properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of decimal places used for floating point values.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1279,109 +1239,162 @@ and expose the detected field distribution.</p>
 </section>
 <section id="module-PyMieSim.single.representations.FarFields">
 <span id="representations"></span><h2>Representations<a class="headerlink" href="#module-PyMieSim.single.representations.FarFields" title="Link to this heading">#</a></h2>
-<p>Compute the far-field scattering pattern for the scatterer.</p>
-<p>The far fields describe the behavior of the scattered electromagnetic waves at a large distance from the scatterer, where the waves can be approximated as planar.
-The computed far fields represent the scattered electric field components in the directions parallel and perpendicular to the plane of incidence.</p>
-<p>The far fields are computed as:</p>
-<div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi, \theta)^2, \, E_{\perp}(\phi, \theta)^2\]</div>
-<p>These components represent the intensities of the scattered electric field in the parallel (( E_{||} )) and perpendicular (( E_{perp} )) directions as functions of the spherical angles ( phi ) (azimuthal) and ( theta ) (polar).</p>
-<p>The fields are expressed up to a constant phase factor:</p>
-<div class="math notranslate nohighlight">
-\[\exp{\left(-i k r \right)}\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(k\)</span>: The wave number, related to the wavelength of the incident light.</p></li>
-<li><p><span class="math notranslate nohighlight">\(r\)</span>: The distance from the scatterer (assumed to be large in the far-field approximation).</p></li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">param sampling<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p>
-</dd>
-<dt class="field-even">type sampling<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param distance<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p>
-</dd>
-<dt class="field-even">type distance<span class="colon">:</span></dt>
-<dd class="field-even"><p>Length, optional</p>
-</dd>
-<dt class="field-odd">returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.</p>
-</dd>
-<dt class="field-even">rtype<span class="colon">:</span></dt>
-<dd class="field-even"><p>representations.FarField</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The far-field approximation assumes that the distance from the scatterer is large enough that the curvature of the wavefronts can be neglected, and the fields can be treated as planar.</p></li>
-<li><p>This method is useful for determining the angular distribution of the scattered light, which is critical in applications such as radar cross-section analysis, optical scattering experiments, and remote sensing.</p></li>
-</ul>
+<p>Far-field scattering representation.</p>
+<p>This class computes and visualizes the complex far-field electric-field
+components returned by a single-scatterer setup.</p>
+<p>The far-field components are evaluated on a spherical angular mesh and are
+returned as the transverse components (<a href="#id8"><span class="problematic" id="id9">E_</span></a>phi) and (<a href="#id10"><span class="problematic" id="id11">E_</span></a>theta).</p>
+<p>The default visualization is a single three-dimensional spherical plot. A
+single field is shown at a time to keep rendering responsive and to make the
+figure easier to interpret.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stokes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/stokes.html#Stokes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.</p>
-<p>The Stokes parameters provide a complete description of the polarization state of electromagnetic radiation, and are defined as follows:</p>
+<p>Stokes parameter representation.</p>
+<p>The Stokes parameters describe the polarization state of the scattered light.</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}I &amp;= \big| E_x \big|^2 + \big| E_y \big|^2 \quad &amp;\text{(total intensity)} \\
-Q &amp;= \big| E_x \big|^2 - \big| E_y \big|^2 \quad &amp;\text{(linear polarization along x and y)} \\
-U &amp;= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \quad &amp;\text{(linear polarization at +45° and -45°)} \\
-V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polarization)}\end{split}\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(I\)</span>: Total intensity of the scattered light.</p></li>
-<li><p><span class="math notranslate nohighlight">\(Q\)</span>: The degree of linear polarization along the x and y axes.</p></li>
-<li><p><span class="math notranslate nohighlight">\(U\)</span>: The degree of linear polarization at +45° and -45° to the axes.</p></li>
-<li><p><span class="math notranslate nohighlight">\(V\)</span>: The degree of circular polarization.</p></li>
-</ul>
-<p>These parameters provide a powerful way to represent the full polarization state of the scattered light.</p>
+\[\begin{split}I &amp;= |E_x|^2 + |E_y|^2 \\
+Q &amp;= |E_x|^2 - |E_y|^2 \\
+U &amp;= 2 \operatorname{Re}\{E_x E_y^*\} \\
+V &amp;= 2 \operatorname{Im}\{E_x E_y^*\}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
-<li><p><strong>setup</strong> (<em>object</em>)</p></li>
+<li><p><strong>setup</strong> (<em>object</em>) – Single-scatterer setup object exposing <code class="docutils literal notranslate"><span class="pre">get_stokes</span></code>.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples used in each spherical mesh direction.</p></li>
+<li><p><strong>distance</strong> (<em>pint.Quantity</em><em>, </em><em>optional</em>) – Observation distance at which the Stokes parameters are evaluated.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.setup" title="Link to this definition">#</a></dt>
+<dd><p>Simulation setup used to compute the Stokes parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.sampling" title="Link to this definition">#</a></dt>
+<dd><p>Angular sampling used for the structured Stokes mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.distance">
+<span class="sig-name descname"><span class="pre">distance</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.distance" title="Link to this definition">#</a></dt>
+<dd><p>Observation distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.I">
+<span class="sig-name descname"><span class="pre">I</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.I" title="Link to this definition">#</a></dt>
+<dd><p>Total scattered intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.Q">
+<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.Q" title="Link to this definition">#</a></dt>
+<dd><p>Linear polarization contrast between the x and y axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.U">
+<span class="sig-name descname"><span class="pre">U</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.U" title="Link to this definition">#</a></dt>
+<dd><p>Linear polarization contrast between the +45 and -45 degree axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.V">
+<span class="sig-name descname"><span class="pre">V</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.V" title="Link to this definition">#</a></dt>
+<dd><p>Circular polarization contrast.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.mesh">
+<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.mesh" title="Link to this definition">#</a></dt>
+<dd><p>Full spherical mesh returned by the backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field='I'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_size=(5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">5.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_color='black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile_clip=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_linewidth=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_antialiased=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation=25.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth=35.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/stokes.html#Stokes.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot one Stokes parameter on a Matplotlib 3D spherical surface.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stokes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+<span class="n">stokes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">)</span>
+<span class="n">stokes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">)</span>
+<span class="n">stokes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>str</em><em>, </em><em>optional</em>) – Stokes parameter to plot. Supported values are <code class="docutils literal notranslate"><span class="pre">&quot;I&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Q&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;U&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;V&quot;</span></code>.</p></li>
+<li><p><strong>unit_size</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Figure size in inches, given as <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>.</p></li>
+<li><p><strong>background_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Figure and axis background color.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, draw surface mesh edges. Edges are also drawn
+automatically when <code class="docutils literal notranslate"><span class="pre">surface_linewidth</span></code> is greater than zero.</p></li>
+<li><p><strong>edge_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Color used for surface mesh edges.</p></li>
+<li><p><strong>colormap</strong> (<em>str</em><em> or </em><em>matplotlib.colors.Colormap</em><em>, </em><em>optional</em>) – Colormap used for the Stokes parameter values.</p></li>
+<li><p><strong>opacity</strong> (<em>float</em><em>, </em><em>optional</em>) – Surface opacity.</p></li>
+<li><p><strong>show_axis_label</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, display Cartesian axis labels, ticks, and panes.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, hide the axis frame.</p></li>
+<li><p><strong>show_colorbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, add a colorbar.</p></li>
+<li><p><strong>percentile_clip</strong> (<em>float</em><em>, </em><em>optional</em>) – If provided, symmetric color limits are clipped to this percentile
+of the finite absolute values.</p></li>
+<li><p><strong>surface_linewidth</strong> (<em>float</em><em>, </em><em>optional</em>) – Line width used for surface edges. Values greater than zero enable
+mesh edges even if <code class="docutils literal notranslate"><span class="pre">show_edges</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>surface_antialiased</strong> (<em>bool</em><em>, </em><em>optional</em>) – Matplotlib antialiasing flag for surfaces.</p></li>
+<li><p><strong>elevation</strong> (<em>float</em><em>, </em><em>optional</em>) – Matplotlib 3D view elevation angle in degrees.</p></li>
+<li><p><strong>azimuth</strong> (<em>float</em><em>, </em><em>optional</em>) – Matplotlib 3D view azimuth angle in degrees.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object containing the computed Stokes parameters (I, Q, U, V), which describe the polarization state of the scattered light.</p>
+<dd class="field-even"><p>Matplotlib figure containing the selected Stokes parameter.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.single.representations.Stokes" title="PyMieSim.single.representations.Stokes">Stokes</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The Stokes parameters are essential for understanding and characterizing the polarization of scattered light. They are used in a wide variety of applications, including atmospheric optics, remote sensing, and optical communication.</p></li>
-<li><p>The <cite>sampling</cite> parameter controls the angular resolution of the calculated Stokes parameters. Higher values provide finer detail, which can be important in accurately modeling polarization effects in scattering experiments.</p></li>
-</ul>
-<p class="rubric">Example</p>
-<p>You can use this method to compute the Stokes parameters for a spherical scatterer, helping you analyze how the scatterer affects the polarization state of light.</p>
-<p>Example usage:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stokes_params</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_stokes</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stokes_params</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="n">stokes_params</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">stokes_params</span><span class="o">.</span><span class="n">U</span><span class="p">,</span> <span class="n">stokes_params</span><span class="o">.</span><span class="n">V</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">400)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/stokes.html#Stokes.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.plot" title="Link to this definition">#</a></dt>
-<dd><p>Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>unit_size</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The size of each subplot in pixels (width, height). Default is (400, 400).</p></li>
-<li><p><strong>background_color</strong> (<em>str</em>) – The background color of the plot. Default is ‘white’.</p></li>
-<li><p><strong>show_edges</strong> (<em>bool</em>) – If True, displays the edges of the mesh. Default is False.</p></li>
-<li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for scalar mapping. Default is ‘blue_black_red’.</p></li>
-<li><p><strong>opacity</strong> (<em>float</em>) – The opacity of the mesh. Default is 1.0.</p></li>
-<li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, shows the axis labels. Default is False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1392,65 +1405,96 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="sig sig-object py" id="PyMieSim.single.representations.SPF">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SPF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/spf.html#SPF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Compute the scattering phase function (SPF) for the scatterer.</p>
-<p>The scattering phase function describes how the intensity of scattered light varies as a function of the scattering angles ( theta ) (polar) and ( phi ) (azimuthal). It is a key quantity in light scattering, as it characterizes the angular distribution of scattered light.</p>
-<p>The scattering phase function is computed as:</p>
-<div class="math notranslate nohighlight">
-\[\text{SPF} = \sqrt{ E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2 }\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(E_{\parallel}\)</span>: The parallel component of the scattered electric field.</p></li>
-<li><p><span class="math notranslate nohighlight">\(E_{\perp}\)</span>: The perpendicular component of the scattered electric field.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span>: The azimuthal and polar angles, respectively, which describe the angular position of the scattered light.</p></li>
-</ul>
-<p>The SPF combines the intensity contributions from both polarization components to describe the total scattered intensity in different directions.</p>
+<p>Scattering phase function representation.</p>
+<p>The scattering phase function describes how the scattered intensity varies
+as a function of the scattering direction around the particle.</p>
+<p>The SPF is sampled on the backend spherical mesh and can be rendered either
+as a normalized radial surface or as an intensity map on a unit sphere.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>setup</strong> (<em>object</em>) – Single scatterer setup object exposing <code class="docutils literal notranslate"><span class="pre">get_spf</span></code>.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples used in each spherical mesh direction.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.setup" title="Link to this definition">#</a></dt>
+<dd><p>Simulation setup used to compute the scattering phase function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.sampling" title="Link to this definition">#</a></dt>
+<dd><p>Angular sampling used for the structured SPF mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.SPF">
+<span class="sig-name descname"><span class="pre">SPF</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.SPF" title="Link to this definition">#</a></dt>
+<dd><p>Scattering phase function sampled on the spherical mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.mesh">
+<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.mesh" title="Link to this definition">#</a></dt>
+<dd><p>Full spherical mesh returned by the backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(5.0,</span> <span class="pre">5.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile_clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_antialiased</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/spf.html#SPF.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the scattering phase function on a Matplotlib 3D surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit_size</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Figure size in inches, given as <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>.</p></li>
+<li><p><strong>background_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Figure and axis background color.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, draw surface mesh edges. Edges are also drawn
+automatically when <code class="docutils literal notranslate"><span class="pre">surface_linewidth</span></code> is greater than zero.</p></li>
+<li><p><strong>edge_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Color used for surface mesh edges.</p></li>
+<li><p><strong>colormap</strong> (<em>str</em><em> or </em><em>matplotlib.colors.Colormap</em><em>, </em><em>optional</em>) – Colormap used for the SPF intensity values.</p></li>
+<li><p><strong>opacity</strong> (<em>float</em><em>, </em><em>optional</em>) – Surface opacity.</p></li>
+<li><p><strong>set_surface</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the surface radius is proportional to the normalized
+SPF intensity. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the SPF intensity is drawn on a unit sphere.</p></li>
+<li><p><strong>show_axis_label</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, display Cartesian axis labels, ticks, and panes.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code>, hide the axis frame.</p></li>
+<li><p><strong>scale</strong> (<em>str</em><em>, </em><em>optional</em>) – Color scaling. Supported values are <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code>.</p></li>
+<li><p><strong>percentile_clip</strong> (<em>float</em><em>, </em><em>optional</em>) – If provided, the upper color limit is clipped to this percentile of
+the finite positive values.</p></li>
+<li><p><strong>surface_linewidth</strong> (<em>float</em><em>, </em><em>optional</em>) – Line width used for surface edges. Values greater than zero enable
+mesh edges even if <code class="docutils literal notranslate"><span class="pre">show_edges</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>surface_antialiased</strong> (<em>bool</em><em>, </em><em>optional</em>) – Matplotlib antialiasing flag for surfaces.</p></li>
+<li><p><strong>elevation</strong> (<em>float</em><em>, </em><em>optional</em>) – Matplotlib 3D view elevation angle in degrees.</p></li>
+<li><p><strong>azimuth</strong> (<em>float</em><em>, </em><em>optional</em>) – Matplotlib 3D view azimuth angle in degrees.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.</p>
+<dd class="field-even"><p>Matplotlib figure containing the SPF visualization.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">representations.SPF</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>The scattering phase function is a critical quantity in the study of light scattering, as it provides insight into the directionality of the scattered light. It is commonly used in fields like atmospheric optics, biomedical imaging, and remote sensing.</p></li>
-<li><p>The <cite>sampling</cite> parameter controls the angular resolution of the SPF. Higher sampling values yield more detailed scattering patterns, especially important when capturing small angular features.</p></li>
-</ul>
-<p class="rubric">Example</p>
-<p>You can use this method to compute the scattering phase function of a spherical scatterer, helping to understand the angular distribution of light scattered by the particle.</p>
-<p>Example usage:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spf</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_spf</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">spf</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(800,</span> <span class="pre">800)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/spf.html#SPF.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF.plot" title="Link to this definition">#</a></dt>
-<dd><p>Visualizes the scattering phase function on a 3D plot.</p>
-<p>This method creates a 3D visualization of the scattering phase function (SPF). It allows customization
-of the plot’s appearance, including the colormap, mesh opacity, and whether or not to display mesh edges
-and axis labels.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>unit_size</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – The size of the plot window in pixels (width, height). Default is (800, 800).</p></li>
-<li><p><strong>background_color</strong> (<em>str</em>) – The background color of the plot. Default is ‘white’.</p></li>
-<li><p><strong>show_edges</strong> (<em>bool</em>) – If True, displays the edges of the mesh. Default is False.</p></li>
-<li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for scalar mapping. Default is ‘viridis’.</p></li>
-<li><p><strong>opacity</strong> (<em>float</em>) – The opacity of the mesh. Default is 1.0.</p></li>
-<li><p><strong>set_surface</strong> (<em>bool</em>) – If True, the surface represents the scaled SPF; if False, a unit sphere is used. Default is True.</p></li>
-<li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, shows the axis labels. Default is False.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1813,7 +1857,6 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PyMieSim.single.scatterer">Scatterers</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell"><code class="docutils literal notranslate"><span class="pre">CoreShell</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.__init__"><code class="docutils literal notranslate"><span class="pre">CoreShell.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.add_to_scene"><code class="docutils literal notranslate"><span class="pre">CoreShell.add_to_scene()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.an"><code class="docutils literal notranslate"><span class="pre">CoreShell.an</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.bn"><code class="docutils literal notranslate"><span class="pre">CoreShell.bn</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cn"><code class="docutils literal notranslate"><span class="pre">CoreShell.cn</span></code></a></li>
@@ -1832,7 +1875,6 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.__init__"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.__init__()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.a1n"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.a1n</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.a2n"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.a2n</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.add_to_scene"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.add_to_scene()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.b1n"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.b1n</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.b2n"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.b2n</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.InfiniteCylinder.diameter"><code class="docutils literal notranslate"><span class="pre">InfiniteCylinder.diameter</span></code></a></li>
@@ -1845,7 +1887,6 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere"><code class="docutils literal notranslate"><span class="pre">Sphere</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.__init__"><code class="docutils literal notranslate"><span class="pre">Sphere.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.add_to_scene"><code class="docutils literal notranslate"><span class="pre">Sphere.add_to_scene()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.an"><code class="docutils literal notranslate"><span class="pre">Sphere.an</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.bn"><code class="docutils literal notranslate"><span class="pre">Sphere.bn</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cn"><code class="docutils literal notranslate"><span class="pre">Sphere.cn</span></code></a></li>
@@ -1864,20 +1905,17 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PyMieSim.single.detector">Detectors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode"><code class="docutils literal notranslate"><span class="pre">CoherentMode</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.__init__"><code class="docutils literal notranslate"><span class="pre">CoherentMode.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.add_to_scene"><code class="docutils literal notranslate"><span class="pre">CoherentMode.add_to_scene()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.print_properties"><code class="docutils literal notranslate"><span class="pre">CoherentMode.print_properties()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.rotation"><code class="docutils literal notranslate"><span class="pre">CoherentMode.rotation</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.IntegratingSphere"><code class="docutils literal notranslate"><span class="pre">IntegratingSphere</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.IntegratingSphere.__init__"><code class="docutils literal notranslate"><span class="pre">IntegratingSphere.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.IntegratingSphere.add_to_scene"><code class="docutils literal notranslate"><span class="pre">IntegratingSphere.add_to_scene()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.IntegratingSphere.print_properties"><code class="docutils literal notranslate"><span class="pre">IntegratingSphere.print_properties()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode"><code class="docutils literal notranslate"><span class="pre">Photodiode</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.__init__"><code class="docutils literal notranslate"><span class="pre">Photodiode.__init__()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.add_to_scene"><code class="docutils literal notranslate"><span class="pre">Photodiode.add_to_scene()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.print_properties"><code class="docutils literal notranslate"><span class="pre">Photodiode.print_properties()</span></code></a></li>
 </ul>
 </li>
@@ -1885,10 +1923,22 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PyMieSim.single.representations.FarFields">Representations</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes"><code class="docutils literal notranslate"><span class="pre">Stokes</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.setup"><code class="docutils literal notranslate"><span class="pre">Stokes.setup</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.sampling"><code class="docutils literal notranslate"><span class="pre">Stokes.sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.distance"><code class="docutils literal notranslate"><span class="pre">Stokes.distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.I"><code class="docutils literal notranslate"><span class="pre">Stokes.I</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.Q"><code class="docutils literal notranslate"><span class="pre">Stokes.Q</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.U"><code class="docutils literal notranslate"><span class="pre">Stokes.U</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.V"><code class="docutils literal notranslate"><span class="pre">Stokes.V</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.mesh"><code class="docutils literal notranslate"><span class="pre">Stokes.mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.plot"><code class="docutils literal notranslate"><span class="pre">Stokes.plot()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF"><code class="docutils literal notranslate"><span class="pre">SPF</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.setup"><code class="docutils literal notranslate"><span class="pre">SPF.setup</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.sampling"><code class="docutils literal notranslate"><span class="pre">SPF.sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.SPF"><code class="docutils literal notranslate"><span class="pre">SPF.SPF</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.mesh"><code class="docutils literal notranslate"><span class="pre">SPF.mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.plot"><code class="docutils literal notranslate"><span class="pre">SPF.plot()</span></code></a></li>
 </ul>
 </li>

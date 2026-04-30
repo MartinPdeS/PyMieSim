@@ -547,14 +547,19 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="far-fields-computation-and-visualization">
 <span id="sphx-glr-gallery-single-farfields-py"></span><h1>Far-Fields Computation and Visualization<a class="headerlink" href="#far-fields-computation-and-visualization" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.</p>
-<img src="../../_images/sphx_glr_farfields_001.png" srcset="../../_images/sphx_glr_farfields_001.png" alt="farfields" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../_images/sphx_glr_farfields_001.png" srcset="../../_images/sphx_glr_farfields_001.png" alt="$\operatorname{Re}(E_\phi)$" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_farfields_002.png" srcset="../../_images/sphx_glr_farfields_002.png" alt="$\operatorname{Im}(E_\phi)$" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../_images/sphx_glr_farfields_003.png" srcset="../../_images/sphx_glr_farfields_003.png" alt="$|E_\phi|^2$" class = "sphx-glr-multi-img"/></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.material</span><span class="w"> </span><span class="kn">import</span> <span class="n">SellmeierMaterial</span>
 
-<span class="n">material</span> <span class="o">=</span> <span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">&quot;BK7&quot;</span><span class="p">)</span>
+<span class="c1"># material = SellmeierMaterial(&quot;BK7&quot;)</span>
 
 <span class="n">polarization</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 
@@ -567,7 +572,7 @@ to download the full example code.</p>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><span class="mi">1500</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
     <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -578,10 +583,17 @@ to download the full example code.</p>
 
 <span class="n">far_fields</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">&quot;farfields&quot;</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">figure</span> <span class="o">=</span> <span class="n">far_fields</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="c1">## Visualize the far-fields: phi_real component</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">far_fields</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;phi_real&quot;</span><span class="p">)</span>
+
+<span class="c1">## Visualize the far-fields: phi_imag component</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">far_fields</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;phi_imag&quot;</span><span class="p">)</span>
+
+<span class="c1">## Visualize the far-fields: phi_magnitude component</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">far_fields</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;phi_intensity&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.380 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.265 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-farfields-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/e2df25befc7dfe210af9fb96ba7e6a6c/farfields.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">farfields.ipynb</span></code></a></p>

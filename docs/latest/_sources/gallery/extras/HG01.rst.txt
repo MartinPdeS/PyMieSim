@@ -23,7 +23,7 @@ Hermite-Gauss 01 Mode Detector
 
 This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-45
+.. GENERATED FROM PYTHON SOURCE LINES 7-47
 
 
 
@@ -33,14 +33,24 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
 
 
+    <Figure size 700x700 with 2 Axes>
+
+
+
+
+
+|
 
 .. code-block:: Python
 
     from PyMieSim.units import ureg
 
-    from PyMieSim.single.scatterer import Sphere
+    from PyMieSim.single.scatterer import InfiniteCylinder, Sphere
     from PyMieSim.single.source import Gaussian
     from PyMieSim.polarization import PolarizationState
     from PyMieSim.single.detector import CoherentMode
@@ -58,7 +68,7 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
         numerical_aperture=0.3,
     )
 
-    scatterer = Sphere(
+    scatterer = InfiniteCylinder(
         diameter=1800 * ureg.nanometer,
         medium=1.0,
         material=1.5,
@@ -74,13 +84,15 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
         medium=1.0,
     )
 
+    detector.initialize_mesh(scatterer)
+
     setup = Setup(scatterer=scatterer, source=source, detector=detector)
 
     setup.plot_system()
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.591 seconds)
+   **Total running time of the script:** (0 minutes 0.182 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_HG01.py:

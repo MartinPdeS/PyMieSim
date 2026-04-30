@@ -6,7 +6,7 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
 """
 from PyMieSim.units import ureg
 
-from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.scatterer import InfiniteCylinder, Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
@@ -24,7 +24,7 @@ source = Gaussian(
     numerical_aperture=0.3,
 )
 
-scatterer = Sphere(
+scatterer = InfiniteCylinder(
     diameter=1800 * ureg.nanometer,
     medium=1.0,
     material=1.5,
@@ -39,6 +39,8 @@ detector = CoherentMode(
     polarization_filter=0 * ureg.degree,
     medium=1.0,
 )
+
+detector.initialize_mesh(scatterer)
 
 setup = Setup(scatterer=scatterer, source=source, detector=detector)
 

@@ -28,7 +28,7 @@ This example demonstrates the computation and visualization of the Stokes parame
 
 
 .. image-sg:: /gallery/single/images/sphx_glr_stokes_001.png
-   :alt: stokes
+   :alt: I field
    :srcset: /gallery/single/images/sphx_glr_stokes_001.png
    :class: sphx-glr-single-img
 
@@ -73,7 +73,7 @@ This example demonstrates the computation and visualization of the Stokes parame
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.227 seconds)
+   **Total running time of the script:** (0 minutes 1.404 seconds)
 
 
 .. _sphx_glr_download_gallery_single_stokes.py:

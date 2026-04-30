@@ -33,8 +33,18 @@ This example demonstrates the initialization and visualization of an Integrating
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
 
 
+    <Figure size 700x700 with 1 Axes>
+
+
+
+
+
+|
 
 .. code-block:: Python
 
@@ -75,7 +85,7 @@ This example demonstrates the initialization and visualization of an Integrating
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.285 seconds)
+   **Total running time of the script:** (0 minutes 0.137 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_integrating_sphere.py:

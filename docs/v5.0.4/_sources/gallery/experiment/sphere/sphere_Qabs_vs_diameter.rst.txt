@@ -38,73 +38,73 @@ Sphere: Qabs vs diameter
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | germanium             | tantalum              |
+    | BAK1                  | copper                |
     +-----------------------+-----------------------+
-    | acetone               | iron                  |
+    | BK7                   | paladium              |
     +-----------------------+-----------------------+
-    | cellulose             | vanadium              |
+    | lithium_niobate       | calcium               |
     +-----------------------+-----------------------+
-    | BAK1                  | test_tabulated_file   |
+    | ethylene              | example_tabulated     |
     +-----------------------+-----------------------+
-    | flint                 | chromium              |
+    | acetylene             | bismuth               |
     +-----------------------+-----------------------+
-    | SF5                   | gold                  |
+    | pvc                   | titanium              |
     +-----------------------+-----------------------+
-    | methane               | bismuth               |
+    | soda_lime_glass       | aluminium             |
     +-----------------------+-----------------------+
-    | ZBLAN                 | rhodium               |
+    | fused_silica          | silicon               |
     +-----------------------+-----------------------+
-    | ethylene              | paladium              |
+    | example_sellmeier     | magnesium             |
     +-----------------------+-----------------------+
-    | pvc                   | example_tabulated     |
+    | methanol              | tungsten              |
     +-----------------------+-----------------------+
-    | lithium_niobate       | lead                  |
+    | crown                 | rhodium               |
     +-----------------------+-----------------------+
-    | test_sellmeier_file   | polyetylene           |
+    | methane               | lead                  |
     +-----------------------+-----------------------+
-    | BK7                   | zinc                  |
+    | LASF9                 | polyetylene           |
     +-----------------------+-----------------------+
-    | glycerol              | sodium                |
+    | argon                 | sodium                |
     +-----------------------+-----------------------+
-    | methanol              | silver                |
+    | propanol              | gold                  |
     +-----------------------+-----------------------+
-    | propanol              | pva                   |
+    | polycarbonate         | iron                  |
     +-----------------------+-----------------------+
-    | FK51A                 | copper                |
+    | ZBLAN                 | zinc                  |
     +-----------------------+-----------------------+
-    | example_sellmeier     | titanium              |
+    | germanium             | test_tabulated_file   |
     +-----------------------+-----------------------+
-    | ethanol               | aluminium             |
+    | ethane                | silver                |
     +-----------------------+-----------------------+
-    | BAF10                 | nickel                |
+    | SF5                   | tantalum              |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | silicon               |
+    | air                   | nickel                |
     +-----------------------+-----------------------+
-    | SF11                  | calcium               |
+    | FK51A                 | chromium              |
     +-----------------------+-----------------------+
-    | ethane                | tungsten              |
+    | polystyrene           | vanadium              |
     +-----------------------+-----------------------+
-    | polystyrene           | magnesium             |
+    | ethanol               | pva                   |
     +-----------------------+-----------------------+
-    | water                 |                       |
+    | acetone               |                       |
     +-----------------------+-----------------------+
-    | argon                 |                       |
+    | glycerol              |                       |
     +-----------------------+-----------------------+
     | SF10                  |                       |
     +-----------------------+-----------------------+
-    | LASF9                 |                       |
+    | flint                 |                       |
     +-----------------------+-----------------------+
-    | acetylene             |                       |
+    | BAF10                 |                       |
     +-----------------------+-----------------------+
-    | polycarbonate         |                       |
+    | water                 |                       |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | cellulose             |                       |
     +-----------------------+-----------------------+
-    | fused_silica          |                       |
-    +-----------------------+-----------------------+
-    | air                   |                       |
+    | test_sellmeier_file   |                       |
     +-----------------------+-----------------------+
     | polystyren            |                       |
+    +-----------------------+-----------------------+
+    | SF11                  |                       |
     +-----------------------+-----------------------+
 
     <Figure size 800x500 with 1 Axes>
@@ -156,7 +156,7 @@ Sphere: Qabs vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.198 seconds)
+   **Total running time of the script:** (0 minutes 0.171 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py:

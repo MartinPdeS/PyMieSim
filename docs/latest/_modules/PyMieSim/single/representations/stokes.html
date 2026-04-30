@@ -459,138 +459,434 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyplot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colors</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span> <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span>  <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
 
 
 <div class="viewcode-block" id="Stokes">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.Stokes">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Stokes</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Stokes</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.</span>
+<span class="sd">    Stokes parameter representation.</span>
 
-<span class="sd">    The Stokes parameters provide a complete description of the polarization state of electromagnetic radiation, and are defined as follows:</span>
+<span class="sd">    The Stokes parameters describe the polarization state of the scattered light.</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        I &amp;= \big| E_x \big|^2 + \big| E_y \big|^2 \quad &amp;\text{(total intensity)} \\</span>
-<span class="sd">        Q &amp;= \big| E_x \big|^2 - \big| E_y \big|^2 \quad &amp;\text{(linear polarization along x and y)} \\</span>
-<span class="sd">        U &amp;= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \quad &amp;\text{(linear polarization at +45° and -45°)} \\</span>
-<span class="sd">        V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polarization)}</span>
 
-<span class="sd">    Where:</span>
-
-<span class="sd">    - :math:`I`: Total intensity of the scattered light.</span>
-<span class="sd">    - :math:`Q`: The degree of linear polarization along the x and y axes.</span>
-<span class="sd">    - :math:`U`: The degree of linear polarization at +45° and -45° to the axes.</span>
-<span class="sd">    - :math:`V`: The degree of circular polarization.</span>
-
-<span class="sd">    These parameters provide a powerful way to represent the full polarization state of the scattered light.</span>
+<span class="sd">        I &amp;= |E_x|^2 + |E_y|^2 \\</span>
+<span class="sd">        Q &amp;= |E_x|^2 - |E_y|^2 \\</span>
+<span class="sd">        U &amp;= 2 \operatorname{Re}\{E_x E_y^*\} \\</span>
+<span class="sd">        V &amp;= 2 \operatorname{Im}\{E_x E_y^*\}</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    setup : object</span>
+<span class="sd">        Single-scatterer setup object exposing ``get_stokes``.</span>
+<span class="sd">    sampling : int, optional</span>
+<span class="sd">        Number of angular samples used in each spherical mesh direction.</span>
+<span class="sd">    distance : pint.Quantity, optional</span>
+<span class="sd">        Observation distance at which the Stokes parameters are evaluated.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    setup : object</span>
+<span class="sd">        Simulation setup used to compute the Stokes parameters.</span>
 <span class="sd">    sampling : int</span>
-<span class="sd">        The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</span>
-<span class="sd">    distance : Length, optional</span>
-<span class="sd">        The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Stokes</span>
-<span class="sd">        An object containing the computed Stokes parameters (I, Q, U, V), which describe the polarization state of the scattered light.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    - The Stokes parameters are essential for understanding and characterizing the polarization of scattered light. They are used in a wide variety of applications, including atmospheric optics, remote sensing, and optical communication.</span>
-<span class="sd">    - The `sampling` parameter controls the angular resolution of the calculated Stokes parameters. Higher values provide finer detail, which can be important in accurately modeling polarization effects in scattering experiments.</span>
-
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
-<span class="sd">    You can use this method to compute the Stokes parameters for a spherical scatterer, helping you analyze how the scatterer affects the polarization state of light.</span>
-
-<span class="sd">    Example usage:</span>
-
-<span class="sd">    &gt;&gt;&gt; stokes_params = scatterer.get_stokes(sampling=500)</span>
-<span class="sd">    &gt;&gt;&gt; print(stokes_params.I, stokes_params.Q, stokes_params.U, stokes_params.V)</span>
-
+<span class="sd">        Angular sampling used for the structured Stokes mesh.</span>
+<span class="sd">    distance : pint.Quantity</span>
+<span class="sd">        Observation distance.</span>
+<span class="sd">    I : pint.Quantity</span>
+<span class="sd">        Total scattered intensity.</span>
+<span class="sd">    Q : pint.Quantity</span>
+<span class="sd">        Linear polarization contrast between the x and y axes.</span>
+<span class="sd">    U : pint.Quantity</span>
+<span class="sd">        Linear polarization contrast between the +45 and -45 degree axes.</span>
+<span class="sd">    V : pint.Quantity</span>
+<span class="sd">        Circular polarization contrast.</span>
+<span class="sd">    mesh : object</span>
+<span class="sd">        Full spherical mesh returned by the backend.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">setup</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+        <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="n">distance</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_stokes</span><span class="p">(</span>
-            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span>
+            <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Stokes.plot">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.Stokes.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">unit_size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+        <span class="n">field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span>
+        <span class="n">unit_size</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
         <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
         <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">blue_black_red</span><span class="p">,</span>
+        <span class="n">edge_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="n">blue_black_red</span><span class="p">,</span>
         <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.</span>
+        <span class="n">show_colorbar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">surface_linewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">surface_antialiased</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">elevation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">25.0</span><span class="p">,</span>
+        <span class="n">azimuth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">35.0</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot one Stokes parameter on a Matplotlib 3D spherical surface.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            stokes.plot(&quot;I&quot;)</span>
+<span class="sd">            stokes.plot(&quot;Q&quot;)</span>
+<span class="sd">            stokes.plot(&quot;U&quot;)</span>
+<span class="sd">            stokes.plot(&quot;V&quot;)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        unit_size : List[float]</span>
-<span class="sd">            The size of each subplot in pixels (width, height). Default is (400, 400).</span>
-<span class="sd">        background_color : str</span>
-<span class="sd">            The background color of the plot. Default is &#39;white&#39;.</span>
-<span class="sd">        show_edges : bool</span>
-<span class="sd">            If True, displays the edges of the mesh. Default is False.</span>
-<span class="sd">        colormap : str</span>
-<span class="sd">            The colormap to use for scalar mapping. Default is &#39;blue_black_red&#39;.</span>
-<span class="sd">        opacity : float</span>
-<span class="sd">            The opacity of the mesh. Default is 1.0.</span>
-<span class="sd">        show_axis_label : bool</span>
-<span class="sd">            If True, shows the axis labels. Default is False.</span>
+<span class="sd">        field : str, optional</span>
+<span class="sd">            Stokes parameter to plot. Supported values are ``&quot;I&quot;``, ``&quot;Q&quot;``,</span>
+<span class="sd">            ``&quot;U&quot;``, and ``&quot;V&quot;``.</span>
+<span class="sd">        unit_size : Sequence[float], optional</span>
+<span class="sd">            Figure size in inches, given as ``(width, height)``.</span>
+<span class="sd">        background_color : str, optional</span>
+<span class="sd">            Figure and axis background color.</span>
+<span class="sd">        show_edges : bool, optional</span>
+<span class="sd">            If ``True``, draw surface mesh edges. Edges are also drawn</span>
+<span class="sd">            automatically when ``surface_linewidth`` is greater than zero.</span>
+<span class="sd">        edge_color : str, optional</span>
+<span class="sd">            Color used for surface mesh edges.</span>
+<span class="sd">        colormap : str or matplotlib.colors.Colormap, optional</span>
+<span class="sd">            Colormap used for the Stokes parameter values.</span>
+<span class="sd">        opacity : float, optional</span>
+<span class="sd">            Surface opacity.</span>
+<span class="sd">        show_axis_label : bool, optional</span>
+<span class="sd">            If ``True``, display Cartesian axis labels, ticks, and panes.</span>
+<span class="sd">            If ``False``, hide the axis frame.</span>
+<span class="sd">        show_colorbar : bool, optional</span>
+<span class="sd">            If ``True``, add a colorbar.</span>
+<span class="sd">        percentile_clip : float, optional</span>
+<span class="sd">            If provided, symmetric color limits are clipped to this percentile</span>
+<span class="sd">            of the finite absolute values.</span>
+<span class="sd">        surface_linewidth : float, optional</span>
+<span class="sd">            Line width used for surface edges. Values greater than zero enable</span>
+<span class="sd">            mesh edges even if ``show_edges`` is ``False``.</span>
+<span class="sd">        surface_antialiased : bool, optional</span>
+<span class="sd">            Matplotlib antialiasing flag for surfaces.</span>
+<span class="sd">        elevation : float, optional</span>
+<span class="sd">            Matplotlib 3D view elevation angle in degrees.</span>
+<span class="sd">        azimuth : float, optional</span>
+<span class="sd">            Matplotlib 3D view azimuth angle in degrees.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.figure.Figure</span>
+<span class="sd">            Matplotlib figure containing the selected Stokes parameter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_values</span><span class="p">,</span> <span class="n">field_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_field_data</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
         <span class="n">cartesian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spherical_mesh</span><span class="o">.</span><span class="n">to_cartesian</span><span class="p">()</span>
 
-        <span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Four subplots horizontally</span>
-
-        <span class="n">scene</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span>
-            <span class="n">theme</span><span class="o">=</span><span class="n">pyvista</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">DocumentTheme</span><span class="p">(),</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">x_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_to_magnitude_array</span><span class="p">(</span><span class="n">cartesian</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">scene</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="n">y_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_to_magnitude_array</span><span class="p">(</span><span class="n">cartesian</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">z_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_to_magnitude_array</span><span class="p">(</span><span class="n">cartesian</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
-            <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">])</span>
-        <span class="p">):</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="n">mesh</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span>
-                <span class="n">cartesian</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                <span class="n">cartesian</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                <span class="n">cartesian</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span>
+            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">facecolor</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_3d_ax</span><span class="p">(</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+            <span class="n">x_coordinates</span><span class="o">=</span><span class="n">x_coordinates</span><span class="p">,</span>
+            <span class="n">y_coordinates</span><span class="o">=</span><span class="n">y_coordinates</span><span class="p">,</span>
+            <span class="n">z_coordinates</span><span class="o">=</span><span class="n">z_coordinates</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">field_values</span><span class="p">,</span>
+            <span class="n">field_label</span><span class="o">=</span><span class="n">field_label</span><span class="p">,</span>
+            <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
+            <span class="n">edge_color</span><span class="o">=</span><span class="n">edge_color</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
+            <span class="n">show_colorbar</span><span class="o">=</span><span class="n">show_colorbar</span><span class="p">,</span>
+            <span class="n">percentile_clip</span><span class="o">=</span><span class="n">percentile_clip</span><span class="p">,</span>
+            <span class="n">surface_linewidth</span><span class="o">=</span><span class="n">surface_linewidth</span><span class="p">,</span>
+            <span class="n">surface_antialiased</span><span class="o">=</span><span class="n">surface_antialiased</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_format_3d_axis</span><span class="p">(</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+            <span class="n">background_color</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
+            <span class="n">show_axis_label</span><span class="o">=</span><span class="n">show_axis_label</span><span class="p">,</span>
+            <span class="n">elevation</span><span class="o">=</span><span class="n">elevation</span><span class="p">,</span>
+            <span class="n">azimuth</span><span class="o">=</span><span class="n">azimuth</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">figure</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_3d_ax</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">x_coordinates</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">y_coordinates</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">z_coordinates</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">field</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">field_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">edge_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="o">=</span><span class="n">blue_black_red</span><span class="p">,</span>
+        <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">show_colorbar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">surface_linewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">surface_antialiased</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add one Stokes field to a Matplotlib 3D axis.</span>
+
+<span class="sd">        The scalar ordering follows the previous PyVista implementation, where</span>
+<span class="sd">        each field was attached to the ``StructuredGrid`` as</span>
+<span class="sd">        ``field.flatten(order=&quot;F&quot;)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colormap_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_colormap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+
+        <span class="n">normalization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_normalization</span><span class="p">(</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
+            <span class="n">percentile_clip</span><span class="o">=</span><span class="n">percentile_clip</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">facecolors</span> <span class="o">=</span> <span class="n">colormap_object</span><span class="p">(</span><span class="n">normalization</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+        <span class="n">facecolors</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">opacity</span>
+
+        <span class="n">draw_edges</span> <span class="o">=</span> <span class="n">show_edges</span> <span class="ow">or</span> <span class="n">surface_linewidth</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+        <span class="n">effective_edge_color</span> <span class="o">=</span> <span class="n">edge_color</span> <span class="k">if</span> <span class="n">draw_edges</span> <span class="k">else</span> <span class="s2">&quot;none&quot;</span>
+        <span class="n">effective_linewidth</span> <span class="o">=</span> <span class="n">surface_linewidth</span> <span class="k">if</span> <span class="n">draw_edges</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span>
+            <span class="n">x_coordinates</span><span class="p">,</span>
+            <span class="n">y_coordinates</span><span class="p">,</span>
+            <span class="n">z_coordinates</span><span class="p">,</span>
+            <span class="n">facecolors</span><span class="o">=</span><span class="n">facecolors</span><span class="p">,</span>
+            <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="n">effective_linewidth</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="n">effective_edge_color</span><span class="p">,</span>
+            <span class="n">antialiased</span><span class="o">=</span><span class="n">surface_antialiased</span><span class="p">,</span>
+            <span class="n">shade</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_label</span><span class="si">}</span><span class="s2"> field&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show_colorbar</span><span class="p">:</span>
+            <span class="n">scalar_mappable</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span>
+                <span class="n">norm</span><span class="o">=</span><span class="n">normalization</span><span class="p">,</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap_object</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">scene</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+            <span class="n">scalar_mappable</span><span class="o">.</span><span class="n">set_array</span><span class="p">([])</span>
 
-            <span class="n">mapping</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
-                <span class="n">mesh</span><span class="p">,</span>
-                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-                <span class="n">scalars</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
-                <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
-                <span class="n">style</span><span class="o">=</span><span class="s2">&quot;surface&quot;</span><span class="p">,</span>
-                <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
-                <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+                <span class="n">scalar_mappable</span><span class="p">,</span>
+                <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span>
+                <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_label</span><span class="si">}</span><span class="s2"> field&quot;</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="n">scene</span><span class="o">.</span><span class="n">add_axes_at_origin</span><span class="p">(</span><span class="n">labels_off</span><span class="o">=</span><span class="ow">not</span> <span class="n">show_axis_label</span><span class="p">)</span>
-            <span class="n">scene</span><span class="o">.</span><span class="n">add_scalar_bar</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapping</span><span class="o">.</span><span class="n">mapper</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> field&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_field_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the selected Stokes parameter and its display label.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_key</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-        <span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
-</div>
+        <span class="n">field_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;I&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span>
+            <span class="s2">&quot;Q&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span>
+            <span class="s2">&quot;U&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span><span class="p">,</span>
+            <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">field_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">field_map</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Unknown Stokes field. Expected one of: &#39;I&#39;, &#39;Q&#39;, &#39;U&#39;, or &#39;V&#39;.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stokes_array</span><span class="p">(</span><span class="n">field_map</span><span class="p">[</span><span class="n">field_key</span><span class="p">]),</span> <span class="n">field_key</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_normalization</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">field</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a Matplotlib normalization for a Stokes parameter.</span>
+
+<span class="sd">        ``I`` is non-negative in normal use, while ``Q``, ``U``, and ``V`` can be</span>
+<span class="sd">        signed. A symmetric normalization around zero is therefore used for all</span>
+<span class="sd">        fields so that the color semantics remain consistent across parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">finite_values</span> <span class="o">=</span> <span class="n">field</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">field</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">finite_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="n">maximum_absolute_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">finite_values</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">percentile_clip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">maximum_absolute_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">finite_values</span><span class="p">),</span>
+                <span class="n">percentile_clip</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">maximum_absolute_value</span><span class="p">)</span> <span class="ow">or</span> <span class="n">maximum_absolute_value</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">maximum_absolute_value</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
+            <span class="n">vmin</span><span class="o">=-</span><span class="n">maximum_absolute_value</span><span class="p">,</span>
+            <span class="n">vmax</span><span class="o">=</span><span class="n">maximum_absolute_value</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_colormap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">colormap</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a Matplotlib colormap object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">colormap</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_3d_axis</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">elevation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">azimuth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply common formatting to the 3D axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="n">elevation</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="n">azimuth</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_equal_axis_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show_axis_label</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_equal_axis_limits</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set symmetric equal limits on a Matplotlib 3D axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis_limit</span> <span class="o">=</span> <span class="mf">1.15</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">&quot;set_box_aspect&quot;</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stokes_array</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a Stokes parameter as a square NumPy array.</span>
+
+<span class="sd">        The transpose reproduces the scalar ordering used by the previous</span>
+<span class="sd">        PyVista implementation, where fields were attached to the</span>
+<span class="sd">        ``StructuredGrid`` as ``field.flatten(order=&quot;F&quot;)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_to_magnitude_array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_quantity_to_magnitude_array</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+        <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a Pint quantity or array-like object to a NumPy array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_as_square_array</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a two-dimensional square array compatible with surface plotting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">array</span>
+
+        <span class="n">flat_array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">expected_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span>
+
+        <span class="k">if</span> <span class="n">flat_array</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">expected_size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot reshape array to the structured Stokes mesh. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">expected_size</span><span class="si">}</span><span class="s2"> values from sampling=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="si">}</span><span class="s2">, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;but received </span><span class="si">{</span><span class="n">flat_array</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">flat_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">),</span>
+            <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 
