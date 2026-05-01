@@ -1,3 +1,5 @@
+"""Public single-simulation APIs and supporting imports."""
+
 import PyMieSim.single.scatterer as _scatterer  # noqa: F401, W292
 import PyMieSim.single.source as _source  # noqa: F401, W292
 import PyMieSim.single.detector as _detector  # noqa: F401, W292

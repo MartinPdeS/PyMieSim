@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Angular mesh wrappers used by single-particle simulations."""
+
 import numpy
 from typing import Optional
 from PyMieSim.units import ureg, Angle
@@ -68,6 +70,7 @@ class FibonacciMesh(FIBONACCIMESH):
         rotation: Optional[Angle] = 0.0 * ureg.degree,
         min_angle: Angle = 0 * ureg.degree,
     ):
+        """Build a Fibonacci-distributed angular mesh."""
 
         super().__init__(
             sampling=sampling,

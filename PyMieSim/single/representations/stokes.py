@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Stokes-parameter visualization helpers for single-scatterer results."""
+
 from typing import Sequence
 
 import matplotlib.pyplot as pyplot

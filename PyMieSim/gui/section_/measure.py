@@ -1,3 +1,5 @@
+"""GUI controls for selecting measures, axes, and export actions."""
+
 from dash import html, dcc, State, Input, Output
 from PyMieSim.gui.helper import parse_string_to_array_or_float
 import numpy
@@ -20,6 +22,7 @@ class MeasureSection:
     """
 
     def __init__(self, app, scatterer_section, source_section, detector_section):
+        """Store section references and initialize control identifiers."""
         self.app = app
         self.scatterer_section = scatterer_section
         self.source_section = source_section
@@ -82,6 +85,7 @@ class MeasureSection:
         )
 
     def get_filename_input(self) -> dcc.Input:
+        """Create the filename input used when exporting data."""
         return dcc.Input(
             id=self.filename_input_id,
             type="text",
@@ -91,6 +95,7 @@ class MeasureSection:
         )
 
     def get_plot_button(self) -> html.Button:
+        """Create the button that triggers plot generation."""
         return html.Button(
             "Generate Plot",
             id=self.plot_button_id,
@@ -100,6 +105,7 @@ class MeasureSection:
         )
 
     def get_save_button(self) -> html.Button:
+        """Create the button that triggers data export."""
         return html.Button(
             "Save Data",
             id=self.save_button_id,
@@ -322,13 +328,19 @@ class MeasureSection:
             Parameters
             ----------
             sphere_data : str
-                The data from the sphere subsection of the scatterer.
+                Serialized state for the sphere scatterer inputs.
             coreshell_data : str
-                The data from the core-shell subsection of the scatterer.
-            source_data : str
-                The data from the source section.
-            detector_data : str
-                The data from the detector section.
+                Serialized state for the core-shell scatterer inputs.
+            cylinder_data : str
+                Serialized state for the cylinder scatterer inputs.
+            planewave_data : str
+                Serialized state for the plane-wave source inputs.
+            gaussian_data : str
+                Serialized state for the Gaussian source inputs.
+            photodiode_data : str
+                Serialized state for the photodiode detector inputs.
+            coherent_mode_data : str
+                Serialized state for the coherent-mode detector inputs.
 
             Returns
             -------

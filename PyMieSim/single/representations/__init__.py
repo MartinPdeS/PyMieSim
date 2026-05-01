@@ -1,3 +1,5 @@
+"""Visualization helpers for single-scatterer simulation results."""
+
 from .farfields import FarFields
 from .nearfields import NearFields
 from .stokes import Stokes

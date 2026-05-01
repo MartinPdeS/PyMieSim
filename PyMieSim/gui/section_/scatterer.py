@@ -1,8 +1,10 @@
+"""Scatterer-related GUI sections."""
+
 from PyMieSim.gui.section_.base import Section, BaseSubSection
 
 
 class SphereSection(BaseSubSection):
-    """Sphere scatterer subsection."""
+    """Inputs for configuring a homogeneous spherical scatterer."""
 
     name: str = "Sphere"
 
@@ -31,7 +33,7 @@ class SphereSection(BaseSubSection):
 
 
 class CylinderSection(BaseSubSection):
-    """Cylinder scatterer subsection."""
+    """Inputs for configuring an infinite cylindrical scatterer."""
 
     name: str = "Cylinder"
 
@@ -60,7 +62,7 @@ class CylinderSection(BaseSubSection):
 
 
 class CoreShellSection(BaseSubSection):
-    """Core-shell scatterer subsection."""
+    """Inputs for configuring a concentric core-shell scatterer."""
 
     name: str = "Core-Shell"
 
@@ -100,7 +102,7 @@ class CoreShellSection(BaseSubSection):
 
 class ScattererSection(Section):
     """
-    Main scatterer section that switches between sphere and core-shell subsections.
+    Main scatterer section that switches between supported scatterer models.
     """
 
     name = "Scatterer"

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""Near-field visualization helpers for single-scatterer results."""
+
 from typing import Tuple, Optional, Sequence, Dict, List
 import numpy
 import matplotlib.pyplot as plt

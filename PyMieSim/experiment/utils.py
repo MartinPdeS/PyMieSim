@@ -1,3 +1,5 @@
+"""Utilities supporting broadcasted experiment parameter sets."""
+
 import numpy as np
 from typing import Union, List, Dict, Optional, TypeVar
 from PyOptik.material.base_class import BaseMaterial
@@ -70,6 +72,8 @@ def broadcast_params(
 
 
 class Sequential:
+    """Mixin that builds sequential instances from broadcastable parameters."""
+
     is_sequential = False
 
     @classmethod

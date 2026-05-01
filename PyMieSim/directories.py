@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Filesystem paths used across the PyMieSim package."""
+
 from pathlib import Path
 import PyMieSim
 

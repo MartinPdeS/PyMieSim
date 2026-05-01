@@ -1,3 +1,5 @@
+"""Utilities for generating PyMieScatt-based validation datasets."""
+
 import pandas as pd
 import numpy as np
 

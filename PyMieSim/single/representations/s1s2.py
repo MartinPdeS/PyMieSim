@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Amplitude-function visualization helpers for single-scatterer results."""
+
 import numpy
 from MPSPlots import helper
 
@@ -54,6 +56,7 @@ class S1S2():
 
     """
     def __init__(self, setup, sampling: int = 200):
+        """Sample the S1 and S2 amplitudes on a regular angular grid."""
         self.setup = setup
         self.sampling = sampling
         self.phi = numpy.linspace(-numpy.pi, numpy.pi, self.sampling) * ureg.radian

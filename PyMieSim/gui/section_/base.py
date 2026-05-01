@@ -1,3 +1,5 @@
+"""Base classes shared by the dynamic GUI sections."""
+
 from dash import html, dcc, Input, Output
 from TypedUnit import ureg
 from PyMieSim.gui.helper import parse_string_to_array_or_float
@@ -89,7 +91,7 @@ class Section:
 
         @self.app.callback(api_outputs, api_inputs, prevent_initial_call=False)
         def switch_subsection(source_type):
-            """Switch between plane wave subsections."""
+            """Switch the active subsection and refresh its inputs."""
             return self._switch_subsection(source_type)
 
         # Set up callbacks for both subsections
@@ -106,7 +108,7 @@ class Section:
         return hidden_subsections
 
     def _switch_subsection(self, object_type):
-        """Switch between plane wave subsections."""
+        """Activate the selected subsection and return its layout."""
         for sub_section in self.sub_sections:
             if sub_section.label == object_type:
                 self.current_section = sub_section
@@ -118,13 +120,14 @@ class Section:
 
 
 class BaseSubSection:
+    """Base implementation for a concrete subsection within a GUI section."""
 
     @property
     def label(self):
         return self.name.replace("_", "").replace("-", "").lower()
 
     def update_x_axis_options(self, input_values) -> list:
-        """Update x-axis options for sphere subsection."""
+        """Refresh x-axis candidates based on multi-valued subsection inputs."""
         self.parent_section._xaxis_options = []
 
         for key, value in input_values.items():
@@ -145,7 +148,7 @@ class BaseSubSection:
         self.parent_section.data = {"type": self.label, **input_values}
 
     def create_layout(self):
-        """Create the sphere input layout."""
+        """Create the Dash input widgets for the subsection."""
         layout = []
         for input_def in self.inputs.values():
             layout.append(
@@ -165,7 +168,7 @@ class BaseSubSection:
         return layout
 
     def _setup_data_callbacks(self) -> None:
-        """Set up data update callbacks for cylinder subsection."""
+        """Register callbacks that keep subsection state in sync with the UI."""
         api_inputs = [Input(f"{self.parent_section.label}-dropdown", "value")]
         api_inputs.extend(
             [Input(input_def["id"], "value") for input_def in self.inputs.values()]
@@ -177,7 +180,7 @@ class BaseSubSection:
 
         @self.app.callback(api_outputs, api_inputs, prevent_initial_call=False)
         def update_scatterer_data(scatterer_type, *input_values):
-            """Update data for scatterer subsection."""
+            """Serialize the active subsection inputs for downstream callbacks."""
             if scatterer_type != self.label:
                 return "Not Active"
 

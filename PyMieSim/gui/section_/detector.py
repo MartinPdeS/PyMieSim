@@ -1,8 +1,10 @@
+"""Detector-related GUI sections."""
+
 from PyMieSim.gui.section_.base import Section, BaseSubSection
 
 
 class PhotodiodeSection(BaseSubSection):
-    """Photodiode scatterer subsection."""
+    """Inputs for configuring a photodiode detector."""
 
     name: str = "photodiode"
 
@@ -91,7 +93,7 @@ class CoherentModeSection(BaseSubSection):
 
 class DetectorSection(Section):
     """
-    Main scatterer section that switches between sphere and core-shell subsections.
+    Main detector section that switches between available detector types.
     """
 
     name = "Detector"

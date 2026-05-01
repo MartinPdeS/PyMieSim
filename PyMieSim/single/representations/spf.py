@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Scattering phase-function visualization helpers."""
+
 from typing import Sequence
 
 import matplotlib.pyplot as pyplot

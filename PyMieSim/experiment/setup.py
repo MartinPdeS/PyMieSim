@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""High-level orchestration for experiment-style PyMieSim simulations."""
+
 from typing import List, Dict, Iterable
 import numpy as np
 import pandas as pd

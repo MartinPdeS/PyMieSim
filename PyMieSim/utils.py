@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""General utility helpers shared across the Python package."""
+
 from pydantic import ConfigDict
 import numpy
 

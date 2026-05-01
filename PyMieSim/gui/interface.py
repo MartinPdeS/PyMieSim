@@ -1,3 +1,5 @@
+"""Top-level Dash interface for configuring PyMieSim simulations."""
+
 from dash import Dash, html, dcc
 import matplotlib.pyplot as plt
 import io
@@ -87,8 +89,11 @@ class OpticalSetupGUI:
             The name of the file to save the data.
         measure : str
             The type of measure to save.
-        xaxis : str
-            The parameter to include on the x-axis in the saved data.
+
+        Returns
+        -------
+        PyMieSimDataFrame
+            Simulation results ready to be written to disk by the caller.
         """
         return get_data(
             source_kwargs=self.source_section.data,

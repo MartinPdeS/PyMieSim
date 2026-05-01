@@ -1,3 +1,5 @@
+"""TypedUnit registry and public unit aliases used by PyMieSim."""
+
 from TypedUnit import ureg
 
 from TypedUnit import (

@@ -1,3 +1,5 @@
+"""Public experiment-set APIs for parameter-sweep simulations."""
+
 from . import detector_set  # noqa: F401, W292
 from . import source_set  # noqa: F401, W292
 from . import scatterer_set  # noqa: F401, W292

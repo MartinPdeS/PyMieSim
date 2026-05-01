@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Footprint visualization helpers for detector-coupling results."""
+
 import numpy
 import MPSPlots
 import matplotlib.pyplot as plt

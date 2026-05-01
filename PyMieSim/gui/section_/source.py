@@ -1,8 +1,10 @@
+"""Source-related GUI sections."""
+
 from PyMieSim.gui.section_.base import Section, BaseSubSection
 
 
 class PlaneWaveSection(BaseSubSection):
-    """Sphere scatterer subsection."""
+    """Inputs for configuring a plane-wave source."""
 
     name: str = "PlaneWave"
 
@@ -31,7 +33,7 @@ class PlaneWaveSection(BaseSubSection):
 
 
 class GaussianBeamSection(BaseSubSection):
-    """Sphere scatterer subsection."""
+    """Inputs for configuring a Gaussian beam source."""
 
     name: str = "Gaussian"
 
@@ -66,7 +68,7 @@ class GaussianBeamSection(BaseSubSection):
 
 class SourceSection(Section):
     """
-    Main scatterer section that switches between sphere and core-shell subsections.
+    Main source section that switches between supported source models.
     """
 
     name = "Source"

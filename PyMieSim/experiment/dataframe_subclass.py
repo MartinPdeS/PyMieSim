@@ -1,3 +1,5 @@
+"""Pandas dataframe helpers for experiment-style simulation results."""
+
 from typing import Self
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,6 +10,7 @@ from PyMieSim.material import ConstantMaterial, ConstantMedium
 
 
 class PyMieSimDataFrame(pd.DataFrame):
+    """DataFrame subclass with unit-aware plotting and aggregation helpers."""
 
     @property
     def _constructor(self):
@@ -215,6 +218,7 @@ class PyMieSimDataFrame(pd.DataFrame):
     # ---------------------------------------------------------
 
     def plot(self, *args, **kwargs):
+        """Dispatch to the standard or standard-deviation plotting routine."""
 
         if kwargs.get("std", None) is not None:
             return self.plot_with_std(*args, **kwargs)
@@ -234,6 +238,7 @@ class PyMieSimDataFrame(pd.DataFrame):
         y_tick_resolution: int | None = 1,
         **kwargs,
     ):
+        """Plot one or more result columns against a selected dataframe column."""
         import warnings
 
         y = [y] if isinstance(y, str) else y
@@ -425,6 +430,7 @@ class PyMieSimDataFrame(pd.DataFrame):
         y_tick_resolution: int = 4,
         **kwargs,
     ):
+        """Plot result columns with shaded standard-deviation envelopes."""
         import warnings
 
         self._validate_column(x)
@@ -631,6 +637,7 @@ class PyMieSimDataFrame(pd.DataFrame):
         return figure
 
     def get(self, key: str):
+        """Return a column as a NumPy array, reapplying any registered unit."""
         return self[key].to_numpy() * self._units().get(key, 1)
 
     # ---------------------------------------------------------
@@ -638,6 +645,7 @@ class PyMieSimDataFrame(pd.DataFrame):
     # ---------------------------------------------------------
 
     def add_weight(self, weight_column: str, weight: np.ndarray) -> Self:
+        """Scale a column by an external weight array and return a copy."""
 
         self._validate_column(weight_column)
 
@@ -648,6 +656,7 @@ class PyMieSimDataFrame(pd.DataFrame):
         return df
 
     def sum_over(self, column: str) -> Self:
+        """Group by a column and sum the remaining numeric values."""
 
         self._validate_column(column)
 
