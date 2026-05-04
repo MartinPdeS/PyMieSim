@@ -471,7 +471,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_axes_locatable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots</span><span class="w"> </span><span class="kn">import</span> <span class="n">helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">scientific</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Length</span>
 
@@ -526,6 +526,69 @@
     <span class="n">v_hat</span> <span class="o">=</span> <span class="n">_normalize_vector</span><span class="p">(</span><span class="n">v_hat</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">n_hat</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">,</span> <span class="n">v_hat</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_finalize_figure</span><span class="p">(</span>
+    <span class="n">figure</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">tight_layout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">save_as</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">xscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">yscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">xlim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ylim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply common Matplotlib figure finalization options.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    figure</span>
+<span class="sd">        Figure returned by the plotting routine.</span>
+<span class="sd">    tight_layout</span>
+<span class="sd">        If True, call ``figure.tight_layout()`` before returning.</span>
+<span class="sd">    save_as</span>
+<span class="sd">        Optional output path used to save the figure.</span>
+<span class="sd">    show</span>
+<span class="sd">        If True, display the figure with ``plt.show()``.</span>
+<span class="sd">    xscale</span>
+<span class="sd">        Optional x-axis scale applied to every axes in the figure.</span>
+<span class="sd">    yscale</span>
+<span class="sd">        Optional y-axis scale applied to every axes in the figure.</span>
+<span class="sd">    xlim</span>
+<span class="sd">        Optional x-axis limits applied to every axes in the figure.</span>
+<span class="sd">    ylim</span>
+<span class="sd">        Optional y-axis limits applied to every axes in the figure.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    plt.Figure</span>
+<span class="sd">        Finalized figure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xscale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">xscale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">yscale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">yscale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">xlim</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ylim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">ylim</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tight_layout</span><span class="p">:</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">save_as</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_as</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">figure</span>
 
 
 <div class="viewcode-block" id="NearFields">
@@ -803,7 +866,6 @@
 
 <div class="viewcode-block" id="NearFields.plot">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.NearFields.plot">[docs]</a>
-    <span class="nd">@helper</span><span class="o">.</span><span class="n">post_mpl_plot</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="n">field_components</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -815,7 +877,15 @@
         <span class="n">v_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="n">Length</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">extent_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>
         <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">blue_black_red</span><span class="p">,</span>
-        <span class="n">figure_size</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">figure_size</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+        <span class="n">tight_layout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">save_as</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">xscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">yscale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">xlim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ylim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="n">scientific</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot near fields over a specified plane.</span>
@@ -842,8 +912,27 @@
 <span class="sd">            Colormap to use for plotting.</span>
 <span class="sd">        figure_size</span>
 <span class="sd">            Size of the matplotlib figure.</span>
-<span class="sd">        show_scatterer_outline</span>
-<span class="sd">            If True, draw the intersection circle of the sphere with the plane.</span>
+<span class="sd">        tight_layout</span>
+<span class="sd">            If True, call ``figure.tight_layout()`` before returning.</span>
+<span class="sd">        save_as</span>
+<span class="sd">            Optional output path used to save the figure.</span>
+<span class="sd">        show</span>
+<span class="sd">            If True, display the figure with ``plt.show()``.</span>
+<span class="sd">        xscale</span>
+<span class="sd">            Optional x-axis scale applied to every subplot.</span>
+<span class="sd">        yscale</span>
+<span class="sd">            Optional y-axis scale applied to every subplot.</span>
+<span class="sd">        xlim</span>
+<span class="sd">            Optional x-axis limits applied to every subplot.</span>
+<span class="sd">        ylim</span>
+<span class="sd">            Optional y-axis limits applied to every subplot.</span>
+<span class="sd">        style</span>
+<span class="sd">            Matplotlib style applied while constructing the figure.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plt.Figure</span>
+<span class="sd">            Figure containing the requested near-field plots.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide at least one field component, for example Ex:real or |E|:abs&quot;</span><span class="p">)</span>
@@ -863,46 +952,56 @@
         <span class="n">unique_components</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">requested_components</span><span class="p">))</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_fields</span><span class="p">(</span><span class="n">unique_components</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">)</span>
 
-        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
-            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figure_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_components</span><span class="p">),</span> <span class="n">figure_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-            <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">field_components</span><span class="p">),</span>
-            <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">requested_component</span><span class="p">,</span> <span class="n">requested_part</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">requested_components</span><span class="p">,</span> <span class="n">requested_parts</span><span class="p">,</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
-            <span class="n">values</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="n">requested_component</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;real&quot;</span><span class="p">:</span>
-                <span class="n">field_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;imag&quot;</span><span class="p">:</span>
-                <span class="n">field_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;abs&quot;</span><span class="p">:</span>
-                <span class="n">field_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown field component part: </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-            <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
-                <span class="n">field_data</span><span class="p">,</span>
-                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-                <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">style</span><span class="p">):</span>
+            <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+                <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figure_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_components</span><span class="p">),</span> <span class="n">figure_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">field_components</span><span class="p">),</span>
+                <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_scatterer_outline_on_plane</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">requested_component</span><span class="p">,</span> <span class="n">requested_part</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">requested_components</span><span class="p">,</span> <span class="n">requested_parts</span><span class="p">,</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="n">requested_component</span><span class="p">]</span>
 
-            <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-            <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;3%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;real&quot;</span><span class="p">:</span>
+                    <span class="n">field_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;imag&quot;</span><span class="p">:</span>
+                    <span class="n">field_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;abs&quot;</span><span class="p">:</span>
+                    <span class="n">field_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown field component part: </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;plane u&quot;</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;plane v&quot;</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_component</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
+                    <span class="n">field_data</span><span class="p">,</span>
+                    <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">figure</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_scatterer_outline_on_plane</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+                <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+                <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;3%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;plane u&quot;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;plane v&quot;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_component</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">_finalize_figure</span><span class="p">(</span>
+                <span class="n">figure</span><span class="p">,</span>
+                <span class="n">tight_layout</span><span class="o">=</span><span class="n">tight_layout</span><span class="p">,</span>
+                <span class="n">save_as</span><span class="o">=</span><span class="n">save_as</span><span class="p">,</span>
+                <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">,</span>
+                <span class="n">xscale</span><span class="o">=</span><span class="n">xscale</span><span class="p">,</span>
+                <span class="n">yscale</span><span class="o">=</span><span class="n">yscale</span><span class="p">,</span>
+                <span class="n">xlim</span><span class="o">=</span><span class="n">xlim</span><span class="p">,</span>
+                <span class="n">ylim</span><span class="o">=</span><span class="n">ylim</span><span class="p">,</span>
+            <span class="p">)</span></div>
 </div>
 
 </pre></div>

@@ -471,8 +471,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyplot</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
 
@@ -717,7 +716,7 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_label</span><span class="si">}</span><span class="s2"> field&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">show_colorbar</span><span class="p">:</span>
-            <span class="n">scalar_mappable</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span>
+            <span class="n">scalar_mappable</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">ScalarMappable</span><span class="p">(</span>
                 <span class="n">norm</span><span class="o">=</span><span class="n">normalization</span><span class="p">,</span>
                 <span class="n">cmap</span><span class="o">=</span><span class="n">colormap_object</span><span class="p">,</span>
             <span class="p">)</span>
@@ -769,7 +768,7 @@
         <span class="n">finite_values</span> <span class="o">=</span> <span class="n">field</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">field</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="n">finite_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
         <span class="n">maximum_absolute_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">finite_values</span><span class="p">))</span>
 
@@ -782,7 +781,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">maximum_absolute_value</span><span class="p">)</span> <span class="ow">or</span> <span class="n">maximum_absolute_value</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">maximum_absolute_value</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-        <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
             <span class="n">vmin</span><span class="o">=-</span><span class="n">maximum_absolute_value</span><span class="p">,</span>
             <span class="n">vmax</span><span class="o">=</span><span class="n">maximum_absolute_value</span><span class="p">,</span>
         <span class="p">)</span>
@@ -795,7 +794,7 @@
 <span class="sd">        Return a Matplotlib colormap object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">colormap</span>
 

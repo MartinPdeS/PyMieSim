@@ -26,7 +26,7 @@ source = GaussianSet(
     numerical_aperture=[0.2],
 )
 
-polystyrene = SellmeierMaterial("polystyrene")
+polystyrene = SellmeierMaterial("BK7")
 
 scatterer = SphereSet(
     diameter=np.linspace(10, 1000, 150) * ureg.nanometer,

@@ -469,10 +469,8 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyplot</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">spherical_to_cartesian</span>
@@ -586,7 +584,7 @@
 <span class="sd">        matplotlib.figure.Figure</span>
 <span class="sd">            Matplotlib figure containing the SPF visualization.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">figure</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span>
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span>
             <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
             <span class="n">facecolor</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
         <span class="p">)</span>
@@ -615,7 +613,7 @@
         <span class="p">)</span>
 
         <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-        <span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">figure</span></div>
 
@@ -704,12 +702,12 @@
         <span class="n">finite_values</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">intensity</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="n">finite_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
         <span class="n">non_negative_values</span> <span class="o">=</span> <span class="n">finite_values</span><span class="p">[</span><span class="n">finite_values</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">non_negative_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
         <span class="n">upper_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">non_negative_values</span><span class="p">)</span>
 
@@ -723,7 +721,7 @@
             <span class="n">upper_limit</span> <span class="o">=</span> <span class="mf">1.0</span>
 
         <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
                 <span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                 <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">,</span>
             <span class="p">)</span>
@@ -732,7 +730,7 @@
             <span class="n">strictly_positive_values</span> <span class="o">=</span> <span class="n">non_negative_values</span><span class="p">[</span><span class="n">non_negative_values</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">strictly_positive_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">)</span>
 
             <span class="n">lower_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">strictly_positive_values</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
             <span class="n">lower_limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lower_limit</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">strictly_positive_values</span><span class="p">))</span>
@@ -740,7 +738,7 @@
             <span class="k">if</span> <span class="n">lower_limit</span> <span class="o">&gt;=</span> <span class="n">upper_limit</span><span class="p">:</span>
                 <span class="n">lower_limit</span> <span class="o">=</span> <span class="n">upper_limit</span> <span class="o">*</span> <span class="mf">1e-6</span>
 
-            <span class="k">return</span> <span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span>
                 <span class="n">vmin</span><span class="o">=</span><span class="n">lower_limit</span><span class="p">,</span>
                 <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">,</span>
             <span class="p">)</span>
@@ -757,7 +755,7 @@
 <span class="sd">        Return a Matplotlib colormap object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">colormap</span>
 
