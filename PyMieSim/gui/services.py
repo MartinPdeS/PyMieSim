@@ -1,0 +1,322 @@
+"""Pure backend services for the experiment dashboard."""
+
+from __future__ import annotations
+
+import logging
+from typing import Any, Dict
+
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+
+from PyMieSim.experiment import Setup
+from PyMieSim.experiment.detector_set import CoherentModeSet, PhotodiodeSet
+from PyMieSim.experiment.scatterer_set import CoreShellSet, InfiniteCylinderSet, SphereSet
+from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
+
+from PyMieSim.gui.parsing import (
+    parse_material_values,
+    parse_mode_numbers,
+    parse_numeric_expression,
+    parse_polarization,
+    parse_quantity_expression,
+    serialize_value,
+)
+from PyMieSim.gui.schemas import DETECTOR_FIELDS, SCATTERER_FIELDS, SOURCE_FIELDS
+
+
+LOGGER = logging.getLogger(__name__)
+
+
+SOURCE_TYPES = {
+    "GaussianSet": GaussianSet,
+    "PlaneWaveSet": PlaneWaveSet,
+}
+
+SCATTERER_TYPES = {
+    "SphereSet": SphereSet,
+    "InfiniteCylinderSet": InfiniteCylinderSet,
+    "CoreShellSet": CoreShellSet,
+}
+
+DETECTOR_TYPES = {
+    "None": None,
+    "PhotodiodeSet": PhotodiodeSet,
+    "CoherentModeSet": CoherentModeSet,
+}
+
+
+def available_measures(scatterer_type: str, detector_type: str) -> list[str]:
+    """Return measures valid for the selected experiment configuration."""
+    LOGGER.debug("Computing available measures for scatterer=%s detector=%s", scatterer_type, detector_type)
+    measures = list(SCATTERER_TYPES[scatterer_type].available_measure_list)
+
+    if detector_type == "None":
+        measures = [measure for measure in measures if measure != "coupling"]
+
+    return measures
+
+
+def build_source_set(source_type: str, raw_values: Dict[str, Any]) -> Any:
+    """Build the selected source set from raw dashboard values."""
+    LOGGER.debug("Building source set %s with raw values: %s", source_type, raw_values)
+    return SOURCE_TYPES[source_type](**_parse_section_fields(SOURCE_FIELDS[source_type], raw_values))
+
+
+def build_scatterer_set(scatterer_type: str, raw_values: Dict[str, Any]) -> Any:
+    """Build the selected scatterer set from raw dashboard values."""
+    LOGGER.debug("Building scatterer set %s with raw values: %s", scatterer_type, raw_values)
+    return SCATTERER_TYPES[scatterer_type](**_parse_section_fields(SCATTERER_FIELDS[scatterer_type], raw_values))
+
+
+def build_detector_set(detector_type: str, raw_values: Dict[str, Any]) -> Any:
+    """Build the selected detector set from raw dashboard values."""
+    LOGGER.debug("Building detector set %s with raw values: %s", detector_type, raw_values)
+    detector_class = DETECTOR_TYPES[detector_type]
+
+    if detector_class is None:
+        LOGGER.debug("Detector type is None; running detector-free experiment")
+        return None
+
+    return detector_class(**_parse_section_fields(DETECTOR_FIELDS[detector_type], raw_values))
+
+
+def infer_variable_fields(
+    *,
+    source_type: str,
+    source_values: Dict[str, Any],
+    scatterer_type: str,
+    scatterer_values: Dict[str, Any],
+    detector_type: str,
+    detector_values: Dict[str, Any],
+) -> list[str]:
+    """Return field names whose current input expands to more than one value."""
+    variable_fields: list[str] = []
+
+    variable_fields.extend(_infer_variable_fields_for_section(SOURCE_FIELDS[source_type], source_values))
+    variable_fields.extend(_infer_variable_fields_for_section(SCATTERER_FIELDS[scatterer_type], scatterer_values))
+
+    if detector_type != "None":
+        variable_fields.extend(_infer_variable_fields_for_section(DETECTOR_FIELDS[detector_type], detector_values))
+
+    LOGGER.debug("Detected variable fields from current inputs: %s", variable_fields)
+    return variable_fields
+
+
+def run_experiment(
+    *,
+    source_type: str,
+    source_values: Dict[str, Any],
+    scatterer_type: str,
+    scatterer_values: Dict[str, Any],
+    detector_type: str,
+    detector_values: Dict[str, Any],
+    measure: str,
+) -> dict[str, Any]:
+    """Execute the selected experiment and serialize the result for Dash."""
+    LOGGER.debug(
+        "Starting experiment run source=%s scatterer=%s detector=%s measure=%s",
+        source_type,
+        scatterer_type,
+        detector_type,
+        measure,
+    )
+    source_set = build_source_set(source_type, source_values)
+    scatterer_set = build_scatterer_set(scatterer_type, scatterer_values)
+    detector_set = build_detector_set(detector_type, detector_values)
+
+    LOGGER.debug("Source set built: %r", source_set)
+    LOGGER.debug("Scatterer set built: %r", scatterer_set)
+    LOGGER.debug("Detector set built: %r", detector_set)
+
+    setup = Setup(
+        scatterer_set=scatterer_set,
+        source_set=source_set,
+        detector_set=detector_set,
+    )
+
+    LOGGER.debug("Experiment setup instantiated: %r", setup)
+
+    dataframe = setup.get(measure, drop_unique_level=True)
+    LOGGER.debug("Experiment returned dataframe with shape %s", getattr(dataframe, "shape", None))
+    frame = pd.DataFrame(dataframe).copy()
+    units = {key: str(value) for key, value in dataframe.attrs.get("units", {}).items()}
+
+    for column in frame.columns:
+        frame[column] = frame[column].map(serialize_value)
+
+    parameter_columns = [column for column in frame.columns if column != measure]
+
+    return {
+        "measure": measure,
+        "units": units,
+        "parameter_columns": parameter_columns,
+        "rows": frame.to_dict("records"),
+        "row_count": len(frame),
+    }
+
+
+def export_result_to_csv(result: dict[str, Any] | None) -> str:
+    """Serialize a stored result payload to CSV text."""
+    if not result or not result.get("rows"):
+        LOGGER.debug("CSV export requested without result rows")
+        return ""
+
+    frame = pd.DataFrame(result["rows"])
+    LOGGER.debug("Exporting %d rows to CSV", len(frame))
+    return frame.to_csv(index=False)
+
+
+def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure:
+    """Build a Plotly figure from serialized experiment results."""
+    LOGGER.debug("Building figure for x_axis=%s", x_axis)
+    if not result or not result.get("rows"):
+        LOGGER.debug("No result rows available; returning empty figure")
+        figure = go.Figure()
+        figure.update_layout(
+            template="plotly_white",
+            xaxis_visible=False,
+            yaxis_visible=False,
+            annotations=[
+                {
+                    "text": "Run an experiment to visualize the result.",
+                    "xref": "paper",
+                    "yref": "paper",
+                    "x": 0.5,
+                    "y": 0.5,
+                    "showarrow": False,
+                    "font": {"size": 16},
+                }
+            ],
+        )
+        return figure
+
+    frame = pd.DataFrame(result["rows"])
+    measure = result["measure"]
+    parameter_columns = result["parameter_columns"]
+    LOGGER.debug("Figure frame columns=%s row_count=%d", list(frame.columns), len(frame))
+
+    if not parameter_columns:
+        figure = px.bar(frame.assign(index=[0] * len(frame)), x="index", y=measure)
+    else:
+        x_axis = x_axis if x_axis in parameter_columns else parameter_columns[0]
+        extra_axes = [column for column in parameter_columns if column != x_axis]
+        plot_kwargs: dict[str, Any] = {"x": x_axis, "y": measure}
+
+        if extra_axes:
+            series_column = extra_axes[0]
+
+            if len(extra_axes) > 1:
+                series_column = "__series__"
+                frame = frame.copy()
+                frame[series_column] = frame[extra_axes].astype(str).agg(" | ".join, axis=1)
+
+            plot_kwargs["color"] = series_column
+            plot_kwargs["line_group"] = series_column
+
+        figure = px.line(frame, **plot_kwargs)
+
+    unit_label = result.get("units", {}).get(measure)
+    yaxis_title = f"{measure} [{unit_label}]" if unit_label else measure
+
+    figure.update_layout(
+        template="plotly_white",
+        paper_bgcolor="rgba(0, 0, 0, 0)",
+        plot_bgcolor="white",
+        margin={"l": 40, "r": 20, "t": 50, "b": 40},
+        title=f"{measure} response",
+        xaxis_title=x_axis or "index",
+        yaxis_title=yaxis_title,
+        legend_title_text="",
+    )
+
+    return figure
+
+
+def build_summary(result: dict[str, Any] | None) -> list[dict[str, str]]:
+    """Build compact summary metadata for the dashboard result cards."""
+    if not result:
+        return []
+
+    LOGGER.debug("Building summary cards for measure=%s", result["measure"])
+
+    return [
+        {"label": "Measure", "value": result["measure"]},
+        {"label": "Rows", "value": str(result["row_count"])},
+        {"label": "Axes", "value": ", ".join(result["parameter_columns"]) or "none"},
+    ]
+
+
+def _parse_section_fields(field_specs: tuple[Any, ...], raw_values: Dict[str, Any]) -> Dict[str, Any]:
+    """Parse raw text inputs according to the schema for one section."""
+    parsed_values: Dict[str, Any] = {}
+
+    for field in field_specs:
+        raw_value = raw_values.get(field.name, field.default)
+
+        LOGGER.debug("Parsing field %s raw_value=%r optional=%s", field.name, raw_value, field.optional)
+
+        if field.optional and (raw_value is None or str(raw_value).strip() == ""):
+            LOGGER.debug("Skipping optional empty field %s", field.name)
+            continue
+
+        parsed_values[field.name] = _parse_field_value(field.kind, raw_value, field.unit)
+
+    return parsed_values
+
+
+def _infer_variable_fields_for_section(field_specs: tuple[Any, ...], raw_values: Dict[str, Any]) -> list[str]:
+    """Return field names that currently expand to multiple values in one section."""
+    variable_fields: list[str] = []
+
+    for field in field_specs:
+        raw_value = raw_values.get(field.name, field.default)
+
+        if field.optional and (raw_value is None or str(raw_value).strip() == ""):
+            continue
+
+        try:
+            parsed_value = _parse_field_value(field.kind, raw_value, field.unit)
+        except Exception:
+            LOGGER.debug("Skipping variable-field inference for invalid field %s=%r", field.name, raw_value, exc_info=True)
+            continue
+
+        if _value_cardinality(parsed_value) > 1:
+            variable_fields.append(field.name)
+
+    return variable_fields
+
+
+def _value_cardinality(value: Any) -> int:
+    """Return how many effective values an already parsed field contains."""
+    if value is None:
+        return 0
+
+    if isinstance(value, (str, bytes)):
+        return 1
+
+    try:
+        return len(value)
+    except TypeError:
+        return 1
+
+
+def _parse_field_value(kind: str, raw_value: Any, unit: Any) -> Any:
+    """Dispatch parsing based on field type."""
+    LOGGER.debug("Dispatching parser for kind=%s raw_value=%r unit=%r", kind, raw_value, unit)
+    if kind == "quantity":
+        return parse_quantity_expression(raw_value, unit)
+    if kind == "numeric":
+        return parse_numeric_expression(raw_value)
+    if kind == "integer":
+        return parse_numeric_expression(raw_value, integer=True)
+    if kind == "polarization":
+        return parse_polarization(raw_value, unit)
+    if kind == "material":
+        return parse_material_values(raw_value, medium=False)
+    if kind == "medium":
+        return parse_material_values(raw_value, medium=True)
+    if kind == "mode":
+        return parse_mode_numbers(raw_value)
+
+    raise ValueError(f"Unsupported field kind '{kind}'.")

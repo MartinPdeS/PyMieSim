@@ -1,154 +1,52 @@
-from dash import Dash, html, dcc
-import matplotlib.pyplot as plt
-import io
-import base64
-import webbrowser
-from PyMieSim.gui.section_.source import SourceSection
-from PyMieSim.gui.section_.scatterer import ScattererSection
-from PyMieSim.gui.section_.detector import DetectorSection
-from PyMieSim.gui.section_.measure import MeasureSection
-from PyMieSim.gui.helper import get_data
+"""Dash interface for the PyMieSim experiment dashboard."""
 
-dcc_store_id = "input-store"
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+import webbrowser
+
+from dash import ALL, Dash, Input, Output, State, dcc, no_update
+
+from PyMieSim.gui.layout import create_layout, render_fields, render_summary_cards
+from PyMieSim.gui.services import (
+    available_measures,
+    build_figure,
+    build_summary,
+    export_result_to_csv,
+    infer_variable_fields,
+    run_experiment,
+)
+
+
+LOGGER = logging.getLogger(__name__)
+
+
+def create_dash_app() -> Dash:
+    """Create and configure the experiment dashboard Dash application."""
+    LOGGER.debug("Creating Dash application")
+    app = Dash(
+        __name__,
+        title="PyMieSim Experiment Lab",
+        assets_folder=str(Path(__file__).with_name("assets")),
+        suppress_callback_exceptions=True,
+    )
+
+    initial_measures = available_measures("SphereSet", "PhotodiodeSet")
+    LOGGER.debug("Initial measures loaded: %s", initial_measures)
+    app.layout = create_layout(initial_measures)
+    _register_callbacks(app)
+    LOGGER.debug("Dash application initialized with %d callbacks", len(app.callback_map))
+    return app
 
 
 class OpticalSetupGUI:
-    """
-    A class to manage the overall GUI for the optical simulation interface.
-
-    This class integrates various sections, including Source, Scatterer, Detector, and Measure sections,
-    and sets up the layout and callbacks for the Dash application.
-    """
+    """Backward-compatible wrapper around the new Dash experiment dashboard."""
 
     def __init__(self):
-        """
-        Initialize the Dash app and other settings.
-
-        This method sets up the Dash application, initializes the individual sections, and prepares the layout
-        and callbacks.
-        """
-        plt.switch_backend("Agg")
-        self.app = Dash(
-            __name__,
-            external_stylesheets=[
-                "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            ],
-        )
-
-        self.source_section = SourceSection(self.app)
-        self.scatterer_section = ScattererSection(self.app)
-        self.detector_section = DetectorSection(self.app)
-        self.measure_section = MeasureSection(
-            self.app, self.scatterer_section, self.source_section, self.detector_section
-        )
-
-        self.setup_layout()
-        self.setup_callbacks()
-
-    def create_plot(self, measure: str, xaxis: str):
-        """
-        Generate a matplotlib plot and return it as a base64 image.
-
-        Parameters
-        ----------
-        measure : str
-            The type of measure to plot (e.g., Qsca, Qext).
-        xaxis : str
-            The parameter to plot on the x-axis.
-
-        Returns
-        -------
-        str
-            A base64-encoded string of the generated plot image.
-        """
-        data = get_data(
-            source_kwargs=self.source_section.data,
-            scatterer_kwargs=self.scatterer_section.data,
-            detector_kwargs=self.detector_section.data,
-            measure=measure,
-        )
-
-        data.plot(x=xaxis.lower())
-
-        buf = io.BytesIO()
-        plt.savefig(buf, format="png")
-        buf.seek(0)
-        encoded_image = base64.b64encode(buf.read()).decode("utf-8")
-        buf.close()
-        return f"data:image/png;base64,{encoded_image}"
-
-    def save_func(self, filename: str, measure: str):
-        """
-        Save the simulation data to a CSV file.
-
-        Parameters
-        ----------
-        filename : str
-            The name of the file to save the data.
-        measure : str
-            The type of measure to save.
-        xaxis : str
-            The parameter to include on the x-axis in the saved data.
-        """
-        return get_data(
-            source_kwargs=self.source_section.data,
-            scatterer_kwargs=self.scatterer_section.data,
-            detector_kwargs=self.detector_section.data,
-            measure=measure,
-            add_units=False,
-        )
-
-    def setup_layout(self):
-        """
-        Define the layout of the Dash app.
-
-        This method organizes the sections and visualization components in the application layout.
-        """
-        self.app.layout = html.Div(
-            [
-                dcc.Store(id=dcc_store_id),  # Store to save input values
-                html.Div(
-                    [
-                        html.H1(
-                            "Optical Simulation Interface",
-                            style={"text-align": "center"},
-                        ),
-                        *self.source_section.create(),
-                        *self.scatterer_section.create(),
-                        *self.detector_section.create(),
-                    ],
-                    style={"width": "40%", "float": "left", "padding": "10px"},
-                ),
-                html.Div(
-                    [
-                        html.H1("Visualization", style={"text-align": "center"}),
-                        self.measure_section.create(),
-                        html.Img(
-                            id="plot-image",
-                            style={
-                                "width": "100%",
-                                "height": "auto",
-                                "margin-top": "20px",
-                            },
-                        ),
-                    ],
-                    style={
-                        "width": "55%",
-                        "float": "right",
-                        "padding": "10px",
-                        "border-left": "1px solid black",
-                    },
-                ),
-            ]
-        )
-
-    def setup_callbacks(self):
-        """
-        Set up Dash callbacks for the GUI.
-
-        This method links user interactions with the relevant functions to update the plot and save data.
-        """
-        self.measure_section.update_callbacks(self.create_plot, self.save_func)
+        """Initialize the Dash application wrapper."""
+        LOGGER.debug("Initializing OpticalSetupGUI wrapper")
+        self.app = create_dash_app()
 
     def run(
         self,
@@ -157,17 +55,204 @@ class OpticalSetupGUI:
         open_browser: bool = False,
         debug: bool = False,
     ):
-        """
-        Run the Dash app.
+        """Run the dashboard server."""
+        url = f"http://{host}:{port}/"
+        LOGGER.debug("Running dashboard at %s debug=%s open_browser=%s", url, debug, open_browser)
 
-        This method starts the Dash server and opens the application in the default web browser.
-        """
         if open_browser:
-            webbrowser.open(f"http://{host}:{port}/", new=2)
-            self.app.run(debug=debug)
+            webbrowser.open(url, new=2)
 
-        else:
-            self.app.run(debug=debug, host=host, port=port)
+        self.app.run(debug=debug, host=host, port=port)
+
+
+def _register_callbacks(app: Dash) -> None:
+    """Register all dashboard callbacks."""
+    LOGGER.debug("Registering dashboard callbacks")
+
+    @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
+    def _render_source_fields(source_type: str):
+        LOGGER.debug("Rendering source fields for %s", source_type)
+        return render_fields("source", source_type)
+
+    @app.callback(Output("scatterer-fields", "children"), Input("scatterer-type", "value"))
+    def _render_scatterer_fields(scatterer_type: str):
+        LOGGER.debug("Rendering scatterer fields for %s", scatterer_type)
+        return render_fields("scatterer", scatterer_type)
+
+    @app.callback(Output("detector-fields", "children"), Input("detector-type", "value"))
+    def _render_detector_fields(detector_type: str):
+        LOGGER.debug("Rendering detector fields for %s", detector_type)
+        return render_fields("detector", detector_type)
+
+    @app.callback(
+        Output("measure-select", "options"),
+        Output("measure-select", "value"),
+        Input("scatterer-type", "value"),
+        Input("detector-type", "value"),
+        State("measure-select", "value"),
+    )
+    def _update_measure_options(scatterer_type: str, detector_type: str, current_measure: str | None):
+        LOGGER.debug(
+            "Updating measure options for scatterer=%s detector=%s current=%s",
+            scatterer_type,
+            detector_type,
+            current_measure,
+        )
+        measures = available_measures(scatterer_type, detector_type)
+        options = [{"label": measure, "value": measure} for measure in measures]
+        value = current_measure if current_measure in measures else measures[0]
+        return options, value
+
+    @app.callback(
+        Output("x-axis-select", "options"),
+        Output("x-axis-select", "value"),
+        Input("source-type", "value"),
+        Input({"kind": "field", "section": "source", "name": ALL}, "value"),
+        Input({"kind": "field", "section": "source", "name": ALL}, "id"),
+        Input("scatterer-type", "value"),
+        Input({"kind": "field", "section": "scatterer", "name": ALL}, "value"),
+        Input({"kind": "field", "section": "scatterer", "name": ALL}, "id"),
+        Input("detector-type", "value"),
+        Input({"kind": "field", "section": "detector", "name": ALL}, "value"),
+        Input({"kind": "field", "section": "detector", "name": ALL}, "id"),
+        State("x-axis-select", "value"),
+    )
+    def _update_x_axis_options(
+        source_type: str,
+        source_values: list[str],
+        source_ids: list[dict[str, str]],
+        scatterer_type: str,
+        scatterer_values: list[str],
+        scatterer_ids: list[dict[str, str]],
+        detector_type: str,
+        detector_values: list[str],
+        detector_ids: list[dict[str, str]],
+        current_x_axis: str | None,
+    ):
+        LOGGER.debug(
+            "Updating x-axis options from form state source=%s scatterer=%s detector=%s current=%s",
+            source_type,
+            scatterer_type,
+            detector_type,
+            current_x_axis,
+        )
+
+        variable_fields = infer_variable_fields(
+            source_type=source_type,
+            source_values=_pair_ids_with_values(source_ids, source_values),
+            scatterer_type=scatterer_type,
+            scatterer_values=_pair_ids_with_values(scatterer_ids, scatterer_values),
+            detector_type=detector_type,
+            detector_values=_pair_ids_with_values(detector_ids, detector_values),
+        )
+
+        options = [{"label": field_name, "value": field_name} for field_name in variable_fields]
+        value = current_x_axis if current_x_axis in variable_fields else (variable_fields[0] if variable_fields else None)
+        return options, value
+
+    @app.callback(
+        Output("experiment-result", "data"),
+        Output("status-banner", "children"),
+        Output("status-banner", "className"),
+        Input("run-experiment", "n_clicks"),
+        State("source-type", "value"),
+        State({"kind": "field", "section": "source", "name": ALL}, "value"),
+        State({"kind": "field", "section": "source", "name": ALL}, "id"),
+        State("scatterer-type", "value"),
+        State({"kind": "field", "section": "scatterer", "name": ALL}, "value"),
+        State({"kind": "field", "section": "scatterer", "name": ALL}, "id"),
+        State("detector-type", "value"),
+        State({"kind": "field", "section": "detector", "name": ALL}, "value"),
+        State({"kind": "field", "section": "detector", "name": ALL}, "id"),
+        State("measure-select", "value"),
+        prevent_initial_call=True,
+    )
+    def _run_experiment(
+        n_clicks: int,
+        source_type: str,
+        source_values: list[str],
+        source_ids: list[dict[str, str]],
+        scatterer_type: str,
+        scatterer_values: list[str],
+        scatterer_ids: list[dict[str, str]],
+        detector_type: str,
+        detector_values: list[str],
+        detector_ids: list[dict[str, str]],
+        measure: str,
+    ):
+        del n_clicks
+
+        LOGGER.debug(
+            "Run button pressed with source=%s scatterer=%s detector=%s measure=%s",
+            source_type,
+            scatterer_type,
+            detector_type,
+            measure,
+        )
+
+        try:
+            result = run_experiment(
+                source_type=source_type,
+                source_values=_pair_ids_with_values(source_ids, source_values),
+                scatterer_type=scatterer_type,
+                scatterer_values=_pair_ids_with_values(scatterer_ids, scatterer_values),
+                detector_type=detector_type,
+                detector_values=_pair_ids_with_values(detector_ids, detector_values),
+                measure=measure,
+            )
+        except Exception as error:
+            LOGGER.exception("Experiment run failed")
+            return None, str(error), "status-banner error"
+
+        LOGGER.debug(
+            "Experiment run finished rows=%d x_axis_options=%s",
+            result["row_count"],
+            result["parameter_columns"],
+        )
+
+        return result, "Experiment completed. Figure updated and CSV is ready.", "status-banner success"
+
+    @app.callback(
+        Output("csv-download", "data"),
+        Input("export-csv", "n_clicks"),
+        State("experiment-result", "data"),
+        State("measure-select", "value"),
+        prevent_initial_call=True,
+    )
+    def _export_csv(n_clicks: int, result: dict | None, measure: str | None):
+        del n_clicks
+        LOGGER.debug("CSV export requested for measure=%s", measure)
+
+        csv_content = export_result_to_csv(result)
+
+        if not csv_content:
+            LOGGER.debug("No CSV exported because result content is empty")
+            return no_update
+
+        filename = f"pymiesim_{measure or 'result'}.csv"
+        LOGGER.debug("CSV export generated filename=%s", filename)
+        return dcc.send_string(csv_content, filename)
+
+    @app.callback(
+        Output("result-graph", "figure"),
+        Output("summary-cards", "children"),
+        Input("experiment-result", "data"),
+        Input("x-axis-select", "value"),
+    )
+    def _update_outputs(result: dict | None, x_axis: str | None):
+        LOGGER.debug("Updating outputs for x_axis=%s result_present=%s", x_axis, bool(result))
+        figure = build_figure(result, x_axis)
+        summary = render_summary_cards(build_summary(result))
+
+        if not result:
+            return figure, summary
+
+        return figure, summary
+
+
+def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[str, str]:
+    """Convert dynamic Dash field IDs and values into a flat mapping."""
+    return {field_id["name"]: value for field_id, value in zip(ids, values)}
 
 
 if __name__ == "__main__":

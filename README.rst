@@ -90,6 +90,31 @@ Below is a short example computing the scattering efficiency of a sphere.
     :alt: Scattering efficiency of a 200 nm sphere with refractive index 4.0.
 
 
+Experiment Dashboard
+--------------------
+PyMieSim also ships with a Dash-based experiment dashboard for interactive set configuration,
+CSV export, and quick visual exploration of experiment outputs.
+
+Launch it from the repository checkout or installed package with:
+
+.. code-block:: bash
+
+    python -m PyMieSim --host 127.0.0.1 --port 8050
+
+Debug mode is off by default. Enable it only when you want verbose logs and Dash debug tooling:
+
+.. code-block:: bash
+
+    python -m PyMieSim --debug
+
+Example dashboard view placeholder:
+
+.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png
+    :width: 1000
+    :align: center
+    :alt: Placeholder preview of the PyMieSim experiment dashboard.
+
+
 
 Code structure
 ---------------
