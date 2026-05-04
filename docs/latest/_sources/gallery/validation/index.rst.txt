@@ -17,6 +17,10 @@ Contents
 - ``internal`` - small utilities checking phase functions and energy flow.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -34,6 +38,10 @@ Bohren & Huffmann
 ~~~~~~~~~~~~~~~~~
 Scripts reproducing figures from the classic text.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -104,6 +112,10 @@ Internal
 Tests checking phase functions and energy conservation.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -155,6 +167,10 @@ PyMieScatt
 ~~~~~~~~~~
 Comparison scripts using the PyMieScatt package.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html

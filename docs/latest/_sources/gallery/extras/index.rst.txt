@@ -17,6 +17,10 @@ Contents
 - ``array_scattering.py`` - compute fields and Stokes parameters for arbitrary angles.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

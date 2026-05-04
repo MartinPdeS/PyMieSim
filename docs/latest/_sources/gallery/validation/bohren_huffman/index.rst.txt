@@ -7,6 +7,10 @@ Bohren & Huffmann
 Scripts reproducing figures from the classic text.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

@@ -7,6 +7,10 @@ Cylinder
 Examples demonstrating infinite cylindrical scatterers.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

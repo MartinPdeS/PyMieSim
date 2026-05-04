@@ -9,6 +9,10 @@ The ``experiment`` package is used to build large parameter sweeps.  It lets you
 combine sources, scatterers and detectors to explore how scattering quantities
 change across many configurations.
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -26,6 +30,10 @@ Core-Shell
 ~~~~~~~~~~
 Examples of particles composed of a core and shell.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -95,6 +103,10 @@ Cylinder
 ~~~~~~~~
 Examples demonstrating infinite cylindrical scatterers.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -249,6 +261,10 @@ Sphere
 ~~~~~~
 Examples focused on spherical scatterers.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html

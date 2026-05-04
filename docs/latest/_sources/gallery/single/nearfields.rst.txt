@@ -40,6 +40,11 @@ This example demonstrates the process of computing and visualizing the far-field
     Computing scattered near field component: Ex
     /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/PyMieSim/single/representations/nearfields.py:259: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
       fields[component] = numpy.asarray(values).reshape(self.X.shape)
+    findfont: Font family ['cursive'] not found. Falling back to DejaVu Sans.
+    findfont: Generic family 'cursive' not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
+    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
+    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
+    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
 
     <Figure size 1200x600 with 4 Axes>
 
@@ -95,7 +100,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.696 seconds)
+   **Total running time of the script:** (0 minutes 0.752 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfields.py:

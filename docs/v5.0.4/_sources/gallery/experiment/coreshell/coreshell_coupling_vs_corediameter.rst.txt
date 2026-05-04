@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
  .. code-block:: none
 
 
-    <Figure size 800x500 with 1 Axes>
+    <Figure size 640x480 with 1 Axes>
 
 
 
@@ -95,7 +95,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.228 seconds)
+   **Total running time of the script:** (0 minutes 0.233 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_corediameter.py:
