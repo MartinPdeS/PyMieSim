@@ -42,9 +42,7 @@ requirements:
     - martinpdes::typedunit
     - matplotlib ~=3.10.3
     - numpy ==2.2.6
-    - pydantic ~=2.9.2
     - pandas ~=2.3.0
-    - tabulate ~=0.9
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim
