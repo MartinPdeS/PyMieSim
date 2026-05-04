@@ -12,7 +12,7 @@
 | PyMieSim/single/representations/nearfields.py |      160 |      141 |       44 |        0 |      9.31% |29-32, 49-62, 96-115, 134-143, 173-216, 234-261, 278-287, 296-334, 378-435 |
 | PyMieSim/single/representations/spf.py        |      101 |       26 |       32 |       12 |     65.41% |178, 182, 236, 241, 246, 252, 260-277, 291, 310-312, 329-\>exit, 350, 366-376 |
 | PyMieSim/single/representations/stokes.py     |       94 |       10 |       24 |       10 |     83.05% |248-\>exit, 280, 301, 306, 312, 327, 348-350, 367-\>exit, 399, 417 |
-| **TOTAL**                                     | **1159** |  **429** |  **384** |   **91** | **59.17%** |           |
+| **TOTAL**                                     | **1157** |  **429** |  **384** |   **91** | **59.12%** |           |
 
 4 files skipped due to complete coverage.
 
