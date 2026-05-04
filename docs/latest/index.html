@@ -536,6 +536,22 @@ conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class=
 <a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png"><img alt="Scattering efficiency of a 200 nm sphere with refractive index 4.0." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png" style="width: 1000px;" />
 </a>
 </section>
+<section id="experiment-dashboard">
+<h2>Experiment Dashboard<a class="headerlink" href="#experiment-dashboard" title="Link to this heading">#</a></h2>
+<p>PyMieSim also ships with a Dash-based experiment dashboard for interactive set configuration,
+CSV export, and quick visual exploration of experiment outputs.</p>
+<p>Launch it from the repository checkout or installed package with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">8050</span>
+</pre></div>
+</div>
+<p>Debug mode is off by default. Enable it only when you want verbose logs and Dash debug tooling:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--debug
+</pre></div>
+</div>
+<p>Example dashboard view placeholder:</p>
+<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png"><img alt="Placeholder preview of the PyMieSim experiment dashboard." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png" style="width: 1000px;" />
+</a>
+</section>
 <section id="code-structure">
 <h2>Code structure<a class="headerlink" href="#code-structure" title="Link to this heading">#</a></h2>
 <p>Here is the architecture for a standard workflow using PyMieSim:</p>
@@ -612,6 +628,7 @@ pytest
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-example">Quick example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-dashboard">Experiment Dashboard</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-structure">Code structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-from-source">Building from source</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
