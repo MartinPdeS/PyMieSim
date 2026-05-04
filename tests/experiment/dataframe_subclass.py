@@ -70,6 +70,43 @@ def test_plot_valid_without_std():
     plt.close()
 
 
+def test_plot_options_are_applied():
+    """Custom plotting options should be applied without the helper decorator."""
+    df = get_experiment_dataframe()
+
+    figure = df.plot(
+        x="source:wavelength",
+        show=False,
+        title="Coupling overview",
+        figure_size=(5, 3),
+        xscale="linear",
+        xlim=(600, 1000),
+        ylim=(-1, 1),
+    )
+
+    axis = figure.axes[0]
+
+    assert figure.get_size_inches()[0] == pytest.approx(5)
+    assert figure.get_size_inches()[1] == pytest.approx(3)
+    assert axis.get_title() == "Coupling overview"
+    assert axis.get_xscale() == "linear"
+    assert axis.get_xlim() == pytest.approx((600, 1000))
+    assert axis.get_ylim() == pytest.approx((-1, 1))
+
+    plt.close()
+
+
+def test_plot_supports_polar_projection_alias():
+    """The convenience alias ``project`` should enable polar plots."""
+    df = get_experiment_dataframe()
+
+    figure = df.plot(x="source:wavelength", show=False, project="polar")
+
+    assert figure.axes[0].name == "polar"
+
+    plt.close()
+
+
 def test_plot_invalid_x():
     """
     Test that plotting with an invalid x index level raises a ValueError.
