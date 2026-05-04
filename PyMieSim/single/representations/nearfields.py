@@ -5,7 +5,7 @@ import numpy
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from MPSPlots.colormaps import blue_black_red
-from MPSPlots import helper
+from MPSPlots.styles import scientific
 
 from PyMieSim.units import Length
 
@@ -60,6 +60,69 @@ def _make_plane_basis(plane_normal: Sequence[float]) -> Tuple[numpy.ndarray, num
     v_hat = _normalize_vector(v_hat)
 
     return n_hat, u_hat, v_hat
+
+
+def _finalize_figure(
+    figure: plt.Figure,
+    *,
+    tight_layout: bool = True,
+    save_as: Optional[str] = None,
+    show: bool = True,
+    xscale: Optional[str] = None,
+    yscale: Optional[str] = None,
+    xlim: Optional[Tuple[float, float]] = None,
+    ylim: Optional[Tuple[float, float]] = None,
+) -> plt.Figure:
+    """
+    Apply common Matplotlib figure finalization options.
+
+    Parameters
+    ----------
+    figure
+        Figure returned by the plotting routine.
+    tight_layout
+        If True, call ``figure.tight_layout()`` before returning.
+    save_as
+        Optional output path used to save the figure.
+    show
+        If True, display the figure with ``plt.show()``.
+    xscale
+        Optional x-axis scale applied to every axes in the figure.
+    yscale
+        Optional y-axis scale applied to every axes in the figure.
+    xlim
+        Optional x-axis limits applied to every axes in the figure.
+    ylim
+        Optional y-axis limits applied to every axes in the figure.
+
+    Returns
+    -------
+    plt.Figure
+        Finalized figure.
+    """
+    for ax in figure.axes:
+        if xscale is not None:
+            ax.set_xscale(xscale)
+
+        if yscale is not None:
+            ax.set_yscale(yscale)
+
+        if xlim is not None:
+            ax.set_xlim(*xlim)
+
+        if ylim is not None:
+            ax.set_ylim(*ylim)
+
+    if tight_layout:
+        figure.tight_layout()
+
+    if save_as is not None:
+        figure.savefig(save_as, dpi=300)
+
+    if show:
+        plt.show()
+
+    return figure
 
 
 class NearFields:
@@ -333,7 +396,6 @@ class NearFields:
         )
         ax.add_patch(circle)
 
-    @helper.post_mpl_plot
     def plot(
         self,
         *field_components: str,
@@ -345,7 +407,15 @@ class NearFields:
         v_range: Optional[Tuple[Length, Length]] = None,
         extent_scale: float = 2.5,
         colormap: str = blue_black_red,
-        figure_size: tuple = (6, 6)
+        figure_size: tuple = (6, 6),
+        tight_layout: bool = True,
+        save_as: Optional[str] = None,
+        show: bool = True,
+        xscale: Optional[str] = None,
+        yscale: Optional[str] = None,
+        xlim: Optional[Tuple[float, float]] = None,
+        ylim: Optional[Tuple[float, float]] = None,
+        style=scientific,
     ):
         """
         Plot near fields over a specified plane.
@@ -372,8 +442,27 @@ class NearFields:
             Colormap to use for plotting.
         figure_size
             Size of the matplotlib figure.
-        show_scatterer_outline
-            If True, draw the intersection circle of the sphere with the plane.
+        tight_layout
+            If True, call ``figure.tight_layout()`` before returning.
+        save_as
+            Optional output path used to save the figure.
+        show
+            If True, display the figure with ``plt.show()``.
+        xscale
+            Optional x-axis scale applied to every subplot.
+        yscale
+            Optional y-axis scale applied to every subplot.
+        xlim
+            Optional x-axis limits applied to every subplot.
+        ylim
+            Optional y-axis limits applied to every subplot.
+        style
+            Matplotlib style applied while constructing the figure.
+
+        Returns
+        -------
+        plt.Figure
+            Figure containing the requested near-field plots.
         """
         if len(field_components) == 0:
             raise ValueError("Provide at least one field component, for example Ex:real or |E|:abs")
@@ -393,43 +482,53 @@ class NearFields:
         unique_components = list(dict.fromkeys(requested_components))
         fields = self._compute_fields(unique_components, type=type)
 
-        figure, axes = plt.subplots(
-            figsize=(figure_size[0] * len(field_components), figure_size[1]),
-            nrows=1,
-            ncols=len(field_components),
-            squeeze=False,
-        )
-
-        for requested_component, requested_part, ax in zip(requested_components, requested_parts, axes.flatten()):
-            values = fields[requested_component]
-
-            if requested_part == "real":
-                field_data = values.real.astype(float)
-            elif requested_part == "imag":
-                field_data = values.imag.astype(float)
-            elif requested_part == "abs":
-                field_data = numpy.abs(values).astype(float)
-            else:
-                raise ValueError(f"Unknown field component part: {requested_part}")
-
-            im = ax.pcolormesh(
-                self.u,
-                self.v,
-                field_data,
-                cmap=colormap,
-                shading="auto",
+        with plt.style.context(style):
+            figure, axes = plt.subplots(
+                figsize=(figure_size[0] * len(field_components), figure_size[1]),
+                nrows=1,
+                ncols=len(field_components),
+                squeeze=False,
             )
 
-            self._add_scatterer_outline_on_plane(ax)
+            for requested_component, requested_part, ax in zip(requested_components, requested_parts, axes.flatten()):
+                values = fields[requested_component]
 
-            divider = make_axes_locatable(ax)
-            cax = divider.append_axes("right", size="3%", pad=0.05)
-            plt.colorbar(im, cax=cax)
+                if requested_part == "real":
+                    field_data = values.real.astype(float)
+                elif requested_part == "imag":
+                    field_data = values.imag.astype(float)
+                elif requested_part == "abs":
+                    field_data = numpy.abs(values).astype(float)
+                else:
+                    raise ValueError(f"Unknown field component part: {requested_part}")
 
-            ax.set_aspect("equal")
-            ax.set_xlabel("plane u")
-            ax.set_ylabel("plane v")
-            ax.set_title(f"{type} {requested_component} {requested_part}")
-            ax.grid(visible=False, which="both", axis="both")
+                im = ax.pcolormesh(
+                    self.u,
+                    self.v,
+                    field_data,
+                    cmap=colormap,
+                    shading="auto",
+                )
 
-        return figure
+                self._add_scatterer_outline_on_plane(ax)
+
+                divider = make_axes_locatable(ax)
+                cax = divider.append_axes("right", size="3%", pad=0.05)
+                plt.colorbar(im, cax=cax)
+
+                ax.set_aspect("equal")
+                ax.set_xlabel("plane u")
+                ax.set_ylabel("plane v")
+                ax.set_title(f"{type} {requested_component} {requested_part}")
+                ax.grid(visible=False, which="both", axis="both")
+
+            return _finalize_figure(
+                figure,
+                tight_layout=tight_layout,
+                save_as=save_as,
+                show=show,
+                xscale=xscale,
+                yscale=yscale,
+                xlim=xlim,
+                ylim=ylim,
+            )

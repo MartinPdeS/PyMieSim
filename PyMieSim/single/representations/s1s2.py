@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from MPSPlots import helper
+import matplotlib.pyplot as plt
+from typing import Optional, Sequence, Tuple
 
 from PyMieSim.units import ureg
+
 
 class S1S2():
     r"""
@@ -54,6 +56,16 @@ class S1S2():
 
     """
     def __init__(self, setup, sampling: int = 200):
+        """
+        Initialize the S1/S2 far-field representation.
+
+        Parameters
+        ----------
+        setup
+            Scattering setup used to compute the amplitude functions.
+        sampling
+            Number of angular samples spanning $[-\\pi, \\pi]$.
+        """
         self.setup = setup
         self.sampling = sampling
         self.phi = numpy.linspace(-numpy.pi, numpy.pi, self.sampling) * ureg.radian
@@ -62,31 +74,125 @@ class S1S2():
             angles=self.phi
         )
 
-    @helper.pre_plot(nrows=1, ncols=2, subplot_kw={"polar": True})
-    def plot(self, axes) -> None:
+    @staticmethod
+    def _finalize_figure(
+        figure: plt.Figure,
+        *,
+        tight_layout: bool = True,
+        save_as: Optional[str] = None,
+        show: bool = True,
+        ylim: Optional[Tuple[float, float]] = None,
+    ) -> plt.Figure:
         """
-        Plots the S1 and S2 Stokes parameters on polar plots.
+        Apply common figure finalization steps for S1/S2 plots.
 
-        The method generates two polar plots: one for the absolute values of the S1 parameter and another
-        for the S2 parameter, filling the area between the radial axis and the parameter values.
+        Parameters
+        ----------
+        figure
+            Figure produced by the plotting routine.
+        tight_layout
+            If True, call ``figure.tight_layout()`` before returning.
+        save_as
+            Optional output path used to save the figure.
+        show
+            If True, display the figure with ``plt.show()``.
+        ylim
+            Optional radial limits applied to every polar subplot.
+
+        Returns
+        -------
+        plt.Figure
+            Finalized matplotlib figure.
         """
-        axes[0].set(title=r"S$_1$ parameter")
-        axes[0].fill_between(
-            self.phi,
-            y1=0,
-            y2=numpy.abs(self.S1),
-            color="C0",
-            alpha=0.7,
-            edgecolor="black",
-        )
+        if ylim is not None:
+            for ax in figure.axes:
+                ax.set_ylim(*ylim)
 
-        # Plot for S2 parameter
-        axes[1].set(title=r"S$_2$ parameter")
-        axes[1].fill_between(
-            self.phi,
-            y1=0,
-            y2=numpy.abs(self.S2),
-            color="C1",
-            alpha=0.7,
-            # edgecolor="black",
-        )
+        if tight_layout:
+            figure.tight_layout()
+
+        if save_as is not None:
+            figure.savefig(save_as, dpi=300)
+
+        if show:
+            plt.show()
+
+        return figure
+
+    def plot(
+        self,
+        figure_size: Tuple[float, float] = (12, 5),
+        titles: Sequence[str] = (r"S$_1$ parameter", r"S$_2$ parameter"),
+        tight_layout: bool = True,
+        save_as: Optional[str] = None,
+        show: bool = True,
+        ylim: Optional[Tuple[float, float]] = None,
+        style=None,
+    ) -> plt.Figure:
+        """
+        Plot the S1 and S2 scattering amplitudes on polar subplots.
+
+        Parameters
+        ----------
+        figure_size
+            Figure size passed to ``plt.subplots``.
+        titles
+            Two subplot titles applied to the S1 and S2 panels.
+        tight_layout
+            If True, call ``figure.tight_layout()`` before returning.
+        save_as
+            Optional output path used to save the figure.
+        show
+            If True, display the figure with ``plt.show()``.
+        ylim
+            Optional radial limits applied to both polar subplots.
+        style
+            Matplotlib style applied while creating the figure. If omitted, the
+            runtime-loaded ``MPSPlots.styles.scientific`` style is used.
+
+        Returns
+        -------
+        plt.Figure
+            Figure containing the two polar amplitude plots.
+        """
+        if len(titles) != 2:
+            raise ValueError("titles must contain exactly two entries for the S1 and S2 subplots")
+
+        if style is None:
+            import MPSPlots
+            style = MPSPlots.styles.scientific
+
+        with plt.style.context(style):
+            figure, axes = plt.subplots(1, 2, figsize=figure_size, subplot_kw={"polar": True})
+
+            axes[0].set(title=titles[0])
+            axes[0].fill_between(
+                self.phi,
+                y1=0,
+                y2=numpy.abs(self.S1),
+                color="C0",
+                alpha=0.7,
+                edgecolor="black",
+            )
+
+            axes[1].set(title=titles[1])
+            axes[1].fill_between(
+                self.phi,
+                y1=0,
+                y2=numpy.abs(self.S2),
+                color="C1",
+                alpha=0.7,
+            )
+
+            for ax in axes:
+                ax.set_yticklabels([])
+                ax.set_xlabel("")
+                ax.set_ylabel("")
+
+            return self._finalize_figure(
+                figure,
+                tight_layout=tight_layout,
+                save_as=save_as,
+                show=show,
+                ylim=ylim,
+            )

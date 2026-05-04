@@ -3,10 +3,8 @@
 
 from typing import Sequence
 
-import matplotlib.pyplot as pyplot
 import numpy
-from matplotlib import cm
-from matplotlib import colors
+import matplotlib
 
 from PyMieSim.units import ureg
 from PyMieSim.utils import spherical_to_cartesian
@@ -116,7 +114,7 @@ class SPF:
         matplotlib.figure.Figure
             Matplotlib figure containing the SPF visualization.
         """
-        figure = pyplot.figure(
+        figure = matplotlib.pyplot.figure(
             figsize=(unit_size[0], unit_size[1]),
             facecolor=background_color,
         )
@@ -145,7 +143,7 @@ class SPF:
         )
 
         figure.tight_layout()
-        pyplot.show()
+        matplotlib.pyplot.show()
 
         return figure
 
@@ -233,12 +231,12 @@ class SPF:
         finite_values = intensity[numpy.isfinite(intensity)]
 
         if finite_values.size == 0:
-            return colors.Normalize(vmin=0.0, vmax=1.0)
+            return matplotlib.colors.Normalize(vmin=0.0, vmax=1.0)
 
         non_negative_values = finite_values[finite_values >= 0.0]
 
         if non_negative_values.size == 0:
-            return colors.Normalize(vmin=0.0, vmax=1.0)
+            return matplotlib.colors.Normalize(vmin=0.0, vmax=1.0)
 
         upper_limit = numpy.nanmax(non_negative_values)
 
@@ -252,7 +250,7 @@ class SPF:
             upper_limit = 1.0
 
         if scale == "linear":
-            return colors.Normalize(
+            return matplotlib.colors.Normalize(
                 vmin=0.0,
                 vmax=upper_limit,
             )
@@ -261,7 +259,7 @@ class SPF:
             strictly_positive_values = non_negative_values[non_negative_values > 0.0]
 
             if strictly_positive_values.size == 0:
-                return colors.Normalize(vmin=0.0, vmax=upper_limit)
+                return matplotlib.colors.Normalize(vmin=0.0, vmax=upper_limit)
 
             lower_limit = numpy.nanmax(strictly_positive_values) * 1e-6
             lower_limit = max(lower_limit, numpy.nanmin(strictly_positive_values))
@@ -269,7 +267,7 @@ class SPF:
             if lower_limit >= upper_limit:
                 lower_limit = upper_limit * 1e-6
 
-            return colors.LogNorm(
+            return matplotlib.colors.LogNorm(
                 vmin=lower_limit,
                 vmax=upper_limit,
             )
@@ -286,7 +284,7 @@ class SPF:
         Return a Matplotlib colormap object.
         """
         if isinstance(colormap, str):
-            return cm.get_cmap(colormap)
+            return matplotlib.colormaps.get_cmap(colormap)
 
         return colormap
 

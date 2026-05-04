@@ -5,8 +5,7 @@ from typing import Sequence
 
 import matplotlib.pyplot as pyplot
 import numpy
-from matplotlib import cm
-from matplotlib import colors
+import matplotlib
 
 from MPSPlots.colormaps import blue_black_red
 
@@ -246,7 +245,7 @@ class Stokes:
         ax.set_title(f"{field_label} field")
 
         if show_colorbar:
-            scalar_mappable = cm.ScalarMappable(
+            scalar_mappable = matplotlib.cm.ScalarMappable(
                 norm=normalization,
                 cmap=colormap_object,
             )
@@ -298,7 +297,7 @@ class Stokes:
         finite_values = field[numpy.isfinite(field)]
 
         if finite_values.size == 0:
-            return colors.Normalize(vmin=-1.0, vmax=1.0)
+            return matplotlib.colors.Normalize(vmin=-1.0, vmax=1.0)
 
         maximum_absolute_value = numpy.nanmax(numpy.abs(finite_values))
 
@@ -311,7 +310,7 @@ class Stokes:
         if not numpy.isfinite(maximum_absolute_value) or maximum_absolute_value <= 0.0:
             maximum_absolute_value = 1.0
 
-        return colors.Normalize(
+        return matplotlib.colors.Normalize(
             vmin=-maximum_absolute_value,
             vmax=maximum_absolute_value,
         )
@@ -324,7 +323,7 @@ class Stokes:
         Return a Matplotlib colormap object.
         """
         if isinstance(colormap, str):
-            return cm.get_cmap(colormap)
+            return matplotlib.get_cmap(colormap)
 
         return colormap
 
