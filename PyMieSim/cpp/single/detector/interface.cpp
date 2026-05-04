@@ -2,6 +2,7 @@
 #include <cmath>
 #include <complex>
 #include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <utility>
 #include <vector>
@@ -25,6 +26,17 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(detector, module) {
     py::object ureg = get_shared_ureg();
+
+    auto format_base_detector_repr = [](const std::string& name, const BaseDetector& self) {
+        std::ostringstream stream;
+        stream << "<" << name
+               << " sampling=" << self.sampling
+               << ", numerical_aperture=" << self.numerical_aperture
+               << ", phi_offset=" << self.phi_offset << " rad"
+               << ", gamma_offset=" << self.gamma_offset << " rad"
+               << ">";
+        return stream.str();
+    };
 
     module.doc() = R"pbdoc(
         Detector bindings for PyMieSim.
@@ -537,6 +549,15 @@ PYBIND11_MODULE(detector, module) {
                 pint.Quantity
                     Coupled optical power in watts.
             )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [format_base_detector_repr](const BaseDetector& self) {
+                return format_base_detector_repr("BaseDetector", self);
+            },
+            R"pbdoc(
+                Return a concise representation of the detector state.
+            )pbdoc"
         );
 
     py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(
@@ -713,6 +734,23 @@ PYBIND11_MODULE(detector, module) {
                 This method replaces the previous PyVista based ``add_to_scene``
                 method. It operates on an existing Matplotlib axis so the Python
                 plotting layer remains responsible for figure creation and style.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [format_base_detector_repr](const Photodiode& self) {
+                std::ostringstream stream;
+                stream << "<Photodiode"
+                       << " sampling=" << self.sampling
+                       << ", numerical_aperture=" << self.numerical_aperture
+                       << ", cache_numerical_aperture=" << self.cache_numerical_aperture
+                       << ", phi_offset=" << self.phi_offset << " rad"
+                       << ", gamma_offset=" << self.gamma_offset << " rad"
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the photodiode parameters.
             )pbdoc"
         );
 
@@ -977,6 +1015,23 @@ PYBIND11_MODULE(detector, module) {
                 diverging colormap for the real part of the coherent collecting
                 field.
             )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [](const CoherentMode& self) {
+                std::ostringstream stream;
+                stream << "<CoherentMode"
+                       << " mode_number=" << self.mode_number
+                       << ", sampling=" << self.sampling
+                       << ", numerical_aperture=" << self.numerical_aperture
+                       << ", rotation=" << self.rotation << " rad"
+                       << ", mean_coupling=" << (self.mean_coupling ? "True" : "False")
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the coherent detector parameters.
+            )pbdoc"
         );
 
     py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(
@@ -1088,6 +1143,17 @@ PYBIND11_MODULE(detector, module) {
                 This method replaces the previous PyVista based ``add_to_scene``
                 method. It operates on an existing Matplotlib axis so the Python
                 plotting layer remains responsible for figure creation and style.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [](const IntegratingSphere& self) {
+                std::ostringstream stream;
+                stream << "<IntegratingSphere sampling=" << self.sampling << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the integrating sphere parameters.
             )pbdoc"
         );
 }

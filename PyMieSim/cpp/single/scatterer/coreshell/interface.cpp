@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
+#include <sstream>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -240,6 +241,24 @@ void register_coreshell(py::module_& module) {
                 ``core_diameter / 2 + shell_thickness``. The plotting helper uses
                 normalized display radii and does not draw the particle at its
                 physical nanometer scale.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [](const CoreShell& self) {
+                std::ostringstream stream;
+                stream << "<CoreShell"
+                       << " core_diameter=" << self.core_diameter << " m"
+                       << ", shell_thickness=" << self.shell_thickness << " m"
+                       << ", max_order=" << self.max_order
+                       << ", core_material=" << py::repr(py::cast(self.core_material)).cast<std::string>()
+                       << ", shell_material=" << py::repr(py::cast(self.shell_material)).cast<std::string>()
+                       << ", medium=" << py::repr(py::cast(self.medium)).cast<std::string>()
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the core-shell parameters.
             )pbdoc"
         )
         .def(

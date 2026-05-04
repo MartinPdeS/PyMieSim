@@ -10,6 +10,7 @@
 
 #include <cstdio>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,38 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(material, module) {
     py::object ureg = get_shared_ureg();
+
+    auto format_complex_repr = [](const complex128& value) {
+        std::ostringstream stream;
+        stream << value.real();
+
+        if (value.imag() >= 0.0) {
+            stream << " + i" << value.imag();
+        }
+        else {
+            stream << " - i" << -value.imag();
+        }
+
+        return stream.str();
+    };
+
+    auto format_wavelength_interval = [](const std::vector<double>& values) {
+        if (values.empty()) {
+            return std::string("unspecified");
+        }
+
+        const double first = values.front();
+        const double last = values.back();
+
+        std::ostringstream stream;
+        stream << first << " m";
+
+        if (values.size() > 1) {
+            stream << " -> " << last << " m";
+        }
+
+        return stream.str();
+    };
 
     module.def(
         "print_available",
@@ -134,34 +167,19 @@ PYBIND11_MODULE(material, module) {
         )
         .def(
             "__repr__",
-            [](const ConstantMaterial& self) {
-                char buffer[128];
-
-                if (self.constant_refractive_index.imag() >= 0.0) {
-                    std::snprintf(
-                        buffer,
-                        sizeof(buffer),
-                        "%g + i%g",
-                        self.constant_refractive_index.real(),
-                        self.constant_refractive_index.imag()
-                    );
-                }
-                else {
-                    std::snprintf(
-                        buffer,
-                        sizeof(buffer),
-                        "%g - i%g",
-                        self.constant_refractive_index.real(),
-                        -self.constant_refractive_index.imag()
-                    );
-                }
-
-                return std::string(buffer);
+            [format_complex_repr](const ConstantMaterial& self) {
+                std::ostringstream stream;
+                stream << "<ConstantMaterial refractive_index="
+                       << format_complex_repr(self.constant_refractive_index)
+                       << ">";
+                return stream.str();
             },
             R"pbdoc(
                 Returns a string representation of the ConstantMaterial instance.
 
-                This method provides a string representation of the ConstantMaterial instance, which includes the real and imaginary parts of the constant refractive index. The format is "real + i*imaginary" or "real - i*imaginary" depending on the sign of the imaginary part. This can be useful for debugging and display purposes when working with instances of ConstantMaterial.
+                This method provides a structured representation of the
+                ``ConstantMaterial`` instance, including its constant complex
+                refractive index.
             )pbdoc"
         )
         ;
@@ -319,13 +337,21 @@ PYBIND11_MODULE(material, module) {
         )
         .def(
             "__repr__",
-            [](const TabulatedMaterial& self) {
-                return self.name;
+            [format_wavelength_interval](const TabulatedMaterial& self) {
+                std::ostringstream stream;
+                stream << "<TabulatedMaterial name='" << self.name << "'"
+                       << ", samples=" << self.wavelengths.size()
+                       << ", wavelength_range=" << format_wavelength_interval(self.wavelengths)
+                       << ", allow_extrapolation=" << (self.allow_extrapolation ? "True" : "False")
+                       << ">";
+                return stream.str();
             },
             R"pbdoc(
                 Returns a string representation of the TabulatedMaterial instance.
 
-                This method provides a string representation of the TabulatedMaterial instance, which in this case is simply the name of the material. This can be useful for debugging and display purposes when working with instances of TabulatedMaterial.
+                This method provides a structured representation of the
+                ``TabulatedMaterial`` instance, including its name, number of
+                samples, wavelength coverage, and extrapolation policy.
             )pbdoc"
         )
         ;
@@ -480,13 +506,22 @@ PYBIND11_MODULE(material, module) {
         )
         .def(
             "__repr__",
-            [](const SellmeierMaterial& self) {
-                return self.name;
+            [format_wavelength_interval](const SellmeierMaterial& self) {
+                std::ostringstream stream;
+                stream << "<SellmeierMaterial name='" << self.name << "'"
+                       << ", formula_type=" << self.formula_type
+                       << ", coefficients=" << self.coefficients.size()
+                       << ", wavelength_bound=" << format_wavelength_interval(self.wavelength_bound)
+                       << ", allow_extrapolation=" << (self.allow_extrapolation ? "True" : "False")
+                       << ">";
+                return stream.str();
             },
             R"pbdoc(
                 Returns a string representation of the SellmeierMaterial instance.
 
-                This method provides a string representation of the SellmeierMaterial instance, which includes the name of the material. This can be useful for debugging and visualization purposes.
+                This method provides a structured representation of the
+                ``SellmeierMaterial`` instance, including its formula type,
+                coefficient count, wavelength bounds, and extrapolation policy.
             )pbdoc"
         )
         ;
@@ -591,14 +626,18 @@ PYBIND11_MODULE(material, module) {
         .def(
             "__repr__",
             [](const ConstantMedium& self) {
-                char buffer[64];
-                std::snprintf(buffer, sizeof(buffer), "%g", self.constant_refractive_index);
-                return std::string(buffer);
+                std::ostringstream stream;
+                stream << "<ConstantMedium refractive_index="
+                       << self.constant_refractive_index
+                       << ">";
+                return stream.str();
             },
             R"pbdoc(
                 Returns a string representation of the ConstantMedium instance.
 
-                This method provides a string representation of the ConstantMedium instance, which includes the constant refractive index value. This can be useful for debugging and visualization purposes.
+                This method provides a structured representation of the
+                ``ConstantMedium`` instance, including its constant refractive
+                index.
             )pbdoc"
         )
         ;
@@ -723,13 +762,21 @@ PYBIND11_MODULE(material, module) {
         )
         .def(
             "__repr__",
-            [](const TabulatedMedium& self) {
-                return self.name;
+            [format_wavelength_interval](const TabulatedMedium& self) {
+                std::ostringstream stream;
+                stream << "<TabulatedMedium name='" << self.name << "'"
+                       << ", samples=" << self.wavelengths.size()
+                       << ", wavelength_range=" << format_wavelength_interval(self.wavelengths)
+                       << ", allow_extrapolation=" << (self.allow_extrapolation ? "True" : "False")
+                       << ">";
+                return stream.str();
             },
             R"pbdoc(
                 Returns a string representation of the TabulatedMedium.
 
-                This method provides a string representation of the TabulatedMedium instance, which in this case is simply the name of the medium. This can be useful for debugging and logging purposes, allowing for easy identification of the material when printed or displayed.
+                This method provides a structured representation of the
+                ``TabulatedMedium`` instance, including its name, number of
+                samples, wavelength coverage, and extrapolation policy.
             )pbdoc"
         )
         ;
@@ -892,13 +939,22 @@ PYBIND11_MODULE(material, module) {
         )
         .def(
             "__repr__",
-            [](const SellmeierMedium& self) -> py::str {
-                return self.name;
+            [format_wavelength_interval](const SellmeierMedium& self) -> std::string {
+                std::ostringstream stream;
+                stream << "<SellmeierMedium name='" << self.name << "'"
+                       << ", formula_type=" << self.formula_type
+                       << ", coefficients=" << self.coefficients.size()
+                       << ", wavelength_bound=" << format_wavelength_interval(self.wavelength_bound)
+                       << ", allow_extrapolation=" << (self.allow_extrapolation ? "True" : "False")
+                       << ">";
+                return stream.str();
             },
             R"pbdoc(
                 Returns a string representation of the SellmeierMedium.
 
-                This method provides a string representation of the SellmeierMedium instance, which in this case is simply the name of the medium. This can be useful for debugging and logging purposes, allowing for easy identification of the material when printed or displayed.
+                This method provides a structured representation of the
+                ``SellmeierMedium`` instance, including its formula type,
+                coefficient count, wavelength bounds, and extrapolation policy.
             )pbdoc"
         )
         ;

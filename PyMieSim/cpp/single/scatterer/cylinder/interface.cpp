@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
+#include <sstream>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -332,6 +333,22 @@ void register_cylinder(py::module_& module) {
                 The cylinder is infinite in the scattering model. The plotting
                 helper draws a finite cylinder only as a normalized visual
                 representation.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [](const InfiniteCylinder& self) {
+                std::ostringstream stream;
+                stream << "<InfiniteCylinder"
+                       << " diameter=" << self.diameter << " m"
+                       << ", max_order=" << self.max_order
+                       << ", material=" << py::repr(py::cast(self.material)).cast<std::string>()
+                       << ", medium=" << py::repr(py::cast(self.medium)).cast<std::string>()
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the infinite-cylinder parameters.
             )pbdoc"
         )
         .def_readonly_static(

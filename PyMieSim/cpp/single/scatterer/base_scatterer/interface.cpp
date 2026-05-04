@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <sstream>
 #include "./base_scatterer.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
@@ -70,6 +71,21 @@ void register_base_scatterer(py::module_& module) {
                 -------
                 float
                     The value of the specified scattering coefficient.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [](const BaseScatterer& self) {
+                std::ostringstream stream;
+                stream << "<BaseScatterer"
+                       << " max_order=" << self.max_order
+                       << ", size_parameter=" << self.size_parameter
+                       << ", cross_section=" << self.cross_section << " m^2"
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the initialized scatterer state.
             )pbdoc"
         )
         ;

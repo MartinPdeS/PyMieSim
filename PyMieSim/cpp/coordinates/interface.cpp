@@ -128,8 +128,9 @@ PYBIND11_MODULE(coordinates, module)
     ;
 
     pybind11::class_<VectorField>(module, "VectorField")
-        .def_property_readonly("data",
-             [](const VectorField& self) {
+        .def_property_readonly(
+            "data",
+            [](const VectorField& self) {
                 std::vector<size_t> shape = {self.sampling, 3};
                 return _vector_to_numpy(self.data, shape);
             },
@@ -138,7 +139,8 @@ PYBIND11_MODULE(coordinates, module)
                 This property provides access to the raw vector field data.
             )pbdoc"
         )
-        .def("_cpp_get_scalar_product",
+        .def(
+            "get_scalar_product",
             &VectorField::get_scalar_product,
             pybind11::arg("base"),
             R"pbdoc(

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
+#include <sstream>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -219,6 +220,22 @@ void register_sphere(py::module_& module) {
                 The material and medium may be dispersive objects or constant
                 refractive indices, depending on the Python object passed to the
                 constructor.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [](const Sphere& self) {
+                std::ostringstream stream;
+                stream << "<Sphere"
+                       << " diameter=" << self.diameter << " m"
+                       << ", max_order=" << self.max_order
+                       << ", material=" << py::repr(py::cast(self.material)).cast<std::string>()
+                       << ", medium=" << py::repr(py::cast(self.medium)).cast<std::string>()
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the sphere parameters.
             )pbdoc"
         )
         .def_readonly_static(

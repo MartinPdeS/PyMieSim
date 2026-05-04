@@ -3,6 +3,9 @@
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
 
+#include <cmath>
+#include <sstream>
+
 #include "polarization.h"
 #include <pint/pint.h>
 
@@ -12,6 +15,33 @@ namespace py = pybind11;
 PYBIND11_MODULE(polarization, module)
 {
     py::object ureg = get_shared_ureg();
+
+    auto format_polarization_state_repr = [](const std::string& name, const PolarizationState& self) {
+        std::ostringstream stream;
+        stream << "<" << name;
+
+        if (self.is_empty) {
+            stream << " empty=True>";
+            return stream.str();
+        }
+
+        if (std::isfinite(self.angle)) {
+            stream << " angle=" << self.angle << " rad>";
+            return stream.str();
+        }
+
+        if (self.jones_vector.size() == 2) {
+            stream << " jones_vector=["
+                   << self.jones_vector[0]
+                   << ", "
+                   << self.jones_vector[1]
+                   << "]>";
+            return stream.str();
+        }
+
+        stream << ">";
+        return stream.str();
+    };
 
     py::class_<PolarizationState, std::shared_ptr<PolarizationState>>(
             module,
@@ -60,6 +90,15 @@ PYBIND11_MODULE(polarization, module)
                         The angle in radians representing the orientation of the polarization. It can be provided as a pint.Quantity object.
             )pbdoc"
         )
+        .def(
+            "__repr__",
+            [format_polarization_state_repr](const PolarizationState& self) {
+                return format_polarization_state_repr("PolarizationState", self);
+            },
+            R"pbdoc(
+                Return a concise representation of the polarization state.
+            )pbdoc"
+        )
         ;
 
         py::class_<RightCircular, PolarizationState, std::shared_ptr<RightCircular>>(module, "RightCircular",
@@ -70,6 +109,15 @@ PYBIND11_MODULE(polarization, module)
             )pbdoc"
         )
         .def(py::init<>())
+        .def(
+            "__repr__",
+            [format_polarization_state_repr](const RightCircular& self) {
+                return format_polarization_state_repr("RightCircular", self);
+            },
+            R"pbdoc(
+                Return a concise representation of the right-circular polarization state.
+            )pbdoc"
+        )
         ;
 
         py::class_<LeftCircular, PolarizationState, std::shared_ptr<LeftCircular>>(module, "LeftCircular",
@@ -80,5 +128,14 @@ PYBIND11_MODULE(polarization, module)
             )pbdoc"
         )
         .def(py::init<>())
+        .def(
+            "__repr__",
+            [format_polarization_state_repr](const LeftCircular& self) {
+                return format_polarization_state_repr("LeftCircular", self);
+            },
+            R"pbdoc(
+                Return a concise representation of the left-circular polarization state.
+            )pbdoc"
+        )
         ;
     }

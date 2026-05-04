@@ -3,6 +3,7 @@
 #include <cmath>
 #include <complex>
 #include <cstddef>
+#include <sstream>
 #include <memory>
 #include <stdexcept>
 #include <utility>
@@ -27,6 +28,36 @@ namespace py = pybind11;
 PYBIND11_MODULE(source, module)
 {
     py::object ureg = get_shared_ureg();
+
+    auto format_source_polarization = [](const PolarizationState& polarization) {
+        std::ostringstream stream;
+
+        if (std::isfinite(polarization.angle)) {
+            stream << "angle=" << polarization.angle << " rad";
+            return stream.str();
+        }
+
+        if (polarization.jones_vector.size() == 2) {
+            stream << "jones=["
+                   << polarization.jones_vector[0]
+                   << ", "
+                   << polarization.jones_vector[1]
+                   << "]";
+            return stream.str();
+        }
+
+        return std::string("unspecified");
+    };
+
+    auto format_base_source_repr = [format_source_polarization](const std::string& name, const BaseSource& self) {
+        std::ostringstream stream;
+        stream << "<" << name
+               << " wavelength=" << self.wavelength << " m"
+               << ", amplitude=" << self.amplitude << " V/m"
+               << ", polarization=" << format_source_polarization(self.polarization)
+               << ">";
+        return stream.str();
+    };
 
     module.doc() = R"pbdoc(
         Source bindings for PyMieSim.
@@ -351,6 +382,15 @@ PYBIND11_MODULE(source, module)
                 the physical properties of the source.
             )pbdoc"
         )
+        .def(
+            "__repr__",
+            [format_base_source_repr](const BaseSource& self) {
+                return format_base_source_repr("BaseSource", self);
+            },
+            R"pbdoc(
+                Return a concise representation of the source state.
+            )pbdoc"
+        )
         ;
 
     py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(
@@ -393,6 +433,15 @@ PYBIND11_MODULE(source, module)
                     any object accepted by the linear polarization constructor.
                 amplitude : pint.Quantity
                     Electric field amplitude. Must be convertible to V/m.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [format_base_source_repr](const Planewave& self) {
+                return format_base_source_repr("PlaneWave", self);
+            },
+            R"pbdoc(
+                Return a concise representation of the plane-wave parameters.
             )pbdoc"
         )
         ;
@@ -522,6 +571,23 @@ PYBIND11_MODULE(source, module)
                 -------
                 pint.Quantity
                     Optical power with units of watts.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [format_base_source_repr](const Gaussian& self) {
+                std::ostringstream stream;
+                stream << format_base_source_repr("Gaussian", self);
+                std::string repr = stream.str();
+                repr.pop_back();
+                std::ostringstream extended;
+                extended << repr
+                         << ", numerical_aperture=" << self.numerical_aperture
+                         << ", optical_power=" << self.optical_power << " W>";
+                return extended.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the Gaussian beam parameters.
             )pbdoc"
         )
         ;

@@ -1,5 +1,7 @@
 #include <pybind11/pybind11.h>
 
+#include <sstream>
+
 #include <utils/numpy_interface.h>
 #include <utils/constants.h>
 #include "./setup.h"
@@ -21,6 +23,14 @@ PYBIND11_MODULE(setup, module)
     py::module_::import("PyMieSim.single.source");
     py::module_::import("PyMieSim.single.scatterer");
     py::module_::import("PyMieSim.mesh");
+
+    auto object_repr_or_none = [](const py::handle& object) {
+        if (object.is_none()) {
+            return std::string("None");
+        }
+
+        return py::repr(object).cast<std::string>();
+    };
 
     py::class_<Setup, std::shared_ptr<Setup>>(module,
         "Setup",
@@ -80,6 +90,21 @@ PYBIND11_MODULE(setup, module)
                     The detector configuration.
                 debug_mode : bool, optional
                     If True, enables debug mode with additional logging. Default is False.
+            )pbdoc"
+        )
+        .def(
+            "__repr__",
+            [object_repr_or_none](const Setup& self) {
+                std::ostringstream stream;
+                stream << "<Setup"
+                       << " scatterer=" << object_repr_or_none(py::cast(self.scatterer))
+                       << ", source=" << object_repr_or_none(py::cast(self.source))
+                       << ", detector=" << object_repr_or_none(py::cast(self.detector))
+                       << ">";
+                return stream.str();
+            },
+            R"pbdoc(
+                Return a concise representation of the configured single-particle setup.
             )pbdoc"
         )
         .def("get",
