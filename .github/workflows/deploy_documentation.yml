@@ -3,13 +3,15 @@ name: Documentation
 
 on:
   push:
-    branches: [ "master" ]
-    tags: '*'
+    branches:
+      - master
+    tags:
+      - "*"
+
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
-
-# Sets permissions of the GITHUB_TOKEN  to allow deployment to GitHub Pages
 permissions:
   contents: write
   pages: write
@@ -17,6 +19,7 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
+    if: github.event_name == 'push'
     uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@master
     with:
       python-version: "3.11"
