@@ -25,14 +25,18 @@ requirements:
     - ninja
     - cmake
     - "{{ compiler('fortran') }}"  # [unix]
+
   host:
     - python {{ PY_VER }}*
+    - pip
+    - numpy ==2.2.6
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
+
   run:
-    - python {{PY_VER}}*
+    - python {{ PY_VER }}*
     - martinpdes::pyoptik
     - martinpdes::mpsplots ==1.8.9
     - martinpdes::typedunit
