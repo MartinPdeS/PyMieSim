@@ -36,7 +36,7 @@ Sphere: Coupling vs diameter
  .. code-block:: none
 
 
-    <Figure size 640x480 with 1 Axes>
+    <Figure size 1000x600 with 1 Axes>
 
 
 
@@ -92,7 +92,7 @@ Sphere: Coupling vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.942 seconds)
+   **Total running time of the script:** (0 minutes 0.966 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:
