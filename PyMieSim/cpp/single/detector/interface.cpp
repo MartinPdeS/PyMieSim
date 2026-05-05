@@ -361,6 +361,44 @@ PYBIND11_MODULE(detector, module) {
                     Complex array with shape ``(sampling,)``.
             )pbdoc"
         )
+        .def_property(
+            "angular_weights",
+            [](
+                BaseDetector& self
+            ) {
+                return vector_as_numpy_view(self, self.angular_weights);
+            },
+            [](
+                BaseDetector& self,
+                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array
+            ) {
+                std::vector<complex128> weights;
+                vector_assign_from_numpy(weights, array);
+
+                try {
+                    self.set_angular_weights(weights);
+                } catch (const std::invalid_argument& error) {
+                    throw py::value_error(error.what());
+                }
+            },
+            R"pbdoc(
+                Persistent multiplicative weights on the detector angular mesh.
+
+                These weights are defined on the detector Fibonacci mesh ordering.
+                They are multiplied into the intrinsic detector scalar response
+                every time the mesh is reinitialized, so they persist across
+                repeated coupling evaluations.
+
+                The setter requires a one dimensional complex array with shape
+                ``(sampling,)``. Setting elements to zero masks those angular
+                sampling points out of the detector response.
+
+                Returns
+                -------
+                numpy.ndarray
+                    Complex array with shape ``(sampling,)``.
+            )pbdoc"
+        )
         .def(
             "get_structured_scalarfield",
             [](

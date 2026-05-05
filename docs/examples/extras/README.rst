@@ -13,3 +13,4 @@ Contents
 - ``plot_system.py`` - draw the arrangement of sources, detectors and scatterers.
 - ``plot_Qsca_vs_permittivity_vs_size_parameter.py`` - inspect scattering as material and size vary.
 - ``array_scattering.py`` - compute fields and Stokes parameters for arbitrary angles.
+- ``photodiode_angular_weights.py`` - apply a custom angular mask on a single photodiode detector.

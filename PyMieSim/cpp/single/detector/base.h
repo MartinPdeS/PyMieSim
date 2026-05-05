@@ -67,6 +67,8 @@ public:
     double max_angle = 0.0;
     double min_angle = 0.0;
     std::vector<complex128> scalar_field;
+    std::vector<complex128> intrinsic_scalar_field;
+    std::vector<complex128> angular_weights;
     FibonacciMesh fibonacci_mesh;
 
     ModeID mode_id;
@@ -96,8 +98,56 @@ public:
         gamma_offset(_gamma_offset),
         polarization_filter(polarization_filter),
         medium(std::move(_medium)),
+        angular_weights(_sampling, complex128(1.0, 0.0)),
         mean_coupling(_mean_coupling)
     {}
+
+    void set_angular_weights(const std::vector<complex128>& weights) {
+        if (weights.size() != this->sampling) {
+            throw std::invalid_argument(
+                "angular_weights must have length equal to detector sampling."
+            );
+        }
+
+        this->angular_weights = weights;
+        this->refresh_scalar_field();
+    }
+
+    void reset_angular_weights() {
+        this->angular_weights.assign(this->sampling, complex128(1.0, 0.0));
+        this->refresh_scalar_field();
+    }
+
+protected:
+    void set_intrinsic_scalar_field(std::vector<complex128> field) {
+        if (field.size() != this->sampling) {
+            throw std::invalid_argument(
+                "Intrinsic scalar field must have length equal to detector sampling."
+            );
+        }
+
+        this->intrinsic_scalar_field = std::move(field);
+        this->refresh_scalar_field();
+    }
+
+    void refresh_scalar_field() {
+        if (this->intrinsic_scalar_field.empty()) {
+            this->scalar_field.clear();
+            return;
+        }
+
+        if (this->angular_weights.size() != this->sampling) {
+            this->angular_weights.assign(this->sampling, complex128(1.0, 0.0));
+        }
+
+        this->scalar_field = this->intrinsic_scalar_field;
+
+        for (std::size_t index = 0; index < this->scalar_field.size(); ++index) {
+            this->scalar_field[index] *= this->angular_weights[index];
+        }
+    }
+
+public:
 
     /**
      * @brief Initializes the detector angular mesh for a given scatterer.

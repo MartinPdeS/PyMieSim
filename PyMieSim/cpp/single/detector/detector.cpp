@@ -210,10 +210,10 @@ void Photodiode::initialize_mesh(const std::shared_ptr<BaseScatterer> scatterer)
         0 // rotation
     );
 
-    this->scalar_field = this->mode_field.get_unstructured(
+    this->set_intrinsic_scalar_field(this->mode_field.get_unstructured(
         this->fibonacci_mesh.base_cartesian.x,
         this->fibonacci_mesh.base_cartesian.y
-    );
+    ));
 
     this->snell_interface.compute_fresnel_amplitude_transmission_on_mesh(
         this->fibonacci_mesh,
@@ -315,10 +315,14 @@ double Photodiode::get_coupling(
 
     auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
 
+    auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
+
+    this->apply_scalar_field(horizontal_projection, vertical_projection);
+
     // this->apply_interface_transmission_to_fields(theta_field, phi_field);
 
-    double coupling_theta = this->get_norm2_squared(theta_field);
-    double coupling_phi   = this->get_norm2_squared(phi_field);
+    double coupling_theta = this->get_norm2_squared(horizontal_projection);
+    double coupling_phi   = this->get_norm2_squared(vertical_projection);
 
     this->apply_polarization_filter(coupling_theta, coupling_phi);
 
@@ -418,10 +422,10 @@ void CoherentMode::initialize_mesh(const std::shared_ptr<BaseScatterer> scattere
         this->rotation
     );
 
-    this->scalar_field = this->mode_field.get_unstructured(
+    this->set_intrinsic_scalar_field(this->mode_field.get_unstructured(
         this->fibonacci_mesh.base_cartesian.x,
         this->fibonacci_mesh.base_cartesian.y
-    );
+    ));
 
     this->snell_interface.compute_fresnel_amplitude_transmission_on_mesh(
         this->fibonacci_mesh,
@@ -605,6 +609,10 @@ void IntegratingSphere::initialize_mesh(const std::shared_ptr<BaseScatterer> sca
         0  // rotation
     );
 
+    this->set_intrinsic_scalar_field(
+        std::vector<complex128>(this->sampling, complex128(1.0, 0.0))
+    );
+
     // Cache Fresnel coefficients on the 4π mesh if you want interface weighting
     this->snell_interface.set_media(
         this->medium->get_refractive_index(),
@@ -634,7 +642,11 @@ double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer,
     double coupling = 0.0;
 
     for (size_t i = 0; i < theta_field.size(); ++i) {
-        coupling += std::norm(theta_field[i]) + std::norm(phi_field[i]);
+        const complex128 weight = this->scalar_field.empty()
+            ? complex128(1.0, 0.0)
+            : this->scalar_field[i];
+
+        coupling += std::norm(theta_field[i] * weight) + std::norm(phi_field[i] * weight);
     }
 
     if (!this->polarization_filter.is_empty) {

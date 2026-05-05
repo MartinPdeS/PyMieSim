@@ -44,6 +44,22 @@ def scatterer_single():
 
 
 @pytest.fixture
+def source_single():
+    """
+    Fixture to create a Gaussian light source for single scattering simulation.
+
+    Returns:
+        single.source.Gaussian: Gaussian light source for single scattering.
+    """
+    return single.source.Gaussian(
+        wavelength=1000 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3,
+    )
+
+
+@pytest.fixture
 def scatterer_experiment():
     """
     Fixture to create a spherical scatterer for experiment-based scattering.
@@ -183,6 +199,60 @@ def test_detector_single_rotation():
     assert np.isclose(
         coupling_0, coupling_180, rtol=1e-3
     ), f"Mismatch in coupling values for 0° and 180° rotation: {coupling_0} vs {coupling_180}"
+
+
+def test_detector_single_angular_weights_update_scalar_field(source_single, scatterer_single):
+    detector = single.detector.Photodiode(
+        numerical_aperture=0.1,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=90 * ureg.degree,
+        polarization_filter=0 * ureg.degree,
+        medium=1.0,
+        sampling=256,
+    )
+
+    detector.initialize_mesh(scatterer_single)
+
+    baseline_scalar_field = np.array(detector.scalar_field, copy=True)
+    angular_weights = np.ones(baseline_scalar_field.size, dtype=np.complex128)
+    angular_weights[::2] = 0.0
+
+    detector.angular_weights = angular_weights
+
+    assert np.allclose(detector.angular_weights, angular_weights)
+    assert np.allclose(detector.scalar_field, baseline_scalar_field * angular_weights)
+
+
+def test_detector_single_angular_weights_persist_across_coupling_calls(source_single, scatterer_single):
+    detector = single.detector.Photodiode(
+        numerical_aperture=0.1,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=90 * ureg.degree,
+        polarization_filter=0 * ureg.degree,
+        medium=1.0,
+        sampling=256,
+    )
+
+    setup = single.Setup(
+        scatterer=scatterer_single,
+        source=source_single,
+        detector=detector,
+    )
+
+    baseline_coupling = setup.get("coupling")
+
+    detector.initialize_mesh(scatterer_single)
+
+    angular_weights = np.ones(detector.scalar_field.size, dtype=np.complex128)
+    angular_weights[: angular_weights.size // 2] = 0.0
+
+    detector.angular_weights = angular_weights
+
+    masked_coupling_first = setup.get("coupling")
+    masked_coupling_second = setup.get("coupling")
+
+    assert masked_coupling_first < baseline_coupling
+    assert np.isclose(masked_coupling_first, masked_coupling_second, rtol=1e-12)
 
 
 def test_detector_experiment_polarization_filter(

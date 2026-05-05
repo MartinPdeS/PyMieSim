@@ -32,11 +32,11 @@ scatterer = Sphere(
 )
 
 detector = CoherentMode(
-    mode_number="LP11",
+    mode_number="LP11:90",
     numerical_aperture=0.2,
     gamma_offset=0 * ureg.degree,
     phi_offset=30 * ureg.degree,
-    rotation=0 * ureg.degree,
+    rotation=90 * ureg.degree,
     polarization_filter=0 * ureg.degree,
     medium=1.0,
 )
