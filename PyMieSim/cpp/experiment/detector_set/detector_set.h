@@ -47,6 +47,8 @@ class PhotodiodeSet : public BaseDetectorSet
         std::vector<double> gamma_offset;
         PolarizationSet polarization_filter_set;
         MediumSet medium;
+        std::vector<std::vector<complex128>> angular_weights;
+        bool has_angular_weights = false;
 
         PhotodiodeSet() = default;
 
@@ -58,6 +60,7 @@ class PhotodiodeSet : public BaseDetectorSet
             const std::vector<double> &gamma_offset,
             const PolarizationSet &polarization_filter_set,
             const MediumSet &medium,
+            const std::vector<std::vector<complex128>> &angular_weights,
             const bool is_sequential
         );
 

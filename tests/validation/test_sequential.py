@@ -88,6 +88,50 @@ def test_sequential_vs_standard_no_detector():
         data_sequential == data_standard
     ), "Mismatch between sequential and standard computed data."
 
+def test_sequential_photodiode_angular_weights_reduce_coupling():
+    size = 2
+    sampling = 128
+
+    source_sequential = GaussianSet.build_sequential(
+        target_size=size,
+        wavelength=[1000, 1000] * ureg.nanometer,
+        polarization=PolarizationSet(angles=[0, 0] * ureg.degree),
+        optical_power=[1, 1] * ureg.watt,
+        numerical_aperture=[0.2, 0.2],
+    )
+
+    scatterer_sequential = SphereSet.build_sequential(
+        target_size=size,
+        diameter=[1000, 1000] * ureg.nanometer,
+        material=[1.5 + 0.5j, 1.5 + 0.5j],
+        medium=[1.0, 1.0],
+    )
+
+    angular_weights = numpy.ones((size, sampling), dtype=numpy.complex128)
+    angular_weights[1, :] = 0.0
+
+    detector_sequential = PhotodiodeSet.build_sequential(
+        target_size=size,
+        phi_offset=[90, 90] * ureg.degree,
+        gamma_offset=[0, 0] * ureg.degree,
+        numerical_aperture=[0.1, 0.1],
+        cache_numerical_aperture=[0.0, 0.0],
+        sampling=[sampling, sampling],
+        polarization_filter=[0, 0] * ureg.degree,
+        medium=[1.0, 1.0],
+        angular_weights=angular_weights,
+    )
+
+    setup_sequential = Setup(
+        scatterer_set=scatterer_sequential,
+        source_set=source_sequential,
+        detector_set=detector_sequential,
+    )
+
+    coupling = setup_sequential.get_sequential("coupling")
+
+    assert coupling[0] > 0
+    assert numpy.isclose(coupling[1], 0.0, atol=1e-20)
 
 def test_sequential_vs_standard_detector():
     source_standard = GaussianSet(

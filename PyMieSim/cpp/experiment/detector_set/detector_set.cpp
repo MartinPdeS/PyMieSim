@@ -9,6 +9,7 @@ PhotodiodeSet::PhotodiodeSet(
     const std::vector<double> &gamma_offset,
     const PolarizationSet &polarization_filter_set,
     const MediumSet &medium_set,
+    const std::vector<std::vector<complex128>> &angular_weights,
     const bool is_sequential
 )
 :   sampling(sampling),
@@ -17,8 +18,32 @@ PhotodiodeSet::PhotodiodeSet(
     phi_offset(phi_offset),
     gamma_offset(gamma_offset),
     polarization_filter_set(polarization_filter_set),
-    medium(medium_set)
+    medium(medium_set),
+    angular_weights(angular_weights),
+    has_angular_weights(!angular_weights.empty())
     {
+        if (this->has_angular_weights) {
+            if (!is_sequential) {
+                throw std::invalid_argument(
+                    "angular_weights are currently supported only for sequential PhotodiodeSet builds."
+                );
+            }
+
+            if (this->angular_weights.size() != this->sampling.size()) {
+                throw std::invalid_argument(
+                    "angular_weights must provide one weight vector per sequential detector."
+                );
+            }
+
+            for (size_t index = 0; index < this->angular_weights.size(); ++index) {
+                if (this->angular_weights[index].size() != this->sampling[index]) {
+                    throw std::invalid_argument(
+                        "Each angular weight vector must match the detector sampling at the same sequential index."
+                    );
+                }
+            }
+        }
+
         this->is_sequential = is_sequential;
         this->is_empty = false;
         this->update_shape();
@@ -51,6 +76,12 @@ PhotodiodeSet::get_detector_by_index(long long flat_index) const {
         this->medium[indices[6]]
     );
 
+    if (this->has_angular_weights) {
+        throw std::invalid_argument(
+            "angular_weights are currently supported only in sequential PhotodiodeSet mode."
+        );
+    }
+
     detector->indices = indices;
 
     return detector;
@@ -67,6 +98,11 @@ PhotodiodeSet::get_detector_by_index_sequential(size_t index) const {
         this->polarization_filter_set.polarization_states[index],
         this->medium[index]
     );
+
+    if (this->has_angular_weights) {
+        detector->set_angular_weights(this->angular_weights[index]);
+    }
+
     detector->indices = {index};
     return detector;
 }

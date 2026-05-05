@@ -98,8 +98,8 @@ public:
         gamma_offset(_gamma_offset),
         polarization_filter(polarization_filter),
         medium(std::move(_medium)),
-        angular_weights(_sampling, complex128(1.0, 0.0)),
-        mean_coupling(_mean_coupling)
+        mean_coupling(_mean_coupling),
+        angular_weights(_sampling, complex128(1.0, 0.0))
     {}
 
     void set_angular_weights(const std::vector<complex128>& weights) {

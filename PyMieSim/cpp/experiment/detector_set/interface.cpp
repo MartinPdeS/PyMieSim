@@ -14,6 +14,105 @@
 
 namespace py = pybind11;
 
+namespace {
+std::vector<std::vector<complex128>> cast_py_to_sequential_angular_weights(
+    const py::object& angular_weights,
+    const std::vector<unsigned>& sampling,
+    const size_t target_size
+) {
+    std::vector<std::vector<complex128>> weights_by_detector;
+
+    if (angular_weights.is_none()) {
+        return weights_by_detector;
+    }
+
+    if (py::isinstance<py::array>(angular_weights)) {
+        py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array =
+            angular_weights.cast<py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast>>();
+
+        if (array.ndim() == 1) {
+            const size_t sampling_size = static_cast<size_t>(array.shape(0));
+
+            for (const unsigned detector_sampling : sampling) {
+                if (sampling_size != detector_sampling) {
+                    throw py::value_error(
+                        "One-dimensional angular_weights arrays require a uniform detector sampling."
+                    );
+                }
+            }
+
+            std::vector<complex128> shared_weight_vector;
+            vector_assign_from_numpy(shared_weight_vector, array);
+            weights_by_detector.assign(target_size, shared_weight_vector);
+            return weights_by_detector;
+        }
+
+        if (array.ndim() == 2) {
+            if (static_cast<size_t>(array.shape(0)) != target_size) {
+                throw py::value_error(
+                    "Two-dimensional angular_weights arrays must have shape (target_size, sampling)."
+                );
+            }
+
+            const size_t sampling_size = static_cast<size_t>(array.shape(1));
+            for (const unsigned detector_sampling : sampling) {
+                if (sampling_size != detector_sampling) {
+                    throw py::value_error(
+                        "Two-dimensional angular_weights arrays require a uniform sampling shared by all detectors."
+                    );
+                }
+            }
+
+            auto unchecked = array.unchecked<2>();
+            weights_by_detector.resize(target_size);
+
+            for (size_t detector_index = 0; detector_index < target_size; ++detector_index) {
+                weights_by_detector[detector_index].resize(sampling_size);
+
+                for (size_t sample_index = 0; sample_index < sampling_size; ++sample_index) {
+                    weights_by_detector[detector_index][sample_index] = unchecked(
+                        static_cast<py::ssize_t>(detector_index),
+                        static_cast<py::ssize_t>(sample_index)
+                    );
+                }
+            }
+
+            return weights_by_detector;
+        }
+
+        throw py::value_error("angular_weights must be one- or two-dimensional.");
+    }
+
+    py::sequence sequence = py::reinterpret_borrow<py::sequence>(angular_weights);
+
+    if (static_cast<size_t>(py::len(sequence)) != target_size) {
+        throw py::value_error(
+            "Sequence angular_weights inputs must provide one weight vector per sequential detector."
+        );
+    }
+
+    weights_by_detector.resize(target_size);
+
+    for (size_t detector_index = 0; detector_index < target_size; ++detector_index) {
+        py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> vector =
+            py::cast<py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast>>(sequence[detector_index]);
+
+        std::vector<complex128> cast_weights;
+        vector_assign_from_numpy(cast_weights, vector);
+
+        if (cast_weights.size() != sampling[detector_index]) {
+            throw py::value_error(
+                "Each angular weight vector must match the detector sampling at the same sequential index."
+            );
+        }
+
+        weights_by_detector[detector_index] = std::move(cast_weights);
+    }
+
+    return weights_by_detector;
+}
+}
+
 
 PYBIND11_MODULE(detector_set, module) {
     py::object ureg = get_shared_ureg();
@@ -109,6 +208,7 @@ PYBIND11_MODULE(detector_set, module) {
                         Casting::cast_py_to_vector<double>(gamma_offset, "radian"),
                         Casting::Polarization::cast_py_to_polarization_set(polarization_filter),
                         Casting::Material::create_material_set_from_pyobject<MediumSet, double, BaseMedium, ConstantMedium>(medium, "medium"),
+                        std::vector<std::vector<complex128>>{},
                         false
                     );
                 }
@@ -243,7 +343,8 @@ PYBIND11_MODULE(detector_set, module) {
                 const py::object& sampling,
                 const py::object& cache_numerical_aperture,
                 const py::object& polarization_filter,
-                const py::object& medium
+                const py::object& medium,
+                const py::object& angular_weights
             ) {
                 std::vector<unsigned> sampling_value =
                     Casting::cast_py_to_broadcasted_vector<unsigned>(
@@ -295,6 +396,13 @@ PYBIND11_MODULE(detector_set, module) {
                         target_size
                 );
 
+                std::vector<std::vector<complex128>> angular_weights_value =
+                    cast_py_to_sequential_angular_weights(
+                        angular_weights,
+                        sampling_value,
+                        target_size
+                    );
+
                 return std::make_shared<PhotodiodeSet>(
                     sampling_value,
                     numerical_aperture_value,
@@ -303,6 +411,7 @@ PYBIND11_MODULE(detector_set, module) {
                     gamma_offset_value,
                     polarization_filter_set,
                     medium_set,
+                    angular_weights_value,
                     true
                 );
             },
@@ -314,6 +423,7 @@ PYBIND11_MODULE(detector_set, module) {
             py::arg("cache_numerical_aperture") = py::float_(0.0),
             py::arg("polarization_filter") = PolarizationState(),
             py::arg("medium") = ConstantMedium(1.0),
+            py::arg("angular_weights") = py::none(),
             R"pdoc(
                 Build a sequential photodiode detector set.
 
@@ -344,6 +454,12 @@ PYBIND11_MODULE(detector_set, module) {
                     Surrounding medium. This can be provided either as medium
                     objects or as refractive index values. Default is
                     ``ConstantMedium(1.0)``.
+                angular_weights : array-like, optional
+                    Explicit complex angular weight vectors for each sequential
+                    detector. This can be a single one-dimensional array shared
+                    by all detectors, a two-dimensional array of shape
+                    ``(target_size, sampling)``, or a list of one-dimensional
+                    arrays when detector sampling varies by sequential index.
 
                 Returns
                 -------
