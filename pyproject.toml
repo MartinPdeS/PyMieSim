@@ -54,7 +54,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "dash>=2.18,<4",
+    "dash>=2.18,<5",
     "TypedUnit ==0.0.11",
     "MPSPlots ==1.8.9",
     "PyOptik ==2.0.7",
