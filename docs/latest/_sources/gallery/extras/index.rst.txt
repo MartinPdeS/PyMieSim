@@ -202,23 +202,6 @@ Contents
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to model a large lens with NA=1.2 oriented at phi=45 degree and split by a mirror plane. Only one side of the lens is kept by building explicit angular_weights arrays for a sequential PhotodiodeSet experiment.">
-
-.. only:: html
-
-  .. image:: /gallery/extras/images/thumb/sphx_glr_experiment_photodiode_angular_weights_thumb.png
-    :alt:
-
-  :doc:`/gallery/extras/experiment_photodiode_angular_weights`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Experiment Photodiode Angular Weights</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.">
 
 .. only:: html
@@ -248,23 +231,6 @@ Contents
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to build a custom angular mask on top of the single-detector Fibonacci mesh using angular_weights.">
-
-.. only:: html
-
-  .. image:: /gallery/extras/images/thumb/sphx_glr_photodiode_angular_weights_thumb.png
-    :alt:
-
-  :doc:`/gallery/extras/photodiode_angular_weights`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Photodiode Angular Weights</div>
     </div>
 
 
@@ -339,10 +305,8 @@ Contents
    /gallery/extras/array_scattering
    /gallery/extras/coupling_heatmap
    /gallery/extras/coupling_vs_NA
-   /gallery/extras/experiment_photodiode_angular_weights
    /gallery/extras/integrating_sphere
    /gallery/extras/photodiode
-   /gallery/extras/photodiode_angular_weights
    /gallery/extras/plot_system
    /gallery/extras/properties_cylinder
    /gallery/extras/properties_sphere
