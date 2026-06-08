@@ -5,5 +5,6 @@ import PyMieSim.mesh as _mesh  # noqa: F401, W292
 import PyMieSim.coordinates as _coordinates  # noqa: F401, W292
 import PyMieSim.material as _material  # noqa: F401, W292
 import PyMieSim.single.setup as _setup  # noqa: F401, W292
+import PyMieSim.single.representations as _representations  # noqa: F401, W292
 
 Setup = _setup.Setup
