@@ -1,9 +1,66 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
 #include "coordinates.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
+
+
+namespace py = pybind11;
+
+
+namespace {
+
+py::handle build_owner_handle(const Cartesian& self) {
+    return py::cast(&self, py::return_value_policy::reference);
+}
+
+
+py::handle build_owner_handle(const Spherical& self) {
+    return py::cast(&self, py::return_value_policy::reference);
+}
+
+
+py::object build_quantity_from_vector_view(
+    const std::vector<double>& values,
+    const py::handle& owner,
+    const py::object& unit
+) {
+    return py::array_t<double>(
+        {static_cast<py::ssize_t>(values.size())},
+        {static_cast<py::ssize_t>(sizeof(double))},
+        values.data(),
+        owner
+    ) * unit;
+}
+
+
+py::object build_quantity_from_spherical_component_view(
+    const std::vector<double>& values,
+    const std::vector<size_t>& shape,
+    const py::handle& owner,
+    const py::object& unit
+) {
+    if (shape.size() >= 2) {
+        const py::ssize_t number_of_rows = static_cast<py::ssize_t>(shape[0]);
+        const py::ssize_t number_of_columns = static_cast<py::ssize_t>(shape[1]);
+
+        return py::array_t<double>(
+            {number_of_rows, number_of_columns},
+            {
+                static_cast<py::ssize_t>(sizeof(double) * number_of_columns),
+                static_cast<py::ssize_t>(sizeof(double))
+            },
+            values.data(),
+            owner
+        ) * unit;
+    }
+
+    return build_quantity_from_vector_view(values, owner, unit);
+}
+
+}  // namespace
 
 
 PYBIND11_MODULE(coordinates, module)
@@ -22,8 +79,12 @@ PYBIND11_MODULE(coordinates, module)
         )
         .def_property_readonly(
             "x",
-            [ureg](const Cartesian& self) -> pybind11::object {
-                return pybind11::cast(self.x) * ureg("meter");
+            [ureg](const Cartesian& self) -> py::object {
+                return build_quantity_from_vector_view(
+                    self.x,
+                    build_owner_handle(self),
+                    ureg("meter")
+                );
             },
             R"pbdoc(
                 Returns x coordinates of points on the Cartesian mesh as a NumPy array.
@@ -32,8 +93,12 @@ PYBIND11_MODULE(coordinates, module)
         )
         .def_property_readonly(
             "y",
-            [ureg](const Cartesian& self) -> pybind11::object {
-                return pybind11::cast(self.y) * ureg("meter");
+            [ureg](const Cartesian& self) -> py::object {
+                return build_quantity_from_vector_view(
+                    self.y,
+                    build_owner_handle(self),
+                    ureg("meter")
+                );
             },
             R"pbdoc(
                 Returns y coordinates of points on the Cartesian mesh as a NumPy array.
@@ -42,8 +107,12 @@ PYBIND11_MODULE(coordinates, module)
         )
         .def_property_readonly(
             "z",
-            [ureg](const Cartesian& self) -> pybind11::object {
-                return pybind11::cast(self.z) * ureg("meter");
+            [ureg](const Cartesian& self) -> py::object {
+                return build_quantity_from_vector_view(
+                    self.z,
+                    build_owner_handle(self),
+                    ureg("meter")
+                );
             },
             R"pbdoc(
                 Returns z coordinates of points on the Cartesian mesh as a NumPy array.
@@ -65,18 +134,12 @@ PYBIND11_MODULE(coordinates, module)
         .def_property_readonly(
             "r",
             [ureg](const Spherical& self) {
-                const pybind11::ssize_t number_of_rows = self.shape[0];
-                const pybind11::ssize_t number_of_columns = self.shape[1];
-
-                return pybind11::array_t<double>(
-                    {number_of_rows, number_of_columns},
-                    {
-                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
-                        static_cast<pybind11::ssize_t>(sizeof(double))
-                    },
-                    self.r.data(),
-                    pybind11::cast(self)
-                ) * ureg("meter");
+                return build_quantity_from_spherical_component_view(
+                    self.r,
+                    self.shape,
+                    build_owner_handle(self),
+                    ureg("meter")
+                );
             },
             R"pbdoc(
                 Returns radial distances of points on the spherical mesh as a NumPy array.
@@ -86,18 +149,12 @@ PYBIND11_MODULE(coordinates, module)
         .def_property_readonly(
             "phi",
             [ureg](const Spherical& self) {
-                const pybind11::ssize_t number_of_rows = self.shape[0];
-                const pybind11::ssize_t number_of_columns = self.shape[1];
-
-                return pybind11::array_t<double>(
-                    {number_of_rows, number_of_columns},
-                    {
-                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
-                        static_cast<pybind11::ssize_t>(sizeof(double))
-                    },
-                    self.phi.data(),
-                    pybind11::cast(self)
-                ) * ureg("radian");
+                return build_quantity_from_spherical_component_view(
+                    self.phi,
+                    self.shape,
+                    build_owner_handle(self),
+                    ureg("radian")
+                );
             },
             R"pbdoc(
                 Returns azimuthal angles (phi) of points on the spherical mesh as a NumPy array.
@@ -107,18 +164,12 @@ PYBIND11_MODULE(coordinates, module)
         .def_property_readonly(
             "theta",
             [ureg](const Spherical& self) {
-                const pybind11::ssize_t number_of_rows = self.shape[0];
-                const pybind11::ssize_t number_of_columns = self.shape[1];
-
-                return pybind11::array_t<double>(
-                    {number_of_rows, number_of_columns},
-                    {
-                        static_cast<pybind11::ssize_t>(sizeof(double) * number_of_columns),
-                        static_cast<pybind11::ssize_t>(sizeof(double))
-                    },
-                    self.theta.data(),
-                    pybind11::cast(self)
-                ) * ureg("radian");
+                return build_quantity_from_spherical_component_view(
+                    self.theta,
+                    self.shape,
+                    build_owner_handle(self),
+                    ureg("radian")
+                );
             },
             R"pbdoc(
                 Returns polar angles (theta) of points on the spherical mesh as a NumPy array.

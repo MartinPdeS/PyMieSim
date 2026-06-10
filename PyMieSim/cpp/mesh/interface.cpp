@@ -11,6 +11,7 @@ namespace py = pybind11;
 PYBIND11_MODULE(mesh, module)
 {
     py::object ureg = get_shared_ureg();
+    py::module_::import("PyMieSim.coordinates");
 
     pybind11::class_<FibonacciMesh, std::shared_ptr<FibonacciMesh>>(module, "FibonacciMesh")
         .def(

@@ -54,7 +54,11 @@ classifiers = [
 ]
 
 dependencies = [
+<<<<<<< HEAD
     "dash>=2.18,<5",
+=======
+    "dash >=4.1.0",
+>>>>>>> a1dabe78f (update dash dependency)
     "TypedUnit ==0.0.11",
     "MPSPlots ==1.8.9",
     "PyOptik ==2.0.7",
