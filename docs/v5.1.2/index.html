@@ -452,7 +452,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><strong>Date</strong>: Jun 10, 2026, <strong>Version</strong>: 5.1.2</p>
+  <p><strong>Date</strong>: Jun 16, 2026, <strong>Version</strong>: 5.1.2</p>
 <p><img alt="PyOptik logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -550,8 +550,15 @@ conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class=
 <h2>Experiment Dashboard<a class="headerlink" href="#experiment-dashboard" title="Link to this heading">#</a></h2>
 <p>PyMieSim also ships with a Dash-based experiment dashboard for interactive set configuration,
 CSV export, and quick visual exploration of experiment outputs.</p>
+<p>The dashboard is intended to feel like a small server-hosted application rather than a one-off demo.
+It uses a browser-based interface served from the local machine or from a remote host that you bind
+explicitly.</p>
 <p>Launch it from the repository checkout or installed package with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">8050</span>
+</pre></div>
+</div>
+<p>For a server deployment or LAN-accessible instance, bind to all interfaces and keep the browser closed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8050</span><span class="w"> </span>--no-browser
 </pre></div>
 </div>
 <p>Debug mode is off by default. Enable it only when you want verbose logs and Dash debug tooling:</p>

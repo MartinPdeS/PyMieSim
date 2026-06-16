@@ -40,37 +40,37 @@ This example demonstrates how to use a goniometer setup to measure and visualize
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | polystyren            | silver                |
-    +-----------------------+-----------------------+
-    | argon                 | polyetylene           |
-    +-----------------------+-----------------------+
-    | crown                 | zinc                  |
+    | BK7                   | aluminium             |
     +-----------------------+-----------------------+
     | flint                 | nickel                |
     +-----------------------+-----------------------+
-    | air                   | silicon               |
+    | argon                 | zinc                  |
     +-----------------------+-----------------------+
-    | BAK1                  | aluminium             |
+    | lithium_niobate       | silicon               |
     +-----------------------+-----------------------+
-    | BAF10                 | iron                  |
+    | soda_lime_glass       | iron                  |
     +-----------------------+-----------------------+
-    | water                 | calcium               |
+    | air                   | silver                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | sodium                |
+    | BAK1                  | polyetylene           |
+    +-----------------------+-----------------------+
+    | ZBLAN                 | calcium               |
+    +-----------------------+-----------------------+
+    | germanium             | sodium                |
+    +-----------------------+-----------------------+
+    | polystyren            | copper                |
     +-----------------------+-----------------------+
     | acetone               | gold                  |
     +-----------------------+-----------------------+
-    | BK7                   | copper                |
+    | SF5                   |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       |                       |
+    | crown                 |                       |
     +-----------------------+-----------------------+
-    | lithium_niobate       |                       |
+    | water                 |                       |
+    +-----------------------+-----------------------+
+    | BAF10                 |                       |
     +-----------------------+-----------------------+
     | fused_silica          |                       |
-    +-----------------------+-----------------------+
-    | germanium             |                       |
-    +-----------------------+-----------------------+
-    | SF5                   |                       |
     +-----------------------+-----------------------+
 
     <Figure size 1000x600 with 1 Axes>
@@ -129,7 +129,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.322 seconds)
+   **Total running time of the script:** (0 minutes 0.345 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:
