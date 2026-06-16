@@ -95,11 +95,21 @@ Experiment Dashboard
 PyMieSim also ships with a Dash-based experiment dashboard for interactive set configuration,
 CSV export, and quick visual exploration of experiment outputs.
 
+The dashboard is intended to feel like a small server-hosted application rather than a one-off demo.
+It uses a browser-based interface served from the local machine or from a remote host that you bind
+explicitly.
+
 Launch it from the repository checkout or installed package with:
 
 .. code-block:: bash
 
     python -m PyMieSim --host 127.0.0.1 --port 8050
+
+For a server deployment or LAN-accessible instance, bind to all interfaces and keep the browser closed:
+
+.. code-block:: bash
+
+   python -m PyMieSim --host 0.0.0.0 --port 8050 --no-browser
 
 Debug mode is off by default. Enable it only when you want verbose logs and Dash debug tooling:
 

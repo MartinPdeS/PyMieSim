@@ -46,7 +46,7 @@ class OpticalSetupGUI:
     def __init__(self):
         """Initialize the Dash application wrapper."""
         LOGGER.debug("Initializing OpticalSetupGUI wrapper")
-        self.app = create_dash_app()
+        self.app = app
 
     def run(
         self,
@@ -253,6 +253,10 @@ def _register_callbacks(app: Dash) -> None:
 def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[str, str]:
     """Convert dynamic Dash field IDs and values into a flat mapping."""
     return {field_id["name"]: value for field_id, value in zip(ids, values)}
+
+
+app = create_dash_app()
+server = app.server
 
 
 if __name__ == "__main__":

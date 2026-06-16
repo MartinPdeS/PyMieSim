@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
 
 :root {
-    --bg: #f4efe6;
-    --panel: rgba(255, 255, 255, 0.88);
+    --bg: #eef3f8;
+    --panel: rgba(255, 255, 255, 0.96);
     --panel-strong: #ffffff;
-    --ink: #16333b;
-    --muted: #5b6d72;
-    --line: rgba(22, 51, 59, 0.14);
-    --accent: #c96d43;
-    --accent-soft: rgba(201, 109, 67, 0.14);
+    --ink: #1d3440;
+    --muted: #5e717b;
+    --line: rgba(29, 52, 64, 0.14);
+    --accent: #2c78b4;
+    --accent-soft: rgba(44, 120, 180, 0.12);
     --success: #1c7c54;
     --error: #b6453d;
-    --shadow: 0 20px 60px rgba(39, 53, 55, 0.12);
+    --shadow: 0 8px 24px rgba(26, 44, 52, 0.08);
 }
 
 * {
@@ -22,10 +22,11 @@ body {
     margin: 0;
     font-family: "IBM Plex Sans", sans-serif;
     background:
-        radial-gradient(circle at top left, rgba(201, 109, 67, 0.18), transparent 32%),
-        radial-gradient(circle at top right, rgba(30, 126, 138, 0.18), transparent 28%),
-        linear-gradient(180deg, #f8f2e9 0%, var(--bg) 100%);
+        radial-gradient(circle at top left, rgba(44, 120, 180, 0.08), transparent 34%),
+        radial-gradient(circle at top right, rgba(20, 145, 125, 0.08), transparent 32%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
     color: var(--ink);
+    scroll-behavior: smooth;
 }
 
 .app-shell {
@@ -33,6 +34,111 @@ body {
     margin: 0 auto;
     padding: 28px;
     overflow-x: clip;
+}
+
+.dashboard-frame {
+    display: grid;
+    grid-template-columns: minmax(300px, 330px) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.dashboard-sidebar {
+    position: sticky;
+    top: 20px;
+    display: grid;
+    gap: 16px;
+    padding: 22px;
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: var(--shadow);
+}
+
+.sidebar-brand {
+    display: grid;
+    gap: 10px;
+}
+
+.sidebar-logo {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    display: block;
+}
+
+.sidebar-eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.74rem;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.sidebar-title {
+    margin: 0;
+    font-family: "Fraunces", serif;
+    font-size: 2.1rem;
+    line-height: 0.95;
+}
+
+.sidebar-copy {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.45;
+}
+
+.sidebar-nav {
+    display: grid;
+    gap: 8px;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 11px 14px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+.sidebar-link:hover {
+    border-color: rgba(201, 109, 67, 0.2);
+    background: rgba(201, 109, 67, 0.08);
+}
+
+.sidebar-card {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 249, 253, 0.98));
+}
+
+.sidebar-card span {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.sidebar-card code {
+    display: block;
+    word-break: break-word;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.84rem;
+    color: var(--ink);
+}
+
+.dashboard-main {
+    min-width: 0;
+    display: grid;
+    gap: 22px;
 }
 
 .hero {
@@ -47,7 +153,6 @@ body {
 .panel,
 .summary-card {
     background: var(--panel);
-    backdrop-filter: blur(18px);
     border: 1px solid var(--line);
     border-radius: 24px;
     box-shadow: var(--shadow);
@@ -60,8 +165,8 @@ body {
 .hero-copy h1 {
     margin: 10px 0 12px;
     font-family: "Fraunces", serif;
-    font-size: clamp(2.4rem, 5vw, 4rem);
-    line-height: 0.95;
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    line-height: 1.02;
 }
 
 .hero-text {
@@ -170,14 +275,12 @@ body {
 .run-panel {
     position: relative;
     overflow: hidden;
-    background:
-        radial-gradient(circle at top right, rgba(201, 109, 67, 0.22), transparent 28%),
-        linear-gradient(135deg, rgba(16, 66, 72, 0.96), rgba(38, 116, 98, 0.94));
-    color: white;
+    background: linear-gradient(135deg, #2a6f9d, #1f5f89);
+    color: #f9fcff;
 }
 
 .helper-panel {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 241, 234, 0.95));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 249, 253, 0.98));
 }
 
 .helper-copy {
@@ -193,8 +296,8 @@ body {
 .helper-chip {
     border-radius: 16px;
     padding: 14px;
-    background: rgba(201, 109, 67, 0.08);
-    border: 1px solid rgba(201, 109, 67, 0.14);
+    background: rgba(44, 120, 180, 0.08);
+    border: 1px solid rgba(44, 120, 180, 0.16);
     min-width: 0;
 }
 
@@ -294,8 +397,20 @@ select {
     border-radius: 14px;
     border: 1px solid var(--line);
     background: var(--panel-strong);
-    padding: 12px 14px;
+    min-height: 56px;
+    padding: 14px 16px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.35;
     color: var(--ink);
+}
+
+.field-input:focus,
+input:focus,
+select:focus {
+    outline: 0;
+    border-color: rgba(44, 120, 180, 0.65);
+    box-shadow: 0 0 0 2px rgba(44, 120, 180, 0.18);
 }
 
 .field-help {
@@ -322,7 +437,7 @@ select {
 }
 
 .dashboard-dropdown .Select-control {
-    min-height: 48px;
+    min-height: 56px;
     border-radius: 14px;
     border: 1px solid var(--line);
     background: var(--panel-strong);
@@ -330,7 +445,19 @@ select {
 
 .dashboard-dropdown .Select-placeholder,
 .dashboard-dropdown .Select--single > .Select-control .Select-value {
-    line-height: 46px;
+    line-height: 54px;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.dashboard-dropdown .Select-input {
+    height: 54px;
+}
+
+.dashboard-dropdown .Select-input > input {
+    line-height: 1.35 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
 }
 
 .dashboard-dropdown .Select-menu-outer {
@@ -381,8 +508,8 @@ select {
     font-size: 1.15rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #ffb16e, #ff7d57);
-    box-shadow: 0 22px 48px rgba(255, 125, 87, 0.3);
+    background: linear-gradient(135deg, #54a6de, #2d78b5);
+    box-shadow: 0 14px 30px rgba(45, 120, 181, 0.24);
 }
 
 .export-button {
@@ -443,11 +570,13 @@ select {
 }
 
 @media (max-width: 1080px) {
+    .dashboard-frame,
     .hero,
     .workspace {
         grid-template-columns: 1fr;
     }
 
+    .dashboard-sidebar,
     .control-column {
         position: static;
     }

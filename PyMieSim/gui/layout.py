@@ -14,154 +14,169 @@ def create_layout(default_measure_options: list[str]):
         children=[
             dcc.Store(id="experiment-result"),
             dcc.Download(id="csv-download"),
-            html.Header(
-                className="hero",
+            html.Div(
+                className="dashboard-frame",
                 children=[
-                    html.Div(
-                        className="hero-copy",
-                        children=[
-                            html.P("PyMieSim", className="eyebrow"),
-                            html.H1("Experiment Lab"),
-                            html.P(
-                                "Configure source, scatterer, and detector sets, then run the compiled experiment engine directly from Dash.",
-                                className="hero-text",
-                            ),
-                        ],
-                    ),
-                    html.Div(
-                        className="hero-meta",
-                        children=[
-                            html.Div(className="meta-chip", children=[html.Span("Set-driven"), html.Small("GaussianSet, SphereSet, PhotodiodeSet and more")]),
-                            html.Div(className="meta-chip", children=[html.Span("Compiled backend"), html.Small("Sends your configured sets straight into the experiment engine and returns structured results for plotting and export.")]),
-                        ],
-                    ),
-                ],
-            ),
-            html.Main(
-                className="workspace",
-                children=[
-                    html.Section(
-                        className="control-column",
+                    _build_sidebar(),
+                    html.Main(
+                        className="dashboard-main",
                         children=[
                             html.Section(
-                                className="panel plot-controls-panel",
+                                id="overview",
+                                className="hero",
                                 children=[
-                                    html.Div(className="panel-header", children=[html.H2("Plot Controls")]),
-                                    html.P(
-                                        "Choose the response to compute and the parameter to place on the horizontal axis.",
-                                        className="helper-copy",
+                                    html.Div(
+                                        className="hero-copy",
+                                        children=[
+                                            html.P("PyMieSim", className="eyebrow"),
+                                            html.H1("Experiment Lab"),
+                                            html.P(
+                                                "Configure source, scatterer, and detector sets, then run the compiled experiment engine directly from Dash.",
+                                                className="hero-text",
+                                            ),
+                                        ],
                                     ),
                                     html.Div(
-                                        className="run-controls-grid",
+                                        className="hero-meta",
                                         children=[
-                                            html.Div(
-                                                className="field-block",
+                                            html.Div(className="meta-chip", children=[html.Span("Set-driven"), html.Small("GaussianSet, SphereSet, PhotodiodeSet and more")]),
+                                            html.Div(className="meta-chip", children=[html.Span("Compiled backend"), html.Small("Sends your configured sets straight into the experiment engine and returns structured results for plotting and export.")]),
+                                        ],
+                                    ),
+                                ],
+                            ),
+                            html.Section(
+                                id="configure",
+                                className="workspace",
+                                children=[
+                                    html.Section(
+                                        className="control-column",
+                                        children=[
+                                            html.Section(
+                                                className="panel plot-controls-panel",
                                                 children=[
-                                                    html.Label("Measure", htmlFor="measure-select"),
-                                                    dcc.Dropdown(
-                                                        id="measure-select",
-                                                        className="dashboard-dropdown",
-                                                        options=[{"label": measure, "value": measure} for measure in default_measure_options],
-                                                        value=default_measure_options[0] if default_measure_options else None,
-                                                        clearable=False,
+                                                    html.Div(className="panel-header", children=[html.H2("Plot Controls")]),
+                                                    html.P(
+                                                        "Choose the response to compute and the parameter to place on the horizontal axis.",
+                                                        className="helper-copy",
+                                                    ),
+                                                    html.Div(
+                                                        className="run-controls-grid",
+                                                        children=[
+                                                            html.Div(
+                                                                className="field-block",
+                                                                children=[
+                                                                    html.Label("Measure", htmlFor="measure-select"),
+                                                                    dcc.Dropdown(
+                                                                        id="measure-select",
+                                                                        className="dashboard-dropdown",
+                                                                        options=[{"label": measure, "value": measure} for measure in default_measure_options],
+                                                                        value=default_measure_options[0] if default_measure_options else None,
+                                                                        clearable=False,
+                                                                    ),
+                                                                ],
+                                                            ),
+                                                            html.Div(
+                                                                className="field-block",
+                                                                children=[
+                                                                    html.Label("X Axis", htmlFor="x-axis-select"),
+                                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values"),
+                                                                ],
+                                                            ),
+                                                        ],
                                                     ),
                                                 ],
                                             ),
-                                            html.Div(
-                                                className="field-block",
+                                            html.Section(
+                                                id="run",
+                                                className="panel run-panel",
                                                 children=[
-                                                    html.Label("X Axis", htmlFor="x-axis-select"),
-                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values"),
+                                                    html.Div(className="panel-header run-panel-header", children=[html.H2("Run Experiment")]),
+                                                    html.P(
+                                                        "Launch the compiled experiment engine with the current sets and refresh the figure instantly.",
+                                                        className="run-panel-copy",
+                                                    ),
+                                                    html.Div(
+                                                        className="run-actions",
+                                                        children=[
+                                                            html.Button("Run Experiment", id="run-experiment", n_clicks=0, className="run-button run-button-primary"),
+                                                            html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button"),
+                                                        ],
+                                                    ),
+                                                    html.Div(id="status-banner", className="status-banner idle", children="Ready."),
+                                                ],
+                                            ),
+                                            html.Section(
+                                                id="guide",
+                                                className="panel helper-panel",
+                                                children=[
+                                                    html.Div(className="panel-header", children=[html.H2("Field Syntax Guide")]),
+                                                    html.P(
+                                                        "Every text field accepts compact batch input, so you can sweep parameters without rewriting the form.",
+                                                        className="helper-copy",
+                                                    ),
+                                                    html.Div(
+                                                        className="helper-examples",
+                                                        children=[
+                                                            html.Div(className="helper-chip", children=[html.Strong("a:b:c"), html.Span("Generate a sweep from start to stop using exactly c points, for example 400:1400:8.")]),
+                                                            html.Div(className="helper-chip", children=[html.Strong("1,2,3"), html.Span("Enter a manual list when you want precise sampled values instead of an evenly spaced sweep.")]),
+                                                            html.Div(className="helper-chip", children=[html.Strong("LP01,HG11"), html.Span("Mode and label fields also accept comma-separated names for detector families or custom batches.")]),
+                                                            html.Div(className="helper-chip helper-chip-note", children=[html.Strong("Tip"), html.Span("Keep the X axis on the parameter you actually swept if you want clean single-panel plots.")]),
+                                                        ],
+                                                    ),
                                                 ],
                                             ),
                                         ],
                                     ),
-                                ],
-                            ),
-                            html.Section(
-                                className="panel run-panel",
-                                children=[
-                                    html.Div(className="panel-header run-panel-header", children=[html.H2("Run Experiment")]),
-                                    html.P(
-                                        "Launch the compiled experiment engine with the current sets and refresh the figure instantly.",
-                                        className="run-panel-copy",
-                                    ),
-                                    html.Div(
-                                        className="run-actions",
+                                    html.Section(
+                                        className="result-column",
                                         children=[
-                                            html.Button("Run Experiment", id="run-experiment", n_clicks=0, className="run-button run-button-primary"),
-                                            html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button"),
+                                            html.Div(
+                                                className="set-panel-grid",
+                                                children=[
+                                                    _section_shell(
+                                                        "Source Set",
+                                                        dcc.Dropdown(
+                                                            id="source-type",
+                                                            className="dashboard-dropdown",
+                                                            options=[{"label": key.replace("Set", ""), "value": key} for key in SECTION_FIELDS["source"]],
+                                                            value="GaussianSet",
+                                                            clearable=False,
+                                                        ),
+                                                        html.Div(id="source-fields"),
+                                                    ),
+                                                    _section_shell(
+                                                        "Scatterer Set",
+                                                        dcc.Dropdown(
+                                                            id="scatterer-type",
+                                                            className="dashboard-dropdown",
+                                                            options=[{"label": key.replace("Set", ""), "value": key} for key in SECTION_FIELDS["scatterer"]],
+                                                            value="SphereSet",
+                                                            clearable=False,
+                                                        ),
+                                                        html.Div(id="scatterer-fields"),
+                                                    ),
+                                                    _section_shell(
+                                                        "Detector Set",
+                                                        dcc.Dropdown(
+                                                            id="detector-type",
+                                                            className="dashboard-dropdown",
+                                                            options=[{"label": "No detector" if key == "None" else key.replace("Set", ""), "value": key} for key in SECTION_FIELDS["detector"]],
+                                                            value="PhotodiodeSet",
+                                                            clearable=False,
+                                                        ),
+                                                        html.Div(id="detector-fields"),
+                                                    ),
+                                                ],
+                                            ),
+                                            html.Div(id="summary-cards", className="summary-grid"),
+                                            html.Section(
+                                                className="panel graph-panel",
+                                                children=[dcc.Graph(id="result-graph", config={"displaylogo": False})],
+                                            ),
                                         ],
                                     ),
-                                    html.Div(id="status-banner", className="status-banner idle", children="Ready."),
                                 ],
-                            ),
-                            html.Section(
-                                className="panel helper-panel",
-                                children=[
-                                    html.Div(className="panel-header", children=[html.H2("Field Syntax Guide")]),
-                                    html.P(
-                                        "Every text field accepts compact batch input, so you can sweep parameters without rewriting the form.",
-                                        className="helper-copy",
-                                    ),
-                                    html.Div(
-                                        className="helper-examples",
-                                        children=[
-                                            html.Div(className="helper-chip", children=[html.Strong("a:b:c"), html.Span("Generate a sweep from start to stop using exactly c points, for example 400:1400:8.")]),
-                                            html.Div(className="helper-chip", children=[html.Strong("1,2,3"), html.Span("Enter a manual list when you want precise sampled values instead of an evenly spaced sweep.")]),
-                                            html.Div(className="helper-chip", children=[html.Strong("LP01,HG11"), html.Span("Mode and label fields also accept comma-separated names for detector families or custom batches.")]),
-                                            html.Div(className="helper-chip helper-chip-note", children=[html.Strong("Tip"), html.Span("Keep the X axis on the parameter you actually swept if you want clean single-panel plots.")]),
-                                        ],
-                                    ),
-                                ],
-                            ),
-                        ],
-                    ),
-                    html.Section(
-                        className="result-column",
-                        children=[
-                            html.Div(
-                                className="set-panel-grid",
-                                children=[
-                                    _section_shell(
-                                        "Source Set",
-                                        dcc.Dropdown(
-                                            id="source-type",
-                                            className="dashboard-dropdown",
-                                            options=[{"label": key.replace("Set", ""), "value": key} for key in SECTION_FIELDS["source"]],
-                                            value="GaussianSet",
-                                            clearable=False,
-                                        ),
-                                        html.Div(id="source-fields"),
-                                    ),
-                                    _section_shell(
-                                        "Scatterer Set",
-                                        dcc.Dropdown(
-                                            id="scatterer-type",
-                                            className="dashboard-dropdown",
-                                            options=[{"label": key.replace("Set", ""), "value": key} for key in SECTION_FIELDS["scatterer"]],
-                                            value="SphereSet",
-                                            clearable=False,
-                                        ),
-                                        html.Div(id="scatterer-fields"),
-                                    ),
-                                    _section_shell(
-                                        "Detector Set",
-                                        dcc.Dropdown(
-                                            id="detector-type",
-                                            className="dashboard-dropdown",
-                                            options=[{"label": "No detector" if key == "None" else key.replace("Set", ""), "value": key} for key in SECTION_FIELDS["detector"]],
-                                            value="PhotodiodeSet",
-                                            clearable=False,
-                                        ),
-                                        html.Div(id="detector-fields"),
-                                    ),
-                                ],
-                            ),
-                            html.Div(id="summary-cards", className="summary-grid"),
-                            html.Section(
-                                className="panel graph-panel",
-                                children=[dcc.Graph(id="result-graph", config={"displaylogo": False})],
                             ),
                         ],
                     ),
@@ -169,6 +184,55 @@ def create_layout(default_measure_options: list[str]):
             ),
         ],
     )
+
+
+def _build_sidebar():
+    """Create the dashboard sidebar."""
+    return html.Aside(
+        className="dashboard-sidebar",
+        children=[
+            html.Div(
+                className="sidebar-brand",
+                children=[
+                    html.Img(src="/assets/logo.png", alt="PyMieSim logo", className="sidebar-logo"),
+                    html.P("PyMieSim", className="sidebar-eyebrow"),
+                    html.H2("Experiment Lab", className="sidebar-title"),
+                    html.P(
+                        "Configure sources, scatterers, and detectors in a server-ready dashboard that mirrors the RosettaX layout.",
+                        className="sidebar-copy",
+                    ),
+                ],
+            ),
+            html.Nav(
+                className="sidebar-nav",
+                children=[
+                    _sidebar_link("Overview", "#overview"),
+                    _sidebar_link("Configure", "#configure"),
+                    _sidebar_link("Run", "#run"),
+                    _sidebar_link("Guide", "#guide"),
+                ],
+            ),
+            html.Div(
+                className="sidebar-card",
+                children=[
+                    html.Span("Server launch"),
+                    html.Code("python -m PyMieSim --host 0.0.0.0 --port 8050 --no-browser"),
+                ],
+            ),
+            html.Div(
+                className="sidebar-card",
+                children=[
+                    html.Span("Engine scope"),
+                    html.Small("Gaussian sources, sphere and cylinder scatterers, photodiodes, and coherent modes."),
+                ],
+            ),
+        ],
+    )
+
+
+def _sidebar_link(label: str, href: str):
+    """Build a single sidebar anchor."""
+    return html.A(label, href=href, className="sidebar-link")
 
 
 def render_fields(section: str, section_type: str):

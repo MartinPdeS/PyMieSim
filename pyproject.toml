@@ -65,18 +65,21 @@ dependencies = [
     "plotly>=5.24,<7",
 ]
 
-keywords = [
-    "mie",
-    "scattering",
-    "backscatter",
-    "sphere",
-    "cylinder",
-    "nanoparticle",
-    "phase function",
-    "efficiency",
-    "rayleigh",
-    "backscattering"
-]
+[project.scripts]
+pymiesim = "PyMieSim.__main__:main"
+
+# keywords = [
+#     "mie",
+#     "scattering",
+#     "backscatter",
+#     "sphere",
+#     "cylinder",
+#     "nanoparticle",
+#     "phase function",
+#     "efficiency",
+#     "rayleigh",
+#     "backscattering"
+# ]
 
 [project.optional-dependencies]
 testing = [
@@ -95,6 +98,9 @@ documentation = [
 ]
 dev = [
     "flake8==7.3.0"
+]
+server = [
+    "gunicorn >=23.0.0",
 ]
 
 [tool.cibuildwheel]
