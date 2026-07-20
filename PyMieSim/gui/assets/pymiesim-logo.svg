@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1239.6711"
+     height="519.4696"
+     viewBox="620 135 1020 330"
+     role="img"
+     aria-labelledby="title description">
+  <title id="title">PyMieSimX</title>
+  <desc id="description">PyMieSimX light scattering simulation logo</desc>
+  <defs>
+    <linearGradient id="gMain" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3865ff"/>
+      <stop offset="1" stop-color="#11cbd9"/>
+    </linearGradient>
+  </defs>
+  <rect x="640" y="135" width="1020" height="330" fill="#ffffff"/>
+
+  <text x="647" y="325"
+        fill="#26272a"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="180px"
+        font-weight="400"
+        letter-spacing="-5px">PyMieSim</text>
+  <g transform="translate(-155 0)">
+    <path d="m 1595.8673,149.6464 h 26 l 64,88 -64,88 h -26 l 64,-88 z" fill="#2d6df6"/>
+    <path d="m 1755.8673,149.6464 h 28 l -64,88 64,88 h -28 l -62,-88 z" fill="#16c9dc"/>
+  </g>
+
+  <text x="927" y="425"
+        fill="#5f5d5d"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="60px"
+        font-weight="400">Light scattering simulation</text>
+  <line x1="927" y1="449" x2="1620" y2="449"
+        stroke="#5f5d5d" stroke-width="5" stroke-linecap="butt"/>
+</svg>

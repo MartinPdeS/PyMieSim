@@ -5,7 +5,7 @@ import numpy as np
 
 from PyMieSim.units import ureg
 from PyMieSim.gui.parsing import parse_material_values, parse_numeric_expression, parse_quantity_expression
-from PyMieSim.gui.services import available_measures, build_detector_set, run_experiment
+from PyMieSim.gui.services import available_measures, build_detector_set, build_single_figure, run_experiment
 
 
 def test_parse_quantity_expression_supports_ranges():
@@ -70,3 +70,18 @@ def test_run_experiment_returns_serialized_dataframe():
     assert result["row_count"] == 3
     assert len(result["rows"]) == 3
     assert result["parameter_columns"]
+
+
+def test_single_representation_returns_plotly_traces():
+    figure, summary = build_single_figure(
+        source_type="Gaussian",
+        source_values={},
+        scatterer_type="Sphere",
+        scatterer_values={},
+        representation="s1s2",
+        sampling=24,
+    )
+
+    assert len(figure.data) == 2
+    assert len(figure.data[0].x) == 24
+    assert summary["Representation"] == "S1S2"

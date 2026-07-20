@@ -8,13 +8,15 @@ import webbrowser
 
 from dash import ALL, Dash, Input, Output, State, dcc, no_update
 
-from PyMieSim.gui.layout import create_layout, render_fields, render_summary_cards
+from PyMieSim.gui.layout import build_workspace_layout, create_layout, render_fields
+from PyMieSim.gui.pages.documentation import build_documentation_page
+from PyMieSim.gui.pages.home import build_home_page
 from PyMieSim.gui.services import (
     available_measures,
     build_figure,
-    build_summary,
     export_result_to_csv,
     infer_variable_fields,
+    build_single_figure,
     run_experiment,
 )
 
@@ -35,7 +37,7 @@ def create_dash_app() -> Dash:
     initial_measures = available_measures("SphereSet", "PhotodiodeSet")
     LOGGER.debug("Initial measures loaded: %s", initial_measures)
     app.layout = create_layout(initial_measures)
-    _register_callbacks(app)
+    _register_callbacks(app, initial_measures)
     LOGGER.debug("Dash application initialized with %d callbacks", len(app.callback_map))
     return app
 
@@ -65,9 +67,38 @@ class OpticalSetupGUI:
         self.app.run(debug=debug, host=host, port=port)
 
 
-def _register_callbacks(app: Dash) -> None:
+def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     """Register all dashboard callbacks."""
     LOGGER.debug("Registering dashboard callbacks")
+
+    @app.callback(
+        Output("page-content", "children"),
+        Output("sidebar-link-home", "className"),
+        Output("sidebar-link-experiment", "className"),
+        Output("sidebar-link-single", "className"),
+        Output("sidebar-link-documentation", "className"),
+        Input("url", "pathname"),
+    )
+    def _route_pages(pathname: str | None):
+        """Render only the selected route page inside the persistent shell."""
+        route = pathname or "/"
+        active = {
+            "home": "sidebar-link",
+            "experiment": "sidebar-link",
+            "single": "sidebar-link",
+            "documentation": "sidebar-link",
+        }
+        if route == "/documentation":
+            active["documentation"] += " active"
+            return build_documentation_page(), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+        if route == "/single":
+            active["single"] += " active"
+            return build_workspace_layout(default_measure_options, "single-tab"), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+        if route == "/experiment":
+            active["experiment"] += " active"
+            return build_workspace_layout(default_measure_options, "experiment-tab"), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+        active["home"] += " active"
+        return build_home_page(), *(active[key] for key in ("home", "experiment", "single", "documentation"))
 
     @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
     def _render_source_fields(source_type: str):
@@ -83,6 +114,14 @@ def _register_callbacks(app: Dash) -> None:
     def _render_detector_fields(detector_type: str):
         LOGGER.debug("Rendering detector fields for %s", detector_type)
         return render_fields("detector", detector_type)
+
+    @app.callback(Output("single-source-fields", "children"), Input("single-source-type", "value"))
+    def _render_single_source_fields(source_type: str):
+        return render_fields("single-source", source_type)
+
+    @app.callback(Output("single-scatterer-fields", "children"), Input("single-scatterer-type", "value"))
+    def _render_single_scatterer_fields(scatterer_type: str):
+        return render_fields("single-scatterer", scatterer_type)
 
     @app.callback(
         Output("measure-select", "options"),
@@ -220,8 +259,11 @@ def _register_callbacks(app: Dash) -> None:
         prevent_initial_call=True,
     )
     def _export_csv(n_clicks: int, result: dict | None, measure: str | None):
-        del n_clicks
         LOGGER.debug("CSV export requested for measure=%s", measure)
+
+        if not n_clicks:
+            LOGGER.debug("Ignoring CSV callback without an explicit button click")
+            return no_update
 
         csv_content = export_result_to_csv(result)
 
@@ -235,24 +277,74 @@ def _register_callbacks(app: Dash) -> None:
 
     @app.callback(
         Output("result-graph", "figure"),
-        Output("summary-cards", "children"),
         Input("experiment-result", "data"),
         Input("x-axis-select", "value"),
     )
     def _update_outputs(result: dict | None, x_axis: str | None):
         LOGGER.debug("Updating outputs for x_axis=%s result_present=%s", x_axis, bool(result))
-        figure = build_figure(result, x_axis)
-        summary = render_summary_cards(build_summary(result))
+        return build_figure(result, x_axis)
 
+    @app.callback(
+        Output("single-result", "data"),
+        Output("single-status", "children"),
+        Output("single-status", "className"),
+        Input("run-single", "n_clicks"),
+        State("single-source-type", "value"),
+        State({"kind": "field", "section": "single-source", "name": ALL}, "value"),
+        State({"kind": "field", "section": "single-source", "name": ALL}, "id"),
+        State("single-scatterer-type", "value"),
+        State({"kind": "field", "section": "single-scatterer", "name": ALL}, "value"),
+        State({"kind": "field", "section": "single-scatterer", "name": ALL}, "id"),
+        State("single-representation", "value"),
+        State("single-sampling", "value"),
+        prevent_initial_call=True,
+    )
+    def _run_single(
+        n_clicks: int,
+        source_type: str,
+        source_values: list[str],
+        source_ids: list[dict[str, str]],
+        scatterer_type: str,
+        scatterer_values: list[str],
+        scatterer_ids: list[dict[str, str]],
+        representation: str,
+        sampling: int,
+    ):
+        del n_clicks
+        try:
+            figure, summary = build_single_figure(
+                source_type=source_type,
+                source_values=_pair_ids_with_values(source_ids, source_values),
+                scatterer_type=scatterer_type,
+                scatterer_values=_pair_ids_with_values(scatterer_ids, scatterer_values),
+                representation=representation,
+                sampling=sampling or 120,
+            )
+        except Exception as error:
+            LOGGER.exception("Single representation render failed")
+            return None, str(error), "status-banner error"
+
+        return {"figure": figure.to_plotly_json(), "summary": summary}, "Representation rendered.", "status-banner success"
+
+    @app.callback(Output("single-graph", "figure"), Input("single-result", "data"))
+    def _update_single_outputs(result: dict | None):
         if not result:
-            return figure, summary
-
-        return figure, summary
+            return build_single_empty_figure()
+        return result["figure"]
 
 
 def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[str, str]:
     """Convert dynamic Dash field IDs and values into a flat mapping."""
     return {field_id["name"]: value for field_id, value in zip(ids, values)}
+
+
+def build_single_empty_figure():
+    """Return the initial representation canvas."""
+    from plotly.graph_objects import Figure
+
+    figure = Figure()
+    figure.update_layout(template="plotly_white", xaxis_visible=False, yaxis_visible=False, annotations=[{"text": "Configure a setup and render a representation.", "xref": "paper", "yref": "paper", "x": 0.5, "y": 0.5, "showarrow": False}])
+    return figure
 
 
 app = create_dash_app()

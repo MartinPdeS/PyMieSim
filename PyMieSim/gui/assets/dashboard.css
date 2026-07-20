@@ -14,6 +14,1080 @@
     --shadow: 0 8px 24px rgba(26, 44, 52, 0.08);
 }
 
+.main-tabs {
+    margin-bottom: 22px;
+}
+
+.main-tabs.workspace-hidden {
+    display: none !important;
+}
+
+.main-tabs.workspace-visible {
+    display: block !important;
+}
+
+.main-tabs > .tab-container {
+    display: none !important;
+}
+
+.main-tab {
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--muted) !important;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 600;
+    padding: 12px 20px !important;
+}
+
+.main-tab--selected {
+    background: var(--panel) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 999px !important;
+    color: var(--accent) !important;
+    box-shadow: var(--shadow);
+}
+
+.tab-content-stack,
+.single-workspace {
+    display: grid;
+    gap: 22px;
+}
+
+.single-workspace {
+    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+}
+
+.single-graph-panel {
+    min-height: 560px;
+}
+
+.single-graph-panel .js-plotly-plot,
+.single-graph-panel .plot-container {
+    min-height: 520px;
+}
+
+@media (max-width: 1080px) {
+    .single-workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* RosettaX application shell: compact white cards, blue section accents, and
+   a quiet fixed navigation rail. */
+body {
+    background: #ffffff;
+    color: #212529;
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    font-size: .95rem;
+}
+
+.app-shell {
+    max-width: none;
+    padding: 0;
+}
+
+.dashboard-frame {
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 0;
+    min-height: 100vh;
+}
+
+.dashboard-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 12px 8px;
+    border: 0;
+    border-radius: 0;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+.sidebar-logo {
+    width: 190px;
+    max-width: 100%;
+    margin: 0 auto 8px;
+}
+
+.sidebar-nav {
+    gap: 2px;
+}
+
+.sidebar-link {
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #343a40;
+    font-size: .92rem;
+    font-weight: 500;
+}
+
+.plot-controls-panel,
+.run-panel,
+.helper-panel {
+    padding-bottom: 12px;
+}
+
+.plot-controls-panel > .helper-copy,
+.plot-controls-panel > .run-controls-grid,
+.run-panel > .run-panel-copy,
+.run-panel > .run-actions,
+.run-panel > .status-banner,
+.helper-panel > .helper-copy,
+.helper-panel > .helper-examples {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.run-panel > .run-actions {
+    margin-bottom: 12px;
+}
+
+.run-panel > .status-banner {
+    margin-bottom: 0;
+}
+
+/* Experiment result column: plot first, then actions, then a horizontal
+   syntax guide matching the RosettaX workflow-page composition. */
+.result-column > .run-panel,
+.result-column > .helper-panel {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.result-column > .helper-panel .helper-examples {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.plot-control-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 18px 12px 12px;
+}
+
+.plot-control-actions .run-button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.plot-controls-panel > .status-banner {
+    margin: 0 12px 12px;
+}
+
+.plot-control-actions .export-button {
+    background: #f7f9fb;
+    color: #2f4358;
+    border: 1px solid #c7d1d9;
+}
+
+@media (max-width: 900px) {
+    .result-column > .helper-panel .helper-examples {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .result-column > .helper-panel .helper-examples {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Keep selectors comfortably inset from card edges on both workflows. */
+.workflow-card > .workflow-card-body {
+    padding: 18px !important;
+}
+
+.workflow-card > .workflow-card-body > .dashboard-dropdown {
+    margin-bottom: 14px;
+}
+
+/* Keep Experiment's left configuration column identical to Single's. */
+.workspace {
+    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr) !important;
+}
+
+.workspace .control-column,
+.workspace .set-panel-grid,
+.workspace .workflow-card {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1080px) {
+    .workspace {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* RosettaX card tokens, applied last so every workflow card uses the same
+   radius, accent, shadow, header, and body proportions as the reference UI. */
+.workflow-card,
+.home-info-card,
+.home-capability-card,
+.panel,
+.summary-card {
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-left: 5px solid rgba(13, 110, 253, .75);
+    border-radius: 15px;
+    box-shadow: 0 .35rem .9rem rgba(0, 0, 0, .08);
+}
+
+.workflow-card {
+    overflow: visible;
+    background: #fff;
+}
+
+.workflow-card > summary,
+.home-section-header,
+.panel-header {
+    padding: 12px 18px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 1.02rem;
+    font-weight: 700;
+}
+
+.workflow-card-body,
+.home-info-body,
+.home-capability-body,
+.panel-body {
+    padding: 18px;
+    overflow: visible;
+}
+
+.single-workspace .representation-card > summary {
+    padding: 12px 18px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-size: 1.02rem;
+    font-weight: 700;
+}
+
+.single-workspace .representation-card > .representation-card-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color: #212529;
+    font-size: 1.02rem;
+    font-weight: 700;
+}
+
+.single-workspace .representation-card-body {
+    padding: 18px;
+}
+
+.home-capability-card,
+.home-info-card {
+    border-left-width: 5px;
+}
+
+/* Extend the same RosettaX card language to every workspace surface, not
+   only the source/scatterer workflow cards. */
+.page-hero,
+.hero,
+.home-action-card,
+.documentation-card,
+.documentation-note,
+.plot-controls-panel,
+.helper-panel,
+.graph-panel,
+.single-graph-panel {
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-left: 5px solid rgba(13, 110, 253, .75);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 .35rem .9rem rgba(0, 0, 0, .08);
+}
+
+.page-hero,
+.hero {
+    padding: 18px;
+}
+
+.home-action-card {
+    min-height: 190px;
+    padding: 18px;
+}
+
+.documentation-card,
+.documentation-note,
+.plot-controls-panel,
+.helper-panel {
+    padding: 0;
+    overflow: visible;
+}
+
+.documentation-card > .panel-header,
+.documentation-note > .panel-header,
+.plot-controls-panel > .panel-header,
+.helper-panel > .panel-header {
+    margin: 0;
+}
+
+.documentation-card > p,
+.documentation-note > p,
+.plot-controls-panel > p,
+.plot-controls-panel > .helper-copy,
+.helper-panel > p,
+.helper-panel > .helper-copy {
+    margin: 0;
+    padding: 18px;
+}
+
+.documentation-note > .inline-action {
+    display: inline-flex;
+    margin: 0 18px 18px;
+}
+
+.graph-panel,
+.single-graph-panel {
+    padding: 18px;
+    overflow: visible;
+}
+
+.workflow-page-header {
+    display: block;
+    min-height: 0;
+    margin-bottom: 18px;
+    padding: 18px;
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-left: 5px solid rgba(13, 110, 253, .75);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 .35rem .9rem rgba(0, 0, 0, .08);
+}
+
+.workflow-page-header .eyebrow {
+    margin: 0 0 6px;
+}
+
+.workflow-page-header h1 {
+    margin: 0 0 8px;
+    color: #212529;
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.workflow-page-header .hero-text {
+    max-width: 900px;
+    margin: 0;
+    color: #52697a;
+    font-size: .95rem;
+    line-height: 1.45;
+}
+
+/* Experiment follows the same left-controls/right-plot composition as
+   Single, with enough width for the source, scatterer, and detector forms. */
+.workspace {
+    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr);
+}
+
+.workspace .control-column,
+.workspace .result-column {
+    min-width: 0;
+}
+
+.workspace .set-panel-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+@media (max-width: 1080px) {
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Reusable card primitives: the accent colors follow RosettaX's workflow
+   progression and remain visible as a highlighted strip on the left edge. */
+.ui-card,
+.workflow-card {
+    border-left: 5px solid rgba(13, 110, 253, .75);
+}
+
+.ui-card--green,
+.workflow-card--green { border-left-color: #20b486; }
+.ui-card--blue,
+.workflow-card--blue { border-left-color: #4f8df7; }
+.ui-card--yellow,
+.workflow-card--yellow { border-left-color: #f2b233; }
+.ui-card--cyan,
+.workflow-card--cyan { border-left-color: #20c7d5; }
+.ui-card--purple,
+.workflow-card--purple { border-left-color: #8d6bd8; }
+
+.workflow-card--yellow { background: #fffbed; }
+.workflow-card--blue { background: #eef4ff; }
+.workflow-card--cyan { background: #effbfc; }
+
+.workflow-card--yellow > summary { background: #fffbed; }
+.workflow-card--blue > summary { background: #eef4ff; }
+.workflow-card--cyan > summary { background: #effbfc; }
+
+.workflow-info-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    margin-left: 6px;
+    border: 1px solid #9da9b2;
+    border-radius: 50%;
+    color: #6e7d87;
+    cursor: help;
+    font-size: .65rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.workflow-info-button:hover,
+.workflow-info-button:focus-visible {
+    border-color: #2f4358;
+    background: #fff;
+    color: #2f4358;
+}
+
+.workflow-header-card {
+    margin-bottom: 18px;
+    padding: 18px;
+    overflow: visible;
+}
+
+.header-card-intro h1 {
+    margin: 0 0 6px;
+    color: #212529;
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.header-card-intro p {
+    margin: 0 0 12px;
+    color: #52697a;
+    font-size: .86rem;
+    line-height: 1.4;
+}
+
+.header-card-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.header-step-card {
+    min-height: 84px;
+    padding: 10px;
+    border: 1px solid rgba(128, 128, 128, .18);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.header-step-card--green { border-color: rgba(32, 180, 134, .28); border-left: 5px solid #20b486; background: rgba(32, 180, 134, .04); }
+.header-step-card--blue { border-color: rgba(79, 141, 247, .28); border-left: 5px solid #4f8df7; background: rgba(79, 141, 247, .04); }
+.header-step-card--yellow { border-color: rgba(242, 178, 51, .34); border-left: 5px solid #f2b233; background: rgba(242, 178, 51, .06); }
+.header-step-card--purple { border-color: rgba(141, 107, 216, .30); border-left: 5px solid #8d6bd8; background: rgba(141, 107, 216, .05); }
+
+.header-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-bottom: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .85);
+    color: #52697a;
+    font-size: .68rem;
+    font-weight: 750;
+}
+
+.header-step-card h3 {
+    margin: 0 0 4px;
+    color: #34495a;
+    font-size: .82rem;
+    font-weight: 750;
+}
+
+.header-step-card p {
+    margin: 0;
+    color: #52697a;
+    font-size: .72rem;
+    line-height: 1.35;
+}
+
+/* Every remaining card-like surface gets the same visible left accent. */
+.meta-chip,
+.helper-chip,
+.home-metric-tile,
+.sidebar-card,
+.empty-section {
+    border-left: 5px solid #4f8df7;
+}
+
+.helper-chip-note {
+    border-left-color: #7d8790;
+}
+
+/* Final card accent guarantee: every card variant, including all workflow
+   configuration cards, keeps its highlighted left edge. */
+html .ui-card,
+html .workflow-card,
+html .panel,
+html .page-hero,
+html .hero,
+html .home-action-card,
+html .documentation-card,
+html .documentation-note,
+html .graph-panel,
+html .single-graph-panel,
+html .summary-card,
+html .meta-chip,
+html .helper-chip,
+html .home-metric-tile,
+html .sidebar-card,
+html .empty-section {
+    border-left: 5px solid #4f8df7 !important;
+}
+
+html .workflow-card--green,
+html .ui-card--green,
+html .header-step-card--green { border-left-color: #20b486 !important; background-color: rgba(32, 180, 134, .04) !important; }
+html .workflow-card--blue,
+html .ui-card--blue,
+html .header-step-card--blue { border-left-color: #4f8df7 !important; background-color: rgba(79, 141, 247, .04) !important; }
+html .workflow-card--yellow,
+html .ui-card--yellow,
+html .header-step-card--yellow { border-left-color: #f2b233 !important; background-color: rgba(242, 178, 51, .06) !important; }
+html .workflow-card--cyan,
+html .ui-card--cyan { border-left-color: #20c7d5 !important; background-color: rgba(32, 199, 213, .04) !important; }
+html .workflow-card--purple,
+html .ui-card--purple,
+html .header-step-card--purple { border-left-color: #8d6bd8 !important; background-color: rgba(141, 107, 216, .05) !important; }
+html .helper-chip-note { border-left-color: #7d8790 !important; }
+
+/* Keep the rounded corner geometry continuous between the tinted surface and
+   its highlighted left edge. */
+html .ui-card,
+html .workflow-card,
+html .header-step-card {
+    background-clip: border-box;
+}
+
+html .workflow-card--green,
+html .ui-card--green { border-color: rgba(32, 180, 134, .28) !important; }
+html .workflow-card--blue,
+html .ui-card--blue { border-color: rgba(79, 141, 247, .28) !important; }
+html .workflow-card--yellow,
+html .ui-card--yellow { border-color: rgba(242, 178, 51, .34) !important; }
+html .workflow-card--cyan,
+html .ui-card--cyan { border-color: rgba(32, 199, 213, .30) !important; }
+html .workflow-card--purple,
+html .ui-card--purple { border-color: rgba(141, 107, 216, .30) !important; }
+
+html .header-step-card--green { border-color: rgba(32, 180, 134, .28) !important; }
+html .header-step-card--blue { border-color: rgba(79, 141, 247, .28) !important; }
+html .header-step-card--yellow { border-color: rgba(242, 178, 51, .34) !important; }
+html .header-step-card--purple { border-color: rgba(141, 107, 216, .30) !important; }
+
+html .workflow-card--green,
+html .ui-card--green,
+html .header-step-card--green { border-left-color: #20b486 !important; }
+html .workflow-card--blue,
+html .ui-card--blue,
+html .header-step-card--blue { border-left-color: #4f8df7 !important; }
+html .workflow-card--yellow,
+html .ui-card--yellow,
+html .header-step-card--yellow { border-left-color: #f2b233 !important; }
+html .workflow-card--cyan,
+html .ui-card--cyan { border-left-color: #20c7d5 !important; }
+html .workflow-card--purple,
+html .ui-card--purple,
+html .header-step-card--purple { border-left-color: #8d6bd8 !important; }
+
+
+/* Slightly larger dashboard type and more generous syntax-guide spacing. */
+html body {
+    font-size: 1rem;
+}
+
+html .workflow-card > summary,
+html .panel-header,
+html .home-section-header,
+html .representation-card-header {
+    font-size: 1.08rem;
+}
+
+html .workflow-card > summary {
+    justify-content: flex-start;
+}
+
+html .workflow-card > summary .workflow-info-button {
+    margin-left: 8px;
+}
+
+html .workflow-card > summary::before {
+    margin-left: auto;
+}
+
+html .field-block label,
+html .run-panel label,
+html .plot-controls-panel label {
+    font-size: 1rem;
+}
+
+html .dashboard-dropdown .Select-value-label,
+html .dashboard-dropdown .Select-placeholder,
+html .field-input,
+html input,
+html select {
+    font-size: 1rem;
+}
+
+html .result-column > .helper-panel {
+    padding-bottom: 18px;
+}
+
+html .result-column > .helper-panel > .helper-copy {
+    padding: 18px 18px 10px;
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+html .result-column > .helper-panel .helper-examples {
+    gap: 12px;
+    margin-left: 18px;
+    margin-right: 18px;
+}
+
+html .result-column > .helper-panel .helper-chip {
+    padding: 16px;
+    font-size: .95rem;
+}
+
+html .result-column > .helper-panel .helper-chip strong {
+    font-size: 1.1rem;
+}
+
+html .result-column > .helper-panel .helper-chip span {
+    font-size: .95rem;
+    line-height: 1.45;
+}
+
+html .header-card-intro h1 {
+    font-size: 2.2rem;
+}
+
+html .header-card-intro p {
+    font-size: 1rem;
+}
+
+html .header-step-card {
+    min-height: 96px;
+    padding: 14px;
+}
+
+html .header-step-number {
+    width: 20px;
+    height: 20px;
+    font-size: .72rem;
+}
+
+html .header-step-card h3 {
+    font-size: .9rem;
+}
+
+html .header-step-card p {
+    font-size: .8rem;
+}
+
+/* React-Select/Dash adds generous global input padding. Override it inside
+   dropdowns so the search field and every option remain RosettaX-sized. */
+.dashboard-dropdown .Select-menu-outer {
+    max-height: 240px !important;
+    overflow-y: auto !important;
+}
+
+.dashboard-dropdown .Select-input,
+.dashboard-dropdown .Select-input > input {
+    box-sizing: border-box !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 10px !important;
+    line-height: 36px !important;
+}
+
+.dashboard-dropdown .Select-menu-outer .Select-option,
+.dashboard-dropdown .Select-menu-outer .VirtualizedSelectOption,
+.dashboard-dropdown .Select-menu-outer .VirtualizedSelectFocusedOption,
+.dashboard-dropdown .Select-menu-outer [class*="Option"] {
+    box-sizing: border-box !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    padding: 7px 10px !important;
+    line-height: 20px !important;
+    font-size: .95rem !important;
+}
+
+.dashboard-dropdown .Select-menu-outer .Select-input,
+.dashboard-dropdown .Select-menu-outer .Select-input input,
+.dashboard-dropdown .Select-menu-outer input {
+    box-sizing: border-box !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    padding: 0 10px !important;
+    line-height: 38px !important;
+}
+
+@media (max-width: 760px) {
+    .header-card-steps { grid-template-columns: 1fr; }
+}
+
+/* Final route and control sizing overrides. */
+.main-tabs .tab-container,
+.main-tabs > div:first-child {
+    display: none !important;
+}
+
+.dashboard-dropdown .Select-control {
+    min-height: 38px;
+    height: 38px;
+    border-radius: 4px;
+}
+
+.dashboard-dropdown .Select-placeholder,
+.dashboard-dropdown .Select--single > .Select-control .Select-value {
+    line-height: 36px;
+    font-size: .95rem;
+}
+
+.dashboard-dropdown .Select-input,
+.dashboard-dropdown .Select-input > input {
+    height: 36px;
+    line-height: 36px !important;
+}
+
+.dashboard-dropdown .Select-option,
+.dashboard-dropdown .VirtualizedSelectOption,
+.dashboard-dropdown .VirtualizedSelectFocusedOption {
+    min-height: 34px;
+    height: 34px;
+    padding: 7px 10px;
+    box-sizing: border-box;
+    line-height: 20px;
+    font-size: .95rem;
+}
+
+.dashboard-dropdown .Select-menu {
+    max-height: 240px;
+}
+
+/* The route already selects Experiment or Single; the internal Tabs control
+   must not be visible as a second navigation bar. */
+.main-tabs .tab-container,
+.main-tabs > div:first-child {
+    display: none !important;
+}
+
+/* Compact Dash dropdowns and normal-height option rows. */
+.dashboard-dropdown .Select-control {
+    min-height: 38px;
+    height: 38px;
+    border-radius: 4px;
+}
+
+.dashboard-dropdown .Select-placeholder,
+.dashboard-dropdown .Select--single > .Select-control .Select-value {
+    line-height: 36px;
+    font-size: .95rem;
+}
+
+.dashboard-dropdown .Select-input,
+.dashboard-dropdown .Select-input > input {
+    height: 36px;
+    line-height: 36px !important;
+}
+
+.dashboard-dropdown .Select-option,
+.dashboard-dropdown .VirtualizedSelectOption,
+.dashboard-dropdown .VirtualizedSelectFocusedOption {
+    min-height: 34px;
+    height: 34px;
+    padding: 7px 10px;
+    box-sizing: border-box;
+    line-height: 20px;
+    font-size: .95rem;
+}
+
+.dashboard-dropdown .Select-menu {
+    max-height: 240px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    border: 0;
+    background: #2f4358;
+    color: #ffffff;
+}
+
+.dashboard-main {
+    padding: 8px 16px 36px;
+    gap: 12px;
+}
+
+.page-content-stack {
+    gap: 12px;
+}
+
+.page-hero,
+.hero-copy,
+.hero-meta,
+.panel,
+.home-action-card,
+.summary-card {
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 .35rem .9rem rgba(0, 0, 0, .08);
+}
+
+.page-hero {
+    padding: 12px 14px;
+    border-left: 4px solid rgba(13, 110, 253, .75);
+    background: #ffffff;
+}
+
+.page-hero h1 {
+    max-width: none;
+    margin: 0 0 6px;
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    font-size: 1.7rem;
+    line-height: 1.15;
+    letter-spacing: 0;
+}
+
+.page-hero .hero-text {
+    margin: 0;
+    max-width: 900px;
+    font-size: .86rem;
+}
+
+.home-card-grid,
+.documentation-grid {
+    gap: 8px;
+}
+
+.home-action-card {
+    min-height: 190px;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 .2rem .6rem rgba(0, 0, 0, .06);
+}
+
+.home-action-card:hover {
+    border-color: rgba(13, 110, 253, .35);
+    transform: none;
+}
+
+.home-action-card h2,
+.documentation-card h2 {
+    margin: 10px 0 7px;
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    font-size: 1.02rem;
+    font-weight: 750;
+}
+
+.home-action-card p,
+.documentation-card p,
+.home-overview-card p,
+.documentation-note p {
+    font-size: .86rem;
+    line-height: 1.45;
+}
+
+.home-overview-card,
+.documentation-note {
+    padding: 0 10px 12px;
+}
+
+.panel {
+    padding: 0;
+    overflow: hidden;
+}
+
+.panel-header {
+    margin: 0;
+    padding: 8px 10px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+}
+
+.panel-header h2 {
+    font-size: 1.02rem;
+    font-weight: 750;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.panel > p,
+.panel > .helper-copy,
+.panel > .run-panel-copy {
+    padding: 0 10px;
+}
+
+.panel-body {
+    padding: 0 10px 10px;
+}
+
+.workflow-card {
+    border-radius: 8px;
+    box-shadow: 0 .2rem .6rem rgba(0, 0, 0, .06);
+}
+
+.workflow-card > summary {
+    padding: 9px 10px;
+    font-size: .94rem;
+    letter-spacing: 0;
+}
+
+.workflow-card-body {
+    padding: 0 10px 10px;
+}
+
+.run-panel {
+    background: #ffffff;
+    color: #212529;
+}
+
+.run-button-primary {
+    background: #2f4358;
+    border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+    .dashboard-frame {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-sidebar {
+        position: static;
+        height: auto;
+    }
+}
+
+.page-content-stack {
+    display: grid;
+    gap: 22px;
+}
+
+.page-hero {
+    background: linear-gradient(135deg, rgba(255,255,255,.98), rgba(232,242,250,.92));
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    padding: 34px;
+}
+
+.page-hero h1 {
+    max-width: 760px;
+    margin: 4px 0 12px;
+    font-family: Fraunces, Georgia, serif;
+    font-size: clamp(2.4rem, 5vw, 4.7rem);
+    line-height: .98;
+    letter-spacing: -.045em;
+}
+
+.home-card-grid,
+.documentation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.documentation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-action-card {
+    display: block;
+    min-height: 210px;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform .18s ease, border-color .18s ease;
+}
+
+.home-action-card:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+.home-card-number {
+    color: var(--accent);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+}
+
+.home-action-card h2,
+.documentation-card h2 {
+    margin: 24px 0 8px;
+    font-family: Fraunces, Georgia, serif;
+}
+
+.home-action-card p,
+.documentation-card p,
+.home-overview-card p,
+.documentation-note p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.documentation-note {
+    padding-bottom: 24px;
+}
+
+.inline-action {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .home-card-grid,
+    .documentation-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -57,7 +1131,12 @@ body {
 
 .sidebar-brand {
     display: grid;
-    gap: 10px;
+    gap: 0;
+}
+
+.sidebar-logo-link {
+    display: block;
+    width: 100%;
 }
 
 .sidebar-logo {
@@ -108,6 +1187,10 @@ body {
 .sidebar-link:hover {
     border-color: rgba(201, 109, 67, 0.2);
     background: rgba(201, 109, 67, 0.08);
+}
+
+.sidebar-link:active {
+    background: var(--accent-soft);
 }
 
 .sidebar-card {
@@ -247,6 +1330,62 @@ body {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
+}
+
+.workflow-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+}
+
+.workflow-card > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.workflow-card > summary::-webkit-details-marker {
+    display: none;
+}
+
+.workflow-card > summary::before {
+    content: "+";
+    order: 3;
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--accent);
+    text-align: center;
+    line-height: 19px;
+    font-size: 1.1rem;
+}
+
+.workflow-card[open] > summary::before {
+    content: "−";
+}
+
+.workflow-card-toggle {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+}
+
+.workflow-card-body {
+    padding: 0 20px 20px;
 }
 
 .control-column {
@@ -593,4 +1732,409 @@ select:focus {
     .app-shell {
         padding: 18px;
     }
+}
+
+/* Final RosettaX visual overrides. */
+body {
+    background: #ffffff;
+    color: #212529;
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+    font-size: .95rem;
+}
+
+.app-shell { max-width: none; padding: 0; }
+.dashboard-frame { grid-template-columns: 210px minmax(0, 1fr); gap: 0; min-height: 100vh; }
+.dashboard-sidebar { position: sticky; top: 0; height: 100vh; padding: 12px 8px; border: 0; border-radius: 0; background: #fff; box-shadow: none; }
+.sidebar-logo { width: 190px; max-width: 100%; margin: 0 auto 8px; }
+.sidebar-nav { gap: 2px; }
+.sidebar-link { padding: 7px 10px; border: 0; border-radius: 8px; background: transparent; color: #343a40; font-size: .92rem; font-weight: 500; }
+.sidebar-link:hover, .sidebar-link.active { border: 0; background: #2f4358; color: #fff; }
+.dashboard-main { padding: 8px 16px 36px; gap: 12px; }
+.page-content-stack { gap: 12px; }
+.page-hero, .hero-copy, .hero-meta, .panel, .home-action-card, .summary-card { border: 1px solid rgba(128,128,128,.25); border-radius: 8px; background: #fff; box-shadow: 0 .35rem .9rem rgba(0,0,0,.08); }
+.page-hero { padding: 12px 14px; border-left: 4px solid rgba(13,110,253,.75); background: #fff; }
+.page-hero h1 { max-width: none; margin: 0 0 6px; font-family: "IBM Plex Sans", "Segoe UI", sans-serif; font-size: 1.7rem; line-height: 1.15; letter-spacing: 0; }
+.page-hero .hero-text { margin: 0; max-width: 900px; font-size: .86rem; }
+.home-card-grid, .documentation-grid { gap: 8px; }
+.home-action-card { min-height: 190px; padding: 12px; border-radius: 8px; box-shadow: 0 .2rem .6rem rgba(0,0,0,.06); }
+.home-action-card:hover { border-color: rgba(13,110,253,.35); transform: none; }
+.home-action-card h2, .documentation-card h2 { margin: 10px 0 7px; font-family: "IBM Plex Sans", "Segoe UI", sans-serif; font-size: 1.02rem; font-weight: 750; }
+.home-action-card p, .documentation-card p, .home-overview-card p, .documentation-note p { font-size: .86rem; line-height: 1.45; }
+.home-overview-card, .documentation-note { padding: 0 10px 12px; }
+.panel { padding: 0; overflow: hidden; }
+.panel-header { margin: 0; padding: 8px 10px; background: rgba(13,110,253,.10); border-bottom: 1px solid rgba(13,110,253,.20); }
+.panel-header h2 { font-size: 1.02rem; font-weight: 750; letter-spacing: 0; text-transform: none; }
+.panel > p, .panel > .helper-copy, .panel > .run-panel-copy { padding: 0 10px; }
+.panel-body { padding: 0 10px 10px; }
+.workflow-card { border-radius: 8px; box-shadow: 0 .2rem .6rem rgba(0,0,0,.06); }
+.workflow-card > summary { padding: 9px 10px; font-size: .94rem; letter-spacing: 0; }
+.workflow-card-body { padding: 0 10px 10px; }
+.run-panel { background: #fff; color: #212529; }
+.run-button-primary { background: #2f4358; border-radius: 4px; }
+
+.home-info-card,
+.home-capability-card {
+    overflow: hidden;
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-left: 4px solid rgba(13, 110, 253, .75);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 .35rem .9rem rgba(0, 0, 0, .08);
+}
+
+.home-section-header {
+    padding: 8px 12px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+    font-size: 1.02rem;
+    font-weight: 750;
+}
+
+.home-info-body,
+.home-capability-body {
+    padding: 14px 12px;
+}
+
+.home-info-copy {
+    margin: 0 0 14px;
+    color: #52697a;
+    font-size: .86rem;
+}
+
+.home-button-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.home-button,
+.home-workflow-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: .82rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.home-button-primary { background: #f59e0b; color: #fff; }
+.home-button-outline { border-color: #2f4358; color: #2f4358; background: #fff; }
+.home-button-info { border-color: #58a9f5; color: #2877b9; background: #fff; }
+.home-button-muted { border-color: #b9c5cc; color: #6c7c85; background: #fff; }
+.home-button:hover, .home-workflow-button:hover { filter: brightness(.97); text-decoration: none; }
+
+.home-capability-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.home-capability-card {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid rgba(13, 110, 253, .16);
+    border-color: rgba(13, 110, 253, .16);
+}
+
+.home-capability-card .home-section-header {
+    padding: 8px 10px;
+    font-size: .94rem;
+}
+
+.home-capability-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.home-capability-body > p {
+    min-height: 58px;
+    margin: 0 0 12px;
+    color: #52697a;
+    font-size: .80rem;
+    line-height: 1.4;
+}
+
+.home-step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+    color: #3f515d;
+    font-size: .78rem;
+}
+
+.home-step-list > div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.home-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #b8d4ff;
+    border-radius: 50%;
+    background: #edf4ff;
+    color: #2672d6;
+    font-size: .68rem;
+}
+
+.home-workflow-button {
+    width: 100%;
+    margin-top: auto;
+    background: #2f4358;
+    color: #fff;
+}
+
+.home-metrics-card { margin-top: 0; }
+
+.home-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px;
+}
+
+.home-metric-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px;
+    border: 1px solid #d9e7fb;
+    border-radius: 8px;
+    background: #f7faff;
+    color: #52697a;
+    font-size: .78rem;
+}
+
+.home-metric-value {
+    color: #26323b;
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+@media (max-width: 900px) {
+    .dashboard-frame { grid-template-columns: 1fr; }
+    .dashboard-sidebar { position: static; height: auto; }
+    .home-capability-grid, .home-metrics-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+    .home-capability-grid, .home-metrics-grid { grid-template-columns: 1fr; }
+}
+
+/* Sidebar sizing correction: keep the navigation compact instead of letting
+   the full-height rail stretch each grid row. */
+.dashboard-frame {
+    grid-template-columns: 420px minmax(0, 1fr);
+}
+
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-content: flex-start;
+    gap: 16px;
+    width: 420px;
+    min-width: 420px;
+    height: 100vh;
+    padding: 16px 12px;
+}
+
+.sidebar-brand,
+.sidebar-nav {
+    flex: 0 0 auto;
+    height: auto;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+}
+
+.sidebar-logo {
+    width: 364px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    min-height: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    box-sizing: border-box;
+}
+
+.set-panel-grid {
+    grid-template-columns: 1fr;
+}
+
+.single-workspace .control-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Give the Single workspace enough horizontal room for its long-form
+   source and scatterer fields, while keeping the plot column flexible. */
+.single-workspace {
+    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr);
+}
+
+.single-workspace .workflow-card,
+.single-workspace .run-panel {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.single-workspace .run-panel {
+    padding: 0 0 12px;
+    overflow: hidden;
+    background: #fff;
+    color: #212529;
+}
+
+.single-workspace .run-panel .panel-header {
+    margin: 0 0 12px;
+    padding: 8px 10px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+}
+
+.single-workspace .run-panel .field-block,
+.single-workspace .run-panel .run-button,
+.single-workspace .run-panel .status-banner {
+    width: auto;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.single-workspace .run-panel .run-button {
+    display: block;
+    width: calc(100% - 24px);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.single-workspace .run-panel .status-banner {
+    margin-bottom: 0;
+}
+
+.single-workspace .representation-card {
+    overflow: hidden;
+}
+
+.single-workspace .representation-card > summary {
+    padding: 9px 10px;
+    background: rgba(13, 110, 253, .10);
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+    font-size: .94rem;
+    font-weight: 750;
+}
+
+.single-workspace .representation-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 12px 12px;
+}
+
+.single-workspace .representation-card-body .field-block {
+    margin: 0;
+}
+
+.single-workspace .representation-card-body .run-button {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.single-workspace .representation-card-body .status-banner {
+    margin: 0;
+}
+
+@media (max-width: 1080px) {
+    .single-workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Final route and dropdown sizing overrides. */
+.main-tabs .tab-container,
+.main-tabs > div:first-child {
+    display: none !important;
+}
+
+.dashboard-dropdown .Select-control {
+    min-height: 38px;
+    height: 38px;
+    border-radius: 4px;
+}
+
+.dashboard-dropdown .Select-placeholder,
+.dashboard-dropdown .Select--single > .Select-control .Select-value {
+    line-height: 36px;
+    font-size: .95rem;
+}
+
+.dashboard-dropdown .Select-input,
+.dashboard-dropdown .Select-input > input {
+    height: 36px;
+    line-height: 36px !important;
+}
+
+.dashboard-dropdown .Select-option,
+.dashboard-dropdown .VirtualizedSelectOption,
+.dashboard-dropdown .VirtualizedSelectFocusedOption {
+    min-height: 34px;
+    height: 34px;
+    padding: 7px 10px;
+    box-sizing: border-box;
+    line-height: 20px;
+    font-size: .95rem;
+}
+
+.dashboard-dropdown .Select-menu {
+    max-height: 240px;
+}
+
+.plot-controls-panel,
+.run-panel,
+.helper-panel {
+    padding-bottom: 12px;
+}
+
+.plot-controls-panel > .helper-copy,
+.plot-controls-panel > .run-controls-grid,
+.run-panel > .run-panel-copy,
+.run-panel > .run-actions,
+.run-panel > .status-banner,
+.helper-panel > .helper-copy,
+.helper-panel > .helper-examples {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+.run-panel > .run-actions {
+    margin-bottom: 12px;
+}
+
+.run-panel > .status-banner {
+    margin-bottom: 0;
 }

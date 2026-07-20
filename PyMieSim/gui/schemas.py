@@ -81,3 +81,38 @@ SECTION_FIELDS = {
     "scatterer": SCATTERER_FIELDS,
     "detector": DETECTOR_FIELDS,
 }
+
+
+SINGLE_SOURCE_FIELDS = {
+    "Gaussian": (
+        FieldSpec("wavelength", "Wavelength", "quantity", "632.8", ureg.nanometer),
+        FieldSpec("polarization", "Polarization", "quantity", "0", ureg.degree),
+        FieldSpec("optical_power", "Optical Power", "quantity", "1e-3", ureg.watt),
+        FieldSpec("numerical_aperture", "Numerical Aperture", "numeric", "0.2"),
+    ),
+    "PlaneWave": (
+        FieldSpec("wavelength", "Wavelength", "quantity", "632.8", ureg.nanometer),
+        FieldSpec("polarization", "Polarization", "quantity", "0", ureg.degree),
+        FieldSpec("amplitude", "Amplitude", "quantity", "1", ureg.volt / ureg.meter),
+    ),
+}
+
+SINGLE_SCATTERER_FIELDS = {
+    "Sphere": (
+        FieldSpec("diameter", "Diameter", "quantity", "200", ureg.nanometer),
+        FieldSpec("material", "Material", "material", "1.4"),
+        FieldSpec("medium", "Medium", "medium", "1.0"),
+    ),
+    "InfiniteCylinder": (
+        FieldSpec("diameter", "Diameter", "quantity", "200", ureg.nanometer),
+        FieldSpec("material", "Material", "material", "1.4"),
+        FieldSpec("medium", "Medium", "medium", "1.0"),
+    ),
+    "CoreShell": (
+        FieldSpec("core_diameter", "Core Diameter", "quantity", "120", ureg.nanometer),
+        FieldSpec("shell_thickness", "Shell Thickness", "quantity", "40", ureg.nanometer),
+        FieldSpec("core_material", "Core Material", "material", "1.4"),
+        FieldSpec("shell_material", "Shell Material", "material", "1.5"),
+        FieldSpec("medium", "Medium", "medium", "1.0"),
+    ),
+}

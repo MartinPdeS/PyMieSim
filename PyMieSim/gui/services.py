@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict
 
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -13,6 +14,10 @@ from PyMieSim.experiment import Setup
 from PyMieSim.experiment.detector_set import CoherentModeSet, PhotodiodeSet
 from PyMieSim.experiment.scatterer_set import CoreShellSet, InfiniteCylinderSet, SphereSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
+from PyMieSim.single import scatterer as single_scatterer
+from PyMieSim.single import source as single_source
+from PyMieSim.single import Setup as SingleSetup
+from PyMieSim.units import ureg
 
 from PyMieSim.gui.parsing import (
     parse_material_values,
@@ -22,7 +27,13 @@ from PyMieSim.gui.parsing import (
     parse_quantity_expression,
     serialize_value,
 )
-from PyMieSim.gui.schemas import DETECTOR_FIELDS, SCATTERER_FIELDS, SOURCE_FIELDS
+from PyMieSim.gui.schemas import (
+    DETECTOR_FIELDS,
+    SCATTERER_FIELDS,
+    SINGLE_SCATTERER_FIELDS,
+    SINGLE_SOURCE_FIELDS,
+    SOURCE_FIELDS,
+)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -43,6 +54,13 @@ DETECTOR_TYPES = {
     "None": None,
     "PhotodiodeSet": PhotodiodeSet,
     "CoherentModeSet": CoherentModeSet,
+}
+
+SINGLE_SOURCE_TYPES = {"Gaussian": single_source.Gaussian, "PlaneWave": single_source.PlaneWave}
+SINGLE_SCATTERER_TYPES = {
+    "Sphere": single_scatterer.Sphere,
+    "InfiniteCylinder": single_scatterer.InfiniteCylinder,
+    "CoreShell": single_scatterer.CoreShell,
 }
 
 
@@ -79,6 +97,77 @@ def build_detector_set(detector_type: str, raw_values: Dict[str, Any]) -> Any:
         return None
 
     return detector_class(**_parse_section_fields(DETECTOR_FIELDS[detector_type], raw_values))
+
+
+def build_single_setup(
+    *, source_type: str, source_values: Dict[str, Any], scatterer_type: str, scatterer_values: Dict[str, Any]
+) -> Any:
+    """Build a single-scatterer setup from the representation tab fields."""
+    source = SINGLE_SOURCE_TYPES[source_type](**_parse_section_fields(SINGLE_SOURCE_FIELDS[source_type], source_values))
+    scatterer = SINGLE_SCATTERER_TYPES[scatterer_type](**_parse_section_fields(SINGLE_SCATTERER_FIELDS[scatterer_type], scatterer_values))
+    return SingleSetup(scatterer=scatterer, source=source)
+
+
+def build_single_figure(
+    *,
+    source_type: str,
+    source_values: Dict[str, Any],
+    scatterer_type: str,
+    scatterer_values: Dict[str, Any],
+    representation: str,
+    sampling: int,
+) -> tuple[go.Figure, dict[str, str]]:
+    """Compute one single-scatterer representation and turn it into Plotly."""
+    setup = build_single_setup(
+        source_type=source_type,
+        source_values=source_values,
+        scatterer_type=scatterer_type,
+        scatterer_values=scatterer_values,
+    )
+    sampling = max(24, min(int(sampling), 300))
+    figure = go.Figure()
+
+    if representation == "s1s2":
+        angles = np.linspace(-np.pi, np.pi, sampling) * ureg.radian
+        s1, s2 = setup.get_s1s2(angles=angles)
+        x = angles.to(ureg.degree).magnitude
+        figure.add_trace(go.Scatter(x=x, y=np.abs(s1.magnitude), mode="lines", name="|S1|"))
+        figure.add_trace(go.Scatter(x=x, y=np.abs(s2.magnitude), mode="lines", name="|S2|"))
+        figure.update_xaxes(title="Scattering angle [degree]")
+        figure.update_yaxes(title="Amplitude [meter]")
+        title = "S1 / S2 scattering amplitudes"
+    else:
+        representation_object = setup.get_representation(representation, sampling=sampling)
+        if representation == "stokes":
+            field = "I"
+            values = getattr(representation_object, field).magnitude
+        elif representation == "spf":
+            field = "SPF"
+            values = getattr(representation_object.SPF, "magnitude", representation_object.SPF)
+        elif representation == "farfields":
+            field = "total_intensity"
+            values = np.abs(representation_object.E_phi.magnitude) ** 2 + np.abs(representation_object.E_theta.magnitude) ** 2
+        else:
+            raise ValueError(f"Representation '{representation}' is not supported by the dashboard.")
+
+        values = np.asarray(values)
+        if values.ndim == 2:
+            figure = go.Figure(data=go.Heatmap(z=values, colorscale="Viridis"))
+            figure.update_xaxes(title="Azimuth sample")
+            figure.update_yaxes(title="Polar sample")
+        else:
+            figure.add_trace(go.Scatter(y=values.ravel(), mode="lines", name=field))
+        title = f"{representation.title()} representation"
+
+    figure.update_layout(
+        template="plotly_white",
+        paper_bgcolor="rgba(0, 0, 0, 0)",
+        plot_bgcolor="white",
+        margin={"l": 45, "r": 20, "t": 55, "b": 45},
+        title=title,
+        legend_title_text="",
+    )
+    return figure, {"Representation": representation.upper(), "Sampling": str(sampling), "Scatterer": scatterer_type}
 
 
 def infer_variable_fields(
@@ -197,11 +286,12 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure
     LOGGER.debug("Figure frame columns=%s row_count=%d", list(frame.columns), len(frame))
 
     if not parameter_columns:
+        resolved_x_axis = "index"
         figure = px.bar(frame.assign(index=[0] * len(frame)), x="index", y=measure)
     else:
-        x_axis = x_axis if x_axis in parameter_columns else parameter_columns[0]
-        extra_axes = [column for column in parameter_columns if column != x_axis]
-        plot_kwargs: dict[str, Any] = {"x": x_axis, "y": measure}
+        resolved_x_axis = x_axis if x_axis in parameter_columns else parameter_columns[0]
+        extra_axes = [column for column in parameter_columns if column != resolved_x_axis]
+        plot_kwargs: dict[str, Any] = {"x": resolved_x_axis, "y": measure}
 
         if extra_axes:
             series_column = extra_axes[0]
@@ -216,8 +306,11 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure
 
         figure = px.line(frame, **plot_kwargs)
 
-    unit_label = result.get("units", {}).get(measure)
-    yaxis_title = f"{measure} [{unit_label}]" if unit_label else measure
+    units = result.get("units", {})
+    measure_unit = units.get(measure)
+    xaxis_unit = units.get(resolved_x_axis)
+    yaxis_title = f"{measure} [{measure_unit}]" if measure_unit else measure
+    xaxis_title = f"{resolved_x_axis} [{xaxis_unit}]" if xaxis_unit else resolved_x_axis
 
     figure.update_layout(
         template="plotly_white",
@@ -225,7 +318,7 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure
         plot_bgcolor="white",
         margin={"l": 40, "r": 20, "t": 50, "b": 40},
         title=f"{measure} response",
-        xaxis_title=x_axis or "index",
+        xaxis_title=xaxis_title,
         yaxis_title=yaxis_title,
         legend_title_text="",
     )
