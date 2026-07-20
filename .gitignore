@@ -21,6 +21,8 @@
 !README.rst
 !notebook.ipynb
 !CMakeLists.txt
+!Dockerfile
+!.dockerignore
 !.coveragerc
 !pytest.ini
 !makefile
