@@ -55,6 +55,7 @@ classifiers = [
 
 dependencies = [
     "dash >=4.1.0",
+    "gunicorn >=23.0.0",
     "TypedUnit ==0.0.11",
     "MPSPlots ==1.8.9",
     "PyOptik ==2.0.7",
