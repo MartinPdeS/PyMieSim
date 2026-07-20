@@ -207,7 +207,7 @@ At the moment, experiment-side angular weights are supported only through
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.515 seconds)
+   **Total running time of the script:** (0 minutes 0.451 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_experiment_photodiode_angular_weights.py:
