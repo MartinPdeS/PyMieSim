@@ -141,6 +141,7 @@ test-command = "python -m pytest {project}/tests --config-file={project}/pytest.
 archs = ["arm64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
 environment = "CC=/usr/bin/clang CXX=/usr/bin/clang++ FC=/opt/homebrew/bin/gfortran-15"
+before-build = "brew install libomp"
 repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"  # --exclude=libomp.dylib
 test-command = 'python -m pytest {project}/tests --config-file={project}/pytest.ini'  # DYLD_PRINT_LIBRARIES=NO
 
