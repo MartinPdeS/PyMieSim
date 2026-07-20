@@ -91,7 +91,7 @@ class Setup(SETUP):
         pandas.DataFrame or numpy.ndarray
         """
 
-        measures = list(set(np.atleast_1d(measures)))
+        measures = self._normalize_measures(measures)
 
         if as_numpy:
             return self._compute_measure_arrays(measures)
@@ -108,6 +108,30 @@ class Setup(SETUP):
     # ------------------------------------------------------------------
     # Measure computation
     # ------------------------------------------------------------------
+
+    def _normalize_measures(self, measures) -> List[str]:
+        """Validate and normalize requested measures while preserving order."""
+        normalized = list(np.atleast_1d(measures))
+
+        if not normalized:
+            raise ValueError("At least one measure must be requested.")
+
+        available = set(self.scatterer_set.available_measure_list)
+        if self.detector_set is None:
+            available.discard("coupling")
+
+        invalid = [
+            measure
+            for measure in normalized
+            if not isinstance(measure, str) or measure not in available
+        ]
+        if invalid:
+            available_names = ", ".join(sorted(available))
+            raise ValueError(
+                f"Unknown measure(s): {invalid}. Available measures: {available_names}."
+            )
+
+        return normalized
 
     def _compute_measure_arrays(self, measures: List[str]) -> np.ndarray:
         """
@@ -128,9 +152,10 @@ class Setup(SETUP):
         for measure in measures:
             values = getattr(self, f"get_{measure}")()
 
-            arrays.append(np.asarray(values))
+            arrays.append(np.squeeze(np.asarray(values)))
 
-        return np.squeeze(np.asarray(arrays))
+        stacked = np.stack(arrays)
+        return stacked[0] if len(arrays) == 1 else stacked
 
     # ------------------------------------------------------------------
     # DataFrame generation

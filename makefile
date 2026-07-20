@@ -3,7 +3,11 @@ BUILD_DIR ?= build
 ROOT_DIR := $(CURDIR)
 PYBIND11_DIR := $(shell $(PYTHON) -m pybind11 --cmakedir)
 
-.PHONY: configure build install quick rebuild editable clean
+.PHONY: configure build install quick rebuild editable clean quality
+
+quality:
+	python -m ruff check PyMieSim tests
+	python -m mypy PyMieSim/gui/parsing.py PyMieSim/gui/schemas.py
 
 configure:
 	cmake -S . -B $(BUILD_DIR) \

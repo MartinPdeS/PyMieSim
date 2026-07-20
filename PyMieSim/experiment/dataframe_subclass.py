@@ -252,11 +252,21 @@ class PyMieSimDataFrame(pd.DataFrame):
         for column, unit in units.items():
 
             values = df[column].to_numpy()
+            finite_values = []
 
-            try:
-                max_val = np.nanmax(np.abs(values))
-            except:
+            for value in values:
+                try:
+                    magnitude = abs(value)
+                except (TypeError, ValueError):
+                    continue
+
+                if np.isfinite(magnitude):
+                    finite_values.append(magnitude)
+
+            if not finite_values:
                 continue
+
+            max_val = np.max(finite_values)
 
             if max_val == 0:
                 continue
