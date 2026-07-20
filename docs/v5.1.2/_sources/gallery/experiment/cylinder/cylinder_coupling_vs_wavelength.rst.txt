@@ -40,37 +40,37 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | BK7                   | aluminium             |
+    | ZBLAN                 | gold                  |
     +-----------------------+-----------------------+
-    | flint                 | nickel                |
+    | crown                 | zinc                  |
     +-----------------------+-----------------------+
-    | argon                 | zinc                  |
+    | germanium             | polyetylene           |
     +-----------------------+-----------------------+
-    | lithium_niobate       | silicon               |
+    | water                 | calcium               |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | iron                  |
+    | argon                 | silicon               |
     +-----------------------+-----------------------+
-    | air                   | silver                |
+    | lithium_niobate       | aluminium             |
     +-----------------------+-----------------------+
-    | BAK1                  | polyetylene           |
+    | SF5                   | copper                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | calcium               |
+    | polystyren            | nickel                |
     +-----------------------+-----------------------+
-    | germanium             | sodium                |
+    | BK7                   | iron                  |
     +-----------------------+-----------------------+
-    | polystyren            | copper                |
+    | fused_silica          | silver                |
     +-----------------------+-----------------------+
-    | acetone               | gold                  |
-    +-----------------------+-----------------------+
-    | SF5                   |                       |
-    +-----------------------+-----------------------+
-    | crown                 |                       |
-    +-----------------------+-----------------------+
-    | water                 |                       |
+    | BAK1                  | sodium                |
     +-----------------------+-----------------------+
     | BAF10                 |                       |
     +-----------------------+-----------------------+
-    | fused_silica          |                       |
+    | air                   |                       |
+    +-----------------------+-----------------------+
+    | acetone               |                       |
+    +-----------------------+-----------------------+
+    | flint                 |                       |
+    +-----------------------+-----------------------+
+    | soda_lime_glass       |                       |
     +-----------------------+-----------------------+
 
     <Figure size 640x480 with 1 Axes>
@@ -130,7 +130,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.955 seconds)
+   **Total running time of the script:** (0 minutes 0.907 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:
