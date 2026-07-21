@@ -25,7 +25,10 @@ def parse_expression(raw_value: Any) -> Any:
 
     if text.count(":") == 2:
         start_text, stop_text, count_text = [part.strip() for part in text.split(":")]
-        return np.linspace(float(start_text), float(stop_text), int(float(count_text)))
+        count = int(float(count_text))
+        if count <= 0:
+            raise ValueError("Range count must be positive.")
+        return np.linspace(float(start_text), float(stop_text), count)
 
     if "," in text:
         tokens = [_parse_scalar_or_text(token.strip()) for token in text.split(",") if token.strip()]

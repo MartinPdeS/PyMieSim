@@ -28,16 +28,16 @@ SOURCE_FIELDS = {
         FieldSpec("numerical_aperture", "Numerical Aperture", "numeric", "0.2"),
     ),
     "PlaneWaveSet": (
-        FieldSpec("wavelength", "Wavelength", "quantity", "600:1000:150", ureg.nanometer),
-        FieldSpec("polarization", "Polarization Angles", "polarization", "0,90", ureg.degree),
+        FieldSpec("wavelength", "Wavelength", "quantity", "400:1000:350", ureg.nanometer),
+        FieldSpec("polarization", "Polarization Angles", "polarization", "0", ureg.degree),
         FieldSpec("amplitude", "Amplitude", "quantity", "1", ureg.volt / ureg.meter),
     ),
 }
 
 SCATTERER_FIELDS = {
     "SphereSet": (
-        FieldSpec("diameter", "Diameter", "quantity", "400:1400:3", ureg.nanometer),
-        FieldSpec("material", "Material", "material", "1.4", help_text="Use refractive indices, complex values, or names such as fused_silica or silver."),
+        FieldSpec("diameter", "Diameter", "quantity", "100,200", ureg.nanometer),
+        FieldSpec("material", "Material", "material", "4", help_text="Use refractive indices, complex values, or names such as fused_silica or silver."),
         FieldSpec("medium", "Medium", "medium", "1.0", help_text="Use refractive indices or named media such as water."),
     ),
     "InfiniteCylinderSet": (

@@ -38,6 +38,17 @@ from PyMieSim.gui.schemas import (
 
 LOGGER = logging.getLogger(__name__)
 
+_POSITIVE_FIELDS = frozenset({
+    "wavelength",
+    "optical_power",
+    "numerical_aperture",
+    "amplitude",
+    "diameter",
+    "core_diameter",
+    "shell_thickness",
+    "sampling",
+})
+
 
 SOURCE_TYPES = {
     "GaussianSet": GaussianSet,
@@ -517,9 +528,23 @@ def _parse_section_fields(field_specs: tuple[Any, ...], raw_values: Dict[str, An
             LOGGER.debug("Skipping optional empty field %s", field.name)
             continue
 
-        parsed_values[field.name] = _parse_field_value(field.kind, raw_value, field.unit)
+        parsed_value = _parse_field_value(field.kind, raw_value, field.unit)
+        if field.name in _POSITIVE_FIELDS:
+            _validate_positive_field(field.name, parsed_value)
+        parsed_values[field.name] = parsed_value
 
     return parsed_values
+
+
+def _validate_positive_field(name: str, value: Any) -> None:
+    """Reject empty or non-positive values before they reach the C++ layer."""
+    if value is None:
+        raise ValueError(f"{name} must be positive.")
+
+    magnitudes = getattr(value, "magnitude", value)
+    values = np.asarray(magnitudes, dtype=float)
+    if values.size == 0 or not np.all(np.isfinite(values)) or np.any(values <= 0):
+        raise ValueError(f"{name} must be positive.")
 
 
 def _infer_variable_fields_for_section(field_specs: tuple[Any, ...], raw_values: Dict[str, Any]) -> list[str]:

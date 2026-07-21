@@ -3051,10 +3051,7 @@ html .plot-options-card .plot-option-control.dashboard-dropdown .Select-control 
 }
 
 .graph-axis-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
+    display: block;
     margin: 0 14px;
     padding: 12px 14px;
     border: 1px solid rgba(96, 110, 123, .20);
@@ -3062,11 +3059,8 @@ html .plot-options-card .plot-option-control.dashboard-dropdown .Select-control 
     background: #f7f8f9;
 }
 
-.graph-axis-copy {
-    min-width: 0;
-}
-
 .graph-axis-title {
+    margin-bottom: 10px;
     color: #52616d;
     font-size: .78rem;
     font-weight: 750;
@@ -3074,24 +3068,34 @@ html .plot-options-card .plot-option-control.dashboard-dropdown .Select-control 
     text-transform: uppercase;
 }
 
-.graph-axis-help {
-    margin-top: 3px;
-    color: #7b8790;
-    font-size: .76rem;
+.graph-axis-fields {
+    display: flex;
+    gap: 14px;
+    flex: 1;
 }
 
-.graph-axis-control {
+.graph-axis-field {
     flex: 0 0 230px;
+}
+
+.graph-axis-field label {
+    display: block;
+    margin-bottom: 4px;
+    color: #63727c;
+    font-size: .72rem;
+    font-weight: 650;
 }
 
 @media (max-width: 620px) {
     .graph-axis-card {
-        align-items: stretch;
+        display: block;
+    }
+
+    .graph-axis-fields {
         flex-direction: column;
     }
 
-    .graph-axis-control {
+    .graph-axis-field {
         flex-basis: auto;
-        width: 100%;
     }
 }

@@ -25,6 +25,7 @@ from PyMieSim.gui.services import (
     build_single_figure,
     run_experiment,
     _parse_field_value,
+    _validate_positive_field,
 )
 
 
@@ -250,7 +251,9 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                 valid = field.optional and empty
                 if not empty:
                     try:
-                        _parse_field_value(field.kind, raw_value, field.unit)
+                        parsed_value = _parse_field_value(field.kind, raw_value, field.unit)
+                        if field.name in {"wavelength", "optical_power", "numerical_aperture", "amplitude", "diameter", "core_diameter", "shell_thickness", "sampling"}:
+                            _validate_positive_field(field.name, parsed_value)
                         valid = True
                     except (TypeError, ValueError, KeyError):
                         valid = False
@@ -350,25 +353,21 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
 
     @app.callback(
         Output("experiment-result", "data"),
-        Output("status-banner", "children"),
-        Output("status-banner", "className"),
         Output("experiment-run-count", "data"),
-        Input("run-experiment", "n_clicks"),
-        State("source-type", "value"),
-        State({"kind": "field", "section": "source", "name": ALL}, "value"),
+        Input("source-type", "value"),
+        Input({"kind": "field", "section": "source", "name": ALL}, "value"),
         State({"kind": "field", "section": "source", "name": ALL}, "id"),
-        State("scatterer-type", "value"),
-        State({"kind": "field", "section": "scatterer", "name": ALL}, "value"),
+        Input("scatterer-type", "value"),
+        Input({"kind": "field", "section": "scatterer", "name": ALL}, "value"),
         State({"kind": "field", "section": "scatterer", "name": ALL}, "id"),
-        State("detector-type", "value"),
-        State({"kind": "field", "section": "detector", "name": ALL}, "value"),
+        Input("detector-type", "value"),
+        Input({"kind": "field", "section": "detector", "name": ALL}, "value"),
         State({"kind": "field", "section": "detector", "name": ALL}, "id"),
-        State("measure-select", "value"),
+        Input("measure-select", "value"),
         State("experiment-run-count", "data"),
         prevent_initial_call=True,
     )
     def _run_experiment(
-        n_clicks: int,
         source_type: str,
         source_values: list[str],
         source_ids: list[dict[str, str]],
@@ -381,11 +380,10 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         measure: str,
         experiment_runs: int,
     ):
-        del n_clicks
         next_experiment_runs = int(experiment_runs or 0)
 
         LOGGER.debug(
-            "Run button pressed with source=%s scatterer=%s detector=%s measure=%s",
+            "Auto-running parameter sweep with source=%s scatterer=%s detector=%s measure=%s",
             source_type,
             scatterer_type,
             detector_type,
@@ -403,8 +401,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                 measure=measure,
             )
         except Exception as error:
-            LOGGER.exception("Experiment run failed")
-            return None, str(error), "status-banner error", next_experiment_runs
+            LOGGER.debug("Skipping incomplete or invalid auto-run input: %s", error)
+            return no_update, next_experiment_runs
 
         LOGGER.debug(
             "Experiment run finished rows=%d x_axis_options=%s",
@@ -412,7 +410,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             result["parameter_columns"],
         )
 
-        return result, "Parameter sweep completed. Figure updated and CSV is ready.", "status-banner success", next_experiment_runs + 1
+        return result, next_experiment_runs + 1
 
     @app.callback(
         Output("csv-download", "data"),

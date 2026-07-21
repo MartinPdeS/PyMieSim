@@ -82,33 +82,14 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                                     html.Div(
                                                         className="run-controls-grid",
                                                         children=[
-                                                            html.Div(
-                                                                className="field-block",
-                                                                children=[
-                                                                    html.Label("Measure", htmlFor="measure-select"),
-                                                                    dcc.Dropdown(
-                                                                        id="measure-select",
-                                                                        className="dashboard-dropdown",
-                                                                        options=[{"label": measure, "value": measure} for measure in default_measure_options],
-                                                                        value=default_measure_options[0] if default_measure_options else None,
-                                                                        clearable=False,
-                                                                        optionHeight=38,
-                                                                        maxHeight=200,
-                                                                        persistence=True,
-                                                                        persistence_type="session",
-                                                                    ),
-                                                                ],
-                                                            ),
                                                         ],
                                                     ),
                                                     html.Div(
                                                         className="run-actions plot-control-actions",
                                                         children=[
-                                                            html.Button("Run", id="run-experiment", n_clicks=0, className="run-button run-button-primary"),
                                                             html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button"),
                                                         ],
                                                     ),
-                                                    html.Div(id="status-banner", className="status-banner idle", children="Ready."),
                                                 ],
                                             ),
                                         ],
@@ -120,7 +101,7 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                                 className="panel graph-panel",
                                                 children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)],
                                             ),
-                                            _x_axis_card(),
+                                            _x_axis_card(default_measure_options),
                                             _plot_options_card("experiment", sweep_settings),
                                         ],
                                     ),
@@ -210,21 +191,49 @@ def _plot_options_card(prefix: str, settings: dict):
     )
 
 
-def _x_axis_card():
-    """Build the post-plot X-axis selector, separate from run controls."""
+def _x_axis_card(default_measure_options: list[str]):
+    """Build the post-plot X/Y axis selectors, separate from run controls."""
     return html.Section(
         className="graph-axis-card",
         children=[
-            html.Div(className="graph-axis-copy", children=[html.Div("Graph axis", className="graph-axis-title"), html.Div("Choose which swept parameter is shown horizontally.", className="graph-axis-help")]),
-            dcc.Dropdown(
-                id="x-axis-select",
-                className="dashboard-dropdown graph-axis-control",
-                options=[],
-                placeholder="Detected from fields with multiple values",
-                optionHeight=38,
-                maxHeight=200,
-                persistence=True,
-                persistence_type="session",
+            html.Div("Graph axes", className="graph-axis-title"),
+            html.Div(
+                className="graph-axis-fields",
+                children=[
+                    html.Div(
+                        className="graph-axis-field",
+                        children=[
+                            html.Label("X axis", htmlFor="x-axis-select"),
+                            dcc.Dropdown(
+                                id="x-axis-select",
+                                className="dashboard-dropdown graph-axis-control",
+                                options=[],
+                                placeholder="Detected from fields with multiple values",
+                                optionHeight=38,
+                                maxHeight=200,
+                                persistence=True,
+                                persistence_type="session",
+                            ),
+                        ],
+                    ),
+                    html.Div(
+                        className="graph-axis-field",
+                        children=[
+                            html.Label("Y axis", htmlFor="measure-select"),
+                            dcc.Dropdown(
+                                id="measure-select",
+                                className="dashboard-dropdown graph-axis-control",
+                                options=[{"label": measure, "value": measure} for measure in default_measure_options],
+                                value=default_measure_options[0] if default_measure_options else None,
+                                clearable=False,
+                                optionHeight=38,
+                                maxHeight=200,
+                                persistence=True,
+                                persistence_type="session",
+                            ),
+                        ],
+                    ),
+                ],
             ),
         ],
     )
@@ -500,6 +509,7 @@ def render_fields(section: str, section_type: str):
 
 def render_field(section: str, field_spec: FieldSpec):
     """Render one schema field as a labeled text input."""
+    persistence = "parameter-sweep-defaults-v2" if section in {"source", "scatterer", "detector"} else True
     return html.Div(
         className="field-block",
         children=[
@@ -511,7 +521,7 @@ def render_field(section: str, field_spec: FieldSpec):
                 debounce=False,
                 placeholder=field_spec.placeholder or field_spec.default,
                 className="field-input",
-                persistence=True,
+                persistence=persistence,
                 persistence_type="session",
             ),
         ],
