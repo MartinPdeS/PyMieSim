@@ -1,21 +1,30 @@
 """Home page composition."""
 
+from importlib.metadata import PackageNotFoundError, version
+
 from dash import html
 
 from PyMieSim.gui.components import Card
 
-def build_home_page():
+def build_home_page(metrics: dict[str, int] | None = None):
     """Build the landing page and its workflow cards."""
+    metrics = metrics or {}
     return html.Div(
         className="page-content-stack",
         children=[
+            html.Div(
+                [
+                    html.Span("Version:", className="version-widget-label"),
+                    html.Span(_package_version(), className="version-widget-value"),
+                ],
+                className="version-widget",
+            ),
             html.Section(
-                className="page-hero",
+                className="page-hero home-page-hero",
                 children=[
-                    html.P("PyMieSim", className="eyebrow"),
-                    html.H1("Optical scattering, clearly organized."),
+                    html.H1("PyMieSim"),
                     html.P(
-                        "Explore parameter sweeps in the Experiment workspace or inspect a single particle through its physical representations.",
+                        "An open-source library for fast and flexible far-field Mie scattering simulations.",
                         className="hero-text",
                     ),
                 ],
@@ -47,9 +56,16 @@ def build_home_page():
                     ),
                 ],
             ),
-            _metrics_card(),
+            _metrics_card(metrics),
         ],
     )
+
+
+def _package_version() -> str:
+    try:
+        return version("PyMieSim")
+    except PackageNotFoundError:
+        return "development"
 
 
 def _citation_card():
@@ -68,10 +84,11 @@ def _citation_card():
                     html.Div(
                         className="home-button-row",
                         children=[
-                            html.A("Support Developer", href="https://github.com/MartinPdeS/PyMieSim", target="_blank", rel="noopener noreferrer", className="home-button home-button-primary"),
-                            html.A("Citing this work", href="https://opg.optica.org/optcon/fulltext.cfm?uri=optcon-2-3-520", target="_blank", rel="noopener noreferrer", className="home-button home-button-outline"),
+                            html.A("Support Developer", href="https://github.com/sponsors/MartinPdeS", target="_blank", rel="noopener noreferrer", className="home-button home-button-primary"),
+                            html.A("Citing this work", href="/citation", className="home-button home-button-outline"),
                             html.A("PyMieSim documentation", href="https://martinpdes.github.io/PyMieSim/", target="_blank", rel="noopener noreferrer", className="home-button home-button-info"),
                             html.A("GitHub repository", href="https://github.com/MartinPdeS/PyMieSim", target="_blank", rel="noopener noreferrer", className="home-button home-button-muted"),
+                            html.A("Install locally (Releases)", href="/documentation/install-local", className="home-button home-button-muted"),
                         ],
                     ),
                 ],
@@ -100,17 +117,35 @@ def _capability_card(title: str, description: str, steps: list[str], button_text
     )
 
 
-def _metrics_card():
+def _metrics_card(metrics: dict[str, int]):
     return html.Section(
         className=Card.classes(color="blue", extra="home-info-card home-metrics-card"),
         children=[
-            html.Div("PyMieSim at a glance", className="home-section-header"),
+            html.Div(className="card-header panel-header", children=[html.Div("PyMieSim usage metrics.", className="card-title")]),
             html.Div(
-                className="home-metrics-grid",
+                className="card-body",
                 children=[
-                    html.Div([html.Strong("2", className="home-metric-value"), html.Span("analysis workspaces")], className="home-metric-tile"),
-                    html.Div([html.Strong("3", className="home-metric-value"), html.Span("optical system components")], className="home-metric-tile"),
-                    html.Div([html.Strong("CSV", className="home-metric-value"), html.Span("structured experiment export")], className="home-metric-tile"),
+                    html.Div(
+                        [
+                            html.Div(str(metrics.get("home_page_visits", 0)), className="home-metric-value"),
+                            html.Div("Home page visits", className="home-metric-label"),
+                        ],
+                        className="home-metric-tile",
+                    ),
+                    html.Div(
+                        [
+                            html.Div(str(metrics.get("experiment_runs", 0)), className="home-metric-value"),
+                            html.Div("Experiment runs", className="home-metric-label"),
+                        ],
+                        className="home-metric-tile",
+                    ),
+                    html.Div(
+                        [
+                            html.Div(str(metrics.get("single_runs", 0)), className="home-metric-value"),
+                            html.Div("Single runs", className="home-metric-label"),
+                        ],
+                        className="home-metric-tile",
+                    ),
                 ],
             ),
         ],

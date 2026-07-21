@@ -148,6 +148,343 @@ body {
     margin-bottom: 0;
 }
 
+/* Final RosettaX typography parity. */
+html body { font-size: 1rem !important; }
+
+.home-page-hero h1 {
+    font-size: 2.55rem;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 8px;
+}
+
+.home-page-hero .hero-text { font-size: 1.08rem; line-height: normal; }
+
+.documentation-page-hero h1 {
+    font-size: 2.45rem;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 10px;
+}
+
+.documentation-page-hero .hero-text { font-size: 1.05rem; line-height: normal; }
+html .home-info-copy { font-size: .95rem !important; }
+html .home-capability-card .home-section-header { font-size: 1.08rem !important; line-height: 1.2; }
+html .home-capability-body > p { min-height: 66px; font-size: 1rem !important; line-height: normal; }
+html .home-step-list { font-size: .9rem !important; }
+html .home-step-number { font-size: .78rem !important; }
+html .home-button, html .home-workflow-button { font-size: 1rem !important; }
+html .home-metric-value { font-size: 2rem !important; }
+html .home-metric-tile { font-size: .92rem !important; }
+
+.version-widget {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border: 1px solid rgba(128, 128, 128, .22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .55);
+    backdrop-filter: blur(8px);
+}
+
+.version-widget-label { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.version-widget-value { font-size: .92rem; font-weight: 700; }
+
+html .home-page-hero { padding: 26px !important; border-radius: 15px; border-left: 5px solid rgba(13, 110, 253, .75); }
+html .home-page-hero h1 { margin: 0 0 8px; font-family: inherit !important; font-size: 2.55rem !important; font-weight: 800; line-height: 1.05; }
+html .home-page-hero .hero-text { max-width: 980px; margin: 0; font-size: 1.08rem !important; line-height: normal; opacity: .86; }
+
+html .home-metrics-card > .card-body {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 16px !important;
+}
+
+html .home-metrics-card .home-metric-tile {
+    height: 100%;
+    padding: 18px !important;
+    border: 1px solid rgba(13, 110, 253, .16);
+    border-radius: 12px;
+    background: rgba(13, 110, 253, .04);
+}
+
+html .home-metrics-card .home-metric-value { font-size: 2rem !important; font-weight: 800; line-height: 1; }
+html .home-metrics-card .home-metric-label { margin-top: 6px; font-size: .92rem !important; opacity: .76; }
+
+/* Exact RosettaX workflow-header geometry and typography. */
+html body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif !important; }
+
+html .workflow-header-card {
+    margin-bottom: 16px;
+    overflow: visible !important;
+}
+
+html .workflow-header-card.ui-card--green { background: var(--bs-card-bg, var(--bs-body-bg, #fff)) !important; border: 1px solid rgba(128, 128, 128, .25) !important; border-left: 5px solid rgba(25, 135, 84, .75) !important; }
+html .workflow-header-card.ui-card--blue { background: var(--bs-card-bg, var(--bs-body-bg, #fff)) !important; border: 1px solid rgba(128, 128, 128, .25) !important; border-left: 5px solid rgba(13, 110, 253, .75) !important; }
+
+html .workflow-header-body {
+    padding: 18px !important;
+    overflow: visible !important;
+}
+
+html .header-card-intro h2 {
+    margin: 0 0 8px;
+    font-family: inherit !important;
+    font-size: 2rem !important;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+html .header-card-intro p {
+    margin: 0 0 12px;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    line-height: 1.5;
+    opacity: .85;
+}
+
+html .header-card-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+html .rosettax-workflow-step-card {
+    height: 100%;
+    min-width: 0;
+    padding: 14px !important;
+    border: 1px solid rgba(13, 110, 253, .16) !important;
+    border-radius: 12px !important;
+    border-left-width: 1px !important;
+    background: var(--bs-card-bg, var(--bs-body-bg, #fff)) !important;
+    overflow: visible !important;
+}
+
+html .rosettax-workflow-step-card--green { border-color: rgba(25, 135, 84, .16) !important; }
+html .rosettax-workflow-step-card--blue { border-color: rgba(13, 110, 253, .16) !important; }
+html .rosettax-workflow-step-card--yellow { border-color: rgba(255, 215, 0, .16) !important; }
+html .rosettax-workflow-step-card--orange { border-color: rgba(255, 193, 7, .16) !important; }
+html .rosettax-workflow-step-card--purple { border-color: rgba(111, 66, 193, .16) !important; }
+
+html .rosettax-workflow-step-card .header-step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    font-family: inherit !important;
+    font-size: .9rem !important;
+    font-weight: 700;
+}
+
+html .rosettax-workflow-step-card--green .header-step-number { background: rgba(25, 135, 84, .12); border: 1px solid rgba(25, 135, 84, .35); }
+html .rosettax-workflow-step-card--blue .header-step-number { background: rgba(13, 110, 253, .12); border: 1px solid rgba(13, 110, 253, .35); }
+html .rosettax-workflow-step-card--yellow .header-step-number { background: rgba(255, 215, 0, .12); border: 1px solid rgba(255, 215, 0, .35); }
+html .rosettax-workflow-step-card--orange .header-step-number { background: rgba(255, 193, 7, .12); border: 1px solid rgba(255, 193, 7, .35); }
+html .rosettax-workflow-step-card--purple .header-step-number { background: rgba(111, 66, 193, .12); border: 1px solid rgba(111, 66, 193, .35); }
+
+html .rosettax-workflow-step-card h6 {
+    margin: 0 0 6px;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+html .rosettax-workflow-step-card p {
+    margin: 0;
+    font-family: inherit !important;
+    font-size: .86rem !important;
+    line-height: 1.45;
+    opacity: .78;
+}
+
+@media (max-width: 700px) {
+    html .home-metrics-card > .card-body { grid-template-columns: 1fr; }
+}
+
+.install-local-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.install-steps {
+    display: grid;
+    row-gap: 7px;
+    margin: 0;
+    padding-left: 20px;
+}
+
+.documentation-link-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.documentation-link-chip {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
+    padding: 8px 11px;
+    border: 1px solid rgba(13, 110, 253, .14);
+    border-radius: 10px;
+    background: rgba(13, 110, 253, .04);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.card-title { font-weight: 750; font-size: 1.02rem; }
+.card-subtitle { margin-top: 3px; opacity: .76; font-size: .86rem; font-weight: 400; }
+
+.install-download-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.install-download-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 6px 12px;
+    border: 1px solid #0d6efd;
+    border-radius: 4px;
+    background: #0d6efd;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.install-release-note { opacity: .85; }
+.install-release-note a { font-weight: 600; text-decoration: none; }
+
+@media (max-width: 800px) {
+    .install-local-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* RosettaX card parity: the final cascade block keeps the shared card tokens
+   identical to RosettaX (15px radius, 5px accent, 18px body, soft shadow). */
+.ui-card {
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 .35rem .9rem rgba(0, 0, 0, .08);
+    overflow: visible;
+}
+
+.ui-card--blue { border-left: 5px solid rgba(13, 110, 253, .75); }
+.ui-card--green { border-left: 5px solid rgba(25, 135, 84, .75); }
+.ui-card--yellow { border-left: 5px solid rgba(255, 215, 0, .75); }
+.ui-card--cyan { border-left: 5px solid rgba(13, 202, 240, .75); }
+.ui-card--purple { border-left: 5px solid rgba(111, 66, 193, .75); }
+
+.ui-card > .card-header,
+.ui-card > .panel-header,
+.ui-card > .home-section-header {
+    margin: 0;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(13, 110, 253, .20);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: rgba(13, 110, 253, .10);
+    font-size: 1.02rem;
+    font-weight: 750;
+}
+
+.ui-card--green > .card-header,
+.ui-card--green > .panel-header,
+.ui-card--green > .home-section-header { background: rgba(25, 135, 84, .10); border-bottom-color: rgba(25, 135, 84, .20); }
+.ui-card--yellow > .card-header,
+.ui-card--yellow > .panel-header,
+.ui-card--yellow > .home-section-header { background: rgba(255, 215, 0, .10); border-bottom-color: rgba(255, 215, 0, .20); }
+.ui-card--cyan > .card-header,
+.ui-card--cyan > .panel-header,
+.ui-card--cyan > .home-section-header { background: rgba(13, 202, 240, .10); border-bottom-color: rgba(13, 202, 240, .20); }
+.ui-card--purple > .card-header,
+.ui-card--purple > .panel-header,
+.ui-card--purple > .home-section-header { background: rgba(111, 66, 193, .10); border-bottom-color: rgba(111, 66, 193, .20); }
+
+.ui-card > .card-header h2,
+.ui-card > .panel-header h2,
+.ui-card > .home-section-header h2 {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 750;
+}
+
+.ui-card > .card-body,
+.ui-card > .home-info-body,
+.ui-card > .home-capability-body {
+    padding: 18px;
+    overflow: visible;
+}
+
+.ui-card > .card-body > p,
+.ui-card > .card-body > .home-info-copy {
+    margin: 0 0 14px;
+}
+
+.theme-mode-control {
+    display: grid;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.theme-mode-control label {
+    color: #52697a;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.theme-mode-select .Select-control {
+    min-height: 34px;
+    height: 34px;
+    border-radius: 4px;
+}
+
+.theme-mode-select .Select-value,
+.theme-mode-select .Select-placeholder {
+    line-height: 32px;
+    font-size: .86rem;
+}
+
+/* Keep PyMieSim surfaces on the active Bootswatch palette, matching
+   RosettaX's FLATLY/SLATE theme behavior. */
+html body,
+html .dashboard-main,
+html .dashboard-sidebar {
+    background-color: var(--bs-body-bg, #fff) !important;
+    color: var(--bs-body-color, #212529) !important;
+}
+
+html .page-hero,
+html .ui-card,
+html .panel,
+html .home-info-card,
+html .home-capability-card,
+html .home-action-card,
+html .summary-card {
+    background-color: var(--bs-card-bg, var(--bs-body-bg, #fff)) !important;
+    color: var(--bs-body-color, #212529) !important;
+    border-color: var(--bs-border-color-translucent, rgba(128, 128, 128, .25));
+}
+
+html .home-info-copy,
+html .home-capability-body > p,
+html .home-step-list,
+html .theme-mode-control label {
+    color: var(--bs-body-color, #52697a) !important;
+}
+
 /* Experiment result column: plot first, then actions, then a horizontal
    syntax guide matching the RosettaX workflow-page composition. */
 .result-column > .run-panel,
@@ -1827,6 +2164,7 @@ body {
 .home-button-info { border-color: #58a9f5; color: #2877b9; background: #fff; }
 .home-button-muted { border-color: #b9c5cc; color: #6c7c85; background: #fff; }
 .home-button:hover, .home-workflow-button:hover { filter: brightness(.97); text-decoration: none; }
+.citation-bibtex { margin: 14px 0 0; padding: 14px; background: rgba(0, 0, 0, .06); border-radius: 6px; white-space: pre-wrap; overflow-x: auto; }
 
 .home-capability-grid {
     display: grid;

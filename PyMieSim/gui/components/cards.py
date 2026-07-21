@@ -13,7 +13,7 @@ class Card:
     @classmethod
     def classes(cls, *, color: str = "blue", extra: str = "") -> str:
         """Return the shared card class names for any page component."""
-        return " ".join(filter(None, ["ui-card", f"ui-card--{color}", extra]))
+        return " ".join(filter(None, ["card", "ui-card", f"ui-card--{color}", extra]))
 
     def __init__(self, children, *, class_name: str = "", color: str = "blue"):
         self.children = children
@@ -38,17 +38,26 @@ class HeaderCard(Card):
             className=self.classes(color=self.color, extra=self.class_name),
             children=[
                 html.Div(
-                    className="header-card-intro",
-                    children=[html.H1(self.title), html.P(self.description)],
-                ),
-                html.Div(
-                    className="header-card-steps",
+                    className="card-body workflow-header-body",
                     children=[
                         html.Div(
-                            className=f"header-step-card header-step-card--{color}",
-                            children=[html.Span(number, className="header-step-number"), html.H3(step_title), html.P(step_description)],
-                        )
-                        for number, step_title, step_description, color in self.steps
+                            className="header-card-intro",
+                            children=[html.H2(self.title), html.P(self.description)],
+                        ),
+                        html.Div(
+                            className="header-card-steps",
+                            children=[
+                                html.Div(
+                                    className=f"rosettax-workflow-step-card rosettax-workflow-step-card--{color}",
+                                    children=[
+                                        html.Div(number, className="header-step-number"),
+                                        html.H6(step_title),
+                                        html.P(step_description),
+                                    ],
+                                )
+                                for number, step_title, step_description, color in self.steps
+                            ],
+                        ),
                     ],
                 ),
             ]

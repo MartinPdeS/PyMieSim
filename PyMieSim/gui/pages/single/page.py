@@ -16,9 +16,9 @@ def build_single_page():
                 "Single Representation Studio",
                 "Inspect angular scattering, polarization, and field patterns for one source–scatterer setup.",
                 [
-                    ("01", "Configure source", "Choose a source and set its optical parameters.", "green"),
+                    ("01", "Configure source", "Choose a source and set its optical parameters.", "yellow"),
                     ("02", "Configure scatterer", "Define the particle geometry and refractive indices.", "blue"),
-                    ("03", "Render representation", "Inspect amplitudes, polarization, phase functions, or far fields.", "purple"),
+                    ("03", "Render representation", "Inspect amplitudes, polarization, phase functions, or far fields.", "orange"),
                 ],
                 color="green",
             ).render(),

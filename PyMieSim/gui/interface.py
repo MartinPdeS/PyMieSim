@@ -8,9 +8,11 @@ import webbrowser
 
 from dash import ALL, Dash, Input, Output, State, dcc, no_update
 
-from PyMieSim.gui.layout import build_workspace_layout, create_layout, render_fields
+from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, build_workspace_layout, create_layout, render_fields
 from PyMieSim.gui.pages.documentation import build_documentation_page
+from PyMieSim.gui.pages.citation import build_citation_page
 from PyMieSim.gui.pages.home import build_home_page
+from PyMieSim.gui.pages.install_local import build_install_local_page
 from PyMieSim.gui.services import (
     available_measures,
     build_figure,
@@ -72,14 +74,27 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     LOGGER.debug("Registering dashboard callbacks")
 
     @app.callback(
+        Output("theme-link", "href"),
+        Output("theme-store", "data"),
+        Input("theme-mode", "value"),
+    )
+    def _sync_theme(theme_mode: str | None):
+        mode = "light" if theme_mode == "light" else "dark"
+        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}
+
+    @app.callback(
         Output("page-content", "children"),
         Output("sidebar-link-home", "className"),
         Output("sidebar-link-experiment", "className"),
         Output("sidebar-link-single", "className"),
         Output("sidebar-link-documentation", "className"),
+        Output("home-visit-count", "data"),
         Input("url", "pathname"),
+        State("home-visit-count", "data"),
+        State("experiment-run-count", "data"),
+        State("single-run-count", "data"),
     )
-    def _route_pages(pathname: str | None):
+    def _route_pages(pathname: str | None, home_visits: int, experiment_runs: int, single_runs: int):
         """Render only the selected route page inside the persistent shell."""
         route = pathname or "/"
         active = {
@@ -88,17 +103,31 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             "single": "sidebar-link",
             "documentation": "sidebar-link",
         }
+        home_visits = int(home_visits or 0)
+        if route == "/":
+            home_visits += 1
+        metrics = {
+            "home_page_visits": home_visits,
+            "experiment_runs": int(experiment_runs or 0),
+            "single_runs": int(single_runs or 0),
+        }
         if route == "/documentation":
             active["documentation"] += " active"
-            return build_documentation_page(), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+            return build_page_with_footer(build_documentation_page()), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+        if route == "/citation":
+            active["home"] += " active"
+            return build_page_with_footer(build_citation_page()), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+        if route == "/documentation/install-local":
+            active["documentation"] += " active"
+            return build_page_with_footer(build_install_local_page()), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
         if route == "/single":
             active["single"] += " active"
-            return build_workspace_layout(default_measure_options, "single-tab"), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+            return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
         if route == "/experiment":
             active["experiment"] += " active"
-            return build_workspace_layout(default_measure_options, "experiment-tab"), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+            return build_page_with_footer(build_workspace_layout(default_measure_options, "experiment-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
         active["home"] += " active"
-        return build_home_page(), *(active[key] for key in ("home", "experiment", "single", "documentation"))
+        return build_page_with_footer(build_home_page(metrics)), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
 
     @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
     def _render_source_fields(source_type: str):
@@ -193,6 +222,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("experiment-result", "data"),
         Output("status-banner", "children"),
         Output("status-banner", "className"),
+        Output("experiment-run-count", "data"),
         Input("run-experiment", "n_clicks"),
         State("source-type", "value"),
         State({"kind": "field", "section": "source", "name": ALL}, "value"),
@@ -204,6 +234,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         State({"kind": "field", "section": "detector", "name": ALL}, "value"),
         State({"kind": "field", "section": "detector", "name": ALL}, "id"),
         State("measure-select", "value"),
+        State("experiment-run-count", "data"),
         prevent_initial_call=True,
     )
     def _run_experiment(
@@ -218,8 +249,10 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         detector_values: list[str],
         detector_ids: list[dict[str, str]],
         measure: str,
+        experiment_runs: int,
     ):
         del n_clicks
+        next_experiment_runs = int(experiment_runs or 0)
 
         LOGGER.debug(
             "Run button pressed with source=%s scatterer=%s detector=%s measure=%s",
@@ -241,7 +274,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             )
         except Exception as error:
             LOGGER.exception("Experiment run failed")
-            return None, str(error), "status-banner error"
+            return None, str(error), "status-banner error", next_experiment_runs
 
         LOGGER.debug(
             "Experiment run finished rows=%d x_axis_options=%s",
@@ -249,7 +282,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             result["parameter_columns"],
         )
 
-        return result, "Experiment completed. Figure updated and CSV is ready.", "status-banner success"
+        return result, "Experiment completed. Figure updated and CSV is ready.", "status-banner success", next_experiment_runs + 1
 
     @app.callback(
         Output("csv-download", "data"),
@@ -288,6 +321,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("single-result", "data"),
         Output("single-status", "children"),
         Output("single-status", "className"),
+        Output("single-run-count", "data"),
         Input("run-single", "n_clicks"),
         State("single-source-type", "value"),
         State({"kind": "field", "section": "single-source", "name": ALL}, "value"),
@@ -297,6 +331,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         State({"kind": "field", "section": "single-scatterer", "name": ALL}, "id"),
         State("single-representation", "value"),
         State("single-sampling", "value"),
+        State("single-run-count", "data"),
         prevent_initial_call=True,
     )
     def _run_single(
@@ -309,8 +344,10 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         scatterer_ids: list[dict[str, str]],
         representation: str,
         sampling: int,
+        single_runs: int,
     ):
         del n_clicks
+        next_single_runs = int(single_runs or 0)
         try:
             figure, summary = build_single_figure(
                 source_type=source_type,
@@ -322,9 +359,9 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             )
         except Exception as error:
             LOGGER.exception("Single representation render failed")
-            return None, str(error), "status-banner error"
+            return None, str(error), "status-banner error", next_single_runs
 
-        return {"figure": figure.to_plotly_json(), "summary": summary}, "Representation rendered.", "status-banner success"
+        return {"figure": figure.to_plotly_json(), "summary": summary}, "Representation rendered.", "status-banner success", next_single_runs + 1
 
     @app.callback(Output("single-graph", "figure"), Input("single-result", "data"))
     def _update_single_outputs(result: dict | None):

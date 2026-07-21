@@ -8,6 +8,10 @@ from PyMieSim.gui.components import HeaderCard
 from PyMieSim.gui.schemas import FieldSpec, SECTION_FIELDS, SINGLE_SCATTERER_FIELDS, SINGLE_SOURCE_FIELDS
 
 
+THEME_LIGHT = "https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/flatly/bootstrap.min.css"
+THEME_DARK = "https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/slate/bootstrap.min.css"
+
+
 def _build_legacy_layout(default_measure_options: list[str]):
     """Build the former all-workspaces layout used to extract page content."""
     return html.Div(
@@ -41,9 +45,9 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                 "Experiment Lab",
                                 "Configure source, scatterer, and detector sets, then run the compiled experiment engine directly from Dash.",
                                 [
-                                    ("01", "Configure source", "Choose the source family and sweep its optical parameters.", "green"),
+                                    ("01", "Configure source", "Choose the source family and sweep its optical parameters.", "yellow"),
                                     ("02", "Configure scatterer", "Set particle geometry, material, and medium values.", "blue"),
-                                    ("03", "Configure detector", "Select collection geometry and compute the experiment response.", "yellow"),
+                                    ("03", "Configure detector", "Select collection geometry and compute the experiment response.", "orange"),
                                 ],
                                 color="green",
                             ).render(),
@@ -170,6 +174,11 @@ def create_layout(default_measure_options: list[str]):
             dcc.Store(id="experiment-result"),
             dcc.Store(id="single-result"),
             dcc.Download(id="csv-download"),
+            dcc.Store(id="home-visit-count", data=0, storage_type="local"),
+            dcc.Store(id="experiment-run-count", data=0, storage_type="local"),
+            dcc.Store(id="single-run-count", data=0, storage_type="local"),
+            dcc.Store(id="theme-store", data={"theme": "light"}, storage_type="local"),
+            html.Link(id="theme-link", rel="stylesheet", href=THEME_LIGHT),
             html.Div(
                 className="dashboard-frame",
                 children=[
@@ -177,11 +186,49 @@ def create_layout(default_measure_options: list[str]):
                     html.Main(
                         id="page-content",
                         className="dashboard-main",
-                        children=[_build_home_page()],
+                        children=[build_page_with_footer(_build_home_page())],
                     ),
                 ],
             ),
         ],
+    )
+
+
+def build_application_footer() -> html.Footer:
+    """Build the global attribution footer shown below every page."""
+    return html.Footer(
+        [
+            "RosettaX is developed and maintained by ",
+            html.A(
+                "Martin Poinsinet de Sivry-Houle",
+                href="mailto:martin.poinsinet.de.sivry@gmail.com",
+                style={
+                    "textDecoration": "none",
+                    "fontWeight": "600",
+                },
+            ),
+            ", at the Amsterdam Vesicle Center.",
+        ],
+        style={
+            "fontSize": "0.88rem",
+            "opacity": 0.72,
+            "textAlign": "center",
+            "paddingTop": "12px",
+            "paddingBottom": "8px",
+        },
+    )
+
+
+def build_page_with_footer(page):
+    """Wrap a routed page with the shared RosettaX-style footer."""
+    return html.Div(
+        children=[page, build_application_footer()],
+        style={
+            "flex": "1 0 auto",
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": "24px",
+        },
     )
 
 
@@ -335,7 +382,27 @@ def _build_sidebar():
                     _sidebar_link("Documentation", "/documentation"),
                 ],
             ),
+            html.Div(
+                className="theme-mode-control",
+                children=[html.Label("Theme", htmlFor="theme-mode"), build_theme_selector()],
+            ),
         ],
+    )
+
+
+def build_theme_selector():
+    """Build the persisted Light/Dark selector used by the application shell."""
+    return dcc.Dropdown(
+        id="theme-mode",
+        options=[
+            {"label": "Dark", "value": "dark"},
+            {"label": "Light", "value": "light"},
+        ],
+        value="light",
+        clearable=False,
+        persistence=True,
+        persistence_type="local",
+        className="theme-mode-select",
     )
 
 

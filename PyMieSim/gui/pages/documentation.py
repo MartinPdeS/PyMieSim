@@ -16,12 +16,12 @@ def build_documentation_page():
     return html.Div(
         className="page-content-stack",
         children=[
-            html.Section(className="page-hero", children=[html.P("PyMieSim reference", className="eyebrow"), html.H1("Documentation"), html.P("A practical map of the objects, workflows, and input conventions used throughout the dashboard.", className="hero-text")]),
+            html.Section(className="page-hero documentation-page-hero", children=[html.P("PyMieSim reference", className="eyebrow"), html.H1("Documentation"), html.P("A practical map of the objects, workflows, and input conventions used throughout the dashboard.", className="hero-text")]),
             html.Div(className="documentation-grid", children=[_topic_card(title, description) for title, description in topics]),
-            html.Section(className=Card.classes(color="blue", extra="panel documentation-note"), children=[html.Div(className="panel-header", children=[html.H2("Where to start")]), html.P("Choose Experiment for parameter studies and detector coupling. Choose Single for representation plots and physical intuition."), html.A("Open the Experiment workspace →", href="/experiment", className="inline-action")]),
+            html.Section(className=Card.classes(color="blue", extra="panel documentation-note"), children=[html.Div(className="card-header panel-header", children=[html.H2("Where to start")]), html.Div(className="card-body", children=[html.P("Choose Experiment for parameter studies and detector coupling. Choose Single for representation plots and physical intuition."), html.A("Open the Experiment workspace →", href="/experiment", className="inline-action")])]),
         ],
     )
 
 
 def _topic_card(title: str, description: str):
-    return html.Section(className=Card.classes(color="blue", extra="panel documentation-card"), children=[html.Div(className="panel-header", children=[html.H2(title)]), html.P(description)])
+    return html.Section(className=Card.classes(color="blue", extra="panel documentation-card"), children=[html.Div(className="card-header panel-header", children=[html.H2(title)]), html.Div(className="card-body", children=[html.P(description)])])
