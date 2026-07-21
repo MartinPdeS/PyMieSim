@@ -11,6 +11,14 @@ from PyMieSim.gui.schemas import FieldSpec, SECTION_FIELDS, SINGLE_SCATTERER_FIE
 THEME_LIGHT = "https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/flatly/bootstrap.min.css"
 THEME_DARK = "https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/slate/bootstrap.min.css"
 
+PLOT_CONFIG = {
+    "displayModeBar": True,
+    "displaylogo": False,
+    "scrollZoom": True,
+    "doubleClick": "reset+autosize",
+    "toImageButtonOptions": {"format": "png", "filename": "pymiesim_plot", "scale": 2},
+}
+
 
 def _build_legacy_layout(default_measure_options: list[str]):
     """Build the former all-workspaces layout used to extract page content."""
@@ -36,18 +44,18 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                 className="main-tabs workspace-hidden",
                                 children=[
                                     dcc.Tab(
-                                        label="Experiment",
+                                        label="Parameter Sweep",
                                         value="experiment-tab",
                                         className="main-tab",
                                         selected_className="main-tab--selected",
                                         children=[
                             HeaderCard(
-                                "Experiment Lab",
-                                "Configure source, scatterer, and detector sets, then run the compiled experiment engine directly from Dash.",
+                                "Parameter Sweep Lab",
+                                "Configure source, scatterer, and detector sets, then run parameter sweeps through the compiled engine directly from Dash.",
                                 [
                                     ("01", "Configure source", "Choose the source family and sweep its optical parameters.", "yellow"),
                                     ("02", "Configure scatterer", "Set particle geometry, material, and medium values.", "blue"),
-                                    ("03", "Configure detector", "Select collection geometry and compute the experiment response.", "orange"),
+                                    ("03", "Configure detector", "Select collection geometry and compute the sweep response.", "orange"),
                                 ],
                                 color="green",
                             ).render(),
@@ -83,6 +91,8 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                                                         clearable=False,
                                                                         optionHeight=38,
                                                                         maxHeight=200,
+                                                                        persistence=True,
+                                                                        persistence_type="session",
                                                                     ),
                                                                 ],
                                                             ),
@@ -90,7 +100,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                                                 className="field-block",
                                                                 children=[
                                                                     html.Label("X Axis", htmlFor="x-axis-select"),
-                                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values", optionHeight=38, maxHeight=200),
+                                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values", optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
                                                                 ],
                                                             ),
                                                         ],
@@ -112,7 +122,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                         children=[
                                             html.Section(
                                                 className="panel graph-panel",
-                                                children=[dcc.Graph(id="result-graph", config={"displaylogo": False})],
+                                                children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)],
                                             ),
                                             html.Section(
                                                 id="guide",
@@ -129,7 +139,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                                             html.Div(className="helper-chip", children=[html.Strong("a:b:c"), html.Span("Generate a sweep from start to stop using exactly c points, for example 400:1400:8.")]),
                                                             html.Div(className="helper-chip", children=[html.Strong("1,2,3"), html.Span("Enter a manual list when you want precise sampled values instead of an evenly spaced sweep.")]),
                                                             html.Div(className="helper-chip", children=[html.Strong("LP01,HG11"), html.Span("Mode and label fields also accept comma-separated names for detector families or custom batches.")]),
-                                                            html.Div(className="helper-chip helper-chip-note", children=[html.Strong("Tip"), html.Span("Keep the X axis on the parameter you actually swept if you want clean single-panel plots.")]),
+                                                            html.Div(className="helper-chip helper-chip-note", children=[html.Strong("Tip"), html.Span("Keep the X axis on the parameter you actually swept if you want clean one-panel plots.")]),
                                                         ],
                                                     ),
                                                 ],
@@ -141,7 +151,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                         ],
                                     ),
                                     dcc.Tab(
-                                        label="Single / Representations",
+                                        label="Particle Explorer / Representations",
                                         value="single-tab",
                                         className="main-tab",
                                         selected_className="main-tab--selected",
@@ -177,15 +187,17 @@ def create_layout(default_measure_options: list[str]):
             dcc.Store(id="home-visit-count", data=0, storage_type="local"),
             dcc.Store(id="experiment-run-count", data=0, storage_type="local"),
             dcc.Store(id="single-run-count", data=0, storage_type="local"),
-            dcc.Store(id="theme-store", data={"theme": "light"}, storage_type="local"),
+            dcc.Store(id="theme-store", data={"theme": "light"}, storage_type="session"),
             dcc.Store(id="plot-settings-store", data={
-                "font_size": 14,
-                "line_width": 2,
-                "marker_size": 6,
-                "template": "match-theme",
-                "show_legend": True,
-                "show_grid": True,
-            }, storage_type="local"),
+                "particle_explorer": {
+                    "font_size": 14, "line_width": 2, "marker_size": 6, "template": "match-theme",
+                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "show_title": True, "log_y": False,
+                },
+                "parameter_sweep": {
+                    "font_size": 14, "line_width": 2, "marker_size": 6, "template": "match-theme",
+                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "show_title": True, "log_y": False,
+                },
+            }, storage_type="session"),
             html.Link(id="theme-link", rel="stylesheet", href=THEME_LIGHT),
             html.Div(
                 className="dashboard-frame",
@@ -257,7 +269,7 @@ def _build_single_tab():
                         className="hero-copy",
                         children=[
                             html.P("PyMieSim", className="eyebrow"),
-                            html.H1("Single Representation Studio"),
+                            html.H1("Particle Explorer"),
                             html.P("Inspect angular scattering, polarization, and field patterns for one source–scatterer setup.", className="hero-text"),
                         ],
                     ),
@@ -271,20 +283,20 @@ def _build_single_tab():
                         children=[
                             _section_shell(
                                 "Source",
-                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False, optionHeight=38, maxHeight=200),
+                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
                                 html.Div(id="single-source-fields"),
                             ),
                             _section_shell(
                                 "Scatterer",
-                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False, optionHeight=38, maxHeight=200),
+                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
                                 html.Div(id="single-scatterer-fields"),
                             ),
                             html.Section(
                                 className="panel run-panel",
                                 children=[
                                     html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
-                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200)]),
-                                    html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, className="field-input")]),
+                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
+                                    html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, className="field-input", persistence=True, persistence_type="session")]),
                                     html.Button("Render representation", id="run-single", n_clicks=0, className="run-button run-button-primary"),
                                     html.Div(id="single-status", className="status-banner idle", children="Ready."),
                                 ],
@@ -293,7 +305,7 @@ def _build_single_tab():
                     ),
                     html.Section(
                         className="result-column",
-                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config={"displaylogo": False})])],
+                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)])],
                     ),
                 ],
             ),
@@ -311,16 +323,16 @@ def _build_home_page():
     return html.Div(
         className="page-content-stack",
         children=[
-            html.Section(className="page-hero", children=[html.P("PyMieSim", className="eyebrow"), html.H1("Optical scattering, clearly organized."), html.P("Explore parameter sweeps in the Experiment workspace or inspect a single particle through its physical representations.", className="hero-text")]),
+            html.Section(className="page-hero", children=[html.P("PyMieSim", className="eyebrow"), html.H1("Optical scattering, clearly organized."), html.P("Run parameter sweeps in the Parameter Sweep workspace or inspect one particle through its physical representations in Particle Explorer.", className="hero-text")]),
             html.Div(
                 className="home-card-grid",
                 children=[
-                    html.A(href="/experiment", className="home-action-card", children=[html.Span("01", className="home-card-number"), html.H2("Experiment"), html.P("Run source, scatterer, and detector sets across parameter sweeps. Export structured results for analysis.")]),
-                    html.A(href="/single", className="home-action-card", children=[html.Span("02", className="home-card-number"), html.H2("Single particle"), html.P("Render S1/S2, Stokes, SPF, and far-field representations for one optical setup.")]),
+                    html.A(href="/experiment", className="home-action-card", children=[html.Span("01", className="home-card-number"), html.H2("Parameter Sweep"), html.P("Run source, scatterer, and detector sets across parameter sweeps. Export structured results for analysis.")]),
+                    html.A(href="/single", className="home-action-card", children=[html.Span("02", className="home-card-number"), html.H2("Particle Explorer"), html.P("Render S1/S2, Stokes, SPF, and far-field representations for one optical setup.")]),
                     html.A(href="/documentation", className="home-action-card", children=[html.Span("03", className="home-card-number"), html.H2("Documentation"), html.P("Learn the model vocabulary, field syntax, supported objects, and recommended workflows.")]),
                 ],
             ),
-            html.Section(className="panel home-overview-card", children=[html.Div(className="panel-header", children=[html.H2("A compact front door to PyMieSim")]), html.P("The dashboard follows the same calm, sectioned layout language as Rosettax: navigation stays in the sidebar, while each workspace gets room for its own controls and visual output."), html.Div(className="meta-strip", children=[html.Div(className="meta-chip", children=[html.Span("Compiled engine"), html.Small("C++ single and experiment backends")]), html.Div(className="meta-chip", children=[html.Span("Plot-ready"), html.Small("Plotly figures and CSV export")])])]),
+            html.Section(className="panel home-overview-card", children=[html.Div(className="panel-header", children=[html.H2("A compact front door to PyMieSim")]), html.P("The dashboard follows the same calm, sectioned layout language as Rosettax: navigation stays in the sidebar, while Parameter Sweep and Particle Explorer each get room for their own controls and visual output."), html.Div(className="meta-strip", children=[html.Div(className="meta-chip", children=[html.Span("Compiled engine"), html.Small("C++ particle and sweep backends")]), html.Div(className="meta-chip", children=[html.Span("Plot-ready"), html.Small("Plotly figures and CSV export")])])]),
         ],
     )
 
@@ -339,13 +351,13 @@ def _build_documentation_page():
             html.Div(
                 className="documentation-grid",
                 children=[
-                    _documentation_card("Experiment workflow", "Use source sets, scatterer sets, and detector sets to build sweeps. The X-axis selector is inferred from fields containing multiple values."),
-                    _documentation_card("Single workflow", "Use one source and one scatterer to inspect angular amplitudes, polarization, phase functions, or far-field intensity."),
+                    _documentation_card("Parameter Sweep workflow", "Use source sets, scatterer sets, and detector sets to build sweeps. The X-axis selector is inferred from fields containing multiple values."),
+                    _documentation_card("Particle Explorer workflow", "Use one source and one scatterer to inspect angular amplitudes, polarization, phase functions, or far-field intensity."),
                     _documentation_card("Field syntax", "Quantity inputs accept scalar values, comma-separated lists, and start:end:count expressions such as 400:1400:8."),
                     _documentation_card("Supported models", "Gaussian and plane-wave sources are available in both workflows, alongside spheres, infinite cylinders, and core-shell scatterers."),
                 ],
             ),
-            html.Section(className="panel documentation-note", children=[html.Div(className="panel-header", children=[html.H2("Where to start")]), html.P("Choose Experiment for parameter studies and detector coupling. Choose Single for representation plots and physical intuition. Both pages preserve the same source/scatterer vocabulary so configurations transfer naturally between them."), html.A("Open the Experiment workspace →", href="/experiment", className="inline-action")]),
+            html.Section(className="panel documentation-note", children=[html.Div(className="panel-header", children=[html.H2("Where to start")]), html.P("Choose Parameter Sweep for parameter studies and detector coupling. Choose Particle Explorer for representation plots and physical intuition. Both pages preserve the same source/scatterer vocabulary so configurations transfer naturally between them."), html.A("Open the Parameter Sweep workspace →", href="/experiment", className="inline-action")]),
         ],
     )
 
@@ -385,15 +397,11 @@ def _build_sidebar():
                 className="sidebar-nav",
                 children=[
                     _sidebar_link("Home", "/"),
-                    _sidebar_link("Experiment", "/experiment"),
-                    _sidebar_link("Single", "/single"),
+                    _sidebar_link("Parameter Sweep", "/experiment"),
+                    _sidebar_link("Particle Explorer", "/single"),
                     _sidebar_link("Documentation", "/documentation"),
                     _sidebar_link("Settings", "/settings"),
                 ],
-            ),
-            html.Div(
-                className="theme-mode-control",
-                children=[html.Label("Theme", htmlFor="theme-mode"), build_theme_selector()],
             ),
         ],
     )
@@ -412,14 +420,15 @@ def build_theme_selector():
         optionHeight=38,
         maxHeight=200,
         persistence=True,
-        persistence_type="local",
+        persistence_type="session",
         className="theme-mode-select",
     )
 
 
 def _sidebar_link(label: str, href: str):
     """Build a single sidebar anchor."""
-    link_id = f"sidebar-link-{label.lower().replace(' ', '-')}"
+    # Keep route-based IDs stable while allowing user-facing labels to evolve.
+    link_id = f"sidebar-link-{href.strip('/') or 'home'}"
     return dcc.Link(label, id=link_id, href=href, refresh=False, className="sidebar-link active" if label == "Home" else "sidebar-link")
 
 
@@ -429,7 +438,7 @@ def render_fields(section: str, section_type: str):
     field_specs = schemas[section][section_type] if section in schemas else SECTION_FIELDS[section][section_type]
 
     if not field_specs:
-        return html.Div("This experiment runs without a detector set.", className="empty-section")
+        return html.Div("This parameter sweep runs without a detector set.", className="empty-section")
 
     return html.Div(className="field-grid", children=[render_field(section, field_spec) for field_spec in field_specs])
 
@@ -447,6 +456,8 @@ def render_field(section: str, field_spec: FieldSpec):
                 debounce=True,
                 placeholder=field_spec.placeholder,
                 className="field-input",
+                persistence=True,
+                persistence_type="session",
             ),
         ],
     )
@@ -455,7 +466,7 @@ def render_field(section: str, field_spec: FieldSpec):
 def render_summary_cards(summary: list[dict[str, str]]):
     """Render compact summary cards for one experiment run."""
     if not summary:
-        return [html.Div(className="summary-card", children=[html.Span("No result yet"), html.Strong("Run an experiment")])]
+        return [html.Div(className="summary-card", children=[html.Span("No result yet"), html.Strong("Run a parameter sweep")])]
 
     return [
         html.Div(className="summary-card", children=[html.Span(item["label"]), html.Strong(item["value"])])
@@ -478,7 +489,7 @@ def _section_shell(title: str, selector, content):
 def _build_default_help_text(field_spec: FieldSpec) -> str:
     """Return a fallback field description."""
     if field_spec.unit is None:
-        return "Single values, comma-separated values, or start:end:count are supported when meaningful."
+        return "Scalar values, comma-separated values, or start:end:count are supported when meaningful."
 
     return f"Values are interpreted in {field_spec.unit}."
 

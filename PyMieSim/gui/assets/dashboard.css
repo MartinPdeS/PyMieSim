@@ -158,6 +158,13 @@ body {
     min-height: 124px;
 }
 
+.settings-card-subtitle {
+    margin-left: auto;
+    color: #6c7c85;
+    font-size: .72rem;
+    font-weight: 500;
+}
+
 .settings-form-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -473,16 +480,238 @@ html .rosettax-workflow-step-card p {
 
 .ui-card--green > .card-header,
 .ui-card--green > .panel-header,
-.ui-card--green > .home-section-header { background: rgba(25, 135, 84, .10); border-bottom-color: rgba(25, 135, 84, .20); }
+.ui-card--green > .home-section-header,
+.ui-card--green > summary { background: rgba(25, 135, 84, .10); border-bottom-color: rgba(25, 135, 84, .20); }
 .ui-card--yellow > .card-header,
 .ui-card--yellow > .panel-header,
-.ui-card--yellow > .home-section-header { background: rgba(255, 215, 0, .10); border-bottom-color: rgba(255, 215, 0, .20); }
+.ui-card--yellow > .home-section-header,
+.ui-card--yellow > summary { background: rgba(255, 215, 0, .10); border-bottom-color: rgba(255, 215, 0, .20); }
 .ui-card--cyan > .card-header,
 .ui-card--cyan > .panel-header,
-.ui-card--cyan > .home-section-header { background: rgba(13, 202, 240, .10); border-bottom-color: rgba(13, 202, 240, .20); }
+.ui-card--cyan > .home-section-header,
+.ui-card--cyan > summary { background: rgba(13, 202, 240, .10); border-bottom-color: rgba(13, 202, 240, .20); }
 .ui-card--purple > .card-header,
 .ui-card--purple > .panel-header,
-.ui-card--purple > .home-section-header { background: rgba(111, 66, 193, .10); border-bottom-color: rgba(111, 66, 193, .20); }
+.ui-card--purple > .home-section-header,
+.ui-card--purple > summary { background: rgba(111, 66, 193, .10); border-bottom-color: rgba(111, 66, 193, .20); }
+
+/* Embedded workflow steps use the same accent treatment as top-level cards. */
+html .rosettax-workflow-step-card--green { border-left: 4px solid #20b486 !important; background: rgba(32, 180, 134, .04) !important; }
+html .rosettax-workflow-step-card--blue { border-left: 4px solid #4f8df7 !important; background: rgba(79, 141, 247, .04) !important; }
+html .rosettax-workflow-step-card--yellow { border-left: 4px solid #f2b233 !important; background: rgba(242, 178, 51, .06) !important; }
+html .rosettax-workflow-step-card--orange { border-left: 4px solid #f2b233 !important; background: rgba(242, 178, 51, .06) !important; }
+html .rosettax-workflow-step-card--purple { border-left: 4px solid #8d6bd8 !important; background: rgba(141, 107, 216, .05) !important; }
+
+/* Documentation hub: structured guide cards, examples, and reference rows. */
+.documentation-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.documentation-quickstart-body {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.documentation-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    align-items: start;
+    min-width: 0;
+}
+
+.documentation-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(13, 110, 253, .28);
+    border-radius: 50%;
+    background: rgba(13, 110, 253, .08);
+    color: #2672d6;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.documentation-step h3 {
+    margin: 0 0 4px;
+    color: #26323b;
+    font-size: .92rem;
+    font-weight: 750;
+}
+
+.documentation-step p {
+    margin: 0;
+    color: #6c7c85;
+    font-size: .78rem;
+    line-height: 1.4;
+}
+
+.documentation-topic-grid .documentation-guide-card {
+    min-height: 100%;
+}
+
+.documentation-guide-card .card-header h2 {
+    margin: 3px 0 0;
+}
+
+.documentation-card-kicker {
+    display: block;
+    color: #6c7c85;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.documentation-guide-card .card-body,
+.documentation-detail-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.documentation-guide-card .card-body > p,
+.documentation-detail-card .card-body > p {
+    margin-top: 0;
+    color: #52697a;
+    line-height: 1.5;
+}
+
+.documentation-bullet-list {
+    display: grid;
+    gap: 5px;
+    margin: 4px 0 16px;
+    padding-left: 18px;
+    color: #6c7c85;
+    font-size: .82rem;
+    line-height: 1.4;
+}
+
+.documentation-guide-card .inline-action {
+    margin-top: auto;
+}
+
+.documentation-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+    gap: 12px;
+}
+
+.documentation-syntax-list {
+    display: grid;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.documentation-syntax-row {
+    display: grid;
+    grid-template-columns: minmax(130px, .55fr) 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 10px;
+    border: 1px solid rgba(13, 110, 253, .14);
+    border-radius: 6px;
+    background: rgba(13, 110, 253, .04);
+}
+
+.documentation-syntax-row code {
+    color: #2672d6;
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+.documentation-syntax-row span {
+    color: #6c7c85;
+    font-size: .8rem;
+}
+
+.documentation-callout {
+    margin: 14px 0 0 !important;
+    padding: 9px 10px;
+    border-left: 3px solid #f2b233;
+    border-radius: 4px;
+    background: rgba(242, 178, 51, .08);
+    font-size: .8rem;
+}
+
+.documentation-definition-list {
+    display: grid;
+    gap: 0;
+}
+
+.documentation-definition-list > div {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, .16);
+}
+
+.documentation-definition-list > div:first-child { padding-top: 0; }
+.documentation-definition-list > div:last-child { padding-bottom: 0; border-bottom: 0; }
+.documentation-definition-list strong { color: #26323b; font-size: .82rem; }
+.documentation-definition-list span { color: #6c7c85; font-size: .82rem; line-height: 1.4; }
+
+.documentation-model-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.documentation-model-group h3 {
+    margin: 0 0 8px;
+    color: #26323b;
+    font-size: .86rem;
+    font-weight: 750;
+}
+
+.documentation-model-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.documentation-model-pill {
+    padding: 5px 8px;
+    border: 1px solid rgba(25, 135, 84, .22);
+    border-radius: 999px;
+    background: rgba(25, 135, 84, .06);
+    color: #52697a;
+    font-size: .76rem;
+}
+
+.documentation-note-body p {
+    margin: 0 0 12px;
+    color: #52697a;
+    line-height: 1.5;
+}
+
+@media (max-width: 1000px) {
+    .documentation-quickstart-body,
+    .documentation-model-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .documentation-quickstart-body,
+    .documentation-columns,
+    .documentation-model-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .documentation-syntax-row,
+    .documentation-definition-list > div {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}
+.ui-card--blue > summary { background: rgba(13, 110, 253, .10); border-bottom-color: rgba(13, 110, 253, .20); }
 
 .ui-card > .card-header h2,
 .ui-card > .panel-header h2,
@@ -2647,3 +2876,11 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 8px;
 }
+
+/* Match each workflow header to its left accent, including the summary
+   headers used by Experiment and Single setup cards. */
+.ui-card--blue > summary { background: rgba(13, 110, 253, .10); border-bottom-color: rgba(13, 110, 253, .20); }
+.ui-card--green > summary { background: rgba(25, 135, 84, .10); border-bottom-color: rgba(25, 135, 84, .20); }
+.ui-card--yellow > summary { background: rgba(255, 215, 0, .10); border-bottom-color: rgba(255, 215, 0, .20); }
+.ui-card--cyan > summary { background: rgba(13, 202, 240, .10); border-bottom-color: rgba(13, 202, 240, .20); }
+.ui-card--purple > summary { background: rgba(111, 66, 193, .10); border-bottom-color: rgba(111, 66, 193, .20); }

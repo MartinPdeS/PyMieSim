@@ -26,6 +26,6 @@ def _build_section(title, selector_id, fields_id, choices, default, detector=Fal
         open=False,
         children=[
             html.Summary(children=[html.Span(title), html.Span("i", className="workflow-info-button", title=info, **{"aria-label": info})]),
-            html.Div(className="workflow-card-body", children=[dcc.Dropdown(id=selector_id, className="dashboard-dropdown", options=options, value=default, clearable=False, optionHeight=38, maxHeight=200), html.Div(id=fields_id, className="panel-body")]),
+            html.Div(className="workflow-card-body", children=[dcc.Dropdown(id=selector_id, className="dashboard-dropdown", options=options, value=default, clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"), html.Div(id=fields_id, className="panel-body")]),
         ],
     )

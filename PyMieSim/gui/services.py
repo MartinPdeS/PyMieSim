@@ -137,6 +137,7 @@ def build_single_figure(
         figure.add_trace(go.Scatter(x=x, y=np.abs(s2.magnitude), mode="lines", name="|S2|"))
         figure.update_xaxes(title="Scattering angle [degree]")
         figure.update_yaxes(title="Amplitude [meter]")
+        figure.update_layout(meta={"polar_axis_unit": "degree"})
         title = "S1 / S2 scattering amplitudes"
     else:
         representation_object = setup.get_representation(representation, sampling=sampling)
@@ -325,13 +326,19 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
         xaxis_title=xaxis_title,
         yaxis_title=yaxis_title,
         legend_title_text="",
+        meta={"polar_axis_unit": xaxis_unit},
     )
     apply_plot_settings(figure, plot_settings, theme)
 
     return figure
 
 
-def apply_plot_settings(figure: go.Figure, plot_settings: dict[str, Any] | None = None, theme: str = "light") -> go.Figure:
+def apply_plot_settings(
+    figure: go.Figure,
+    plot_settings: dict[str, Any] | None = None,
+    theme: str = "light",
+    polar_allowed: bool | None = None,
+) -> go.Figure:
     """Apply persisted visual preferences to an existing Plotly figure."""
     settings = {
         "font_size": 14,
@@ -340,6 +347,9 @@ def apply_plot_settings(figure: go.Figure, plot_settings: dict[str, Any] | None 
         "template": "match-theme",
         "show_legend": True,
         "show_grid": True,
+        "coordinate_system": "cartesian",
+        "show_title": True,
+        "log_y": False,
         **(plot_settings or {}),
     }
     template = settings["template"]
@@ -350,17 +360,73 @@ def apply_plot_settings(figure: go.Figure, plot_settings: dict[str, Any] | None 
         template=template,
         font={"size": settings["font_size"]},
         showlegend=bool(settings["show_legend"]),
+        title_text=figure.layout.title.text if settings["show_title"] else "",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         plot_bgcolor="#20252b" if is_dark else "white",
         xaxis={"showgrid": bool(settings["show_grid"])},
-        yaxis={"showgrid": bool(settings["show_grid"])},
+        yaxis={"showgrid": bool(settings["show_grid"]), "type": "log" if settings["log_y"] else "linear"},
     )
     for trace in figure.data:
         if getattr(trace, "line", None) is not None:
             trace.line.width = settings["line_width"]
         if getattr(trace, "marker", None) is not None:
             trace.marker.size = settings["marker_size"]
+    if polar_allowed is None:
+        metadata = figure.layout.meta if isinstance(figure.layout.meta, dict) else {}
+        polar_allowed = _is_angular_unit(metadata.get("polar_axis_unit"))
+
+    if settings["coordinate_system"] == "polar" and polar_allowed:
+        _convert_traces_to_polar(figure, bool(settings["show_grid"]), bool(settings["log_y"]))
     return figure
+
+
+def _is_angular_unit(unit: Any) -> bool:
+    """Return whether a serialized unit represents radians or degrees."""
+    normalized = str(unit or "").strip().lower().replace("°", "degree")
+    return normalized in {"rad", "radian", "radians", "deg", "degree", "degrees"}
+
+
+def _convert_traces_to_polar(figure: go.Figure, show_grid: bool, log_y: bool) -> None:
+    """Convert compatible line traces to a polar subplot in place."""
+    converted_traces = []
+    converted = False
+    for trace in figure.data:
+        if trace.type not in {"scatter", "scattergl"} or trace.y is None:
+            converted_traces.append(trace)
+            continue
+
+        # A Cartesian Scatter cannot be updated with ``r`` and ``theta``;
+        # Plotly requires a Scatterpolar trace for those properties. Copy the
+        # existing trace attributes so styling, hover text, and names survive.
+        properties = trace.to_plotly_json()
+        properties.pop("type", None)
+        x_values = properties.pop("x", None)
+        y_values = properties.pop("y")
+        properties["r"] = list(y_values)
+        properties["theta"] = list(x_values) if x_values is not None else list(
+            np.linspace(0, 360, len(y_values), endpoint=False)
+        )
+        polar_properties = go.Scatterpolar._valid_props
+        converted_traces.append(
+            go.Scatterpolar(**{key: value for key, value in properties.items() if key in polar_properties})
+        )
+        converted = True
+
+    if not converted:
+        return
+
+    # Plotly only permits assigning existing trace objects to ``figure.data``.
+    # Clear the original traces, then add the newly constructed polar traces.
+    figure.data = ()
+    figure.add_traces(converted_traces)
+    figure.update_layout(
+        polar={
+            "angularaxis": {"showgrid": show_grid},
+            "radialaxis": {"showgrid": show_grid, "type": "log" if log_y else "linear"},
+        },
+        xaxis_visible=False,
+        yaxis_visible=False,
+    )
 
 
 def build_summary(result: dict[str, Any] | None) -> list[dict[str, str]]:

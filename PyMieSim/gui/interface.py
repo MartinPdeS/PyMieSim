@@ -6,14 +6,14 @@ import logging
 from pathlib import Path
 import webbrowser
 
-from dash import ALL, Dash, Input, Output, State, ctx, dcc, no_update
+from dash import ALL, Dash, Input, Output, State, dcc, no_update
 
 from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, build_workspace_layout, create_layout, render_fields
 from PyMieSim.gui.pages.documentation import build_documentation_page
 from PyMieSim.gui.pages.citation import build_citation_page
 from PyMieSim.gui.pages.home import build_home_page
 from PyMieSim.gui.pages.install_local import build_install_local_page
-from PyMieSim.gui.pages.settings import DEFAULT_PLOT_SETTINGS, build_settings_page
+from PyMieSim.gui.pages.settings import DEFAULT_PARTICLE_PLOT_SETTINGS, DEFAULT_SWEEP_PLOT_SETTINGS, build_settings_page
 from PyMieSim.gui.services import (
     available_measures,
     apply_plot_settings,
@@ -33,7 +33,7 @@ def create_dash_app() -> Dash:
     LOGGER.debug("Creating Dash application")
     app = Dash(
         __name__,
-        title="PyMieSim Experiment Lab",
+        title="PyMieSim Parameter Sweep Lab",
         assets_folder=str(Path(__file__).with_name("assets")),
         suppress_callback_exceptions=True,
     )
@@ -78,18 +78,16 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     @app.callback(
         Output("theme-link", "href"),
         Output("theme-store", "data"),
-        Output("theme-mode", "value"),
         Output("settings-theme-mode", "value"),
-        Input("theme-mode", "value"),
         Input("settings-theme-mode", "value"),
         State("theme-store", "data"),
     )
-    def _sync_theme(sidebar_theme: str | None, settings_theme: str | None, stored_theme: dict | None):
-        theme_mode = settings_theme if ctx.triggered_id == "settings-theme-mode" else sidebar_theme
+    def _sync_theme(settings_theme: str | None, stored_theme: dict | None):
+        theme_mode = settings_theme
         if theme_mode not in {"light", "dark"}:
             theme_mode = (stored_theme or {}).get("theme", "light")
         mode = "light" if theme_mode == "light" else "dark"
-        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}, mode, mode
+        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}, mode
 
     @app.callback(
         Output("page-content", "children"),
@@ -135,7 +133,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             return build_page_with_footer(build_install_local_page()), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/settings":
             active["settings"] += " active"
-            return build_page_with_footer(build_settings_page((theme_store or {}).get("theme", "light"), {**DEFAULT_PLOT_SETTINGS, **(plot_settings or {})})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+            return build_page_with_footer(build_settings_page((theme_store or {}).get("theme", "light"), plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/single":
             active["single"] += " active"
             return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
@@ -148,25 +146,43 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     @app.callback(
         Output("plot-settings-store", "data"),
         Output("settings-save-status", "children"),
-        Input("settings-font-size", "value"),
-        Input("settings-line-width", "value"),
-        Input("settings-marker-size", "value"),
-        Input("settings-plot-template", "value"),
-        Input("settings-show-legend", "value"),
-        Input("settings-show-grid", "value"),
+        Input("settings-particle-font-size", "value"),
+        Input("settings-particle-line-width", "value"),
+        Input("settings-particle-marker-size", "value"),
+        Input("settings-particle-template", "value"),
+        Input("settings-particle-coordinates", "value"),
+        Input("settings-particle-legend", "value"),
+        Input("settings-particle-grid", "value"),
+        Input("settings-particle-title", "value"),
+        Input("settings-particle-log-y", "value"),
+        Input("settings-sweep-font-size", "value"),
+        Input("settings-sweep-line-width", "value"),
+        Input("settings-sweep-marker-size", "value"),
+        Input("settings-sweep-template", "value"),
+        Input("settings-sweep-coordinates", "value"),
+        Input("settings-sweep-legend", "value"),
+        Input("settings-sweep-grid", "value"),
+        Input("settings-sweep-title", "value"),
+        Input("settings-sweep-log-y", "value"),
         State("plot-settings-store", "data"),
     )
-    def _sync_plot_settings(font_size, line_width, marker_size, template, show_legend, show_grid, stored_settings):
-        settings = {**DEFAULT_PLOT_SETTINGS, **(stored_settings or {})}
-        settings.update({
-            "font_size": font_size if font_size is not None else settings["font_size"],
-            "line_width": line_width if line_width is not None else settings["line_width"],
-            "marker_size": marker_size if marker_size is not None else settings["marker_size"],
-            "template": template or settings["template"],
-            "show_legend": bool(show_legend) if show_legend is not None else settings["show_legend"],
-            "show_grid": bool(show_grid) if show_grid is not None else settings["show_grid"],
-        })
-        return settings, "All settings are saved automatically."
+    def _sync_plot_settings(*values):
+        stored_settings = values[-1] or {}
+        particle_values = values[:9]
+        sweep_values = values[9:18]
+
+        def merge(defaults, key, settings_values):
+            current = {**defaults, **(stored_settings.get(key, {}) if isinstance(stored_settings, dict) else {})}
+            names = ("font_size", "line_width", "marker_size", "template", "coordinate_system", "show_legend", "show_grid", "show_title", "log_y")
+            for name, value in zip(names, settings_values):
+                if value is not None:
+                    current[name] = value
+            return current
+
+        return {
+            "particle_explorer": merge(DEFAULT_PARTICLE_PLOT_SETTINGS, "particle_explorer", particle_values),
+            "parameter_sweep": merge(DEFAULT_SWEEP_PLOT_SETTINGS, "parameter_sweep", sweep_values),
+        }, "All settings are saved automatically."
 
     @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
     def _render_source_fields(source_type: str):
@@ -321,7 +337,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             result["parameter_columns"],
         )
 
-        return result, "Experiment completed. Figure updated and CSV is ready.", "status-banner success", next_experiment_runs + 1
+        return result, "Parameter sweep completed. Figure updated and CSV is ready.", "status-banner success", next_experiment_runs + 1
 
     @app.callback(
         Output("csv-download", "data"),
@@ -356,7 +372,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     )
     def _update_outputs(result: dict | None, x_axis: str | None, plot_settings: dict | None, theme_store: dict | None):
         LOGGER.debug("Updating outputs for x_axis=%s result_present=%s", x_axis, bool(result))
-        return build_figure(result, x_axis, plot_settings=plot_settings, theme=(theme_store or {}).get("theme", "light"))
+        sweep_settings = (plot_settings or {}).get("parameter_sweep", plot_settings or {})
+        return build_figure(result, x_axis, plot_settings=sweep_settings, theme=(theme_store or {}).get("theme", "light"))
 
     @app.callback(
         Output("single-result", "data"),
@@ -402,7 +419,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             LOGGER.exception("Single representation render failed")
             return None, str(error), "status-banner error", next_single_runs
 
-        return {"figure": figure.to_plotly_json(), "summary": summary}, "Representation rendered.", "status-banner success", next_single_runs + 1
+        return {"figure": figure.to_plotly_json(), "summary": summary}, "Particle Explorer rendered.", "status-banner success", next_single_runs + 1
 
     @app.callback(
         Output("single-graph", "figure"),
@@ -411,11 +428,12 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("theme-store", "data"),
     )
     def _update_single_outputs(result: dict | None, plot_settings: dict | None, theme_store: dict | None):
+        particle_settings = (plot_settings or {}).get("particle_explorer", plot_settings or {})
         if not result:
-            return build_single_empty_figure(plot_settings=plot_settings, theme=(theme_store or {}).get("theme", "light"))
+            return build_single_empty_figure(plot_settings=particle_settings, theme=(theme_store or {}).get("theme", "light"))
         from plotly.graph_objects import Figure
 
-        return apply_plot_settings(Figure(result["figure"]), plot_settings, (theme_store or {}).get("theme", "light"))
+        return apply_plot_settings(Figure(result["figure"]), particle_settings, (theme_store or {}).get("theme", "light"))
 
 
 def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[str, str]:

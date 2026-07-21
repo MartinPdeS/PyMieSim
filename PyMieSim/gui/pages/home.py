@@ -34,17 +34,17 @@ def build_home_page(metrics: dict[str, int] | None = None):
                 className="home-capability-grid",
                 children=[
                     _capability_card(
-                        "Single module",
+                        "Particle Explorer",
                         "Inspect one optical setup through angular scattering, polarization, phase functions, and field representations.",
                         ["Configure source", "Configure scatterer", "Render representations"],
-                        "Open Single module",
+                        "Open Particle Explorer",
                         "/single",
                     ),
                     _capability_card(
-                        "Experiment",
+                        "Parameter Sweep",
                         "Run source, scatterer, and detector sets across parameter sweeps and export structured results for analysis.",
                         ["Configure source", "Configure scatterer and detector", "Run and export results"],
-                        "Open experiment",
+                        "Open Parameter Sweep",
                         "/experiment",
                     ),
                     _capability_card(
@@ -135,14 +135,14 @@ def _metrics_card(metrics: dict[str, int]):
                     html.Div(
                         [
                             html.Div(str(metrics.get("experiment_runs", 0)), className="home-metric-value"),
-                            html.Div("Experiment runs", className="home-metric-label"),
+                            html.Div("Parameter sweeps", className="home-metric-label"),
                         ],
                         className="home-metric-tile",
                     ),
                     html.Div(
                         [
                             html.Div(str(metrics.get("single_runs", 0)), className="home-metric-value"),
-                            html.Div("Single runs", className="home-metric-label"),
+                            html.Div("Particle explorations", className="home-metric-label"),
                         ],
                         className="home-metric-tile",
                     ),
