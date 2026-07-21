@@ -116,6 +116,8 @@ def build_single_figure(
     scatterer_values: Dict[str, Any],
     representation: str,
     sampling: int,
+    plot_settings: dict[str, Any] | None = None,
+    theme: str = "light",
 ) -> tuple[go.Figure, dict[str, str]]:
     """Compute one single-scatterer representation and turn it into Plotly."""
     setup = build_single_setup(
@@ -167,6 +169,7 @@ def build_single_figure(
         title=title,
         legend_title_text="",
     )
+    apply_plot_settings(figure, plot_settings, theme)
     return figure, {"Representation": representation.upper(), "Sampling": str(sampling), "Scatterer": scatterer_type}
 
 
@@ -256,7 +259,7 @@ def export_result_to_csv(result: dict[str, Any] | None) -> str:
     return frame.to_csv(index=False)
 
 
-def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure:
+def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_settings: dict[str, Any] | None = None, theme: str = "light") -> go.Figure:
     """Build a Plotly figure from serialized experiment results."""
     LOGGER.debug("Building figure for x_axis=%s", x_axis)
     if not result or not result.get("rows"):
@@ -278,6 +281,7 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure
                 }
             ],
         )
+        apply_plot_settings(figure, plot_settings, theme)
         return figure
 
     frame = pd.DataFrame(result["rows"])
@@ -322,7 +326,40 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None) -> go.Figure
         yaxis_title=yaxis_title,
         legend_title_text="",
     )
+    apply_plot_settings(figure, plot_settings, theme)
 
+    return figure
+
+
+def apply_plot_settings(figure: go.Figure, plot_settings: dict[str, Any] | None = None, theme: str = "light") -> go.Figure:
+    """Apply persisted visual preferences to an existing Plotly figure."""
+    settings = {
+        "font_size": 14,
+        "line_width": 2,
+        "marker_size": 6,
+        "template": "match-theme",
+        "show_legend": True,
+        "show_grid": True,
+        **(plot_settings or {}),
+    }
+    template = settings["template"]
+    if template == "match-theme":
+        template = "plotly_dark" if theme == "dark" else "plotly_white"
+    is_dark = template == "plotly_dark"
+    figure.update_layout(
+        template=template,
+        font={"size": settings["font_size"]},
+        showlegend=bool(settings["show_legend"]),
+        paper_bgcolor="rgba(0, 0, 0, 0)",
+        plot_bgcolor="#20252b" if is_dark else "white",
+        xaxis={"showgrid": bool(settings["show_grid"])},
+        yaxis={"showgrid": bool(settings["show_grid"])},
+    )
+    for trace in figure.data:
+        if getattr(trace, "line", None) is not None:
+            trace.line.width = settings["line_width"]
+        if getattr(trace, "marker", None) is not None:
+            trace.marker.size = settings["marker_size"]
     return figure
 
 

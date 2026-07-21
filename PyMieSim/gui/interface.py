@@ -6,15 +6,17 @@ import logging
 from pathlib import Path
 import webbrowser
 
-from dash import ALL, Dash, Input, Output, State, dcc, no_update
+from dash import ALL, Dash, Input, Output, State, ctx, dcc, no_update
 
 from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, build_workspace_layout, create_layout, render_fields
 from PyMieSim.gui.pages.documentation import build_documentation_page
 from PyMieSim.gui.pages.citation import build_citation_page
 from PyMieSim.gui.pages.home import build_home_page
 from PyMieSim.gui.pages.install_local import build_install_local_page
+from PyMieSim.gui.pages.settings import DEFAULT_PLOT_SETTINGS, build_settings_page
 from PyMieSim.gui.services import (
     available_measures,
+    apply_plot_settings,
     build_figure,
     export_result_to_csv,
     infer_variable_fields,
@@ -76,11 +78,18 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     @app.callback(
         Output("theme-link", "href"),
         Output("theme-store", "data"),
+        Output("theme-mode", "value"),
+        Output("settings-theme-mode", "value"),
         Input("theme-mode", "value"),
+        Input("settings-theme-mode", "value"),
+        State("theme-store", "data"),
     )
-    def _sync_theme(theme_mode: str | None):
+    def _sync_theme(sidebar_theme: str | None, settings_theme: str | None, stored_theme: dict | None):
+        theme_mode = settings_theme if ctx.triggered_id == "settings-theme-mode" else sidebar_theme
+        if theme_mode not in {"light", "dark"}:
+            theme_mode = (stored_theme or {}).get("theme", "light")
         mode = "light" if theme_mode == "light" else "dark"
-        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}
+        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}, mode, mode
 
     @app.callback(
         Output("page-content", "children"),
@@ -88,13 +97,16 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("sidebar-link-experiment", "className"),
         Output("sidebar-link-single", "className"),
         Output("sidebar-link-documentation", "className"),
+        Output("sidebar-link-settings", "className"),
         Output("home-visit-count", "data"),
         Input("url", "pathname"),
         State("home-visit-count", "data"),
         State("experiment-run-count", "data"),
         State("single-run-count", "data"),
+        State("theme-store", "data"),
+        State("plot-settings-store", "data"),
     )
-    def _route_pages(pathname: str | None, home_visits: int, experiment_runs: int, single_runs: int):
+    def _route_pages(pathname: str | None, home_visits: int, experiment_runs: int, single_runs: int, theme_store: dict | None, plot_settings: dict | None):
         """Render only the selected route page inside the persistent shell."""
         route = pathname or "/"
         active = {
@@ -102,6 +114,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             "experiment": "sidebar-link",
             "single": "sidebar-link",
             "documentation": "sidebar-link",
+            "settings": "sidebar-link",
         }
         home_visits = int(home_visits or 0)
         if route == "/":
@@ -113,21 +126,47 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         }
         if route == "/documentation":
             active["documentation"] += " active"
-            return build_page_with_footer(build_documentation_page()), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+            return build_page_with_footer(build_documentation_page()), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/citation":
             active["home"] += " active"
-            return build_page_with_footer(build_citation_page()), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+            return build_page_with_footer(build_citation_page()), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/documentation/install-local":
             active["documentation"] += " active"
-            return build_page_with_footer(build_install_local_page()), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+            return build_page_with_footer(build_install_local_page()), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+        if route == "/settings":
+            active["settings"] += " active"
+            return build_page_with_footer(build_settings_page((theme_store or {}).get("theme", "light"), {**DEFAULT_PLOT_SETTINGS, **(plot_settings or {})})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/single":
             active["single"] += " active"
-            return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+            return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/experiment":
             active["experiment"] += " active"
-            return build_page_with_footer(build_workspace_layout(default_measure_options, "experiment-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+            return build_page_with_footer(build_workspace_layout(default_measure_options, "experiment-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         active["home"] += " active"
-        return build_page_with_footer(build_home_page(metrics)), *(active[key] for key in ("home", "experiment", "single", "documentation")), home_visits
+        return build_page_with_footer(build_home_page(metrics)), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+
+    @app.callback(
+        Output("plot-settings-store", "data"),
+        Output("settings-save-status", "children"),
+        Input("settings-font-size", "value"),
+        Input("settings-line-width", "value"),
+        Input("settings-marker-size", "value"),
+        Input("settings-plot-template", "value"),
+        Input("settings-show-legend", "value"),
+        Input("settings-show-grid", "value"),
+        State("plot-settings-store", "data"),
+    )
+    def _sync_plot_settings(font_size, line_width, marker_size, template, show_legend, show_grid, stored_settings):
+        settings = {**DEFAULT_PLOT_SETTINGS, **(stored_settings or {})}
+        settings.update({
+            "font_size": font_size if font_size is not None else settings["font_size"],
+            "line_width": line_width if line_width is not None else settings["line_width"],
+            "marker_size": marker_size if marker_size is not None else settings["marker_size"],
+            "template": template or settings["template"],
+            "show_legend": bool(show_legend) if show_legend is not None else settings["show_legend"],
+            "show_grid": bool(show_grid) if show_grid is not None else settings["show_grid"],
+        })
+        return settings, "All settings are saved automatically."
 
     @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
     def _render_source_fields(source_type: str):
@@ -312,10 +351,12 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("result-graph", "figure"),
         Input("experiment-result", "data"),
         Input("x-axis-select", "value"),
+        Input("plot-settings-store", "data"),
+        Input("theme-store", "data"),
     )
-    def _update_outputs(result: dict | None, x_axis: str | None):
+    def _update_outputs(result: dict | None, x_axis: str | None, plot_settings: dict | None, theme_store: dict | None):
         LOGGER.debug("Updating outputs for x_axis=%s result_present=%s", x_axis, bool(result))
-        return build_figure(result, x_axis)
+        return build_figure(result, x_axis, plot_settings=plot_settings, theme=(theme_store or {}).get("theme", "light"))
 
     @app.callback(
         Output("single-result", "data"),
@@ -363,11 +404,18 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
 
         return {"figure": figure.to_plotly_json(), "summary": summary}, "Representation rendered.", "status-banner success", next_single_runs + 1
 
-    @app.callback(Output("single-graph", "figure"), Input("single-result", "data"))
-    def _update_single_outputs(result: dict | None):
+    @app.callback(
+        Output("single-graph", "figure"),
+        Input("single-result", "data"),
+        Input("plot-settings-store", "data"),
+        Input("theme-store", "data"),
+    )
+    def _update_single_outputs(result: dict | None, plot_settings: dict | None, theme_store: dict | None):
         if not result:
-            return build_single_empty_figure()
-        return result["figure"]
+            return build_single_empty_figure(plot_settings=plot_settings, theme=(theme_store or {}).get("theme", "light"))
+        from plotly.graph_objects import Figure
+
+        return apply_plot_settings(Figure(result["figure"]), plot_settings, (theme_store or {}).get("theme", "light"))
 
 
 def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[str, str]:
@@ -375,13 +423,13 @@ def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[
     return {field_id["name"]: value for field_id, value in zip(ids, values)}
 
 
-def build_single_empty_figure():
+def build_single_empty_figure(plot_settings: dict | None = None, theme: str = "light"):
     """Return the initial representation canvas."""
     from plotly.graph_objects import Figure
 
     figure = Figure()
     figure.update_layout(template="plotly_white", xaxis_visible=False, yaxis_visible=False, annotations=[{"text": "Configure a setup and render a representation.", "xref": "paper", "yref": "paper", "x": 0.5, "y": 0.5, "showarrow": False}])
-    return figure
+    return apply_plot_settings(figure, plot_settings, theme)
 
 
 app = create_dash_app()

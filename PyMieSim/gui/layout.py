@@ -81,7 +81,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                                                         options=[{"label": measure, "value": measure} for measure in default_measure_options],
                                                                         value=default_measure_options[0] if default_measure_options else None,
                                                                         clearable=False,
-                                                                        optionHeight=34,
+                                                                        optionHeight=38,
                                                                         maxHeight=200,
                                                                     ),
                                                                 ],
@@ -90,7 +90,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                                                 className="field-block",
                                                                 children=[
                                                                     html.Label("X Axis", htmlFor="x-axis-select"),
-                                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values", optionHeight=34, maxHeight=200),
+                                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values", optionHeight=38, maxHeight=200),
                                                                 ],
                                                             ),
                                                         ],
@@ -178,6 +178,14 @@ def create_layout(default_measure_options: list[str]):
             dcc.Store(id="experiment-run-count", data=0, storage_type="local"),
             dcc.Store(id="single-run-count", data=0, storage_type="local"),
             dcc.Store(id="theme-store", data={"theme": "light"}, storage_type="local"),
+            dcc.Store(id="plot-settings-store", data={
+                "font_size": 14,
+                "line_width": 2,
+                "marker_size": 6,
+                "template": "match-theme",
+                "show_legend": True,
+                "show_grid": True,
+            }, storage_type="local"),
             html.Link(id="theme-link", rel="stylesheet", href=THEME_LIGHT),
             html.Div(
                 className="dashboard-frame",
@@ -263,19 +271,19 @@ def _build_single_tab():
                         children=[
                             _section_shell(
                                 "Source",
-                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False),
+                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False, optionHeight=38, maxHeight=200),
                                 html.Div(id="single-source-fields"),
                             ),
                             _section_shell(
                                 "Scatterer",
-                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False),
+                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False, optionHeight=38, maxHeight=200),
                                 html.Div(id="single-scatterer-fields"),
                             ),
                             html.Section(
                                 className="panel run-panel",
                                 children=[
                                     html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
-                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False)]),
+                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200)]),
                                     html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, className="field-input")]),
                                     html.Button("Render representation", id="run-single", n_clicks=0, className="run-button run-button-primary"),
                                     html.Div(id="single-status", className="status-banner idle", children="Ready."),
@@ -380,6 +388,7 @@ def _build_sidebar():
                     _sidebar_link("Experiment", "/experiment"),
                     _sidebar_link("Single", "/single"),
                     _sidebar_link("Documentation", "/documentation"),
+                    _sidebar_link("Settings", "/settings"),
                 ],
             ),
             html.Div(
@@ -400,6 +409,8 @@ def build_theme_selector():
         ],
         value="light",
         clearable=False,
+        optionHeight=38,
+        maxHeight=200,
         persistence=True,
         persistence_type="local",
         className="theme-mode-select",

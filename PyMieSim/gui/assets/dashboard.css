@@ -148,6 +148,77 @@ body {
     margin-bottom: 0;
 }
 
+.settings-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+}
+
+.settings-card-body {
+    min-height: 124px;
+}
+
+.settings-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.settings-field {
+    min-width: 0;
+}
+
+.settings-field-wide {
+    grid-column: span 3;
+}
+
+.settings-layout-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.settings-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #52697a;
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+.settings-number-input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 38px;
+    padding: 7px 10px;
+    border: 1px solid #cbd8e2;
+    border-radius: 4px;
+    color: #26323b;
+    background: #fff;
+}
+
+.settings-help,
+.settings-save-status {
+    margin: 12px 0 0;
+    color: #6c7c85;
+    font-size: .82rem;
+    line-height: 1.4;
+}
+
+.settings-note {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+    .settings-form-grid,
+    .settings-layout-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-field-wide,
+    .settings-note {
+        grid-column: auto;
+    }
+}
+
 /* Final RosettaX typography parity. */
 html body { font-size: 1rem !important; }
 
@@ -2099,7 +2170,83 @@ body {
 .home-action-card p, .documentation-card p, .home-overview-card p, .documentation-note p { font-size: .86rem; line-height: 1.45; }
 .home-overview-card, .documentation-note { padding: 0 10px 12px; }
 .panel { padding: 0; overflow: hidden; }
-.panel-header { margin: 0; padding: 8px 10px; background: rgba(13,110,253,.10); border-bottom: 1px solid rgba(13,110,253,.20); }
+.panel-header {
+    margin: 0;
+    padding: 8px 10px;
+    background: rgba(13,110,253,.10);
+    border-bottom: 1px solid rgba(13,110,253,.20);
+    /* Let the header meet the colored card accent without a white notch. */
+    border-top-left-radius: 0;
+    border-top-right-radius: 8px;
+}
+.workflow-card > summary,
+.home-section-header,
+.ui-card > .card-header,
+.single-workspace .representation-card > summary,
+.single-workspace .representation-card > .representation-card-header {
+    border-top-left-radius: 0;
+    border-top-right-radius: 8px;
+}
+
+/* Dash 4 renders dropdown options with its own option-list classes. Keep
+   those rows compact as well as the legacy React-Select classes above. */
+.dash-dropdown-content .dash-dropdown-options {
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+.dash-dropdown-content .dash-dropdown-search-container {
+    box-sizing: border-box !important;
+    min-height: 44px !important;
+    height: 44px !important;
+    margin: 6px !important;
+    padding: 0 10px !important;
+}
+
+.dash-dropdown-content .dash-dropdown-search {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 42px !important;
+    padding: 0 !important;
+    line-height: 22px !important;
+}
+
+.dash-dropdown-content .dash-dropdown-option,
+.dash-dropdown-content .dash-options-list-option-wrapper,
+.dash-dropdown-content .dash-options-list-option,
+.dash-dropdown-content .dash-options-list-option-text {
+    box-sizing: border-box !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    line-height: 22px !important;
+}
+
+.dash-dropdown-content .dash-dropdown-option {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+}
+
+.dash-dropdown-content .dash-options-list-option-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    width: 0 !important;
+    flex: 0 0 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+.dash-dropdown-content .dash-options-list-option {
+    width: 100% !important;
+    padding: 0 12px !important;
+}
+
+.dash-dropdown-content .dash-options-list-option-text {
+    margin: 0 !important;
+    padding: 0 !important;
+}
 .panel-header h2 { font-size: 1.02rem; font-weight: 750; letter-spacing: 0; text-transform: none; }
 .panel > p, .panel > .helper-copy, .panel > .run-panel-copy { padding: 0 10px; }
 .panel-body { padding: 0 10px 10px; }
@@ -2475,4 +2622,28 @@ body {
 
 .run-panel > .status-banner {
     margin-bottom: 0;
+}
+
+/* Shared card geometry: keep every card's header clipped to the same outer
+   corner and aligned with its left accent, including home-page cards. */
+.ui-card,
+.panel,
+.workflow-card,
+.home-info-card,
+.home-capability-card,
+.home-action-card,
+.summary-card {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.ui-card > .card-header,
+.ui-card > .panel-header,
+.ui-card > .home-section-header,
+.workflow-card > summary,
+.home-section-header,
+.single-workspace .representation-card > summary,
+.single-workspace .representation-card > .representation-card-header {
+    border-top-left-radius: 0;
+    border-top-right-radius: 8px;
 }
