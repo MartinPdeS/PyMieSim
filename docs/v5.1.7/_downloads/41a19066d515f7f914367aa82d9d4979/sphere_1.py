@@ -1,0 +1,90 @@
+"""
+Sphere Particles: 1
+===================
+
+"""
+
+# Standard library imports
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from PyMieSim.units import ureg
+
+# PyMieSim imports
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
+from PyMieSim.experiment import Setup
+from PyMieSim.directories import validation_data_path
+
+
+# Define parameters
+wavelength = 632.8 * ureg.nanometer  # Wavelength of the source in meters
+index = (1.4 + 0.2j)  # Refractive index of the sphere
+medium_index = 1.2  # Refractive index of the medium
+optical_power = 1 * ureg.watt  # Power of the light source in watts
+NA = 0.2  # Numerical aperture
+diameters = (
+    np.geomspace(10, 6_000, 800) * ureg.nanometer
+)  # Diameters from 10 nm to 6 μm
+
+# Configure the Gaussian source
+source = GaussianSet(
+    wavelength=[632.8] * ureg.nanometer,
+    polarization=PolarizationSet(angles=0 * ureg.degree),
+    optical_power=[1] * ureg.watt,
+    numerical_aperture=[0.2],
+)
+
+# Setup spherical scatterer
+scatterer = SphereSet(
+    diameter=diameters,
+    material=[(1.4 + 0.2j)],
+    medium=[1.2],
+)
+
+# Create experimental setup
+experiment = Setup(scatterer_set=scatterer, source_set=source)
+
+comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
+
+# Compute PyMieSim scattering efficiency data
+pymiesim = experiment.get(*comparison_measures, as_numpy=True)
+
+pymiescatt_dataframe = pd.read_csv(
+    validation_data_path / "pymiescatt/example_shpere_1.csv"
+)
+
+# Plot results
+
+figure, ax = plt.subplots(1, 1)
+
+
+pymiescatt_dataframe.diameter *= 1e9
+
+for string in comparison_measures:
+    ax.plot(
+        pymiescatt_dataframe["diameter"],
+        pymiescatt_dataframe[string],
+        label="PyMieScatt: " + string,
+        linewidth=3,
+    )
+
+
+for data, string in zip(pymiesim, comparison_measures):
+    ax.plot(
+        diameters.to(ureg.nanometer).magnitude,
+        data,
+        label="PyMieSim: " + string,
+        linestyle="--",
+        color="black",
+        linewidth=1.5,
+    )
+
+ax.set(
+    xlabel=r"Diameter [$\mu$m]",
+    ylabel="Scattering Efficiency",
+    title="Scattering Efficiency Comparison for Sphere Particles",
+)
+plt.legend()
+plt.show()
