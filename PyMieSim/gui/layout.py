@@ -20,8 +20,11 @@ PLOT_CONFIG = {
 }
 
 
-def _build_legacy_layout(default_measure_options: list[str]):
+def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict | None = None):
     """Build the former all-workspaces layout used to extract page content."""
+    stored = plot_settings or {}
+    particle_settings = stored.get("particle_explorer", {})
+    sweep_settings = stored.get("parameter_sweep", {})
     return html.Div(
         className="app-shell",
         children=[
@@ -122,7 +125,7 @@ def _build_legacy_layout(default_measure_options: list[str]):
                                         children=[
                                             html.Section(
                                                 className="panel graph-panel",
-                                                children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)],
+                                                children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG), _plot_options_card("experiment", sweep_settings)],
                                             ),
                                             html.Section(
                                                 id="guide",
@@ -167,12 +170,68 @@ def _build_legacy_layout(default_measure_options: list[str]):
     )
 
 
-def build_workspace_layout(default_measure_options: list[str], tab_value: str):
+def build_workspace_layout(default_measure_options: list[str], tab_value: str, plot_settings: dict | None = None):
     """Extract only the selected workspace page from the legacy composition."""
-    legacy_layout = _build_legacy_layout(default_measure_options)
+    legacy_layout = _build_legacy_layout(default_measure_options, plot_settings)
     tabs = legacy_layout.children[4].children[1].children[2]
     selected_tab = next(tab for tab in tabs.children if tab.value == tab_value)
     return html.Div(className="workspace-page", children=selected_tab.children)
+
+
+def _plot_options_card(prefix: str, settings: dict):
+    """Build the neutral, per-plot controls shown beneath each graph."""
+    values = {
+        "x_scale": "linear",
+        "log_y": False,
+        "font_size": 14,
+        "line_width": 2,
+        "show_legend": True,
+        "show_grid": True,
+        "show_title": True,
+        **(settings or {}),
+    }
+
+    def dropdown(name: str, options: list[dict], value):
+        return dcc.Dropdown(
+            id=f"plot-{prefix}-{name}",
+            options=options,
+            value=value,
+            clearable=False,
+            optionHeight=34,
+            maxHeight=170,
+            persistence=True,
+            persistence_type="session",
+            className="dashboard-dropdown plot-option-control",
+        )
+
+    def number(name: str, value, minimum, maximum, step):
+        return dcc.Input(
+            id=f"plot-{prefix}-{name}",
+            type="number",
+            value=value,
+            min=minimum,
+            max=maximum,
+            step=step,
+            persistence=True,
+            persistence_type="session",
+            className="field-input plot-option-control plot-number-control",
+        )
+
+    fields = [
+        ("X scale", dropdown("x-scale", [{"label": "Linear", "value": "linear"}, {"label": "Logarithmic", "value": "log"}], values["x_scale"])),
+        ("Y scale", dropdown("y-scale", [{"label": "Linear", "value": False}, {"label": "Logarithmic", "value": True}], bool(values["log_y"]))),
+        ("Font size", number("font-size", values["font_size"], 8, 32, 1)),
+        ("Line width", number("line-width", values["line_width"], 0.5, 8, 0.5)),
+        ("Legend", dropdown("legend", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_legend"])),),
+        ("Grid", dropdown("grid", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_grid"])),),
+    ]
+    return html.Section(
+        className="plot-options-card",
+        children=[
+            html.Div(className="plot-options-title", children="Plot options"),
+            html.Div(className="plot-options-grid", children=[html.Div(className="plot-option-field", children=[html.Label(label), control]) for label, control in fields]),
+        ],
+    )
 
 
 def create_layout(default_measure_options: list[str]):
@@ -190,12 +249,12 @@ def create_layout(default_measure_options: list[str]):
             dcc.Store(id="theme-store", data={"theme": "light"}, storage_type="session"),
             dcc.Store(id="plot-settings-store", data={
                 "particle_explorer": {
-                    "font_size": 14, "line_width": 2, "marker_size": 6, "template": "match-theme",
-                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "show_title": True, "log_y": False,
+                    "font_size": 14, "line_width": 2, "template": "match-theme",
+                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "x_scale": "linear", "show_title": True, "log_y": False,
                 },
                 "parameter_sweep": {
-                    "font_size": 14, "line_width": 2, "marker_size": 6, "template": "match-theme",
-                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "show_title": True, "log_y": False,
+                    "font_size": 14, "line_width": 2, "template": "match-theme",
+                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "x_scale": "linear", "show_title": True, "log_y": False,
                 },
             }, storage_type="session"),
             html.Link(id="theme-link", rel="stylesheet", href=THEME_LIGHT),
@@ -305,7 +364,7 @@ def _build_single_tab():
                     ),
                     html.Section(
                         className="result-column",
-                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)])],
+                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG), _plot_options_card("single", particle_settings)])],
                     ),
                 ],
             ),

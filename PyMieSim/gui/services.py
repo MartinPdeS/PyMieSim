@@ -300,11 +300,18 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
 
         if extra_axes:
             series_column = extra_axes[0]
+            frame = frame.copy()
 
             if len(extra_axes) > 1:
                 series_column = "__series__"
-                frame = frame.copy()
-                frame[series_column] = frame[extra_axes].astype(str).agg(" | ".join, axis=1)
+                frame[series_column] = frame[extra_axes].apply(
+                    lambda row: " | ".join(_format_plot_value(value) for value in row),
+                    axis=1,
+                )
+            else:
+                frame[series_column] = frame[series_column].map(
+                    _format_plot_value
+                )
 
             plot_kwargs["color"] = series_column
             plot_kwargs["line_group"] = series_column
@@ -326,7 +333,10 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
         xaxis_title=xaxis_title,
         yaxis_title=yaxis_title,
         legend_title_text="",
-        meta={"polar_axis_unit": xaxis_unit},
+        meta={
+            "polar_axis_unit": xaxis_unit,
+            "legend_description": " | ".join(extra_axes),
+        },
     )
     apply_plot_settings(figure, plot_settings, theme)
 
@@ -343,11 +353,11 @@ def apply_plot_settings(
     settings = {
         "font_size": 14,
         "line_width": 2,
-        "marker_size": 6,
         "template": "match-theme",
         "show_legend": True,
         "show_grid": True,
         "coordinate_system": "cartesian",
+        "x_scale": "linear",
         "show_title": True,
         "log_y": False,
         **(plot_settings or {}),
@@ -360,17 +370,43 @@ def apply_plot_settings(
         template=template,
         font={"size": settings["font_size"]},
         showlegend=bool(settings["show_legend"]),
-        title_text=figure.layout.title.text if settings["show_title"] else "",
+        legend={
+            "orientation": "h",
+            "x": 0,
+            "xanchor": "left",
+            "y": -0.31,
+            "yanchor": "top",
+            "bgcolor": "rgba(32, 37, 43, 0.82)" if is_dark else "rgba(255, 255, 255, 0.92)",
+            "bordercolor": "rgba(255, 255, 255, 0.24)" if is_dark else "rgba(96, 110, 123, 0.28)",
+            "borderwidth": 1,
+            "entrywidthmode": "pixels",
+            "entrywidth": 170,
+            "font": {"size": max(10, int(settings["font_size"] * 0.85)), "color": "#f3f5f7" if is_dark else "#26323b"},
+        },
+        margin={"b": 145},
+        title_text="",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         plot_bgcolor="#20252b" if is_dark else "white",
-        xaxis={"showgrid": bool(settings["show_grid"])},
+        xaxis={"showgrid": bool(settings["show_grid"]), "type": settings["x_scale"]},
         yaxis={"showgrid": bool(settings["show_grid"]), "type": "log" if settings["log_y"] else "linear"},
     )
+    metadata = figure.layout.meta if isinstance(figure.layout.meta, dict) else {}
+    legend_description = metadata.get("legend_description")
+    if legend_description:
+        figure.add_annotation(
+            text=legend_description,
+            x=0,
+            xref="paper",
+            y=-0.24,
+            yref="paper",
+            xanchor="left",
+            yanchor="top",
+            showarrow=False,
+            font={"size": max(10, int(settings["font_size"] * 0.78)), "color": "#f3f5f7" if is_dark else "#52616d"},
+        )
     for trace in figure.data:
         if getattr(trace, "line", None) is not None:
             trace.line.width = settings["line_width"]
-        if getattr(trace, "marker", None) is not None:
-            trace.marker.size = settings["marker_size"]
     if polar_allowed is None:
         metadata = figure.layout.meta if isinstance(figure.layout.meta, dict) else {}
         polar_allowed = _is_angular_unit(metadata.get("polar_axis_unit"))
@@ -384,6 +420,18 @@ def _is_angular_unit(unit: Any) -> bool:
     """Return whether a serialized unit represents radians or degrees."""
     normalized = str(unit or "").strip().lower().replace("°", "degree")
     return normalized in {"rad", "radian", "radians", "deg", "degree", "degrees"}
+
+
+def _format_plot_value(value: Any) -> str:
+    """Keep legend values readable without exposing floating-point noise."""
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError):
+        return str(value)
+
+    if not np.isfinite(numeric):
+        return str(value)
+    return f"{numeric:.4g}"
 
 
 def _convert_traces_to_polar(figure: go.Figure, show_grid: bool, log_y: bool) -> None:

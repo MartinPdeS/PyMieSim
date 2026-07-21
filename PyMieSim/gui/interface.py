@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 import webbrowser
+from typing import Any
 
 from dash import ALL, Dash, Input, Output, State, dcc, no_update
 
@@ -136,53 +137,73 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             return build_page_with_footer(build_settings_page((theme_store or {}).get("theme", "light"), plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/single":
             active["single"] += " active"
-            return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+            return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab", plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/experiment":
             active["experiment"] += " active"
-            return build_page_with_footer(build_workspace_layout(default_measure_options, "experiment-tab")), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+            return build_page_with_footer(build_workspace_layout(default_measure_options, "experiment-tab", plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         active["home"] += " active"
         return build_page_with_footer(build_home_page(metrics)), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
 
     @app.callback(
         Output("plot-settings-store", "data"),
-        Output("settings-save-status", "children"),
-        Input("settings-particle-font-size", "value"),
-        Input("settings-particle-line-width", "value"),
-        Input("settings-particle-marker-size", "value"),
-        Input("settings-particle-template", "value"),
-        Input("settings-particle-coordinates", "value"),
-        Input("settings-particle-legend", "value"),
-        Input("settings-particle-grid", "value"),
-        Input("settings-particle-title", "value"),
-        Input("settings-particle-log-y", "value"),
-        Input("settings-sweep-font-size", "value"),
-        Input("settings-sweep-line-width", "value"),
-        Input("settings-sweep-marker-size", "value"),
-        Input("settings-sweep-template", "value"),
-        Input("settings-sweep-coordinates", "value"),
-        Input("settings-sweep-legend", "value"),
-        Input("settings-sweep-grid", "value"),
-        Input("settings-sweep-title", "value"),
-        Input("settings-sweep-log-y", "value"),
+        Input("settings-particle-font-size", "value", allow_optional=True),
+        Input("settings-particle-line-width", "value", allow_optional=True),
+        Input("settings-particle-template", "value", allow_optional=True),
+        Input("settings-particle-coordinates", "value", allow_optional=True),
+        Input("settings-particle-x-scale", "value", allow_optional=True),
+        Input("settings-particle-legend", "value", allow_optional=True),
+        Input("settings-particle-grid", "value", allow_optional=True),
+        Input("settings-particle-log-y", "value", allow_optional=True),
+        Input("settings-sweep-font-size", "value", allow_optional=True),
+        Input("settings-sweep-line-width", "value", allow_optional=True),
+        Input("settings-sweep-template", "value", allow_optional=True),
+        Input("settings-sweep-coordinates", "value", allow_optional=True),
+        Input("settings-sweep-x-scale", "value", allow_optional=True),
+        Input("settings-sweep-legend", "value", allow_optional=True),
+        Input("settings-sweep-grid", "value", allow_optional=True),
+        Input("settings-sweep-log-y", "value", allow_optional=True),
+        Input("plot-single-x-scale", "value", allow_optional=True),
+        Input("plot-single-y-scale", "value", allow_optional=True),
+        Input("plot-single-font-size", "value", allow_optional=True),
+        Input("plot-single-line-width", "value", allow_optional=True),
+        Input("plot-single-legend", "value", allow_optional=True),
+        Input("plot-single-grid", "value", allow_optional=True),
+        Input("plot-experiment-x-scale", "value", allow_optional=True),
+        Input("plot-experiment-y-scale", "value", allow_optional=True),
+        Input("plot-experiment-font-size", "value", allow_optional=True),
+        Input("plot-experiment-line-width", "value", allow_optional=True),
+        Input("plot-experiment-legend", "value", allow_optional=True),
+        Input("plot-experiment-grid", "value", allow_optional=True),
         State("plot-settings-store", "data"),
     )
     def _sync_plot_settings(*values):
         stored_settings = values[-1] or {}
-        particle_values = values[:9]
-        sweep_values = values[9:18]
+        particle_values = values[:8]
+        sweep_values = values[8:16]
+        single_local_values = values[16:22]
+        experiment_local_values = values[22:28]
 
         def merge(defaults, key, settings_values):
             current = {**defaults, **(stored_settings.get(key, {}) if isinstance(stored_settings, dict) else {})}
-            names = ("font_size", "line_width", "marker_size", "template", "coordinate_system", "show_legend", "show_grid", "show_title", "log_y")
+            names = ("font_size", "line_width", "template", "coordinate_system", "x_scale", "show_legend", "show_grid", "log_y")
             for name, value in zip(names, settings_values):
                 if value is not None:
                     current[name] = value
             return current
 
+        def merge_local(current, local_values):
+            names = ("x_scale", "log_y", "font_size", "line_width", "show_legend", "show_grid")
+            for name, value in zip(names, local_values):
+                if value is not None:
+                    current[name] = value
+            return current
+
+        particle = merge(DEFAULT_PARTICLE_PLOT_SETTINGS, "particle_explorer", particle_values)
+        sweep = merge(DEFAULT_SWEEP_PLOT_SETTINGS, "parameter_sweep", sweep_values)
         return {
-            "particle_explorer": merge(DEFAULT_PARTICLE_PLOT_SETTINGS, "particle_explorer", particle_values),
-            "parameter_sweep": merge(DEFAULT_SWEEP_PLOT_SETTINGS, "parameter_sweep", sweep_values),
-        }, "All settings are saved automatically."
+            "particle_explorer": merge_local(particle, single_local_values),
+            "parameter_sweep": merge_local(sweep, experiment_local_values),
+        }
 
     @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
     def _render_source_fields(source_type: str):
@@ -369,10 +390,17 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("x-axis-select", "value"),
         Input("plot-settings-store", "data"),
         Input("theme-store", "data"),
+        Input("plot-experiment-x-scale", "value", allow_optional=True),
+        Input("plot-experiment-y-scale", "value", allow_optional=True),
+        Input("plot-experiment-font-size", "value", allow_optional=True),
+        Input("plot-experiment-line-width", "value", allow_optional=True),
+        Input("plot-experiment-legend", "value", allow_optional=True),
+        Input("plot-experiment-grid", "value", allow_optional=True),
     )
-    def _update_outputs(result: dict | None, x_axis: str | None, plot_settings: dict | None, theme_store: dict | None):
+    def _update_outputs(result: dict | None, x_axis: str | None, plot_settings: dict | None, theme_store: dict | None, *local_values):
         LOGGER.debug("Updating outputs for x_axis=%s result_present=%s", x_axis, bool(result))
         sweep_settings = (plot_settings or {}).get("parameter_sweep", plot_settings or {})
+        sweep_settings = _merge_local_plot_values(sweep_settings, local_values)
         return build_figure(result, x_axis, plot_settings=sweep_settings, theme=(theme_store or {}).get("theme", "light"))
 
     @app.callback(
@@ -426,9 +454,16 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("single-result", "data"),
         Input("plot-settings-store", "data"),
         Input("theme-store", "data"),
+        Input("plot-single-x-scale", "value", allow_optional=True),
+        Input("plot-single-y-scale", "value", allow_optional=True),
+        Input("plot-single-font-size", "value", allow_optional=True),
+        Input("plot-single-line-width", "value", allow_optional=True),
+        Input("plot-single-legend", "value", allow_optional=True),
+        Input("plot-single-grid", "value", allow_optional=True),
     )
-    def _update_single_outputs(result: dict | None, plot_settings: dict | None, theme_store: dict | None):
+    def _update_single_outputs(result: dict | None, plot_settings: dict | None, theme_store: dict | None, *local_values):
         particle_settings = (plot_settings or {}).get("particle_explorer", plot_settings or {})
+        particle_settings = _merge_local_plot_values(particle_settings, local_values)
         if not result:
             return build_single_empty_figure(plot_settings=particle_settings, theme=(theme_store or {}).get("theme", "light"))
         from plotly.graph_objects import Figure
@@ -439,6 +474,16 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
 def _pair_ids_with_values(ids: list[dict[str, str]], values: list[str]) -> dict[str, str]:
     """Convert dynamic Dash field IDs and values into a flat mapping."""
     return {field_id["name"]: value for field_id, value in zip(ids, values)}
+
+
+def _merge_local_plot_values(settings: dict | None, values: tuple[Any, ...]) -> dict:
+    """Overlay values from a plot-local options card onto stored preferences."""
+    merged = dict(settings or {})
+    names = ("x_scale", "log_y", "font_size", "line_width", "show_legend", "show_grid")
+    for name, value in zip(names, values):
+        if value is not None:
+            merged[name] = value
+    return merged
 
 
 def build_single_empty_figure(plot_settings: dict | None = None, theme: str = "light"):

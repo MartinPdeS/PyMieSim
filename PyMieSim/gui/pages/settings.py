@@ -10,11 +10,11 @@ from PyMieSim.gui.components import Card
 _COMMON_PLOT_SETTINGS = {
     "font_size": 14,
     "line_width": 2,
-    "marker_size": 6,
     "template": "match-theme",
     "show_legend": True,
     "show_grid": True,
     "coordinate_system": "cartesian",
+    "x_scale": "linear",
     "show_title": True,
     "log_y": False,
 }
@@ -78,12 +78,11 @@ def _plot_card(prefix: str, title: str, color: str, settings: dict):
                 children=[
                     _number_setting("Font size", f"settings-{prefix}-font-size", settings["font_size"], 8, 32, 1),
                     _number_setting("Line width", f"settings-{prefix}-line-width", settings["line_width"], 0.5, 8, 0.5),
-                    _number_setting("Marker size", f"settings-{prefix}-marker-size", settings["marker_size"], 0, 24, 1),
                     _dropdown_field("Plot theme", f"settings-{prefix}-template", [{"label": "Match application theme", "value": "match-theme"}, {"label": "Light plot", "value": "plotly_white"}, {"label": "Dark plot", "value": "plotly_dark"}], settings["template"]),
                     _dropdown_field("Coordinates", f"settings-{prefix}-coordinates", [{"label": "Cartesian", "value": "cartesian"}, {"label": "Polar (when supported)", "value": "polar"}], settings["coordinate_system"]),
+                    _dropdown_field("X-axis scale", f"settings-{prefix}-x-scale", [{"label": "Linear", "value": "linear"}, {"label": "Logarithmic", "value": "log"}], settings["x_scale"]),
                     _dropdown_field("Legend", f"settings-{prefix}-legend", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(settings["show_legend"])),
                     _dropdown_field("Grid", f"settings-{prefix}-grid", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(settings["show_grid"])),
-                    _dropdown_field("Title", f"settings-{prefix}-title", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(settings["show_title"])),
                     _dropdown_field("Y-axis scale", f"settings-{prefix}-log-y", [{"label": "Linear", "value": False}, {"label": "Logarithmic", "value": True}], bool(settings["log_y"])),
                 ],
             ),
