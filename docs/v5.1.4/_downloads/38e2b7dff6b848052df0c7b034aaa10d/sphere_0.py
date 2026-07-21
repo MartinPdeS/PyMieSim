@@ -1,0 +1,89 @@
+"""
+Sphere Particles: 0
+===================
+
+"""
+
+# Standard library imports
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from PyMieSim.units import ureg
+
+# PyMieSim imports
+from PyMieSim.experiment.scatterer_set import SphereSet
+from PyMieSim.experiment.source_set import GaussianSet
+from PyMieSim.experiment.polarization_set import PolarizationSet
+from PyMieSim.experiment import Setup
+from PyMieSim.directories import validation_data_path
+
+
+# Define parameters
+wavelength = 632.8 * ureg.nanometer  # Wavelength of the light source in meters
+polarization = PolarizationSet(angles=0 * ureg.degree)
+optical_power = 1e-3 * ureg.watt  # Power in watts
+NA = 0.2  # Numerical aperture
+medium_index = 1.21
+index = 1.4
+diameters = (
+    np.geomspace(10, 1_000, 50) * ureg.nanometer
+)  # Geometric space for diameters
+
+# Setup source
+source = GaussianSet(
+    wavelength=[632.8] * ureg.nanometer,
+    polarization=polarization,
+    optical_power=[1e-3] * ureg.watt,
+    numerical_aperture=[0.2],
+)
+
+# Setup scatterer
+scatterer = SphereSet(
+    diameter=diameters,
+    material=[1.4],
+    medium=[1.21],
+)
+
+# Define experiment setup
+experiment = Setup(scatterer_set=scatterer, source_set=source)
+
+comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
+
+# Simulate using PyMieSim
+pymiesim = experiment.get(*comparison_measures, as_numpy=True)
+
+pymiescatt_dataframe = pd.read_csv(
+    validation_data_path / "pymiescatt/example_shpere_0.csv"
+)
+
+# Plot results
+figure, ax = plt.subplots(1, 1)
+
+pymiescatt_dataframe.diameter *= 1e9
+
+ax.set(
+    xlabel="Diameter [nm]",
+    ylabel="Scattering Efficiencies",
+    title="Scattering parameters Comparison for Sphere Particles",
+)
+
+for string in comparison_measures:
+    ax.plot(
+        pymiescatt_dataframe["diameter"],
+        pymiescatt_dataframe[string],
+        label="PyMieScatt: " + string,
+        linewidth=3,
+    )
+
+for data, string in zip(pymiesim, comparison_measures):
+    ax.plot(
+        diameters.to(ureg.nanometer).magnitude,
+        data,
+        label="PyMieSim: " + string,
+        linestyle="--",
+        color="black",
+        linewidth=1.5,
+    )
+
+plt.legend()
+plt.show()
