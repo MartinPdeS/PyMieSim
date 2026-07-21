@@ -294,7 +294,7 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
         resolved_x_axis = "index"
         figure = px.bar(frame.assign(index=[0] * len(frame)), x="index", y=measure)
     else:
-        resolved_x_axis = x_axis if x_axis in parameter_columns else parameter_columns[0]
+        resolved_x_axis = _resolve_x_axis(x_axis, parameter_columns)
         extra_axes = [column for column in parameter_columns if column != resolved_x_axis]
         plot_kwargs: dict[str, Any] = {"x": resolved_x_axis, "y": measure}
 
@@ -343,6 +343,19 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
     return figure
 
 
+def _resolve_x_axis(x_axis: str | None, parameter_columns: list[str]) -> str:
+    """Resolve a selector field name against namespaced result columns."""
+    if x_axis in parameter_columns:
+        return x_axis
+
+    if x_axis:
+        matching_columns = [column for column in parameter_columns if column.rsplit(":", 1)[-1] == x_axis]
+        if matching_columns:
+            return matching_columns[0]
+
+    return parameter_columns[0]
+
+
 def apply_plot_settings(
     figure: go.Figure,
     plot_settings: dict[str, Any] | None = None,
@@ -374,7 +387,7 @@ def apply_plot_settings(
             "orientation": "h",
             "x": 0,
             "xanchor": "left",
-            "y": -0.31,
+            "y": -0.38,
             "yanchor": "top",
             "bgcolor": "rgba(32, 37, 43, 0.82)" if is_dark else "rgba(255, 255, 255, 0.92)",
             "bordercolor": "rgba(255, 255, 255, 0.24)" if is_dark else "rgba(96, 110, 123, 0.28)",
@@ -383,7 +396,7 @@ def apply_plot_settings(
             "entrywidth": 170,
             "font": {"size": max(10, int(settings["font_size"] * 0.85)), "color": "#f3f5f7" if is_dark else "#26323b"},
         },
-        margin={"b": 145},
+        margin={"b": 125},
         title_text="",
         paper_bgcolor="rgba(0, 0, 0, 0)",
         plot_bgcolor="#20252b" if is_dark else "white",
@@ -392,12 +405,12 @@ def apply_plot_settings(
     )
     metadata = figure.layout.meta if isinstance(figure.layout.meta, dict) else {}
     legend_description = metadata.get("legend_description")
-    if legend_description:
+    if legend_description and settings["show_legend"]:
         figure.add_annotation(
             text=legend_description,
             x=0,
             xref="paper",
-            y=-0.24,
+            y=-0.29,
             yref="paper",
             xanchor="left",
             yanchor="top",

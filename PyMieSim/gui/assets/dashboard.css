@@ -2291,6 +2291,23 @@ select:focus {
     box-shadow: 0 0 0 2px rgba(44, 120, 180, 0.18);
 }
 
+html input::placeholder {
+    color: #9aa7b2;
+    opacity: 1;
+}
+
+html .field-input-invalid {
+    border-color: #dc3545 !important;
+    background: #fff5f5 !important;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, .14);
+}
+
+html .field-input {
+    min-height: 48px;
+    padding: 10px 12px;
+    font-size: .95rem;
+}
+
 .field-help {
     display: block;
     margin-top: 6px;
@@ -2999,5 +3016,82 @@ body {
 
     .workspace {
         grid-template-columns: minmax(320px, 25%) minmax(0, 1fr) !important;
+    }
+}
+
+/* Compact controls inside the Source, Scatterer, and Detector cards. */
+html .workflow-card .field-input {
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 8px 12px !important;
+    border-radius: 8px;
+    font-size: .95rem;
+}
+
+html .workflow-card .dashboard-dropdown .Select-control {
+    height: 42px !important;
+    min-height: 42px !important;
+    border-radius: 8px;
+}
+
+html .workflow-card .dashboard-dropdown .Select-placeholder,
+html .workflow-card .dashboard-dropdown .Select--single > .Select-control .Select-value {
+    line-height: 40px;
+    font-size: .95rem;
+}
+
+html .plot-options-card .plot-option-control,
+html .plot-options-card .plot-option-control.dashboard-dropdown,
+html .plot-options-card .plot-option-control.dashboard-dropdown .Select-control {
+    width: 104px !important;
+    min-width: 104px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    box-sizing: border-box;
+}
+
+.graph-axis-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 0 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(96, 110, 123, .20);
+    border-radius: 8px;
+    background: #f7f8f9;
+}
+
+.graph-axis-copy {
+    min-width: 0;
+}
+
+.graph-axis-title {
+    color: #52616d;
+    font-size: .78rem;
+    font-weight: 750;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.graph-axis-help {
+    margin-top: 3px;
+    color: #7b8790;
+    font-size: .76rem;
+}
+
+.graph-axis-control {
+    flex: 0 0 230px;
+}
+
+@media (max-width: 620px) {
+    .graph-axis-card {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .graph-axis-control {
+        flex-basis: auto;
+        width: 100%;
     }
 }

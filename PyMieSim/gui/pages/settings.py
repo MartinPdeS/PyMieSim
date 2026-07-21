@@ -99,4 +99,4 @@ def _dropdown(component_id: str, options: list[dict], value):
 
 
 def _number_setting(label: str, component_id: str, value: int | float, minimum: int | float, maximum: int | float, step: int | float):
-    return html.Div(className="settings-field", children=[html.Label(label, htmlFor=component_id, className="settings-label"), dcc.Input(id=component_id, type="number", value=value, min=minimum, max=maximum, step=step, persistence=True, persistence_type="session", className="settings-number-input")])
+    return html.Div(className="settings-field", children=[html.Label(label, htmlFor=component_id, className="settings-label"), dcc.Input(id=component_id, type="number", value=value, min=minimum, max=maximum, step=step, placeholder=str(value), persistence=True, persistence_type="session", className="settings-number-input")])

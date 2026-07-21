@@ -99,13 +99,6 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                                                     ),
                                                                 ],
                                                             ),
-                                                            html.Div(
-                                                                className="field-block",
-                                                                children=[
-                                                                    html.Label("X Axis", htmlFor="x-axis-select"),
-                                                                    dcc.Dropdown(id="x-axis-select", className="dashboard-dropdown", options=[], placeholder="Detected from fields with multiple values", optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
-                                                                ],
-                                                            ),
                                                         ],
                                                     ),
                                                     html.Div(
@@ -125,28 +118,10 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                         children=[
                                             html.Section(
                                                 className="panel graph-panel",
-                                                children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG), _plot_options_card("experiment", sweep_settings)],
+                                                children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)],
                                             ),
-                                            html.Section(
-                                                id="guide",
-                                                className="panel helper-panel",
-                                                children=[
-                                                    html.Div(className="panel-header", children=[html.H2("Field Syntax Guide")]),
-                                                    html.P(
-                                                        "Every text field accepts compact batch input, so you can sweep parameters without rewriting the form.",
-                                                        className="helper-copy",
-                                                    ),
-                                                    html.Div(
-                                                        className="helper-examples",
-                                                        children=[
-                                                            html.Div(className="helper-chip", children=[html.Strong("a:b:c"), html.Span("Generate a sweep from start to stop using exactly c points, for example 400:1400:8.")]),
-                                                            html.Div(className="helper-chip", children=[html.Strong("1,2,3"), html.Span("Enter a manual list when you want precise sampled values instead of an evenly spaced sweep.")]),
-                                                            html.Div(className="helper-chip", children=[html.Strong("LP01,HG11"), html.Span("Mode and label fields also accept comma-separated names for detector families or custom batches.")]),
-                                                            html.Div(className="helper-chip helper-chip-note", children=[html.Strong("Tip"), html.Span("Keep the X axis on the parameter you actually swept if you want clean one-panel plots.")]),
-                                                        ],
-                                                    ),
-                                                ],
-                                            ),
+                                            _x_axis_card(),
+                                            _plot_options_card("experiment", sweep_settings),
                                         ],
                                     ),
                                 ],
@@ -212,6 +187,7 @@ def _plot_options_card(prefix: str, settings: dict):
             min=minimum,
             max=maximum,
             step=step,
+            placeholder=str(value),
             persistence=True,
             persistence_type="session",
             className="field-input plot-option-control plot-number-control",
@@ -230,6 +206,26 @@ def _plot_options_card(prefix: str, settings: dict):
         children=[
             html.Div(className="plot-options-title", children="Plot options"),
             html.Div(className="plot-options-grid", children=[html.Div(className="plot-option-field", children=[html.Label(label), control]) for label, control in fields]),
+        ],
+    )
+
+
+def _x_axis_card():
+    """Build the post-plot X-axis selector, separate from run controls."""
+    return html.Section(
+        className="graph-axis-card",
+        children=[
+            html.Div(className="graph-axis-copy", children=[html.Div("Graph axis", className="graph-axis-title"), html.Div("Choose which swept parameter is shown horizontally.", className="graph-axis-help")]),
+            dcc.Dropdown(
+                id="x-axis-select",
+                className="dashboard-dropdown graph-axis-control",
+                options=[],
+                placeholder="Detected from fields with multiple values",
+                optionHeight=38,
+                maxHeight=200,
+                persistence=True,
+                persistence_type="session",
+            ),
         ],
     )
 
@@ -355,7 +351,7 @@ def _build_single_tab():
                                 children=[
                                     html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
                                     html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
-                                    html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, className="field-input", persistence=True, persistence_type="session")]),
+                                    html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, placeholder="120", className="field-input", persistence=True, persistence_type="session")]),
                                     html.Button("Render representation", id="run-single", n_clicks=0, className="run-button run-button-primary"),
                                     html.Div(id="single-status", className="status-banner idle", children="Ready."),
                                 ],
@@ -364,7 +360,7 @@ def _build_single_tab():
                     ),
                     html.Section(
                         className="result-column",
-                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG), _plot_options_card("single", particle_settings)])],
+                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)]), _plot_options_card("single", particle_settings)],
                     ),
                 ],
             ),
@@ -512,8 +508,8 @@ def render_field(section: str, field_spec: FieldSpec):
                 id={"kind": "field", "section": section, "name": field_spec.name},
                 type="text",
                 value=field_spec.default,
-                debounce=True,
-                placeholder=field_spec.placeholder,
+                debounce=False,
+                placeholder=field_spec.placeholder or field_spec.default,
                 className="field-input",
                 persistence=True,
                 persistence_type="session",

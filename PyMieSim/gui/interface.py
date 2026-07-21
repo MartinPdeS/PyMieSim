@@ -7,7 +7,7 @@ from pathlib import Path
 import webbrowser
 from typing import Any
 
-from dash import ALL, Dash, Input, Output, State, dcc, no_update
+from dash import ALL, MATCH, Dash, Input, Output, State, dcc, no_update
 
 from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, build_workspace_layout, create_layout, render_fields
 from PyMieSim.gui.pages.documentation import build_documentation_page
@@ -15,6 +15,7 @@ from PyMieSim.gui.pages.citation import build_citation_page
 from PyMieSim.gui.pages.home import build_home_page
 from PyMieSim.gui.pages.install_local import build_install_local_page
 from PyMieSim.gui.pages.settings import DEFAULT_PARTICLE_PLOT_SETTINGS, DEFAULT_SWEEP_PLOT_SETTINGS, build_settings_page
+from PyMieSim.gui.schemas import DETECTOR_FIELDS, SCATTERER_FIELDS, SINGLE_SCATTERER_FIELDS, SINGLE_SOURCE_FIELDS, SOURCE_FIELDS
 from PyMieSim.gui.services import (
     available_measures,
     apply_plot_settings,
@@ -23,6 +24,7 @@ from PyMieSim.gui.services import (
     infer_variable_fields,
     build_single_figure,
     run_experiment,
+    _parse_field_value,
 )
 
 
@@ -204,6 +206,58 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             "particle_explorer": merge_local(particle, single_local_values),
             "parameter_sweep": merge_local(sweep, experiment_local_values),
         }
+
+    @app.callback(
+        Output({"kind": "field", "section": MATCH, "name": ALL}, "className"),
+        Input({"kind": "field", "section": MATCH, "name": ALL}, "value"),
+        State({"kind": "field", "section": MATCH, "name": ALL}, "id"),
+        State("source-type", "value", allow_optional=True),
+        State("scatterer-type", "value", allow_optional=True),
+        State("detector-type", "value", allow_optional=True),
+        State("single-source-type", "value", allow_optional=True),
+        State("single-scatterer-type", "value", allow_optional=True),
+    )
+    def _validate_fields(values, field_ids, source_type, scatterer_type, detector_type, single_source_type, single_scatterer_type):
+        """Mark schema-invalid dynamic inputs without interrupting the form."""
+        if not field_ids:
+            return []
+
+        selected_types = {
+            "source": source_type,
+            "scatterer": scatterer_type,
+            "detector": detector_type,
+            "single-source": single_source_type,
+            "single-scatterer": single_scatterer_type,
+        }
+        schema_groups = {
+            "source": SOURCE_FIELDS,
+            "scatterer": SCATTERER_FIELDS,
+            "detector": DETECTOR_FIELDS,
+            "single-source": SINGLE_SOURCE_FIELDS,
+            "single-scatterer": SINGLE_SCATTERER_FIELDS,
+        }
+
+        classes = []
+        for field_id, raw_value in zip(field_ids, values):
+            section = field_id["section"]
+            selected_type = selected_types.get(section)
+            field_specs = schema_groups.get(section, {}).get(selected_type, ())
+            field = next((spec for spec in field_specs if spec.name == field_id["name"]), None)
+            valid = field is not None
+
+            if field is not None:
+                empty = raw_value is None or str(raw_value).strip() == ""
+                valid = field.optional and empty
+                if not empty:
+                    try:
+                        _parse_field_value(field.kind, raw_value, field.unit)
+                        valid = True
+                    except (TypeError, ValueError, KeyError):
+                        valid = False
+
+            classes.append("field-input" if valid else "field-input field-input-invalid")
+
+        return classes
 
     @app.callback(Output("source-fields", "children"), Input("source-type", "value"))
     def _render_source_fields(source_type: str):
