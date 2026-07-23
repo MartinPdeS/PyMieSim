@@ -61,8 +61,8 @@ DETECTOR_FIELDS = {
         FieldSpec("gamma_offset", "Gamma Offset", "quantity", "0", ureg.degree),
         FieldSpec("phi_offset", "Phi Offset", "quantity", "0", ureg.degree),
         FieldSpec("sampling", "Sampling", "integer", "200"),
-        FieldSpec("polarization_filter", "Polarization Filter", "quantity", "", ureg.degree, optional=True),
-        FieldSpec("medium", "Detector Medium", "medium", "", optional=True),
+        FieldSpec("polarization_filter", "Polarization Filter", "quantity", "", ureg.degree, optional=True, placeholder="None"),
+        FieldSpec("medium", "Detector Medium", "medium", "1.0", optional=True, placeholder="1.0 (default)"),
     ),
     "CoherentModeSet": (
         FieldSpec("mode_number", "Mode Number", "mode", "LP01", help_text="Use a single mode label or comma-separated labels such as LP01,HG11."),
@@ -71,8 +71,8 @@ DETECTOR_FIELDS = {
         FieldSpec("phi_offset", "Phi Offset", "quantity", "0", ureg.degree),
         FieldSpec("rotation", "Rotation", "quantity", "0", ureg.degree),
         FieldSpec("sampling", "Sampling", "integer", "200"),
-        FieldSpec("polarization_filter", "Polarization Filter", "quantity", "", ureg.degree, optional=True),
-        FieldSpec("medium", "Detector Medium", "medium", "", optional=True),
+        FieldSpec("polarization_filter", "Polarization Filter", "quantity", "", ureg.degree, optional=True, placeholder="None"),
+        FieldSpec("medium", "Detector Medium", "medium", "1.0", optional=True, placeholder="1.0 (default)"),
     ),
 }
 

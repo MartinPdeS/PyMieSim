@@ -3,12 +3,12 @@
 from dash import dcc, html
 
 from PyMieSim.gui.components import HeaderCard
-from PyMieSim.gui.layout import PLOT_CONFIG
+from PyMieSim.gui.layout import PLOT_CONFIG, _plot_options_card
 
 from .sections import build_representation_section, build_scatterer_section, build_source_section
 
 
-def build_single_page():
+def build_single_page(plot_settings: dict | None = None):
     """Build the single page from independent setup and plot sections."""
     return html.Div(
         className="tab-content-stack single-tab-content",
@@ -23,6 +23,6 @@ def build_single_page():
                 ],
                 color="green",
             ).render(),
-            html.Section(className="single-workspace", children=[html.Section(className="control-column", children=[build_source_section(), build_scatterer_section()]), html.Section(className="result-column", children=[html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)]), build_representation_section()])]),
+            html.Section(className="single-workspace", children=[html.Section(className="control-column", children=[build_source_section(), build_scatterer_section()]), html.Section(className="result-column", children=[html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)]), build_representation_section(), _plot_options_card("single", plot_settings or {}), html.Div(className="export-actions", children=[html.Button("Export CSV", id="export-single-csv", n_clicks=0, className="run-button export-button")])])]),
         ],
     )

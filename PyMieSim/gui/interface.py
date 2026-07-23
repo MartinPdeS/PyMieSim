@@ -21,6 +21,7 @@ from PyMieSim.gui.services import (
     apply_plot_settings,
     build_figure,
     export_result_to_csv,
+    export_single_result_to_csv,
     infer_variable_fields,
     build_single_figure,
     run_experiment,
@@ -260,7 +261,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                     except (TypeError, ValueError, KeyError):
                         valid = False
 
-            classes.append("field-input" if valid else "field-input field-input-invalid")
+            is_detector_default = section == "detector" and field is not None and field.name in {"polarization_filter", "medium"} and (raw_value is None or str(raw_value).strip() in {"", field.default})
+            classes.append("field-input field-input-default" if valid and is_detector_default else "field-input" if valid else "field-input field-input-invalid")
 
         return classes
 
@@ -439,6 +441,22 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         return dcc.send_string(csv_content, filename)
 
     @app.callback(
+        Output("single-csv-download", "data"),
+        Input("export-single-csv", "n_clicks"),
+        State("single-result", "data"),
+        prevent_initial_call=True,
+    )
+    def _export_single_csv(n_clicks: int, result: dict | None):
+        if not n_clicks:
+            return no_update
+
+        csv_content = export_single_result_to_csv(result)
+        if not csv_content:
+            return no_update
+
+        return dcc.send_string(csv_content, "pymiesim_particle_explorer.csv")
+
+    @app.callback(
         Output("result-graph", "figure"),
         Input("experiment-result", "data"),
         Input("x-axis-select", "value"),
@@ -467,6 +485,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input({"kind": "field", "section": "single-scatterer", "name": ALL}, "value"),
         State({"kind": "field", "section": "single-scatterer", "name": ALL}, "id"),
         Input("single-representation", "value"),
+        Input("single-projection", "value"),
         Input("single-sampling", "value"),
         State("single-run-count", "data"),
     )
@@ -478,6 +497,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         scatterer_values: list[str],
         scatterer_ids: list[dict[str, str]],
         representation: str,
+        projection: str,
         sampling: int,
         single_runs: int,
     ):
@@ -489,6 +509,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                 scatterer_type=scatterer_type,
                 scatterer_values=_pair_ids_with_values(scatterer_ids, scatterer_values),
                 representation=representation,
+                projection=projection,
                 sampling=sampling or 120,
             )
         except Exception as error:
@@ -496,6 +517,19 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             return None, next_single_runs
 
         return {"figure": figure.to_plotly_json(), "summary": summary}, next_single_runs + 1
+
+    @app.callback(
+        Output("single-projection", "options"),
+        Output("single-projection", "value"),
+        Input("single-representation", "value"),
+        State("single-projection", "value"),
+    )
+    def _update_single_projection_options(representation: str, current_projection: str | None):
+        supports_3d = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"}
+        options = [{"label": "2D heatmap" if supports_3d else "2D plot", "value": "2d"}]
+        if supports_3d:
+            options.append({"label": "3D surface", "value": "3d"})
+        return options, current_projection if supports_3d and current_projection == "3d" else "2d"
 
     @app.callback(
         Output("single-graph", "figure"),

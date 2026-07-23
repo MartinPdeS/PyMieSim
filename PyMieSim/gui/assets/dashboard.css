@@ -2309,6 +2309,10 @@ html input::placeholder {
     opacity: 1;
 }
 
+html .field-input-default {
+    color: #9aa7b2 !important;
+}
+
 html .field-input-invalid {
     border-color: #dc3545 !important;
     background: #fff5f5 !important;
@@ -3162,7 +3166,7 @@ html .single-workspace .representation-card {
 
 .single-workspace .representation-card-body {
     display: grid;
-    grid-template-columns: 230px 230px;
+    grid-template-columns: repeat(3, minmax(0, 230px));
     align-items: start;
     gap: 14px;
     height: auto;
@@ -3191,6 +3195,14 @@ html .single-workspace .representation-card {
 
 .single-workspace .representation-card-body .dashboard-dropdown {
     width: 100%;
+}
+
+.single-workspace .representation-card .dashboard-dropdown .Select-menu {
+    max-height: 400px;
+}
+
+.single-workspace .representation-card .dash-dropdown-content .dash-dropdown-options {
+    max-height: 400px !important;
 }
 
 @media (max-width: 620px) {

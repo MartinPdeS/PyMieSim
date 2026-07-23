@@ -101,7 +101,7 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                         value="single-tab",
                                         className="main-tab",
                                         selected_className="main-tab--selected",
-                                        children=[_build_single_tab()],
+                                        children=[_build_single_tab(particle_settings)],
                                     ),
                                 ],
                             ),
@@ -235,6 +235,7 @@ def create_layout(default_measure_options: list[str]):
             dcc.Store(id="experiment-result"),
             dcc.Store(id="single-result"),
             dcc.Download(id="csv-download"),
+            dcc.Download(id="single-csv-download"),
             dcc.Store(id="home-visit-count", data=0, storage_type="local"),
             dcc.Store(id="experiment-run-count", data=0, storage_type="local"),
             dcc.Store(id="single-run-count", data=0, storage_type="local"),
@@ -303,11 +304,11 @@ def build_page_with_footer(page):
     )
 
 
-def _build_single_tab():
+def _build_single_tab(plot_settings: dict | None = None):
     """Build the single-scatterer representation workspace."""
     from PyMieSim.gui.pages.single import build_single_page
 
-    return build_single_page()
+    return build_single_page(plot_settings=plot_settings)
 
     # Kept below as a reference while the page migration is completed.
     return html.Div(
@@ -346,7 +347,7 @@ def _build_single_tab():
                                 className="panel run-panel",
                                 children=[
                                     html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
-                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
+                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes I intensity", "value": "stokes"}, {"label": "Stokes Q", "value": "stokes_q"}, {"label": "Stokes U", "value": "stokes_u"}, {"label": "Stokes V", "value": "stokes_v"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
                                     html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, placeholder="120", className="field-input", persistence=True, persistence_type="session")]),
                                 ],
                             ),
@@ -495,6 +496,7 @@ def render_fields(section: str, section_type: str):
 def render_field(section: str, field_spec: FieldSpec):
     """Render one schema field as a labeled text input."""
     persistence = "parameter-sweep-defaults-v2" if section in {"source", "scatterer", "detector"} else True
+    default_class = " field-input-default" if section == "detector" and field_spec.name in {"polarization_filter", "medium"} else ""
     return html.Div(
         className="field-block",
         children=[
@@ -505,7 +507,7 @@ def render_field(section: str, field_spec: FieldSpec):
                 value=field_spec.default,
                 debounce=False,
                 placeholder=field_spec.placeholder or field_spec.default,
-                className="field-input",
+                className=f"field-input{default_class}",
                 persistence=persistence,
                 persistence_type="session",
             ),

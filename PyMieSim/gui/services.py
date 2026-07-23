@@ -127,6 +127,7 @@ def build_single_figure(
     scatterer_values: Dict[str, Any],
     representation: str,
     sampling: int,
+    projection: str = "2d",
     plot_settings: dict[str, Any] | None = None,
     theme: str = "light",
 ) -> tuple[go.Figure, dict[str, str]]:
@@ -147,31 +148,51 @@ def build_single_figure(
         figure.add_trace(go.Scatter(x=x, y=np.abs(s1.magnitude), mode="lines", name="|S1|"))
         figure.add_trace(go.Scatter(x=x, y=np.abs(s2.magnitude), mode="lines", name="|S2|"))
         figure.update_xaxes(title="Scattering angle [degree]")
-        figure.update_yaxes(title="Amplitude [meter]")
+        figure.update_yaxes(title=f"Amplitude [{_unit_label(s1, 'meter')}]")
         figure.update_layout(meta={"polar_axis_unit": "degree"})
         title = "S1 / S2 scattering amplitudes"
     else:
-        representation_object = setup.get_representation(representation, sampling=sampling)
-        if representation == "stokes":
-            field = "I"
-            values = getattr(representation_object, field).magnitude
+        backend_representation = "stokes" if representation == "stokes" or representation.startswith("stokes_") else representation
+        representation_object = setup.get_representation(backend_representation, sampling=sampling)
+        if representation == "stokes" or representation.startswith("stokes_"):
+            field = representation.rsplit("_", 1)[-1].upper() if "_" in representation else "I"
+            quantity = getattr(representation_object, field)
+            values = quantity.magnitude
+            value_label = f"Stokes {field}"
         elif representation == "spf":
             field = "SPF"
-            values = getattr(representation_object.SPF, "magnitude", representation_object.SPF)
+            quantity = representation_object.SPF
+            values = getattr(quantity, "magnitude", quantity)
+            value_label = "Scattering intensity"
         elif representation == "farfields":
             field = "total_intensity"
-            values = np.abs(representation_object.E_phi.magnitude) ** 2 + np.abs(representation_object.E_theta.magnitude) ** 2
+            quantity = np.abs(representation_object.E_phi) ** 2 + np.abs(representation_object.E_theta) ** 2
+            values = quantity.magnitude
+            value_label = "Intensity"
         else:
             raise ValueError(f"Representation '{representation}' is not supported by the dashboard.")
 
         values = np.asarray(values)
+        value_unit = _unit_label(quantity, "dimensionless")
         if values.ndim == 2:
-            figure = go.Figure(data=go.Heatmap(z=values, colorscale="Viridis"))
-            figure.update_xaxes(title="Azimuth sample")
-            figure.update_yaxes(title="Polar sample")
+            azimuth = np.linspace(-180.0, 180.0, values.shape[1])
+            polar = np.linspace(-90.0, 90.0, values.shape[0])
+            if projection == "3d":
+                azimuth_grid, polar_grid = np.meshgrid(np.deg2rad(azimuth), np.deg2rad(polar))
+                sphere_x = np.cos(polar_grid) * np.cos(azimuth_grid)
+                sphere_y = np.cos(polar_grid) * np.sin(azimuth_grid)
+                sphere_z = np.sin(polar_grid)
+                figure = go.Figure(data=go.Surface(x=sphere_x, y=sphere_y, z=sphere_z, surfacecolor=values, colorscale="Viridis", colorbar={"title": value_unit}))
+                figure.update_layout(scene={"xaxis_title": "x", "yaxis_title": "y", "zaxis_title": "z", "aspectmode": "cube"})
+            else:
+                figure = go.Figure(data=go.Heatmap(x=azimuth, y=polar, z=values, colorscale="Viridis", colorbar={"title": value_unit}))
+                figure.update_xaxes(title="Azimuth angle [degree]")
+                figure.update_yaxes(title="Polar angle [degree]")
         else:
             figure.add_trace(go.Scatter(y=values.ravel(), mode="lines", name=field))
-        title = f"{representation.title()} representation"
+            figure.update_xaxes(title="Scattering angle [degree]")
+            figure.update_yaxes(title=f"{value_label} [{value_unit}]")
+        title = f"{value_label} representation" if representation.startswith("stokes") else f"{representation.title()} representation"
 
     figure.update_layout(
         template="plotly_white",
@@ -183,6 +204,12 @@ def build_single_figure(
     )
     apply_plot_settings(figure, plot_settings, theme)
     return figure, {"Representation": representation.upper(), "Sampling": str(sampling), "Scatterer": scatterer_type}
+
+
+def _unit_label(value: Any, fallback: str) -> str:
+    """Return a compact display label for a Pint quantity's units."""
+    units = getattr(value, "units", None)
+    return str(units) if units is not None else fallback
 
 
 def infer_variable_fields(
@@ -269,6 +296,32 @@ def export_result_to_csv(result: dict[str, Any] | None) -> str:
     frame = pd.DataFrame(result["rows"])
     LOGGER.debug("Exporting %d rows to CSV", len(frame))
     return frame.to_csv(index=False)
+
+
+def export_single_result_to_csv(result: dict[str, Any] | None) -> str:
+    """Serialize a Particle Explorer figure payload to CSV text."""
+    if not result or not result.get("figure"):
+        LOGGER.debug("Particle Explorer CSV export requested without a result")
+        return ""
+
+    traces = result["figure"].get("data", [])
+    rows: list[dict[str, Any]] = []
+    for trace in traces:
+        name = trace.get("name", "value")
+        if "z" in trace:
+            z_values = np.asarray(trace["z"])
+            x_values = trace.get("x") or list(range(z_values.shape[1]))
+            y_values = trace.get("y") or list(range(z_values.shape[0]))
+            for y_index, y_value in enumerate(y_values):
+                for x_index, x_value in enumerate(x_values):
+                    rows.append({"series": name, "x": x_value, "y": y_value, "value": z_values[y_index, x_index]})
+            continue
+
+        y_values = trace.get("y", [])
+        x_values = trace.get("x") or list(range(len(y_values)))
+        rows.extend({"series": name, "x": x_value, "value": y_value} for x_value, y_value in zip(x_values, y_values))
+
+    return pd.DataFrame(rows).to_csv(index=False) if rows else ""
 
 
 def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_settings: dict[str, Any] | None = None, theme: str = "light") -> go.Figure:
