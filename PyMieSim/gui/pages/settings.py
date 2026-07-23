@@ -5,27 +5,17 @@ from __future__ import annotations
 from dash import dcc, html
 
 from PyMieSim.gui.components import Card
+from PyMieSim.gui.defaults import DEFAULT_APPLICATION_SETTINGS, DEFAULT_PLOT_SETTINGS
 
 
-_COMMON_PLOT_SETTINGS = {
-    "font_size": 14,
-    "line_width": 2,
-    "graph_height": 700,
-    "template": "match-theme",
-    "show_legend": True,
-    "show_grid": True,
-    "coordinate_system": "cartesian",
-    "x_scale": "linear",
-    "show_title": True,
-    "log_y": False,
-}
+_COMMON_PLOT_SETTINGS = dict(DEFAULT_PLOT_SETTINGS)
 DEFAULT_PARTICLE_PLOT_SETTINGS = {**_COMMON_PLOT_SETTINGS}
 DEFAULT_SWEEP_PLOT_SETTINGS = {**_COMMON_PLOT_SETTINGS}
 # Kept as a compatibility alias for callers that used the original global defaults.
 DEFAULT_PLOT_SETTINGS = DEFAULT_PARTICLE_PLOT_SETTINGS
 
 
-def build_settings_page(theme: str = "light", plot_settings: dict | None = None):
+def build_settings_page(theme: str = DEFAULT_APPLICATION_SETTINGS["theme"], plot_settings: dict | None = None):
     """Build the settings page with separate controls for each workspace."""
     stored = plot_settings or {}
     particle = _workspace_settings(stored, "particle_explorer", DEFAULT_PARTICLE_PLOT_SETTINGS)
@@ -64,7 +54,7 @@ def _appearance_card(theme: str):
         className=Card.classes(color="blue", extra="panel settings-card"),
         children=[
             html.Div(className="card-header panel-header", children=[html.H2("Appearance")]),
-            html.Div(className="card-body settings-card-body", children=[html.Label("Theme", htmlFor="settings-theme-mode", className="settings-label"), _dropdown("settings-theme-mode", [{"label": "Light", "value": "light"}, {"label": "Dark", "value": "dark"}], theme if theme in {"light", "dark"} else "light"), html.P("The theme changes the dashboard shell and its controls.", className="settings-help")]),
+            html.Div(className="card-body settings-card-body", children=[html.Label("Theme", htmlFor="settings-theme-mode", className="settings-label"), _dropdown("settings-theme-mode", [{"label": "Light", "value": "light"}, {"label": "Dark", "value": "dark"}], theme if theme in {"light", "dark"} else DEFAULT_APPLICATION_SETTINGS["theme"]), html.P("The theme changes the dashboard shell and its controls.", className="settings-help")]),
         ],
     )
 
@@ -97,7 +87,7 @@ def _dropdown_field(label: str, component_id: str, options: list[dict], value):
 
 
 def _dropdown(component_id: str, options: list[dict], value):
-    return dcc.Dropdown(id=component_id, options=options, value=value, clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session", className="dashboard-dropdown")
+    return dcc.Dropdown(id=component_id, options=options, value=value, clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session", className="dashboard-dropdown")
 
 
 def _number_setting(label: str, component_id: str, value: int | float, minimum: int | float, maximum: int | float, step: int | float):

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PyMieSim favicon">
+  <title>PyMieSim</title>
+  <rect width="64" height="64" rx="14" fill="#2f4358"/>
+  <path d="M13 16h9l10 13 10-13h9L37 32l14 16h-9L32 35 22 48h-9l14-16z" fill="#65a0ff"/>
+  <path d="M25 16h8L22 32l11 16h-8L14 32z" fill="#48e0eb" opacity=".95"/>
+</svg>

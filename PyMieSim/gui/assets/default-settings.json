@@ -1,0 +1,32 @@
+{
+  "application": {
+    "theme": "light",
+    "default_tab": "experiment-tab"
+  },
+  "workspaces": {
+    "parameter_sweep": {
+      "source_type": "PlaneWaveSet",
+      "scatterer_type": "SphereSet",
+      "detector_type": "PhotodiodeSet"
+    },
+    "particle_explorer": {
+      "source_type": "Gaussian",
+      "scatterer_type": "Sphere",
+      "representation": "s1s2",
+      "projection": "2d",
+      "sampling": 120
+    }
+  },
+  "plot": {
+    "font_size": 18,
+    "line_width": 2,
+    "graph_height": 700,
+    "template": "match-theme",
+    "show_legend": true,
+    "show_grid": true,
+    "coordinate_system": "cartesian",
+    "x_scale": "linear",
+    "show_title": true,
+    "log_y": false
+  }
+}

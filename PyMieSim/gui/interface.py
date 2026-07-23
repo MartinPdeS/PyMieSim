@@ -10,6 +10,7 @@ from typing import Any
 from dash import ALL, MATCH, Dash, Input, Output, State, dcc, no_update
 
 from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, build_workspace_layout, create_layout, render_fields
+from PyMieSim.gui.defaults import DEFAULT_APPLICATION_SETTINGS
 from PyMieSim.gui.pages.documentation import build_documentation_page
 from PyMieSim.gui.pages.citation import build_citation_page
 from PyMieSim.gui.pages.home import build_home_page
@@ -27,6 +28,7 @@ from PyMieSim.gui.services import (
     run_experiment,
     _parse_field_value,
     _validate_positive_field,
+    _is_angular_unit,
 )
 
 
@@ -41,6 +43,11 @@ def create_dash_app() -> Dash:
         title="PyMieSim Parameter Sweep Lab",
         assets_folder=str(Path(__file__).with_name("assets")),
         suppress_callback_exceptions=True,
+    )
+    app.index_string = app.index_string.replace(
+        "{%favicon%}",
+        '<link rel="icon" type="image/svg+xml" href="/assets/pymiesim-favicon.svg?v=2">'
+        '<link rel="shortcut icon" type="image/svg+xml" href="/assets/pymiesim-favicon.svg?v=2">',
     )
 
     initial_measures = available_measures("SphereSet", "PhotodiodeSet")
@@ -84,15 +91,17 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("theme-link", "href"),
         Output("theme-store", "data"),
         Output("settings-theme-mode", "value"),
+        Output("sidebar-logo", "src"),
         Input("settings-theme-mode", "value"),
         State("theme-store", "data"),
     )
     def _sync_theme(settings_theme: str | None, stored_theme: dict | None):
         theme_mode = settings_theme
         if theme_mode not in {"light", "dark"}:
-            theme_mode = (stored_theme or {}).get("theme", "light")
+            theme_mode = (stored_theme or {}).get("theme", DEFAULT_APPLICATION_SETTINGS["theme"])
         mode = "light" if theme_mode == "light" else "dark"
-        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}, mode
+        logo = "/assets/pymiesim-logo.svg" if mode == "light" else "/assets/pymiesim-logo-dark.svg"
+        return (THEME_LIGHT if mode == "light" else THEME_DARK), {"theme": mode}, mode, logo
 
     @app.callback(
         Output("page-content", "children"),
@@ -468,12 +477,14 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("plot-experiment-line-width", "value", allow_optional=True),
         Input("plot-experiment-legend", "value", allow_optional=True),
         Input("plot-experiment-grid", "value", allow_optional=True),
+        Input("plot-experiment-projection", "value", allow_optional=True),
     )
     def _update_outputs(result: dict | None, x_axis: str | None, plot_settings: dict | None, theme_store: dict | None, *local_values):
         LOGGER.debug("Updating outputs for x_axis=%s result_present=%s", x_axis, bool(result))
+        projection = local_values[-1] or "cartesian"
         sweep_settings = (plot_settings or {}).get("parameter_sweep", plot_settings or {})
-        sweep_settings = _merge_local_plot_values(sweep_settings, local_values)
-        return build_figure(result, x_axis, plot_settings=sweep_settings, theme=(theme_store or {}).get("theme", "light"))
+        sweep_settings = _merge_local_plot_values(sweep_settings, local_values[:-1])
+        return build_figure(result, x_axis, plot_settings=sweep_settings, theme=(theme_store or {}).get("theme", "light"), projection=projection)
 
     @app.callback(
         Output("single-result", "data"),
@@ -525,11 +536,53 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         State("single-projection", "value"),
     )
     def _update_single_projection_options(representation: str, current_projection: str | None):
+        if representation == "s1s2":
+            options = [{"label": "2D plot", "value": "2d"}, {"label": "Polar 1D", "value": "polar_1d"}]
+            return options, current_projection if current_projection == "polar_1d" else "2d"
+
         supports_3d = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"}
         options = [{"label": "2D heatmap" if supports_3d else "2D plot", "value": "2d"}]
         if supports_3d:
-            options.append({"label": "3D surface", "value": "3d"})
-        return options, current_projection if supports_3d and current_projection == "3d" else "2d"
+            options.extend([
+                {"label": "3D sphere", "value": "3d"},
+                {"label": "3D radial surface", "value": "3d_radial"},
+            ])
+        return options, current_projection if supports_3d and current_projection in {"3d", "3d_radial"} else "2d"
+
+    @app.callback(
+        Output("single-plot-options-container", "children"),
+        Input("single-representation", "value"),
+        Input("single-projection", "value"),
+        State("plot-settings-store", "data"),
+    )
+    def _update_single_plot_options(representation: str, projection: str, plot_settings: dict | None):
+        particle_settings = (plot_settings or {}).get("particle_explorer", plot_settings or {})
+        from PyMieSim.gui.layout import _plot_options_card
+
+        return _plot_options_card("single", particle_settings, representation, projection)
+
+    @app.callback(
+        Output("experiment-plot-options-container", "children"),
+        Input("x-axis-select", "value"),
+        Input("experiment-result", "data"),
+        State("plot-settings-store", "data"),
+        State("plot-experiment-projection", "value", allow_optional=True),
+    )
+    def _update_experiment_plot_options(x_axis: str | None, result: dict | None, plot_settings: dict | None, current_projection: str | None):
+        sweep_settings = (plot_settings or {}).get("parameter_sweep", plot_settings or {})
+        units = (result or {}).get("units", {})
+        xaxis_unit = units.get(x_axis)
+        if xaxis_unit is None and x_axis:
+            matching_units = [value for key, value in units.items() if key.rsplit(":", 1)[-1] == x_axis]
+            xaxis_unit = matching_units[0] if matching_units else None
+        is_angle = _is_angular_unit(xaxis_unit)
+        options = [{"label": "Cartesian", "value": "cartesian"}]
+        if is_angle:
+            options.append({"label": "Polar", "value": "polar"})
+        projection = current_projection if is_angle and current_projection == "polar" else "cartesian"
+        from PyMieSim.gui.layout import _plot_options_card
+
+        return _plot_options_card("experiment", sweep_settings, projection=projection, projection_options=options)
 
     @app.callback(
         Output("single-graph", "figure"),

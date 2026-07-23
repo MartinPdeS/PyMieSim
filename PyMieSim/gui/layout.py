@@ -5,6 +5,7 @@ from __future__ import annotations
 from dash import dcc, html
 
 from PyMieSim.gui.components import HeaderCard
+from PyMieSim.gui.defaults import DEFAULT_APPLICATION_SETTINGS, DEFAULT_PLOT_SETTINGS
 from PyMieSim.gui.schemas import FieldSpec, SECTION_FIELDS, SINGLE_SCATTERER_FIELDS, SINGLE_SOURCE_FIELDS
 
 
@@ -12,10 +13,11 @@ THEME_LIGHT = "https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/flatly/bootstr
 THEME_DARK = "https://cdn.jsdelivr.net/npm/bootswatch@5.3.6/dist/slate/bootstrap.min.css"
 
 PLOT_CONFIG = {
-    "displayModeBar": True,
+    "displayModeBar": "always",
     "displaylogo": False,
     "scrollZoom": True,
     "doubleClick": "reset+autosize",
+    "modeBarButtonsToAdd": ["zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d"],
     "toImageButtonOptions": {"format": "png", "filename": "pymiesim_plot", "scale": 2},
 }
 
@@ -43,9 +45,16 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                             html.Div(id="documentation-page", className="page-view", style={"display": "none"}, children=[_build_documentation_page()]),
                             dcc.Tabs(
                                 id="main-tabs",
-                                value="experiment-tab",
+                                value=DEFAULT_APPLICATION_SETTINGS["default_tab"],
                                 className="main-tabs workspace-hidden",
                                 children=[
+                                    dcc.Tab(
+                                        label="Particle Explorer / Representations",
+                                        value="single-tab",
+                                        className="main-tab",
+                                        selected_className="main-tab--selected",
+                                        children=[_build_single_tab(particle_settings)],
+                                    ),
                                     dcc.Tab(
                                         label="Parameter Sweep",
                                         value="experiment-tab",
@@ -85,7 +94,7 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                                 children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)],
                                             ),
                                             _x_axis_card(default_measure_options),
-                                            _plot_options_card("experiment", sweep_settings),
+                                            html.Div(id="experiment-plot-options-container", children=[_plot_options_card("experiment", sweep_settings)]),
                                             html.Div(
                                                 className="export-actions",
                                                 children=[html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button")],
@@ -95,13 +104,6 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                 ],
                             ),
                                         ],
-                                    ),
-                                    dcc.Tab(
-                                        label="Particle Explorer / Representations",
-                                        value="single-tab",
-                                        className="main-tab",
-                                        selected_className="main-tab--selected",
-                                        children=[_build_single_tab(particle_settings)],
                                     ),
                                 ],
                             ),
@@ -116,12 +118,13 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
 def build_workspace_layout(default_measure_options: list[str], tab_value: str, plot_settings: dict | None = None):
     """Extract only the selected workspace page from the legacy composition."""
     legacy_layout = _build_legacy_layout(default_measure_options, plot_settings)
-    tabs = legacy_layout.children[4].children[1].children[2]
+    dashboard_frame = next(child for child in legacy_layout.children if getattr(child, "className", None) == "dashboard-frame")
+    tabs = dashboard_frame.children[1].children[2]
     selected_tab = next(tab for tab in tabs.children if tab.value == tab_value)
     return html.Div(className="workspace-page", children=selected_tab.children)
 
 
-def _plot_options_card(prefix: str, settings: dict):
+def _plot_options_card(prefix: str, settings: dict, representation: str | None = None, projection: str | None = None, projection_options: list[dict] | None = None):
     """Build the neutral, per-plot controls shown beneath each graph."""
     values = {
         "x_scale": "linear",
@@ -140,6 +143,7 @@ def _plot_options_card(prefix: str, settings: dict):
             options=options,
             value=value,
             clearable=False,
+            searchable=False,
             optionHeight=34,
             maxHeight=170,
             persistence=True,
@@ -161,14 +165,27 @@ def _plot_options_card(prefix: str, settings: dict):
             className="field-input plot-option-control plot-number-control",
         )
 
-    fields = [
-        ("X scale", dropdown("x-scale", [{"label": "Linear", "value": "linear"}, {"label": "Logarithmic", "value": "log"}], values["x_scale"])),
-        ("Y scale", dropdown("y-scale", [{"label": "Linear", "value": False}, {"label": "Logarithmic", "value": True}], bool(values["log_y"]))),
-        ("Font size", number("font-size", values["font_size"], 8, 32, 1)),
-        ("Line width", number("line-width", values["line_width"], 0.5, 8, 0.5)),
-        ("Legend", dropdown("legend", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_legend"])),),
-        ("Grid", dropdown("grid", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_grid"])),),
-    ]
+    fields = []
+    is_structured_map = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"}
+    is_polar = prefix == "single" and projection == "polar_1d"
+    is_3d = prefix == "single" and projection in {"3d", "3d_radial"}
+
+    if is_polar:
+        fields.append(("Radial scale", dropdown("y-scale", [{"label": "Linear", "value": False}, {"label": "Logarithmic", "value": True}], bool(values["log_y"]))))
+    elif not is_structured_map and not is_3d:
+        fields.extend([
+            ("X scale", dropdown("x-scale", [{"label": "Linear", "value": "linear"}, {"label": "Logarithmic", "value": "log"}], values["x_scale"])),
+            ("Y scale", dropdown("y-scale", [{"label": "Linear", "value": False}, {"label": "Logarithmic", "value": True}], bool(values["log_y"]))),
+        ])
+    fields.append(("Font size", number("font-size", values["font_size"], 8, 32, 1)))
+    if not is_structured_map and not is_3d:
+        fields.append(("Line width", number("line-width", values["line_width"], 0.5, 8, 0.5)))
+    fields.extend([
+        ("Legend", dropdown("legend", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_legend"]))),
+        ("Grid", dropdown("grid", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_grid"]))),
+    ])
+    if prefix == "experiment":
+        fields.insert(2, ("Projection", dropdown("projection", projection_options or [{"label": "Cartesian", "value": "cartesian"}], projection or "cartesian")))
     return html.Section(
         className="plot-options-card",
         children=[
@@ -196,6 +213,7 @@ def _x_axis_card(default_measure_options: list[str]):
                                 className="dashboard-dropdown graph-axis-control",
                                 options=[],
                                 placeholder="Detected from fields with multiple values",
+                                searchable=False,
                                 optionHeight=38,
                                 maxHeight=200,
                                 persistence=True,
@@ -213,6 +231,7 @@ def _x_axis_card(default_measure_options: list[str]):
                                 options=[{"label": measure, "value": measure} for measure in default_measure_options],
                                 value=default_measure_options[0] if default_measure_options else None,
                                 clearable=False,
+                                searchable=False,
                                 optionHeight=38,
                                 maxHeight=200,
                                 persistence=True,
@@ -239,16 +258,10 @@ def create_layout(default_measure_options: list[str]):
             dcc.Store(id="home-visit-count", data=0, storage_type="local"),
             dcc.Store(id="experiment-run-count", data=0, storage_type="local"),
             dcc.Store(id="single-run-count", data=0, storage_type="local"),
-            dcc.Store(id="theme-store", data={"theme": "light"}, storage_type="session"),
+            dcc.Store(id="theme-store", data={"theme": DEFAULT_APPLICATION_SETTINGS["theme"]}, storage_type="session"),
             dcc.Store(id="plot-settings-store", data={
-                "particle_explorer": {
-                    "font_size": 14, "line_width": 2, "template": "match-theme",
-                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "x_scale": "linear", "show_title": True, "log_y": False,
-                },
-                "parameter_sweep": {
-                    "font_size": 14, "line_width": 2, "template": "match-theme",
-                    "show_legend": True, "show_grid": True, "coordinate_system": "cartesian", "x_scale": "linear", "show_title": True, "log_y": False,
-                },
+                "particle_explorer": dict(DEFAULT_PLOT_SETTINGS),
+                "parameter_sweep": dict(DEFAULT_PLOT_SETTINGS),
             }, storage_type="session"),
             html.Link(id="theme-link", rel="stylesheet", href=THEME_LIGHT),
             html.Div(
@@ -258,7 +271,7 @@ def create_layout(default_measure_options: list[str]):
                     html.Main(
                         id="page-content",
                         className="dashboard-main",
-                        children=[build_page_with_footer(_build_home_page())],
+                        children=[],
                     ),
                 ],
             ),
@@ -335,19 +348,19 @@ def _build_single_tab(plot_settings: dict | None = None):
                         children=[
                             _section_shell(
                                 "Source",
-                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
+                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
                                 html.Div(id="single-source-fields"),
                             ),
                             _section_shell(
                                 "Scatterer",
-                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
+                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
                                 html.Div(id="single-scatterer-fields"),
                             ),
                             html.Section(
                                 className="panel run-panel",
                                 children=[
                                     html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
-                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes I intensity", "value": "stokes"}, {"label": "Stokes Q", "value": "stokes_q"}, {"label": "Stokes U", "value": "stokes_u"}, {"label": "Stokes V", "value": "stokes_v"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
+                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes I intensity", "value": "stokes"}, {"label": "Stokes Q", "value": "stokes_q"}, {"label": "Stokes U", "value": "stokes_u"}, {"label": "Stokes V", "value": "stokes_v"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
                                     html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, placeholder="120", className="field-input", persistence=True, persistence_type="session")]),
                                 ],
                             ),
@@ -436,7 +449,7 @@ def _build_sidebar():
                 className="sidebar-brand",
                 children=[
                     dcc.Link(
-                        html.Img(src="/assets/pymiesim-logo.svg", alt="PyMieSim home", className="sidebar-logo"),
+                        html.Img(id="sidebar-logo", src="/assets/pymiesim-logo.svg", alt="PyMieSim home", className="sidebar-logo"),
                         href="/",
                         refresh=False,
                         className="sidebar-logo-link",
@@ -447,8 +460,8 @@ def _build_sidebar():
                 className="sidebar-nav",
                 children=[
                     _sidebar_link("Home", "/"),
-                    _sidebar_link("Parameter Sweep", "/experiment"),
                     _sidebar_link("Particle Explorer", "/single"),
+                    _sidebar_link("Parameter Sweep", "/experiment"),
                     _sidebar_link("Documentation", "/documentation"),
                     _sidebar_link("Settings", "/settings"),
                 ],
@@ -465,8 +478,9 @@ def build_theme_selector():
             {"label": "Dark", "value": "dark"},
             {"label": "Light", "value": "light"},
         ],
-        value="light",
+        value=DEFAULT_APPLICATION_SETTINGS["theme"],
         clearable=False,
+        searchable=False,
         optionHeight=38,
         maxHeight=200,
         persistence=True,

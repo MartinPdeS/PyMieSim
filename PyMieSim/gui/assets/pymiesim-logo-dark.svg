@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="400" viewBox="200 50 700 400" role="img" aria-label="PyMieSim Light Scattering Simulation logo">
+  <title>PyMieSim Light Scattering Simulation</title>
+  <style>
+    .logo-main { font-family: "Avenir Next", "Century Gothic", Futura, Montserrat, Arial, sans-serif; font-size: 186px; font-weight: 560; letter-spacing: -3px; fill: #f4f7fb; }
+    .logo-subtitle { font-family: "Avenir Next", "Century Gothic", Futura, Montserrat, Arial, sans-serif; font-size: 55px; font-weight: 350; letter-spacing: -1.2px; fill: #d8e2ee; text-anchor: end; }
+  </style>
+  <text class="logo-main" x="35" y="290"><tspan>P</tspan><tspan dx="9">yMieSim</tspan></text>
+  <g transform="translate(-108,0)">
+    <path d="m 975.8673,149.6464 h 26 l 64,88 -64,88 h -26 l 64,-88 z" fill="#65a0ff"/>
+    <path d="m 1135.8673,149.6464 h 28 l -64,88 64,88 h -28 l -62,-88 z" fill="#48e0eb"/>
+  </g>
+  <text class="logo-subtitle" x="1078" y="397">Light Scattering Simulation</text>
+  <line x1="460" y1="416" x2="1078" y2="416" stroke="#d8e2ee" stroke-width="5" stroke-linecap="butt" />
+</svg>

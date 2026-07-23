@@ -23,6 +23,6 @@ def build_single_page(plot_settings: dict | None = None):
                 ],
                 color="green",
             ).render(),
-            html.Section(className="single-workspace", children=[html.Section(className="control-column", children=[build_source_section(), build_scatterer_section()]), html.Section(className="result-column", children=[html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)]), build_representation_section(), _plot_options_card("single", plot_settings or {}), html.Div(className="export-actions", children=[html.Button("Export CSV", id="export-single-csv", n_clicks=0, className="run-button export-button")])])]),
+            html.Section(className="single-workspace", children=[html.Section(className="control-column", children=[build_source_section(), build_scatterer_section()]), html.Section(className="result-column", children=[html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)]), build_representation_section(), html.Div(id="single-plot-options-container", children=[_plot_options_card("single", plot_settings or {})]), html.Div(className="export-actions", children=[html.Button("Export CSV", id="export-single-csv", n_clicks=0, className="run-button export-button")])])]),
         ],
     )

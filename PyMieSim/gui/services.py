@@ -27,6 +27,7 @@ from PyMieSim.gui.parsing import (
     parse_quantity_expression,
     serialize_value,
 )
+from PyMieSim.gui.defaults import DEFAULT_PLOT_SETTINGS
 from PyMieSim.gui.schemas import (
     DETECTOR_FIELDS,
     SCATTERER_FIELDS,
@@ -145,10 +146,15 @@ def build_single_figure(
         angles = np.linspace(-np.pi, np.pi, sampling) * ureg.radian
         s1, s2 = setup.get_s1s2(angles=angles)
         x = angles.to(ureg.degree).magnitude
-        figure.add_trace(go.Scatter(x=x, y=np.abs(s1.magnitude), mode="lines", name="|S1|"))
-        figure.add_trace(go.Scatter(x=x, y=np.abs(s2.magnitude), mode="lines", name="|S2|"))
-        figure.update_xaxes(title="Scattering angle [degree]")
-        figure.update_yaxes(title=f"Amplitude [{_unit_label(s1, 'meter')}]")
+        if projection == "polar_1d":
+            figure.add_trace(go.Scatterpolar(theta=x, r=np.abs(s1.magnitude), mode="lines", name="|S1|"))
+            figure.add_trace(go.Scatterpolar(theta=x, r=np.abs(s2.magnitude), mode="lines", name="|S2|"))
+            figure.update_layout(polar={"angularaxis": {"direction": "counterclockwise", "rotation": 90}, "radialaxis": {"title": {"text": ""}}})
+        else:
+            figure.add_trace(go.Scatter(x=x, y=np.abs(s1.magnitude), mode="lines", name="|S1|"))
+            figure.add_trace(go.Scatter(x=x, y=np.abs(s2.magnitude), mode="lines", name="|S2|"))
+            figure.update_xaxes(title="Scattering angle [degree]")
+            figure.update_yaxes(title=f"Amplitude [{_unit_label(s1, 'meter')}]")
         figure.update_layout(meta={"polar_axis_unit": "degree"})
         title = "S1 / S2 scattering amplitudes"
     else:
@@ -177,12 +183,21 @@ def build_single_figure(
         if values.ndim == 2:
             azimuth = np.linspace(-180.0, 180.0, values.shape[1])
             polar = np.linspace(-90.0, 90.0, values.shape[0])
-            if projection == "3d":
+            if projection in {"3d", "3d_radial"}:
                 azimuth_grid, polar_grid = np.meshgrid(np.deg2rad(azimuth), np.deg2rad(polar))
                 sphere_x = np.cos(polar_grid) * np.cos(azimuth_grid)
                 sphere_y = np.cos(polar_grid) * np.sin(azimuth_grid)
                 sphere_z = np.sin(polar_grid)
-                figure = go.Figure(data=go.Surface(x=sphere_x, y=sphere_y, z=sphere_z, surfacecolor=values, colorscale="Viridis", colorbar={"title": value_unit}))
+                surface_values = np.abs(values)
+                if projection == "3d_radial":
+                    maximum = float(np.nanmax(surface_values)) if surface_values.size else 0.0
+                    radius = surface_values / maximum if maximum > 0.0 else np.ones_like(surface_values)
+                    surface_x = sphere_x * radius
+                    surface_y = sphere_y * radius
+                    surface_z = sphere_z * radius
+                else:
+                    surface_x, surface_y, surface_z = sphere_x, sphere_y, sphere_z
+                figure = go.Figure(data=go.Surface(x=surface_x, y=surface_y, z=surface_z, surfacecolor=surface_values, colorscale="Viridis", colorbar={"title": value_unit}))
                 figure.update_layout(scene={"xaxis_title": "x", "yaxis_title": "y", "zaxis_title": "z", "aspectmode": "cube"})
             else:
                 figure = go.Figure(data=go.Heatmap(x=azimuth, y=polar, z=values, colorscale="Viridis", colorbar={"title": value_unit}))
@@ -324,7 +339,7 @@ def export_single_result_to_csv(result: dict[str, Any] | None) -> str:
     return pd.DataFrame(rows).to_csv(index=False) if rows else ""
 
 
-def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_settings: dict[str, Any] | None = None, theme: str = "light") -> go.Figure:
+def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_settings: dict[str, Any] | None = None, theme: str = "light", projection: str = "cartesian") -> go.Figure:
     """Build a Plotly figure from serialized experiment results."""
     LOGGER.debug("Building figure for x_axis=%s", x_axis)
     if not result or not result.get("rows"):
@@ -352,6 +367,7 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
     frame = pd.DataFrame(result["rows"])
     measure = result["measure"]
     parameter_columns = result["parameter_columns"]
+    units = result.get("units", {})
     LOGGER.debug("Figure frame columns=%s row_count=%d", list(frame.columns), len(frame))
 
     if not parameter_columns:
@@ -359,6 +375,10 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
         figure = px.bar(frame.assign(index=[0] * len(frame)), x="index", y=measure)
     else:
         resolved_x_axis = _resolve_x_axis(x_axis, parameter_columns)
+        xaxis_unit = units.get(resolved_x_axis)
+        if xaxis_unit is None:
+            matching_units = [value for key, value in units.items() if key.rsplit(":", 1)[-1] == resolved_x_axis]
+            xaxis_unit = matching_units[0] if matching_units else None
         extra_axes = [column for column in parameter_columns if column != resolved_x_axis]
         plot_kwargs: dict[str, Any] = {"x": resolved_x_axis, "y": measure}
 
@@ -380,11 +400,27 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
             plot_kwargs["color"] = series_column
             plot_kwargs["line_group"] = series_column
 
-        figure = px.line(frame, **plot_kwargs)
+        if projection == "polar" and _is_angular_unit(xaxis_unit):
+            figure = go.Figure()
+            groups = frame.groupby(series_column, sort=False) if extra_axes else [(measure, frame)]
+            for series_name, group in groups:
+                # Plotly's polar theta values are degrees by default.  The
+                # experiment data can legitimately be returned in radians,
+                # so convert at this boundary instead of letting a 0..2*pi
+                # sweep collapse into a tiny line around 0 degrees.
+                theta = _polar_theta_degrees(group[resolved_x_axis], xaxis_unit)
+                radius = pd.to_numeric(group[measure], errors="coerce").to_numpy(dtype=float)
+                valid = np.isfinite(theta) & np.isfinite(radius)
+                theta = theta[valid]
+                radius = radius[valid]
+                order = np.argsort(theta)
+                figure.add_trace(go.Scatterpolar(theta=theta[order], r=radius[order], mode="lines", name=str(series_name)))
+            figure.update_layout(polar={"angularaxis": {"direction": "counterclockwise", "rotation": 90}})
+        else:
+            figure = px.line(frame, **plot_kwargs)
 
-    units = result.get("units", {})
     measure_unit = units.get(measure)
-    xaxis_unit = units.get(resolved_x_axis)
+    xaxis_unit = locals().get("xaxis_unit", units.get(resolved_x_axis))
     yaxis_title = f"{measure} [{measure_unit}]" if measure_unit else measure
     xaxis_title = f"{resolved_x_axis} [{xaxis_unit}]" if xaxis_unit else resolved_x_axis
 
@@ -394,8 +430,8 @@ def build_figure(result: dict[str, Any] | None, x_axis: str | None, plot_setting
         plot_bgcolor="white",
         margin={"l": 40, "r": 20, "t": 50, "b": 40},
         title=f"{measure} response",
-        xaxis_title=xaxis_title,
-        yaxis_title=yaxis_title,
+        xaxis_title=None if projection == "polar" and _is_angular_unit(xaxis_unit) else xaxis_title,
+        yaxis_title=None if projection == "polar" and _is_angular_unit(xaxis_unit) else yaxis_title,
         legend_title_text="",
         meta={
             "polar_axis_unit": xaxis_unit,
@@ -427,19 +463,7 @@ def apply_plot_settings(
     polar_allowed: bool | None = None,
 ) -> go.Figure:
     """Apply persisted visual preferences to an existing Plotly figure."""
-    settings = {
-        "font_size": 14,
-        "line_width": 2,
-        "graph_height": 700,
-        "template": "match-theme",
-        "show_legend": True,
-        "show_grid": True,
-        "coordinate_system": "cartesian",
-        "x_scale": "linear",
-        "show_title": True,
-        "log_y": False,
-        **(plot_settings or {}),
-    }
+    settings = {**DEFAULT_PLOT_SETTINGS, **(plot_settings or {})}
     template = settings["template"]
     if template == "match-theme":
         template = "plotly_dark" if theme == "dark" else "plotly_white"
@@ -486,6 +510,14 @@ def apply_plot_settings(
     for trace in figure.data:
         if getattr(trace, "line", None) is not None:
             trace.line.width = settings["line_width"]
+
+    if figure.layout.polar is not None:
+        figure.update_layout(
+            polar={
+                "angularaxis": {"showgrid": bool(settings["show_grid"])},
+                "radialaxis": {"showgrid": bool(settings["show_grid"]), "type": "log" if settings["log_y"] else "linear"},
+            }
+        )
     if polar_allowed is None:
         metadata = figure.layout.meta if isinstance(figure.layout.meta, dict) else {}
         polar_allowed = _is_angular_unit(metadata.get("polar_axis_unit"))
@@ -499,6 +531,15 @@ def _is_angular_unit(unit: Any) -> bool:
     """Return whether a serialized unit represents radians or degrees."""
     normalized = str(unit or "").strip().lower().replace("°", "degree")
     return normalized in {"rad", "radian", "radians", "deg", "degree", "degrees"}
+
+
+def _polar_theta_degrees(values: Any, unit: Any) -> np.ndarray:
+    """Convert serialized angular values to the degree convention used by Plotly."""
+    theta = pd.to_numeric(values, errors="coerce").to_numpy(dtype=float)
+    normalized = str(unit or "").strip().lower().replace("°", "degree")
+    if normalized in {"rad", "radian", "radians"}:
+        theta = np.rad2deg(theta)
+    return np.mod(theta, 360.0)
 
 
 def _format_plot_value(value: Any) -> str:
