@@ -10,6 +10,7 @@ from PyMieSim.gui.components import Card
 _COMMON_PLOT_SETTINGS = {
     "font_size": 14,
     "line_width": 2,
+    "graph_height": 700,
     "template": "match-theme",
     "show_legend": True,
     "show_grid": True,
@@ -78,6 +79,7 @@ def _plot_card(prefix: str, title: str, color: str, settings: dict):
                 children=[
                     _number_setting("Font size", f"settings-{prefix}-font-size", settings["font_size"], 8, 32, 1),
                     _number_setting("Line width", f"settings-{prefix}-line-width", settings["line_width"], 0.5, 8, 0.5),
+                    _number_setting("Graph height (px)", f"settings-{prefix}-graph-height", settings["graph_height"], 300, 1400, 10),
                     _dropdown_field("Plot theme", f"settings-{prefix}-template", [{"label": "Match application theme", "value": "match-theme"}, {"label": "Light plot", "value": "plotly_white"}, {"label": "Dark plot", "value": "plotly_dark"}], settings["template"]),
                     _dropdown_field("Coordinates", f"settings-{prefix}-coordinates", [{"label": "Cartesian", "value": "cartesian"}, {"label": "Polar (when supported)", "value": "polar"}], settings["coordinate_system"]),
                     _dropdown_field("X-axis scale", f"settings-{prefix}-x-scale", [{"label": "Linear", "value": "linear"}, {"label": "Logarithmic", "value": "log"}], settings["x_scale"]),

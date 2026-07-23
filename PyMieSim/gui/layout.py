@@ -75,23 +75,6 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                                     *_build_experiment_configuration_sections(),
                                                 ],
                                             ),
-                                            html.Section(
-                                                className="panel plot-controls-panel",
-                                                children=[
-                                                    html.Div(className="panel-header", children=[html.H2("Plot Controls")]),
-                                                    html.Div(
-                                                        className="run-controls-grid",
-                                                        children=[
-                                                        ],
-                                                    ),
-                                                    html.Div(
-                                                        className="run-actions plot-control-actions",
-                                                        children=[
-                                                            html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button"),
-                                                        ],
-                                                    ),
-                                                ],
-                                            ),
                                         ],
                                     ),
                                     html.Section(
@@ -103,6 +86,10 @@ def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict
                                             ),
                                             _x_axis_card(default_measure_options),
                                             _plot_options_card("experiment", sweep_settings),
+                                            html.Div(
+                                                className="export-actions",
+                                                children=[html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button")],
+                                            ),
                                         ],
                                     ),
                                 ],
@@ -361,8 +348,6 @@ def _build_single_tab():
                                     html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
                                     html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes intensity", "value": "stokes"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
                                     html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, placeholder="120", className="field-input", persistence=True, persistence_type="session")]),
-                                    html.Button("Render representation", id="run-single", n_clicks=0, className="run-button run-button-primary"),
-                                    html.Div(id="single-status", className="status-banner idle", children="Ready."),
                                 ],
                             ),
                         ],

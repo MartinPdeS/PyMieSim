@@ -183,6 +183,19 @@ body {
     background: #f1f3f5;
 }
 
+.export-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 14px 14px;
+}
+
+.export-actions .export-button {
+    min-width: 220px;
+    background: #f7f9fb;
+    color: #2f4358;
+    border: 1px solid #c7d1d9;
+}
+
 .plot-options-title {
     margin-bottom: 10px;
     color: #52616d;
@@ -2768,7 +2781,7 @@ body {
 /* Sidebar sizing correction: keep the navigation compact instead of letting
    the full-height rail stretch each grid row. */
 .dashboard-frame {
-    grid-template-columns: 420px minmax(0, 1fr);
+    grid-template-columns: 312px minmax(0, 1fr);
 }
 
 .dashboard-sidebar {
@@ -2777,8 +2790,8 @@ body {
     align-items: stretch;
     align-content: flex-start;
     gap: 16px;
-    width: 420px;
-    min-width: 420px;
+    width: 312px;
+    min-width: 312px;
     height: 100vh;
     padding: 16px 12px;
 }
@@ -2815,6 +2828,11 @@ body {
 
 .set-panel-grid {
     grid-template-columns: 1fr;
+}
+
+/* Keep the Parameter Sweep setup cards the same width as Particle Explorer. */
+.workspace {
+    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr);
 }
 
 .single-workspace .control-column {
@@ -3006,16 +3024,34 @@ body {
 
 @media (min-width: 700px) {
     .dashboard-frame {
-        grid-template-columns: 240px minmax(0, 1fr);
+        grid-template-columns: 312px minmax(0, 1fr);
     }
 
     .dashboard-sidebar {
-        width: 240px;
-        min-width: 240px;
+        width: 312px;
+        min-width: 312px;
     }
 
     .workspace {
-        grid-template-columns: minmax(320px, 25%) minmax(0, 1fr) !important;
+        grid-template-columns: minmax(540px, 640px) minmax(0, 1fr) !important;
+    }
+}
+
+@media (max-width: 1080px) {
+    .dashboard-frame {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-sidebar {
+        width: auto;
+        min-width: 0;
+        position: static;
+        height: auto;
+    }
+
+    .workspace,
+    .single-workspace {
+        grid-template-columns: 1fr !important;
     }
 }
 
@@ -3084,6 +3120,83 @@ html .plot-options-card .plot-option-control.dashboard-dropdown .Select-control 
     color: #63727c;
     font-size: .72rem;
     font-weight: 650;
+}
+
+/* Match Particle Explorer representation controls to the compact Graph Axes
+   card used by Parameter Sweep. */
+.single-workspace .representation-card {
+    width: calc(100% - 28px);
+    max-width: none;
+    height: fit-content;
+    min-height: 0;
+    margin: 0 14px;
+    align-self: start;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid rgba(96, 110, 123, .20);
+    border-radius: 8px;
+    background: #f7f8f9;
+    box-shadow: none;
+}
+
+/* Override the inherited blue workflow-card treatment for this neutral
+   controls surface. */
+html .single-workspace .representation-card {
+    border: 1px solid rgba(96, 110, 123, .20) !important;
+    border-left: 1px solid rgba(96, 110, 123, .20) !important;
+    background: #f7f8f9 !important;
+    background-color: #f7f8f9 !important;
+}
+
+.single-workspace .representation-card > .representation-card-header {
+    padding: 0;
+    margin-bottom: 10px;
+    background: transparent;
+    border: 0;
+    color: #52616d;
+    font-size: .78rem;
+    font-weight: 750;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.single-workspace .representation-card-body {
+    display: grid;
+    grid-template-columns: 230px 230px;
+    align-items: start;
+    gap: 14px;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+}
+
+.single-workspace .representation-card-body .field-block {
+    flex: 0 0 230px;
+    margin: 0;
+}
+
+.single-workspace .representation-card-body .field-block label {
+    display: block;
+    margin-bottom: 4px;
+    color: #63727c;
+    font-size: .72rem;
+    font-weight: 650;
+}
+
+.single-workspace .representation-card-body .field-input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.single-workspace .representation-card-body .dashboard-dropdown {
+    width: 100%;
+}
+
+@media (max-width: 620px) {
+    .single-workspace .representation-card-body {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 620px) {

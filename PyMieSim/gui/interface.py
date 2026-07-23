@@ -151,6 +151,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("plot-settings-store", "data"),
         Input("settings-particle-font-size", "value", allow_optional=True),
         Input("settings-particle-line-width", "value", allow_optional=True),
+        Input("settings-particle-graph-height", "value", allow_optional=True),
         Input("settings-particle-template", "value", allow_optional=True),
         Input("settings-particle-coordinates", "value", allow_optional=True),
         Input("settings-particle-x-scale", "value", allow_optional=True),
@@ -159,6 +160,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("settings-particle-log-y", "value", allow_optional=True),
         Input("settings-sweep-font-size", "value", allow_optional=True),
         Input("settings-sweep-line-width", "value", allow_optional=True),
+        Input("settings-sweep-graph-height", "value", allow_optional=True),
         Input("settings-sweep-template", "value", allow_optional=True),
         Input("settings-sweep-coordinates", "value", allow_optional=True),
         Input("settings-sweep-x-scale", "value", allow_optional=True),
@@ -181,14 +183,14 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     )
     def _sync_plot_settings(*values):
         stored_settings = values[-1] or {}
-        particle_values = values[:8]
-        sweep_values = values[8:16]
-        single_local_values = values[16:22]
-        experiment_local_values = values[22:28]
+        particle_values = values[:9]
+        sweep_values = values[9:18]
+        single_local_values = values[18:24]
+        experiment_local_values = values[24:30]
 
         def merge(defaults, key, settings_values):
             current = {**defaults, **(stored_settings.get(key, {}) if isinstance(stored_settings, dict) else {})}
-            names = ("font_size", "line_width", "template", "coordinate_system", "x_scale", "show_legend", "show_grid", "log_y")
+            names = ("font_size", "line_width", "graph_height", "template", "coordinate_system", "x_scale", "show_legend", "show_grid", "log_y")
             for name, value in zip(names, settings_values):
                 if value is not None:
                     current[name] = value
@@ -457,23 +459,18 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
 
     @app.callback(
         Output("single-result", "data"),
-        Output("single-status", "children"),
-        Output("single-status", "className"),
         Output("single-run-count", "data"),
-        Input("run-single", "n_clicks"),
-        State("single-source-type", "value"),
-        State({"kind": "field", "section": "single-source", "name": ALL}, "value"),
+        Input("single-source-type", "value"),
+        Input({"kind": "field", "section": "single-source", "name": ALL}, "value"),
         State({"kind": "field", "section": "single-source", "name": ALL}, "id"),
-        State("single-scatterer-type", "value"),
-        State({"kind": "field", "section": "single-scatterer", "name": ALL}, "value"),
+        Input("single-scatterer-type", "value"),
+        Input({"kind": "field", "section": "single-scatterer", "name": ALL}, "value"),
         State({"kind": "field", "section": "single-scatterer", "name": ALL}, "id"),
-        State("single-representation", "value"),
-        State("single-sampling", "value"),
+        Input("single-representation", "value"),
+        Input("single-sampling", "value"),
         State("single-run-count", "data"),
-        prevent_initial_call=True,
     )
     def _run_single(
-        n_clicks: int,
         source_type: str,
         source_values: list[str],
         source_ids: list[dict[str, str]],
@@ -484,7 +481,6 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         sampling: int,
         single_runs: int,
     ):
-        del n_clicks
         next_single_runs = int(single_runs or 0)
         try:
             figure, summary = build_single_figure(
@@ -497,9 +493,9 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             )
         except Exception as error:
             LOGGER.exception("Single representation render failed")
-            return None, str(error), "status-banner error", next_single_runs
+            return None, next_single_runs
 
-        return {"figure": figure.to_plotly_json(), "summary": summary}, "Particle Explorer rendered.", "status-banner success", next_single_runs + 1
+        return {"figure": figure.to_plotly_json(), "summary": summary}, next_single_runs + 1
 
     @app.callback(
         Output("single-graph", "figure"),
@@ -543,7 +539,7 @@ def build_single_empty_figure(plot_settings: dict | None = None, theme: str = "l
     from plotly.graph_objects import Figure
 
     figure = Figure()
-    figure.update_layout(template="plotly_white", xaxis_visible=False, yaxis_visible=False, annotations=[{"text": "Configure a setup and render a representation.", "xref": "paper", "yref": "paper", "x": 0.5, "y": 0.5, "showarrow": False}])
+    figure.update_layout(template="plotly_white", xaxis_visible=False, yaxis_visible=False, annotations=[{"text": "Configure a setup to inspect a representation.", "xref": "paper", "yref": "paper", "x": 0.5, "y": 0.5, "showarrow": False}])
     return apply_plot_settings(figure, plot_settings, theme)
 
 

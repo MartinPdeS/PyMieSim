@@ -377,6 +377,7 @@ def apply_plot_settings(
     settings = {
         "font_size": 14,
         "line_width": 2,
+        "graph_height": 700,
         "template": "match-theme",
         "show_legend": True,
         "show_grid": True,
@@ -393,6 +394,7 @@ def apply_plot_settings(
     figure.update_layout(
         template=template,
         font={"size": settings["font_size"]},
+        height=max(300, int(settings["graph_height"])),
         showlegend=bool(settings["show_legend"]),
         legend={
             "orientation": "h",
