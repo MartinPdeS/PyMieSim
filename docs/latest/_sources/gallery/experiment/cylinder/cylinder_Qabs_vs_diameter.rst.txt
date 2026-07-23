@@ -40,37 +40,37 @@ This example demonstrates how to compute and visualize the scattering efficiency
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | crown                 | nickel                |
+    | ZBLAN                 | gold                  |
     +-----------------------+-----------------------+
-    | acetone               | calcium               |
+    | crown                 | zinc                  |
     +-----------------------+-----------------------+
-    | air                   | silicon               |
+    | germanium             | polyetylene           |
     +-----------------------+-----------------------+
-    | SF5                   | zinc                  |
+    | water                 | calcium               |
     +-----------------------+-----------------------+
-    | BAF10                 | copper                |
+    | argon                 | silicon               |
     +-----------------------+-----------------------+
-    | BK7                   | sodium                |
+    | lithium_niobate       | aluminium             |
     +-----------------------+-----------------------+
-    | flint                 | gold                  |
+    | SF5                   | copper                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | polyetylene           |
+    | polystyren            | nickel                |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | iron                  |
+    | BK7                   | iron                  |
     +-----------------------+-----------------------+
-    | germanium             | silver                |
+    | fused_silica          | silver                |
     +-----------------------+-----------------------+
-    | polystyren            | aluminium             |
+    | BAK1                  | sodium                |
     +-----------------------+-----------------------+
-    | BAK1                  |                       |
+    | BAF10                 |                       |
     +-----------------------+-----------------------+
-    | argon                 |                       |
+    | air                   |                       |
     +-----------------------+-----------------------+
-    | water                 |                       |
+    | acetone               |                       |
     +-----------------------+-----------------------+
-    | fused_silica          |                       |
+    | flint                 |                       |
     +-----------------------+-----------------------+
-    | lithium_niobate       |                       |
+    | soda_lime_glass       |                       |
     +-----------------------+-----------------------+
 
     <Figure size 1000x600 with 1 Axes>
@@ -121,7 +121,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.355 seconds)
+   **Total running time of the script:** (0 minutes 0.424 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:
