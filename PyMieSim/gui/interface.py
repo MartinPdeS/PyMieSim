@@ -9,13 +9,15 @@ from typing import Any
 
 from dash import ALL, MATCH, Dash, Input, Output, State, dcc, no_update
 
-from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, build_workspace_layout, create_layout, render_fields
-from PyMieSim.gui.defaults import DEFAULT_APPLICATION_SETTINGS
+from PyMieSim.gui.layout import THEME_DARK, THEME_LIGHT, build_page_with_footer, create_layout, render_fields
+from PyMieSim.gui.defaults import DEFAULT_APPLICATION_SETTINGS, DEFAULT_PARTICLE_PLOT_SETTINGS, DEFAULT_SWEEP_PLOT_SETTINGS
 from PyMieSim.gui.pages.documentation import build_documentation_page
 from PyMieSim.gui.pages.citation import build_citation_page
 from PyMieSim.gui.pages.home import build_home_page
 from PyMieSim.gui.pages.install_local import build_install_local_page
-from PyMieSim.gui.pages.settings import DEFAULT_PARTICLE_PLOT_SETTINGS, DEFAULT_SWEEP_PLOT_SETTINGS, build_settings_page
+from PyMieSim.gui.pages.experiment import build_experiment_page
+from PyMieSim.gui.pages.settings import build_settings_page
+from PyMieSim.gui.pages.single import build_single_page
 from PyMieSim.gui.schemas import DETECTOR_FIELDS, SCATTERER_FIELDS, SINGLE_SCATTERER_FIELDS, SINGLE_SOURCE_FIELDS, SOURCE_FIELDS
 from PyMieSim.gui.services import (
     available_measures,
@@ -150,10 +152,10 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             return build_page_with_footer(build_settings_page((theme_store or {}).get("theme", "light"), plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/single":
             active["single"] += " active"
-            return build_page_with_footer(build_workspace_layout(default_measure_options, "single-tab", plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+            return build_page_with_footer(build_single_page((plot_settings or {}).get("particle_explorer", {}))), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         if route == "/experiment":
             active["experiment"] += " active"
-            return build_page_with_footer(build_workspace_layout(default_measure_options, "experiment-tab", plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
+            return build_page_with_footer(build_experiment_page(default_measure_options, plot_settings or {})), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
         active["home"] += " active"
         return build_page_with_footer(build_home_page(metrics)), *(active[key] for key in ("home", "experiment", "single", "documentation", "settings")), home_visits
 

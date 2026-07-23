@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dash import dcc, html
 
-from PyMieSim.gui.components import HeaderCard
 from PyMieSim.gui.defaults import DEFAULT_APPLICATION_SETTINGS, DEFAULT_PLOT_SETTINGS
 from PyMieSim.gui.schemas import FieldSpec, SECTION_FIELDS, SINGLE_SCATTERER_FIELDS, SINGLE_SOURCE_FIELDS
 
@@ -20,108 +19,6 @@ PLOT_CONFIG = {
     "modeBarButtonsToAdd": ["zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d"],
     "toImageButtonOptions": {"format": "png", "filename": "pymiesim_plot", "scale": 2},
 }
-
-
-def _build_legacy_layout(default_measure_options: list[str], plot_settings: dict | None = None):
-    """Build the former all-workspaces layout used to extract page content."""
-    stored = plot_settings or {}
-    particle_settings = stored.get("particle_explorer", {})
-    sweep_settings = stored.get("parameter_sweep", {})
-    return html.Div(
-        className="app-shell",
-        children=[
-            dcc.Location(id="url", refresh=False),
-            dcc.Store(id="experiment-result"),
-            dcc.Store(id="single-result"),
-            dcc.Download(id="csv-download"),
-            html.Div(
-                className="dashboard-frame",
-                children=[
-                    _build_sidebar(),
-                    html.Main(
-                        className="dashboard-main",
-                        children=[
-                            html.Div(id="home-page", className="page-view", style={"display": "block"}, children=[_build_home_page()]),
-                            html.Div(id="documentation-page", className="page-view", style={"display": "none"}, children=[_build_documentation_page()]),
-                            dcc.Tabs(
-                                id="main-tabs",
-                                value=DEFAULT_APPLICATION_SETTINGS["default_tab"],
-                                className="main-tabs workspace-hidden",
-                                children=[
-                                    dcc.Tab(
-                                        label="Particle Explorer / Representations",
-                                        value="single-tab",
-                                        className="main-tab",
-                                        selected_className="main-tab--selected",
-                                        children=[_build_single_tab(particle_settings)],
-                                    ),
-                                    dcc.Tab(
-                                        label="Parameter Sweep",
-                                        value="experiment-tab",
-                                        className="main-tab",
-                                        selected_className="main-tab--selected",
-                                        children=[
-                            HeaderCard(
-                                "Parameter Sweep Lab",
-                                "Configure source, scatterer, and detector sets, then run parameter sweeps through the compiled engine directly from Dash.",
-                                [
-                                    ("01", "Configure source", "Choose the source family and sweep its optical parameters.", "yellow"),
-                                    ("02", "Configure scatterer", "Set particle geometry, material, and medium values.", "blue"),
-                                    ("03", "Configure detector", "Select collection geometry and compute the sweep response.", "orange"),
-                                ],
-                                color="green",
-                            ).render(),
-                            html.Section(
-                                id="configure",
-                                className="workspace",
-                                children=[
-                                    html.Section(
-                                        className="control-column",
-                                        children=[
-                                            html.Div(
-                                                className="set-panel-grid",
-                                                children=[
-                                                    *_build_experiment_configuration_sections(),
-                                                ],
-                                            ),
-                                        ],
-                                    ),
-                                    html.Section(
-                                        className="result-column",
-                                        children=[
-                                            html.Section(
-                                                className="panel graph-panel",
-                                                children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)],
-                                            ),
-                                            _x_axis_card(default_measure_options),
-                                            html.Div(id="experiment-plot-options-container", children=[_plot_options_card("experiment", sweep_settings)]),
-                                            html.Div(
-                                                className="export-actions",
-                                                children=[html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button")],
-                                            ),
-                                        ],
-                                    ),
-                                ],
-                            ),
-                                        ],
-                                    ),
-                                ],
-                            ),
-                        ],
-                    ),
-                ],
-            ),
-        ],
-    )
-
-
-def build_workspace_layout(default_measure_options: list[str], tab_value: str, plot_settings: dict | None = None):
-    """Extract only the selected workspace page from the legacy composition."""
-    legacy_layout = _build_legacy_layout(default_measure_options, plot_settings)
-    dashboard_frame = next(child for child in legacy_layout.children if getattr(child, "className", None) == "dashboard-frame")
-    tabs = dashboard_frame.children[1].children[2]
-    selected_tab = next(tab for tab in tabs.children if tab.value == tab_value)
-    return html.Div(className="workspace-page", children=selected_tab.children)
 
 
 def _plot_options_card(prefix: str, settings: dict, representation: str | None = None, projection: str | None = None, projection_options: list[dict] | None = None):
@@ -317,129 +214,6 @@ def build_page_with_footer(page):
     )
 
 
-def _build_single_tab(plot_settings: dict | None = None):
-    """Build the single-scatterer representation workspace."""
-    from PyMieSim.gui.pages.single import build_single_page
-
-    return build_single_page(plot_settings=plot_settings)
-
-    # Kept below as a reference while the page migration is completed.
-    return html.Div(
-        className="tab-content-stack single-tab-content",
-        children=[
-            html.Section(
-                className="workflow-page-header hero single-hero",
-                children=[
-                    html.Div(
-                        className="hero-copy",
-                        children=[
-                            html.P("PyMieSim", className="eyebrow"),
-                            html.H1("Particle Explorer"),
-                            html.P("Inspect angular scattering, polarization, and field patterns for one source–scatterer setup.", className="hero-text"),
-                        ],
-                    ),
-                ],
-            ),
-            html.Section(
-                className="single-workspace",
-                children=[
-                    html.Section(
-                        className="control-column",
-                        children=[
-                            _section_shell(
-                                "Source",
-                                dcc.Dropdown(id="single-source-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SOURCE_FIELDS], value="Gaussian", clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
-                                html.Div(id="single-source-fields"),
-                            ),
-                            _section_shell(
-                                "Scatterer",
-                                dcc.Dropdown(id="single-scatterer-type", className="dashboard-dropdown", options=[{"label": key, "value": key} for key in SINGLE_SCATTERER_FIELDS], value="Sphere", clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session"),
-                                html.Div(id="single-scatterer-fields"),
-                            ),
-                            html.Section(
-                                className="panel run-panel",
-                                children=[
-                                    html.Div(className="panel-header", children=[html.H2("Representation Controls")]),
-                                    html.Div(className="field-block", children=[html.Label("Representation", htmlFor="single-representation"), dcc.Dropdown(id="single-representation", className="dashboard-dropdown", options=[{"label": "S1 / S2 amplitudes", "value": "s1s2"}, {"label": "Stokes I intensity", "value": "stokes"}, {"label": "Stokes Q", "value": "stokes_q"}, {"label": "Stokes U", "value": "stokes_u"}, {"label": "Stokes V", "value": "stokes_v"}, {"label": "Scattering phase function", "value": "spf"}, {"label": "Far-field intensity", "value": "farfields"}], value="s1s2", clearable=False, searchable=False, optionHeight=38, maxHeight=200, persistence=True, persistence_type="session")]),
-                                    html.Div(className="field-block", children=[html.Label("Angular sampling", htmlFor="single-sampling"), dcc.Input(id="single-sampling", type="number", value=120, min=24, max=300, step=1, placeholder="120", className="field-input", persistence=True, persistence_type="session")]),
-                                ],
-                            ),
-                        ],
-                    ),
-                    html.Section(
-                        className="result-column",
-                        children=[html.Div(id="single-summary", className="summary-grid"), html.Section(className="panel graph-panel single-graph-panel", children=[dcc.Graph(id="single-graph", config=PLOT_CONFIG)]), _plot_options_card("single", particle_settings)],
-                    ),
-                ],
-            ),
-        ],
-    )
-
-
-def _build_home_page():
-    """Build the Rosettax-style landing page."""
-    from PyMieSim.gui.pages.home import build_home_page
-
-    return build_home_page()
-
-    # Legacy inline composition retained temporarily for compatibility.
-    return html.Div(
-        className="page-content-stack",
-        children=[
-            html.Section(className="page-hero", children=[html.P("PyMieSim", className="eyebrow"), html.H1("Optical scattering, clearly organized."), html.P("Run parameter sweeps in the Parameter Sweep workspace or inspect one particle through its physical representations in Particle Explorer.", className="hero-text")]),
-            html.Div(
-                className="home-card-grid",
-                children=[
-                    html.A(href="/experiment", className="home-action-card", children=[html.Span("01", className="home-card-number"), html.H2("Parameter Sweep"), html.P("Run source, scatterer, and detector sets across parameter sweeps. Export structured results for analysis.")]),
-                    html.A(href="/single", className="home-action-card", children=[html.Span("02", className="home-card-number"), html.H2("Particle Explorer"), html.P("Render S1/S2, Stokes, SPF, and far-field representations for one optical setup.")]),
-                    html.A(href="/documentation", className="home-action-card", children=[html.Span("03", className="home-card-number"), html.H2("Documentation"), html.P("Learn the model vocabulary, field syntax, supported objects, and recommended workflows.")]),
-                ],
-            ),
-            html.Section(className="panel home-overview-card", children=[html.Div(className="panel-header", children=[html.H2("A compact front door to PyMieSim")]), html.P("The dashboard follows the same calm, sectioned layout language as Rosettax: navigation stays in the sidebar, while Parameter Sweep and Particle Explorer each get room for their own controls and visual output."), html.Div(className="meta-strip", children=[html.Div(className="meta-chip", children=[html.Span("Compiled engine"), html.Small("C++ particle and sweep backends")]), html.Div(className="meta-chip", children=[html.Span("Plot-ready"), html.Small("Plotly figures and CSV export")])])]),
-        ],
-    )
-
-
-def _build_documentation_page():
-    """Build a lightweight documentation hub matching Rosettax's page style."""
-    from PyMieSim.gui.pages.documentation import build_documentation_page
-
-    return build_documentation_page()
-
-    # Legacy inline composition retained temporarily for compatibility.
-    return html.Div(
-        className="page-content-stack",
-        children=[
-            html.Section(className="page-hero", children=[html.P("PyMieSim reference", className="eyebrow"), html.H1("Documentation"), html.P("A practical map of the objects, workflows, and input conventions used throughout the dashboard.", className="hero-text")]),
-            html.Div(
-                className="documentation-grid",
-                children=[
-                    _documentation_card("Parameter Sweep workflow", "Use source sets, scatterer sets, and detector sets to build sweeps. The X-axis selector is inferred from fields containing multiple values."),
-                    _documentation_card("Particle Explorer workflow", "Use one source and one scatterer to inspect angular amplitudes, polarization, phase functions, or far-field intensity."),
-                    _documentation_card("Field syntax", "Quantity inputs accept scalar values, comma-separated lists, and start:end:count expressions such as 400:1400:8."),
-                    _documentation_card("Supported models", "Gaussian and plane-wave sources are available in both workflows, alongside spheres, infinite cylinders, and core-shell scatterers."),
-                ],
-            ),
-            html.Section(className="panel documentation-note", children=[html.Div(className="panel-header", children=[html.H2("Where to start")]), html.P("Choose Parameter Sweep for parameter studies and detector coupling. Choose Particle Explorer for representation plots and physical intuition. Both pages preserve the same source/scatterer vocabulary so configurations transfer naturally between them."), html.A("Open the Parameter Sweep workspace →", href="/experiment", className="inline-action")]),
-        ],
-    )
-
-
-def _documentation_card(title: str, description: str):
-    return html.Section(className="panel documentation-card", children=[html.Div(className="panel-header", children=[html.H2(title)]), html.P(description)])
-
-
-def _build_experiment_configuration_sections():
-    """Compose experiment configuration cards from page section modules."""
-    from PyMieSim.gui.pages.experiment.sections import (
-        build_detector_section,
-        build_scatterer_section,
-        build_source_section,
-    )
-
-    return [build_source_section(), build_scatterer_section(), build_detector_section()]
-
-
 def _build_sidebar():
     """Create the dashboard sidebar."""
     return html.Aside(
@@ -538,18 +312,6 @@ def render_summary_cards(summary: list[dict[str, str]]):
         html.Div(className="summary-card", children=[html.Span(item["label"]), html.Strong(item["value"])])
         for item in summary
     ]
-
-
-def _section_shell(title: str, selector, content):
-    """Wrap one configuration section in consistent panel markup."""
-    return html.Section(
-        className="panel",
-        children=[
-            html.Div(className="panel-header", children=[html.H2(title)]),
-            selector,
-            html.Div(className="panel-body", children=[content]),
-        ],
-    )
 
 
 def _build_default_help_text(field_spec: FieldSpec) -> str:
