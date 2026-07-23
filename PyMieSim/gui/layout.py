@@ -63,7 +63,7 @@ def _plot_options_card(prefix: str, settings: dict, representation: str | None =
         )
 
     fields = []
-    is_structured_map = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"}
+    is_structured_map = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"} or str(representation or "").startswith("nearfields")
     is_polar = prefix == "single" and projection == "polar_1d"
     is_3d = prefix == "single" and projection in {"3d", "3d_radial"}
 

@@ -10,7 +10,7 @@
       "detector_type": "PhotodiodeSet"
     },
     "particle_explorer": {
-      "source_type": "Gaussian",
+      "source_type": "PlaneWave",
       "scatterer_type": "Sphere",
       "representation": "s1s2",
       "projection": "2d",

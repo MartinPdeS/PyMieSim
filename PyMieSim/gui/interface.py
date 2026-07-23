@@ -369,6 +369,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     @app.callback(
         Output("experiment-result", "data"),
         Output("experiment-run-count", "data"),
+        Output("experiment-computation-status", "children"),
         Input("source-type", "value"),
         Input({"kind": "field", "section": "source", "name": ALL}, "value"),
         State({"kind": "field", "section": "source", "name": ALL}, "id"),
@@ -417,7 +418,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             )
         except Exception as error:
             LOGGER.debug("Skipping incomplete or invalid auto-run input: %s", error)
-            return no_update, next_experiment_runs
+            return no_update, next_experiment_runs, ""
 
         LOGGER.debug(
             "Experiment run finished rows=%d x_axis_options=%s",
@@ -425,7 +426,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
             result["parameter_columns"],
         )
 
-        return result, next_experiment_runs + 1
+        return result, next_experiment_runs + 1, ""
 
     @app.callback(
         Output("csv-download", "data"),
@@ -491,6 +492,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     @app.callback(
         Output("single-result", "data"),
         Output("single-run-count", "data"),
+        Output("single-computation-status", "children"),
         Input("single-source-type", "value"),
         Input({"kind": "field", "section": "single-source", "name": ALL}, "value"),
         State({"kind": "field", "section": "single-source", "name": ALL}, "id"),
@@ -500,6 +502,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("single-representation", "value"),
         Input("single-projection", "value"),
         Input("single-sampling", "value"),
+        Input("single-nearfield-mode", "value"),
         State("single-run-count", "data"),
     )
     def _run_single(
@@ -512,6 +515,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         representation: str,
         projection: str,
         sampling: int,
+        nearfield_mode: str,
         single_runs: int,
     ):
         next_single_runs = int(single_runs or 0)
@@ -524,32 +528,38 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                 representation=representation,
                 projection=projection,
                 sampling=sampling or 120,
+                nearfield_mode=nearfield_mode or "absolute",
             )
         except Exception as error:
             LOGGER.exception("Single representation render failed")
-            return None, next_single_runs
+            return None, next_single_runs, ""
 
-        return {"figure": figure.to_plotly_json(), "summary": summary}, next_single_runs + 1
+        return {"figure": figure.to_plotly_json(), "summary": summary}, next_single_runs + 1, ""
 
     @app.callback(
         Output("single-projection", "options"),
         Output("single-projection", "value"),
+        Output("single-nearfield-mode-field", "style"),
+        Output("single-representation-body", "style"),
         Input("single-representation", "value"),
         State("single-projection", "value"),
     )
     def _update_single_projection_options(representation: str, current_projection: str | None):
         if representation == "s1s2":
             options = [{"label": "2D plot", "value": "2d"}, {"label": "Polar 1D", "value": "polar_1d"}]
-            return options, current_projection if current_projection == "polar_1d" else "2d"
+            return options, current_projection if current_projection == "polar_1d" else "2d", {"display": "none"}, {"gridTemplateColumns": "repeat(3, minmax(0, 230px))"}
 
         supports_3d = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"}
-        options = [{"label": "2D heatmap" if supports_3d else "2D plot", "value": "2d"}]
+        supports_heatmap = supports_3d or str(representation or "").startswith("nearfields")
+        options = [{"label": "2D heatmap" if supports_heatmap else "2D plot", "value": "2d"}]
         if supports_3d:
             options.extend([
                 {"label": "3D sphere", "value": "3d"},
                 {"label": "3D radial surface", "value": "3d_radial"},
             ])
-        return options, current_projection if supports_3d and current_projection in {"3d", "3d_radial"} else "2d"
+        is_nearfield = str(representation or "").startswith("nearfields")
+        body_columns = "repeat(4, minmax(0, 230px))" if is_nearfield else "repeat(3, minmax(0, 230px))"
+        return options, current_projection if supports_3d and current_projection in {"3d", "3d_radial"} else "2d", {"display": "block" if is_nearfield else "none"}, {"gridTemplateColumns": body_columns}
 
     @app.callback(
         Output("single-plot-options-container", "children"),

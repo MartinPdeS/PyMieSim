@@ -37,7 +37,7 @@ def build_experiment_page(default_measure_options: list[str], plot_settings: dic
                     html.Section(
                         className="result-column",
                         children=[
-                            html.Section(className="panel graph-panel", children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG)]),
+                            html.Section(className="panel graph-panel", children=[dcc.Loading(id="result-graph-loading", type="circle", color="#4f8df7", custom_spinner=html.Div("Computing…", className="plot-computing-indicator"), delay_show=150, delay_hide=150, children=html.Div(className="plot-loading-target", children=[dcc.Graph(id="result-graph", config=PLOT_CONFIG), html.Div(id="experiment-computation-status", style={"display": "none"})]))]),
                             _x_axis_card(default_measure_options),
                             html.Div(id="experiment-plot-options-container", children=[_plot_options_card("experiment", settings)]),
                             html.Div(className="export-actions", children=[html.Button("Export CSV", id="export-csv", n_clicks=0, className="run-button export-button")]),
@@ -47,4 +47,3 @@ def build_experiment_page(default_measure_options: list[str], plot_settings: dic
             ),
         ],
     )
-

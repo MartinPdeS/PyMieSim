@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from typing import Tuple, Optional, Sequence, Dict, List
+import logging
 import numpy
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
@@ -8,6 +9,9 @@ from MPSPlots.colormaps import blue_black_red
 from MPSPlots.styles import scientific
 
 from PyMieSim.units import Length
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _normalize_vector(vector: numpy.ndarray, eps: float = 1e-15) -> numpy.ndarray:
@@ -307,7 +311,7 @@ class NearFields:
         }
 
         for component in field_components:
-            print(f"Computing {type} near field component: {component}")
+            LOGGER.debug("Computing %s near field component: %s", type, component)
             kwargs["field_type"] = component
 
             if type == "total":
@@ -319,9 +323,36 @@ class NearFields:
             else:
                 raise ValueError(f"Unknown field type: {type}")
 
-        fields[component] = numpy.asarray(values).reshape(self.X.shape)
+            values = getattr(values, "magnitude", values)
+            fields[component] = numpy.asarray(values).reshape(self.X.shape)
 
         return fields
+
+    def compute(
+        self,
+        *field_components: str,
+        type: str = "scattered",
+        sampling: int = 200,
+        plane_origin: Optional[Sequence[Length]] = None,
+        plane_normal: Optional[Sequence[float]] = None,
+        u_range: Optional[Tuple[Length, Length]] = None,
+        v_range: Optional[Tuple[Length, Length]] = None,
+        extent_scale: float = 2.5,
+    ) -> Dict[str, numpy.ndarray]:
+        """Compute near-field components on the configured sampling plane."""
+        if not field_components:
+            raise ValueError("Provide at least one field component, for example |E|")
+
+        self._setup_coordinates_plane(
+            sampling=sampling,
+            plane_origin=plane_origin,
+            plane_normal=plane_normal,
+            u_range=u_range,
+            v_range=v_range,
+            extent_scale=extent_scale,
+        )
+        requested_components, _ = self._parse_field_components(field_components)
+        return self._compute_fields(list(dict.fromkeys(requested_components)), type=type)
 
     @staticmethod
     def _parse_field_components(field_components: Sequence[str]) -> Tuple[List[str], List[str]]:

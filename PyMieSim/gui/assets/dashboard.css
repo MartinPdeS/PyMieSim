@@ -2913,6 +2913,25 @@ body {
     margin: 0;
 }
 
+.single-workspace .representation-top-row {
+    display: contents;
+}
+
+.single-workspace .representation-card-body .nearfield-mode-field {
+    margin-top: -4px;
+}
+
+.plot-computing-indicator {
+    padding: 10px 16px;
+    border: 1px solid rgba(79, 141, 247, .35);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .96);
+    color: #315f9e;
+    box-shadow: 0 4px 14px rgba(30, 55, 90, .18);
+    font-size: .9rem;
+    font-weight: 700;
+}
+
 .single-workspace .representation-card-body .run-button {
     width: 100%;
     min-width: 0;

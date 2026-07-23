@@ -129,6 +129,7 @@ def build_single_figure(
     representation: str,
     sampling: int,
     projection: str = "2d",
+    nearfield_mode: str = "absolute",
     plot_settings: dict[str, Any] | None = None,
     theme: str = "light",
 ) -> tuple[go.Figure, dict[str, str]]:
@@ -157,6 +158,35 @@ def build_single_figure(
             figure.update_yaxes(title=f"Amplitude [{_unit_label(s1, 'meter')}]")
         figure.update_layout(meta={"polar_axis_unit": "degree"})
         title = "S1 / S2 scattering amplitudes"
+    elif representation.startswith("nearfields"):
+        nearfield_components = {
+            "nearfields": "|E|",
+            "nearfields_ex": "Ex",
+            "nearfields_ey": "Ey",
+            "nearfields_ez": "Ez",
+        }
+        component = nearfield_components.get(representation, "|E|")
+        nearfields = setup.get_representation("nearfields")
+        field = nearfields.compute(component, type="total", sampling=sampling)[component]
+        complex_values = np.asarray(field, dtype=complex)
+        values = np.abs(complex_values) if nearfield_mode != "real" else complex_values.real
+        x = np.asarray(nearfields.u.to(ureg.nanometer).magnitude, dtype=float)
+        y = np.asarray(nearfields.v.to(ureg.nanometer).magnitude, dtype=float)
+        figure = go.Figure(
+            data=go.Heatmap(
+                x=x,
+                y=y,
+                z=values,
+                colorscale="Viridis",
+                colorbar={"title": "V/m"},
+            )
+        )
+        figure.update_layout(yaxis={"scaleanchor": "x", "scaleratio": 1})
+        figure.update_xaxes(title="Plane u [nanometer]")
+        figure.update_yaxes(title="Plane v [nanometer]")
+        value_label = "|" if nearfield_mode != "real" else "Re("
+        value_suffix = "|" if nearfield_mode != "real" else ")"
+        title = f"Near-field {value_label}{component.strip('|')}{value_suffix}"
     else:
         backend_representation = "stokes" if representation == "stokes" or representation.startswith("stokes_") else representation
         representation_object = setup.get_representation(backend_representation, sampling=sampling)
