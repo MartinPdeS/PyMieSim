@@ -955,9 +955,10 @@ html .theme-mode-control label {
     margin-bottom: 14px;
 }
 
-/* Keep Experiment's left configuration column identical to Single's. */
+/* Keep Experiment's left configuration column aligned with Single's
+   narrower setup area. */
 .workspace {
-    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 1fr) !important;
 }
 
 .workspace .control-column,
@@ -2834,9 +2835,10 @@ body {
     grid-template-columns: 1fr;
 }
 
-/* Keep the Parameter Sweep setup cards the same width as Particle Explorer. */
-.workspace {
-    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr);
+/* Keep Parameter Sweep configuration cards compact and let the result area
+   use the remaining horizontal space. */
+html body .workspace {
+    grid-template-columns: minmax(280px, 320px) minmax(0, 1fr) !important;
 }
 
 .single-workspace .control-column {
@@ -2845,10 +2847,8 @@ body {
     gap: 18px;
 }
 
-/* Give the Single workspace enough horizontal room for its long-form
-   source and scatterer fields, while keeping the plot column flexible. */
 .single-workspace {
-    grid-template-columns: minmax(540px, 640px) minmax(0, 1fr);
+    grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
 }
 
 .single-workspace .workflow-card,
