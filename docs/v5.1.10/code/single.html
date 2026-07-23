@@ -1725,6 +1725,29 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 </dd>
 </dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.NearFields.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">field_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scattered'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_normal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/nearfields.html#NearFields.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.NearFields.compute" title="Link to this definition">#</a></dt>
+<dd><p>Compute near-field components on the configured sampling plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_components</strong> (<em>str</em>)</p></li>
+<li><p><strong>type</strong> (<em>str</em>)</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>)</p></li>
+<li><p><strong>plane_origin</strong> (<em>Sequence</em><em>[</em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>plane_normal</strong> (<em>Sequence</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>u_range</strong> (<em>Tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>v_range</strong> (<em>Tuple</em><em>[</em><em>Length</em><em>, </em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>extent_scale</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Dict</em>[str, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><em>ndarray</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.NearFields.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*field_components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type='scattered'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_origin=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_normal=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_range=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extent_scale=2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figure_size=(6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tight_layout=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_as=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xscale=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscale=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style=PosixPath('/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/MPSPlots/styles/scientific.mplstyle')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/nearfields.html#NearFields.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.NearFields.plot" title="Link to this definition">#</a></dt>
 <dd><p>Plot near fields over a specified plane.</p>
@@ -1909,6 +1932,7 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.NearFields"><code class="docutils literal notranslate"><span class="pre">NearFields</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.NearFields.compute"><code class="docutils literal notranslate"><span class="pre">NearFields.compute()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.NearFields.plot"><code class="docutils literal notranslate"><span class="pre">NearFields.plot()</span></code></a></li>
 </ul>
 </li>
