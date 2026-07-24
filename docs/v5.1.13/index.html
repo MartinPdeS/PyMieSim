@@ -468,7 +468,7 @@
 <td><p><a class="reference external" href="https://opg.optica.org/optcon/viewmedia.cfm?uri=optcon-2-3-520&amp;html=true"><img alt="Scientific article" src="https://img.shields.io/badge/Optics%20Continuum-PyMieSim-green.svg" /></a></p></td>
 </tr>
 <tr class="row-even"><td><p>Testing</p></td>
-<td><p><img alt="Unittest Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg" /></p></td>
+<td><p><a href="#id1"><span class="problematic" id="id2">|ci/cd|</span></a></p></td>
 <td><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html"><img alt="Unittest coverage" src="https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg" /></a></p></td>
 <td><p><a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb"><img alt="Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></td>
 </tr>
@@ -547,29 +547,6 @@ conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class=
 <a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png"><img alt="Scattering efficiency of a 200 nm sphere with refractive index 4.0." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png" style="width: 1000px;" />
 </a>
 </section>
-<section id="experiment-dashboard">
-<h2>Experiment Dashboard<a class="headerlink" href="#experiment-dashboard" title="Link to this heading">#</a></h2>
-<p>PyMieSim also ships with a Dash-based experiment dashboard for interactive set configuration,
-CSV export, and quick visual exploration of experiment outputs.</p>
-<p>The dashboard is intended to feel like a small server-hosted application rather than a one-off demo.
-It uses a browser-based interface served from the local machine or from a remote host that you bind
-explicitly.</p>
-<p>Launch it from the repository checkout or installed package with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--host<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>--port<span class="w"> </span><span class="m">8050</span>
-</pre></div>
-</div>
-<p>For a server deployment or LAN-accessible instance, bind to all interfaces and keep the browser closed:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8050</span><span class="w"> </span>--no-browser
-</pre></div>
-</div>
-<p>Debug mode is off by default. Enable it only when you want verbose logs and Dash debug tooling:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyMieSim<span class="w"> </span>--debug
-</pre></div>
-</div>
-<p>Example dashboard view placeholder:</p>
-<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png"><img alt="Placeholder preview of the PyMieSim experiment dashboard." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png" style="width: 1000px;" />
-</a>
-</section>
 <section id="code-structure">
 <h2>Code structure<a class="headerlink" href="#code-structure" title="Link to this heading">#</a></h2>
 <p>Here is the architecture for a standard workflow using PyMieSim:</p>
@@ -646,7 +623,6 @@ pytest
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-example">Quick example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-dashboard">Experiment Dashboard</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-structure">Code structure</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-from-source">Building from source</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
