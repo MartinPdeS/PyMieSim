@@ -28,6 +28,8 @@ PyMieSim
 It supports spherical, cylindrical and core--shell particles and provides helper classes for custom sources and detectors.
 The project targets both quick single-scatterer studies and large parametric experiments.
 
+Try the live web GUI: `PyMieSim Parameter Sweep Lab <https://pymiesim.onrender.com/>`_.
+
 Features
 --------
 - Solvers for spheres, cylinders and core--shell geometries.
