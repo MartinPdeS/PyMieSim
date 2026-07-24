@@ -130,6 +130,7 @@ def build_single_figure(
     sampling: int,
     projection: str = "2d",
     nearfield_mode: str = "absolute",
+    include_incident_field: bool = True,
     plot_settings: dict[str, Any] | None = None,
     theme: str = "light",
 ) -> tuple[go.Figure, dict[str, str]]:
@@ -167,7 +168,8 @@ def build_single_figure(
         }
         component = nearfield_components.get(representation, "|E|")
         nearfields = setup.get_representation("nearfields")
-        field = nearfields.compute(component, type="total", sampling=sampling)[component]
+        field_type = "total" if include_incident_field else "scattered"
+        field = nearfields.compute(component, type=field_type, sampling=sampling)[component]
         complex_values = np.asarray(field, dtype=complex)
         values = np.abs(complex_values) if nearfield_mode != "real" else complex_values.real
         x = np.asarray(nearfields.u.to(ureg.nanometer).magnitude, dtype=float)
@@ -186,7 +188,8 @@ def build_single_figure(
         figure.update_yaxes(title="Plane v [nanometer]")
         value_label = "|" if nearfield_mode != "real" else "Re("
         value_suffix = "|" if nearfield_mode != "real" else ")"
-        title = f"Near-field {value_label}{component.strip('|')}{value_suffix}"
+        field_label = "total" if include_incident_field else "scattered"
+        title = f"{field_label.title()} near-field {value_label}{component.strip('|')}{value_suffix}"
     else:
         backend_representation = "stokes" if representation == "stokes" or representation.startswith("stokes_") else representation
         representation_object = setup.get_representation(backend_representation, sampling=sampling)

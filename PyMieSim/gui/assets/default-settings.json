@@ -7,7 +7,7 @@
     "parameter_sweep": {
       "source_type": "PlaneWaveSet",
       "scatterer_type": "SphereSet",
-      "detector_type": "PhotodiodeSet"
+      "detector_type": "None"
     },
     "particle_explorer": {
       "source_type": "PlaneWave",

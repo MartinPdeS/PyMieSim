@@ -77,10 +77,10 @@ def _plot_options_card(prefix: str, settings: dict, representation: str | None =
     fields.append(("Font size", number("font-size", values["font_size"], 8, 32, 1)))
     if not is_structured_map and not is_3d:
         fields.append(("Line width", number("line-width", values["line_width"], 0.5, 8, 0.5)))
-    fields.extend([
-        ("Legend", dropdown("legend", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_legend"]))),
-        ("Grid", dropdown("grid", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_grid"]))),
-    ])
+    has_legend = not (prefix == "single" and (is_structured_map or is_3d))
+    if has_legend:
+        fields.append(("Legend", dropdown("legend", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_legend"]))))
+    fields.append(("Grid", dropdown("grid", [{"label": "Show", "value": True}, {"label": "Hide", "value": False}], bool(values["show_grid"]))))
     if prefix == "experiment":
         fields.insert(2, ("Projection", dropdown("projection", projection_options or [{"label": "Cartesian", "value": "cartesian"}], projection or "cartesian")))
     return html.Section(

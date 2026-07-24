@@ -955,6 +955,90 @@ html .theme-mode-control label {
     margin-bottom: 14px;
 }
 
+.detector-coupling-alert {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    border: 1px solid rgba(217, 119, 6, .28);
+    border-radius: 8px;
+    background: #fff7e6;
+    color: #8a4b08;
+    font-size: .86rem;
+    line-height: 1.35;
+}
+
+.nearfield-switch {
+    margin-top: -3px;
+    padding-top: 0;
+}
+
+.nearfield-switch label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 28px;
+    padding-left: 42px;
+    cursor: pointer;
+    color: var(--ink);
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.nearfield-switch input {
+    display: none !important;
+}
+
+.nearfield-switch label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 24px;
+    border: 1px solid #b8c2cc;
+    border-radius: 999px;
+    background: #dce2e8;
+    transition: background 160ms ease, border-color 160ms ease;
+}
+
+.nearfield-switch label::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(33, 37, 41, .25);
+    transition: transform 160ms ease;
+}
+
+.nearfield-switch label:has(input:checked)::before {
+    border-color: #4f8df7;
+    background: #4f8df7;
+}
+
+.nearfield-switch label:has(input:checked)::after {
+    transform: translate(18px, -50%);
+}
+
+/* Sampling is intentionally a plain numeric field without browser stepper
+   arrows or custom increment/decrement controls. */
+#single-sampling {
+    width: 96px !important;
+    min-width: 96px !important;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+#single-sampling::-webkit-inner-spin-button,
+#single-sampling::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
 /* Keep Experiment's left configuration column aligned with Single's
    narrower setup area. */
 .workspace {
@@ -3184,17 +3268,29 @@ html .single-workspace .representation-card {
 }
 
 .single-workspace .representation-card-body {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 230px));
-    align-items: start;
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     height: auto;
     min-height: 0;
     padding: 0;
 }
 
+.single-workspace .representation-controls-row {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(220px, 1fr) 160px;
+    align-items: start;
+    gap: 16px;
+}
+
+.single-workspace .nearfield-controls-row {
+    display: grid;
+    grid-template-columns: 100px 140px;
+    align-items: start;
+    gap: 16px;
+}
+
 .single-workspace .representation-card-body .field-block {
-    flex: 0 0 230px;
     margin: 0;
 }
 

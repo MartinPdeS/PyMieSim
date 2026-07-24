@@ -303,6 +303,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
     @app.callback(
         Output("measure-select", "options"),
         Output("measure-select", "value"),
+        Output("detector-coupling-alert", "style"),
         Input("scatterer-type", "value"),
         Input("detector-type", "value"),
         State("measure-select", "value"),
@@ -317,7 +318,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         measures = available_measures(scatterer_type, detector_type)
         options = [{"label": measure, "value": measure} for measure in measures]
         value = current_measure if current_measure in measures else measures[0]
-        return options, value
+        alert_style = {} if detector_type == "None" else {"display": "none"}
+        return options, value, alert_style
 
     @app.callback(
         Output("x-axis-select", "options"),
@@ -503,6 +505,7 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Input("single-projection", "value"),
         Input("single-sampling", "value"),
         Input("single-nearfield-mode", "value"),
+        Input("single-include-incident-field", "value"),
         State("single-run-count", "data"),
     )
     def _run_single(
@@ -515,7 +518,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         representation: str,
         projection: str,
         sampling: int,
-        nearfield_mode: str,
+        nearfield_mode: list[str] | str | None,
+        include_incident_field: list[str] | None,
         single_runs: int,
     ):
         next_single_runs = int(single_runs or 0)
@@ -528,7 +532,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                 representation=representation,
                 projection=projection,
                 sampling=sampling or 120,
-                nearfield_mode=nearfield_mode or "absolute",
+                nearfield_mode="absolute" if "absolute" in (nearfield_mode if isinstance(nearfield_mode, list) else [nearfield_mode]) else "real",
+                include_incident_field="include" in (include_incident_field or []),
             )
         except Exception as error:
             LOGGER.exception("Single representation render failed")
@@ -540,14 +545,16 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
         Output("single-projection", "options"),
         Output("single-projection", "value"),
         Output("single-nearfield-mode-field", "style"),
-        Output("single-representation-body", "style"),
+        Output("single-nearfield-incident-field", "style"),
+        Output("single-nearfield-controls-row", "style"),
         Input("single-representation", "value"),
         State("single-projection", "value"),
     )
     def _update_single_projection_options(representation: str, current_projection: str | None):
         if representation == "s1s2":
             options = [{"label": "2D plot", "value": "2d"}, {"label": "Polar 1D", "value": "polar_1d"}]
-            return options, current_projection if current_projection == "polar_1d" else "2d", {"display": "none"}, {"gridTemplateColumns": "repeat(3, minmax(0, 230px))"}
+            hidden = {"display": "none"}
+            return options, current_projection if current_projection == "polar_1d" else "2d", hidden, hidden, hidden
 
         supports_3d = representation in {"stokes", "stokes_q", "stokes_u", "stokes_v", "spf", "farfields"}
         supports_heatmap = supports_3d or str(representation or "").startswith("nearfields")
@@ -558,8 +565,8 @@ def _register_callbacks(app: Dash, default_measure_options: list[str]) -> None:
                 {"label": "3D radial surface", "value": "3d_radial"},
             ])
         is_nearfield = str(representation or "").startswith("nearfields")
-        body_columns = "repeat(4, minmax(0, 230px))" if is_nearfield else "repeat(3, minmax(0, 230px))"
-        return options, current_projection if supports_3d and current_projection in {"3d", "3d_radial"} else "2d", {"display": "block" if is_nearfield else "none"}, {"gridTemplateColumns": body_columns}
+        nearfield_style = {"display": "block" if is_nearfield else "none"}
+        return options, current_projection if supports_3d and current_projection in {"3d", "3d_radial"} else "2d", nearfield_style, nearfield_style, nearfield_style
 
     @app.callback(
         Output("single-plot-options-container", "children"),
