@@ -58,8 +58,6 @@ classifiers = [
 ]
 
 dependencies = [
-    "dash >=4.1.0",
-    "gunicorn >=23.0.0",
     "TypedUnit ==0.0.11",
     "MPSPlots ==1.8.9",
     "PyOptik ==2.0.7",
@@ -67,7 +65,6 @@ dependencies = [
     "numpy ==2.2.6",
     "matplotlib ==3.10.9",
     "pandas ~=2.3.0",
-    "plotly>=5.24,<7",
 ]
 
 keywords = [
@@ -82,9 +79,6 @@ keywords = [
     "rayleigh",
     "backscattering"
 ]
-
-[project.scripts]
-pymiesim = "PyMieSim.__main__:main"
 
 [project.optional-dependencies]
 testing = [
@@ -104,12 +98,7 @@ documentation = [
 dev = [
     "flake8==7.3.0",
     "ruff==0.11.2",
-    "mypy==1.15.0",
 ]
-server = [
-    "gunicorn >=23.0.0",
-]
-
 [tool.ruff]
 target-version = "py310"
 line-length = 300
@@ -120,14 +109,6 @@ select = ["E9", "F63", "F7", "F82"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["F401"]
-
-[tool.mypy]
-python_version = "3.10"
-ignore_missing_imports = true
-follow_imports = "skip"
-check_untyped_defs = true
-no_implicit_optional = true
-exclude = "(^development/|^docs/)"
 
 [tool.cibuildwheel]
 build-frontend = "build"

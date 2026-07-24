@@ -28,8 +28,6 @@ PyMieSim
 It supports spherical, cylindrical and core--shell particles and provides helper classes for custom sources and detectors.
 The project targets both quick single-scatterer studies and large parametric experiments.
 
-Try the live web GUI: `PyMieSim Parameter Sweep Lab <https://pymiesim.onrender.com/>`_.
-
 Features
 --------
 - Solvers for spheres, cylinders and core--shell geometries.
@@ -90,42 +88,6 @@ Below is a short example computing the scattering efficiency of a sphere.
     :width: 1000
     :align: center
     :alt: Scattering efficiency of a 200 nm sphere with refractive index 4.0.
-
-
-Experiment Dashboard
---------------------
-PyMieSim also ships with a Dash-based experiment dashboard for interactive set configuration,
-CSV export, and quick visual exploration of experiment outputs.
-
-The dashboard is intended to feel like a small server-hosted application rather than a one-off demo.
-It uses a browser-based interface served from the local machine or from a remote host that you bind
-explicitly.
-
-Launch it from the repository checkout or installed package with:
-
-.. code-block:: bash
-
-    python -m PyMieSim --host 127.0.0.1 --port 8050
-
-For a server deployment or LAN-accessible instance, bind to all interfaces and keep the browser closed:
-
-.. code-block:: bash
-
-   python -m PyMieSim --host 0.0.0.0 --port 8050 --no-browser
-
-Debug mode is off by default. Enable it only when you want verbose logs and Dash debug tooling:
-
-.. code-block:: bash
-
-    python -m PyMieSim --debug
-
-Example dashboard view placeholder:
-
-.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png
-    :width: 1000
-    :align: center
-    :alt: Placeholder preview of the PyMieSim experiment dashboard.
-
 
 
 Code structure
@@ -205,7 +167,6 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
     :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
 .. |ci/cd| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg
     :alt: Unittest Status
-.. |example_gui| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png
     :width: 800
     :alt: Structure of the library
 .. |wikipedia_example| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png
