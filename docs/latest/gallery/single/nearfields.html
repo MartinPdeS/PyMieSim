@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Near-Fields Computation and Visualization &#8212; PyMieSim  documentation</title>
+    <title>Near-Field Computation and Visualization &#8212; PyMieSim  documentation</title>
   
   
   
@@ -440,7 +440,7 @@
 <li class="toctree-l2"><a class="reference internal" href="coupling.html">Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Near-Fields Computation and Visualization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Near-Field Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="properties.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spf.html">SPF Computation</a></li>
@@ -549,7 +549,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Single Module</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Near-Fields Computation and Visualization</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Near-Field Computation and Visualization</span></li>
   </ul>
 </nav>
 </div>
@@ -571,10 +571,9 @@
 <p><a class="reference internal" href="#sphx-glr-download-gallery-single-nearfields-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="near-fields-computation-and-visualization">
-<span id="sphx-glr-gallery-single-nearfields-py"></span><h1>Near-Fields Computation and Visualization<a class="headerlink" href="#near-fields-computation-and-visualization" title="Link to this heading">#</a></h1>
-<p>This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.</p>
-<img src="../../_images/sphx_glr_nearfields_001.png" srcset="../../_images/sphx_glr_nearfields_001.png" alt="scattered Ex real, scattered Ex abs" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;cursive&#39;] not found. Falling back to DejaVu Sans.
+<section class="sphx-glr-example-title" id="near-field-computation-and-visualization">
+<span id="sphx-glr-gallery-single-nearfields-py"></span><h1>Near-Field Computation and Visualization<a class="headerlink" href="#near-field-computation-and-visualization" title="Link to this heading">#</a></h1>
+<img src="../../_images/sphx_glr_nearfields_001.png" srcset="../../_images/sphx_glr_nearfields_001.png" alt="total Ez real, total Ex real" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;cursive&#39;] not found. Falling back to DejaVu Sans.
 findfont: Generic family &#39;cursive&#39; not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
 findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
 findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
@@ -587,26 +586,25 @@ findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
 <div class="line"><br /></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreShell</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-
-<span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 
 
 <span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_state</span><span class="p">,</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
     <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">400</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="p">(</span><span class="mf">1.4</span> <span class="o">+</span> <span class="mf">5.</span><span class="n">j</span><span class="p">),</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
+<span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShell</span><span class="p">(</span>
+    <span class="n">core_diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">shell_thickness</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">core_material</span><span class="o">=</span><span class="mf">1.3</span> <span class="o">+</span> <span class="mi">2</span><span class="n">j</span><span class="p">,</span>
+    <span class="n">shell_material</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">setup</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span>
@@ -617,18 +615,18 @@ findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
 <span class="n">near_field</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">&quot;nearfields&quot;</span><span class="p">)</span>
 
 <span class="n">near_field</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="s2">&quot;Ez:real&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Ex:real&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Ex:abs&quot;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;scattered&quot;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;total&quot;</span><span class="p">,</span>
     <span class="n">plane_origin</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
     <span class="n">plane_normal</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
     <span class="n">sampling</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">extent_scale</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">extent_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.775 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.721 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-nearfields-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5045ac3ab9b8f03b00541eca37fc4c47/nearfields.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nearfields.ipynb</span></code></a></p>

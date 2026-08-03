@@ -676,10 +676,13 @@
 <span class="sd">        Tuple[Tuple[Length, Length], Tuple[Length, Length]]</span>
 <span class="sd">            (u_range, v_range)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;diameter&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;scatterer must expose diameter to infer a default plotting extent&quot;</span><span class="p">)</span>
+        <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;total_diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;scatterer must expose diameter or total_diameter to infer a default plotting extent&quot;</span><span class="p">)</span>
 
-        <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">diameter</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">diameter</span>
         <span class="n">half_width</span> <span class="o">=</span> <span class="n">extent_scale</span> <span class="o">*</span> <span class="n">radius</span>
 
         <span class="n">u_range</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">half_width</span><span class="p">,</span> <span class="n">half_width</span><span class="p">)</span>
@@ -871,10 +874,24 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;diameter&quot;</span><span class="p">):</span>
-            <span class="k">return</span>
+        <span class="n">scatterer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span>
+        <span class="n">core_diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;core_diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">shell_thickness</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;shell_thickness&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">core_diameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shell_thickness</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">core_diameter</span><span class="p">,</span> <span class="s2">&quot;#ffd166&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">core_diameter</span> <span class="o">+</span> <span class="n">shell_thickness</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;total_diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">radii</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">diameter</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]</span>
 
-        <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">diameter</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">radii</span><span class="p">:</span>
+            <span class="k">return</span>
 
         <span class="n">sphere_center</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
@@ -888,25 +905,28 @@
         <span class="n">signed_distance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">sphere_center</span> <span class="o">-</span> <span class="n">plane_origin</span><span class="p">),</span> <span class="n">n_hat</span><span class="p">))</span>
         <span class="n">abs_distance</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">signed_distance</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">abs_distance</span> <span class="o">&gt;</span> <span class="n">radius</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="n">intersection_radius</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">radius</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">-</span> <span class="n">abs_distance</span> <span class="o">*</span> <span class="n">abs_distance</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-
         <span class="n">closest_point</span> <span class="o">=</span> <span class="n">sphere_center</span> <span class="o">-</span> <span class="n">signed_distance</span> <span class="o">*</span> <span class="n">n_hat</span>
         <span class="n">relative</span> <span class="o">=</span> <span class="n">closest_point</span> <span class="o">-</span> <span class="n">plane_origin</span>
 
         <span class="n">u0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">))</span>
         <span class="n">v0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">))</span>
 
-        <span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">v0</span><span class="p">),</span>
-            <span class="n">intersection_radius</span><span class="p">,</span>
-            <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
-            <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span><span class="p">,</span> <span class="n">linewidth</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">abs_distance</span> <span class="o">&gt;</span> <span class="n">radius</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">intersection_radius</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">radius</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">-</span> <span class="n">abs_distance</span> <span class="o">*</span> <span class="n">abs_distance</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+            <span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">v0</span><span class="p">),</span>
+                <span class="n">intersection_radius</span><span class="p">,</span>
+                <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
 
 <div class="viewcode-block" id="NearFields.plot">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.NearFields.plot">[docs]</a>

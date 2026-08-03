@@ -1,31 +1,28 @@
 """
-Near-Fields Computation and Visualization
+Near-Field Computation and Visualization
 =========================================
-
-This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
 """
 
 from PyMieSim.units import ureg
-
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
+from PyMieSim.single.scatterer import CoreShell
+from PyMieSim.single.source import Gaussian
 from PyMieSim.single.setup import Setup
-
-polarization_state = PolarizationState(angle=0 * ureg.degree)
 
 
 source = Gaussian(
-    wavelength=300 * ureg.nanometer,
-    polarization=polarization_state,
+    wavelength=100 * ureg.nanometer,
+    polarization=PolarizationState(angle=0 * ureg.degree),
     optical_power=1 * ureg.watt,
     numerical_aperture=0.3,
 )
 
-scatterer = Sphere(
-    diameter=400 * ureg.nanometer,
-    material=(1.4 + 5.j),
-    medium=1.,
+scatterer = CoreShell(
+    core_diameter=200 * ureg.nanometer,
+    shell_thickness=100 * ureg.nanometer,
+    core_material=1.3 + 2j,
+    shell_material=1.5,
+    medium=1.0,
 )
 
 setup = Setup(
@@ -36,12 +33,12 @@ setup = Setup(
 near_field = setup.get_representation("nearfields")
 
 near_field.plot(
+    "Ez:real",
     "Ex:real",
-    "Ex:abs",
-    type="scattered",
+    type="total",
     plane_origin=(0.0, 0.0, 0.0),
     plane_normal=(0.0, 1.0, 0.0),
     sampling=100,
-    extent_scale=4,
+    extent_scale=2,
     tight_layout=True,
 )
