@@ -1,4 +1,7 @@
 #include "./cylinder.h"
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
 
 
 // ---------------------- Methods ---------------------------------------
@@ -179,4 +182,216 @@ InfiniteCylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
         Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
 
     return Dn;
+}
+
+namespace {
+using C = complex128;
+
+C i_to_n(const std::size_t n) {
+    switch (n & 3u) {
+        case 0u: return C{1.0, 0.0};
+        case 1u: return C{0.0, 1.0};
+        case 2u: return C{-1.0, 0.0};
+        default: return C{0.0, -1.0};
+    }
+}
+
+C radial_value(const std::size_t n, const C& argument, const bool hankel) {
+    return hankel
+        ? Cylindrical_::H1n(static_cast<double>(n), argument)
+        : Cylindrical_::Jn(static_cast<double>(n), argument);
+}
+
+C radial_derivative(const std::size_t n, const C& argument, const bool hankel) {
+    return hankel
+        ? Cylindrical_::H1np(static_cast<double>(n), argument)
+        : Cylindrical_::Jnp(static_cast<double>(n), argument);
+}
+
+std::vector<C> internal_coefficients(
+    const std::vector<C>& scattering_coefficients,
+    const C& external_argument,
+    const C& internal_argument
+) {
+    std::vector<C> coefficients(scattering_coefficients.size());
+    for (std::size_t n = 0; n < scattering_coefficients.size(); ++n) {
+        const C external_field =
+            radial_value(n, external_argument, false) +
+            -scattering_coefficients[n] * radial_value(n, external_argument, true);
+        coefficients[n] = external_field / radial_value(n, internal_argument, false);
+    }
+    return coefficients;
+}
+
+std::vector<C> evaluate_cylinder_fields(
+    const InfiniteCylinder& scatterer,
+    const std::vector<double>& x,
+    const std::vector<double>& y,
+    const std::vector<double>& z,
+    const std::string& field_type,
+    const std::shared_ptr<BaseSource>& source,
+    const bool scattered_only
+) {
+    if (field_type != "Ex" && field_type != "Ey" &&
+        field_type != "Ez" && field_type != "|E|") {
+        throw std::invalid_argument("Invalid field_type. Must be one of: Ex, Ey, Ez, |E|");
+    }
+    if (x.size() != y.size() || x.size() != z.size()) {
+        throw std::invalid_argument("x, y, z vectors must have the same length");
+    }
+
+    const C medium_index = scatterer.medium->get_refractive_index();
+    const C material_index = scatterer.material->get_refractive_index();
+    const C relative_index = material_index / medium_index;
+    const C e0x = source->polarization.jones_vector[0] * source->amplitude;
+    const C e0y = source->polarization.jones_vector[1] * source->amplitude;
+    const C i_unit{0.0, 1.0};
+    const double radius = scatterer.diameter / 2.0;
+    const C k_medium = source->wavenumber_vacuum * medium_index;
+    const C external_radius_argument = k_medium * radius;
+    const C internal_radius_argument = relative_index * external_radius_argument;
+
+    // The cylinder implementation uses a2n for transverse electric
+    // polarization (Ex/Ez) and b1n for the axial electric mode (Ey).
+    const auto internal_transverse = internal_coefficients(
+        scatterer.a2n, external_radius_argument, internal_radius_argument);
+    const auto internal_parallel = internal_coefficients(
+        scatterer.b1n, external_radius_argument, internal_radius_argument);
+
+    std::vector<C> values(x.size(), C{0.0, 0.0});
+
+    for (std::size_t point = 0; point < x.size(); ++point) {
+        const double rho = std::sqrt(x[point] * x[point] + z[point] * z[point]);
+        const bool inside = rho < radius;
+
+        if (scattered_only && inside) {
+            continue;
+        }
+
+        const double phi = std::atan2(x[point], z[point]);
+        const C argument = k_medium * rho;
+
+        C ey{};
+        C ex{};
+        C ez{};
+
+        // At the cylinder axis, only the n=0 axial mode and n=1 transverse
+        // mode have finite limits.  Avoid the explicit 1/rho factors there.
+        if (std::abs(argument) < 1e-15) {
+            if (inside && !scattered_only) {
+                if (!internal_parallel.empty()) {
+                    ey = e0y * internal_parallel[0];
+                }
+                if (internal_transverse.size() > 1) {
+                    ex = e0x * internal_transverse[1] / relative_index;
+                }
+            }
+            if (field_type == "Ex") {
+                values[point] = ex;
+            } else if (field_type == "Ey") {
+                values[point] = ey;
+            } else if (field_type == "Ez") {
+                values[point] = ez;
+            } else {
+                values[point] = std::sqrt(
+                    std::norm(ex) + std::norm(ey) + std::norm(ez));
+            }
+            continue;
+        }
+
+        for (std::size_t n = 0; n < scatterer.max_order; ++n) {
+            const double angular_weight = n == 0 ? 1.0 : 2.0;
+            const C angular_phase = angular_weight * i_to_n(n);
+            const double angular_cos = std::cos(static_cast<double>(n) * phi);
+            const double angular_sin = std::sin(static_cast<double>(n) * phi);
+
+            // Axial electric mode: electric field parallel to the cylinder
+            // axis (Ey).
+            C tm_value{};
+            if (inside) {
+                tm_value = internal_parallel[n] * radial_value(
+                    n, relative_index * argument, false);
+            } else if (scattered_only) {
+                tm_value = -scatterer.b1n[n] * radial_value(n, argument, true);
+            } else {
+                tm_value = radial_value(n, argument, false) +
+                    -scatterer.b1n[n] * radial_value(n, argument, true);
+            }
+            ey += angular_phase * angular_cos * tm_value;
+
+            // Transverse electric mode: magnetic field parallel to the
+            // cylinder axis (Hy), producing Ex and Ez.
+            // The corresponding transverse electric field is obtained from
+            // the radial and azimuthal derivatives of Hy.
+            if (std::abs(argument) < 1e-15) {
+                continue;
+            }
+
+            C te_value{};
+            C te_derivative{};
+            C te_factor = e0x;
+            if (inside) {
+                te_value = internal_transverse[n] * radial_value(
+                    n, relative_index * argument, false);
+                te_derivative = internal_transverse[n] * radial_derivative(
+                    n, relative_index * argument, false);
+                te_factor /= relative_index;
+            } else if (scattered_only) {
+                te_value = -scatterer.a2n[n] * radial_value(n, argument, true);
+                te_derivative = -scatterer.a2n[n] * radial_derivative(n, argument, true);
+            } else {
+                te_value = radial_value(n, argument, false) +
+                    -scatterer.a2n[n] * radial_value(n, argument, true);
+                te_derivative = radial_derivative(n, argument, false) +
+                    -scatterer.a2n[n] * radial_derivative(n, argument, true);
+            }
+
+            const C radial_argument = inside ? relative_index * argument : argument;
+            const C e_rho = te_factor * angular_phase *
+                i_unit * (-static_cast<double>(n) * angular_sin) * te_value / radial_argument;
+            const C e_phi = te_factor * angular_phase *
+                (-i_unit) * angular_cos * te_derivative;
+
+            ex += e_rho * std::sin(phi) + e_phi * std::cos(phi);
+            ez += e_rho * std::cos(phi) - e_phi * std::sin(phi);
+        }
+
+        ey *= e0y;
+
+        if (field_type == "Ex") {
+            values[point] = ex;
+        } else if (field_type == "Ey") {
+            values[point] = ey;
+        } else if (field_type == "Ez") {
+            values[point] = ez;
+        } else {
+            values[point] = std::sqrt(
+                std::norm(ex) + std::norm(ey) + std::norm(ez));
+        }
+    }
+
+    return values;
+}
+}
+
+std::vector<complex128> InfiniteCylinder::get_total_nearfields(
+    const std::vector<double>& x,
+    const std::vector<double>& y,
+    const std::vector<double>& z,
+    const std::string& field_type,
+    const std::shared_ptr<BaseSource>& source
+) {
+    this->compute_an_bn(this->max_order);
+    return evaluate_cylinder_fields(*this, x, y, z, field_type, source, false);
+}
+
+std::vector<complex128> InfiniteCylinder::get_scattered_nearfields(
+    const std::vector<double>& x,
+    const std::vector<double>& y,
+    const std::vector<double>& z,
+    const std::string& field_type,
+    const std::shared_ptr<BaseSource>& source
+) {
+    this->compute_an_bn(this->max_order);
+    return evaluate_cylinder_fields(*this, x, y, z, field_type, source, true);
 }

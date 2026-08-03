@@ -200,10 +200,7 @@ class InfiniteCylinder: public BaseScatterer
             const std::vector<double>&,
             const std::string&,
             const std::shared_ptr<BaseSource>&
-        ) override {
-            throw std::logic_error{"Function not implemented!"};
-            return std::vector<complex128>{};
-        };
+        ) override;
 
         /**
          * @brief Computes scattered near-field electromagnetic fields using an and bn coefficients.
@@ -219,10 +216,7 @@ class InfiniteCylinder: public BaseScatterer
             const std::vector<double>&,
             const std::string&,
             const std::shared_ptr<BaseSource>&
-        ) override {
-            throw std::logic_error{"Function not implemented!"};
-            return std::vector<complex128>{};
-        };
+        ) override;
 
     public:
         void print_properties(int precision) const override

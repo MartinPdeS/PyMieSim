@@ -4,6 +4,7 @@ from typing import Tuple, Optional, Sequence, Dict, List
 import logging
 import numpy
 import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from MPSPlots.colormaps import blue_black_red
 from MPSPlots.styles import scientific
@@ -385,10 +386,12 @@ class NearFields:
 
     def _add_scatterer_outline_on_plane(self, ax) -> None:
         """
-        Draw the intersection of the sphere with the current plane.
+        Draw the scatterer intersection with the current plane.
 
-        If the plane intersects the sphere, the intersection is a circle in plane coordinates (u, v).
-        The circle center in (u, v) is the projection of the sphere center onto the plane.
+        Spheres and core/shell particles produce circles.  The infinite
+        cylinder is treated as having its axis along ``y``: a tilted plane
+        produces an ellipse, while a plane parallel to the axis produces an
+        infinite strip.
         """
         if self.U is None or self.V is None:
             return
@@ -412,15 +415,100 @@ class NearFields:
         if not radii:
             return
 
-        sphere_center = numpy.array([0.0, 0.0, 0.0], dtype=float)
-
         origin_x, origin_y, origin_z = self.plane_origin
-        plane_origin = numpy.array([float(origin_x), float(origin_y), float(origin_z)], dtype=float)
+        coordinate_unit = getattr(self.u, "units", None)
+
+        def coordinate_value(value: object) -> float:
+            if hasattr(value, "to") and coordinate_unit is not None:
+                return float(value.to(coordinate_unit).magnitude)
+            if hasattr(value, "magnitude"):
+                return float(value.magnitude)
+            return float(value)
+
+        plane_origin = numpy.array(
+            [coordinate_value(origin_x), coordinate_value(origin_y), coordinate_value(origin_z)],
+            dtype=float,
+        )
 
         n_hat = _normalize_vector(numpy.array(self.plane_normal, dtype=float))
         u_hat = numpy.array(self.plane_u_hat, dtype=float)
         v_hat = numpy.array(self.plane_v_hat, dtype=float)
 
+        is_cylinder = scatterer.__class__.__name__ == "InfiniteCylinder"
+
+        if is_cylinder:
+            cylinder_axis = numpy.array([0.0, 1.0, 0.0])
+            axis_normal_component = float(numpy.dot(cylinder_axis, n_hat))
+            axis_in_plane = cylinder_axis - axis_normal_component * n_hat
+            axis_in_plane_norm = float(numpy.linalg.norm(axis_in_plane))
+            transverse_direction = numpy.cross(cylinder_axis, n_hat)
+            transverse_norm = float(numpy.linalg.norm(transverse_direction))
+
+            for radius, color, linestyle, linewidth in radii:
+                radius = coordinate_value(radius)
+                plane_offset = float(numpy.dot(plane_origin, n_hat))
+
+                if abs(axis_normal_component) > 1e-12:
+                    # The plane cuts the infinite cylinder in an ellipse.
+                    center = (plane_offset / axis_normal_component) * cylinder_axis
+                    relative = center - plane_origin
+                    u0 = float(numpy.dot(relative, u_hat))
+                    v0 = float(numpy.dot(relative, v_hat))
+
+                    transverse_direction /= transverse_norm
+                    axis_in_plane /= axis_in_plane_norm
+                    transverse_angle = numpy.degrees(
+                        numpy.arctan2(
+                            numpy.dot(transverse_direction, v_hat),
+                            numpy.dot(transverse_direction, u_hat),
+                        )
+                    )
+                    ellipse = Ellipse(
+                        (u0, v0),
+                        2.0 * radius,
+                        2.0 * radius / abs(axis_normal_component),
+                        angle=transverse_angle,
+                        fill=False,
+                        color=color,
+                        linestyle=linestyle,
+                        linewidth=linewidth,
+                    )
+                    ax.add_patch(ellipse)
+                elif transverse_norm > 1e-12:
+                    # A parallel plane intersects the cylinder in a strip.
+                    distance = abs(plane_offset)
+                    if distance > radius:
+                        continue
+                    half_width = numpy.sqrt(max(radius * radius - distance * distance, 0.0))
+                    base_point = plane_offset * n_hat
+                    transverse_direction /= transverse_norm
+                    relative = base_point - plane_origin
+                    center_u = float(numpy.dot(relative, u_hat))
+                    center_v = float(numpy.dot(relative, v_hat))
+                    transverse_u = float(numpy.dot(transverse_direction, u_hat))
+                    transverse_v = float(numpy.dot(transverse_direction, v_hat))
+                    axis_u = float(numpy.dot(cylinder_axis, u_hat))
+                    axis_v = float(numpy.dot(cylinder_axis, v_hat))
+                    span = max(
+                        abs(coordinate_value(self.u[0])),
+                        abs(coordinate_value(self.u[-1])),
+                        abs(coordinate_value(self.v[0])),
+                        abs(coordinate_value(self.v[-1])),
+                    ) * 2.0
+                    for sign in (-1.0, 1.0):
+                        offset_u = center_u + sign * half_width * transverse_u
+                        offset_v = center_v + sign * half_width * transverse_v
+                        line = ax.plot(
+                            [offset_u - span * axis_u, offset_u + span * axis_u],
+                            [offset_v - span * axis_v, offset_v + span * axis_v],
+                            color=color,
+                            linestyle=linestyle,
+                            linewidth=linewidth,
+                        )
+                        line[0].set_clip_on(True)
+            return
+
+        sphere_center = numpy.array([0.0, 0.0, 0.0], dtype=float)
         signed_distance = float(numpy.dot((sphere_center - plane_origin), n_hat))
         abs_distance = abs(signed_distance)
 
@@ -431,8 +519,7 @@ class NearFields:
         v0 = float(numpy.dot(relative, v_hat))
 
         for radius, color, linestyle, linewidth in radii:
-            if hasattr(radius, "magnitude"):
-                radius = float(radius.magnitude)
+            radius = coordinate_value(radius)
             if abs_distance > radius:
                 continue
 
@@ -556,7 +643,7 @@ class NearFields:
                 im = ax.pcolormesh(
                     self.u,
                     self.v,
-                    field_data,
+                    field_data.T,
                     cmap=colormap,
                     shading="auto",
                 )
