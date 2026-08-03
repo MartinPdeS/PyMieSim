@@ -480,6 +480,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ellipse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_axes_locatable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.colormaps</span><span class="w"> </span><span class="kn">import</span> <span class="n">blue_black_red</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">scientific</span>
@@ -866,10 +867,12 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_scatterer_outline_on_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Draw the intersection of the sphere with the current plane.</span>
+<span class="sd">        Draw the scatterer intersection with the current plane.</span>
 
-<span class="sd">        If the plane intersects the sphere, the intersection is a circle in plane coordinates (u, v).</span>
-<span class="sd">        The circle center in (u, v) is the projection of the sphere center onto the plane.</span>
+<span class="sd">        Spheres and core/shell particles produce circles.  The infinite</span>
+<span class="sd">        cylinder is treated as having its axis along ``y``: a tilted plane</span>
+<span class="sd">        produces an ellipse, while a plane parallel to the axis produces an</span>
+<span class="sd">        infinite strip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -893,15 +896,100 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">radii</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">sphere_center</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-
         <span class="n">origin_x</span><span class="p">,</span> <span class="n">origin_y</span><span class="p">,</span> <span class="n">origin_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plane_origin</span>
-        <span class="n">plane_origin</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">origin_x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">origin_y</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">origin_z</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">coordinate_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">coordinate_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">coordinate_unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">coordinate_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">plane_origin</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">coordinate_value</span><span class="p">(</span><span class="n">origin_x</span><span class="p">),</span> <span class="n">coordinate_value</span><span class="p">(</span><span class="n">origin_y</span><span class="p">),</span> <span class="n">coordinate_value</span><span class="p">(</span><span class="n">origin_z</span><span class="p">)],</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">n_hat</span> <span class="o">=</span> <span class="n">_normalize_vector</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plane_normal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
         <span class="n">u_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plane_u_hat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">v_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plane_v_hat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
+        <span class="n">is_cylinder</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;InfiniteCylinder&quot;</span>
+
+        <span class="k">if</span> <span class="n">is_cylinder</span><span class="p">:</span>
+            <span class="n">cylinder_axis</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+            <span class="n">axis_normal_component</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cylinder_axis</span><span class="p">,</span> <span class="n">n_hat</span><span class="p">))</span>
+            <span class="n">axis_in_plane</span> <span class="o">=</span> <span class="n">cylinder_axis</span> <span class="o">-</span> <span class="n">axis_normal_component</span> <span class="o">*</span> <span class="n">n_hat</span>
+            <span class="n">axis_in_plane_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">axis_in_plane</span><span class="p">))</span>
+            <span class="n">transverse_direction</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">cylinder_axis</span><span class="p">,</span> <span class="n">n_hat</span><span class="p">)</span>
+            <span class="n">transverse_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">transverse_direction</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span><span class="p">,</span> <span class="n">linewidth</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">:</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="n">coordinate_value</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+                <span class="n">plane_offset</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">plane_origin</span><span class="p">,</span> <span class="n">n_hat</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">axis_normal_component</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+                    <span class="c1"># The plane cuts the infinite cylinder in an ellipse.</span>
+                    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">plane_offset</span> <span class="o">/</span> <span class="n">axis_normal_component</span><span class="p">)</span> <span class="o">*</span> <span class="n">cylinder_axis</span>
+                    <span class="n">relative</span> <span class="o">=</span> <span class="n">center</span> <span class="o">-</span> <span class="n">plane_origin</span>
+                    <span class="n">u0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">))</span>
+                    <span class="n">v0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">))</span>
+
+                    <span class="n">transverse_direction</span> <span class="o">/=</span> <span class="n">transverse_norm</span>
+                    <span class="n">axis_in_plane</span> <span class="o">/=</span> <span class="n">axis_in_plane_norm</span>
+                    <span class="n">transverse_angle</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span>
+                        <span class="n">numpy</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+                            <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transverse_direction</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">),</span>
+                            <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transverse_direction</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">ellipse</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">v0</span><span class="p">),</span>
+                        <span class="mf">2.0</span> <span class="o">*</span> <span class="n">radius</span><span class="p">,</span>
+                        <span class="mf">2.0</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">axis_normal_component</span><span class="p">),</span>
+                        <span class="n">angle</span><span class="o">=</span><span class="n">transverse_angle</span><span class="p">,</span>
+                        <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                        <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+                        <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">ellipse</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">transverse_norm</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+                    <span class="c1"># A parallel plane intersects the cylinder in a strip.</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">plane_offset</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">radius</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">half_width</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">radius</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">-</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">distance</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+                    <span class="n">base_point</span> <span class="o">=</span> <span class="n">plane_offset</span> <span class="o">*</span> <span class="n">n_hat</span>
+                    <span class="n">transverse_direction</span> <span class="o">/=</span> <span class="n">transverse_norm</span>
+                    <span class="n">relative</span> <span class="o">=</span> <span class="n">base_point</span> <span class="o">-</span> <span class="n">plane_origin</span>
+                    <span class="n">center_u</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">))</span>
+                    <span class="n">center_v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">))</span>
+                    <span class="n">transverse_u</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transverse_direction</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">))</span>
+                    <span class="n">transverse_v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transverse_direction</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">))</span>
+                    <span class="n">axis_u</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cylinder_axis</span><span class="p">,</span> <span class="n">u_hat</span><span class="p">))</span>
+                    <span class="n">axis_v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cylinder_axis</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">))</span>
+                    <span class="n">span</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">coordinate_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">coordinate_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">coordinate_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">coordinate_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])),</span>
+                    <span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span>
+                    <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">):</span>
+                        <span class="n">offset_u</span> <span class="o">=</span> <span class="n">center_u</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">half_width</span> <span class="o">*</span> <span class="n">transverse_u</span>
+                        <span class="n">offset_v</span> <span class="o">=</span> <span class="n">center_v</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">half_width</span> <span class="o">*</span> <span class="n">transverse_v</span>
+                        <span class="n">line</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                            <span class="p">[</span><span class="n">offset_u</span> <span class="o">-</span> <span class="n">span</span> <span class="o">*</span> <span class="n">axis_u</span><span class="p">,</span> <span class="n">offset_u</span> <span class="o">+</span> <span class="n">span</span> <span class="o">*</span> <span class="n">axis_u</span><span class="p">],</span>
+                            <span class="p">[</span><span class="n">offset_v</span> <span class="o">-</span> <span class="n">span</span> <span class="o">*</span> <span class="n">axis_v</span><span class="p">,</span> <span class="n">offset_v</span> <span class="o">+</span> <span class="n">span</span> <span class="o">*</span> <span class="n">axis_v</span><span class="p">],</span>
+                            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                            <span class="n">linestyle</span><span class="o">=</span><span class="n">linestyle</span><span class="p">,</span>
+                            <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_clip_on</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">sphere_center</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">signed_distance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">sphere_center</span> <span class="o">-</span> <span class="n">plane_origin</span><span class="p">),</span> <span class="n">n_hat</span><span class="p">))</span>
         <span class="n">abs_distance</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">signed_distance</span><span class="p">)</span>
 
@@ -912,8 +1000,7 @@
         <span class="n">v0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">relative</span><span class="p">,</span> <span class="n">v_hat</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">linestyle</span><span class="p">,</span> <span class="n">linewidth</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>
-                <span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="n">coordinate_value</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">abs_distance</span> <span class="o">&gt;</span> <span class="n">radius</span><span class="p">:</span>
                 <span class="k">continue</span>
 
@@ -1039,7 +1126,7 @@
                 <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
-                    <span class="n">field_data</span><span class="p">,</span>
+                    <span class="n">field_data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
                     <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
                     <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
