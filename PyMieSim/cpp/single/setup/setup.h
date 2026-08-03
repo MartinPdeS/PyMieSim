@@ -160,6 +160,9 @@ class Setup
         const std::vector<double>& z,
         const std::string& field_type
     ) const {
+        if (auto coreshell = std::dynamic_pointer_cast<CoreShell>(this->scatterer)) {
+            return coreshell->get_scattered_nearfields(x, y, z, field_type, this->source);
+        }
         return this->scatterer->get_scattered_nearfields(
             x,
             y,
@@ -192,6 +195,9 @@ class Setup
         const std::vector<double>& z,
         const std::string& field_type
     ) const {
+        if (auto coreshell = std::dynamic_pointer_cast<CoreShell>(this->scatterer)) {
+            return coreshell->get_total_nearfields(x, y, z, field_type, this->source);
+        }
         return this->scatterer->get_total_nearfields(
             x,
             y,

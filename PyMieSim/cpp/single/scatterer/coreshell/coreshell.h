@@ -18,6 +18,11 @@ class CoreShell: public BaseScatterer
         double x_core;
         double x_shell;
 
+        // Internal coated-sphere expansion coefficients.  The shell has a
+        // regular and an irregular coefficient for each TE/TM family.
+        std::vector<complex128> shell_m_regular, shell_m_irregular;
+        std::vector<complex128> shell_n_regular, shell_n_irregular;
+
         inline static const std::vector<std::string> property_names = {
             "size_parameter",
             "cross_section",
@@ -329,10 +334,7 @@ class CoreShell: public BaseScatterer
             const std::vector<double>&,
             const std::string&,
             const std::shared_ptr<BaseSource>&
-        ) override {
-            throw std::logic_error{"Function not implemented!"};
-            return std::vector<complex128>{};
-        };
+        ) override;
 
         std::vector<complex128> get_scattered_nearfields(
             const std::vector<double>&,
@@ -340,10 +342,7 @@ class CoreShell: public BaseScatterer
             const std::vector<double>&,
             const std::string&,
             const std::shared_ptr<BaseSource>&
-        ) override {
-            throw std::logic_error{"Function not implemented!"};
-            return std::vector<complex128>{};
-        };
+        ) override;
 
     private:
         /**

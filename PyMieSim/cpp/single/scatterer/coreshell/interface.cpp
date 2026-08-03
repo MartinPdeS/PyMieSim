@@ -300,6 +300,15 @@ void register_coreshell(py::module_& module) {
                     Shell thickness expressed as a compact length unit.
             )pbdoc"
         )
+        .def_property_readonly(
+            "total_diameter",
+            [ureg](const CoreShell& self) {
+                return (py::float_(self.total_diameter) * ureg.attr("meter")).attr("to_compact")();
+            },
+            R"pbdoc(
+                Outer diameter of the complete core-shell particle.
+            )pbdoc"
+        )
         .def_readonly(
             "core_material",
             &CoreShell::core_material,

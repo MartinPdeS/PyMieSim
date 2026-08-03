@@ -198,10 +198,13 @@ class NearFields:
         Tuple[Tuple[Length, Length], Tuple[Length, Length]]
             (u_range, v_range)
         """
-        if not hasattr(self.setup.scatterer, "diameter"):
-            raise ValueError("scatterer must expose diameter to infer a default plotting extent")
+        diameter = getattr(self.setup.scatterer, "diameter", None)
+        if diameter is None:
+            diameter = getattr(self.setup.scatterer, "total_diameter", None)
+        if diameter is None:
+            raise ValueError("scatterer must expose diameter or total_diameter to infer a default plotting extent")
 
-        radius = 0.5 * self.setup.scatterer.diameter
+        radius = 0.5 * diameter
         half_width = extent_scale * radius
 
         u_range = (-half_width, half_width)
@@ -390,10 +393,24 @@ class NearFields:
         if self.U is None or self.V is None:
             return
 
-        if not hasattr(self.setup.scatterer, "diameter"):
-            return
+        scatterer = self.setup.scatterer
+        core_diameter = getattr(scatterer, "core_diameter", None)
+        shell_thickness = getattr(scatterer, "shell_thickness", None)
+        if core_diameter is not None and shell_thickness is not None:
+            radii = [
+                (0.5 * core_diameter, "#ffd166", "--", 1.5),
+                (0.5 * core_diameter + shell_thickness, "white", "-", 2.0),
+            ]
+        else:
+            diameter = getattr(scatterer, "diameter", None)
+            if diameter is None:
+                diameter = getattr(scatterer, "total_diameter", None)
+            if diameter is None:
+                return
+            radii = [(0.5 * diameter, "white", "-", 2.0)]
 
-        radius = 0.5 * self.setup.scatterer.diameter
+        if not radii:
+            return
 
         sphere_center = numpy.array([0.0, 0.0, 0.0], dtype=float)
 
@@ -407,25 +424,28 @@ class NearFields:
         signed_distance = float(numpy.dot((sphere_center - plane_origin), n_hat))
         abs_distance = abs(signed_distance)
 
-        if abs_distance > radius:
-            return
-
-        intersection_radius = numpy.sqrt(max(radius * radius - abs_distance * abs_distance, 0.0))
-
         closest_point = sphere_center - signed_distance * n_hat
         relative = closest_point - plane_origin
 
         u0 = float(numpy.dot(relative, u_hat))
         v0 = float(numpy.dot(relative, v_hat))
 
-        circle = plt.Circle(
-            (u0, v0),
-            intersection_radius,
-            fill=False,
-            color="white",
-            linewidth=2.0,
-        )
-        ax.add_patch(circle)
+        for radius, color, linestyle, linewidth in radii:
+            if hasattr(radius, "magnitude"):
+                radius = float(radius.magnitude)
+            if abs_distance > radius:
+                continue
+
+            intersection_radius = numpy.sqrt(max(radius * radius - abs_distance * abs_distance, 0.0))
+            circle = plt.Circle(
+                (u0, v0),
+                intersection_radius,
+                fill=False,
+                color=color,
+                linestyle=linestyle,
+                linewidth=linewidth,
+            )
+            ax.add_patch(circle)
 
     def plot(
         self,
