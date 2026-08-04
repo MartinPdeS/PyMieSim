@@ -609,7 +609,7 @@
 <div class="viewcode-block" id="NearFields">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.NearFields">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NearFields</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Near field visualization for a scatterer.</span>
 
 <span class="sd">    This class samples fields over an arbitrary plane defined by an origin and a normal.</span>
@@ -619,7 +619,7 @@
 <span class="sd">    -----------------</span>
 <span class="sd">    The plot is parameterized by two in plane coordinates (u, v):</span>
 
-<span class="sd">        r(u, v) = r0 + u * u_hat + v * v_hat</span>
+<span class="sd">        \mathbf{r}(u, v) = \mathbf{r}_0 + u\,\hat{\mathbf{u}} + v\,\hat{\mathbf{v}}.</span>
 
 <span class="sd">    The ranges u_range and v_range define the sampled extent in that plane.</span>
 <span class="sd">    These replace the old idea of x_range and y_range, because the plane is not necessarily a z slice.</span>
@@ -823,7 +823,23 @@
         <span class="n">v_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="n">Length</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">extent_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute near-field components on the configured sampling plane.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute near-field components on the configured sampling plane.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        field_components : Sequence[str]</span>
+<span class="sd">            Components and reductions to evaluate, such as ``&quot;Ex:real&quot;`` or</span>
+<span class="sd">            ``&quot;E:abs&quot;``.</span>
+<span class="sd">        type : str</span>
+<span class="sd">            Field family to evaluate: ``&quot;total&quot;``, ``&quot;incident&quot;``, or</span>
+<span class="sd">            ``&quot;scattered&quot;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, numpy.ndarray]</span>
+<span class="sd">            Requested fields keyed by their component notation. Arrays are</span>
+<span class="sd">            arranged on the configured ``(u, v)`` sampling grid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">field_components</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide at least one field component, for example |E|&quot;</span><span class="p">)</span>
 
@@ -900,6 +916,7 @@
         <span class="n">coordinate_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">coordinate_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert a coordinate to the plane&#39;s plotting unit.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">coordinate_unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">coordinate_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>

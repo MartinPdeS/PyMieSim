@@ -539,6 +539,17 @@
         <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
         <span class="n">distance</span><span class="p">:</span> <span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the Stokes parameters on a structured angular mesh.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        setup : object</span>
+<span class="sd">            Single-scatterer setup exposing ``get_stokes``.</span>
+<span class="sd">        sampling : int, optional</span>
+<span class="sd">            Number of angular samples along each mesh direction.</span>
+<span class="sd">        distance : pint.Quantity, optional</span>
+<span class="sd">            Observation distance at which the fields are evaluated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>

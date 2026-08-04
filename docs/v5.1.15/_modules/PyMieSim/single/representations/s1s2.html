@@ -486,11 +486,12 @@
 
 <div class="viewcode-block" id="S1S2">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.S1S2">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">S1S2</span><span class="p">():</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S1S2</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.</span>
 
-<span class="sd">    The S1 and S2 parameters represent the scattering amplitudes for perpendicular and parallel polarizations of light, respectively. These parameters are fundamental in Mie theory, which describes the scattering of electromagnetic waves by spherical particles.</span>
+<span class="sd">    The S1 and S2 parameters represent the scattering amplitudes for</span>
+<span class="sd">    perpendicular and parallel polarizations of light, respectively.</span>
 
 <span class="sd">    The formulas for \( S_1 \) and \( S_2 \) are:</span>
 
@@ -498,36 +499,36 @@
 <span class="sd">        S_1 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \pi_n + b_n \tau_n \right) \\</span>
 <span class="sd">        S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n + b_n \pi_n \right)</span>
 
-<span class="sd">    Where:</span>
+<span class="sd">    where:</span>
 
 <span class="sd">    - :math:`a_n` and :math:`b_n`: Mie coefficients, which depend on the size, shape, and refractive index of the scatterer.</span>
-<span class="sd">    - :math:`\pi_n` and :math:`\tau_n` \)`: Angular functions related to the angular components of the incident and scattered fields.</span>
+<span class="sd">    - :math:`\pi_n` and :math:`\tau_n`: angular functions related to the</span>
+<span class="sd">      incident and scattered fields.</span>
 <span class="sd">    - :math:`n_{\text{max}}`: Maximum number of terms in the series, determined by the size parameter of the scatterer.</span>
 
 <span class="sd">    These scattering amplitude functions are essential for calculating properties such as scattering phase functions, efficiencies, and angular distribution of scattered light.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    sampling : int</span>
-<span class="sd">        The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</span>
-<span class="sd">    distance : Length, optional</span>
-<span class="sd">        The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</span>
+<span class="sd">    setup : object</span>
+<span class="sd">        Single-scatterer setup exposing ``get_s1s2``.</span>
+<span class="sd">    sampling : int, optional</span>
+<span class="sd">        Number of angular samples between :math:`-\pi` and :math:`\pi`.</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    representations.S1S2</span>
-<span class="sd">        An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phi : pint.Quantity</span>
+<span class="sd">        Sampled angular coordinates in radians.</span>
+<span class="sd">    S1, S2 : numpy.ndarray or pint.Quantity</span>
+<span class="sd">        Complex scattering amplitudes for the two polarization components.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    - The S1 and S2 parameters are central to Mie scattering theory and are used to derive many important scattering properties, such as intensity distributions and polarization effects.</span>
 <span class="sd">    - The `sampling` parameter controls how finely the angular distribution is resolved. A higher value of `sampling` provides more detailed scattering information, which can be critical for accurately modeling the far-field pattern.</span>
 
-<span class="sd">    Example</span>
-<span class="sd">    -------</span>
-<span class="sd">    You can use this method to compute the scattering properties of spherical particles, particularly in experiments where the polarization and scattering pattern of the light are important.</span>
-
-<span class="sd">    Example usage:</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; s1s2 = scatterer.get_s1s2(sampling=500)</span>
 <span class="sd">    &gt;&gt;&gt; print(s1s2.S1, s1s2.S2)</span>
@@ -542,7 +543,7 @@
 <span class="sd">        setup</span>
 <span class="sd">            Scattering setup used to compute the amplitude functions.</span>
 <span class="sd">        sampling</span>
-<span class="sd">            Number of angular samples spanning $[-\\pi, \\pi]$.</span>
+<span class="sd">            Number of angular samples spanning :math:`[-\\pi, \\pi]`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>

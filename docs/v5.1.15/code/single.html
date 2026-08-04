@@ -1537,40 +1537,56 @@ mesh edges even if <code class="docutils literal notranslate"><span class="pre">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">S1S2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/s1s2.html#S1S2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.S1S2" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.</p>
-<p>The S1 and S2 parameters represent the scattering amplitudes for perpendicular and parallel polarizations of light, respectively. These parameters are fundamental in Mie theory, which describes the scattering of electromagnetic waves by spherical particles.</p>
+<p>The S1 and S2 parameters represent the scattering amplitudes for
+perpendicular and parallel polarizations of light, respectively.</p>
 <p>The formulas for ( S_1 ) and ( S_2 ) are:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}S_1 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \pi_n + b_n \tau_n \right) \\
 S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n + b_n \pi_n \right)\end{split}\]</div>
-<p>Where:</p>
+<p>where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span>: Mie coefficients, which depend on the size, shape, and refractive index of the scatterer.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\pi_n\)</span> and <span class="math notranslate nohighlight">\(\tau_n\)</span> )`: Angular functions related to the angular components of the incident and scattered fields.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi_n\)</span> and <span class="math notranslate nohighlight">\(\tau_n\)</span>: angular functions related to the
+incident and scattered fields.</p></li>
 <li><p><span class="math notranslate nohighlight">\(n_{\text{max}}\)</span>: Maximum number of terms in the series, determined by the size parameter of the scatterer.</p></li>
 </ul>
 <p>These scattering amplitude functions are essential for calculating properties such as scattering phase functions, efficiencies, and angular distribution of scattered light.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>Length</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>setup</strong> (<em>object</em>) – Single-scatterer setup exposing <code class="docutils literal notranslate"><span class="pre">get_s1s2</span></code>.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples between <span class="math notranslate nohighlight">\(-\pi\)</span> and <span class="math notranslate nohighlight">\(\pi\)</span>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">representations.S1S2</a></p>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.S1S2.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><a class="headerlink" href="#PyMieSim.single.representations.S1S2.phi" title="Link to this definition">#</a></dt>
+<dd><p>Sampled angular coordinates in radians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">S1,</span> <span class="pre">S2</span></span></dt>
+<dd><p>Complex scattering amplitudes for the two polarization components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a> or pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>The S1 and S2 parameters are central to Mie scattering theory and are used to derive many important scattering properties, such as intensity distributions and polarization effects.</p></li>
 <li><p>The <cite>sampling</cite> parameter controls how finely the angular distribution is resolved. A higher value of <cite>sampling</cite> provides more detailed scattering information, which can be critical for accurately modeling the far-field pattern.</p></li>
 </ul>
-<p class="rubric">Example</p>
-<p>You can use this method to compute the scattering properties of spherical particles, particularly in experiments where the polarization and scattering pattern of the light are important.</p>
-<p>Example usage:</p>
+<p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s1s2</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_s1s2</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">s1s2</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="n">s1s2</span><span class="o">.</span><span class="n">S2</span><span class="p">)</span>
 </pre></div>
@@ -1627,18 +1643,34 @@ This is important for understanding how the scattered light interacts with the d
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>detector</strong> (<em>GenericDetector</em>) – The detector object that defines the capturing field and geometry. This object provides information about the detector’s configuration, including its numerical aperture, position, and sensitivity.</p></li>
-<li><p><strong>setup</strong> (<em>object</em>)</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>)</p></li>
-<li><p><strong>padding_factor</strong> (<em>int</em>)</p></li>
+<li><p><strong>setup</strong> (<em>object</em>) – Setup exposing a scatterer, detector, source, and <code class="docutils literal notranslate"><span class="pre">get_farfields</span></code>.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples along each direction.</p></li>
+<li><p><strong>padding_factor</strong> (<em>int</em><em>, </em><em>optional</em>) – Factor used to zero-pad the Fourier input before transforming.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">representations.Footprint</a></p>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.mapping">
+<span class="sig-name descname"><span class="pre">mapping</span></span><a class="headerlink" href="#PyMieSim.single.representations.Footprint.mapping" title="Link to this definition">#</a></dt>
+<dd><p>Computed footprint intensity on the detector plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">direct_x,</span> <span class="pre">direct_y</span></span></dt>
+<dd><p>Detector-plane coordinates corresponding to <code class="docutils literal notranslate"><span class="pre">mapping</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>The footprint provides valuable information about the coupling efficiency between the scattered light and the detector. This is useful in designing experiments where precise control of light detection is important, such as in microscopy, remote sensing, or optical measurements.</p></li>
@@ -1654,53 +1686,57 @@ This is important for understanding how the scattered light interacts with the d
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.compute_footprint">
 <span class="sig-name descname"><span class="pre">compute_footprint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/footprint.html#Footprint.compute_footprint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint.compute_footprint" title="Link to this definition">#</a></dt>
-<dd><p>Computes the footprint of the scatterer as detected by the specified detector.</p>
+<dd><p>Compute the footprint of the scatterer on the detector plane.</p>
 <p>The footprint is calculated based on the far-field scattering patterns and the characteristics of the detector,
 using a Fourier transform to project the far-field onto the detector plane.</p>
 <p>The computed footprint and the corresponding spatial coordinates are stored as attributes of the instance.</p>
-<p>Warning: this function do not currently take account of the cache block on the detector.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The detector cache block is not currently included in this
+calculation.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.get_fourier_component">
 <span class="sig-name descname"><span class="pre">get_fourier_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scalar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/footprint.html#Footprint.get_fourier_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint.get_fourier_component" title="Link to this definition">#</a></dt>
-<dd><p>Computes the Fourier component of a given scalar field.</p>
+<dd><p>Compute one detector-plane Fourier component.</p>
 <p>This method performs a two-dimensional inverse Fourier transform on the input scalar field, which represents
 a projection (either parallel or perpendicular) of the far-field pattern. It then extracts a central portion
 of the result, effectively applying a padding factor to increase the resolution of the Fourier transform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>scalar</strong> (<em>-</em>) – A two-dimensional numpy array representing the scalar field of which the Fourier component
+<dd class="field-odd"><p><strong>scalar</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><em>numpy.ndarray</em></a><em> or </em><em>pint.Quantity</em>) – A two-dimensional numpy array representing the scalar field of which the Fourier component
 is to be computed. This field could represent either the parallel or perpendicular projection of the far-field
 pattern onto the detector plane.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>numpy.ndarray</em> – A two-dimensional numpy array representing the computed Fourier component. This array is a square
-section, extracted from the center of the full Fourier transform, with dimensions determined by the original
-sampling rate and the padding factor of the instance. The values in the array represent the intensity distribution
-of the light in the detector plane, providing insights into the spatial characteristics of the scattering pattern.</p></li>
-<li><p><em>The method uses numpy’s fft module to perform the Fourier transform, applying a padding factor to the input to</em></p></li>
-<li><p><em>achieve a higher resolution in the Fourier domain. The resulting Fourier transform is then squared and fftshifted</em></p></li>
-<li><p><em>to center the zero-frequency component, and a central portion is extracted to match the intended output size.</em></p></li>
-</ul>
-</p>
+<dd class="field-even"><p>A square intensity array of shape <code class="docutils literal notranslate"><span class="pre">(sampling,</span> <span class="pre">sampling)</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><em>ndarray</em></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>With <span class="math notranslate nohighlight">\(p\)</span> equal to <code class="docutils literal notranslate"><span class="pre">padding_factor</span></code>, the input is zero-padded
+to <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">*</span> <span class="pre">sampling</span></code> samples in each direction. The returned field is
+the centered portion of</p>
+<div class="math notranslate nohighlight">
+\[I(x, y) = \left|\mathscr{F}^{-1}\{\psi(\xi, \nu)\}\right|^2.\]</div>
+<p>The method uses numpy’s fft module to perform the Fourier transform, applying a padding factor to the input to
+achieve a higher resolution in the Fourier domain. The resulting Fourier transform is then squared and fftshifted
+to center the zero-frequency component, and a central portion is extracted to match the intended output size.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gray'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/footprint.html#Footprint.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Footprint.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plots the scatterer footprint using a 2D colormap.</p>
+<dd><p>Plot the scatterer footprint using a two-dimensional colormap.</p>
 <p>The method generates a plot representing the footprint of the scatterer, with the X and Y axes showing
 offset distances in micrometers, and the colormap depicting the mapping values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for the plot. Default is ‘gray’.</p>
+<dd class="field-odd"><p><strong>colormap</strong> (<em>str</em>) – Matplotlib colormap name. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;gray&quot;</span></code>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -1721,7 +1757,7 @@ All coordinates are kept as unit aware objects because the C++ wrapper accepts u
 <h3>Important concept<a class="headerlink" href="#important-concept" title="Link to this heading">#</a></h3>
 <p>The plot is parameterized by two in plane coordinates (u, v):</p>
 <blockquote>
-<div><p>r(u, v) = r0 + u * u_hat + v * v_hat</p>
+<div><p>mathbf{r}(u, v) = mathbf{r}_0 + u,hat{mathbf{u}} + v,hat{mathbf{v}}.</p>
 </div></blockquote>
 <p>The ranges u_range and v_range define the sampled extent in that plane.
 These replace the old idea of x_range and y_range, because the plane is not necessarily a z slice.</p>
@@ -1737,8 +1773,10 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>field_components</strong> (<em>str</em>)</p></li>
-<li><p><strong>type</strong> (<em>str</em>)</p></li>
+<li><p><strong>field_components</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – Components and reductions to evaluate, such as <code class="docutils literal notranslate"><span class="pre">&quot;Ex:real&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;E:abs&quot;</span></code>.</p></li>
+<li><p><strong>type</strong> (<em>str</em>) – Field family to evaluate: <code class="docutils literal notranslate"><span class="pre">&quot;total&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;incident&quot;</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">&quot;scattered&quot;</span></code>.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>)</p></li>
 <li><p><strong>plane_origin</strong> (<em>Sequence</em><em>[</em><em>Length</em><em>] </em><em>| </em><em>None</em>)</p></li>
 <li><p><strong>plane_normal</strong> (<em>Sequence</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
@@ -1747,8 +1785,12 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 <li><p><strong>extent_scale</strong> (<em>float</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Dict</em>[str, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><em>ndarray</em></a>]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Requested fields keyed by their component notation. Arrays are
+arranged on the configured <code class="docutils literal notranslate"><span class="pre">(u,</span> <span class="pre">v)</span></code> sampling grid.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1929,10 +1971,12 @@ These replace the old idea of x_range and y_range, because the plane is not nece
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2"><code class="docutils literal notranslate"><span class="pre">S1S2</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.phi"><code class="docutils literal notranslate"><span class="pre">S1S2.phi</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.plot"><code class="docutils literal notranslate"><span class="pre">S1S2.plot()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint"><code class="docutils literal notranslate"><span class="pre">Footprint</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.mapping"><code class="docutils literal notranslate"><span class="pre">Footprint.mapping</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.compute_footprint"><code class="docutils literal notranslate"><span class="pre">Footprint.compute_footprint()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.get_fourier_component"><code class="docutils literal notranslate"><span class="pre">Footprint.get_fourier_component()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.plot"><code class="docutils literal notranslate"><span class="pre">Footprint.plot()</span></code></a></li>
