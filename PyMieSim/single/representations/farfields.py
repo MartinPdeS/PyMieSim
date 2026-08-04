@@ -34,6 +34,24 @@ class FarFields:
         sampling: int = 200,
         distance: Length = 1.0 * ureg.meter,
     ) -> None:
+        """Compute far-field components on a structured angular mesh.
+
+        Parameters
+        ----------
+        setup : object
+            Single-scatterer setup exposing ``get_farfields``.
+        sampling : int, optional
+            Number of angular samples along each mesh direction.
+        distance : pint.Quantity, optional
+            Observation distance at which the fields are evaluated.
+
+        Attributes
+        ----------
+        E_phi, E_theta : pint.Quantity
+            Complex transverse far-field components.
+        mesh : object
+            Structured spherical mesh associated with the field arrays.
+        """
         self.setup = setup
         self.sampling = sampling
         self.distance = distance

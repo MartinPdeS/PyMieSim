@@ -70,6 +70,13 @@ def broadcast_params(
 
 
 class Sequential:
+    """Mixin for constructing experiment sets with broadcast parameters.
+
+    Classes using this mixin can create a sequential instance from scalar,
+    singleton, and equally sized array-valued parameters with
+    :meth:`build_sequential`.
+    """
+
     is_sequential = False
 
     @classmethod

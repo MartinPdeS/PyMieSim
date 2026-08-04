@@ -9,8 +9,18 @@ import numpy
 def cartesian_to_spherical(
     x: numpy.ndarray, y: numpy.ndarray, z: numpy.ndarray
 ) -> tuple:
-    """
-    Convert Cartesian coordinates to spherical coordinates.
+    r"""Convert Cartesian coordinates to spherical coordinates.
+
+    PyMieSim uses the elevation angle ``phi`` and the azimuth ``theta``:
+
+    .. math::
+
+        r = \sqrt{x^2 + y^2 + z^2}, \qquad
+        \phi = \arcsin\left(\frac{z}{r}\right), \qquad
+        \theta = \operatorname{atan2}(y, x).
+
+    The returned angles are in radians and follow the same convention as
+    :func:`spherical_to_cartesian`. The inputs are broadcast by NumPy.
 
     Parameters
     ----------
@@ -23,8 +33,10 @@ def cartesian_to_spherical(
 
     Returns
     -------
-    numpy.ndarray
-        The spherical coordinates (r, phi, theta).
+    tuple of numpy.ndarray
+        The spherical coordinates ``(r, phi, theta)``. ``r`` has the input
+        length unit, while ``phi`` and ``theta`` are NumPy arrays containing
+        radians.
     """
     r = numpy.sqrt(x**2 + y**2 + z**2)
     phi = numpy.arcsin(z / r)
@@ -35,8 +47,19 @@ def cartesian_to_spherical(
 def spherical_to_cartesian(
     phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray = None
 ) -> tuple:
-    """
-    Convert spherical coordinates to Cartesian coordinates.
+    r"""Convert spherical coordinates to Cartesian coordinates.
+
+    ``phi`` is the elevation from the :math:`x-y` plane and ``theta`` is the
+    azimuth in that plane. The conversion is
+
+    .. math::
+
+        x = r\cos(\phi)\cos(\theta), \qquad
+        y = r\cos(\phi)\sin(\theta), \qquad
+        z = r\sin(\phi).
+
+    If ``r`` is omitted, a unit sphere is used. The inputs are broadcast by
+    NumPy, so scalar and array-valued angles can be combined.
 
     Parameters
     ----------
@@ -49,8 +72,9 @@ def spherical_to_cartesian(
 
     Returns
     -------
-    numpy.ndarray
-        The Cartesian coordinates (x, y, z).
+    tuple of numpy.ndarray
+        The Cartesian coordinates ``(x, y, z)`` with the same shape and
+        radial unit as ``r``.
     """
     if r is None:
         r = numpy.ones_like(phi)
@@ -62,7 +86,18 @@ def spherical_to_cartesian(
 
 
 def rotate_on_x(phi: numpy.ndarray, theta: numpy.ndarray, angle: float) -> tuple:
-    """Rotate spherical coordinates around the X-axis.
+    r"""Rotate spherical coordinates around the X-axis.
+
+    The rotation is applied to the corresponding Cartesian vectors using
+
+    .. math::
+
+        \begin{bmatrix}x'\\y'\\z'\end{bmatrix} =
+        \begin{bmatrix}1&0&0\\0&\cos\alpha&-\sin\alpha\\
+        0&\sin\alpha&\cos\alpha\end{bmatrix}
+        \begin{bmatrix}x\\y\\z\end{bmatrix}.
+
+    The radius is unchanged and is returned together with the rotated angles.
 
     Parameters
     ----------

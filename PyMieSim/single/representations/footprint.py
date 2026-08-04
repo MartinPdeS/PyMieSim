@@ -9,7 +9,7 @@ from TypedUnit import ureg
 from PyMieSim.utils import rotate_on_x
 
 
-class Footprint():
+class Footprint:
     r"""
     Compute the footprint of the scattered light coupling with the detector.
 
@@ -37,10 +37,21 @@ class Footprint():
     detector : GenericDetector
         The detector object that defines the capturing field and geometry. This object provides information about the detector's configuration, including its numerical aperture, position, and sensitivity.
 
-    Returns
-    -------
-    representations.Footprint
-        An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.
+    Parameters
+    ----------
+    setup : object
+        Setup exposing a scatterer, detector, source, and ``get_farfields``.
+    sampling : int, optional
+        Number of angular samples along each direction.
+    padding_factor : int, optional
+        Factor used to zero-pad the Fourier input before transforming.
+
+    Attributes
+    ----------
+    mapping : numpy.ndarray
+        Computed footprint intensity on the detector plane.
+    direct_x, direct_y : pint.Quantity
+        Detector-plane coordinates corresponding to ``mapping``.
 
     Notes
     -----
@@ -58,6 +69,11 @@ class Footprint():
 
     """
     def __init__(self, setup: object, sampling: int = 200, padding_factor: int = 20):
+        """Compute and store the detector-plane footprint.
+
+        The footprint is computed during initialization and is available as
+        ``mapping``, ``direct_x``, and ``direct_y`` afterwards.
+        """
         self.setup = setup
         self.sampling = sampling
         self.padding_factor = padding_factor
@@ -66,15 +82,17 @@ class Footprint():
         self.compute_footprint()
 
     def compute_footprint(self):
-        """
-        Computes the footprint of the scatterer as detected by the specified detector.
+        """Compute the footprint of the scatterer on the detector plane.
 
         The footprint is calculated based on the far-field scattering patterns and the characteristics of the detector,
         using a Fourier transform to project the far-field onto the detector plane.
 
         The computed footprint and the corresponding spatial coordinates are stored as attributes of the instance.
 
-        Warning: this function do not currently take account of the cache block on the detector.
+        .. warning::
+
+            The detector cache block is not currently included in this
+            calculation.
         """
         max_angle = self.detector.max_angle
         n_point = complex(self.sampling)
@@ -124,8 +142,7 @@ class Footprint():
         self.direct_y = y
 
     def get_fourier_component(self, scalar: numpy.ndarray) -> numpy.ndarray:
-        """
-        Computes the Fourier component of a given scalar field.
+        r"""Compute one detector-plane Fourier component.
 
         This method performs a two-dimensional inverse Fourier transform on the input scalar field, which represents
         a projection (either parallel or perpendicular) of the far-field pattern. It then extracts a central portion
@@ -133,7 +150,7 @@ class Footprint():
 
         Parameters
         ----------
-        - scalar : numpy.ndarray
+        scalar : numpy.ndarray or pint.Quantity
             A two-dimensional numpy array representing the scalar field of which the Fourier component
             is to be computed. This field could represent either the parallel or perpendicular projection of the far-field
             pattern onto the detector plane.
@@ -141,10 +158,17 @@ class Footprint():
         Returns
         -------
         numpy.ndarray
-            A two-dimensional numpy array representing the computed Fourier component. This array is a square
-            section, extracted from the center of the full Fourier transform, with dimensions determined by the original
-            sampling rate and the padding factor of the instance. The values in the array represent the intensity distribution
-            of the light in the detector plane, providing insights into the spatial characteristics of the scattering pattern.
+            A square intensity array of shape ``(sampling, sampling)``.
+
+        Notes
+        -----
+        With :math:`p` equal to ``padding_factor``, the input is zero-padded
+        to ``p * sampling`` samples in each direction. The returned field is
+        the centered portion of
+
+        .. math::
+
+            I(x, y) = \left|\mathscr{F}^{-1}\{\psi(\xi, \nu)\}\right|^2.
 
         The method uses numpy's fft module to perform the Fourier transform, applying a padding factor to the input to
         achieve a higher resolution in the Fourier domain. The resulting Fourier transform is then squared and fftshifted
@@ -176,8 +200,7 @@ class Footprint():
         return central_portion
 
     def plot(self, colormap: str = "gray") -> None:
-        """
-        Plots the scatterer footprint using a 2D colormap.
+        """Plot the scatterer footprint using a two-dimensional colormap.
 
         The method generates a plot representing the footprint of the scatterer, with the X and Y axes showing
         offset distances in micrometers, and the colormap depicting the mapping values.
@@ -185,7 +208,7 @@ class Footprint():
         Parameters
         ----------
         colormap : str
-            The colormap to use for the plot. Default is 'gray'.
+            Matplotlib colormap name. Defaults to ``"gray"``.
 
         """
         with plt.style.context(MPSPlots.styles.mps):

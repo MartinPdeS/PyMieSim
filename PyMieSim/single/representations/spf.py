@@ -45,6 +45,15 @@ class SPF:
         setup,
         sampling: int = 200,
     ) -> None:
+        """Compute the phase function on a structured angular mesh.
+
+        Parameters
+        ----------
+        setup : object
+            Single-scatterer setup exposing ``get_spf``.
+        sampling : int, optional
+            Number of angular samples along each mesh direction.
+        """
         self.setup = setup
         self.sampling = sampling
 

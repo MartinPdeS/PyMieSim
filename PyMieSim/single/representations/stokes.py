@@ -61,6 +61,17 @@ class Stokes:
         sampling: int = 200,
         distance: ureg.Quantity = 1.0 * ureg.meter,
     ) -> None:
+        """Compute the Stokes parameters on a structured angular mesh.
+
+        Parameters
+        ----------
+        setup : object
+            Single-scatterer setup exposing ``get_stokes``.
+        sampling : int, optional
+            Number of angular samples along each mesh direction.
+        distance : pint.Quantity, optional
+            Observation distance at which the fields are evaluated.
+        """
         self.setup = setup
         self.sampling = sampling
         self.distance = distance

@@ -131,7 +131,7 @@ def _finalize_figure(
 
 
 class NearFields:
-    """
+    r"""
     Near field visualization for a scatterer.
 
     This class samples fields over an arbitrary plane defined by an origin and a normal.
@@ -141,7 +141,7 @@ class NearFields:
     -----------------
     The plot is parameterized by two in plane coordinates (u, v):
 
-        r(u, v) = r0 + u * u_hat + v * v_hat
+        \mathbf{r}(u, v) = \mathbf{r}_0 + u\,\hat{\mathbf{u}} + v\,\hat{\mathbf{v}}.
 
     The ranges u_range and v_range define the sampled extent in that plane.
     These replace the old idea of x_range and y_range, because the plane is not necessarily a z slice.
@@ -343,7 +343,23 @@ class NearFields:
         v_range: Optional[Tuple[Length, Length]] = None,
         extent_scale: float = 2.5,
     ) -> Dict[str, numpy.ndarray]:
-        """Compute near-field components on the configured sampling plane."""
+        """Compute near-field components on the configured sampling plane.
+
+        Parameters
+        ----------
+        field_components : Sequence[str]
+            Components and reductions to evaluate, such as ``"Ex:real"`` or
+            ``"E:abs"``.
+        type : str
+            Field family to evaluate: ``"total"``, ``"incident"``, or
+            ``"scattered"``.
+
+        Returns
+        -------
+        dict[str, numpy.ndarray]
+            Requested fields keyed by their component notation. Arrays are
+            arranged on the configured ``(u, v)`` sampling grid.
+        """
         if not field_components:
             raise ValueError("Provide at least one field component, for example |E|")
 
@@ -419,6 +435,7 @@ class NearFields:
         coordinate_unit = getattr(self.u, "units", None)
 
         def coordinate_value(value: object) -> float:
+            """Convert a coordinate to the plane's plotting unit."""
             if hasattr(value, "to") and coordinate_unit is not None:
                 return float(value.to(coordinate_unit).magnitude)
             if hasattr(value, "magnitude"):
