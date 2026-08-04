@@ -170,7 +170,6 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
 .. |ci/cd| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg
     :alt: Unittest Status
     :width: 800
-    :alt: Structure of the library
 .. |wikipedia_example| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png
     :width: 800
     :alt: Example wikipedia
