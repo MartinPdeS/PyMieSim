@@ -1,25 +1,26 @@
 |logo|
 
 .. list-table::
-   :widths: 10 25 25 25
-   :header-rows: 0
+   :widths: 18 42 40
+   :header-rows: 1
 
-   * - Meta
+   * - Category
+     - Version / status
+     - Resources
+   * - Project
      - |python|
      - |docs|
-     - |article|
+       |article|
    * - Testing
      - |ci/cd|
-     - |coverage|
+       |coverage|
      - |colab|
-   * - PyPI
+   * - Package indexes
      - |PyPI|
+       |anaconda|
      - |PyPI_download|
-     -
-   * - Anaconda
-     - |anaconda|
-     - |anaconda_download|
-     - |anaconda_date|
+       |anaconda_download|
+       |anaconda_date|
 
 PyMieSim
 ========
@@ -169,7 +170,6 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
     :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
 .. |ci/cd| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg
     :alt: Unittest Status
-    :width: 800
 .. |wikipedia_example| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png
     :width: 800
     :alt: Example wikipedia
