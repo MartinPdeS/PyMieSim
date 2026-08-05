@@ -14,17 +14,19 @@ At the moment, experiment-side angular weights are supported only through
 import numpy as np
 import matplotlib.pyplot as plt
 
-from PyMieSim.units import ureg
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.source import Gaussian as SingleGaussian
-from PyMieSim.single.scatterer import Sphere as SingleSphere
-from PyMieSim.single.detector import Photodiode as SinglePhotodiode
+from PyMieSim import (
+    Experiment,
+    Gaussian as SingleGaussian,
+    GaussianSet,
+    Photodiode as SinglePhotodiode,
+    PhotodiodeSet,
+    PolarizationSet,
+    PolarizationState,
+    Sphere as SingleSphere,
+    SphereSet,
+    ureg,
+)
 
-from PyMieSim.experiment import Setup
-from PyMieSim.experiment.detector_set import PhotodiodeSet
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
 
 
 sampling = 1400
@@ -116,7 +118,7 @@ detector_set = PhotodiodeSet.build_sequential(
     ],
 )
 
-experiment = Setup(
+experiment = Experiment(
     scatterer_set=scatterer_set,
     source_set=source_set,
     detector_set=detector_set,

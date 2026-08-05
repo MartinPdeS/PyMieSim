@@ -8,13 +8,15 @@ Core-Shell Particles: 1
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    CoreShellSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer_set import CoreShellSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
 # Define parameters
@@ -46,7 +48,7 @@ scatterer = CoreShellSet(
 )
 
 # Create experimental setup
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 

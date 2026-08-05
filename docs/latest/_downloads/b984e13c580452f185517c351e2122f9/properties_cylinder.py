@@ -5,10 +5,12 @@ Print properties
 This example demonstrates the computation of scattering properties using PyMieSim.
 """
 
-from PyMieSim.units import ureg
-from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
+from PyMieSim import (
+    ureg,
+    InfiniteCylinder,
+    Gaussian,
+    PolarizationState,
+)
 
 polarization_state = PolarizationState(angle=30 * ureg.degree)
 

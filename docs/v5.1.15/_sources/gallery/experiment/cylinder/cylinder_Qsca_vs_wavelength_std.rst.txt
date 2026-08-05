@@ -21,7 +21,7 @@
 InfiniteCylinder: Qsca vs wavelength std
 ========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-35
+.. GENERATED FROM PYTHON SOURCE LINES 6-37
 
 
 
@@ -47,12 +47,14 @@ InfiniteCylinder: Qsca vs wavelength std
 .. code-block:: Python
 
     import numpy as np
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        InfiniteCylinderSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+    )
 
-    from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
 
     polarization_set = PolarizationSet(
         angles=[0.0] * ureg.degree,
@@ -70,7 +72,7 @@ InfiniteCylinder: Qsca vs wavelength std
         medium=[1.0],
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     dataframe = experiment.get("Qsca")
 
@@ -79,7 +81,7 @@ InfiniteCylinder: Qsca vs wavelength std
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.489 seconds)
+   **Total running time of the script:** (0 minutes 0.351 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py:

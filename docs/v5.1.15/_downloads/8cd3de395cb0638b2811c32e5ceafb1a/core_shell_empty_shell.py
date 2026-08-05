@@ -7,13 +7,15 @@ Effect of Shell dimensions in equivalent medium
 # Standard library imports
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    CoreShellSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer_set import CoreShellSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 
 # Setup parameters
 scatterer_diameter = 0.3 * ureg.micrometer  # Diameter of the scatterer in meters
@@ -41,7 +43,7 @@ scatterer = CoreShellSet(
 )
 
 
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Csca")
 

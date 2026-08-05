@@ -24,19 +24,21 @@ Array-based scattering calculations
 This example demonstrates how to compute far fields, S1/S2 amplitudes and
 Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-18
+.. GENERATED FROM PYTHON SOURCE LINES 8-20
 
 .. code-block:: Python
 
 
     import numpy as np
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        Sphere,
+        PlaneWave,
+        Simulation,
+        PolarizationState,
+    )
     import matplotlib.pyplot as plt
 
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.source import PlaneWave
-    from PyMieSim.single.setup import Setup
-    from PyMieSim.polarization import PolarizationState
 
 
 
@@ -45,11 +47,11 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-20
+.. GENERATED FROM PYTHON SOURCE LINES 21-22
 
 Create a simple plane wave source
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-58
+.. GENERATED FROM PYTHON SOURCE LINES 22-60
 
 .. code-block:: Python
 
@@ -65,7 +67,7 @@ Create a simple plane wave source
         medium=1.0,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source
     )
@@ -103,11 +105,11 @@ Create a simple plane wave source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-60
+.. GENERATED FROM PYTHON SOURCE LINES 61-62
 
 S1 and S2 scattering amplitudes
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-78
+.. GENERATED FROM PYTHON SOURCE LINES 62-80
 
 .. code-block:: Python
 
@@ -141,11 +143,11 @@ S1 and S2 scattering amplitudes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-80
+.. GENERATED FROM PYTHON SOURCE LINES 81-82
 
 Stokes parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-109
+.. GENERATED FROM PYTHON SOURCE LINES 82-111
 
 .. code-block:: Python
 
@@ -193,7 +195,7 @@ Stokes parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.137 seconds)
+   **Total running time of the script:** (0 minutes 0.791 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_array_scattering.py:

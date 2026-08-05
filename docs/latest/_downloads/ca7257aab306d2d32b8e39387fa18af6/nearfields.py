@@ -3,11 +3,13 @@ Near-Field Computation and Visualization
 =========================================
 """
 
-from PyMieSim.units import ureg
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.scatterer import CoreShell
-from PyMieSim.single.source import Gaussian
-from PyMieSim.single.setup import Setup
+from PyMieSim import (
+    ureg,
+    PolarizationState,
+    CoreShell,
+    Gaussian,
+    Simulation,
+)
 
 
 source = Gaussian(
@@ -25,7 +27,7 @@ scatterer = CoreShell(
     medium=1.0,
 )
 
-setup = Setup(
+setup = Simulation(
     scatterer=scatterer,
     source=source,
 )

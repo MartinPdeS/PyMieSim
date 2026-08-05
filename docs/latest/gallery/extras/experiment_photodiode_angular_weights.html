@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -156,7 +156,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -316,7 +323,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -582,17 +596,19 @@ kept by building explicit <code class="docutils literal notranslate"><span class
 <img src="../../_images/sphx_glr_experiment_photodiode_angular_weights_001.png" srcset="../../_images/sphx_glr_experiment_photodiode_angular_weights_001.png" alt="NA=1.2 lens at phi=45 degree split by a mirror, Full NA=1.2 lens, Mirror keeps one side, Coupling after mirror split" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">SingleGaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span> <span class="k">as</span> <span class="n">SingleSphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span> <span class="k">as</span> <span class="n">SinglePhotodiode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Experiment</span><span class="p">,</span>
+    <span class="n">Gaussian</span> <span class="k">as</span> <span class="n">SingleGaussian</span><span class="p">,</span>
+    <span class="n">GaussianSet</span><span class="p">,</span>
+    <span class="n">Photodiode</span> <span class="k">as</span> <span class="n">SinglePhotodiode</span><span class="p">,</span>
+    <span class="n">PhotodiodeSet</span><span class="p">,</span>
+    <span class="n">PolarizationSet</span><span class="p">,</span>
+    <span class="n">PolarizationState</span><span class="p">,</span>
+    <span class="n">Sphere</span> <span class="k">as</span> <span class="n">SingleSphere</span><span class="p">,</span>
+    <span class="n">SphereSet</span><span class="p">,</span>
+    <span class="n">ureg</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.detector_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhotodiodeSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">SphereSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.polarization_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationSet</span>
 
 
 <span class="n">sampling</span> <span class="o">=</span> <span class="mi">1400</span>
@@ -684,7 +700,7 @@ kept by building explicit <code class="docutils literal notranslate"><span class
     <span class="p">],</span>
 <span class="p">)</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
     <span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer_set</span><span class="p">,</span>
     <span class="n">source_set</span><span class="o">=</span><span class="n">source_set</span><span class="p">,</span>
     <span class="n">detector_set</span><span class="o">=</span><span class="n">detector_set</span><span class="p">,</span>
@@ -740,7 +756,7 @@ kept by building explicit <code class="docutils literal notranslate"><span class
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.493 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.349 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-experiment-photodiode-angular-weights-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/bb7ffd754bffae16f6f77375c7df40bc/experiment_photodiode_angular_weights.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">experiment_photodiode_angular_weights.ipynb</span></code></a></p>

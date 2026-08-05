@@ -21,7 +21,7 @@
 Sphere: Coherent Goniometer
 ===========================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-49
+.. GENERATED FROM PYTHON SOURCE LINES 6-52
 
 
 
@@ -82,14 +82,17 @@ Sphere: Coherent Goniometer
 .. code-block:: Python
 
     import numpy
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        CoherentModeSet,
+        SphereSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+        print_available,
+        SellmeierMaterial,
+    )
 
-    from PyMieSim.experiment.detector_set import CoherentModeSet
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyMieSim.material import print_available, SellmeierMaterial
 
     print_available()
 
@@ -119,7 +122,7 @@ Sphere: Coherent Goniometer
         rotation=[0] * ureg.degree,
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     dataframe = experiment.get("coupling")
 
@@ -128,7 +131,7 @@ Sphere: Coherent Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.415 seconds)
+   **Total running time of the script:** (0 minutes 0.312 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py:

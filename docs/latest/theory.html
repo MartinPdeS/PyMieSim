@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Theoretical Background &#8212; PyMieSim  documentation</title>
+    <title>Theory &#8212; PyMieSim  documentation</title>
   
   
   
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -63,7 +63,7 @@
     <link rel="icon" href="_static/thumbnail.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Coding examples" href="examples.html" />
+    <link rel="next" title="Workflows" href="workflows.html" />
     <link rel="prev" title="PyMieSim" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -157,7 +157,14 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -317,7 +324,14 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -475,7 +489,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Theoretical Background</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Theory</span></li>
   </ul>
 </nav>
 </div>
@@ -492,8 +506,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="theoretical-background">
-<h1>Theoretical Background<a class="headerlink" href="#theoretical-background" title="Link to this heading">#</a></h1>
+  <section id="theory">
+<h1>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h1>
 <section id="lorenz-mie-theory-lmt">
 <h2>Lorenz-Mie Theory (LMT)<a class="headerlink" href="#lorenz-mie-theory-lmt" title="Link to this heading">#</a></h2>
 <div class="admonition note">
@@ -508,13 +522,16 @@
 <h2>Key Relations Governing PyMieSim<a class="headerlink" href="#key-relations-governing-pymiesim" title="Link to this heading">#</a></h2>
 <p>The following are some of the core relations used in PyMieSim to compute the scattered fields and related parameters.</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}S_1 &amp;= \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \pi_n + b_n \tau_n \right) \\\end{split}\\\begin{split}S_2 &amp;= \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n + b_n \pi_n \right) \\\end{split}\\\begin{split}\text{Fields} &amp;= E_{\theta}(\phi, \theta) \hat{\theta} + E_{\phi}(\phi, \theta) \hat{\phi} \\\end{split}\\\text{SPF} &amp;= \sqrt{E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2}\end{aligned}\end{align} \]</div>
+\[\begin{split}S_1 &amp;= \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \pi_n + b_n \tau_n \right) \\[1.1em]
+S_2 &amp;= \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n + b_n \pi_n \right) \\[1.1em]
+\text{Fields} &amp;= E_{\theta}(\phi, \theta) \hat{\theta} + E_{\phi}(\phi, \theta) \hat{\phi} \\[1.1em]
+\text{SPF} &amp;= \sqrt{E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2}\end{split}\]</div>
 <p><strong>Stokes Parameters:</strong></p>
 <p>These parameters describe the polarization state of the scattered light:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}I &amp;= |E_x|^2 + |E_y|^2 \\
-Q &amp;= |E_x|^2 - |E_y|^2 \\
-U &amp;= 2 \operatorname{Re}(E_x E_y^*) \\
+\[\begin{split}I &amp;= |E_x|^2 + |E_y|^2 \\[1.1em]
+Q &amp;= |E_x|^2 - |E_y|^2 \\[1.1em]
+U &amp;= 2 \operatorname{Re}(E_x E_y^*) \\[1.1em]
 V &amp;= 2 \operatorname{Im}(E_x E_y^*)\end{split}\]</div>
 </section>
 <section id="scattering-properties">
@@ -531,16 +548,16 @@ V &amp;= 2 \operatorname{Im}(E_x E_y^*)\end{split}\]</div>
 </ul>
 <p>These properties are computed as follows:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}Q_{\text{sca}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2) \\
-Q_{\text{ext}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n) \\
-Q_{\text{abs}} &amp;= Q_{\text{ext}} - Q_{\text{sca}} \\
-Q_{\text{back}} &amp;= \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2 \\
-Q_{\text{ratio}} &amp;= \frac{Q_{\text{back}}}{Q_{\text{sca}}} \\
-Q_{\text{pr}} &amp;= Q_{\text{ext}} - g \cdot Q_{\text{sca}} \\
-g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]\end{split}\]</div>
+\[\begin{split}&amp;Q_{\text{sca}} = \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2) \\[1.1em]
+&amp;Q_{\text{ext}} = \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n) \\[1.1em]
+&amp;Q_{\text{abs}} = Q_{\text{ext}} - Q_{\text{sca}} \\[1.1em]
+&amp;Q_{\text{back}} = \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2 \\[1.1em]
+&amp;Q_{\text{ratio}} = \frac{Q_{\text{back}}}{Q_{\text{sca}}} \\[1.1em]
+&amp;Q_{\text{pr}} = Q_{\text{ext}} - g \cdot Q_{\text{sca}} \\[1.1em]
+&amp;g = \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]\end{split}\]</div>
 <p>The cross-sectional areas can be computed as:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}A_s &amp;= \pi r^2 \\
+\[\begin{split}A_s &amp;= \pi r^2 \\[1.1em]
 \sigma_i &amp;= Q_i A_s\end{split}\]</div>
 <p>Where:
 - <span class="math notranslate nohighlight">\(C\)</span> is the concentration of scatterers in the sample.
@@ -549,10 +566,12 @@ g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n
 <section id="an-and-bn-coefficients">
 <h2>An and Bn Coefficients<a class="headerlink" href="#an-and-bn-coefficients" title="Link to this heading">#</a></h2>
 <p>The Lorenz-Mie theory also defines the coefficients <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span>, which characterize the scattered fields. These coefficients vary depending on the scatterer’s geometry.</p>
-<p>### Sphere</p>
+<section id="sphere">
+<h3>Sphere<a class="headerlink" href="#sphere" title="Link to this heading">#</a></h3>
 <p>For a spherical scatterer, the <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span> coefficients are given by:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}a_n &amp;= \frac{\mu_{\text{sp}} \Psi_n(x) \Psi_n'(Mx) - \mu M \Psi_n'(x) \Psi_n(Mx)}{\mu_{\text{sp}} \xi_n(x) \Psi_n'(Mx) - \mu M \xi_n'(x) \Psi_n(Mx)} \\\end{split}\\b_n &amp;= \frac{\mu M \Psi_n(x) \Psi_n'(Mx) - \mu_{\text{sp}} \Psi_n'(x) \Psi_n(Mx)}{\mu M \xi_n(x) \Psi_n'(Mx) - \mu_{\text{sp}} \xi_n'(x) \Psi_n(Mx)}\end{aligned}\end{align} \]</div>
+\[\begin{split}a_n &amp;= \frac{\mu_{\text{sp}} \Psi_n(x) \Psi_n'(Mx) - \mu M \Psi_n'(x) \Psi_n(Mx)}{\mu_{\text{sp}} \xi_n(x) \Psi_n'(Mx) - \mu M \xi_n'(x) \Psi_n(Mx)} \\[1.1em]
+b_n &amp;= \frac{\mu M \Psi_n(x) \Psi_n'(Mx) - \mu_{\text{sp}} \Psi_n'(x) \Psi_n(Mx)}{\mu M \xi_n(x) \Psi_n'(Mx) - \mu_{\text{sp}} \xi_n'(x) \Psi_n(Mx)}\end{split}\]</div>
 <p>With:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\psi_n\)</span> and <span class="math notranslate nohighlight">\(\xi_n\)</span> being spherical Bessel and Hankel functions.</p></li>
@@ -561,22 +580,27 @@ g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n
 <li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is the wavelength in the surrounding medium.</p></li>
 </ul>
 <p><strong>Note</strong>: PyMieSim assumes <span class="math notranslate nohighlight">\(\mu_{\text{sp}} = \mu\)</span> for now, but this may change in future updates.</p>
-<p>### Cylinder</p>
+</section>
+<section id="cylinder">
+<h3>Cylinder<a class="headerlink" href="#cylinder" title="Link to this heading">#</a></h3>
 <p>For cylindrical scatterers, the coefficients are:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}a_n &amp;= \frac{M J_n(Mx) J_n'(mx) - m J_n'(Mx) J_n(mx)}{m J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)} \\
+\[\begin{split}a_n &amp;= \frac{M J_n(Mx) J_n'(mx) - m J_n'(Mx) J_n(mx)}{m J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)} \\[1.1em]
 b_n &amp;= \frac{m J_n(Mx) J_n'(mx) - M J_n'(Mx) J_n(mx)}{M J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)}\end{split}\]</div>
 <p>Where:
 - <span class="math notranslate nohighlight">\(M\)</span> is the refractive index of the scatterer.
 - <span class="math notranslate nohighlight">\(m\)</span> is the refractive index of the medium.
 - <span class="math notranslate nohighlight">\(H_n\)</span> is the Hankel function of the first kind of order <span class="math notranslate nohighlight">\(n\)</span>.</p>
-<p>### Core/Shell Sphere</p>
+</section>
+<section id="core-shell-sphere">
+<h3>Core/Shell Sphere<a class="headerlink" href="#core-shell-sphere" title="Link to this heading">#</a></h3>
 <p>For core/shell spheres, the coefficients <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span> are given by more complex expressions:</p>
 <div class="math notranslate nohighlight">
-\[a_n &amp;= \frac{\psi_n [\psi_n'(m_2 y) - A_n \chi_n'(m_2 y)] - m_2 \psi_n'(y) [\psi_n(m_2 y) - A_n \chi_n(m_2 y)]}{\xi_n(y) [\psi_n'(m_2 y) - A_n \chi_n'(m_2 y)] - m_2 \xi_n'(y) [\psi_n(m_2 y) - A_n \chi_n(m_2 y)]}\]</div>
+\[a_n = \frac{\psi_n [\psi_n'(m_2 y) - A_n \chi_n'(m_2 y)] - m_2 \psi_n'(y) [\psi_n(m_2 y) - A_n \chi_n(m_2 y)]}{\xi_n(y) [\psi_n'(m_2 y) - A_n \chi_n'(m_2 y)] - m_2 \xi_n'(y) [\psi_n(m_2 y) - A_n \chi_n(m_2 y)]}\]</div>
 <p>With:
 - <span class="math notranslate nohighlight">\(x = \frac{2\pi R_{\text{core}}}{\lambda}\)</span> and <span class="math notranslate nohighlight">\(y = \frac{2\pi R_{\text{shell}}}{\lambda}\)</span>
 - <span class="math notranslate nohighlight">\(m_1 = \frac{n_{\text{core}}}{n_{\text{medium}}}\)</span> and <span class="math notranslate nohighlight">\(m_2 = \frac{n_{\text{shell}}}{n_{\text{medium}}}\)</span></p>
+</section>
 </section>
 <section id="generalized-lorenz-mie-theory-glmt">
 <h2>Generalized Lorenz-Mie Theory (GLMT)<a class="headerlink" href="#generalized-lorenz-mie-theory-glmt" title="Link to this heading">#</a></h2>
@@ -591,7 +615,7 @@ b_n &amp;= \frac{m J_n(Mx) J_n'(mx) - M J_n'(Mx) J_n(mx)}{M J_n(Mx) H_n'(mx) - m
 <p><strong>Coherent coupling</strong> involves interference and usually results in less light being collected but offers additional information about the sample. <strong>Non-coherent coupling</strong> collects light without interference and is used by instruments like photodiodes.</p>
 <p>The mathematical definitions are:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}C_{\text{coh}} &amp;= \left| \iint_{\Omega} \Phi_{\text{det}} \cdot \Psi_{\text{scat}}^* \, d\Omega \right|^2 \\
+\[\begin{split}C_{\text{coh}} &amp;= \left| \iint_{\Omega} \Phi_{\text{det}} \cdot \Psi_{\text{scat}}^* \, d\Omega \right|^2 \\[1.1em]
 C_{\text{non-coh}} &amp;= \iint_{\Omega} \left| \Phi_{\text{det}} \right|^2 \cdot \left| \Psi_{\text{scat}} \right|^2 \, d\Omega\end{split}\]</div>
 <p><strong>Centered Coupling</strong> assumes the scatterer is perfectly aligned with the detector. For non-centered scenarios, the footprint of the scatterer is defined by:</p>
 <div class="math notranslate nohighlight">
@@ -628,7 +652,12 @@ C_{\text{non-coh}} &amp;= \iint_{\Omega} \left| \Phi_{\text{det}} \right|^2 \cdo
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-mie-theory-lmt">Lorenz-Mie Theory (LMT)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-relations-governing-pymiesim">Key Relations Governing PyMieSim</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-properties">Scattering Properties</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-and-bn-coefficients">An and Bn Coefficients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-and-bn-coefficients">An and Bn Coefficients</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sphere">Sphere</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylinder">Cylinder</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-shell-sphere">Core/Shell Sphere</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-lorenz-mie-theory-glmt">Generalized Lorenz-Mie Theory (GLMT)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coupling-mechanisms">Coupling Mechanisms</a></li>
 </ul>

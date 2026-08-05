@@ -8,14 +8,18 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    PhotodiodeSet,
+    CoreShellSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+    SellmeierMaterial,
+    TabulatedMaterial,
+    SellmeierMedium,
+)
 
-from PyMieSim.experiment.detector_set import PhotodiodeSet
-from PyMieSim.experiment.scatterer_set import CoreShellSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
-from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -45,7 +49,7 @@ detector = PhotodiodeSet(
     polarization_filter=[1] * ureg.degree,
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

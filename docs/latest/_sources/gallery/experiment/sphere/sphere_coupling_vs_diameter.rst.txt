@@ -21,7 +21,7 @@
 Sphere: Coupling vs diameter
 ============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-48
+.. GENERATED FROM PYTHON SOURCE LINES 6-50
 
 
 
@@ -47,13 +47,15 @@ Sphere: Coupling vs diameter
 .. code-block:: Python
 
     import numpy
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        CoherentModeSet,
+        SphereSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+    )
 
-    from PyMieSim.experiment.detector_set import CoherentModeSet
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
 
 
     polarization_set = PolarizationSet(
@@ -83,7 +85,7 @@ Sphere: Coupling vs diameter
         mean_coupling=True,
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
 
@@ -92,7 +94,7 @@ Sphere: Coupling vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.909 seconds)
+   **Total running time of the script:** (0 minutes 0.767 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:

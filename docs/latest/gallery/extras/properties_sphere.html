@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -156,7 +156,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -316,7 +323,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -573,11 +587,13 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="samples-properties">
 <span id="sphx-glr-gallery-extras-properties-sphere-py"></span><h1>Samples Properties<a class="headerlink" href="#samples-properties" title="Link to this heading">#</a></h1>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ureg</span><span class="p">,</span>
+    <span class="n">Sphere</span><span class="p">,</span>
+    <span class="n">Gaussian</span><span class="p">,</span>
+    <span class="n">PolarizationState</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
 
 <span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 

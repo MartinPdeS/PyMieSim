@@ -3,15 +3,18 @@ Sphere: Goniometer
 ==================
 
 """
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    PhotodiodeSet,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+    print_available,
+    SellmeierMaterial,
+)
 import numpy
 
-from PyMieSim.experiment.detector_set import PhotodiodeSet
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
-from PyMieSim.material import print_available, SellmeierMaterial
 
 print_available()
 
@@ -39,7 +42,7 @@ detector = PhotodiodeSet(
     sampling=[400]
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

@@ -4,13 +4,16 @@ Sphere: Qsca vs wavelength STD
 
 """
 import numpy as np
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+    print_available,
+    TabulatedMaterial,
+)
 
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
-from PyMieSim.material import print_available, TabulatedMaterial
 
 print_available()
 
@@ -34,7 +37,7 @@ scatterer = SphereSet(
     medium=[1],
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca")
 

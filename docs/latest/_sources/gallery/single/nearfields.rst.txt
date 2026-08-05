@@ -21,7 +21,7 @@
 Near-Field Computation and Visualization
 =========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-44
+.. GENERATED FROM PYTHON SOURCE LINES 5-46
 
 
 
@@ -52,11 +52,13 @@ Near-Field Computation and Visualization
 .. code-block:: Python
 
 
-    from PyMieSim.units import ureg
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.single.scatterer import CoreShell
-    from PyMieSim.single.source import Gaussian
-    from PyMieSim.single.setup import Setup
+    from PyMieSim import (
+        ureg,
+        PolarizationState,
+        CoreShell,
+        Gaussian,
+        Simulation,
+    )
 
 
     source = Gaussian(
@@ -74,7 +76,7 @@ Near-Field Computation and Visualization
         medium=1.0,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
     )
@@ -94,7 +96,7 @@ Near-Field Computation and Visualization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.672 seconds)
+   **Total running time of the script:** (0 minutes 3.666 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfields.py:

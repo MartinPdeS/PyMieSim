@@ -4,12 +4,14 @@ InfiniteCylinder: Qsca vs wavelength std
 
 """
 import numpy as np
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    InfiniteCylinderSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 
-from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
@@ -27,7 +29,7 @@ scatterer = InfiniteCylinderSet(
     medium=[1.0],
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca")
 

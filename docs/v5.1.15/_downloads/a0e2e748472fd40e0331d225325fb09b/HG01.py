@@ -4,13 +4,16 @@ Hermite-Gauss 01 Mode Detector
 
 This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.
 """
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    InfiniteCylinder,
+    Sphere,
+    Gaussian,
+    PolarizationState,
+    CoherentMode,
+    Simulation,
+)
 
-from PyMieSim.single.scatterer import InfiniteCylinder, Sphere
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import Setup
 
 
 polarization_state = PolarizationState(
@@ -42,6 +45,6 @@ detector = CoherentMode(
 
 detector.initialize_mesh(scatterer)
 
-setup = Setup(scatterer=scatterer, source=source, detector=detector)
+setup = Simulation(scatterer=scatterer, source=source, detector=detector)
 
 setup.plot_system()

@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -156,7 +156,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -316,7 +323,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -524,7 +538,7 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="infinitecylinder-scatterer-bohren-huffman-figure-8-8">
 <span id="sphx-glr-gallery-validation-bohren-huffman-figure-88-py"></span><h1>InfiniteCylinder Scatterer Bohren-Huffman figure 8.8<a class="headerlink" href="#infinitecylinder-scatterer-bohren-huffman-figure-8-8" title="Link to this heading">#</a></h1>
-<img src="../../../_images/sphx_glr_figure_88_001.png" srcset="../../../_images/sphx_glr_figure_88_001.png" alt="Comparison of Scattering Cross Sections for InfiniteCylinders" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:97: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
+<img src="../../../_images/sphx_glr_figure_88_001.png" srcset="../../../_images/sphx_glr_figure_88_001.png" alt="Comparison of Scattering Cross Sections for InfiniteCylinders" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/PyMieSim/PyMieSim/docs/examples/validation/bohren_huffman/figure_88.py:99: UserWarning: Glyph 956 (\N{GREEK SMALL LETTER MU}) missing from font(s) cmr10.
   plt.tight_layout()
 </pre></div>
 </div>
@@ -534,14 +548,16 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ureg</span><span class="p">,</span>
+    <span class="n">InfiniteCylinderSet</span><span class="p">,</span>
+    <span class="n">GaussianSet</span><span class="p">,</span>
+    <span class="n">PolarizationSet</span><span class="p">,</span>
+    <span class="n">Experiment</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1"># PyMieSim imports</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">InfiniteCylinderSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.polarization_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
 
 <span class="c1"># Load theoretical data</span>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">theoretical_data</span></a> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.genfromtxt.html#numpy.genfromtxt" title="numpy.genfromtxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span></a><span class="p">(</span>
@@ -576,7 +592,7 @@ to download the full example code.</p>
 <span class="p">)</span>
 
 <span class="c1"># Create experimental setup</span>
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
 <span class="c1"># Compute PyMieSim scattering cross section data</span>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">csca_data</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Csca&quot;</span><span class="p">,</span> <span class="n">as_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -625,7 +641,7 @@ to download the full example code.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.420 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.299 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-bohren-huffman-figure-88-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/01ccb157b0e5993780c48420a764a11d/figure_88.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">figure_88.ipynb</span></code></a></p>

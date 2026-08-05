@@ -21,7 +21,7 @@
 Sphere: Coupling vs polarization filter
 =======================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-47
+.. GENERATED FROM PYTHON SOURCE LINES 5-50
 
 
 
@@ -82,14 +82,17 @@ Sphere: Coupling vs polarization filter
 .. code-block:: Python
 
     import numpy as np
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        PhotodiodeSet,
+        SphereSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+        print_available,
+        SellmeierMaterial,
+    )
 
-    from PyMieSim.experiment.detector_set import PhotodiodeSet
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyMieSim.material import print_available, SellmeierMaterial
 
     print_available()
 
@@ -118,7 +121,7 @@ Sphere: Coupling vs polarization filter
         sampling=[500],
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     dataframe = experiment.get("coupling")
 
@@ -127,7 +130,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.957 seconds)
+   **Total running time of the script:** (0 minutes 0.760 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_filter.py:

@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -62,7 +62,7 @@
     <link rel="icon" href="_static/thumbnail.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Theoretical Background" href="theory.html" />
+    <link rel="next" title="Theory" href="theory.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="5.1.15" />
@@ -155,7 +155,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -317,7 +324,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -528,38 +542,28 @@ conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class=
 <section id="quick-example">
 <h2>Quick example<a class="headerlink" href="#quick-example" title="Link to this heading">#</a></h2>
 <p>Below is a short example computing the scattering efficiency of a sphere.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">SphereSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.polarization_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span><span class="p">,</span> <span class="n">PolarizationState</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">Sphere</span><span class="p">,</span> <span class="n">ureg</span>
 
-<span class="n">polarization</span> <span class="o">=</span> <span class="n">PolarizationSet</span><span class="p">(</span>
-    <span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
-<span class="p">)</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">GaussianSet</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization</span><span class="p">,</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">750</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
+    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
+<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span>
+    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span>
-    <span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span>
-    <span class="n">source_set</span><span class="o">=</span><span class="n">source</span>
-<span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">)</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+<span class="n">qsca</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qsca</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>For wavelength, size, or material sweeps, use the experiment API described in
+the <a class="reference external" href="https://martinpdes.github.io/PyMieSim/examples.html">experiment examples</a>.</p>
 <a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png"><img alt="Scattering efficiency of a 200 nm sphere with refractive index 4.0." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png" style="width: 1000px;" />
 </a>
 </section>

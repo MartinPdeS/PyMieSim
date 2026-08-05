@@ -9,13 +9,15 @@ of a sphere as a function of the permittivity and the size parameter.
 """
 
 import numpy
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 
 polarization_state = PolarizationSet(
     angles=90 * ureg.degree,
@@ -40,7 +42,7 @@ scatterer = SphereSet(
     medium=[1]
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 data = experiment.get("Qsca", as_numpy=True)
 

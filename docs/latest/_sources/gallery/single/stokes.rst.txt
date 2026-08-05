@@ -23,7 +23,7 @@ Stokes Parameters Computation
 
 This example demonstrates the computation and visualization of the Stokes parameters using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-38
+.. GENERATED FROM PYTHON SOURCE LINES 7-40
 
 
 
@@ -39,12 +39,14 @@ This example demonstrates the computation and visualization of the Stokes parame
 .. code-block:: Python
 
 
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        Sphere,
+        Gaussian,
+        PolarizationState,
+        Simulation,
+    )
 
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.source import Gaussian
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.single.setup import Setup
 
     polarization_state = PolarizationState(angle=0 * ureg.degree)
 
@@ -61,7 +63,7 @@ This example demonstrates the computation and visualization of the Stokes parame
         material=1.4,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
     )
@@ -73,7 +75,7 @@ This example demonstrates the computation and visualization of the Stokes parame
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.613 seconds)
+   **Total running time of the script:** (0 minutes 1.100 seconds)
 
 
 .. _sphx_glr_download_gallery_single_stokes.py:

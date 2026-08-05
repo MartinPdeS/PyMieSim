@@ -23,7 +23,7 @@ InfiniteCylinder: Goniometer
 
 This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-49
+.. GENERATED FROM PYTHON SOURCE LINES 7-52
 
 
 
@@ -84,14 +84,17 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 .. code-block:: Python
 
     import numpy as np
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        PhotodiodeSet,
+        InfiniteCylinderSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+        print_available,
+        SellmeierMaterial,
+    )
 
-    from PyMieSim.experiment.detector_set import PhotodiodeSet
-    from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyMieSim.material import print_available, SellmeierMaterial
 
     print_available()
 
@@ -120,7 +123,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
         polarization_filter=None,
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     dataframe = experiment.get("coupling", scale_unit=True)
 
@@ -129,7 +132,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.348 seconds)
+   **Total running time of the script:** (0 minutes 0.261 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:

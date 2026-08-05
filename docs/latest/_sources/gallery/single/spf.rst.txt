@@ -23,7 +23,7 @@ SPF Computation
 
 This example demonstrates the computation and visualization of the Scattering Phase Function (SPF) using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-42
+.. GENERATED FROM PYTHON SOURCE LINES 7-44
 
 
 
@@ -39,14 +39,16 @@ This example demonstrates the computation and visualization of the Scattering Ph
 .. code-block:: Python
 
 
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        CoreShell,
+        Gaussian,
+        Simulation,
+        PolarizationState,
+    )
 
-    from PyMieSim.single.scatterer import CoreShell
-    from PyMieSim.single.source import Gaussian
 
-    from PyMieSim.single.setup import Setup
 
-    from PyMieSim.polarization import PolarizationState
     polarization = PolarizationState(angle=90 * ureg.degree)
 
     source = Gaussian(
@@ -65,7 +67,7 @@ This example demonstrates the computation and visualization of the Scattering Ph
         medium=1.33,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
     )
@@ -77,7 +79,7 @@ This example demonstrates the computation and visualization of the Scattering Ph
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.421 seconds)
+   **Total running time of the script:** (0 minutes 0.965 seconds)
 
 
 .. _sphx_glr_download_gallery_single_spf.py:

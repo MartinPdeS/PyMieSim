@@ -29,7 +29,7 @@ kept by building explicit ``angular_weights`` arrays for a sequential
 At the moment, experiment-side angular weights are supported only through
 ``PhotodiodeSet.build_sequential(...)``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-172
+.. GENERATED FROM PYTHON SOURCE LINES 13-175
 
 
 
@@ -48,17 +48,19 @@ At the moment, experiment-side angular weights are supported only through
     import numpy as np
     import matplotlib.pyplot as plt
 
-    from PyMieSim.units import ureg
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.single.source import Gaussian as SingleGaussian
-    from PyMieSim.single.scatterer import Sphere as SingleSphere
-    from PyMieSim.single.detector import Photodiode as SinglePhotodiode
+    from PyMieSim import (
+        Experiment,
+        Gaussian as SingleGaussian,
+        GaussianSet,
+        Photodiode as SinglePhotodiode,
+        PhotodiodeSet,
+        PolarizationSet,
+        PolarizationState,
+        Sphere as SingleSphere,
+        SphereSet,
+        ureg,
+    )
 
-    from PyMieSim.experiment import Setup
-    from PyMieSim.experiment.detector_set import PhotodiodeSet
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
 
 
     sampling = 1400
@@ -150,7 +152,7 @@ At the moment, experiment-side angular weights are supported only through
         ],
     )
 
-    experiment = Setup(
+    experiment = Experiment(
         scatterer_set=scatterer_set,
         source_set=source_set,
         detector_set=detector_set,
@@ -205,9 +207,10 @@ At the moment, experiment-side angular weights are supported only through
     if plt.get_backend().lower() != "agg":
         plt.show()
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.493 seconds)
+   **Total running time of the script:** (0 minutes 0.349 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_experiment_photodiode_angular_weights.py:

@@ -9,6 +9,7 @@
     :hidden:
 
     theory.rst
+    workflows.rst
     examples.rst
     gallery/validation/index.rst
     code/index.rst

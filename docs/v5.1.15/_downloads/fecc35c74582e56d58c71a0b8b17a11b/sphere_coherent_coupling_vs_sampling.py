@@ -4,13 +4,16 @@ Sphere: coherent coupling vs sampling
 
 """
 import numpy
-from PyMieSim.units import ureg
-from PyMieSim.experiment.detector_set import CoherentModeSet
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
-from PyMieSim.material import print_available, SellmeierMaterial
+from PyMieSim import (
+    ureg,
+    CoherentModeSet,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+    print_available,
+    SellmeierMaterial,
+)
 
 print_available()
 
@@ -40,7 +43,7 @@ detector = CoherentModeSet(
     polarization_filter=[0] * ureg.degree,
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling")
 

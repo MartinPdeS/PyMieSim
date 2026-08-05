@@ -23,7 +23,7 @@ Far-Fields Computation and Visualization
 
 This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-44
+.. GENERATED FROM PYTHON SOURCE LINES 7-46
 
 
 
@@ -58,11 +58,13 @@ This example demonstrates the process of computing and visualizing the far-field
 .. code-block:: Python
 
 
-    from PyMieSim.units import ureg
-    from PyMieSim.single.source import Gaussian
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.setup import Setup
+    from PyMieSim import (
+        ureg,
+        Gaussian,
+        PolarizationState,
+        Sphere,
+        Simulation,
+    )
 
     polarization = PolarizationState(angle=30 * ureg.degree)
 
@@ -79,7 +81,7 @@ This example demonstrates the process of computing and visualizing the far-field
         medium=1.0,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
     )
@@ -98,7 +100,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.870 seconds)
+   **Total running time of the script:** (0 minutes 3.404 seconds)
 
 
 .. _sphx_glr_download_gallery_single_farfields.py:

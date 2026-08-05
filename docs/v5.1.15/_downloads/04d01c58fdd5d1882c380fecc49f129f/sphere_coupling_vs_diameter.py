@@ -4,13 +4,15 @@ Sphere: Coupling vs diameter
 
 """
 import numpy
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    CoherentModeSet,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 
-from PyMieSim.experiment.detector_set import CoherentModeSet
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 
 
 polarization_set = PolarizationSet(
@@ -40,7 +42,7 @@ detector = CoherentModeSet(
     mean_coupling=True,
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
 

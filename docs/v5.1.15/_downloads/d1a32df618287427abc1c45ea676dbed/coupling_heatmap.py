@@ -9,15 +9,17 @@ of a sphere as a function of the permittivity and the size parameter.
 """
 
 import numpy
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    PhotodiodeSet,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+    SellmeierMedium,
+)
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment.detector_set import PhotodiodeSet
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
-from PyMieSim.material import SellmeierMedium
 
 polarization_state = PolarizationSet(
     angles=[90] * ureg.degree,
@@ -46,7 +48,7 @@ detector = PhotodiodeSet(
     sampling=[400]
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 values = experiment.get("coupling", add_units=False, as_numpy=True)
 

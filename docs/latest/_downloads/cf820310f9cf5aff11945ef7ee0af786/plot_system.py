@@ -11,13 +11,15 @@ PyVista for rendering the 3D scene.
 This script is intended to be used in conjunction with the Read the Docs documentation.
 """
 
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    InfiniteCylinder,
+    Gaussian,
+    PolarizationState,
+    CoherentMode,
+    Simulation,
+)
 
-from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import Setup
 
 
 polarization_state = PolarizationState(
@@ -47,6 +49,6 @@ detector = CoherentMode(
     medium=1.0,
 )
 
-setup = Setup(scatterer=scatterer, source=source, detector=detector)
+setup = Simulation(scatterer=scatterer, source=source, detector=detector)
 
 setup.plot_system()

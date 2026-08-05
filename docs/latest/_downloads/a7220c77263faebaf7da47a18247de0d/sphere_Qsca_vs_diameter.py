@@ -5,13 +5,17 @@ Sphere: Qsca vs diameter
 """
 import numpy as np
 
-from PyMieSim.units import ureg
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment.material_set import MaterialSet, MediumSet
-from PyMieSim.experiment.setup import Setup
-from PyMieSim.material import print_available, SellmeierMaterial
+from PyMieSim import (
+    ureg,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    MaterialSet,
+    MediumSet,
+    Experiment,
+    print_available,
+    SellmeierMaterial,
+)
 
 print_available()
 
@@ -34,7 +38,7 @@ scatterer = SphereSet(
     medium=MediumSet([1.33, 1.34, 1.5]),
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qsca", scale_unit=True)
 

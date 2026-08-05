@@ -23,7 +23,7 @@ Coupling
 
 This example demonstrates the process of computing the coupling efficiency of a scatterer to a detector using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-66
+.. GENERATED FROM PYTHON SOURCE LINES 7-69
 
 
 
@@ -46,12 +46,15 @@ This example demonstrates the process of computing the coupling efficiency of a 
 .. code-block:: Python
 
 
-    from PyMieSim.units import ureg
-    from PyMieSim.single.source import Gaussian
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.detector import Photodiode, IntegratingSphere
-    from PyMieSim.single.setup import Setup
+    from PyMieSim import (
+        ureg,
+        Gaussian,
+        PolarizationState,
+        Sphere,
+        Photodiode,
+        IntegratingSphere,
+        Simulation,
+    )
 
 
     polarization = PolarizationState(angle=30 * ureg.degree)
@@ -81,7 +84,7 @@ This example demonstrates the process of computing the coupling efficiency of a 
         sampling=1000
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
         detector=side_detector
@@ -95,7 +98,7 @@ This example demonstrates the process of computing the coupling efficiency of a 
         sampling=1000
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
         detector=forward_detector
@@ -108,7 +111,7 @@ This example demonstrates the process of computing the coupling efficiency of a 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.024 seconds)
+   **Total running time of the script:** (0 minutes 0.005 seconds)
 
 
 .. _sphx_glr_download_gallery_single_coupling.py:

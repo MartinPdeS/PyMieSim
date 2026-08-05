@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -156,7 +156,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -316,7 +323,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -618,15 +632,18 @@ to download the full example code.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ureg</span><span class="p">,</span>
+    <span class="n">PhotodiodeSet</span><span class="p">,</span>
+    <span class="n">SphereSet</span><span class="p">,</span>
+    <span class="n">GaussianSet</span><span class="p">,</span>
+    <span class="n">PolarizationSet</span><span class="p">,</span>
+    <span class="n">Experiment</span><span class="p">,</span>
+    <span class="n">print_available</span><span class="p">,</span>
+    <span class="n">SellmeierMaterial</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.detector_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhotodiodeSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.scatterer_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">SphereSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.source_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment.polarization_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationSet</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.experiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.material</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_available</span><span class="p">,</span> <span class="n">SellmeierMaterial</span>
 
 <span class="n">print_available</span><span class="p">()</span>
 
@@ -654,14 +671,14 @@ to download the full example code.</p>
     <span class="n">sampling</span><span class="o">=</span><span class="p">[</span><span class="mi">400</span><span class="p">]</span>
 <span class="p">)</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector_set</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector_set</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
 
 <span class="n">dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
 
 <span class="n">dataframe</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;detector:phi_offset&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.253 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.183 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-sphere-coupling-vs-phioffset-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/0b917180c8cd9c26596397c9b38b1924/sphere_coupling_vs_phioffset.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_coupling_vs_phioffset.ipynb</span></code></a></p>

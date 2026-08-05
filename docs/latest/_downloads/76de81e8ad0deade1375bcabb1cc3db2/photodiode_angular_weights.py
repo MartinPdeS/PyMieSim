@@ -9,12 +9,14 @@ single-detector Fibonacci mesh using ``angular_weights``.
 import numpy as np
 import matplotlib.pyplot as plt
 
-from PyMieSim.units import ureg
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.source import Gaussian
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.detector import Photodiode
-from PyMieSim.single.setup import Setup
+from PyMieSim import (
+    ureg,
+    PolarizationState,
+    Gaussian,
+    Sphere,
+    Photodiode,
+    Simulation,
+)
 
 
 source = Gaussian(
@@ -37,7 +39,7 @@ detector = Photodiode(
     sampling=500,
 )
 
-setup = Setup(
+setup = Simulation(
     scatterer=scatterer,
     source=source,
     detector=detector,

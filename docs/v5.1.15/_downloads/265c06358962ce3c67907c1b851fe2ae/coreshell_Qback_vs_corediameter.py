@@ -9,13 +9,18 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    CoreShellSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+    print_available,
+    SellmeierMaterial,
+    TabulatedMaterial,
+    SellmeierMedium,
+)
 
-from PyMieSim.experiment.scatterer_set import CoreShellSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
-from PyMieSim.material import print_available, SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
 print_available()
 
@@ -38,7 +43,7 @@ scatterer = CoreShellSet(
     medium=[SellmeierMedium("water")],
 )
 
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 dataframe = experiment.get("Qback")
 

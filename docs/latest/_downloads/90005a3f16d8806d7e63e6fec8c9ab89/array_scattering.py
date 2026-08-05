@@ -7,13 +7,15 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 """
 
 import numpy as np
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    Sphere,
+    PlaneWave,
+    Simulation,
+    PolarizationState,
+)
 import matplotlib.pyplot as plt
 
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import PlaneWave
-from PyMieSim.single.setup import Setup
-from PyMieSim.polarization import PolarizationState
 
 # %%
 # Create a simple plane wave source
@@ -29,7 +31,7 @@ scatterer = Sphere(
     medium=1.0,
 )
 
-setup = Setup(
+setup = Simulation(
     scatterer=scatterer,
     source=source
 )

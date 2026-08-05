@@ -5,13 +5,15 @@ Photodiode Detector
 This example demonstrates the initialization and visualization of a Photodiode detector using PyMieSim.
 """
 
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    Sphere,
+    Gaussian,
+    PolarizationState,
+    Photodiode,
+    Simulation,
+)
 
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import Setup
 
 
 polarization_state = PolarizationState(
@@ -39,7 +41,7 @@ detector = Photodiode(
     medium=3,
 )
 
-setup = Setup(scatterer=scatterer, source=source, detector=detector)
+setup = Simulation(scatterer=scatterer, source=source, detector=detector)
 
 setup.plot_system()
 

@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=82b89df1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=e13101ea" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -156,7 +156,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -316,7 +323,14 @@
     
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../theory.html">
-    Theoretical Background
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../workflows.html">
+    Workflows
   </a>
 </li>
 
@@ -575,11 +589,13 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-single-properties-py"></span><h1>Far-Fields Computation and Visualization<a class="headerlink" href="#far-fields-computation-and-visualization" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.</p>
 <p>Importing the package: PyMieSim</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolarizationState</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">Setup</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ureg</span><span class="p">,</span>
+    <span class="n">Gaussian</span><span class="p">,</span>
+    <span class="n">PolarizationState</span><span class="p">,</span>
+    <span class="n">Sphere</span><span class="p">,</span>
+    <span class="n">Simulation</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">polarization</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
 
@@ -596,7 +612,7 @@ to download the full example code.</p>
     <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">setup</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span>
+<span class="n">setup</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
     <span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
 <span class="p">)</span>
@@ -617,7 +633,7 @@ Cabs: 0.0 meter ** 2
 Cback: 1.247925033026569e-12 meter ** 2
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.003 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.002 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-properties-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8d13f02e980094edefa0e6c2c14d7db7/properties.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">properties.ipynb</span></code></a></p>

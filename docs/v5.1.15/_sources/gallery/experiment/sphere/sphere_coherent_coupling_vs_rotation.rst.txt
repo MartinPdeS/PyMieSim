@@ -21,7 +21,7 @@
 Sphere: Coherent mode field rotation
 ====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-50
+.. GENERATED FROM PYTHON SOURCE LINES 6-53
 
 
 
@@ -82,14 +82,17 @@ Sphere: Coherent mode field rotation
 .. code-block:: Python
 
     import numpy
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        CoherentModeSet,
+        SphereSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+        print_available,
+        SellmeierMaterial,
+    )
 
-    from PyMieSim.experiment.detector_set import CoherentModeSet
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyMieSim.material import print_available, SellmeierMaterial
 
     print_available()
 
@@ -120,7 +123,7 @@ Sphere: Coherent mode field rotation
         polarization_filter=None,
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     dataframe = experiment.get("coupling")
 
@@ -129,7 +132,7 @@ Sphere: Coherent mode field rotation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.238 seconds)
+   **Total running time of the script:** (0 minutes 0.158 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_rotation.py:

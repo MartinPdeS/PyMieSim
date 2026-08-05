@@ -26,7 +26,7 @@ defined, it is possible to use PyMieSim to find the scattering efficiency of the
 scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-59
+.. GENERATED FROM PYTHON SOURCE LINES 10-61
 
 
 
@@ -43,13 +43,15 @@ of a sphere as a function of the permittivity and the size parameter.
 
 
     import numpy
-    from PyMieSim.units import ureg
+    from PyMieSim import (
+        ureg,
+        SphereSet,
+        GaussianSet,
+        PolarizationSet,
+        Experiment,
+    )
     import matplotlib.pyplot as plt
 
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
 
     polarization_state = PolarizationSet(
         angles=90 * ureg.degree,
@@ -74,7 +76,7 @@ of a sphere as a function of the permittivity and the size parameter.
         medium=[1]
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     data = experiment.get("Qsca", as_numpy=True)
 
@@ -94,7 +96,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.652 seconds)
+   **Total running time of the script:** (0 minutes 1.256 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_Qsca_vs_permittivity_vs_size_parameter.py:

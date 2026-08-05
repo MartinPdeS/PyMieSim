@@ -23,7 +23,7 @@ S1 S2 Function Computation
 
 This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-40
+.. GENERATED FROM PYTHON SOURCE LINES 7-42
 
 
 
@@ -39,12 +39,14 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 .. code-block:: Python
 
 
-    from PyMieSim.units import ureg
-    from PyMieSim.single.scatterer import InfiniteCylinder
-    from PyMieSim.single.source import Gaussian
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.material import SellmeierMaterial
-    from PyMieSim.single.setup import Setup
+    from PyMieSim import (
+        ureg,
+        InfiniteCylinder,
+        Gaussian,
+        PolarizationState,
+        SellmeierMaterial,
+        Simulation,
+    )
 
     bk7 = SellmeierMaterial("BK7")
 
@@ -63,7 +65,7 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
         material=bk7,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
     )
@@ -75,7 +77,7 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.255 seconds)
+   **Total running time of the script:** (0 minutes 0.172 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:

@@ -24,7 +24,7 @@ Photodiode Angular Weights
 This example demonstrates how to build a custom angular mask on top of the
 single-detector Fibonacci mesh using ``angular_weights``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-135
+.. GENERATED FROM PYTHON SOURCE LINES 8-137
 
 
 
@@ -43,12 +43,14 @@ single-detector Fibonacci mesh using ``angular_weights``.
     import numpy as np
     import matplotlib.pyplot as plt
 
-    from PyMieSim.units import ureg
-    from PyMieSim.polarization import PolarizationState
-    from PyMieSim.single.source import Gaussian
-    from PyMieSim.single.scatterer import Sphere
-    from PyMieSim.single.detector import Photodiode
-    from PyMieSim.single.setup import Setup
+    from PyMieSim import (
+        ureg,
+        PolarizationState,
+        Gaussian,
+        Sphere,
+        Photodiode,
+        Simulation,
+    )
 
 
     source = Gaussian(
@@ -71,7 +73,7 @@ single-detector Fibonacci mesh using ``angular_weights``.
         sampling=500,
     )
 
-    setup = Setup(
+    setup = Simulation(
         scatterer=scatterer,
         source=source,
         detector=detector,
@@ -170,7 +172,7 @@ single-detector Fibonacci mesh using ``angular_weights``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.452 seconds)
+   **Total running time of the script:** (0 minutes 0.313 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_photodiode_angular_weights.py:
