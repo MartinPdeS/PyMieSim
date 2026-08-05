@@ -14,6 +14,8 @@ from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.material_set import MaterialSet
 from PyMieSim.material import ConstantMaterial, ConstantMedium
+from PyMieSim.measures import Measure, MeasureLike, normalize_measure, normalize_measures
+from PyMieSim.results import ExperimentResult
 
 
 
@@ -39,7 +41,16 @@ class Setup(SETUP):
     # Sequential execution
     # ------------------------------------------------------------------
 
-    def get_sequential(self, measure: str) -> np.ndarray:
+    @property
+    def available_measures(self) -> tuple[str, ...]:
+        """Measures supported by the configured scatterer and detector sets."""
+
+        available = list(self.scatterer_set.available_measure_list)
+        if self.detector_set is None and "coupling" in available:
+            available.remove("coupling")
+        return tuple(available)
+
+    def get_sequential(self, measure: MeasureLike) -> np.ndarray:
         """
         Compute a measure once using the current parameter sets.
 
@@ -56,7 +67,7 @@ class Setup(SETUP):
         numpy.ndarray
             Computed values.
         """
-        return getattr(self, f"get_{measure}_sequential")()
+        return getattr(self, f"get_{normalize_measure(measure)}_sequential")()
 
     # ------------------------------------------------------------------
     # Main public interface
@@ -64,11 +75,12 @@ class Setup(SETUP):
 
     def get(
         self,
-        *measures: str,
+        *measures: MeasureLike,
         drop_unique_level: bool = True,
         add_units: bool = True,
         as_numpy: bool = False,
         scale_unit: bool = True,
+        as_result: bool = False,
     ):
         """
         Run the simulation and compute the requested measures.
@@ -94,7 +106,10 @@ class Setup(SETUP):
         measures = self._normalize_measures(measures)
 
         if as_numpy:
-            return self._compute_measure_arrays(measures)
+            if as_result:
+                raise ValueError("as_result=True requires DataFrame output; omit as_numpy.")
+            result = self._compute_measure_arrays(measures)
+            return result
 
         dataframe = self._build_dataframe(measures, drop_unique_level)
 
@@ -103,7 +118,7 @@ class Setup(SETUP):
         if scale_unit:
             dataframe = dataframe.to_compact()
 
-        return dataframe
+        return ExperimentResult(dataframe, tuple(measures)) if as_result else dataframe
 
     # ------------------------------------------------------------------
     # Measure computation
@@ -111,14 +126,12 @@ class Setup(SETUP):
 
     def _normalize_measures(self, measures) -> List[str]:
         """Validate and normalize requested measures while preserving order."""
-        normalized = list(np.atleast_1d(measures))
+        normalized = normalize_measures(measures)
 
         if not normalized:
             raise ValueError("At least one measure must be requested.")
 
-        available = set(self.scatterer_set.available_measure_list)
-        if self.detector_set is None:
-            available.discard("coupling")
+        available = set(self.available_measures)
 
         invalid = [
             measure

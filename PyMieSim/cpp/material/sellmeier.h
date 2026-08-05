@@ -108,9 +108,10 @@ private:
             return;
         }
 
-        const double wavelength_in_micrometer = wavelength * 1e6;
-
-        if (wavelength_in_micrometer < wavelength_bound[0] || wavelength_in_micrometer > wavelength_bound[1]) {
+        // Wavelength bounds are supplied by the Python binding in metres.
+        // The Sellmeier equation itself uses micrometres, but range checking
+        // must use the same unit as wavelength_bound.
+        if (wavelength < wavelength_bound[0] || wavelength > wavelength_bound[1]) {
             throw std::out_of_range("Wavelength is outside the allowed range.");
         }
     }

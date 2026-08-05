@@ -62,6 +62,7 @@ def reset_mpl(gallery_conf, fname):
 examples_files = [
     "single",
     "experiment",
+    "benchmarks",
     "validation",
     "extras"
 ]
@@ -119,7 +120,7 @@ html_context = {
     "github_user": package_name,
     "github_repo": package_name,
     "github_version": "master",
-    "doc_path": "doc/source",
+    "doc_path": "docs/source",
     "default_mode": "dark",
 }
 

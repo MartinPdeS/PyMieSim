@@ -1,6 +1,7 @@
 """Specialized dataframe utilities for PyMieSim experiment results."""
 
-from typing import Self
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np

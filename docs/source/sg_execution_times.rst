@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.098** total execution time for 56 files **from all galleries**:
+**00:01.173** total execution time for 63 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,20 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_single_coupling.py` (``../examples/single/coupling.py``)
-     - 00:00.098
+   * - :ref:`sphx_glr_gallery_benchmarks_memory_scaling.py` (``../examples/benchmarks/memory_scaling.py``)
+     - 00:00.833
+     - 0.0
+   * - :ref:`sphx_glr_gallery_benchmarks_sweep_runtime.py` (``../examples/benchmarks/sweep_runtime.py``)
+     - 00:00.111
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_energy_conservation.py` (``../examples/validation/energy_conservation.py``)
+     - 00:00.087
+     - 0.0
+   * - :ref:`sphx_glr_gallery_benchmarks_reproducible_parameter_sweep.py` (``../examples/benchmarks/reproducible_parameter_sweep.py``)
+     - 00:00.073
+     - 0.0
+   * - :ref:`sphx_glr_gallery_benchmarks_parameter_grid.py` (``../examples/benchmarks/parameter_grid.py``)
+     - 00:00.070
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_Qback_vs_corediameter.py` (``../examples/experiment/coreshell/coreshell_Qback_vs_corediameter.py``)
      - 00:00.000
@@ -137,10 +149,16 @@ Computation times
    * - :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py` (``../examples/extras/coupling_vs_NA.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_gallery_extras_experiment_photodiode_angular_weights.py` (``../examples/extras/experiment_photodiode_angular_weights.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_gallery_extras_integrating_sphere.py` (``../examples/extras/integrating_sphere.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_photodiode.py` (``../examples/extras/photodiode.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_photodiode_angular_weights.py` (``../examples/extras/photodiode_angular_weights.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``../examples/extras/plot_system.py``)
@@ -150,6 +168,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_properties_sphere.py` (``../examples/extras/properties_sphere.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_coupling.py` (``../examples/single/coupling.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_single_farfields.py` (``../examples/single/farfields.py``)

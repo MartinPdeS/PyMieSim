@@ -13,9 +13,11 @@ users through practical implementations.
 
    /gallery/single/index
    /gallery/experiment/index
+   /gallery/benchmarks/index
    /gallery/extras/index
+   /gallery/validation/index
 
-.. grid:: 3
+.. grid:: 5
    :gutter: 2
 
    .. grid-item-card:: Single
@@ -60,6 +62,38 @@ users through practical implementations.
       +++
 
       .. button-link:: /gallery/extras/index
+         :color: primary
+         :outline:
+         :expand:
+
+         Open
+
+   .. grid-item-card:: Validation
+      :link: /gallery/validation/index
+      :link-type: doc
+      :text-align: center
+
+      Reference comparisons and internal consistency checks.
+
+      +++
+
+      .. button-link:: /gallery/validation/index
+         :color: primary
+         :outline:
+         :expand:
+
+         Open
+
+   .. grid-item-card:: Benchmarks
+      :link: /gallery/benchmarks/index
+      :link-type: doc
+      :text-align: center
+
+      Reproducible runtime and scaling measurements.
+
+      +++
+
+      .. button-link:: /gallery/benchmarks/index
          :color: primary
          :outline:
          :expand:

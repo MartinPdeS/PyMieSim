@@ -4,6 +4,7 @@
 import numpy as np
 import pytest
 
+from PyMieSim import ExperimentResult, Measure
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.scatterer_set import SphereSet
@@ -50,3 +51,15 @@ def test_get_single_numpy_measure_keeps_simulation_shape():
     values = _setup().get("Qsca", as_numpy=True)
 
     assert values.shape == (2, 2)
+
+
+def test_experiment_exposes_available_measures_and_accepts_enum():
+    experiment = _setup()
+
+    assert "Qsca" in experiment.available_measures
+    result = experiment.get(Measure.QSCA, as_result=True)
+
+    assert isinstance(result, ExperimentResult)
+    assert result.measure_names == ("Qsca",)
+    assert result.to_pandas() is result.dataframe
+    assert "scatterer:diameter" in result.parameters

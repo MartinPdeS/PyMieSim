@@ -16,6 +16,7 @@ Each module contains a variety of classes and methods that can be customized to 
     :maxdepth: 1
     :caption: Code Structure
 
+    public_api.rst
     single.rst
     experiment.rst
     material.rst
@@ -31,4 +32,3 @@ Classes and Components
 - **Detector**: Captures the scattered light and measures properties like intensity, polarization, and phase. The detector can be placed at different angles or configured to capture light from specific regions around the scatterer.
 
 - **Experiment**: A class that brings together the source, scatterer, and detector, creating a complete experimental setup for optical scattering simulations.
-

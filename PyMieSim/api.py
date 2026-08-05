@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, overload
 
+from .measures import Measure, MeasureLike, normalize_measures
+from .results import SimulationResult, SimulationResults
 from .single import Setup
 
 
@@ -25,22 +27,55 @@ class Simulation:
 
     @property
     def setup(self) -> Setup:
-        """Return the underlying setup for advanced or legacy operations."""
+        """Return the legacy backend setup for advanced operations."""
 
         return self._setup
 
-    def run(self, *measures: str, **options: Any):
-        """Compute measures using the standard PyMieSim result interface."""
+    @property
+    def advanced(self) -> Setup:
+        """Explicit alias for the advanced/legacy backend interface."""
 
-        return self._setup.get(*measures, **options)
+        return self._setup
 
-    def get(self, *measures: str, **options: Any):
-        """Alias for :meth:`run`."""
+    @property
+    def available_measures(self) -> tuple[str, ...]:
+        """Measures supported by this simulation configuration."""
+
+        names = tuple(getattr(self._setup.scatterer, "property_names", ()))
+        if self._setup.detector is not None and "coupling" not in names:
+            names += ("coupling",)
+        return names
+
+    @overload
+    def run(self, *measures: MeasureLike, as_result: bool = False, **options: Any) -> Any: ...
+
+    def run(self, *measures: MeasureLike, as_result: bool = False, **options: Any):
+        """Compute measures using the stable simulation interface.
+
+        ``Measure`` members and historical strings are both accepted.
+        ``as_result=True`` opts into explicit typed result containers while
+        the default preserves the existing quantity return values.
+        """
+
+        names = normalize_measures(measures)
+        if not names:
+            raise ValueError("At least one measure must be requested.")
+        if as_result:
+            values = {name: SimulationResult(name, self._setup.get(name, **options)) for name in names}
+            return next(iter(values.values())) if len(values) == 1 else SimulationResults(values)
+
+        return self._setup.get(*names, **options)
+
+    def get(self, *measures: MeasureLike, **options: Any):
+        """Alias for :meth:`run`.
+
+        Use ``as_result=True`` for explicit typed result containers.
+        """
 
         return self.run(*measures, **options)
 
     def __getattr__(self, name: str):
-        """Preserve access to specialized setup methods during the transition."""
+        """Preserve legacy access to specialized backend methods."""
 
         return getattr(self._setup, name)
 

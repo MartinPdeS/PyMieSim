@@ -9,6 +9,12 @@ import PyMieSim.material as _
 import PyMieSim.polarization as _
 
 from .api import Simulation
+from .measures import (
+    Cabs, Cback, Cext, Cforward, Cpr, Cratio, Csca,
+    Measure, MeasureLike, MeasureName, Qabs, Qback, Qext, Qforward, Qpr, Qratio, Qsca,
+    coupling, cross_section, g, g_with_farfields, size_parameter,
+)
+from .results import ExperimentResult, SimulationResult, SimulationResults
 from .coordinates import Cartesian, Spherical, VectorField
 from .experiment.detector_set import CoherentModeSet, PhotodiodeSet
 from .experiment.material_set import MaterialSet, MediumSet
@@ -25,6 +31,17 @@ from .material import (
     TabulatedMaterial,
     TabulatedMedium,
 )
+from .materials import (
+    MaterialInfo,
+    available_materials,
+    load_material,
+    load_tabulated,
+    material_info,
+    validate_refractive_indices,
+    validate_material,
+    validate_tabulated_data,
+    validate_wavelength,
+)
 from .mesh import FibonacciMesh, FullMesh
 from .polarization import LeftCircular, PolarizationState, RightCircular
 from .single import Setup
@@ -38,6 +55,13 @@ __all__ = [
     "CoherentMode",
     "ConstantMaterial",
     "ConstantMedium",
+    "Cabs",
+    "Cback",
+    "Cext",
+    "Cforward",
+    "Cpr",
+    "Cratio",
+    "Csca",
     "CoreShell",
     "CoreShellSet",
     "CoherentModeSet",
@@ -49,12 +73,23 @@ __all__ = [
     "IntegratingSphere",
     "LeftCircular",
     "MaterialSet",
+    "MaterialInfo",
+    "Measure",
+    "MeasureLike",
+    "MeasureName",
     "MediumSet",
     "Photodiode",
     "PhotodiodeSet",
     "PlaneWave",
     "PolarizationState",
     "PolarizationSet",
+    "Qabs",
+    "Qback",
+    "Qext",
+    "Qforward",
+    "Qpr",
+    "Qratio",
+    "Qsca",
     "RightCircular",
     "SellmeierMaterial",
     "SellmeierMedium",
@@ -62,14 +97,30 @@ __all__ = [
     "Simulation",
     "Sphere",
     "SphereSet",
+    "SimulationResult",
+    "SimulationResults",
+    "ExperimentResult",
     "Spherical",
     "TabulatedMaterial",
     "TabulatedMedium",
     "VectorField",
+    "coupling",
+    "cross_section",
+    "g",
+    "g_with_farfields",
+    "size_parameter",
     "GaussianSet",
     "InfiniteCylinderSet",
     "PlaneWaveSet",
     "print_available",
+    "available_materials",
+    "load_material",
+    "load_tabulated",
+    "material_info",
+    "validate_refractive_indices",
+    "validate_material",
+    "validate_tabulated_data",
+    "validate_wavelength",
     "__version__",
     "ureg",
 ]
