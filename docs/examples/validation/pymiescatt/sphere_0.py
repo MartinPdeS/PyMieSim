@@ -8,13 +8,15 @@ Sphere Particles: 0
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    SphereSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 
 # PyMieSim imports
-from PyMieSim.experiment.scatterer_set import SphereSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 from PyMieSim.directories import validation_data_path
 
 
@@ -45,7 +47,7 @@ scatterer = SphereSet(
 )
 
 # Define experiment setup
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 

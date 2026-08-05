@@ -5,29 +5,38 @@ Goniometric Coupling vs S1 S2 Comparison
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieSim.units import ureg
-from PyMieSim import single, experiment
-from PyMieSim.polarization import PolarizationState
+from PyMieSim import (
+    Experiment,
+    Gaussian,
+    GaussianSet,
+    PhotodiodeSet,
+    PolarizationSet,
+    PolarizationState,
+    Simulation,
+    Sphere,
+    SphereSet,
+    ureg,
+)
 
 # Setup parameters
 scatterer_diameter = 0.3 * ureg.micrometer  # Diameter of the scatterer in meters
 scatterer_index = 1.4  # Refractive index of the scatterer
 source_wavelength = 1.2 * ureg.micrometer  # Wavelength of the source in meters
 
-source = experiment.source_set.GaussianSet(
+source = GaussianSet(
     wavelength=[1.2] * ureg.micrometer,
-    polarization=experiment.polarization_set.PolarizationSet(angles=[0, 90] * ureg.degree),
+    polarization=PolarizationSet(angles=[0, 90] * ureg.degree),
     optical_power=[1] * ureg.watt,
     numerical_aperture=[0.2],
 )
 
-scatterer = experiment.scatterer_set.SphereSet(
+scatterer = SphereSet(
     diameter=scatterer_diameter,
     material=scatterer_index,
     medium=[1.0],
 )
 
-detector = experiment.detector_set.PhotodiodeSet(
+detector = PhotodiodeSet(
     numerical_aperture=[0.1],
     phi_offset=np.linspace(-180, 180, 100) * ureg.degree,
     gamma_offset=[0.0] * ureg.degree,
@@ -35,7 +44,7 @@ detector = experiment.detector_set.PhotodiodeSet(
 )
 
 # Configure experiment
-experiment = experiment.Setup(scatterer_set=scatterer, source_set=source, detector_set=detector)
+experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 # Gather data
 data_experiment = experiment.get("coupling", as_numpy=True)
@@ -43,20 +52,20 @@ data_experiment = experiment.get("coupling", as_numpy=True)
 data_experiment /= data_experiment.max()  # Normalize data
 
 # Single scatterer simulation for S1 and S2
-single_source = single.source.Gaussian(
+single_source = Gaussian(
     wavelength=source_wavelength,
     polarization=PolarizationState(angle=90 * ureg.degree),
     optical_power=1 * ureg.watt,
     numerical_aperture=0.2,
 )
 
-single_scatterer = single.scatterer.Sphere(
+single_scatterer = Sphere(
     diameter=scatterer_diameter,
     material=scatterer_index,
     medium=1.0,
 )
 
-single_setup = single.setup.Setup(
+single_setup = Simulation(
     scatterer=single_scatterer,
     source=single_source
 )

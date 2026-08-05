@@ -8,13 +8,15 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.10
 # Importing the dependencies: numpy, matplotlib, PyMieSim
 import numpy
 import matplotlib.pyplot as plt
-from PyMieSim.units import ureg
+from PyMieSim import (
+    Gaussian,
+    InfiniteCylinder,
+    PolarizationState,
+    Simulation,
+    ureg,
+)
 
 from PyMieSim.directories import validation_data_path
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single import Setup
 
 theoretical = numpy.genfromtxt(
     f"{validation_data_path}/bohren_huffman/figure_810.csv", delimiter=","
@@ -38,7 +40,7 @@ scatterer = InfiniteCylinder(
     medium=1.0,
 )
 
-setup = Setup(
+setup = Simulation(
     scatterer=scatterer,
     source=source
 )

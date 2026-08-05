@@ -62,36 +62,27 @@ Below is a short example computing the scattering efficiency of a sphere.
 
 .. code-block:: python
 
-    from PyMieSim.experiment.scatterer_set import SphereSet
-    from PyMieSim.experiment.source_set import GaussianSet
-    from PyMieSim.experiment.polarization_set import PolarizationSet
-    from PyMieSim.experiment import Setup
-    from PyMieSim.units import ureg
-    import numpy as np
+    from PyMieSim import Gaussian, PolarizationState, Simulation, Sphere, ureg
 
-    polarization = PolarizationSet(
-        angles=[0] * ureg.degree
-    )
-
-    source = GaussianSet(
-        wavelength=np.linspace(400, 2000, 500) * ureg.nanometer,
-        polarization=polarization,
+    source = Gaussian(
+        wavelength=750 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
         optical_power=1e-3 * ureg.watt,
-        numerical_aperture=0.2 * ureg.AU,
+        numerical_aperture=0.2,
     )
 
-    scatterer = SphereSet(
-        diameter=[200, 300] * ureg.nanometer,
-        material=[4 + 1j] * ureg.RIU,
-        medium=[1] * ureg.RIU,
+    scatterer = Sphere(
+        diameter=200 * ureg.nanometer,
+        material=4 + 1j,
+        medium=1.0,
     )
 
-    experiment = Setup(
-        scatterer_set=scatterer,
-        source_set=source
-    )
-    df = experiment.get("Qsca", "Qext")
-    df.plot(x="source:wavelength")
+    simulation = Simulation(scatterer=scatterer, source=source)
+    qsca = simulation.run("Qsca")
+    print(qsca)
+
+For wavelength, size, or material sweeps, use the experiment API described in
+the `experiment examples <https://martinpdes.github.io/PyMieSim/examples.html>`_.
 
 
 .. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png

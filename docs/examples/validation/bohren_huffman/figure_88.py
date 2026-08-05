@@ -7,14 +7,16 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
 # Standard library imports
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    InfiniteCylinderSet,
+    GaussianSet,
+    PolarizationSet,
+    Experiment,
+)
 
 # PyMieSim imports
 from PyMieSim.directories import validation_data_path
-from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
-from PyMieSim.experiment.source_set import GaussianSet
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
 
 # Load theoretical data
 theoretical_data = np.genfromtxt(
@@ -49,7 +51,7 @@ scatterer = InfiniteCylinderSet(
 )
 
 # Create experimental setup
-experiment = Setup(scatterer_set=scatterer, source_set=source)
+experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 # Compute PyMieSim scattering cross section data
 csca_data = experiment.get("Csca", as_numpy=True)

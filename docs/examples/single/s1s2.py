@@ -5,12 +5,14 @@ S1 S2 Function Computation
 This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.
 """
 
-from PyMieSim.units import ureg
-from PyMieSim.single.scatterer import InfiniteCylinder
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
-from PyMieSim.material import SellmeierMaterial
-from PyMieSim.single.setup import Setup
+from PyMieSim import (
+    ureg,
+    InfiniteCylinder,
+    Gaussian,
+    PolarizationState,
+    SellmeierMaterial,
+    Simulation,
+)
 
 bk7 = SellmeierMaterial("BK7")
 
@@ -29,7 +31,7 @@ scatterer = InfiniteCylinder(
     material=bk7,
 )
 
-setup = Setup(
+setup = Simulation(
     scatterer=scatterer,
     source=source,
 )

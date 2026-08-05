@@ -3,11 +3,13 @@ Samples Properties
 ==================
 """
 
-from PyMieSim.units import ureg
+from PyMieSim import (
+    ureg,
+    Sphere,
+    Gaussian,
+    PolarizationState,
+)
 
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
-from PyMieSim.polarization import PolarizationState
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 

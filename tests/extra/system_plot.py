@@ -6,6 +6,7 @@ from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
+from PyMieSim import CoherentMode, Simulation
 import matplotlib.pyplot as plt
 
 @patch("matplotlib.pyplot.show")
@@ -50,6 +51,34 @@ def test_plot_system(mock_show):
     detector._add_to_ax(ax)
 
     plt.show()
+    mock_show.assert_called_once()
+
+
+@patch("matplotlib.pyplot.show")
+def test_plot_system_with_coherent_mode(mock_show):
+    """A coherent detector's ModeField binding is available to plot_system."""
+    source = Gaussian(
+        wavelength=1550 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3,
+    )
+    scatterer = InfiniteCylinder(
+        diameter=780 * ureg.nanometer,
+        medium=1.0,
+        material=1.5,
+    )
+    detector = CoherentMode(
+        mode_number="LP02",
+        numerical_aperture=0.1,
+        gamma_offset=0 * ureg.degree,
+        phi_offset=0 * ureg.degree,
+        rotation=0 * ureg.degree,
+        polarization_filter=0 * ureg.degree,
+        medium=1.0,
+    )
+
+    Simulation(scatterer=scatterer, source=source, detector=detector).plot_system()
     mock_show.assert_called_once()
 
 

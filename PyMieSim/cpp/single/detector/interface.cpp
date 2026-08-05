@@ -25,6 +25,11 @@ namespace py = pybind11;
 
 
 PYBIND11_MODULE(detector, module) {
+    // Register ModeField before exposing BaseDetector::mode_field.  Without
+    // loading its pybind11 module first, accessing that property fails when
+    // pybind11 tries to convert the C++ value to Python.
+    py::module_::import("PyMieSim.single.mode_field");
+
     py::object ureg = get_shared_ureg();
 
     auto format_base_detector_repr = [](const std::string& name, const BaseDetector& self) {
