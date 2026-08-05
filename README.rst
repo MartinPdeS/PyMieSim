@@ -171,7 +171,7 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
     :target: https://badge.fury.io/py/PyMieSim
 .. |PyPI_download| image:: https://api.pepy.tech/badge/PyMieSim/month
     :alt: PyPI downloads
-    :target: https://pypistats.org/packages/pymiesim
+    :target: https://pepy.tech/projects/pymiesim
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
     :alt: Unittest coverage
     :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
