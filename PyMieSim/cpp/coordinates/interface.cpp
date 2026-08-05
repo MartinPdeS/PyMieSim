@@ -2,6 +2,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
+#include <sstream>
 #include "coordinates.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
@@ -11,6 +12,18 @@ namespace py = pybind11;
 
 
 namespace {
+
+std::string format_shape(const std::vector<size_t>& shape) {
+    std::ostringstream stream;
+    stream << "(";
+    for (size_t index = 0; index < shape.size(); ++index) {
+        if (index != 0) stream << ", ";
+        stream << shape[index];
+    }
+    if (shape.size() == 1) stream << ",";
+    stream << ")";
+    return stream.str();
+}
 
 py::handle build_owner_handle(const Cartesian& self) {
     return py::cast(&self, py::return_value_policy::reference);
@@ -69,6 +82,12 @@ PYBIND11_MODULE(coordinates, module)
 
 
     pybind11::class_<Cartesian>(module, "Cartesian")
+        .def("__repr__", [](const Cartesian& self) {
+            std::ostringstream stream;
+            stream << "<Cartesian samples=" << self.x.size()
+                   << ", shape=" << format_shape(self.shape) << ">";
+            return stream.str();
+        })
         .def(
             "to_spherical",
             &Cartesian::to_spherical,
@@ -123,6 +142,12 @@ PYBIND11_MODULE(coordinates, module)
 
     // ------------------ Bindings for SphericalCoordinate ------------------
     pybind11::class_<Spherical>(module, "Spherical")
+        .def("__repr__", [](const Spherical& self) {
+            std::ostringstream stream;
+            stream << "<Spherical samples=" << self.r.size()
+                   << ", shape=" << format_shape(self.shape) << ">";
+            return stream.str();
+        })
         .def(
             "to_cartesian",
             &Spherical::to_cartesian,
@@ -179,6 +204,13 @@ PYBIND11_MODULE(coordinates, module)
     ;
 
     pybind11::class_<VectorField>(module, "VectorField")
+        .def("__repr__", [](const VectorField& self) {
+            std::ostringstream stream;
+            stream << "<VectorField sampling=" << self.sampling
+                   << ", shape=" << format_shape(self.shape)
+                   << ", size=" << self.data.size() << ">";
+            return stream.str();
+        })
         .def_property_readonly(
             "data",
             [](const VectorField& self) {

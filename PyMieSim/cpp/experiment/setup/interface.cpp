@@ -1,12 +1,33 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
+#include <sstream>
 
 #include "./setup.cpp"
 #include <utils/numpy_interface.h>
 #include <utils/defines.h>
 
 namespace py = pybind11;
+
+namespace {
+
+std::string format_shape(const std::vector<size_t>& shape) {
+    std::ostringstream stream;
+    stream << "(";
+    for (size_t index = 0; index < shape.size(); ++index) {
+        if (index != 0) stream << ", ";
+        stream << shape[index];
+    }
+    if (shape.size() == 1) stream << ",";
+    stream << ")";
+    return stream.str();
+}
+
+std::string repr_or_none(const py::object& object) {
+    return object.is_none() ? "None" : py::repr(object).cast<std::string>();
+}
+
+}
 
 #define DEFINE_GETTER_INTERFACE(property) \
     .def("get_"  #property, \
@@ -94,6 +115,18 @@ PYBIND11_MODULE(_setup, module) {
         .def_readonly("debug_mode", &Setup::debug_mode)
         .def_readonly("array_shape", &Setup::array_shape)
         .def_readonly("total_iterations", &Setup::total_iterations)
+        .def("__repr__", [](const Setup& self) {
+            std::ostringstream stream;
+            stream << "<Setup"
+                   << " scatterer_set=" << repr_or_none(py::cast(self.scatterer_set))
+                   << ", source_set=" << repr_or_none(py::cast(self.source_set))
+                   << ", detector_set=" << repr_or_none(py::cast(self.detector_set))
+                   << ", array_shape=" << format_shape(self.array_shape)
+                   << ", total_iterations=" << self.total_iterations
+                   << ", debug_mode=" << (self.debug_mode ? "True" : "False")
+                   << ">";
+            return stream.str();
+        })
         .def(
             "get_coupling_sequential",
             [](Setup& self) {

@@ -1,26 +1,33 @@
 |logo|
 
 .. list-table::
-   :widths: 18 42 40
+   :widths: 35 65
    :header-rows: 1
 
-   * - Category
-     - Version / status
-     - Resources
-   * - Project
+   * - Badge
+     - Status
+   * - Python versions
      - |python|
+   * - Documentation
      - |docs|
-       |article|
-   * - Testing
+   * - Scientific article
+     - |article|
+   * - Continuous integration
      - |ci/cd|
-       |coverage|
+   * - Test coverage
+     - |coverage|
+   * - Google Colab
      - |colab|
-   * - Package indexes
+   * - PyPI package
      - |PyPI|
-       |anaconda|
+   * - PyPI downloads
      - |PyPI_download|
-       |anaconda_download|
-       |anaconda_date|
+   * - Anaconda package
+     - |anaconda|
+   * - Anaconda downloads
+     - |anaconda_download|
+   * - Latest Anaconda release
+     - |anaconda_date|
 
 PyMieSim
 ========
@@ -162,7 +169,7 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
 .. |PyPI| image:: https://badge.fury.io/py/PyMieSim.svg
     :alt: PyPI version
     :target: https://badge.fury.io/py/PyMieSim
-.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PyMieSim?style=plastic&label=PyPI%20downloads&labelColor=hex
+.. |PyPI_download| image:: https://api.pepy.tech/badge/PyMieSim/month
     :alt: PyPI downloads
     :target: https://pypistats.org/packages/pymiesim
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg

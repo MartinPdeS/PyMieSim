@@ -71,6 +71,9 @@ PYBIND11_MODULE(material, module) {
     );
 
     py::class_<BaseMaterial, std::shared_ptr<BaseMaterial>>(module, "BaseMaterial")
+        .def("__repr__", [](const BaseMaterial&) {
+            return std::string("<BaseMaterial>");
+        })
         .def(
             "initialize",
             [](BaseMaterial& self, const py::object& wavelength) {
@@ -535,6 +538,9 @@ PYBIND11_MODULE(material, module) {
                 This class defines the interface for materials that have a refractive index, which can be initialized based on a wavelength and retrieved for specific wavelengths. The class provides methods to initialize the medium and to get the refractive index, which must be implemented by derived classes.
             )pbdoc"
         )
+        .def("__repr__", [](const BaseMedium&) {
+            return std::string("<BaseMedium>");
+        })
         .def(
             "initialize",
             [](BaseMedium& self, const py::object& wavelength) {

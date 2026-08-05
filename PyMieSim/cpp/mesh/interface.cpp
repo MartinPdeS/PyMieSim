@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
+#include <sstream>
 #include "fibonacci.h"
 #include "full_mesh.h"
 #include <pint/pint.h>
@@ -73,6 +74,18 @@ PYBIND11_MODULE(mesh, module)
                     Offset for the polar angle (gamma) in radians.
             )pbdoc"
         )
+        .def("__repr__", [](const FibonacciMesh& self) {
+            std::ostringstream stream;
+            stream << "<FibonacciMesh sampling=" << self.sampling
+                   << ", max_angle=" << self.max_angle << " rad"
+                   << ", min_angle=" << self.min_angle << " rad"
+                   << ", phi_offset=" << self.phi_offset << " rad"
+                   << ", gamma_offset=" << self.gamma_offset << " rad"
+                   << ", rotation=" << self.rotation << " rad"
+                   << ", radius=" << self.radius << " m"
+                   << ", solid_angle=" << self.Omega << " sr>";
+            return stream.str();
+        })
         .def_readonly(
             "_cpp_vertical_base",
             &FibonacciMesh::vertical_vector_field,
@@ -256,6 +269,15 @@ PYBIND11_MODULE(mesh, module)
     ;
 
     pybind11::class_<FullSteradian, std::shared_ptr<FullSteradian>>(module, "FullMesh")
+    .def("__repr__", [](const FullSteradian& self) {
+        std::ostringstream stream;
+        stream << "<FullMesh sampling=" << self.sampling
+               << ", radius=" << self.radius << " m"
+               << ", total_size=" << self.total_size
+               << ", dtheta=" << self.dTheta << " rad"
+               << ", dphi=" << self.dPhi << " rad>";
+        return stream.str();
+    })
     .def_readonly(
         "spherical",
         &FullSteradian::spherical,

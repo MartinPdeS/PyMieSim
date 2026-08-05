@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <string>
 #include "mode_field.h"
 #include <utils/numpy_interface.h>
 
@@ -7,6 +8,9 @@ PYBIND11_MODULE(mode_field, module)
 {
     // ------------------ Bindings for ModeField ------------------
     pybind11::class_<ModeField>(module, "MODEFIELD")
+        .def("__repr__", [](const ModeField&) {
+            return std::string("<MODEFIELD>");
+        })
         .def("_cpp_get_unstructured",
             &ModeField::get_unstructured,
             pybind11::arg("x_coords"),
