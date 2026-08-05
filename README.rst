@@ -162,7 +162,7 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
 .. |PyPI| image:: https://badge.fury.io/py/PyMieSim.svg
     :alt: PyPI version
     :target: https://badge.fury.io/py/PyMieSim
-.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PyMieSim
+.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PyMieSim?style=plastic&label=PyPI%20downloads&labelColor=hex
     :alt: PyPI downloads
     :target: https://pypistats.org/packages/pymiesim
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
