@@ -866,7 +866,14 @@ PYBIND11_MODULE(setup, module)
                     py::dict detector_kwargs;
                     detector_kwargs["show_axes"] = py::bool_(show_axes);
 
-                    if (py::hasattr(detector_object, "mode_field")) {
+                    // ``mode_field`` is exposed by BaseDetector, including for
+                    // detectors that do not use a coloured mode-field plot.
+                    // Only CoherentMode accepts the ``show_colorbar`` keyword.
+                    const std::string detector_type = py::str(
+                        detector_object.attr("__class__").attr("__name__")
+                    ).cast<std::string>();
+
+                    if (detector_type == "CoherentMode") {
                         detector_kwargs["show_colorbar"] = py::bool_(show_colorbar);
                         detector_kwargs["show_cone"] = py::bool_(show_detector_cone);
                     }

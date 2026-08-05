@@ -5,7 +5,7 @@ from PyMieSim.units import ureg
 from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
-from PyMieSim.single.detector import Photodiode
+from PyMieSim.single.detector import IntegratingSphere, Photodiode
 from PyMieSim import CoherentMode, Simulation
 import matplotlib.pyplot as plt
 
@@ -79,6 +79,41 @@ def test_plot_system_with_coherent_mode(mock_show):
     )
 
     Simulation(scatterer=scatterer, source=source, detector=detector).plot_system()
+    mock_show.assert_called_once()
+
+
+@patch("matplotlib.pyplot.show")
+@pytest.mark.parametrize("detector", ["photodiode", "integrating_sphere"])
+def test_plot_system_with_non_colored_detector(mock_show, detector):
+    """Detectors without colored mode fields use their own plot signature."""
+    source = Gaussian(
+        wavelength=1550 * ureg.nanometer,
+        polarization=PolarizationState(angle=0 * ureg.degree),
+        optical_power=1 * ureg.watt,
+        numerical_aperture=0.3,
+    )
+    scatterer = InfiniteCylinder(
+        diameter=780 * ureg.nanometer,
+        medium=1.0,
+        material=1.5,
+    )
+
+    if detector == "photodiode":
+        detector_object = Photodiode(
+            numerical_aperture=0.1,
+            gamma_offset=90 * ureg.degree,
+            phi_offset=0 * ureg.degree,
+            polarization_filter=0 * ureg.degree,
+            medium=1.0,
+        )
+    else:
+        detector_object = IntegratingSphere(sampling=100)
+
+    Simulation(
+        scatterer=scatterer,
+        source=source,
+        detector=detector_object,
+    ).plot_system()
     mock_show.assert_called_once()
 
 

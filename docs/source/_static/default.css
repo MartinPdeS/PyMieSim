@@ -1,4 +1,4 @@
-/* Additional styling for the PyData Sphinx theme.
+/* Additional styling for the PyData Sphinx theme. */
 
 /* Use hyperlink color for grid-item-cards.
 TODO find a way to only apply this to grid-item-cards that link somewhere */
@@ -16,4 +16,22 @@ div.highlight a {
 /* Stack components in footer vertically. */
 .bd-footer .footer-items__end, .bd-footer .footer-items__start {
   flex-direction: row;
-} */
+}
+
+/* Keep display equations readable in the theory pages. */
+div.math {
+  margin: 2.25rem 0;
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  text-align: center;
+}
+
+div.math mjx-container[display="true"] {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+div.math mjx-mtr + mjx-mtr mjx-mtd {
+  padding-top: 1.1em;
+}
