@@ -303,7 +303,7 @@ namespace Special_ {
         n1 = n0 + 5;
         f1 = 0.5 * log10(6.28 * n1) - n1 * log10(1.36 * a0 / n1) - mp;
         for (it = 1; it <= 20; it++) {
-            nn = n1 - (n1 - n0) / (1.0 - f0 / f1);
+            nn = static_cast<int>(n1 - (n1 - n0) / (1.0 - f0 / f1));
             f = 0.5 * log10(6.28 * nn) - nn * log10(1.36 * a0 / nn) - mp;
             if (abs(nn - n1) < 1) { break; }
             n0 = n1;
@@ -343,7 +343,7 @@ namespace Special_ {
         n1 = n0 + 5;
         f1 = 0.5 * log10(6.28 * n1) - n1 * log10(1.36 * a0 / n1) - obj;
         for (it = 1; it <= 20; it++) {
-            nn = n1 - (n1 - n0) / (1.0 - f0/f1);
+            nn = static_cast<int>(n1 - (n1 - n0) / (1.0 - f0/f1));
             f = 0.5*log10(6.28 * nn) - nn*log10(1.36 * a0 / nn) - obj;
             if (abs(nn - n1) < 1) { break; }
             n0 = n1;

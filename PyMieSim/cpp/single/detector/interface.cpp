@@ -781,7 +781,7 @@ PYBIND11_MODULE(detector, module) {
         )
         .def(
             "__repr__",
-            [format_base_detector_repr](const Photodiode& self) {
+            [](const Photodiode& self) {
                 std::ostringstream stream;
                 stream << "<Photodiode"
                        << " sampling=" << self.sampling
