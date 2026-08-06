@@ -38,6 +38,6 @@ scatterer = InfiniteCylinderSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Qabs", "Qsca", "Qext")
+result = experiment.get("Qabs", "Qsca", "Qext")
 
-dataframe.plot(x="scatterer:diameter")
+result.plot(x="scatterer:diameter", y="Qabs")

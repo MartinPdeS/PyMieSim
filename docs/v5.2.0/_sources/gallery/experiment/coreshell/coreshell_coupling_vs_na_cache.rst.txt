@@ -75,9 +75,9 @@ Importing the package dependencies: numpy, PyMieSim
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    dataframe = experiment.get("coupling")
+    result = experiment.get("coupling")
 
-    dataframe.plot(x="detector:cache_NA")
+    result.plot(x="detector:cache_NA")
 
 
 
@@ -92,14 +92,14 @@ Importing the package dependencies: numpy, PyMieSim
  .. code-block:: none
 
 
-    <Figure size 1000x600 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f5148023ed0>, <matplotlib.lines.Line2D object at 0x7f5148023510>, <matplotlib.lines.Line2D object at 0x7f5148020c10>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.506 seconds)
+   **Total running time of the script:** (0 minutes 0.560 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py:

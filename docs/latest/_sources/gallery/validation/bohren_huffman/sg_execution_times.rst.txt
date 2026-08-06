@@ -36,7 +36,7 @@ Computation times
      - 00:00.378
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_87.py` (``figure_87.py``)
-     - 00:00.322
+     - 00:00.323
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_810.py` (``figure_810.py``)
      - 00:00.266

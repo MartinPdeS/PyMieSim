@@ -71,7 +71,7 @@ Sphere: Goniometer
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    <Figure size 1000x600 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f5147090a50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f514758eb90>, <matplotlib.lines.Line2D object at 0x7f5147c8cb90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5147c8c9d0>]
 
 
 
@@ -101,7 +101,7 @@ Sphere: Goniometer
     )
 
     source = GaussianSet(
-        wavelength=[1200] * ureg.nanometer,
+        wavelength=[600, 1200] * ureg.nanometer,
         polarization=polarization_set,
         optical_power=[1e-3] * ureg.watt,
         numerical_aperture=[0.2],
@@ -116,20 +116,20 @@ Sphere: Goniometer
         numerical_aperture=[0.1, 0.15, 0.2],
         phi_offset=numpy.linspace(-180, 180, 200) * ureg.degree,
         cache_numerical_aperture=[0.05],
-        gamma_offset=[0] * ureg.degree,
+        gamma_offset=0 * ureg.degree,
         sampling=[400]
     )
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    dataframe = experiment.get("coupling")
+    result = experiment.get("coupling")
 
-    dataframe.plot(x="detector:phi_offset")
+    result.plot(x="detector:phi_offset", y='coupling', std='detector:NA')
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.236 seconds)
+   **Total running time of the script:** (0 minutes 0.337 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py:

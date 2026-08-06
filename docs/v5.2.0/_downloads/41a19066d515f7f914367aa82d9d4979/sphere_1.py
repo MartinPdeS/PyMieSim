@@ -51,7 +51,7 @@ experiment = Experiment(scatterer_set=scatterer, source_set=source)
 comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 
 # Compute PyMieSim scattering efficiency data
-pymiesim = experiment.get(*comparison_measures, as_numpy=True)
+pymiesim = experiment.get(*comparison_measures).as_numpy()
 
 pymiescatt_dataframe = pd.read_csv(
     validation_data_path / "pymiescatt/example_shpere_1.csv"

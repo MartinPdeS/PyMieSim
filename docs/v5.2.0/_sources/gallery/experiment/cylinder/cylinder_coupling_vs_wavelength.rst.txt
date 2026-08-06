@@ -73,7 +73,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    <Figure size 640x480 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f5148036010>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5147c8d690>, <matplotlib.lines.Line2D object at 0x7f5147cb7d10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5147cb7f90>]
 
 
 
@@ -126,14 +126,14 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    dataframe = experiment.get("coupling", scale_unit=True)
+    result = experiment.get("coupling")
 
-    dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+    result.plot(x="source:wavelength", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.832 seconds)
+   **Total running time of the script:** (0 minutes 0.718 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:

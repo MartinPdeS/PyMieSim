@@ -47,7 +47,7 @@ detector = PhotodiodeSet(
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 # Gather data
-data_experiment = experiment.get("coupling", as_numpy=True)
+data_experiment = experiment.get("coupling").as_numpy()
 
 data_experiment /= data_experiment.max()  # Normalize data
 

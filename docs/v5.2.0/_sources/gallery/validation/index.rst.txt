@@ -28,11 +28,34 @@ Contents
 
 .. thumbnail-parent-div-open
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Check the identity Qext = Qsca + Qabs over a wavelength sweep for a lossy sphere. This is an internal consistency validation that is independent of plotting and can be reused as a compact regression example.">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_energy_conservation_thumb.png
+    :alt:
+
+  :doc:`/gallery/validation/energy_conservation`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Energy-conservation validation</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
 
     </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/validation/energy_conservation
 
 Bohren & Huffmann
 ~~~~~~~~~~~~~~~~~

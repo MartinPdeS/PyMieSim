@@ -36,7 +36,7 @@ Sphere: Coupling vs diameter
  .. code-block:: none
 
 
-    <Figure size 1000x600 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f5147d16590>, <matplotlib.lines.Line2D object at 0x7f5147d16010>, <matplotlib.lines.Line2D object at 0x7f514a784110>]
 
 
 
@@ -87,14 +87,14 @@ Sphere: Coupling vs diameter
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    dataframe = experiment.get("coupling", drop_unique_level=True, scale_unit=True)
+    result = experiment.get("coupling", drop_unique_level=True)
 
-    dataframe.plot(x="scatterer:diameter")
+    result.plot(x="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.964 seconds)
+   **Total running time of the script:** (0 minutes 0.996 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:

@@ -35,8 +35,12 @@ Sphere: Qsca vs index
 
  .. code-block:: none
 
+    /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
+      return math.isfinite(val)
+    /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
+      return np.asarray(x, float)
 
-    <Figure size 1000x600 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f514801dfd0>, <matplotlib.lines.Line2D object at 0x7f5147acb590>, <matplotlib.lines.Line2D object at 0x7f5147acb7d0>]
 
 
 
@@ -75,14 +79,14 @@ Sphere: Qsca vs index
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    dataframe = experiment.get("Qsca")
+    result = experiment.get("Qsca")
 
-    dataframe.plot(x="scatterer:material")
+    result.plot(x="scatterer:material")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.172 seconds)
+   **Total running time of the script:** (0 minutes 0.174 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_index.py:

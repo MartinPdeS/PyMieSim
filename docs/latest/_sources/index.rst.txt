@@ -9,7 +9,13 @@
     :hidden:
 
     theory.rst
+    getting_started.rst
     workflows.rst
+    measures.rst
+    performance.rst
+    troubleshooting.rst
+    reproducibility.rst
+    compatibility.rst
     examples.rst
     gallery/validation/index.rst
     code/index.rst

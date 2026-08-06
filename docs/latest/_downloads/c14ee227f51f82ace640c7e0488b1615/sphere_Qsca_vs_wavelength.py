@@ -38,6 +38,6 @@ scatterer = SphereSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Qsca", "Qpr", scale_unit=True)
+result = experiment.get("Qsca", "Qpr")
 
-dataframe.plot(x="source:wavelength")
+result.isel({"measure": 0}).plot(x="source:wavelength", y="Qsca")

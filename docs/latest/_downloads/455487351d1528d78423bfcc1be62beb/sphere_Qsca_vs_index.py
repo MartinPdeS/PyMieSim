@@ -32,6 +32,6 @@ scatterer = SphereSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Qsca")
+result = experiment.get("Qsca")
 
-dataframe.plot(x="scatterer:material")
+result.plot(x="scatterer:material")

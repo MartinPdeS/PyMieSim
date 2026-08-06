@@ -89,9 +89,9 @@ Sphere: Coupling vs numerical aperture
         detector_set=detector
     )
 
-    dataframe = setup.get("coupling", drop_unique_level=True)
+    result = setup.get("coupling", drop_unique_level=True)
 
-    dataframe.plot(x="detector:NA")
+    result.plot(x="detector:NA")
 
     single_source = Gaussian(
         wavelength=950 * ureg.nanometer,
@@ -116,7 +116,7 @@ Sphere: Coupling vs numerical aperture
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.322 seconds)
+   **Total running time of the script:** (0 minutes 0.328 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_coupling_vs_NA.py:

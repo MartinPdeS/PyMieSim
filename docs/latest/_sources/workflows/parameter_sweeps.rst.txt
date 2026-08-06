@@ -32,12 +32,37 @@ evaluated as a parameter grid.
    )
 
    experiment = Experiment(scatterer_set=scatterer, source_set=source)
-   dataframe = experiment.get("Qsca", "Qext")
-   dataframe.plot(x="source:wavelength")
+   result = experiment.get("Qsca", "Qext")
+   result.isel({"measure": 0}).plot(x="source:wavelength", y="Qsca")
 
-The result is a unit-aware PyMieSim DataFrame.  Use ``as_numpy=True`` when a
-raw NumPy array is preferable, or ``get_sequential`` for aligned sequential
-configurations.
+The result is a unit-aware PyMieSim LabeledArray.  Use ``.as_numpy()`` when a
+raw NumPy array is preferable, ``.as_dataframe()`` for tabular interoperability,
+or ``get_sequential`` for aligned sequential configurations.
+
+Extracting NumPy and pandas data
+---------------------------------
+
+The experiment result remains labeled by default. Convert it explicitly when
+using libraries that expect a raw array or a pandas table:
+
+.. code-block:: python
+
+   result = experiment.get("Qsca")
+
+   values = result.as_numpy()
+   print(values.shape)
+
+   dataframe = result.as_dataframe()
+   print(dataframe[["source:wavelength", "scatterer:diameter", "Qsca"]])
+
+For multiple measures, the labeled array contains a ``measure`` dimension and
+``as_dataframe()`` creates one output column per measure:
+
+.. code-block:: python
+
+   result = experiment.get("Qext", "Qsca")
+   dataframe = result.as_dataframe()
+   # Columns: source:wavelength, scatterer:diameter, Qext, Qsca
 
 See the :ref:`experiment gallery <sphx_glr_gallery_experiment>` for larger
 examples.

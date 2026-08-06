@@ -162,6 +162,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started in 10 minutes
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../workflows.html">
     Workflows
   </a>
@@ -169,32 +176,77 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../examples.html">
+  <a class="nav-link nav-internal" href="../measures.html">
+    Measure reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../performance.html">
+    Performance and scaling
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../reproducibility.html">
+    Reproducible studies
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../compatibility.html">
+    Compatibility matrix
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../examples.html">
     Coding examples
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../gallery/validation/index.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../gallery/validation/index.html">
     Validation Examples
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="index.html">
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="index.html">
     API Reference
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../references.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../references.html">
     References
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -329,8 +381,50 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started in 10 minutes
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../workflows.html">
     Workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../measures.html">
+    Measure reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../performance.html">
+    Performance and scaling
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reproducibility.html">
+    Reproducible studies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../compatibility.html">
+    Compatibility matrix
   </a>
 </li>
 
@@ -450,6 +544,7 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="list-caption"><li class="toctree-l0 has-children"><details open><summary><p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="public_api.html">Stable Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="single.html">Single module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="experiment.html">Experiment module</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Materials</a></li>
@@ -772,6 +867,27 @@
 <p>This function retrieves and prints the list of available materials from the PyOptik library. It sets the appropriate flags to indicate that both tabulated and Sellmeier materials should be included in the output.</p>
 </dd></dl>
 
+<section id="practical-material-helpers">
+<h2>Practical material helpers<a class="headerlink" href="#practical-material-helpers" title="Link to this heading">#</a></h2>
+<p>PyMieSim also exposes a curated, wavelength-aware registry through
+<code class="docutils literal notranslate"><span class="pre">PyMieSim.materials</span></code>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">available_materials</span><span class="p">,</span> <span class="n">load_material</span><span class="p">,</span> <span class="n">load_tabulated</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">available_materials</span><span class="p">(</span><span class="s2">&quot;sellmeier&quot;</span><span class="p">))</span>
+<span class="n">glass</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">&quot;BK7&quot;</span><span class="p">)</span>
+<span class="n">silver</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">&quot;silver&quot;</span><span class="p">,</span> <span class="n">extrapolation</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Tabulated data can be loaded from CSV or JSON. CSV files should contain
+<code class="docutils literal notranslate"><span class="pre">wavelength,n,k</span></code> columns; suffixes such as <code class="docutils literal notranslate"><span class="pre">wavelength_nm</span></code> and
+<code class="docutils literal notranslate"><span class="pre">wavelength_um</span></code> select the wavelength unit automatically. JSON accepts
+either sample records or array fields. The default extrapolation policy is
+<code class="docutils literal notranslate"><span class="pre">&quot;error&quot;</span></code> and the supported interpolation policy is explicit linear
+interpolation.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">validate_material</span></code> or <code class="docutils literal notranslate"><span class="pre">validate_refractive_indices</span></code> to check finite,
+positive, passive data. PyMieSim uses the convention <code class="docutils literal notranslate"><span class="pre">imag(n)</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code> for
+passive materials.</p>
+</section>
 </section>
 
 
@@ -842,6 +958,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.material.print_available"><code class="docutils literal notranslate"><span class="pre">print_available()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-material-helpers">Practical material helpers</a></li>
 </ul>
   </nav></div>
 

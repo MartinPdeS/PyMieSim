@@ -45,9 +45,9 @@ setup = Experiment(
     detector_set=detector
 )
 
-dataframe = setup.get("coupling", drop_unique_level=True)
+result = setup.get("coupling", drop_unique_level=True)
 
-dataframe.plot(x="detector:NA")
+result.plot(x="detector:NA")
 
 single_source = Gaussian(
     wavelength=950 * ureg.nanometer,

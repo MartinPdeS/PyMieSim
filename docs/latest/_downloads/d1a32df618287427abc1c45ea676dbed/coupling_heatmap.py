@@ -50,7 +50,7 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-values = experiment.get("coupling", add_units=False, as_numpy=True)
+values = experiment.get("coupling").as_numpy()
 
 
 figure, ax = plt.subplots(1, 1)

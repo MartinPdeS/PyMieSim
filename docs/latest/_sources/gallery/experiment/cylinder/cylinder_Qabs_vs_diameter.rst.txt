@@ -73,7 +73,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    <Figure size 1000x600 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f51477f2dd0>, <matplotlib.lines.Line2D object at 0x7f51477f1d10>, <matplotlib.lines.Line2D object at 0x7f514a4e63d0>]
 
 
 
@@ -117,14 +117,14 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    dataframe = experiment.get("Qabs", "Qsca", "Qext")
+    result = experiment.get("Qabs", "Qsca", "Qext")
 
-    dataframe.plot(x="scatterer:diameter")
+    result.plot(x="scatterer:diameter", y="Qabs")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.403 seconds)
+   **Total running time of the script:** (0 minutes 0.402 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:

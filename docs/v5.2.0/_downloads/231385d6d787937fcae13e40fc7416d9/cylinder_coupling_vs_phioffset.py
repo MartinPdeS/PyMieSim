@@ -46,6 +46,6 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-dataframe = experiment.get("coupling", scale_unit=True)
+result = experiment.get("coupling")
 
-dataframe.plot(x="detector:phi_offset")
+result.plot(x="detector:phi_offset")

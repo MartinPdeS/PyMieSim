@@ -44,7 +44,7 @@ scatterer = SphereSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-data = experiment.get("Qsca", as_numpy=True)
+data = experiment.get("Qsca").as_numpy()
 
 figure, ax = plt.subplots(1, 1)
 ax.set(

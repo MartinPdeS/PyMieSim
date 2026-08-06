@@ -48,6 +48,6 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-dataframe = experiment.get("coupling")
+result = experiment.get("coupling")
 
-dataframe.plot(x="scatterer:core_diameter")
+result.plot(x="scatterer:core_diameter")

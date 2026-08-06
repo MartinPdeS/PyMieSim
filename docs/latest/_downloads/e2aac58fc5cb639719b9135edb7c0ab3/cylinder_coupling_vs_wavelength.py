@@ -47,6 +47,6 @@ detector = CoherentModeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-dataframe = experiment.get("coupling", scale_unit=True)
+result = experiment.get("coupling")
 
-dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+result.plot(x="source:wavelength", std="scatterer:diameter")

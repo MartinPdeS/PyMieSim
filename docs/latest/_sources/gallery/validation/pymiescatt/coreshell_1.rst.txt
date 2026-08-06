@@ -86,7 +86,7 @@ Core-Shell Particles: 1
     comparison_measures = ["Qsca", "Qext", "Qabs", "g", "Qpr", "Qback"]
 
     # Simulate using PyMieSim
-    pymiesim = experiment.get(*comparison_measures, as_numpy=True)
+    pymiesim = experiment.get(*comparison_measures).as_numpy()
 
     pymiescatt_dataframe = pd.read_csv(
         validation_data_path / "pymiescatt/example_coreshell_1.csv"

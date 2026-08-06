@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
  .. code-block:: none
 
 
-    <Figure size 1000x600 with 1 Axes>
+    [<matplotlib.lines.Line2D object at 0x7f5147c785d0>, <matplotlib.lines.Line2D object at 0x7f5147c7a150>]
 
 
 
@@ -87,14 +87,14 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    dataframe = experiment.get("coupling")
+    result = experiment.get("coupling")
 
-    dataframe.plot(x="scatterer:diameter")
+    result.plot(x="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.289 seconds)
+   **Total running time of the script:** (0 minutes 0.334 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_diameter.py:

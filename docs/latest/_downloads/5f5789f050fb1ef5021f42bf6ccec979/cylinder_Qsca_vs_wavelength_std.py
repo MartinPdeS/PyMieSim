@@ -31,6 +31,6 @@ scatterer = InfiniteCylinderSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Qsca")
+result = experiment.get("Qsca")
 
-dataframe.plot(x="source:wavelength", std="scatterer:diameter")
+result.plot(x="source:wavelength", std="scatterer:diameter")
