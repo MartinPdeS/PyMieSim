@@ -61,6 +61,16 @@ class Simulation:
 
         return self._setup.get_farfields(*args, **options)
 
+    def get_s1s2(self, angles: Any):
+        """Compute the complex angular scattering amplitudes ``S1`` and ``S2``."""
+
+        return self._setup.get_s1s2(angles=angles)
+
+    def get_stokes(self, *args: Any, **options: Any):
+        """Compute the Stokes parameters at selected angles and distance."""
+
+        return self._setup.get_stokes(*args, **options)
+
     def plot_system(
         self,
         show_axes: bool = False,
