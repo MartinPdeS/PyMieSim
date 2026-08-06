@@ -44,7 +44,7 @@ experiment = Experiment(
     source_set=source,
 )
 
-values = experiment.get("Csca", as_numpy=True)
+values = experiment.get("Csca").as_numpy()
 
 data = values / volume * 1e-4 / 100
 

@@ -29,7 +29,7 @@ def run_sweep(number_of_diameters: int) -> tuple[float, int]:
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     start = time.perf_counter()
-    values = experiment.get("Qsca", as_numpy=True)
+    values = experiment.get("Qsca").as_numpy()
     elapsed = time.perf_counter() - start
     return elapsed, int(np.asarray(values).size)
 

@@ -31,9 +31,7 @@ def peak_memory(number_of_diameters: int) -> float:
         material=[1.5],
         medium=[1.0],
     )
-    Experiment(scatterer_set=scatterer, source_set=source).get(
-        "Qsca", as_numpy=True
-    )
+    Experiment(scatterer_set=scatterer, source_set=source).get("Qsca").as_numpy()
 
     _, peak_bytes = tracemalloc.get_traced_memory()
     tracemalloc.stop()

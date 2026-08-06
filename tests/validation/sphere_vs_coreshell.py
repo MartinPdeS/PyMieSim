@@ -36,8 +36,8 @@ def test_no_shell(metric):
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
     experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
-    data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
+    data_sphere = experiment_sphere.get(metric).as_numpy().squeeze()
+    data_coreshell = experiment_core_shell.get(metric).as_numpy().squeeze()
 
     assert numpy.allclose(
         data_sphere, data_coreshell
@@ -73,8 +73,8 @@ def test_shell_equal_core(metric):
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
     experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
-    data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
+    data_sphere = experiment_sphere.get(metric).as_numpy().squeeze()
+    data_coreshell = experiment_core_shell.get(metric).as_numpy().squeeze()
 
 
     assert numpy.allclose(
@@ -112,8 +112,8 @@ def test_only_shell(metric):
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
     experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric, as_numpy=True).squeeze()
-    data_coreshell = experiment_core_shell.get(metric, as_numpy=True).squeeze()
+    data_sphere = experiment_sphere.get(metric).as_numpy().squeeze()
+    data_coreshell = experiment_core_shell.get(metric).as_numpy().squeeze()
 
 
     assert numpy.allclose(
@@ -150,9 +150,9 @@ def test_shell_is_medium(metric):
     experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
     experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric, as_numpy=True)
+    data_sphere = experiment_sphere.get(metric).as_numpy()
     data_coreshell = (
-        experiment_core_shell.get(metric, as_numpy=True)
+        experiment_core_shell.get(metric).as_numpy()
     )
 
     assert numpy.allclose(

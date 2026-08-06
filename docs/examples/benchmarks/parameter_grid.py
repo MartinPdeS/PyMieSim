@@ -29,7 +29,7 @@ def run_grid(size: int) -> tuple[float, int]:
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     start = time.perf_counter()
-    result = experiment.get("Qsca", as_numpy=True)
+    result = experiment.get("Qsca").as_numpy()
     return time.perf_counter() - start, int(np.asarray(result).size)
 
 

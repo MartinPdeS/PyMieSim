@@ -115,6 +115,7 @@ add_subdirectory(PyMieSim/cpp/bessel_subroutine)
 add_subdirectory(PyMieSim/cpp/material)
 add_subdirectory(PyMieSim/cpp/polarization)
 add_subdirectory(PyMieSim/cpp/mesh)
+add_subdirectory(PyMieSim/cpp/labeled_array)
 
 add_subdirectory(PyMieSim/cpp/single/mode_field)
 add_subdirectory(PyMieSim/cpp/single/setup)

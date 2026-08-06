@@ -50,12 +50,12 @@ def get_pymiescatt_sphere_dataframe(
     )
 
     # Define the DataFrame structure
-    dataframe = pd.DataFrame(
+    result = pd.DataFrame(
         columns=["Qext", "Qsca", "Qabs", "g", "Qpr", "Qback", "Qratio"], index=indices
     )
 
     # Calculate Mie scattering properties for each combination
-    dataframe[:] = [
+    result[:] = [
         pms.MieQ(
             m=_index, wavelength=wavelength, diameter=diameter, nMedium=medium_index
         )
@@ -65,17 +65,17 @@ def get_pymiescatt_sphere_dataframe(
     ]
 
     # Assign the results to the DataFrame
-    for name, col in dataframe.items():
-        dataframe[name] = col.values
+    for name, col in result.items():
+        result[name] = col.values
 
     # Save the DataFrame if a save_name is provided
     if save_name:
         save_path = validation_data_path / "pymiescatt" / f"{save_name}.csv"
-        dataframe.to_csv(save_path)
+        result.to_csv(save_path)
 
         print(f"Saving data: {save_path}")
 
-    return dataframe
+    return result
 
 
 def get_pymiescatt_coreshell_dataframe(
@@ -137,12 +137,12 @@ def get_pymiescatt_coreshell_dataframe(
     )
 
     # Define the DataFrame structure
-    dataframe = pd.DataFrame(
+    result = pd.DataFrame(
         columns=["Qext", "Qsca", "Qabs", "g", "Qpr", "Qback", "Qratio"], index=indices
     )
 
     # Calculate Mie scattering properties for each combination
-    dataframe[:] = [
+    result[:] = [
         pms.MieQCoreShell(
             mCore=core_index,
             mShell=shell_index,
@@ -161,17 +161,17 @@ def get_pymiescatt_coreshell_dataframe(
         )
     ]
 
-    for name, col in dataframe.items():
-        dataframe[name] = col.values
+    for name, col in result.items():
+        result[name] = col.values
 
     # Save the DataFrame if a save_name is provided
     if save_name:
         save_path = validation_data_path / "pymiescatt" / f"{save_name}.csv"
-        dataframe.to_csv(save_path)
+        result.to_csv(save_path)
 
         print(f"Saving data: {save_path}")
 
-    return dataframe
+    return result
 
 
 # Define sphere parameters

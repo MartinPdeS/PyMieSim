@@ -43,6 +43,7 @@ from .materials import (
     validate_wavelength,
 )
 from .mesh import FibonacciMesh, FullMesh
+from .labeled_array import LabeledArray
 from .polarization import LeftCircular, PolarizationState, RightCircular
 from .single import Setup
 from .single.detector import CoherentMode, IntegratingSphere, Photodiode
@@ -72,6 +73,7 @@ __all__ = [
     "InfiniteCylinder",
     "IntegratingSphere",
     "LeftCircular",
+    "LabeledArray",
     "MaterialSet",
     "MaterialInfo",
     "Measure",

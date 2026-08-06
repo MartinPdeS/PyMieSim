@@ -45,16 +45,16 @@ scatterer = CoreShellSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Csca")
+result = experiment.get("Csca")
 
-figure = dataframe.plot(x="scatterer:shell_thickness")
+figure = result.plot(x="scatterer:shell_thickness")
 
 
 # %%
 # As it is supposed the scattering Cross-section should not be affected by
 # the shell thickness as it's refractive index is same as the surrounding medium.
-dataframe = experiment.get("Qsca")
+result = experiment.get("Qsca")
 
-figure = dataframe.plot(x="scatterer:shell_thickness")
+figure = result.plot(x="scatterer:shell_thickness")
 
 # Similarly the scattering decrease as the scatterer becomes technically larger but the effects of the shell is for no account.

@@ -92,8 +92,8 @@ unit-aware ``PyMieSimDataFrame``.
        scatterer_set=sweep_sphere,
        source_set=sweep_source,
    )
-   dataframe = experiment.get(Measure.QSCA)
-   dataframe.plot_standard(x="scatterer:diameter", y="Qsca")
+   result = experiment.get(Measure.QSCA)
+   result.plot(x="scatterer:diameter", y="Qsca")
 
 Detector coupling
 -----------------

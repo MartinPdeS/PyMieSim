@@ -45,6 +45,6 @@ scatterer = CoreShellSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Qback")
+result = experiment.get("Qback")
 
-dataframe.plot(x="scatterer:core_diameter")
+result.plot(x="scatterer:core_diameter")

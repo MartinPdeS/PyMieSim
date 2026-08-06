@@ -24,7 +24,7 @@ Typed result containers are opt-in::
 For multiple single-particle measures, ``as_result=True`` returns a mapping of
 measure names to ``SimulationResult`` objects. For experiments it returns an
 ``ExperimentResult`` whose original DataFrame is available as
-``result.dataframe`` or through ``result.to_pandas()``.
+``result.result`` or through ``result.to_pandas()``.
 
 Advanced and legacy access
 ---------------------------

@@ -38,6 +38,6 @@ scatterer = SphereSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-dataframe = experiment.get("Qsca")
+result = experiment.get("Qsca")
 
-dataframe.plot(x="scatterer:diameter", yscale="log")
+result.plot(x="scatterer:diameter")

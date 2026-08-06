@@ -65,7 +65,7 @@ Unexpected memory use or slow sweeps
 ------------------------------------
 
 Print ``array_shape`` and ``total_iterations`` before running an experiment.
-Reduce the grid, request fewer measures, use ``as_numpy=True``, or process the
+Reduce the grid, request fewer measures, use ``.as_numpy()``, or process the
 study in chunks. Near-field and far-field sampling can add substantial arrays;
 start with a coarse sampling value.
 

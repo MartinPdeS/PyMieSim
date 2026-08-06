@@ -88,9 +88,9 @@ def test_get_measure(source, measure, material, medium):
     )
 
 
-    experiment.get(measure, drop_unique_level=True, scale_unit=True)
+    experiment.get(measure, drop_unique_level=True)
 
-    experiment.get(measure, as_numpy=True)
+    experiment.get(measure).as_numpy()
 
 
 if __name__ == "__main__":

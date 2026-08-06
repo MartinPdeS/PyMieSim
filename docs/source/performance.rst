@@ -8,7 +8,7 @@ Choose the API based on the shape of the problem:
 * Use ``Simulation`` for one or a few configurations and for interactive
   exploration.
 * Use ``Experiment`` for Cartesian parameter grids and repeated measurements.
-* Use ``get(..., as_numpy=True)`` when plotting and unit metadata are not
+* Use ``get(...).as_numpy()`` when plotting and unit metadata are not
   needed; this avoids DataFrame construction.
 
 Grid size and memory
@@ -43,9 +43,9 @@ pattern. Sphinx-Gallery also exports them as notebooks.
 Output choices
 --------------
 
-``as_numpy=True`` is usually fastest for numeric post-processing. DataFrame
-output is preferable when you need parameter labels, units, grouping, or the
-plotting helpers. Request only the measures needed for the study, especially
+``.as_numpy()`` is usually fastest for numeric post-processing. DataFrame
+output is available through ``.as_dataframe()`` when you need tabular
+interoperability. Request only the measures needed for the study, especially
 for large grids.
 
 Far fields and near fields

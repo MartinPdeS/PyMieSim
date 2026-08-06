@@ -52,7 +52,7 @@ def test_sequential_vs_standard_no_detector():
         source_set=source_standard
     )
 
-    data_standard = setup_standard.get("Qsca", as_numpy=True).squeeze()
+    data_standard = setup_standard.get("Qsca").as_numpy().squeeze()
 
     assert setup_standard is not None, "Error while running the standard get function."
 
@@ -162,7 +162,7 @@ def test_sequential_vs_standard_detector():
         detector_set=detector_standard
     )
 
-    data_standard = setup_standard.get("coupling", as_numpy=True).squeeze()
+    data_standard = setup_standard.get("coupling").as_numpy().squeeze()
 
     assert data_standard is not None, "Error while running the standard get function."
 

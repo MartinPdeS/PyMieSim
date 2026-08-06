@@ -14,8 +14,8 @@ from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.material_set import MaterialSet
 from PyMieSim.material import ConstantMaterial, ConstantMedium
+from PyMieSim.labeled_array import LabeledArray
 from PyMieSim.measures import Measure, MeasureLike, normalize_measure, normalize_measures
-from PyMieSim.results import ExperimentResult
 
 
 
@@ -27,14 +27,10 @@ class Setup(SETUP):
     scatterer and detector sets and exposes a simple interface
     for computing simulation measures.
 
-    The class supports two execution modes:
-
-    1. Sequential execution returning raw arrays.
-    2. Structured execution returning a pandas DataFrame where
-       simulation parameters define the parameter grid.
-
-    Units are stored in ``DataFrame.attrs["units"]`` and the
-    DataFrame itself only contains pure numerical values.
+    Structured experiment results are returned as the native C++
+    :class:`~PyMieSim.labeled_array.LabeledArray`, preserving parameter
+    dimensions, coordinates, and units. Convert explicitly with
+    ``result.as_numpy()`` or ``result.as_dataframe()`` when needed.
     """
 
     # ------------------------------------------------------------------
@@ -77,10 +73,6 @@ class Setup(SETUP):
         self,
         *measures: MeasureLike,
         drop_unique_level: bool = True,
-        add_units: bool = True,
-        as_numpy: bool = False,
-        scale_unit: bool = True,
-        as_result: bool = False,
     ):
         """
         Run the simulation and compute the requested measures.
@@ -91,34 +83,66 @@ class Setup(SETUP):
             Names of the measures to compute.
         drop_unique_level
             Remove parameters that only contain a single value.
-        add_units
-            Store units inside ``DataFrame.attrs["units"]``.
-        as_numpy
-            Return raw NumPy arrays instead of a DataFrame.
-        scale_unit
-            Automatically convert results to compact units.
-
         Returns
         -------
-        pandas.DataFrame or numpy.ndarray
+        LabeledArray
+            Native labeled simulation data with parameter coordinates and units.
         """
 
         measures = self._normalize_measures(measures)
 
-        if as_numpy:
-            if as_result:
-                raise ValueError("as_result=True requires DataFrame output; omit as_numpy.")
-            result = self._compute_measure_arrays(measures)
-            return result
+        return self._build_labeled_array(measures, drop_unique_level)
 
-        dataframe = self._build_dataframe(measures, drop_unique_level)
+    def _build_labeled_array(self, measures: List[str], drop_unique_level: bool) -> LabeledArray:
+        """Build a native labeled array while preserving the experiment grid."""
+        mappings = self._collect_parameter_mappings()
+        values, coordinate_units = self._separate_units_and_values(mappings)
+        parameter_names = list(values)
+        parameter_axes = [np.asarray(values[name]) for name in parameter_names]
 
-        self._populate_measure_columns(dataframe, measures, add_units)
+        if len(parameter_axes) != len(self.array_shape):
+            raise ValueError(
+                f"Mismatch between number of parameter axes ({len(parameter_axes)}) "
+                f"and setup shape dimensions ({len(self.array_shape)})."
+            )
 
-        if scale_unit:
-            dataframe = dataframe.to_compact()
+        for name, coordinate, size in zip(parameter_names, parameter_axes, self.array_shape):
+            if coordinate.size != size:
+                raise ValueError(
+                    f"Parameter '{name}' has length {coordinate.size} "
+                    f"but corresponding setup axis has size {size}."
+                )
 
-        return ExperimentResult(dataframe, tuple(measures)) if as_result else dataframe
+        arrays = [np.asarray(getattr(self, f"get_{measure}")()) for measure in measures]
+        data = arrays[0] if len(arrays) == 1 else np.stack(arrays, axis=0)
+
+        dims = list(parameter_names)
+        coords = {
+            name: coordinate
+            for name, coordinate in zip(parameter_names, parameter_axes)
+        }
+        attrs = {
+            "units": {measure: self._determine_unit(measure) for measure in measures},
+            "coordinate_units": coordinate_units,
+            "measures": tuple(measures),
+        }
+
+        if len(measures) > 1:
+            dims.insert(0, "measure")
+            coords["measure"] = np.asarray(measures, dtype=object)
+
+        if drop_unique_level:
+            axes_to_drop = [
+                axis for axis, coordinate in enumerate(parameter_axes)
+                if coordinate.size == 1
+            ]
+            for axis in reversed(axes_to_drop):
+                data = np.take(data, 0, axis=axis + (1 if len(measures) > 1 else 0))
+                dims.pop(axis + (1 if len(measures) > 1 else 0))
+                coords.pop(parameter_names[axis])
+
+        name = measures[0] if len(measures) == 1 else None
+        return LabeledArray(data, dims, coords, attrs, name)
 
     # ------------------------------------------------------------------
     # Measure computation

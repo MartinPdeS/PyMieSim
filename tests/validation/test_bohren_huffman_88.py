@@ -43,7 +43,7 @@ def test_validation():
 
     experiment = Setup(scatterer_set=scatterer, source_set=source)
 
-    csca_data =  experiment.get("Csca", as_numpy=True)
+    csca_data =  experiment.get("Csca").as_numpy()
 
     normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100
 
