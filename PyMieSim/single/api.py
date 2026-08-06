@@ -51,6 +51,24 @@ class Simulation:
 
         return self.run(*measures, **options)
 
+    def plot_system(
+        self,
+        show_axes: bool = False,
+        show_colorbar: bool = True,
+        show_detector_cone: bool = False,
+        show_unit_sphere: bool = True,
+        figure_size: float = 7.0,
+    ):
+        """Plot the configured source, scatterer, and detector system."""
+
+        return self._setup.plot_system(
+            show_axes=show_axes,
+            show_colorbar=show_colorbar,
+            show_detector_cone=show_detector_cone,
+            show_unit_sphere=show_unit_sphere,
+            figure_size=figure_size,
+        )
+
     def __repr__(self) -> str:
         return f"<Simulation setup={self._setup!r}>"
 

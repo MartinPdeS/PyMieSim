@@ -73,7 +73,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     pymiesim_data = experiment.get(measure, drop_unique_level=True)
 
     discrepency = np.allclose(
-        pymiesim_data.get(measure).magnitude,
+        pymiesim_data.as_numpy(),
         pymiescatt_dataframe[measure].squeeze().values,
         atol=1e-6,
         rtol=1e-2,
