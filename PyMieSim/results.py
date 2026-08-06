@@ -1,7 +1,5 @@
 """Typed, opt-in result containers for the stable Python API."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Any, Iterator, Mapping
 
@@ -64,29 +62,4 @@ class SimulationResults(Mapping[str, SimulationResult]):
         return f"SimulationResults({self._results!r})"
 
 
-@dataclass(frozen=True)
-class ExperimentResult:
-    """Typed wrapper around a parameter-sweep DataFrame.
-
-    The original DataFrame remains available through ``dataframe`` and is
-    returned unchanged by the default experiment API.
-    """
-
-    dataframe: Any
-    measure_names: tuple[str, ...] = ()
-
-    @property
-    def units(self) -> Mapping[str, Any]:
-        return getattr(self.dataframe, "attrs", {}).get("units", {})
-
-    @property
-    def parameters(self) -> tuple[str, ...]:
-        return tuple(column for column in self.dataframe.columns if column not in self.measure_names)
-
-    def to_pandas(self) -> Any:
-        """Return the underlying PyMieSim DataFrame."""
-
-        return self.dataframe
-
-
-__all__ = ["ExperimentResult", "SimulationResult", "SimulationResults"]
+__all__ = ["SimulationResult", "SimulationResults"]

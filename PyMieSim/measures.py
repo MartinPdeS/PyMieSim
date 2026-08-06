@@ -1,7 +1,5 @@
 """Discoverable measure names and metadata for the public API."""
 
-from __future__ import annotations
-
 from enum import Enum
 from typing import Final, Iterable, Literal
 

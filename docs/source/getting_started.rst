@@ -63,8 +63,8 @@ Parameter sweep
 --------------
 
 Use ``Experiment`` when several parameter dimensions must be evaluated. Scalar
-parameters are broadcast over the grid, and the default result is a
-unit-aware ``PyMieSimDataFrame``.
+parameters are broadcast over the grid, and the default result is a native
+``LabeledArray`` with named dimensions, coordinates, and units.
 
 .. code-block:: python
 

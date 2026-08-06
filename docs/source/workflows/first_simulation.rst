@@ -36,8 +36,4 @@ properties.
    result = simulation.run("Qsca", "Qext")
    print(result)
 
-Use :attr:`simulation.setup <PyMieSim.Simulation.setup>` when an advanced
-operation is not yet exposed by the facade.  Existing ``Setup`` code remains
-compatible.
-
 Next: :ref:`workflow_parameter_sweeps`.

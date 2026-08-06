@@ -7,8 +7,6 @@ lossy sphere. This is an internal consistency validation that is independent
 of plotting and can be reused as a compact regression example.
 """
 
-from __future__ import annotations
-
 import matplotlib.pyplot as plt
 import numpy as np
 

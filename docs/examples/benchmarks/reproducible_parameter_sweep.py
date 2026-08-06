@@ -7,8 +7,6 @@ The script is deterministic; runtime values are machine-dependent and should
 be compared only under the same environment.
 """
 
-from __future__ import annotations
-
 import platform
 import statistics
 import time

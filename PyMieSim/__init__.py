@@ -8,13 +8,13 @@ import PyMieSim.units as _
 import PyMieSim.material as _
 import PyMieSim.polarization as _
 
-from .api import Simulation
+from .single.api import Simulation
 from .measures import (
     Cabs, Cback, Cext, Cforward, Cpr, Cratio, Csca,
     Measure, MeasureLike, MeasureName, Qabs, Qback, Qext, Qforward, Qpr, Qratio, Qsca,
     coupling, cross_section, g, g_with_farfields, size_parameter,
 )
-from .results import ExperimentResult, SimulationResult, SimulationResults
+from .results import SimulationResult, SimulationResults
 from .coordinates import Cartesian, Spherical, VectorField
 from .experiment.detector_set import CoherentModeSet, PhotodiodeSet
 from .experiment.material_set import MaterialSet, MediumSet
@@ -101,7 +101,6 @@ __all__ = [
     "SphereSet",
     "SimulationResult",
     "SimulationResults",
-    "ExperimentResult",
     "Spherical",
     "TabulatedMaterial",
     "TabulatedMedium",

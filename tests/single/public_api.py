@@ -17,8 +17,6 @@ def test_public_api_builds_a_simulation():
         ),
     )
 
-    assert simulation.setup is not None
-    assert simulation.advanced is simulation.setup
     assert Qsca == Measure.QSCA.value
     assert "Qsca" in simulation.available_measures
     assert "Simulation" in repr(simulation)

@@ -46,5 +46,4 @@ experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set
 
 result = experiment.get("coupling")
 
-
 result.plot(x="detector:phi_offset", y='coupling', std='detector:NA')

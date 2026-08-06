@@ -22,15 +22,6 @@ Typed result containers are opt-in::
     print(result.measure, result.quantity, result.units)
 
 For multiple single-particle measures, ``as_result=True`` returns a mapping of
-measure names to ``SimulationResult`` objects. For experiments it returns an
-``ExperimentResult`` whose original DataFrame is available as
-``result.result`` or through ``result.to_pandas()``.
-
-Advanced and legacy access
----------------------------
-
-The ``Simulation`` facade is the recommended stable entry point. The compiled
-backend remains available through ``simulation.advanced`` (and the historical
-``simulation.setup`` alias) for specialized methods and migration of existing
-applications. Backend methods reached through attribute forwarding are not
-part of the stable API contract.
+measure names to ``SimulationResult`` objects. Experiment sweeps always return
+``LabeledArray``; use ``result.as_numpy()`` or ``result.as_dataframe()`` for
+explicit conversion.

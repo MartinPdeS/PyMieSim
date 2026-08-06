@@ -62,6 +62,7 @@ def test_labeled_array_converts_to_numpy_and_dataframe():
     np.testing.assert_allclose(result.as_numpy(), result.to_numpy())
     dataframe = result.as_dataframe()
 
+    assert type(dataframe).__name__ == "DataFrame"
     assert list(dataframe.columns) == [
         "source:wavelength",
         "scatterer:diameter",
@@ -77,6 +78,7 @@ def test_labeled_array_converts_multiple_measures_to_tabular_columns():
     dataframe = result.as_dataframe()
 
     assert values.shape == (2, 2, 2)
+    assert type(dataframe).__name__ == "DataFrame"
     assert list(dataframe.columns) == [
         "source:wavelength",
         "scatterer:diameter",
@@ -97,6 +99,16 @@ def test_get_labeled_array_preserves_grid_coordinates():
     np.testing.assert_allclose(result.to_numpy(), experiment.get("Qsca").as_numpy())
     np.testing.assert_allclose(result.coords["source:wavelength"], [600e-9, 700e-9])
     assert result.attrs["coordinate_units"]["source:wavelength"] == ureg.meter
+
+
+def test_labeled_array_repr_is_informative():
+    result = _setup().get("Qsca")
+
+    representation = repr(result)
+
+    assert representation.startswith("LabeledArray(")
+    assert "shape=(2, 2)" in representation
+    assert "source:wavelength" in representation
 
 
 def test_get_labeled_array_stacks_measures_on_a_named_dimension():

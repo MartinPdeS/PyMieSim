@@ -5,8 +5,6 @@ the bundled PyOptik material bank for built-in data and provides a small,
 dependency-light file format for user-supplied tabulated indices.
 """
 
-from __future__ import annotations
-
 import csv
 import json
 from dataclasses import dataclass

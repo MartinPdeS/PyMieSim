@@ -1,20 +1,16 @@
-"""Stable, Python-facing entry points for common PyMieSim workflows."""
+"""Python-facing API for single-scatterer simulations."""
 
-from __future__ import annotations
+from typing import Any
 
-from typing import Any, overload
-
-from .measures import Measure, MeasureLike, normalize_measures
-from .results import SimulationResult, SimulationResults
-from .single import Setup
+from ..measures import MeasureLike, normalize_measures
+from ..results import SimulationResult, SimulationResults
+from .setup import Setup
 
 
 class Simulation:
     """Run a single-scatterer PyMieSim simulation.
 
-    This facade keeps users independent from generated C++ extension modules.
-    The underlying setup remains available through :attr:`setup` for advanced
-    workflows.
+    The underlying setup is kept private so the public API remains small.
     """
 
     def __init__(self, scatterer: Any, source: Any, detector: Any = None, debug_mode: bool = False):
@@ -26,18 +22,6 @@ class Simulation:
         )
 
     @property
-    def setup(self) -> Setup:
-        """Return the legacy backend setup for advanced operations."""
-
-        return self._setup
-
-    @property
-    def advanced(self) -> Setup:
-        """Explicit alias for the advanced/legacy backend interface."""
-
-        return self._setup
-
-    @property
     def available_measures(self) -> tuple[str, ...]:
         """Measures supported by this simulation configuration."""
 
@@ -46,15 +30,11 @@ class Simulation:
             names += ("coupling",)
         return names
 
-    @overload
-    def run(self, *measures: MeasureLike, as_result: bool = False, **options: Any) -> Any: ...
-
     def run(self, *measures: MeasureLike, as_result: bool = False, **options: Any):
-        """Compute measures using the stable simulation interface.
+        """Compute measures using the stable single-simulation interface.
 
         ``Measure`` members and historical strings are both accepted.
-        ``as_result=True`` opts into explicit typed result containers while
-        the default preserves the existing quantity return values.
+        ``as_result=True`` returns explicit typed result containers.
         """
 
         names = normalize_measures(measures)
@@ -67,17 +47,9 @@ class Simulation:
         return self._setup.get(*names, **options)
 
     def get(self, *measures: MeasureLike, **options: Any):
-        """Alias for :meth:`run`.
-
-        Use ``as_result=True`` for explicit typed result containers.
-        """
+        """Alias for :meth:`run`."""
 
         return self.run(*measures, **options)
-
-    def __getattr__(self, name: str):
-        """Preserve legacy access to specialized backend methods."""
-
-        return getattr(self._setup, name)
 
     def __repr__(self) -> str:
         return f"<Simulation setup={self._setup!r}>"

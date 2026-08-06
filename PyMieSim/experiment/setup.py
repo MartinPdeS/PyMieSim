@@ -3,19 +3,11 @@
 
 from typing import List, Dict, Iterable
 import numpy as np
-import pandas as pd
 
 from PyMieSim.units import ureg
 from PyMieSim.experiment._setup import Setup as SETUP
-from PyMieSim.experiment.scatterer_set import SphereSet, InfiniteCylinderSet, CoreShellSet
-from PyMieSim.experiment.detector_set import PhotodiodeSet, CoherentModeSet
-from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
-from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
-from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment.material_set import MaterialSet
-from PyMieSim.material import ConstantMaterial, ConstantMedium
 from PyMieSim.labeled_array import LabeledArray
-from PyMieSim.measures import Measure, MeasureLike, normalize_measure, normalize_measures
+from PyMieSim.measures import MeasureLike, normalize_measure, normalize_measures
 
 
 
@@ -170,34 +162,6 @@ class Setup(SETUP):
 
         return normalized
 
-    def _compute_measure_arrays(self, measures: List[str]) -> np.ndarray:
-        """
-        Return measures as a stacked NumPy array.
-
-        Parameters
-        ----------
-        measures
-            Names of the measures to compute.
-
-        Returns
-        -------
-        numpy.ndarray
-            Computed values.
-        """
-        arrays = []
-
-        for measure in measures:
-            values = getattr(self, f"get_{measure}")()
-
-            arrays.append(np.squeeze(np.asarray(values)))
-
-        stacked = np.stack(arrays)
-        return stacked[0] if len(arrays) == 1 else stacked
-
-    # ------------------------------------------------------------------
-    # DataFrame generation
-    # ------------------------------------------------------------------
-
     def _collect_parameter_mappings(self) -> Dict[str, Iterable]:
         """
         Collect parameter mappings from source, scatterer and detector.
@@ -222,8 +186,8 @@ class Setup(SETUP):
         """
         Extract numeric values and units from parameter mappings.
 
-        This function also converts non-numeric simulation objects such as
-        materials into dataframe-safe representations for grouping and plotting.
+        This function normalizes parameter coordinates for the labeled result,
+        including non-numeric simulation objects such as materials.
 
         Returns
         -------
@@ -256,112 +220,6 @@ class Setup(SETUP):
             values[key] = [param_values]
 
         return values, units
-
-    def _build_dataframe(self, measures: List[str], drop_unique_level: bool):
-        """
-        Construct a DataFrame from the canonical experiment shape stored in ``self.shape``.
-
-        Parameters
-        ----------
-        measures
-            Names of the measures to initialize in the dataframe.
-        drop_unique_level
-            Remove parameters that only contain a single value.
-
-        Returns
-        -------
-        PyMieSimDataFrame
-        """
-        mappings = self._collect_parameter_mappings()
-        values, units = self._separate_units_and_values(mappings)
-
-        parameter_names = list(values.keys())
-        parameter_axes = list(values.values())
-
-        if len(parameter_axes) != len(self.array_shape):
-            raise ValueError(
-                f"Mismatch between number of parameter axes ({len(parameter_axes)}) "
-                f"and setup shape dimensions ({len(self.array_shape)})."
-            )
-
-        dataframe_dict = {}
-
-        total_size = int(np.prod(self.array_shape))
-
-        for axis_index, (parameter_name, axis_values, axis_size) in enumerate(zip(parameter_names, parameter_axes, self.array_shape)):
-
-            if len(axis_values) != axis_size:
-                raise ValueError(
-                    f"Parameter '{parameter_name}' has length {len(axis_values)} but corresponding setup axis has size {axis_size}."
-                )
-
-            if drop_unique_level and axis_size == 1:
-                continue
-
-            axis_object_array = np.empty(axis_size, dtype=object)
-            axis_object_array[:] = list(axis_values)
-
-            reshaped = axis_object_array.reshape(
-                [axis_size if i == axis_index else 1 for i in range(len(self.array_shape))]
-            )
-
-            broadcasted = np.broadcast_to(reshaped, self.array_shape)
-
-            dataframe_dict[parameter_name] = broadcasted.reshape(total_size)
-
-        if drop_unique_level:
-            units = {key: value for key, value in units.items() if key in dataframe_dict}
-
-        dataframe = PyMieSimDataFrame(dataframe_dict)
-
-        dataframe.attrs["units"] = units
-
-        for measure in measures:
-            dataframe[measure] = np.nan
-
-        return dataframe
-
-    # ------------------------------------------------------------------
-    # Populate simulation outputs
-    # ------------------------------------------------------------------
-
-    def _populate_measure_columns(
-        self,
-        dataframe: pd.DataFrame,
-        measures: List[str],
-        add_units: bool,
-    ):
-        """
-        Fill the DataFrame with computed simulation results.
-
-        Parameters
-        ----------
-        dataframe
-            DataFrame to populate.
-        measures
-            List of measures to compute and add to the DataFrame.
-        add_units
-            Whether to store units in ``DataFrame.attrs["units"]``.
-
-        Returns
-        -------
-        None
-        """
-
-        units = dataframe.attrs.setdefault("units", {})
-
-        for measure in measures:
-
-            values = getattr(self, f"get_{measure}")()
-
-            dataframe[measure] = values.ravel()
-
-            if add_units:
-                units[measure] = self._determine_unit(measure)
-
-    # ------------------------------------------------------------------
-    # Unit inference
-    # ------------------------------------------------------------------
 
     def _determine_unit(self, measure: str):
         """
