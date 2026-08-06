@@ -73,13 +73,13 @@ py::object LabeledArray::as_dataframe() const {
         ) {
             py::array coordinate = coords_[py::str(dimension)];
             py::tuple coordinate_shape(source_values.ndim());
-            for (ssize_t i = 0; i < source_values.ndim(); ++i) {
+            for (py::ssize_t i = 0; i < source_values.ndim(); ++i) {
                 coordinate_shape[i] = py::int_(
-                    i == static_cast<ssize_t>(coordinate_axis) ? source_values.shape(i) : 1
+                    i == static_cast<py::ssize_t>(coordinate_axis) ? source_values.shape(i) : 1
                 );
             }
             py::tuple value_shape(source_values.ndim());
-            for (ssize_t i = 0; i < source_values.ndim(); ++i) {
+            for (py::ssize_t i = 0; i < source_values.ndim(); ++i) {
                 value_shape[i] = py::int_(source_values.shape(i));
             }
             py::object reshaped = coordinate.attr("reshape")(coordinate_shape);
@@ -94,7 +94,7 @@ py::object LabeledArray::as_dataframe() const {
                 add_coordinate_column(axis - 1, dims_[axis], first_measure);
             }
             py::array measure_names = coords_[py::str("measure")];
-            for (ssize_t index = 0; index < measure_names.shape(0); ++index) {
+            for (py::ssize_t index = 0; index < measure_names.shape(0); ++index) {
                 py::object measure = measure_names.attr("__getitem__")(index);
                 py::object measure_values = numpy.attr("take")(values_, index, py::arg("axis") = 0);
                 columns[measure] = measure_values.attr("reshape")(-1);
@@ -131,7 +131,7 @@ LabeledArray LabeledArray::isel(py::dict indexers) const {
         py::object selected_values = values_;
         std::vector<std::string> new_dims;
         py::dict new_coords;
-        ssize_t current_axis = 0;
+        py::ssize_t current_axis = 0;
 
         for (std::size_t axis = 0; axis < dims_.size(); ++axis) {
             py::str dimension(dims_[axis]);
@@ -146,7 +146,7 @@ LabeledArray LabeledArray::isel(py::dict indexers) const {
 
             py::object selected_coordinate;
             if (py::isinstance<py::int_>(selector)) {
-                ssize_t index = selector.cast<ssize_t>();
+                py::ssize_t index = selector.cast<py::ssize_t>();
                 selected_values = numpy.attr("take")(selected_values, index, py::arg("axis") = current_axis);
                 selected_coordinate = numpy.attr("take")(coords_[dimension], index);
                 continue;
@@ -156,7 +156,7 @@ LabeledArray LabeledArray::isel(py::dict indexers) const {
             }
 
             py::tuple selectors(selected_values.attr("ndim").cast<std::size_t>());
-            for (ssize_t i = 0; i < static_cast<ssize_t>(selectors.size()); ++i) {
+            for (py::ssize_t i = 0; i < static_cast<py::ssize_t>(selectors.size()); ++i) {
                 selectors[i] = py::slice(py::none(), py::none(), py::none());
             }
             selectors[current_axis] = selector;
@@ -284,8 +284,8 @@ py::object LabeledArray::plot(
             }
 
             py::array measure_names = py::array::ensure(coords_[py::str("measure")]);
-            ssize_t measure_index = -1;
-            for (ssize_t index = 0; index < measure_names.shape(0); ++index) {
+            py::ssize_t measure_index = -1;
+            for (py::ssize_t index = 0; index < measure_names.shape(0); ++index) {
                 if (py::cast<std::string>(measure_names.attr("__getitem__")(index)) ==
                     py::cast<std::string>(y_measure)) {
                     measure_index = index;
@@ -315,7 +315,7 @@ py::object LabeledArray::plot(
             }
 
             py::tuple plot_shape = plot_values.attr("shape").cast<py::tuple>();
-            ssize_t std_size = plot_shape[plot_std_axis].cast<ssize_t>();
+            py::ssize_t std_size = plot_shape[plot_std_axis].cast<py::ssize_t>();
             py::object spread_source = plot_values;
             plot_values = numpy.attr("mean")(plot_values, py::arg("axis") = plot_std_axis);
             if (std_size > 1) {
@@ -354,14 +354,14 @@ py::object LabeledArray::plot(
             }
         }
 
-        for (ssize_t line_index = 0; line_index < value_matrix.shape(1); ++line_index) {
+        for (py::ssize_t line_index = 0; line_index < value_matrix.shape(1); ++line_index) {
             py::object series = numpy.attr("take")(value_matrix, line_index, py::arg("axis") = 1);
             std::string label = py::cast<std::string>(display_label(y_measure));
-            ssize_t remaining = line_index;
-            for (ssize_t position = static_cast<ssize_t>(other_axes.size()) - 1; position >= 0; --position) {
+            py::ssize_t remaining = line_index;
+            for (py::ssize_t position = static_cast<py::ssize_t>(other_axes.size()) - 1; position >= 0; --position) {
                 std::size_t axis = other_axes[static_cast<std::size_t>(position)];
-                ssize_t coordinate_index = remaining % moved_values.shape(static_cast<ssize_t>(position) + 1);
-                remaining /= moved_values.shape(static_cast<ssize_t>(position) + 1);
+                py::ssize_t coordinate_index = remaining % moved_values.shape(static_cast<py::ssize_t>(position) + 1);
+                remaining /= moved_values.shape(static_cast<py::ssize_t>(position) + 1);
                 py::object coordinate = coords_[py::str(plot_dims[axis])].attr("__getitem__")(coordinate_index);
                 if (!label.empty()) {
                     label += " | ";
@@ -404,7 +404,7 @@ py::tuple LabeledArray::dims() const {
 
 py::tuple LabeledArray::shape() const {
         py::tuple result(values_.ndim());
-        for (ssize_t i = 0; i < values_.ndim(); ++i) {
+        for (py::ssize_t i = 0; i < values_.ndim(); ++i) {
             result[i] = py::int_(values_.shape(i));
         }
         return result;
