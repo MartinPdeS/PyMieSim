@@ -52,7 +52,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     pymiesim_data = experiment.get(measure)
 
     discrepency = np.allclose(
-        pymiesim_data.get(measure).magnitude,
+        pymiesim_data.as_numpy(),
         pymiescatt_dataframe[measure].squeeze().values,
         atol=1e-3,
         rtol=1e-2,
@@ -60,7 +60,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
 
     assert (
         discrepency
-    ), f"Mismatch in PyMieSim vs PyMieScatt for {measure} \n {pymiesim_data[measure].squeeze().values.quantity}"
+    ), f"Mismatch in PyMieSim vs PyMieScatt for {measure} \n {pymiesim_data.as_numpy()}"
 
 
 if __name__ == "__main__":

@@ -280,11 +280,12 @@ def test_detector_experiment_polarization_filter(
     )
 
     # Get the coupling values for both polarization filters
-    dataframe = setup.get("coupling")
+    result = setup.get("coupling")
+    coupling_values = result.as_numpy()
 
     # Assert that the coupling values for 0° and 180° polarization are equal
     assert (
-        dataframe.coupling.values[0] == dataframe.coupling.values[-1]
+        np.isclose(coupling_values[0], coupling_values[-1])
     ), "Mismatch in coupling values for 0° and 180° polarization filters."
 
 
