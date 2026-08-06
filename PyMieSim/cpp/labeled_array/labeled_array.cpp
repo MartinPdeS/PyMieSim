@@ -271,27 +271,66 @@ py::object LabeledArray::plot(
         ax.attr("set_xlabel")(display_label(x_dimension));
         ax.attr("set_ylabel")(display_label(y_measure));
 
+        bool has_measure_axis = !dims_.empty() && dims_[0] == "measure";
         py::object plot_values = values_;
         py::object spread_values = py::none();
         std::vector<std::string> plot_dims = dims_;
         std::size_t plot_x_axis = x_axis;
+        std::size_t plot_std_axis = 0;
+
+        if (has_measure_axis) {
+            if (x_axis == 0) {
+                throw std::invalid_argument("x must name a parameter dimension, not measure");
+            }
+
+            py::array measure_names = py::array::ensure(coords_[py::str("measure")]);
+            ssize_t measure_index = -1;
+            for (ssize_t index = 0; index < measure_names.shape(0); ++index) {
+                if (py::cast<std::string>(measure_names.attr("__getitem__")(index)) ==
+                    py::cast<std::string>(y_measure)) {
+                    measure_index = index;
+                    break;
+                }
+            }
+            if (measure_index < 0) {
+                throw std::invalid_argument("unknown computed measure: " + py::cast<std::string>(y_measure));
+            }
+
+            plot_values = numpy.attr("take")(values_, measure_index, py::arg("axis") = 0);
+            plot_dims.erase(plot_dims.begin());
+            --plot_x_axis;
+        }
 
         if (!std_dimension.is_none()) {
             std::size_t std_axis = dimension_index(std_dimension);
+            if (has_measure_axis) {
+                if (std_axis == 0) {
+                    throw std::invalid_argument("std must name a parameter dimension, not measure");
+                }
+                --std_axis;
+            }
+            plot_std_axis = std_axis;
             if (std_axis == x_axis) {
                 throw std::invalid_argument("std must name a parameter different from x");
             }
 
-            plot_values = numpy.attr("mean")(values_, py::arg("axis") = std_axis);
-            if (values_.shape(std_axis) > 1) {
+            if (plot_std_axis == plot_x_axis) {
+                throw std::invalid_argument("std must name a parameter different from x");
+            }
+
+            py::tuple plot_shape = plot_values.attr("shape").cast<py::tuple>();
+            ssize_t std_size = plot_shape[plot_std_axis].cast<ssize_t>();
+            py::object spread_source = plot_values;
+            plot_values = numpy.attr("mean")(plot_values, py::arg("axis") = plot_std_axis);
+            if (std_size > 1) {
                 spread_values = numpy.attr("std")(
-                    values_, py::arg("axis") = std_axis, py::arg("ddof") = 1
+                    spread_source, py::arg("axis") = plot_std_axis, py::arg("ddof") = 1
                 );
             } else {
                 spread_values = numpy.attr("zeros_like")(plot_values);
             }
-            plot_dims.erase(plot_dims.begin() + static_cast<long>(std_axis));
-            if (std_axis < x_axis) {
+            plot_dims.erase(plot_dims.begin() + static_cast<long>(plot_std_axis));
+            if (plot_std_axis < plot_x_axis) {
                 --plot_x_axis;
             }
         }

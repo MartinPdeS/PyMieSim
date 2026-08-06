@@ -186,6 +186,26 @@ def test_labeled_array_plot_supports_standard_deviation_band():
     plt.close(figure)
 
 
+def test_labeled_array_plot_selects_requested_measure_from_multi_measure_result():
+    result = _setup().get("Qext", "Qsca")
+    figure, axis = plt.subplots()
+
+    artists = result.plot(
+        x="source:wavelength",
+        y="Qext",
+        std="scatterer:diameter",
+        ax=axis,
+        show=False,
+    )
+
+    assert len(axis.lines) == 2
+    assert len(axis.collections) == 2
+    assert len(artists) == 4
+    assert all("Qext |" in line.get_label() for line in axis.lines)
+    assert all("Qsca" not in line.get_label() for line in axis.lines)
+    plt.close(figure)
+
+
 def test_labeled_array_plot_supports_remaining_parameter_sweeps():
     values = np.arange(2 * 3 * 4, dtype=float).reshape(2, 3, 4)
     result = LabeledArray(
