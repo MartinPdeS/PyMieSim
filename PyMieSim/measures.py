@@ -18,7 +18,7 @@ class Measure(str, Enum):
     QRATIO = "Qratio"
     QPR = "Qpr"
     CSCA = "Csca"
-    CEXT = "Cext"
+    CEXT =  "Cext"
     CABS = "Cabs"
     CBACK = "Cback"
     CRATIO = "Cratio"
