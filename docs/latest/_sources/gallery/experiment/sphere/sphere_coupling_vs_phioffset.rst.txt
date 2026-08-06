@@ -38,40 +38,40 @@ Sphere: Goniometer
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | crown                 | nickel                |
+    | acetone               | silver                |
     +-----------------------+-----------------------+
-    | acetone               | calcium               |
+    | SF5                   | aluminium             |
     +-----------------------+-----------------------+
-    | air                   | silicon               |
+    | air                   | copper                |
     +-----------------------+-----------------------+
-    | SF5                   | zinc                  |
+    | lithium_niobate       | nickel                |
     +-----------------------+-----------------------+
-    | BAF10                 | copper                |
+    | soda_lime_glass       | calcium               |
     +-----------------------+-----------------------+
-    | BK7                   | sodium                |
+    | polystyren            | iron                  |
     +-----------------------+-----------------------+
-    | flint                 | gold                  |
+    | argon                 | polyetylene           |
     +-----------------------+-----------------------+
-    | ZBLAN                 | polyetylene           |
+    | fused_silica          | zinc                  |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | iron                  |
+    | BAK1                  | gold                  |
     +-----------------------+-----------------------+
-    | germanium             | silver                |
+    | BAF10                 | sodium                |
     +-----------------------+-----------------------+
-    | polystyren            | aluminium             |
+    | water                 | silicon               |
     +-----------------------+-----------------------+
-    | BAK1                  |                       |
+    | flint                 |                       |
     +-----------------------+-----------------------+
-    | argon                 |                       |
+    | crown                 |                       |
     +-----------------------+-----------------------+
-    | water                 |                       |
+    | BK7                   |                       |
     +-----------------------+-----------------------+
-    | fused_silica          |                       |
+    | germanium             |                       |
     +-----------------------+-----------------------+
-    | lithium_niobate       |                       |
+    | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f5147090a50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f514758eb90>, <matplotlib.lines.Line2D object at 0x7f5147c8cb90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5147c8c9d0>]
+    [<matplotlib.lines.Line2D object at 0x7ff6d2601c50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff6d01f1e50>, <matplotlib.lines.Line2D object at 0x7ff6d01f3210>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff6cfa19b10>]
 
 
 
@@ -129,7 +129,7 @@ Sphere: Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.337 seconds)
+   **Total running time of the script:** (0 minutes 0.341 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py:
