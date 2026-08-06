@@ -51,6 +51,16 @@ class Simulation:
 
         return self.run(*measures, **options)
 
+    def get_representation(self, representation_type: str, **options: Any):
+        """Build a named single-scatterer field representation."""
+
+        return self._setup.get_representation(representation_type, **options)
+
+    def get_farfields(self, *args: Any, **options: Any):
+        """Compute structured or angle-sampled far fields."""
+
+        return self._setup.get_farfields(*args, **options)
+
     def plot_system(
         self,
         show_axes: bool = False,

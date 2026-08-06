@@ -35,4 +35,4 @@ experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 result = experiment.get("Qsca", "Qext")
 
-result.plot(x="scatterer:material")
+result.plot(x="scatterer:material", y="Qsca")

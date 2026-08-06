@@ -40,4 +40,4 @@ experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 result = experiment.get("Qabs", "Qsca", "Qext")
 
-result.plot(x="scatterer:diameter")
+result.plot(x="scatterer:diameter", y="Qabs")
