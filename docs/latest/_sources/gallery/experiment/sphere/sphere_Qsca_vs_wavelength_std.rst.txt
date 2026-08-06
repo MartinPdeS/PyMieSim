@@ -38,40 +38,40 @@ Sphere: Qsca vs wavelength STD
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | acetone               | silver                |
+    | crown                 | nickel                |
     +-----------------------+-----------------------+
-    | SF5                   | aluminium             |
+    | acetone               | calcium               |
     +-----------------------+-----------------------+
-    | air                   | copper                |
+    | air                   | silicon               |
     +-----------------------+-----------------------+
-    | lithium_niobate       | nickel                |
+    | SF5                   | zinc                  |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | calcium               |
+    | BAF10                 | copper                |
     +-----------------------+-----------------------+
-    | polystyren            | iron                  |
+    | BK7                   | sodium                |
     +-----------------------+-----------------------+
-    | argon                 | polyetylene           |
+    | flint                 | gold                  |
     +-----------------------+-----------------------+
-    | fused_silica          | zinc                  |
+    | ZBLAN                 | polyetylene           |
     +-----------------------+-----------------------+
-    | BAK1                  | gold                  |
+    | soda_lime_glass       | iron                  |
     +-----------------------+-----------------------+
-    | BAF10                 | sodium                |
+    | germanium             | silver                |
     +-----------------------+-----------------------+
-    | water                 | silicon               |
+    | polystyren            | aluminium             |
     +-----------------------+-----------------------+
-    | flint                 |                       |
+    | BAK1                  |                       |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | argon                 |                       |
     +-----------------------+-----------------------+
-    | BK7                   |                       |
+    | water                 |                       |
     +-----------------------+-----------------------+
-    | germanium             |                       |
+    | fused_silica          |                       |
     +-----------------------+-----------------------+
-    | ZBLAN                 |                       |
+    | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7ff6d24396d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff6d2437c90>, <matplotlib.lines.Line2D object at 0x7ff6cf946ed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff6cf9468d0>, <matplotlib.lines.Line2D object at 0x7ff6d0069690>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff6d0068290>]
+    [<matplotlib.lines.Line2D object at 0x7ff46db61f90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46dcc1ed0>, <matplotlib.lines.Line2D object at 0x7ff46b346390>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46b347910>, <matplotlib.lines.Line2D object at 0x7ff46b346e50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46b82f490>]
 
 
 
@@ -125,7 +125,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.350 seconds)
+   **Total running time of the script:** (0 minutes 0.336 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_wavelength_std.py:

@@ -38,40 +38,40 @@ Sphere: Coupling vs sampling
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | acetone               | silver                |
+    | crown                 | nickel                |
     +-----------------------+-----------------------+
-    | SF5                   | aluminium             |
+    | acetone               | calcium               |
     +-----------------------+-----------------------+
-    | air                   | copper                |
+    | air                   | silicon               |
     +-----------------------+-----------------------+
-    | lithium_niobate       | nickel                |
+    | SF5                   | zinc                  |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | calcium               |
+    | BAF10                 | copper                |
     +-----------------------+-----------------------+
-    | polystyren            | iron                  |
+    | BK7                   | sodium                |
     +-----------------------+-----------------------+
-    | argon                 | polyetylene           |
+    | flint                 | gold                  |
     +-----------------------+-----------------------+
-    | fused_silica          | zinc                  |
+    | ZBLAN                 | polyetylene           |
     +-----------------------+-----------------------+
-    | BAK1                  | gold                  |
+    | soda_lime_glass       | iron                  |
     +-----------------------+-----------------------+
-    | BAF10                 | sodium                |
+    | germanium             | silver                |
     +-----------------------+-----------------------+
-    | water                 | silicon               |
+    | polystyren            | aluminium             |
     +-----------------------+-----------------------+
-    | flint                 |                       |
+    | BAK1                  |                       |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | argon                 |                       |
     +-----------------------+-----------------------+
-    | BK7                   |                       |
+    | water                 |                       |
     +-----------------------+-----------------------+
-    | germanium             |                       |
+    | fused_silica          |                       |
     +-----------------------+-----------------------+
-    | ZBLAN                 |                       |
+    | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7ff6cf8b2290>, <matplotlib.lines.Line2D object at 0x7ff6cf8b0e90>, <matplotlib.lines.Line2D object at 0x7ff6cf8b3e50>, <matplotlib.lines.Line2D object at 0x7ff6cf8b2490>]
+    [<matplotlib.lines.Line2D object at 0x7ff46b559b90>, <matplotlib.lines.Line2D object at 0x7ff46b4c5250>, <matplotlib.lines.Line2D object at 0x7ff46b4c6890>, <matplotlib.lines.Line2D object at 0x7ff46afebb10>]
 
 
 
@@ -133,7 +133,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.489 seconds)
+   **Total running time of the script:** (0 minutes 0.470 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_sampling.py:

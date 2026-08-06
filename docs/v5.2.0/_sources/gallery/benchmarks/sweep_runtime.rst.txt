@@ -39,11 +39,11 @@ diameters increases.
  .. code-block:: none
 
       10 diameters | 0.0004 s | 10 results
-      25 diameters | 0.0005 s | 25 results
-      50 diameters | 0.0008 s | 50 results
-     100 diameters | 0.0014 s | 100 results
-     200 diameters | 0.0025 s | 200 results
-     400 diameters | 0.0048 s | 400 results
+      25 diameters | 0.0006 s | 25 results
+      50 diameters | 0.0009 s | 50 results
+     100 diameters | 0.0017 s | 100 results
+     200 diameters | 0.0027 s | 200 results
+     400 diameters | 0.0051 s | 400 results
 
 
 
@@ -104,7 +104,7 @@ diameters increases.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.189 seconds)
+   **Total running time of the script:** (0 minutes 0.200 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_sweep_runtime.py:
