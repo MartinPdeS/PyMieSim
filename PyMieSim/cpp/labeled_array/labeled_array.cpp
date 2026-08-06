@@ -310,10 +310,6 @@ py::object LabeledArray::plot(
                 --std_axis;
             }
             plot_std_axis = std_axis;
-            if (std_axis == x_axis) {
-                throw std::invalid_argument("std must name a parameter different from x");
-            }
-
             if (plot_std_axis == plot_x_axis) {
                 throw std::invalid_argument("std must name a parameter different from x");
             }

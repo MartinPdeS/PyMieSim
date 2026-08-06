@@ -198,10 +198,10 @@ def test_labeled_array_plot_selects_requested_measure_from_multi_measure_result(
         show=False,
     )
 
-    assert len(axis.lines) == 2
-    assert len(axis.collections) == 2
-    assert len(artists) == 4
-    assert all("Qext |" in line.get_label() for line in axis.lines)
+    assert len(axis.lines) == 1
+    assert len(axis.collections) == 1
+    assert len(artists) == 2
+    assert all(line.get_label() == "Qext" for line in axis.lines)
     assert all("Qsca" not in line.get_label() for line in axis.lines)
     plt.close(figure)
 
