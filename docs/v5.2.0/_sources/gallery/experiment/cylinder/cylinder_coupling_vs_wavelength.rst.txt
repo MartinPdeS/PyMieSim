@@ -73,7 +73,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7ff46b036050>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46b034110>, <matplotlib.lines.Line2D object at 0x7ff46b52aad0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46b52ad10>]
+    [<matplotlib.lines.Line2D object at 0x7fc716994110>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc716996b50>, <matplotlib.lines.Line2D object at 0x7fc716938790>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc715625610>]
 
 
 
@@ -133,7 +133,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.705 seconds)
+   **Total running time of the script:** (0 minutes 0.656 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:

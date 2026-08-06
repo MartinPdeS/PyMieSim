@@ -71,7 +71,7 @@ Sphere: Qsca vs diameter
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7ff46b025350>, <matplotlib.lines.Line2D object at 0x7ff46b8432d0>, <matplotlib.lines.Line2D object at 0x7ff46b843810>]
+    [<matplotlib.lines.Line2D object at 0x7fc716952090>, <matplotlib.lines.Line2D object at 0x7fc7163dcb90>, <matplotlib.lines.Line2D object at 0x7fc716951310>]
 
 
 
@@ -125,7 +125,7 @@ Sphere: Qsca vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.194 seconds)
+   **Total running time of the script:** (0 minutes 0.189 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:

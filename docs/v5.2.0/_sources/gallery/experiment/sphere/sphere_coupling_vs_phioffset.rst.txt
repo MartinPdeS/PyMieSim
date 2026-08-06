@@ -71,7 +71,7 @@ Sphere: Goniometer
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7ff46a579bd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46a57a5d0>, <matplotlib.lines.Line2D object at 0x7ff46b52bc50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46b52b250>]
+    [<matplotlib.lines.Line2D object at 0x7fc715868e90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc715869310>, <matplotlib.lines.Line2D object at 0x7fc71692c650>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc71692f650>]
 
 
 
@@ -129,7 +129,7 @@ Sphere: Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.340 seconds)
+   **Total running time of the script:** (0 minutes 0.333 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py:

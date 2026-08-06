@@ -71,7 +71,7 @@ Sphere: Coupling vs polarization filter
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7ff46b800750>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46b026d10>, <matplotlib.lines.Line2D object at 0x7ff46affc110>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7ff46affdad0>]
+    [<matplotlib.lines.Line2D object at 0x7fc7168c5150>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc7168c7a10>, <matplotlib.lines.Line2D object at 0x7fc716838ed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc71683b950>]
 
 
 
@@ -130,7 +130,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.962 seconds)
+   **Total running time of the script:** (0 minutes 0.946 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_filter.py:

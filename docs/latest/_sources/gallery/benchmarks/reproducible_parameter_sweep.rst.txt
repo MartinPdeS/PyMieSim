@@ -38,8 +38,8 @@ be compared only under the same environment.
     Platform: Linux-6.17.0-1020-azure-x86_64-with-glibc2.39
     PyMieSim grid: [1, 1, 1, 1, 100, 1, 1]
     Results: 100
-    Median runtime: 0.001461 s
-    All timings: [0.001573, 0.001558, 0.001461, 0.001411, 0.001425]
+    Median runtime: 0.001355 s
+    All timings: [0.001352, 0.001359, 0.001347, 0.001378, 0.001355]
 
 
 
@@ -95,7 +95,7 @@ be compared only under the same environment.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.021 seconds)
+   **Total running time of the script:** (0 minutes 0.033 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_reproducible_parameter_sweep.py:
