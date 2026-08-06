@@ -71,7 +71,7 @@ Sphere: Coupling vs sampling
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fc7160bdb90>, <matplotlib.lines.Line2D object at 0x7fc7160bc090>, <matplotlib.lines.Line2D object at 0x7fc7160bcbd0>, <matplotlib.lines.Line2D object at 0x7fc718c9c650>]
+    [<matplotlib.lines.Line2D object at 0x7f5f55659810>, <matplotlib.lines.Line2D object at 0x7f5f5565ab10>, <matplotlib.lines.Line2D object at 0x7f5f55658f50>, <matplotlib.lines.Line2D object at 0x7f5f55658790>]
 
 
 
@@ -133,7 +133,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.489 seconds)
+   **Total running time of the script:** (0 minutes 0.494 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_sampling.py:

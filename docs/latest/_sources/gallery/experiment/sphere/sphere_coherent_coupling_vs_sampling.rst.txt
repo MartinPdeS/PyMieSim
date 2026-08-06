@@ -71,7 +71,7 @@ Sphere: coherent coupling vs sampling
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fc7163f6f50>, <matplotlib.lines.Line2D object at 0x7fc7160d1890>, <matplotlib.lines.Line2D object at 0x7fc716147f90>, <matplotlib.lines.Line2D object at 0x7fc716147ed0>, <matplotlib.lines.Line2D object at 0x7fc7161459d0>]
+    [<matplotlib.lines.Line2D object at 0x7f5f5514fed0>, <matplotlib.lines.Line2D object at 0x7f5f5514dad0>, <matplotlib.lines.Line2D object at 0x7f5f5514ca50>, <matplotlib.lines.Line2D object at 0x7f5f54e9d010>, <matplotlib.lines.Line2D object at 0x7f5f54e9f050>]
 
 
 
@@ -130,7 +130,7 @@ Sphere: coherent coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.277 seconds)
+   **Total running time of the script:** (0 minutes 0.299 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_sampling.py:

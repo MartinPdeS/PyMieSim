@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.087** total execution time for 1 file **from gallery/validation**:
+**00:00.100** total execution time for 1 file **from gallery/validation**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_energy_conservation.py` (``energy_conservation.py``)
-     - 00:00.087
+     - 00:00.100
      - 0.0

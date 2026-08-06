@@ -71,7 +71,7 @@ Sphere: Coherent mode field rotation
     | lithium_niobate       |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fc71695ae10>, <matplotlib.lines.Line2D object at 0x7fc7169589d0>]
+    [<matplotlib.lines.Line2D object at 0x7f5f54e1e710>, <matplotlib.lines.Line2D object at 0x7f5f54e1ef10>]
 
 
 
@@ -132,7 +132,7 @@ Sphere: Coherent mode field rotation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.242 seconds)
+   **Total running time of the script:** (0 minutes 0.266 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_rotation.py:

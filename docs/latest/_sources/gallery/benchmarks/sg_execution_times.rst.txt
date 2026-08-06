@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.910** total execution time for 4 files **from gallery/benchmarks**:
+**00:00.962** total execution time for 4 files **from gallery/benchmarks**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_benchmarks_memory_scaling.py` (``memory_scaling.py``)
-     - 00:00.497
+     - 00:00.492
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_parameter_grid.py` (``parameter_grid.py``)
-     - 00:00.194
+     - 00:00.221
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_sweep_runtime.py` (``sweep_runtime.py``)
-     - 00:00.187
+     - 00:00.217
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_reproducible_parameter_sweep.py` (``reproducible_parameter_sweep.py``)
-     - 00:00.033
+     - 00:00.032
      - 0.0
