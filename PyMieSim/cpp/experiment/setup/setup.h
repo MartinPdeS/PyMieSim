@@ -141,7 +141,16 @@ class Setup
             if (debug_mode)
                 this->debug_print_state();
 
-            if (!this->detector_set) {
+            const bool sequential =
+                this->source_set->is_sequential &&
+                this->scatterer_set->is_sequential &&
+                this->detector_set &&
+                this->detector_set->is_sequential;
+
+            if (sequential) {
+                this->array_shape = {this->source_set->total_combinations};
+                this->total_iterations = this->source_set->total_combinations;
+            } else if (!this->detector_set) {
                 this->array_shape = this->concatenate_vector(this->source_set->shape, this->scatterer_set->shape);
                 this->total_iterations = this->source_set->total_combinations * this->scatterer_set->total_combinations;
             }
