@@ -39,9 +39,9 @@ material refractive index.
  .. code-block:: none
 
        4 combinations | 0.0004 s | 4 results
-      16 combinations | 0.0005 s | 16 results
-      64 combinations | 0.0012 s | 64 results
-     144 combinations | 0.0020 s | 144 results
+      16 combinations | 0.0004 s | 16 results
+      64 combinations | 0.0010 s | 64 results
+     144 combinations | 0.0019 s | 144 results
 
 
 
@@ -105,7 +105,7 @@ material refractive index.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.221 seconds)
+   **Total running time of the script:** (0 minutes 0.189 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_parameter_grid.py:

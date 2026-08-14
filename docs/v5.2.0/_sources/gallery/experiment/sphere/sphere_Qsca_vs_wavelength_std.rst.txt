@@ -38,40 +38,40 @@ Sphere: Qsca vs wavelength STD
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | crown                 | nickel                |
+    | polystyren            | polyetylene           |
     +-----------------------+-----------------------+
-    | acetone               | calcium               |
+    | germanium             | nickel                |
     +-----------------------+-----------------------+
-    | air                   | silicon               |
+    | BAF10                 | calcium               |
+    +-----------------------+-----------------------+
+    | flint                 | sodium                |
+    +-----------------------+-----------------------+
+    | fused_silica          | iron                  |
+    +-----------------------+-----------------------+
+    | water                 | copper                |
+    +-----------------------+-----------------------+
+    | BAK1                  | aluminium             |
     +-----------------------+-----------------------+
     | SF5                   | zinc                  |
     +-----------------------+-----------------------+
-    | BAF10                 | copper                |
+    | lithium_niobate       | silicon               |
     +-----------------------+-----------------------+
-    | BK7                   | sodium                |
+    | BK7                   | gold                  |
     +-----------------------+-----------------------+
-    | flint                 | gold                  |
+    | argon                 | silver                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | polyetylene           |
+    | crown                 |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | iron                  |
+    | acetone               |                       |
     +-----------------------+-----------------------+
-    | germanium             | silver                |
+    | ZBLAN                 |                       |
     +-----------------------+-----------------------+
-    | polystyren            | aluminium             |
+    | soda_lime_glass       |                       |
     +-----------------------+-----------------------+
-    | BAK1                  |                       |
-    +-----------------------+-----------------------+
-    | argon                 |                       |
-    +-----------------------+-----------------------+
-    | water                 |                       |
-    +-----------------------+-----------------------+
-    | fused_silica          |                       |
-    +-----------------------+-----------------------+
-    | lithium_niobate       |                       |
+    | air                   |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f5f556205d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5f556230d0>, <matplotlib.lines.Line2D object at 0x7f5f55169590>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5f55169810>, <matplotlib.lines.Line2D object at 0x7f5f55617190>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5f55614e10>]
+    [<matplotlib.lines.Line2D object at 0x7fc4de469ad0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4db97c390>, <matplotlib.lines.Line2D object at 0x7fc4de0becd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4de0be550>, <matplotlib.lines.Line2D object at 0x7fc4de0bc610>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4dbde4a50>]
 
 
 
@@ -125,7 +125,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.371 seconds)
+   **Total running time of the script:** (0 minutes 0.318 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_wavelength_std.py:

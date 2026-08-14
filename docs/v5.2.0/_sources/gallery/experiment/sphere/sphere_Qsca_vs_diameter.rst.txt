@@ -38,40 +38,40 @@ Sphere: Qsca vs diameter
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | crown                 | nickel                |
+    | polystyren            | polyetylene           |
     +-----------------------+-----------------------+
-    | acetone               | calcium               |
+    | germanium             | nickel                |
     +-----------------------+-----------------------+
-    | air                   | silicon               |
+    | BAF10                 | calcium               |
+    +-----------------------+-----------------------+
+    | flint                 | sodium                |
+    +-----------------------+-----------------------+
+    | fused_silica          | iron                  |
+    +-----------------------+-----------------------+
+    | water                 | copper                |
+    +-----------------------+-----------------------+
+    | BAK1                  | aluminium             |
     +-----------------------+-----------------------+
     | SF5                   | zinc                  |
     +-----------------------+-----------------------+
-    | BAF10                 | copper                |
+    | lithium_niobate       | silicon               |
     +-----------------------+-----------------------+
-    | BK7                   | sodium                |
+    | BK7                   | gold                  |
     +-----------------------+-----------------------+
-    | flint                 | gold                  |
+    | argon                 | silver                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | polyetylene           |
+    | crown                 |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | iron                  |
+    | acetone               |                       |
     +-----------------------+-----------------------+
-    | germanium             | silver                |
+    | ZBLAN                 |                       |
     +-----------------------+-----------------------+
-    | polystyren            | aluminium             |
+    | soda_lime_glass       |                       |
     +-----------------------+-----------------------+
-    | BAK1                  |                       |
-    +-----------------------+-----------------------+
-    | argon                 |                       |
-    +-----------------------+-----------------------+
-    | water                 |                       |
-    +-----------------------+-----------------------+
-    | fused_silica          |                       |
-    +-----------------------+-----------------------+
-    | lithium_niobate       |                       |
+    | air                   |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f5f55347750>, <matplotlib.lines.Line2D object at 0x7f5f55346bd0>, <matplotlib.lines.Line2D object at 0x7f5f59bd3550>]
+    [<matplotlib.lines.Line2D object at 0x7fc4e4303bd0>, <matplotlib.lines.Line2D object at 0x7fc4dbd800d0>, <matplotlib.lines.Line2D object at 0x7fc4dbd80290>]
 
 
 
@@ -125,7 +125,7 @@ Sphere: Qsca vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.215 seconds)
+   **Total running time of the script:** (0 minutes 0.181 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:
