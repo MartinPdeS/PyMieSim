@@ -299,7 +299,7 @@ Contact
 For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <mailto:martin.poinsinet.de.sivry@gmail.com>`_.
 
 .. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
-    :alt: PyOptik logo
+    :alt: PyMieSim logo
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
     :alt: Python
     :target: https://www.python.org/
