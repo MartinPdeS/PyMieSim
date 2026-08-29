@@ -31,7 +31,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -712,12 +712,12 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-benchmarks-sweep-runtime-py"></span><h1>Runtime scaling with sweep size<a class="headerlink" href="#runtime-scaling-with-sweep-size" title="Link to this heading">#</a></h1>
 <p>Measure how long a <code class="docutils literal notranslate"><span class="pre">Qsca</span></code> calculation takes as the number of sphere
 diameters increases.</p>
-<img src="../../_images/sphx_glr_sweep_runtime_001.png" srcset="../../_images/sphx_glr_sweep_runtime_001.png" alt="PyMieSim runtime scaling" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> 10 diameters | 0.0004 s | 10 results
- 25 diameters | 0.0005 s | 25 results
- 50 diameters | 0.0008 s | 50 results
+<img src="../../_images/sphx_glr_sweep_runtime_001.png" srcset="../../_images/sphx_glr_sweep_runtime_001.png" alt="PyMieSim runtime scaling" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> 10 diameters | 0.0006 s | 10 results
+ 25 diameters | 0.0007 s | 25 results
+ 50 diameters | 0.0009 s | 50 results
 100 diameters | 0.0015 s | 100 results
 200 diameters | 0.0026 s | 200 results
-400 diameters | 0.0064 s | 400 results
+400 diameters | 0.0050 s | 400 results
 </pre></div>
 </div>
 <div class="line-block">
@@ -746,7 +746,7 @@ diameters increases.</p>
     <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
     <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
     <span class="k">return</span> <span class="n">elapsed</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><a href="https://numpy.org/devdocs/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
@@ -756,21 +756,21 @@ diameters increases.</p>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">runtime_seconds</span></a><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">result_sizes</span></a> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><span class="n">measurements</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
 <span class="k">for</span> <span class="n">size</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">runtime</span></a><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">result_size</span></a> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">runtime_seconds</span></a><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">result_sizes</span></a><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> diameters | </span><span class="si">{</span><a href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">runtime</span></a><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> s | </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><a href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">result_size</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> results&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> diameters | </span><span class="si">{</span><a href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">runtime</span></a><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> s | </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><a href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">result_size</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> results"</span><span class="p">)</span>
 
 <span class="n">figure</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">runtime_seconds</span></a><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+<span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">runtime_seconds</span></a><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">)</span>
 <span class="n">axis</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Number of diameters&quot;</span><span class="p">,</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Runtime [s]&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;PyMieSim runtime scaling&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"Number of diameters"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Runtime [s]"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"PyMieSim runtime scaling"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.219 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.216 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-sweep-runtime-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/b46d2755b48a7c0c08d32eedb7bc1e39/sweep_runtime.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sweep_runtime.ipynb</span></code></a></p>

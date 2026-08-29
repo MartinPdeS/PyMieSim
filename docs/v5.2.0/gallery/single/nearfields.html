@@ -31,7 +31,7 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -710,11 +710,11 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="near-field-computation-and-visualization">
 <span id="sphx-glr-gallery-single-nearfields-py"></span><h1>Near-Field Computation and Visualization<a class="headerlink" href="#near-field-computation-and-visualization" title="Link to this heading">#</a></h1>
-<img src="../../_images/sphx_glr_nearfields_001.png" srcset="../../_images/sphx_glr_nearfields_001.png" alt="total Ez real, total Ex real" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>findfont: Font family [&#39;cursive&#39;] not found. Falling back to DejaVu Sans.
-findfont: Generic family &#39;cursive&#39; not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
-findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
-findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
-findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
+<img src="../../_images/sphx_glr_nearfields_001.png" srcset="../../_images/sphx_glr_nearfields_001.png" alt="total Ez real, total Ex real" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>findfont: Font family ['cursive'] not found. Falling back to DejaVu Sans.
+findfont: Generic family 'cursive' not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
+findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
+findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
 
 &lt;Figure size 1200x600 with 4 Axes&gt;
 </pre></div>
@@ -751,12 +751,12 @@ findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">near_field</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">&quot;nearfields&quot;</span><span class="p">)</span>
+<span class="n">near_field</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">"nearfields"</span><span class="p">)</span>
 
 <span class="n">near_field</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="s2">&quot;Ez:real&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Ex:real&quot;</span><span class="p">,</span>
-    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;total&quot;</span><span class="p">,</span>
+    <span class="s2">"Ez:real"</span><span class="p">,</span>
+    <span class="s2">"Ex:real"</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s2">"total"</span><span class="p">,</span>
     <span class="n">plane_origin</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
     <span class="n">plane_normal</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
     <span class="n">sampling</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -765,7 +765,7 @@ findfont: Font family [&#39;Arial&#39;] not found. Falling back to DejaVu Sans.
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.035 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.665 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-nearfields-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5045ac3ab9b8f03b00541eca37fc4c47/nearfields.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nearfields.ipynb</span></code></a></p>

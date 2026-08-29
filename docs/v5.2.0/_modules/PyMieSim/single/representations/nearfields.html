@@ -30,7 +30,7 @@
 <link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -600,7 +600,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-15</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Normalize a 3D vector.</span>
 
 <span class="sd">    Parameters</span>
@@ -614,15 +614,15 @@
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
 <span class="sd">        Normalized vector.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">norm</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Vector norm too small to normalize&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Vector norm too small to normalize"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vector</span> <span class="o">/</span> <span class="n">norm</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_make_plane_basis</span><span class="p">(</span><span class="n">plane_normal</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Build an orthonormal basis for a plane.</span>
 
 <span class="sd">    Parameters</span>
@@ -634,7 +634,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray]</span>
 <span class="sd">        (n_hat, u_hat, v_hat) where u_hat and v_hat span the plane.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">n_hat</span> <span class="o">=</span> <span class="n">_normalize_vector</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">plane_normal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">n_hat</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.9</span><span class="p">:</span>
@@ -662,7 +662,7 @@
     <span class="n">xlim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ylim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Apply common Matplotlib figure finalization options.</span>
 
 <span class="sd">    Parameters</span>
@@ -688,7 +688,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    plt.Figure</span>
 <span class="sd">        Finalized figure.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">xscale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">xscale</span><span class="p">)</span>
@@ -717,7 +717,7 @@
 <div class="viewcode-block" id="NearFields">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.NearFields">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NearFields</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Near field visualization for a scatterer.</span>
 
 <span class="sd">    This class samples fields over an arbitrary plane defined by an origin and a normal.</span>
@@ -736,17 +736,17 @@
 <span class="sd">    ----------</span>
 <span class="sd">    scatterer</span>
 <span class="sd">        Object exposing compute_total_nearfields, compute_incident_nearfields, compute_scattered_nearfields.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initialize NearField object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        scatterer</span>
 <span class="sd">            Object exposing compute_total_nearfields, compute_incident_nearfields, compute_scattered_nearfields.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
@@ -769,7 +769,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">v_range</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_default_uv_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extent_scale</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="n">Length</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="n">Length</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Define a default sampling extent in the plane.</span>
 
 <span class="sd">        The default is symmetric about zero and based on the particle radius.</span>
@@ -784,12 +784,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        Tuple[Tuple[Length, Length], Tuple[Length, Length]]</span>
 <span class="sd">            (u_range, v_range)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">"diameter"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;total_diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">"total_diameter"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;scatterer must expose diameter or total_diameter to infer a default plotting extent&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"scatterer must expose diameter or total_diameter to infer a default plotting extent"</span><span class="p">)</span>
 
         <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">diameter</span>
         <span class="n">half_width</span> <span class="o">=</span> <span class="n">extent_scale</span> <span class="o">*</span> <span class="n">radius</span>
@@ -809,7 +809,7 @@
         <span class="n">v_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="n">Length</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">extent_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Setup the coordinate grid for the sampling plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -826,7 +826,7 @@
 <span class="sd">            Range of plane coordinate v along v_hat. If None, inferred from scatterer diameter and extent_scale.</span>
 <span class="sd">        extent_scale</span>
 <span class="sd">            Scaling factor applied to the default extent derived from the scatterer radius.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
 
         <span class="k">if</span> <span class="n">u_range</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">v_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -845,7 +845,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">u_min</span><span class="p">,</span> <span class="n">u_max</span><span class="p">,</span> <span class="n">sampling</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">sampling</span><span class="p">)</span>
 
-        <span class="n">U</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+        <span class="n">U</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">U</span> <span class="o">=</span> <span class="n">U</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">V</span>
 
@@ -873,7 +873,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="n">origin_z</span> <span class="o">+</span> <span class="n">U</span> <span class="o">*</span> <span class="n">u_hat</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">V</span> <span class="o">*</span> <span class="n">v_hat</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_compute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Compute near fields over the sampling plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -887,7 +887,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        Dict[str, numpy.ndarray]</span>
 <span class="sd">            Dictionary mapping component name to 2D array of values on the plane grid.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">x_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -895,25 +895,25 @@
         <span class="n">z_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">x_flat</span><span class="p">,</span>
-            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y_flat</span><span class="p">,</span>
-            <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">z_flat</span><span class="p">,</span>
+            <span class="s2">"x"</span><span class="p">:</span> <span class="n">x_flat</span><span class="p">,</span>
+            <span class="s2">"y"</span><span class="p">:</span> <span class="n">y_flat</span><span class="p">,</span>
+            <span class="s2">"z"</span><span class="p">:</span> <span class="n">z_flat</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">field_components</span><span class="p">:</span>
-            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Computing </span><span class="si">%s</span><span class="s2"> near field component: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;field_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Computing </span><span class="si">%s</span><span class="s2"> near field component: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">component</span><span class="p">)</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"field_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span>
 
-            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;total&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">"total"</span><span class="p">:</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_total_nearfields</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;incident&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">"incident"</span><span class="p">:</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_incident_nearfields</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;scattered&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">"scattered"</span><span class="p">:</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">get_scattered_nearfields</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown field type: </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown field type: </span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-            <span class="n">values</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
             <span class="n">fields</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">fields</span>
@@ -923,7 +923,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">compute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="n">field_components</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;scattered&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"scattered"</span><span class="p">,</span>
         <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
         <span class="n">plane_origin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Length</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">plane_normal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -931,25 +931,25 @@
         <span class="n">v_range</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Length</span><span class="p">,</span> <span class="n">Length</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">extent_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute near-field components on the configured sampling plane.</span>
+<span class="w">        </span><span class="sd">"""Compute near-field components on the configured sampling plane.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        field_components : Sequence[str]</span>
-<span class="sd">            Components and reductions to evaluate, such as ``&quot;Ex:real&quot;`` or</span>
-<span class="sd">            ``&quot;E:abs&quot;``.</span>
+<span class="sd">            Components and reductions to evaluate, such as ``"Ex:real"`` or</span>
+<span class="sd">            ``"E:abs"``.</span>
 <span class="sd">        type : str</span>
-<span class="sd">            Field family to evaluate: ``&quot;total&quot;``, ``&quot;incident&quot;``, or</span>
-<span class="sd">            ``&quot;scattered&quot;``.</span>
+<span class="sd">            Field family to evaluate: ``"total"``, ``"incident"``, or</span>
+<span class="sd">            ``"scattered"``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict[str, numpy.ndarray]</span>
 <span class="sd">            Requested fields keyed by their component notation. Arrays are</span>
 <span class="sd">            arranged on the configured ``(u, v)`` sampling grid.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">field_components</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide at least one field component, for example |E|&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Provide at least one field component, for example |E|"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_coordinates_plane</span><span class="p">(</span>
             <span class="n">sampling</span><span class="o">=</span><span class="n">sampling</span><span class="p">,</span>
@@ -965,7 +965,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_field_components</span><span class="p">(</span><span class="n">field_components</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse field components into their main component and part.</span>
 
 <span class="sd">        Parameters</span>
@@ -977,57 +977,57 @@
 <span class="sd">        -------</span>
 <span class="sd">        Tuple[List[str], List[str]]</span>
 <span class="sd">            Two lists: one with the main components and one with the parts.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">parts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">field_components</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="n">component</span><span class="p">,</span> <span class="n">part</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">":"</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="n">component</span><span class="p">,</span> <span class="n">part</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">component</span><span class="p">,</span> <span class="n">part</span> <span class="o">=</span> <span class="n">item</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span>
+                <span class="n">component</span><span class="p">,</span> <span class="n">part</span> <span class="o">=</span> <span class="n">item</span><span class="p">,</span> <span class="s2">"real"</span>
             <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
             <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">components</span><span class="p">,</span> <span class="n">parts</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_scatterer_outline_on_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Draw the scatterer intersection with the current plane.</span>
 
 <span class="sd">        Spheres and core/shell particles produce circles.  The infinite</span>
 <span class="sd">        cylinder is treated as having its axis along ``y``: a tilted plane</span>
 <span class="sd">        produces an ellipse, while a plane parallel to the axis produces an</span>
 <span class="sd">        infinite strip.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">U</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="n">scatterer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">scatterer</span>
-        <span class="n">core_diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;core_diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">shell_thickness</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;shell_thickness&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">core_diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">"core_diameter"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">shell_thickness</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">"shell_thickness"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">core_diameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shell_thickness</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">core_diameter</span><span class="p">,</span> <span class="s2">&quot;#ffd166&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span>
-                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">core_diameter</span> <span class="o">+</span> <span class="n">shell_thickness</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">core_diameter</span><span class="p">,</span> <span class="s2">"#ffd166"</span><span class="p">,</span> <span class="s2">"--"</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span>
+                <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">core_diameter</span> <span class="o">+</span> <span class="n">shell_thickness</span><span class="p">,</span> <span class="s2">"white"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
             <span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">"diameter"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">&quot;total_diameter&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">diameter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">scatterer</span><span class="p">,</span> <span class="s2">"total_diameter"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">diameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span>
-            <span class="n">radii</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">diameter</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]</span>
+            <span class="n">radii</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">diameter</span><span class="p">,</span> <span class="s2">"white"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">radii</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="n">origin_x</span><span class="p">,</span> <span class="n">origin_y</span><span class="p">,</span> <span class="n">origin_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plane_origin</span>
-        <span class="n">coordinate_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">coordinate_unit</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="s2">"units"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">coordinate_value</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert a coordinate to the plane&#39;s plotting unit.&quot;&quot;&quot;</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">coordinate_unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">"""Convert a coordinate to the plane's plotting unit."""</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">coordinate_unit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">coordinate_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">):</span>
                 <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -1040,7 +1040,7 @@
         <span class="n">u_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plane_u_hat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">v_hat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plane_v_hat</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-        <span class="n">is_cylinder</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;InfiniteCylinder&quot;</span>
+        <span class="n">is_cylinder</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"InfiniteCylinder"</span>
 
         <span class="k">if</span> <span class="n">is_cylinder</span><span class="p">:</span>
             <span class="n">cylinder_axis</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
@@ -1145,7 +1145,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="n">field_components</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;scattered&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"scattered"</span><span class="p">,</span>
         <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
         <span class="n">plane_origin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Length</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">plane_normal</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1163,7 +1163,7 @@
         <span class="n">ylim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">style</span><span class="o">=</span><span class="n">scientific</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Plot near fields over a specified plane.</span>
 
 <span class="sd">        Parameters</span>
@@ -1209,9 +1209,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        plt.Figure</span>
 <span class="sd">            Figure containing the requested near-field plots.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">field_components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide at least one field component, for example Ex:real or |E|:abs&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Provide at least one field component, for example Ex:real or |E|:abs"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_coordinates_plane</span><span class="p">(</span>
             <span class="n">sampling</span><span class="o">=</span><span class="n">sampling</span><span class="p">,</span>
@@ -1239,34 +1239,34 @@
             <span class="k">for</span> <span class="n">requested_component</span><span class="p">,</span> <span class="n">requested_part</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">requested_components</span><span class="p">,</span> <span class="n">requested_parts</span><span class="p">,</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="n">requested_component</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;real&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">"real"</span><span class="p">:</span>
                     <span class="n">field_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;imag&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">"imag"</span><span class="p">:</span>
                     <span class="n">field_data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">&quot;abs&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">requested_part</span> <span class="o">==</span> <span class="s2">"abs"</span><span class="p">:</span>
                     <span class="n">field_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown field component part: </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown field component part: </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
                 <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span>
                     <span class="n">field_data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
                     <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-                    <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                    <span class="n">shading</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">,</span>
                 <span class="p">)</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_scatterer_outline_on_plane</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 
                 <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-                <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;3%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+                <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">"3%"</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
                 <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
 
-                <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;plane u&quot;</span><span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;plane v&quot;</span><span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_component</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"plane u"</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"plane v"</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_component</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">requested_part</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">"both"</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">"both"</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">_finalize_figure</span><span class="p">(</span>
                 <span class="n">figure</span><span class="p">,</span>

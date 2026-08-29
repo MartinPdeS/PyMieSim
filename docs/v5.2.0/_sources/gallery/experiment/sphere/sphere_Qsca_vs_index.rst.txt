@@ -35,12 +35,12 @@ Sphere: Qsca vs index
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
+    /opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
       return math.isfinite(val)
-    /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
+    /opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
-    [<matplotlib.lines.Line2D object at 0x7fc4de46ae50>, <matplotlib.lines.Line2D object at 0x7fc4db6a8710>, <matplotlib.lines.Line2D object at 0x7fc4db6b2fd0>]
+    [<matplotlib.lines.Line2D object at 0x7f1fdf49fd10>, <matplotlib.lines.Line2D object at 0x7f1fdf4a9510>, <matplotlib.lines.Line2D object at 0x7f1fdf4ab610>]
 
 
 
@@ -86,7 +86,7 @@ Sphere: Qsca vs index
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.164 seconds)
+   **Total running time of the script:** (0 minutes 0.197 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_index.py:

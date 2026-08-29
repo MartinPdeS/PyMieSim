@@ -31,7 +31,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -683,13 +683,13 @@ to download the full example code.</p>
 <span class="c1"># Define experiment setup</span>
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
-<span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">,</span> <span class="s2">&quot;Qabs&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;Qpr&quot;</span><span class="p">,</span> <span class="s2">&quot;Qback&quot;</span><span class="p">]</span>
+<span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="s2">"Qext"</span><span class="p">,</span> <span class="s2">"Qabs"</span><span class="p">,</span> <span class="s2">"g"</span><span class="p">,</span> <span class="s2">"Qpr"</span><span class="p">,</span> <span class="s2">"Qback"</span><span class="p">]</span>
 
 <span class="c1"># Simulate using PyMieSim</span>
 <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pymiesim</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
 
 <span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-    <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">&quot;pymiescatt/example_shpere_0.csv&quot;</span>
+    <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">"pymiescatt/example_shpere_0.csv"</span>
 <span class="p">)</span>
 
 <span class="c1"># Plot results</span>
@@ -698,16 +698,16 @@ to download the full example code.</p>
 <span class="n">pymiescatt_dataframe</span><span class="o">.</span><span class="n">diameter</span> <span class="o">*=</span> <span class="mf">1e9</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Diameter [nm]&quot;</span><span class="p">,</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Scattering Efficiencies&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Scattering parameters Comparison for Sphere Particles&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"Diameter [nm]"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Scattering Efficiencies"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Scattering parameters Comparison for Sphere Particles"</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">comparison_measures</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="s2">&quot;diameter&quot;</span><span class="p">],</span>
+        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="s2">"diameter"</span><span class="p">],</span>
         <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="n">string</span><span class="p">],</span>
-        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PyMieScatt: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">"PyMieScatt: "</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
         <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -715,9 +715,9 @@ to download the full example code.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">diameters</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
         <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;PyMieSim: &quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">"PyMieSim: "</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
         <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -725,7 +725,7 @@ to download the full example code.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.230 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.280 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-sphere-0-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/77794443f3893357bbd77f490bdb1d3a/sphere_0.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_0.ipynb</span></code></a></p>

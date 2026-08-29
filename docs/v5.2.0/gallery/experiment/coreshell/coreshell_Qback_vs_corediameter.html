@@ -31,7 +31,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -746,16 +746,16 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.</p>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShellSet</span><span class="p">(</span>
     <span class="n">core_diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">shell_thickness</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">core_material</span><span class="o">=</span><span class="p">[</span><span class="n">TabulatedMaterial</span><span class="p">(</span><span class="s2">&quot;silver&quot;</span><span class="p">)],</span>
-    <span class="n">shell_material</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">&quot;BK7&quot;</span><span class="p">)],</span>
-    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMedium</span><span class="p">(</span><span class="s2">&quot;water&quot;</span><span class="p">)],</span>
+    <span class="n">core_material</span><span class="o">=</span><span class="p">[</span><span class="n">TabulatedMaterial</span><span class="p">(</span><span class="s2">"silver"</span><span class="p">)],</span>
+    <span class="n">shell_material</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">"BK7"</span><span class="p">)],</span>
+    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMedium</span><span class="p">(</span><span class="s2">"water"</span><span class="p">)],</span>
 <span class="p">)</span>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qback&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qback"</span><span class="p">)</span>
 
-<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;scatterer:core_diameter&quot;</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"scatterer:core_diameter"</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../../_images/sphx_glr_coreshell_Qback_vs_corediameter_001.png" srcset="../../../_images/sphx_glr_coreshell_Qback_vs_corediameter_001.png" alt="coreshell Qback vs corediameter" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>+-----------------------+-----------------------+
@@ -794,10 +794,10 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.</p>
 | air                   |                       |
 +-----------------------+-----------------------+
 
-[&lt;matplotlib.lines.Line2D object at 0x7fc4dbd6e710&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbd6f790&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbb95410&gt;]
+[&lt;matplotlib.lines.Line2D object at 0x7f1fdf848450&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fdf4a8d10&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fdf4a81d0&gt;]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.289 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.339 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-qback-vs-corediameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/8df6241e7e5bb2e6d40f66083ba8365b/coreshell_Qback_vs_corediameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_Qback_vs_corediameter.ipynb</span></code></a></p>

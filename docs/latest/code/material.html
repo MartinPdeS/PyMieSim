@@ -31,7 +31,7 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -873,9 +873,9 @@
 <code class="docutils literal notranslate"><span class="pre">PyMieSim.materials</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">available_materials</span><span class="p">,</span> <span class="n">load_material</span><span class="p">,</span> <span class="n">load_tabulated</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">available_materials</span><span class="p">(</span><span class="s2">&quot;sellmeier&quot;</span><span class="p">))</span>
-<span class="n">glass</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">&quot;BK7&quot;</span><span class="p">)</span>
-<span class="n">silver</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">&quot;silver&quot;</span><span class="p">,</span> <span class="n">extrapolation</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">available_materials</span><span class="p">(</span><span class="s2">"sellmeier"</span><span class="p">))</span>
+<span class="n">glass</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">"BK7"</span><span class="p">)</span>
+<span class="n">silver</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">"silver"</span><span class="p">,</span> <span class="n">extrapolation</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Tabulated data can be loaded from CSV or JSON. CSV files should contain

@@ -31,7 +31,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -749,7 +749,7 @@ to download the full example code.</p>
 | air                   |                       |
 +-----------------------+-----------------------+
 
-[&lt;matplotlib.lines.Line2D object at 0x7fc4dbbfa810&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4dbbf88d0&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbb93e50&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4dbb92490&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbd90290&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4dbb92a50&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbb940d0&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7fc4dbb96d50&gt;]
+[&lt;matplotlib.lines.Line2D object at 0x7f1fdf5fb090&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdf5fafd0&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fdf48b010&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fde247410&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fde247f50&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdf1b4690&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fde245910&gt;, &lt;matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdfa3f390&gt;]
 </pre></div>
 </div>
 <div class="line-block">
@@ -784,29 +784,29 @@ to download the full example code.</p>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
     <span class="n">diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">1400</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">&quot;BK7&quot;</span><span class="p">)],</span>
+    <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">"BK7"</span><span class="p">)],</span>
     <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="n">detector</span> <span class="o">=</span> <span class="n">CoherentModeSet</span><span class="p">(</span>
-    <span class="n">mode_number</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;LP11&quot;</span><span class="p">],</span>
+    <span class="n">mode_number</span><span class="o">=</span><span class="p">[</span><span class="s2">"LP11"</span><span class="p">],</span>
     <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">],</span>
     <span class="n">phi_offset</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">180</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">gamma_offset</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">polarization_filter</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">rotation</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
     <span class="n">sampling</span><span class="o">=</span><span class="p">[</span><span class="mi">300</span><span class="p">],</span>
-    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMedium</span><span class="p">(</span><span class="s2">&quot;water&quot;</span><span class="p">)]</span>
+    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMedium</span><span class="p">(</span><span class="s2">"water"</span><span class="p">)]</span>
 <span class="p">)</span>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector_set</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coupling"</span><span class="p">)</span>
 
-<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="s2">&quot;scatterer:diameter&quot;</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"source:wavelength"</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="s2">"scatterer:diameter"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.244 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.365 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-sphere-coupling-vs-wavelength-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/375672ab6e1073d0441c5329351615bb/sphere_coupling_vs_wavelength.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_coupling_vs_wavelength.ipynb</span></code></a></p>

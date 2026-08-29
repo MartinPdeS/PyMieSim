@@ -30,7 +30,7 @@
 <link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -596,11 +596,11 @@
 <div class="viewcode-block" id="Footprint">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.Footprint">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Footprint</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Compute the footprint of the scattered light coupling with the detector.</span>
 
 <span class="sd">    The footprint represents the spatial distribution of the scattered light as it couples with the detector.</span>
-<span class="sd">    This is important for understanding how the scattered light interacts with the detector&#39;s field of view and is influenced by both the scatterer&#39;s properties and the detector configuration.</span>
+<span class="sd">    This is important for understanding how the scattered light interacts with the detector's field of view and is influenced by both the scatterer's properties and the detector configuration.</span>
 
 <span class="sd">    The footprint is computed using an inverse Fourier transform:</span>
 
@@ -612,16 +612,16 @@
 <span class="sd">    Where:</span>
 
 <span class="sd">    - :math:`\tilde{ \psi } (\xi, \nu)`: The Fourier transform of the scattered field.</span>
-<span class="sd">    - :math:`\tilde{ \phi}_{l,m} (\xi, \nu)`: The Fourier transform of the detector&#39;s capturing field.</span>
+<span class="sd">    - :math:`\tilde{ \phi}_{l,m} (\xi, \nu)`: The Fourier transform of the detector's capturing field.</span>
 <span class="sd">    - :math:`\mathscr{F}^{-1}`: The inverse Fourier transform operator.</span>
 <span class="sd">    - :math:`(\delta_x, \delta_y)`: Spatial coordinates describing the footprint in the detector plane.</span>
 
-<span class="sd">    The inverse Fourier transform yields the spatial pattern of the scattered light&#39;s interaction with the detector, which is then squared to compute the intensity of the footprint.</span>
+<span class="sd">    The inverse Fourier transform yields the spatial pattern of the scattered light's interaction with the detector, which is then squared to compute the intensity of the footprint.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    detector : GenericDetector</span>
-<span class="sd">        The detector object that defines the capturing field and geometry. This object provides information about the detector&#39;s configuration, including its numerical aperture, position, and sensitivity.</span>
+<span class="sd">        The detector object that defines the capturing field and geometry. This object provides information about the detector's configuration, including its numerical aperture, position, and sensitivity.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -642,7 +642,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    - The footprint provides valuable information about the coupling efficiency between the scattered light and the detector. This is useful in designing experiments where precise control of light detection is important, such as in microscopy, remote sensing, or optical measurements.</span>
-<span class="sd">    - The interaction between the scattered field and the detector is influenced by factors such as the size, shape, and refractive index of the scatterer, as well as the detector&#39;s aperture and positioning.</span>
+<span class="sd">    - The interaction between the scattered field and the detector is influenced by factors such as the size, shape, and refractive index of the scatterer, as well as the detector's aperture and positioning.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -653,13 +653,13 @@
 <span class="sd">    &gt;&gt;&gt; footprint = scatterer.get_footprint(detector=my_detector)</span>
 <span class="sd">    &gt;&gt;&gt; print(footprint)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">padding_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute and store the detector-plane footprint.</span>
+<span class="w">        </span><span class="sd">"""Compute and store the detector-plane footprint.</span>
 
 <span class="sd">        The footprint is computed during initialization and is available as</span>
 <span class="sd">        ``mapping``, ``direct_x``, and ``direct_y`` afterwards.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup</span> <span class="o">=</span> <span class="n">setup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="n">sampling</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">padding_factor</span> <span class="o">=</span> <span class="n">padding_factor</span>
@@ -670,7 +670,7 @@
 <div class="viewcode-block" id="Footprint.compute_footprint">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.Footprint.compute_footprint">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the footprint of the scatterer on the detector plane.</span>
+<span class="w">        </span><span class="sd">"""Compute the footprint of the scatterer on the detector plane.</span>
 
 <span class="sd">        The footprint is calculated based on the far-field scattering patterns and the characteristics of the detector,</span>
 <span class="sd">        using a Fourier transform to project the far-field onto the detector plane.</span>
@@ -681,17 +681,17 @@
 
 <span class="sd">            The detector cache block is not currently included in this</span>
 <span class="sd">            calculation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">max_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">max_angle</span>
         <span class="n">n_point</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
 
         <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span>
-            <span class="o">-</span><span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="p">:</span> <span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="p">:</span> <span class="n">n_point</span><span class="p">,</span>
+            <span class="o">-</span><span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"radian"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="p">:</span> <span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"radian"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="p">:</span> <span class="n">n_point</span><span class="p">,</span>
             <span class="mi">0</span> <span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="p">:</span> <span class="n">n_point</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="n">max_distance_direct_space</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;radian&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavenumber_vacuum</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"radian"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavenumber_vacuum</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span>
@@ -733,7 +733,7 @@
 <div class="viewcode-block" id="Footprint.get_fourier_component">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.Footprint.get_fourier_component">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_fourier_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute one detector-plane Fourier component.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute one detector-plane Fourier component.</span>
 
 <span class="sd">        This method performs a two-dimensional inverse Fourier transform on the input scalar field, which represents</span>
 <span class="sd">        a projection (either parallel or perpendicular) of the far-field pattern. It then extracts a central portion</span>
@@ -761,10 +761,10 @@
 
 <span class="sd">            I(x, y) = \left|\mathscr{F}^{-1}\{\psi(\xi, \nu)\}\right|^2.</span>
 
-<span class="sd">        The method uses numpy&#39;s fft module to perform the Fourier transform, applying a padding factor to the input to</span>
+<span class="sd">        The method uses numpy's fft module to perform the Fourier transform, applying a padding factor to the input to</span>
 <span class="sd">        achieve a higher resolution in the Fourier domain. The resulting Fourier transform is then squared and fftshifted</span>
 <span class="sd">        to center the zero-frequency component, and a central portion is extracted to match the intended output size.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Calculate the target size based on the sampling and padding factor, and the indices for the central portion extraction.</span>
         <span class="n">total_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_factor</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
@@ -773,7 +773,7 @@
         <span class="n">padded_scalar</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
             <span class="n">scalar</span><span class="p">,</span>
             <span class="n">pad_width</span><span class="o">=</span><span class="p">((</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">)),</span>
-            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span>
             <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -793,8 +793,8 @@
 
 <div class="viewcode-block" id="Footprint.plot">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.Footprint.plot">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gray&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the scatterer footprint using a two-dimensional colormap.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"gray"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Plot the scatterer footprint using a two-dimensional colormap.</span>
 
 <span class="sd">        The method generates a plot representing the footprint of the scatterer, with the X and Y axes showing</span>
 <span class="sd">        offset distances in micrometers, and the colormap depicting the mapping values.</span>
@@ -802,16 +802,16 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        colormap : str</span>
-<span class="sd">            Matplotlib colormap name. Defaults to ``&quot;gray&quot;``.</span>
+<span class="sd">            Matplotlib colormap name. Defaults to ``"gray"``.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">MPSPlots</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">mps</span><span class="p">):</span>
             <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
             <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Scatterer Footprint&quot;</span><span class="p">,</span>
-                <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Offset distance in X-axis [$\mu$m]&quot;</span><span class="p">,</span>
-                <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Offset distance in Y-axis [$\mu$m]&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">"Scatterer Footprint"</span><span class="p">,</span>
+                <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"Offset distance in X-axis [$\mu$m]"</span><span class="p">,</span>
+                <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"Offset distance in Y-axis [$\mu$m]"</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>

@@ -31,7 +31,7 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -636,8 +636,8 @@ evaluated as a parameter grid.</p>
 <span class="p">)</span>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">)</span>
-<span class="n">result</span><span class="o">.</span><span class="n">isel</span><span class="p">({</span><span class="s2">&quot;measure&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="s2">"Qext"</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">isel</span><span class="p">({</span><span class="s2">"measure"</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"source:wavelength"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"Qsca"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The result is a unit-aware PyMieSim LabeledArray.  Use <code class="docutils literal notranslate"><span class="pre">.as_numpy()</span></code> when a
@@ -647,18 +647,18 @@ or <code class="docutils literal notranslate"><span class="pre">get_sequential</
 <h2>Extracting NumPy and pandas data<a class="headerlink" href="#extracting-numpy-and-pandas-data" title="Link to this heading">#</a></h2>
 <p>The experiment result remains labeled by default. Convert it explicitly when
 using libraries that expect a raw array or a pandas table:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
 
 <span class="n">values</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
 <span class="n">dataframe</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dataframe</span><span class="p">[[</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">,</span> <span class="s2">&quot;scatterer:diameter&quot;</span><span class="p">,</span> <span class="s2">&quot;Qsca&quot;</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dataframe</span><span class="p">[[</span><span class="s2">"source:wavelength"</span><span class="p">,</span> <span class="s2">"scatterer:diameter"</span><span class="p">,</span> <span class="s2">"Qsca"</span><span class="p">]])</span>
 </pre></div>
 </div>
 <p>For multiple measures, the labeled array contains a <code class="docutils literal notranslate"><span class="pre">measure</span></code> dimension and
 <code class="docutils literal notranslate"><span class="pre">as_dataframe()</span></code> creates one output column per measure:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qext&quot;</span><span class="p">,</span> <span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qext"</span><span class="p">,</span> <span class="s2">"Qsca"</span><span class="p">)</span>
 <span class="n">dataframe</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
 <span class="c1"># Columns: source:wavelength, scatterer:diameter, Qext, Qsca</span>
 </pre></div>

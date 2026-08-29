@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -560,8 +560,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><strong>Date</strong>: Aug 14, 2026, <strong>Version</strong>: 5.2.0</p>
-<p><img alt="PyOptik logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
+  <p><strong>Date</strong>: Aug 29, 2026, <strong>Version</strong>: 5.2.0</p>
+<p><img alt="PyMieSim logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 35.0%" />
@@ -633,7 +633,7 @@ conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class=
 </div>
 <p>Verify the installation with the same Python interpreter that you will use for
 your simulations:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import PyMieSim; print(PyMieSim.__version__)&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import PyMieSim; print(PyMieSim.__version__)"</span>
 </pre></div>
 </div>
 <p>The released wheels are the easiest option.  Building from source requires a
@@ -668,7 +668,7 @@ dimensionless real or complex values.</p>
 <span class="p">)</span>
 
 <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-<span class="n">qsca</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<span class="n">qsca</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">qsca</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -681,7 +681,7 @@ dimensionless real or complex values.</p>
 </pre></div>
 </div>
 <p>For explicit measure and unit metadata, request a typed result:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">measure</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -728,7 +728,7 @@ coordinates, and can be converted to NumPy or pandas explicitly.</p>
 <span class="p">)</span>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
 <span class="n">values</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
 <span class="n">dataframe</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
 </pre></div>
@@ -775,7 +775,7 @@ scatterer property:</p>
     <span class="n">source</span><span class="o">=</span><span class="n">single_source</span><span class="p">,</span>
     <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">coupling</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
+<span class="n">coupling</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"coupling"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">coupling</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -814,7 +814,7 @@ far-field workflows.</p>
 <p>For development or manual compilation, clone the repository and run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
 mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span>../<span class="w"> </span>-G<span class="s2">&quot;Unix Makefiles&quot;</span>
+cmake<span class="w"> </span>../<span class="w"> </span>-G<span class="s2">"Unix Makefiles"</span>
 sudo<span class="w"> </span>make<span class="w"> </span>install
 <span class="nb">cd</span><span class="w"> </span>..
 python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.

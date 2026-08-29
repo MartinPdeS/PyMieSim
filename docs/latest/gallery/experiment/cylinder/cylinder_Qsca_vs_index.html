@@ -31,7 +31,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -714,12 +714,12 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="infinitecylinder-qsca-vs-index">
 <span id="sphx-glr-gallery-experiment-cylinder-cylinder-qsca-vs-index-py"></span><h1>InfiniteCylinder: Qsca vs Index<a class="headerlink" href="#infinitecylinder-qsca-vs-index" title="Link to this heading">#</a></h1>
 <p>This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.</p>
-<img src="../../../_images/sphx_glr_cylinder_Qsca_vs_index_001.png" srcset="../../../_images/sphx_glr_cylinder_Qsca_vs_index_001.png" alt="cylinder Qsca vs index" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
+<img src="../../../_images/sphx_glr_cylinder_Qsca_vs_index_001.png" srcset="../../../_images/sphx_glr_cylinder_Qsca_vs_index_001.png" alt="cylinder Qsca vs index" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
   return math.isfinite(val)
-/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
+/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
   return np.asarray(x, float)
 
-[&lt;matplotlib.lines.Line2D object at 0x7fc4db6dce10&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4db998f10&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4db99ba10&gt;]
+[&lt;matplotlib.lines.Line2D object at 0x7f1fdfa3ed90&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fdf63b110&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fdfa967d0&gt;]
 </pre></div>
 </div>
 <div class="line-block">
@@ -754,12 +754,12 @@ to download the full example code.</p>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="s2">"Qext"</span><span class="p">)</span>
 
-<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;scatterer:material&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Qsca&quot;</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"scatterer:material"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"Qsca"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.609 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.679 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-cylinder-cylinder-qsca-vs-index-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/1de34893f45b90fffab8548d0812ffc5/cylinder_Qsca_vs_index.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cylinder_Qsca_vs_index.ipynb</span></code></a></p>

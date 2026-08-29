@@ -31,7 +31,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -743,9 +743,9 @@ to download the full example code.</p>
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShellSet</span><span class="p">(</span>
     <span class="n">core_diameter</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1250</span><span class="p">,</span> <span class="mi">1500</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
     <span class="n">shell_thickness</span><span class="o">=</span><span class="p">[</span><span class="mi">800</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">core_material</span><span class="o">=</span><span class="p">[</span><span class="n">TabulatedMaterial</span><span class="p">(</span><span class="s2">&quot;silver&quot;</span><span class="p">)],</span>
-    <span class="n">shell_material</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">&quot;BK7&quot;</span><span class="p">)],</span>
-    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMedium</span><span class="p">(</span><span class="s2">&quot;water&quot;</span><span class="p">)],</span>
+    <span class="n">core_material</span><span class="o">=</span><span class="p">[</span><span class="n">TabulatedMaterial</span><span class="p">(</span><span class="s2">"silver"</span><span class="p">)],</span>
+    <span class="n">shell_material</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMaterial</span><span class="p">(</span><span class="s2">"BK7"</span><span class="p">)],</span>
+    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="n">SellmeierMedium</span><span class="p">(</span><span class="s2">"water"</span><span class="p">)],</span>
 <span class="p">)</span>
 
 <span class="n">detector</span> <span class="o">=</span> <span class="n">PhotodiodeSet</span><span class="p">(</span>
@@ -759,15 +759,15 @@ to download the full example code.</p>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector_set</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coupling&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coupling"</span><span class="p">)</span>
 
-<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;detector:cache_NA&quot;</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"detector:cache_NA"</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_coreshell_coupling_vs_na_cache_001.png" srcset="../../../_images/sphx_glr_coreshell_coupling_vs_na_cache_001.png" alt="coreshell coupling vs na cache" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D object at 0x7fc4dbd6ebd0&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbb93610&gt;, &lt;matplotlib.lines.Line2D object at 0x7fc4dbb91550&gt;]
+<img src="../../../_images/sphx_glr_coreshell_coupling_vs_na_cache_001.png" srcset="../../../_images/sphx_glr_coreshell_coupling_vs_na_cache_001.png" alt="coreshell coupling vs na cache" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D object at 0x7f1fdf2da4d0&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fe22e8a90&gt;, &lt;matplotlib.lines.Line2D object at 0x7f1fdf4afe50&gt;]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.512 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.585 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-coupling-vs-na-cache-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/621acc8601f3cf1acefaa170c5421bec/coreshell_coupling_vs_na_cache.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_coupling_vs_na_cache.ipynb</span></code></a></p>
