@@ -60,7 +60,7 @@ classifiers = [
 dependencies = [
     "TypedUnit ==0.0.11",
     "MPSPlots ==1.8.9",
-    "PyOptik ==2.0.7",
+    "PyOptik ==3.0.5",
     "setuptools_scm[toml] >=8,<11",
     "numpy ==2.2.6",
     "matplotlib ==3.10.9",
