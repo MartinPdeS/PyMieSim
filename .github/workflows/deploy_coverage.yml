@@ -3,8 +3,6 @@ name: Deploy coverage
 
 on:
   push:
-    branches: [ "master" ]
-    tags: '*'
   pull_request:
     branches: [ "master" ]
 

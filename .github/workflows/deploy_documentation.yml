@@ -3,14 +3,14 @@ name: Documentation
 
 on:
   push:
-    branches:
-      - master
-    tags:
-      - "*"
 
   pull_request:
     branches:
       - master
+
+concurrency:
+  group: documentation-build-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -19,9 +19,9 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
-    if: github.event_name == 'push'
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v1
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v2
     with:
       python-version: "3.11"
       package-name: "PyMieSim"
       apt-package: xvfb jq
+      deploy-pages: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
