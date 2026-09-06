@@ -121,7 +121,7 @@ Importing the package dependencies: numpy, PyMieSim
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f1fede5d190>, <matplotlib.lines.Line2D object at 0x7f1fede5ce90>, <matplotlib.lines.Line2D object at 0x7f1fece5ba10>]
+    [<matplotlib.lines.Line2D object at 0x7f7d01e91890>, <matplotlib.lines.Line2D object at 0x7f7d015c4c10>, <matplotlib.lines.Line2D object at 0x7f7d015c4310>]
 
 
 
