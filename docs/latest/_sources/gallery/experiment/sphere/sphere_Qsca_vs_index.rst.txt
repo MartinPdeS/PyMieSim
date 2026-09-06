@@ -40,7 +40,7 @@ Sphere: Qsca vs index
     /opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
-    [<matplotlib.lines.Line2D object at 0x7f77c00d6d90>, <matplotlib.lines.Line2D object at 0x7f77c00d5dd0>, <matplotlib.lines.Line2D object at 0x7f77c00d4050>]
+    [<matplotlib.lines.Line2D object at 0x7f512d7fde10>, <matplotlib.lines.Line2D object at 0x7f512d256290>, <matplotlib.lines.Line2D object at 0x7f512d255ad0>]
 
 
 
@@ -86,7 +86,7 @@ Sphere: Qsca vs index
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.173 seconds)
+   **Total running time of the script:** (0 minutes 0.200 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_index.py:
