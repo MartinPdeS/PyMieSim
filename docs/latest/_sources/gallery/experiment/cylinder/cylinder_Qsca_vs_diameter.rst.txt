@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7fdb5afb0690>, <matplotlib.lines.Line2D object at 0x7fdb5afb2950>]
+    [<matplotlib.lines.Line2D object at 0x7f1ff094fc50>, <matplotlib.lines.Line2D object at 0x7f1ff0c10b10>]
 
 
 
@@ -84,7 +84,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.417 seconds)
+   **Total running time of the script:** (0 minutes 0.425 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_diameter.py:
