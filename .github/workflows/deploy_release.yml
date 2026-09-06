@@ -22,7 +22,7 @@ jobs:
         mingw-w64-x86_64-gcc-fortran
         mingw-w64-x86_64-pkg-config
       conda_python_versions: '["3.11", "3.12", "3.13"]'
-      conda_os_list: '["ubuntu-latest", "macos-latest", "windows-latest"]'
+      conda_os_list: '["ubuntu-latest", "macos-latest"]'
       conda_package_name: pymiesim
       conda_recipe_path: conda.recipe
       conda_test_import: PyMieSim
