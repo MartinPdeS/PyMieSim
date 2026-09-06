@@ -1,0 +1,32 @@
+{
+  "title": "PyMieSim: fast and flexible Mie scattering simulations",
+  "description": "PyMieSim is an open-source Python package for fast and flexible Mie scattering simulations. It supports spherical, cylindrical, and core-shell particles, configurable sources and detectors, and parametric scattering studies.",
+  "creators": [
+    {
+      "name": "Poinsinet de Sivry-Houle, Martin",
+      "affiliation": "Amsterdam UMC"
+    }
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "version": "5.2.0",
+  "publication_date": "2026-08-05",
+  "keywords": [
+    "Mie scattering",
+    "light scattering",
+    "backscatter",
+    "sphere",
+    "cylinder",
+    "nanoparticle",
+    "phase function",
+    "Rayleigh scattering"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.1364/OPTCON.473102",
+      "relation": "isDescribedBy",
+      "resource_type": "publication-article"
+    }
+  ]
+}
