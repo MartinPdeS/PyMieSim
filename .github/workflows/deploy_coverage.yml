@@ -17,9 +17,10 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@master
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@v1
     with:
       python-version: "3.11"
       apt-package: xvfb
+      coverage-package: PyMieSim
     secrets:
       _GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

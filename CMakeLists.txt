@@ -12,8 +12,8 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
 # --------------------- CMake configuration --------------------
 
 # --------------------- Set the output directory for libraries --------------------
-set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
-set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/binary")
+set(LOCAL_CXX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cpp")
+set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}")
 include_directories(${LOCAL_CXX_DIR})
 # --------------------- Set the output directory for libraries --------------------
 
@@ -109,26 +109,32 @@ message(STATUS "")
 # ----------------- logging build configuration --------------------
 
 # ----------------- collect subdirectories --------------------
-add_subdirectory(PyMieSim/cpp/pint)
-add_subdirectory(PyMieSim/cpp/coordinates)
-add_subdirectory(PyMieSim/cpp/bessel_subroutine)
-add_subdirectory(PyMieSim/cpp/material)
-add_subdirectory(PyMieSim/cpp/polarization)
-add_subdirectory(PyMieSim/cpp/mesh)
-add_subdirectory(PyMieSim/cpp/labeled_array)
+add_subdirectory(cpp/pint)
+add_subdirectory(cpp/coordinates)
+add_subdirectory(cpp/bessel_subroutine)
+add_subdirectory(cpp/material)
+add_subdirectory(cpp/polarization)
+add_subdirectory(cpp/mesh)
+add_subdirectory(cpp/labeled_array)
 
-add_subdirectory(PyMieSim/cpp/single/mode_field)
-add_subdirectory(PyMieSim/cpp/single/setup)
-add_subdirectory(PyMieSim/cpp/single/source)
-add_subdirectory(PyMieSim/cpp/single/scatterer)
-add_subdirectory(PyMieSim/cpp/single/optical_interface)
-add_subdirectory(PyMieSim/cpp/single/detector)
+add_subdirectory(cpp/single/mode_field)
+add_subdirectory(cpp/single/setup)
+add_subdirectory(cpp/single/source)
+add_subdirectory(cpp/single/scatterer)
+add_subdirectory(cpp/single/optical_interface)
+add_subdirectory(cpp/single/detector)
 
 
-add_subdirectory(PyMieSim/cpp/experiment/polarization_set)
-add_subdirectory(PyMieSim/cpp/experiment/source_set)
-add_subdirectory(PyMieSim/cpp/experiment/material_set)
-add_subdirectory(PyMieSim/cpp/experiment/scatterer_set)
-add_subdirectory(PyMieSim/cpp/experiment/detector_set)
-add_subdirectory(PyMieSim/cpp/experiment/setup)
+add_subdirectory(cpp/experiment/polarization_set)
+add_subdirectory(cpp/experiment/source_set)
+add_subdirectory(cpp/experiment/material_set)
+add_subdirectory(cpp/experiment/scatterer_set)
+add_subdirectory(cpp/experiment/detector_set)
+add_subdirectory(cpp/experiment/setup)
 # ----------------- collect subdirectories --------------------
+
+option(PYMIESIM_BUILD_TESTS "Build native regression tests" OFF)
+if(PYMIESIM_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests/native)
+endif()

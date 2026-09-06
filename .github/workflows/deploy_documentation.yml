@@ -20,7 +20,7 @@ permissions:
 jobs:
   ManyLinux_x86_64:
     if: github.event_name == 'push'
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@master
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v1
     with:
       python-version: "3.11"
       package-name: "PyMieSim"

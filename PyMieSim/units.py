@@ -11,5 +11,6 @@ from TypedUnit import (
 )  # noqa: E501
 
 
-from PyMieSim.binary import interface_pint
-interface_pint.set_ureg(ureg)
+from PyMieSim import _pint
+
+_pint.set_ureg(ureg)

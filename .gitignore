@@ -8,10 +8,15 @@
 
 # Except ...
 !.github
+!conda.recipe
+!conda.recipe/meta.yaml
 !PyMieSim
+!cpp
 !development
 !docs
 !tests
+!tools
+!tools/*.py
 !.flake8
 !.gitignore
 !.pre-commit-config.yaml
@@ -26,6 +31,7 @@
 !.coveragerc
 !pytest.ini
 !makefile
+!CONTRIBUTING.md
 
 # But ignore docs/build inside docs and code
 docs/build/

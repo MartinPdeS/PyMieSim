@@ -1,0 +1,5 @@
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Embed)
+add_executable(native_regressions regressions.cpp)
+target_link_libraries(native_regressions PRIVATE _setup_lib pybind11::embed Python::Python)
+add_test(NAME native_regressions COMMAND native_regressions)
+set_tests_properties(native_regressions PROPERTIES ENVIRONMENT "OMP_NUM_THREADS=4;PYTHONPATH=${Python_SITELIB}")
