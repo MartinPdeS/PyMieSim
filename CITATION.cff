@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use PyMieSim in your research, please cite this software and the associated publication."
+title: "PyMieSim"
+type: software
+authors:
+  - family-names: "Poinsinet de Sivry-Houle"
+    given-names: "Martin"
+    affiliation: "Amsterdam UMC"
+abstract: >
+  PyMieSim is an open-source Python package for fast and flexible Mie
+  scattering simulations of spherical, cylindrical, and core-shell particles.
+license: "MIT"
+repository-code: "https://github.com/MartinPdeS/PyMieSim"
+doi: "10.1364/OPTCON.473102"
+keywords:
+  - Mie scattering
+  - light scattering
+  - nanoparticles
+  - phase functions
+  - Rayleigh scattering
