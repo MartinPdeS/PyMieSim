@@ -71,7 +71,7 @@ Sphere: coherent coupling vs sampling
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f92637638d0>, <matplotlib.lines.Line2D object at 0x7f926290bcd0>, <matplotlib.lines.Line2D object at 0x7f926290a250>, <matplotlib.lines.Line2D object at 0x7f926290a910>, <matplotlib.lines.Line2D object at 0x7f926290a5d0>]
+    [<matplotlib.lines.Line2D object at 0x7f5dd857b510>, <matplotlib.lines.Line2D object at 0x7f5dd857b5d0>, <matplotlib.lines.Line2D object at 0x7f5dd8578b90>, <matplotlib.lines.Line2D object at 0x7f5dd857a4d0>, <matplotlib.lines.Line2D object at 0x7f5dd857aa90>]
 
 
 
@@ -130,7 +130,7 @@ Sphere: coherent coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.181 seconds)
+   **Total running time of the script:** (0 minutes 0.268 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_sampling.py:
