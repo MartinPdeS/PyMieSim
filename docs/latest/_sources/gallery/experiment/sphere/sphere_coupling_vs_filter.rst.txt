@@ -38,40 +38,40 @@ Sphere: Coupling vs polarization filter
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | polystyren            | polyetylene           |
+    | fused_silica          | calcium               |
     +-----------------------+-----------------------+
-    | germanium             | nickel                |
+    | water                 | gold                  |
     +-----------------------+-----------------------+
-    | BAF10                 | calcium               |
+    | BAK1                  | copper                |
     +-----------------------+-----------------------+
-    | flint                 | sodium                |
+    | soda_lime_glass       | silicon               |
     +-----------------------+-----------------------+
-    | fused_silica          | iron                  |
+    | lithium_niobate       | aluminium             |
     +-----------------------+-----------------------+
-    | water                 | copper                |
+    | argon                 | iron                  |
     +-----------------------+-----------------------+
-    | BAK1                  | aluminium             |
+    | flint                 | polyetylene           |
     +-----------------------+-----------------------+
-    | SF5                   | zinc                  |
+    | BAF10                 | sodium                |
     +-----------------------+-----------------------+
-    | lithium_niobate       | silicon               |
+    | germanium             | silver                |
     +-----------------------+-----------------------+
-    | BK7                   | gold                  |
+    | air                   | nickel                |
     +-----------------------+-----------------------+
-    | argon                 | silver                |
+    | crown                 | zinc                  |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | SF5                   |                       |
+    +-----------------------+-----------------------+
+    | polystyren            |                       |
+    +-----------------------+-----------------------+
+    | BK7                   |                       |
     +-----------------------+-----------------------+
     | acetone               |                       |
     +-----------------------+-----------------------+
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       |                       |
-    +-----------------------+-----------------------+
-    | air                   |                       |
-    +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f1fdf195810>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdf195190>, <matplotlib.lines.Line2D object at 0x7f1fdfa99f50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdfa98ad0>]
+    [<matplotlib.lines.Line2D object at 0x7f9263e5c150>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f9263e5e650>, <matplotlib.lines.Line2D object at 0x7f9263915010>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f9263915990>]
 
 
 
@@ -130,7 +130,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.940 seconds)
+   **Total running time of the script:** (0 minutes 0.592 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_filter.py:

@@ -38,40 +38,40 @@ Sphere: Coherent Goniometer
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | polystyren            | polyetylene           |
+    | fused_silica          | calcium               |
     +-----------------------+-----------------------+
-    | germanium             | nickel                |
+    | water                 | gold                  |
     +-----------------------+-----------------------+
-    | BAF10                 | calcium               |
+    | BAK1                  | copper                |
     +-----------------------+-----------------------+
-    | flint                 | sodium                |
+    | soda_lime_glass       | silicon               |
     +-----------------------+-----------------------+
-    | fused_silica          | iron                  |
+    | lithium_niobate       | aluminium             |
     +-----------------------+-----------------------+
-    | water                 | copper                |
+    | argon                 | iron                  |
     +-----------------------+-----------------------+
-    | BAK1                  | aluminium             |
+    | flint                 | polyetylene           |
     +-----------------------+-----------------------+
-    | SF5                   | zinc                  |
+    | BAF10                 | sodium                |
     +-----------------------+-----------------------+
-    | lithium_niobate       | silicon               |
+    | germanium             | silver                |
     +-----------------------+-----------------------+
-    | BK7                   | gold                  |
+    | air                   | nickel                |
     +-----------------------+-----------------------+
-    | argon                 | silver                |
+    | crown                 | zinc                  |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | SF5                   |                       |
+    +-----------------------+-----------------------+
+    | polystyren            |                       |
+    +-----------------------+-----------------------+
+    | BK7                   |                       |
     +-----------------------+-----------------------+
     | acetone               |                       |
     +-----------------------+-----------------------+
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       |                       |
-    +-----------------------+-----------------------+
-    | air                   |                       |
-    +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f1fdf846f90>, <matplotlib.lines.Line2D object at 0x7f1fdf845a10>, <matplotlib.lines.Line2D object at 0x7f1fdf845f90>, <matplotlib.lines.Line2D object at 0x7f1fdf846210>]
+    [<matplotlib.lines.Line2D object at 0x7f9263d94c90>, <matplotlib.lines.Line2D object at 0x7f9263d976d0>, <matplotlib.lines.Line2D object at 0x7f9263d94f10>, <matplotlib.lines.Line2D object at 0x7f9263786090>]
 
 
 
@@ -131,7 +131,7 @@ Sphere: Coherent Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.463 seconds)
+   **Total running time of the script:** (0 minutes 0.279 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py:

@@ -38,40 +38,40 @@ Sphere: Coupling vs wavelength
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | polystyren            | polyetylene           |
+    | fused_silica          | calcium               |
     +-----------------------+-----------------------+
-    | germanium             | nickel                |
+    | water                 | gold                  |
     +-----------------------+-----------------------+
-    | BAF10                 | calcium               |
+    | BAK1                  | copper                |
     +-----------------------+-----------------------+
-    | flint                 | sodium                |
+    | soda_lime_glass       | silicon               |
     +-----------------------+-----------------------+
-    | fused_silica          | iron                  |
+    | lithium_niobate       | aluminium             |
     +-----------------------+-----------------------+
-    | water                 | copper                |
+    | argon                 | iron                  |
     +-----------------------+-----------------------+
-    | BAK1                  | aluminium             |
+    | flint                 | polyetylene           |
     +-----------------------+-----------------------+
-    | SF5                   | zinc                  |
+    | BAF10                 | sodium                |
     +-----------------------+-----------------------+
-    | lithium_niobate       | silicon               |
+    | germanium             | silver                |
     +-----------------------+-----------------------+
-    | BK7                   | gold                  |
+    | air                   | nickel                |
     +-----------------------+-----------------------+
-    | argon                 | silver                |
+    | crown                 | zinc                  |
     +-----------------------+-----------------------+
-    | crown                 |                       |
+    | SF5                   |                       |
+    +-----------------------+-----------------------+
+    | polystyren            |                       |
+    +-----------------------+-----------------------+
+    | BK7                   |                       |
     +-----------------------+-----------------------+
     | acetone               |                       |
     +-----------------------+-----------------------+
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       |                       |
-    +-----------------------+-----------------------+
-    | air                   |                       |
-    +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f1fdf5fb090>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdf5fafd0>, <matplotlib.lines.Line2D object at 0x7f1fdf48b010>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fde247410>, <matplotlib.lines.Line2D object at 0x7f1fde247f50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdf1b4690>, <matplotlib.lines.Line2D object at 0x7f1fde245910>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1fdfa3f390>]
+    [<matplotlib.lines.Line2D object at 0x7f92634ec510>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f92638c7d10>, <matplotlib.lines.Line2D object at 0x7f926276d550>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f926276d790>, <matplotlib.lines.Line2D object at 0x7f9263d7e0d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f9263d7fe10>, <matplotlib.lines.Line2D object at 0x7f9263908e90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f9263909650>]
 
 
 
@@ -134,7 +134,7 @@ Sphere: Coupling vs wavelength
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.365 seconds)
+   **Total running time of the script:** (0 minutes 0.816 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_wavelength.py:
