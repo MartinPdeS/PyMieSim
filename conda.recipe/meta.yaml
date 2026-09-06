@@ -22,7 +22,7 @@ requirements:
     - "{{ compiler('c') }}"
     - "{{ compiler('cxx') }}"
     - vs2022_win-64          # [win]
-    - flang_win-64           # [win]
+    - flang_win-64 ==22.1.8  # [win]
     - ninja
     - cmake
     - "{{ compiler('fortran') }}"  # [unix]
