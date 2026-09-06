@@ -36,7 +36,7 @@ Sphere: Coupling vs diameter
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f5dd8b097d0>, <matplotlib.lines.Line2D object at 0x7f5dd8b0a250>, <matplotlib.lines.Line2D object at 0x7f5dd8b0a450>]
+    [<matplotlib.lines.Line2D object at 0x7f77c03b4650>, <matplotlib.lines.Line2D object at 0x7f77c03b5490>, <matplotlib.lines.Line2D object at 0x7f77bfdd0e50>]
 
 
 
@@ -94,7 +94,7 @@ Sphere: Coupling vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.957 seconds)
+   **Total running time of the script:** (0 minutes 0.959 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:
