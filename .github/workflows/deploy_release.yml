@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   release:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v4
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v5
     with:
       pypi_python_version: "3.11"
       pypi_build_linux: true
