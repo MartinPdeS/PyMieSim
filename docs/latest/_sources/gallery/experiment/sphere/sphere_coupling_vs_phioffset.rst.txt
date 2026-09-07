@@ -71,7 +71,7 @@ Sphere: Goniometer
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f0fbbcc2ed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f0fbbcc2d50>, <matplotlib.lines.Line2D object at 0x7f0fbbf10790>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f0fbbf12390>]
+    [<matplotlib.lines.Line2D object at 0x7fd4f4fa4410>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fd4f4fa5e10>, <matplotlib.lines.Line2D object at 0x7fd4f4f7a810>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fd4f4f7aa90>]
 
 
 
@@ -129,7 +129,7 @@ Sphere: Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.352 seconds)
+   **Total running time of the script:** (0 minutes 0.360 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py:

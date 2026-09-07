@@ -73,7 +73,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f0fc4cd1cd0>, <matplotlib.lines.Line2D object at 0x7f0fbada5510>, <matplotlib.lines.Line2D object at 0x7f0fbada4190>]
+    [<matplotlib.lines.Line2D object at 0x7fd4f5226f90>, <matplotlib.lines.Line2D object at 0x7fd4f49fe390>, <matplotlib.lines.Line2D object at 0x7fd4f49fc850>]
 
 
 
@@ -124,7 +124,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.414 seconds)
+   **Total running time of the script:** (0 minutes 0.452 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:
