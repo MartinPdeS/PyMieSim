@@ -73,7 +73,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fd4f2bfcc50>, <matplotlib.lines.Line2D object at 0x7fd4f2bfda50>, <matplotlib.lines.Line2D object at 0x7fd4f2bff350>, <matplotlib.lines.Line2D object at 0x7fd4f2bfe8d0>]
+    [<matplotlib.lines.Line2D object at 0x7f972dbf47d0>, <matplotlib.lines.Line2D object at 0x7f97309e6650>, <matplotlib.lines.Line2D object at 0x7f973293f950>, <matplotlib.lines.Line2D object at 0x7f972e28f150>]
 
 
 
@@ -132,7 +132,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.280 seconds)
+   **Total running time of the script:** (0 minutes 0.361 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:

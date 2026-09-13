@@ -71,7 +71,7 @@ Sphere: Coupling vs polarization filter
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fd4f39ccb90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fd4f35b2310>, <matplotlib.lines.Line2D object at 0x7fd4f3cd7750>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fd4f3cd4210>]
+    [<matplotlib.lines.Line2D object at 0x7f9732967d90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f972d8ad390>, <matplotlib.lines.Line2D object at 0x7f972d8aef50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f972e17a810>]
 
 
 
@@ -130,7 +130,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.742 seconds)
+   **Total running time of the script:** (0 minutes 0.922 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_filter.py:
