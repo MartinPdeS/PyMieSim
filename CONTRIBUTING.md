@@ -18,7 +18,7 @@ make test
 
 After changing native sources, rebuild the editable installation before
 testing. Do not hand-edit `PyMieSim/_version.py`; it is generated from Git
-metadata during releases and builds.
+metadata by the release helper.
 
 ## Repository layout
 
@@ -65,6 +65,21 @@ Keep pull requests focused. Explain the scientific or technical motivation,
 the public behaviour affected, and the verification performed. Report platform
 and compiler details for native changes.
 
-Release tags use `vMAJOR.MINOR.PATCH`. `make tag VERSION=vX.Y.Z` regenerates
-the source version file, creates a release commit, and makes an annotated tag;
+Release tags use `vMAJOR.MINOR.PATCH`. The release helper keeps the explicit
+`pyproject.toml` version, Conda recipe, Zenodo version and publication date,
+and generated `PyMieSim/_version.py` aligned, following PackLab's release rules.
+Do not edit `_version.py` by hand.
+
+`make release patch`, `make release minor`, and `make release major` increment
+the highest existing local semantic-version tag, create a release commit and
+annotated tag, and push that commit and tag to `origin`. Fetch remote tags
+before choosing a release version. The helper requires a clean working tree
+and refuses an existing tag. A pushed `v*` tag triggers the shared MPSActions
+`publish_release.yml@v5` workflow for PyPI and Conda, plus versioned documentation.
+
+Run `make release-check` to check all four version declarations, or
+`make release-check VERSION=vX.Y.Z` to check an expected version.
+
+For a local release without pushing, `make tag VERSION=vX.Y.Z` (or
+`make tag vX.Y.Z`) updates the release metadata and generates the source version file, creates a release commit, and makes an annotated tag;
 it never pushes. Review it, then push the commit and tag explicitly.
