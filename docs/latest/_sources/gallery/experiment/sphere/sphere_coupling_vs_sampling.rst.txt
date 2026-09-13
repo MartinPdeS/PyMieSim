@@ -71,7 +71,7 @@ Sphere: Coupling vs sampling
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fe824f7f850>, <matplotlib.lines.Line2D object at 0x7fe824f7cc10>, <matplotlib.lines.Line2D object at 0x7fe824f7fe10>, <matplotlib.lines.Line2D object at 0x7fe824f3f6d0>]
+    [<matplotlib.lines.Line2D object at 0x7fc20d4663d0>, <matplotlib.lines.Line2D object at 0x7fc20d4675d0>, <matplotlib.lines.Line2D object at 0x7fc20d466fd0>, <matplotlib.lines.Line2D object at 0x7fc20d464ed0>]
 
 
 
@@ -133,7 +133,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.512 seconds)
+   **Total running time of the script:** (0 minutes 0.497 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_sampling.py:

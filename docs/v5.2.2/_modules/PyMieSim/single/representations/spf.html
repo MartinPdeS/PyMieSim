@@ -585,6 +585,8 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">._plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">AngularPlotMixin</span><span class="p">,</span> <span class="n">resolve_colormap</span><span class="p">,</span> <span class="n">intensity_normalization</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
@@ -592,12 +594,12 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">spherical_to_cartesian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span>  <span class="c1"># Necessary for loading the class, even if not directly used in this file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.mesh</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullMesh</span>  <span class="c1"># noqa: F401 - Necessary for loading the class, even if not directly used in this file</span>
 
 
 <div class="viewcode-block" id="SPF">
 <a class="viewcode-back" href="../../../../code/single.html#PyMieSim.single.representations.SPF">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">(</span><span class="n">AngularPlotMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Scattering phase function representation.</span>
 
@@ -817,113 +819,12 @@
             <span class="n">shade</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_normalization</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">intensity</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Build the Matplotlib normalization for the SPF intensity values.</span>
-<span class="sd">        """</span>
-        <span class="n">finite_values</span> <span class="o">=</span> <span class="n">intensity</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">intensity</span><span class="p">)]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_normalization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">percentile_clip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">intensity_normalization</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">percentile_clip</span><span class="p">,</span> <span class="n">include_zeros</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">finite_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_colormap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colormap</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">resolve_colormap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
 
-        <span class="n">non_negative_values</span> <span class="o">=</span> <span class="n">finite_values</span><span class="p">[</span><span class="n">finite_values</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">non_negative_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-
-        <span class="n">upper_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">non_negative_values</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">percentile_clip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">upper_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span>
-                <span class="n">non_negative_values</span><span class="p">,</span>
-                <span class="n">percentile_clip</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">upper_limit</span><span class="p">)</span> <span class="ow">or</span> <span class="n">upper_limit</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="n">upper_limit</span> <span class="o">=</span> <span class="mf">1.0</span>
-
-        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">"linear"</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span>
-                <span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">"log"</span><span class="p">:</span>
-            <span class="n">strictly_positive_values</span> <span class="o">=</span> <span class="n">non_negative_values</span><span class="p">[</span><span class="n">non_negative_values</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="n">strictly_positive_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">)</span>
-
-            <span class="n">lower_limit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">strictly_positive_values</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
-            <span class="n">lower_limit</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lower_limit</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">strictly_positive_values</span><span class="p">))</span>
-
-            <span class="k">if</span> <span class="n">lower_limit</span> <span class="o">&gt;=</span> <span class="n">upper_limit</span><span class="p">:</span>
-                <span class="n">lower_limit</span> <span class="o">=</span> <span class="n">upper_limit</span> <span class="o">*</span> <span class="mf">1e-6</span>
-
-            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span>
-                <span class="n">vmin</span><span class="o">=</span><span class="n">lower_limit</span><span class="p">,</span>
-                <span class="n">vmax</span><span class="o">=</span><span class="n">upper_limit</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"Invalid SPF scale. Expected 'linear' or 'log'."</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_colormap</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Return a Matplotlib colormap object.</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colormap</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">colormap</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_format_3d_axis</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">ax</span><span class="p">,</span>
-        <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">elevation</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">azimuth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Apply common formatting to the 3D axis.</span>
-<span class="sd">        """</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span><span class="o">=</span><span class="n">elevation</span><span class="p">,</span> <span class="n">azim</span><span class="o">=</span><span class="n">azimuth</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_equal_axis_limits</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">show_axis_label</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"x"</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"y"</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">"z"</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_set_equal_axis_limits</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">ax</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Set symmetric equal limits on a Matplotlib 3D axis.</span>
-<span class="sd">        """</span>
-        <span class="n">axis_limit</span> <span class="o">=</span> <span class="mf">1.15</span>
-
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="o">-</span><span class="n">axis_limit</span><span class="p">,</span> <span class="n">axis_limit</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s2">"set_box_aspect"</span><span class="p">):</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set_box_aspect</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_spf_array</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -933,45 +834,6 @@
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_square_array</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_quantity_to_magnitude_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="p">)</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_quantity_to_magnitude_array</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">value</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Convert a Pint quantity or array like object to a NumPy array.</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_as_square_array</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">value</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Return a two dimensional square array compatible with surface plotting.</span>
-<span class="sd">        """</span>
-        <span class="n">array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">array</span>
-
-        <span class="n">flat_array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-        <span class="n">expected_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span>
-
-        <span class="k">if</span> <span class="n">flat_array</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">expected_size</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"Cannot reshape array to the structured SPF mesh. "</span>
-                <span class="sa">f</span><span class="s2">"Expected </span><span class="si">{</span><span class="n">expected_size</span><span class="si">}</span><span class="s2"> values from sampling=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="si">}</span><span class="s2">, "</span>
-                <span class="sa">f</span><span class="s2">"but received </span><span class="si">{</span><span class="n">flat_array</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">."</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">flat_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">),</span>
-            <span class="n">order</span><span class="o">=</span><span class="s2">"F"</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 </pre></div>

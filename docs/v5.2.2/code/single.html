@@ -1383,14 +1383,14 @@ of 1.0 is used.</p></li>
 <p>This class computes and visualizes the complex far-field electric-field
 components returned by a single-scatterer setup.</p>
 <p>The far-field components are evaluated on a spherical angular mesh and are
-returned as the transverse components (<a href="#id3"><span class="problematic" id="id4">E_</span></a>phi) and (<a href="#id5"><span class="problematic" id="id6">E_</span></a>theta).</p>
+returned as the transverse components (<a href="#id4"><span class="problematic" id="id5">E_</span></a>phi) and (<a href="#id6"><span class="problematic" id="id7">E_</span></a>theta).</p>
 <p>The default visualization is a single three-dimensional spherical plot. A
 single field is shown at a time to keep rendering responsive and to make the
 figure easier to interpret.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stokes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/stokes.html#Stokes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AngularPlotMixin</span></code></p>
 <p>Stokes parameter representation.</p>
 <p>The Stokes parameters describe the polarization state of the scattered light.</p>
 <div class="math notranslate nohighlight">
@@ -1539,12 +1539,17 @@ mesh edges even if <code class="docutils literal notranslate"><span class="pre">
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.SPF">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SPF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/spf.html#SPF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AngularPlotMixin</span></code></p>
 <p>Scattering phase function representation.</p>
 <p>The scattering phase function describes how the scattered intensity varies
 as a function of the scattering direction around the particle.</p>
@@ -1638,6 +1643,11 @@ mesh edges even if <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1911,7 +1921,7 @@ arranged on the configured <code class="docutils literal notranslate"><span clas
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>field_components</strong> (<em>str</em>) – List of field components to plot, for example Ex:real, <a href="#id1"><span class="problematic" id="id2">|E|</span></a>:abs.</p></li>
+<li><p><strong>field_components</strong> (<em>str</em>) – List of field components to plot, for example Ex:real, <a href="#id2"><span class="problematic" id="id3">|E|</span></a>:abs.</p></li>
 <li><p><strong>type</strong> (<em>str</em>) – Type of field to compute: total, incident, or scattered.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>) – Number of points along each in plane direction (u and v).</p></li>
 <li><p><strong>plane_origin</strong> (<em>Sequence</em><em>[</em><em>Length</em><em>] </em><em>| </em><em>None</em>) – Origin of the sampling plane in 3D space. If None, defaults to (0, 0, z).</p></li>
@@ -2069,6 +2079,7 @@ arranged on the configured <code class="docutils literal notranslate"><span clas
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.V"><code class="docutils literal notranslate"><span class="pre">Stokes.V</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.mesh"><code class="docutils literal notranslate"><span class="pre">Stokes.mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.plot"><code class="docutils literal notranslate"><span class="pre">Stokes.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Stokes.sampling</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF"><code class="docutils literal notranslate"><span class="pre">SPF</span></code></a><ul class="nav section-nav flex-column">
@@ -2077,6 +2088,7 @@ arranged on the configured <code class="docutils literal notranslate"><span clas
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.SPF"><code class="docutils literal notranslate"><span class="pre">SPF.SPF</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.mesh"><code class="docutils literal notranslate"><span class="pre">SPF.mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.plot"><code class="docutils literal notranslate"><span class="pre">SPF.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">SPF.sampling</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2"><code class="docutils literal notranslate"><span class="pre">S1S2</span></code></a><ul class="nav section-nav flex-column">

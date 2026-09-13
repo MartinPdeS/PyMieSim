@@ -628,10 +628,46 @@ support. Existing string calls remain supported for compatibility.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">measure</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For multiple single-particle measures, <code class="docutils literal notranslate"><span class="pre">as_result=True</span></code> returns a mapping of
-measure names to <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code> objects. Experiment sweeps always return
-<code class="docutils literal notranslate"><span class="pre">LabeledArray</span></code>; use <code class="docutils literal notranslate"><span class="pre">result.as_numpy()</span></code> or <code class="docutils literal notranslate"><span class="pre">result.as_dataframe()</span></code> for
-explicit conversion.</p>
+<p>Both interfaces provide <code class="docutils literal notranslate"><span class="pre">run</span></code> and its synonym <code class="docutils literal notranslate"><span class="pre">get</span></code>. One requested measure
+with <code class="docutils literal notranslate"><span class="pre">as_result=True</span></code> returns <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code>; multiple measures return
+<code class="docutils literal notranslate"><span class="pre">SimulationResults</span></code>, a mapping keyed by measure name:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">,</span> <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">scattering</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"Csca"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scattering</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">scattering</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">scattering</span><span class="o">.</span><span class="n">coordinate_units</span><span class="p">)</span>
+<span class="n">labeled</span> <span class="o">=</span> <span class="n">scattering</span><span class="o">.</span><span class="n">as_labeled_array</span><span class="p">()</span>
+<span class="n">dataframe</span> <span class="o">=</span> <span class="n">labeled</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Experiment results retain parameter dimensions, coordinates, and coordinate
+units through unit conversion. Use <code class="docutils literal notranslate"><span class="pre">drop_unique_level=False</span></code> to retain axes
+containing only one value. Single-simulation results convert to scalar labeled
+arrays with no parameter dimensions.</p>
+<p>Default return values remain lightweight: a single simulation returns a quantity
+for one measure or a dictionary of quantities for multiple measures. Experiments
+return <code class="docutils literal notranslate"><span class="pre">LabeledArray</span></code>, with <code class="docutils literal notranslate"><span class="pre">as_numpy()</span></code> and <code class="docutils literal notranslate"><span class="pre">as_dataframe()</span></code> conversions.
+Measure order is preserved. Empty requests, unsupported names, and duplicate
+measures raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> consistently before computation.</p>
+</section>
+<section id="typing">
+<h2>Typing<a class="headerlink" href="#typing" title="Link to this heading">#</a></h2>
+<p>The simulation interface provides overloads for single and multiple measures,
+typed results, and structured versus angle-sampled fields. Native setup and
+labeled-array interfaces have accompanying <code class="docutils literal notranslate"><span class="pre">.pyi</span></code> files. Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">typecheck</span></code>
+with development dependencies installed to check the Python API. After building
+the native extensions, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">stubcheck</span></code> to compare the stubs with the
+installed bindings. Both checks run in CI.</p>
+</section>
+<section id="particle-size-distributions">
+<h2>Particle-size distributions<a class="headerlink" href="#particle-size-distributions" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution</span></code> supports discrete, monodisperse, uniform, lognormal,
+truncated-normal, triangular, and mixed number-based populations.
+<code class="docutils literal notranslate"><span class="pre">Experiment.average_size_distribution</span></code> averages homogeneous-sphere sweeps
+using the non-interacting approximation, as specified in its docstring.
+It excludes multiple scattering and interparticle interference. For a better
+approximation when particle correlations matter, refer to
+<a class="reference external" href="https://martinpdes.github.io/PackLab/docs/latest/scattering.html">PackLab</a>.
+See <a class="reference internal" href="../workflows/particle_size_distributions.html#particle-size-distributions"><span class="std std-ref">Particle-size distributions: independent scattering</span></a> for physical weighting rules,
+limitations, and an example.</p>
 </section>
 </section>
 
@@ -659,6 +695,8 @@ explicit conversion.</p>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typed-results">Typed results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing">Typing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#particle-size-distributions">Particle-size distributions</a></li>
 </ul>
   </nav></div>
 

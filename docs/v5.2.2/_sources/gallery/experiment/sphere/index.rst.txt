@@ -20,6 +20,57 @@ Examples focused on spherical scatterers.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Average isolated-sphere cross sections over a lognormal number distribution. This is the non-interacting approximation: no interparticle electromagnetic coupling, multiple scattering, positional correlations, or interference between particles is modeled. The result is a mean per particle, not a sample total.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_independent_size_distribution_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/independent_size_distribution`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Size distribution: independent scattering only</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Number-based size populations averaged in the non-interacting approximation. No interparticle coupling, multiple scattering, or interparticle interference is included. Refer to PackLab for correlation-based dependent-scattering approximations when particle correlations matter.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_size_distribution_families_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/size_distribution_families`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compare size distribution families</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare lognormal number distributions at the same median diameter. The right panel shows the unpolarized phase function per unit solid angle, normalized so its integral over the sphere is one. Intensities are averaged before normalization; averaging complex amplitudes or equally weighted normalized single-particle phase functions would give a different result.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_size_distribution_phase_function_thumb.png
+    :alt:
+
+  :doc:`/gallery/experiment/sphere/size_distribution_phase_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">How distribution width changes the scattering phase function</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qabs vs diameter">
 
 .. only:: html
@@ -249,6 +300,9 @@ Examples focused on spherical scatterers.
 .. toctree::
    :hidden:
 
+   /gallery/experiment/sphere/independent_size_distribution
+   /gallery/experiment/sphere/size_distribution_families
+   /gallery/experiment/sphere/size_distribution_phase_function
    /gallery/experiment/sphere/sphere_Qabs_vs_diameter
    /gallery/experiment/sphere/sphere_Qsca_vs_diameter
    /gallery/experiment/sphere/sphere_Qsca_vs_index

@@ -1,0 +1,1153 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Particle-size distributions: independent scattering &#8212; PyMieSim  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=e13101ea" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'workflows/particle_size_distributions';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v5.2.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Detector coupling" href="detector_coupling.html" />
+    <link rel="prev" title="Parameter sweeps" href="parameter_sweeps.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="5.2.2" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="dark">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <img src="../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started in 10 minutes
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../workflows.html">
+    Workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../measures.html">
+    Measure reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../performance.html">
+    Performance and scaling
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../reproducibility.html">
+    Reproducible studies
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../compatibility.html">
+    Compatibility matrix
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../references.html">
+    References
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started in 10 minutes
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../workflows.html">
+    Workflows
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../measures.html">
+    Measure reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../performance.html">
+    Performance and scaling
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../reproducibility.html">
+    Reproducible studies
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../compatibility.html">
+    Compatibility matrix
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="first_simulation.html">Your first simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameter_sweeps.html">Parameter sweeps</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Particle-size distributions: independent scattering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detector_coupling.html">Detector coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualizing_fields.html">Visualizing fields</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../workflows.html" class="nav-link">Workflows</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Particle-size distributions: independent scattering</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="particle-size-distributions-independent-scattering">
+<span id="particle-size-distributions"></span><h1>Particle-size distributions: independent scattering<a class="headerlink" href="#particle-size-distributions-independent-scattering" title="Link to this heading">#</a></h1>
+<p>PyMieSim can average the response of homogeneous spheres over a <strong>number-based
+particle-size distribution</strong>, using discrete weights or quadrature for continuous distributions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This feature uses the <strong>non-interacting (independent-scattering)
+approximation only</strong>. Each particle responds to the prescribed incident
+illumination in isolation. It excludes electromagnetic coupling between
+particles, multiple scattering, positional correlations, and interference
+between fields scattered by different particles.</p>
+<p>It does not predict the response of a dense suspension, an aggregate, or an
+optically thick sample. Low concentration alone does not guarantee that
+multiple scattering is negligible: propagation distance also matters.
+PyMieSim does not infer or verify whether your sample meets these assumptions.</p>
+</div>
+<p>For a better approximation when particle correlations matter, refer to
+<a class="reference external" href="https://martinpdes.github.io/PackLab/docs/latest/scattering.html">PackLab’s correlation-based dependent-scattering calculations</a>. These
+incorporate interparticle correlations; they are not a general solver for full
+electromagnetic multiple scattering.</p>
+<p>Averaging uses the independent-scattering approximation without a mode argument.
+Results record this assumption in their metadata, including when converted to
+typed results or dataframes.</p>
+<section id="discrete-sizes">
+<h2>Discrete sizes<a class="headerlink" href="#discrete-sizes" title="Link to this heading">#</a></h2>
+<p>Supply particle counts or number fractions at each diameter:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Experiment</span><span class="p">,</span> <span class="n">ParticleSizeDistribution</span><span class="p">,</span> <span class="n">PlaneWaveSet</span><span class="p">,</span>
+    <span class="n">PolarizationSet</span><span class="p">,</span> <span class="n">SphereSet</span><span class="p">,</span> <span class="n">ureg</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">distribution</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="p">(</span>
+    <span class="n">diameters</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">number_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">PlaneWaveSet</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">450</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">650</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
+    <span class="n">amplitude</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">volt</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">spheres</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="n">distribution</span><span class="o">.</span><span class="n">diameters</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">],</span>
+    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">spheres</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">average_size_distribution</span><span class="p">(</span>
+    <span class="n">distribution</span><span class="p">,</span> <span class="s2">"Csca"</span><span class="p">,</span> <span class="s2">"Cext"</span><span class="p">,</span> <span class="s2">"g"</span><span class="p">,</span>
+    <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">scattering</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"Csca"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">scattering</span><span class="o">.</span><span class="n">as_labeled_array</span><span class="p">()</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Weights are normalized to sum to one. They must be <strong>number weights</strong>, not
+volume fractions, mass fractions, or intensity-weighted size estimates.
+For histogram measurements, use the number of particles in each bin. Samples
+of a probability density require integration weights (including bin widths);
+supplying only density values generally gives the wrong average.</p>
+<p>The experiment diameter nodes must match <code class="docutils literal notranslate"><span class="pre">distribution.diameters</span></code> in the
+same order. The method removes only the diameter axis and optionally singleton
+axes; wavelength, material, medium, and detector sweeps remain separate.
+It applies the same size distribution at every remaining grid point. It does
+not represent a joint distribution of size and material. Sequential parameter
+sets, cylinders, and core-shell particles are currently rejected.</p>
+</section>
+<section id="lognormal-sizes">
+<h2>Lognormal sizes<a class="headerlink" href="#lognormal-sizes" title="Link to this heading">#</a></h2>
+<p>A lognormal number distribution can be constructed with:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span>
+    <span class="n">median_diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">geometric_std</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Build the <code class="docutils literal notranslate"><span class="pre">SphereSet</span></code> using these new <code class="docutils literal notranslate"><span class="pre">distribution.diameters</span></code> before
+averaging. The median is the <strong>number median diameter</strong>, and <code class="docutils literal notranslate"><span class="pre">geometric_std</span></code>
+is dimensionless: the standard deviation of log diameter is its natural
+logarithm. A geometric standard deviation of one produces a single diameter.</p>
+<p>Gauss-Hermite quadrature samples the full lognormal distribution without an
+explicit cutoff. Nodes and weights are integration points, not histogram bins.
+Increase <code class="docutils literal notranslate"><span class="pre">sampling</span></code> and compare the optical results to check convergence;
+broad distributions and sharp Mie resonances can require more points. Tail
+nodes can extend far beyond an intended particle-size range and increase
+computation cost; use a discrete distribution for explicitly bounded
+populations.</p>
+</section>
+<section id="more-distribution-families">
+<h2>More distribution families<a class="headerlink" href="#more-distribution-families" title="Link to this heading">#</a></h2>
+<p>All constructors return the same <code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution</span></code> type, so use
+<code class="docutils literal notranslate"><span class="pre">distribution.diameters</span></code> in the <code class="docutils literal notranslate"><span class="pre">SphereSet</span></code> and call
+<code class="docutils literal notranslate"><span class="pre">experiment.average_size_distribution(distribution,</span> <span class="pre">&quot;Csca&quot;)</span></code> as above.
+All weights represent particle number. The non-interacting approximation and
+PackLab guidance at the top of this page apply to every family.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id1">
+<caption><span class="caption-text">Available constructors</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 45.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Constructor</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">monodisperse</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">diameter</span></code></p></td>
+<td><p>All particles have one diameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">uniform</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">minimum_diameter</span></code>, <code class="docutils literal notranslate"><span class="pre">maximum_diameter</span></code>, <code class="docutils literal notranslate"><span class="pre">sampling=32</span></code></p></td>
+<td><p>Constant number density per unit diameter within the bounds.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lognormal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">median_diameter</span></code>, <code class="docutils literal notranslate"><span class="pre">geometric_std</span></code>, <code class="docutils literal notranslate"><span class="pre">sampling=32</span></code></p></td>
+<td><p>Normal distribution of log diameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">truncated_normal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mean_diameter</span></code>, <code class="docutils literal notranslate"><span class="pre">standard_deviation</span></code>, required positive bounds,
+<code class="docutils literal notranslate"><span class="pre">sampling=64</span></code></p></td>
+<td><p>Normal density conditioned on the bounded interval.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">triangular</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">minimum_diameter</span></code>, <code class="docutils literal notranslate"><span class="pre">mode_diameter</span></code>, <code class="docutils literal notranslate"><span class="pre">maximum_diameter</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sampling=16</span></code></p></td>
+<td><p>Linear density on either side of a peak.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mixture</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">distributions</span></code>, <code class="docutils literal notranslate"><span class="pre">number_weights</span></code></p></td>
+<td><p>Combine populations by their particle counts or number fractions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_size</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">monodisperse</span><span class="p">(</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span>
+<span class="n">uniform</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
+    <span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">normal</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span>
+    <span class="n">mean_diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">standard_deviation</span><span class="o">=</span><span class="mi">40</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">minimum_diameter</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">maximum_diameter</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">triangular</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">triangular</span><span class="p">(</span>
+    <span class="n">minimum_diameter</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">mode_diameter</span><span class="o">=</span><span class="mi">180</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">maximum_diameter</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">bimodal</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span>
+    <span class="n">distributions</span><span class="o">=</span><span class="p">[</span><span class="n">single_size</span><span class="p">,</span> <span class="n">uniform</span><span class="p">],</span>
+    <span class="n">number_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The normal parameters describe the <strong>untruncated</strong> distribution. Conditioning
+on the specified bounds generally changes its actual mean and standard
+deviation. Bounds are explicit so negative particle sizes are never generated.
+Use <code class="docutils literal notranslate"><span class="pre">monodisperse</span></code> when the width is zero.</p>
+<p>Uniform and truncated-normal constructors use Gauss-Legendre quadrature.
+Triangular distributions integrate each nonempty side of the peak separately:
+<code class="docutils literal notranslate"><span class="pre">sampling</span></code> is the point count <strong>per side</strong>, so an interior peak produces twice
+that many nodes. An endpoint peak is supported. Always compare optical results
+at increasing sampling, particularly for a normal distribution on an interval
+much wider than its standard deviation or when Mie resonances are sharp.</p>
+<p>Mixtures preserve each component’s quadrature nodes. In the example, 75% of
+particles belong to <code class="docutils literal notranslate"><span class="pre">single_size</span></code> and 25% to <code class="docutils literal notranslate"><span class="pre">uniform</span></code>, regardless of how
+many nodes either component has. Duplicate diameters are retained. These are
+mixtures of sizes, not a joint distribution of size and composition.</p>
+</section>
+<section id="what-the-average-means">
+<h2>What the average means<a class="headerlink" href="#what-the-average-means" title="Link to this heading">#</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(w_i\)</span> be normalized number fractions, <span class="math notranslate nohighlight">\(d_i\)</span> diameters, and
+<span class="math notranslate nohighlight">\(A_i=\pi d_i^2/4\)</span> projected areas. The supported reductions are:</p>
+<div class="math notranslate nohighlight">
+\[\overline{C} = \sum_i w_i C_i,
+\qquad
+Q_{\mathrm{ensemble}} =
+\frac{\sum_i w_i C_i}{\sum_i w_i A_i},
+\qquad
+g_{\mathrm{ensemble}} =
+\frac{\sum_i w_i C_{\mathrm{sca},i} g_i}
+     {\sum_i w_i C_{\mathrm{sca},i}}.\]</div>
+<p>Cross sections <code class="docutils literal notranslate"><span class="pre">Csca</span></code>, <code class="docutils literal notranslate"><span class="pre">Cext</span></code>, <code class="docutils literal notranslate"><span class="pre">Cabs</span></code>, <code class="docutils literal notranslate"><span class="pre">Cback</span></code>, <code class="docutils literal notranslate"><span class="pre">Cforward</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">Cpr</span></code> are means <strong>per particle</strong>, in area units. Their corresponding
+<code class="docutils literal notranslate"><span class="pre">Q</span></code> measures divide by mean projected area; they are not arithmetic number
+averages of individual efficiencies. Asymmetry <code class="docutils literal notranslate"><span class="pre">g</span></code> is weighted by scattered
+power through <code class="docutils literal notranslate"><span class="pre">Csca</span></code>; it is undefined when the mean scattering cross section
+is zero, in which case the method raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">coupling</span></code> is the number-averaged <strong>single-particle detector power</strong>, in
+watts, for identical illumination and detector geometry. Even for a coherent
+mode detector, this averages individual powers, never complex amplitudes.
+There is no integration over particle positions, illumination gradients, or
+relative optical phases. It is not the total detected power of a suspension.
+Complex multipole coefficients, <code class="docutils literal notranslate"><span class="pre">Qratio</span></code>, and <code class="docutils literal notranslate"><span class="pre">Cratio</span></code> are not supported.</p>
+<p>A sample’s particle count, concentration, and path length are not supplied or
+inferred. Multiplying a mean cross section by number density gives an
+independent-scattering coefficient; predicting transmitted or detected light
+through a sample requires a suitable propagation model and its own validity
+assessment.</p>
+<p>The result’s <code class="docutils literal notranslate"><span class="pre">attrs</span></code> (or <code class="docutils literal notranslate"><span class="pre">metadata</span></code> for typed results) records the
+approximation, assumptions, weighting rule, diameter nodes, and number
+fractions. These records survive unit conversion and labeled-array/dataframe
+export.</p>
+<p>For the cross-section integration and scattering-weighted asymmetry
+conventions, see <a class="reference external" href="https://gmd.copernicus.org/articles/14/7497/2021/gmd-14-7497-2021.html#section2">Geer et al. (2021), Section 2</a>.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParticleSizeDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Discrete diameters and normalized particle number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>diameters</strong> (<em>Quantity</em>) – One-dimensional, finite, positive diameters with length units.</p></li>
+<li><p><strong>number_weights</strong> (<em>ArrayLike</em>) – Nonnegative particle counts or probability masses at each diameter.
+These are number weights, not volume fractions, intensity weights,
+or samples of a probability density. They are normalized internally.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This object describes sizes only. <code class="docutils literal notranslate"><span class="pre">Experiment.average_size_distribution</span></code>
+uses it exclusively in the non-interacting, independent-scattering
+approximation. It does not model interactions between particles, multiple
+scattering, or interparticle interference. For a better approximation when
+particle correlations matter, refer to PackLab’s correlation-based
+dependent-scattering calculations:
+<a class="reference external" href="https://martinpdes.github.io/PackLab/docs/latest/scattering.html">https://martinpdes.github.io/PackLab/docs/latest/scattering.html</a>.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.diameters">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.diameters" title="Link to this definition">#</a></dt>
+<dd><p>Diameter nodes in meters, returned as a copy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.lognormal">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lognormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">median_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.lognormal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.lognormal" title="Link to this definition">#</a></dt>
+<dd><p>Discretize a number-based lognormal distribution by Gauss-Hermite quadrature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>median_diameter</strong> (<em>Quantity</em>) – Finite positive scalar diameter with length units. This is the
+number median, not the arithmetic mean or a volume median.</p></li>
+<li><p><strong>geometric_std</strong> (<em>float</em>) – Geometric standard deviation, at least one. The standard deviation
+of log(diameter) is <code class="docutils literal notranslate"><span class="pre">log(geometric_std)</span></code>. One gives a single size.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>) – Number of quadrature nodes (default 32). Increase this and compare
+optical results to verify convergence, especially near resonances.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The nodes integrate the full lognormal distribution without explicit
+tail truncation. The returned weights are quadrature probability masses,
+not a histogram or pointwise probability density.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.mixture">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distributions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.mixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.mixture" title="Link to this definition">#</a></dt>
+<dd><p>Combine distributions with component particle counts or number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distributions</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a><em>]</em>) – Nonempty sequence of size distributions. Components can use
+different families and numbers of quadrature nodes.</p></li>
+<li><p><strong>number_weights</strong> (<em>_Buffer</em><em> | </em><em>_SupportsArray</em><em>[</em><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.6.dev0)"><em>dtype</em></a><em>[</em><em>Any</em><em>]</em><em>] </em><em>| </em><em>_NestedSequence</em><em>[</em><em>_SupportsArray</em><em>[</em><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.6.dev0)"><em>dtype</em></a><em>[</em><em>Any</em><em>]</em><em>]</em><em>] </em><em>| </em><em>bool</em><em> | </em><em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em><em> | </em><em>str</em><em> | </em><em>bytes</em><em> | </em><em>_NestedSequence</em><em>[</em><em>bool</em><em> | </em><em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em><em> | </em><em>str</em><em> | </em><em>bytes</em><em>]</em>) – Nonnegative number weights, one per component, normalized internally.
+A component’s weight is its fraction of particles, independent of
+the number of nodes used to discretize it.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Nodes are concatenated in component order; duplicate diameters are
+retained. This combines sizes only, not size-dependent compositions.
+Optical averaging remains in the non-interacting approximation; see
+PackLab for correlation-based dependent-scattering approximations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.monodisperse">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">monodisperse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.monodisperse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.monodisperse" title="Link to this definition">#</a></dt>
+<dd><p>Put all particles at one positive diameter with length units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>diameter</strong> (<em>Quantity</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.number_fractions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_fractions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.6.dev0)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.number_fractions" title="Link to this definition">#</a></dt>
+<dd><p>Normalized particle number fractions, returned as a copy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.triangular">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">triangular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.triangular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.triangular" title="Link to this definition">#</a></dt>
+<dd><p>Discretize a triangular number density with a specified peak diameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minimum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar bounds with length units.</p></li>
+<li><p><strong>maximum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar bounds with length units.</p></li>
+<li><p><strong>mode_diameter</strong> (<em>Quantity</em>) – Positive scalar peak position, within the closed diameter interval.
+An endpoint mode gives a monotonically increasing or decreasing density.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>) – Gauss-Legendre points per nonempty side of the peak (default 16).
+The result has up to twice this number of nodes. Increase it to
+check convergence of optical averages.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Integrating each side separately resolves the change of slope at the
+peak. Weights represent particle number, not particle volume.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.truncated_normal">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">truncated_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.truncated_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.truncated_normal" title="Link to this definition">#</a></dt>
+<dd><p>Discretize a normal number distribution conditioned on positive bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean_diameter</strong> (<em>Quantity</em>) – Positive scalar mean of the underlying untruncated normal, with
+length units. Truncation generally changes the actual mean.</p></li>
+<li><p><strong>standard_deviation</strong> (<em>Quantity</em>) – Positive scalar standard deviation of that underlying normal,
+with length units. Use <code class="docutils literal notranslate"><span class="pre">monodisperse</span></code> for zero width.</p></li>
+<li><p><strong>minimum_diameter</strong> (<em>Quantity</em>) – Required positive scalar bounds. Probability outside this interval
+is discarded and the retained distribution is renormalized.</p></li>
+<li><p><strong>maximum_diameter</strong> (<em>Quantity</em>) – Required positive scalar bounds. Probability outside this interval
+is discarded and the retained distribution is renormalized.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>) – Number of Gauss-Legendre points, default 64. Increase it to check
+convergence, especially for intervals much wider than the width.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Weights integrate exp(-0.5*((d-mean)/standard_deviation)**2) on the
+specified interval. They are number fractions, not density samples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.uniform">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.uniform" title="Link to this definition">#</a></dt>
+<dd><p>Discretize a number density uniform in diameter between positive bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minimum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar lengths, with minimum strictly below maximum.</p></li>
+<li><p><strong>maximum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar lengths, with minimum strictly below maximum.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>) – Number of Gauss-Legendre quadrature points. Increase it to check
+convergence of optical averages.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The density is constant in diameter, not in log diameter or volume.
+The returned number fractions include the quadrature weights.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.Experiment.average_size_distribution">
+<span class="sig-prename descclassname"><span class="pre">Experiment.</span></span><span class="sig-name descname"><span class="pre">average_size_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distribution</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">measures</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_unique_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_result</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Experiment.average_size_distribution" title="Link to this definition">#</a></dt>
+<dd><p>Average sphere sizes in the non-interacting approximation only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distribution</strong> (<a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a>) – Number-based distribution with nodes matching the SphereSet diameter
+axis, in the same order. Other parameter axes remain independent.</p></li>
+<li><p><strong>measures</strong> (<em>str</em><em> | </em><em>Measure</em>) – Cross sections (Csca, Cext, Cabs, Cback, Cforward, Cpr), corresponding
+efficiencies, g, or coupling. Amplitudes and ratios are unsupported.</p></li>
+<li><p><strong>drop_unique_level</strong> (<em>bool</em>) – Remove remaining parameter axes containing only one value.</p></li>
+<li><p><strong>as_result</strong> (<em>bool</em>) – Return named typed results instead of a LabeledArray. Both retain
+the approximation and weighting rules in their metadata.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>LabeledArray</em> | <em>SimulationResult</em> | <em>SimulationResults</em></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This uses the non-interacting (independent-scattering) approximation:
+particles respond in isolation to the prescribed illumination. It
+excludes interparticle electromagnetic coupling, multiple scattering,
+positional correlations, and interference between different particles.
+For a better approximation when particle correlations matter, refer to
+PackLab’s correlation-based dependent-scattering calculations:
+<a class="reference external" href="https://martinpdes.github.io/PackLab/docs/latest/scattering.html">https://martinpdes.github.io/PackLab/docs/latest/scattering.html</a>.
+PackLab is not a general solver for full electromagnetic multiple scattering.</p>
+<p>Cross sections and detector powers are number averages per particle,
+assuming the same illumination for each particle. Efficiencies are
+mean cross section divided by mean projected area; g is weighted by
+scattering cross section. These are not predictions of a dense or
+multiply scattering sample, nor sums of coherent particle fields.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-sizes">Discrete sizes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lognormal-sizes">Lognormal sizes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-distribution-families">More distribution families</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-average-means">What the average means</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.diameters"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.diameters</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.lognormal"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.lognormal()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.mixture"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.mixture()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.monodisperse"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.monodisperse()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.number_fractions"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.number_fractions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.triangular"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.triangular()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.truncated_normal"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.truncated_normal()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParticleSizeDistribution.uniform"><code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution.uniform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Experiment.average_size_distribution"><code class="docutils literal notranslate"><span class="pre">Experiment.average_size_distribution()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/workflows/particle_size_distributions.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
