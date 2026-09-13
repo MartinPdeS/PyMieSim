@@ -1,52 +1,76 @@
-"""Typed, opt-in result containers for the stable Python API."""
+"""Unit-aware result containers shared by simulations and parameter sweeps."""
 
-from dataclasses import dataclass
-from typing import Any, Iterator, Mapping
+from dataclasses import dataclass, field, replace
+from typing import Iterator, Mapping, cast
+
+import numpy as np
+from numpy.typing import NDArray
+from pint import Quantity, Unit
+
+from .labeled_array import LabeledArray
 
 
 @dataclass(frozen=True)
 class SimulationResult:
-    """One named result from a single-scatterer simulation.
+    """One named quantity, optionally carrying experiment dimensions and coordinates.
 
-    ``value`` is intentionally the original PyMieSim quantity, so unit
-    conversion and arithmetic continue to use the project's existing unit
-    system.  Use ``as_result=True`` on :meth:`Simulation.run` to opt in.
+    Use ``as_result=True`` on ``Simulation.run`` or ``Experiment.run``. Unit
+    conversion preserves parameter labels and coordinate units.
     """
 
     measure: str
-    value: Any
+    value: Quantity
+    dims: tuple[str, ...] = ()
+    coords: Mapping[str, NDArray] = field(default_factory=dict)
+    coordinate_units: Mapping[str, Unit] = field(default_factory=dict)
+
+    metadata: Mapping[str, object] = field(default_factory=dict)
 
     @property
-    def quantity(self) -> Any:
-        """Alias for the underlying unit-aware value."""
-
+    def quantity(self) -> Quantity:
+        """Underlying quantity, supporting unit conversion and arithmetic."""
         return self.value
 
     @property
-    def magnitude(self) -> Any:
-        """Magnitude of the underlying quantity when available."""
-
-        return getattr(self.value, "magnitude", self.value)
+    def magnitude(self) -> NDArray | float | complex:
+        """Numerical values in the current units."""
+        return self.value.magnitude
 
     @property
-    def units(self) -> Any:
-        """Units of the underlying quantity, or ``None`` for plain values."""
+    def units(self) -> Unit:
+        """Physical units of the result."""
+        return cast(Unit, self.value.units)
 
-        return getattr(self.value, "units", None)
+    def to(self, unit: str | Unit) -> "SimulationResult":
+        """Return a converted result with the same parameter coordinates."""
+        return replace(self, value=self.value.to(unit))
 
-    def to(self, unit: Any) -> "SimulationResult":
-        """Return a copy converted to ``unit``."""
+    def as_labeled_array(self) -> LabeledArray:
+        """Return native labeled data for plotting, selection, and tabular export."""
+        return LabeledArray(
+            np.asarray(self.magnitude), list(self.dims), dict(self.coords),
+            {**self.metadata, "units": {self.measure: self.units},
+             "coordinate_units": dict(self.coordinate_units),
+             "measures": (self.measure,)},
+            self.measure,
+        )
 
-        return SimulationResult(self.measure, self.value.to(unit))
-
-    def __repr__(self) -> str:
-        return f"SimulationResult(measure={self.measure!r}, value={self.value!r})"
+    @classmethod
+    def from_labeled_array(cls, data: LabeledArray) -> "SimulationResult":
+        """Wrap a single-measure experiment result without losing its grid."""
+        if data.name is None or len(data.attrs["measures"]) != 1:
+            raise ValueError("Expected a labeled array containing exactly one named measure.")
+        return cls(
+            data.name, data.as_numpy() * data.attrs["units"][data.name],
+            data.dims, dict(data.coords), dict(data.attrs["coordinate_units"]),
+            {key: value for key, value in data.attrs.items() if key not in {"units", "coordinate_units", "measures"}},
+        )
 
 
 class SimulationResults(Mapping[str, SimulationResult]):
-    """Immutable collection returned for a multi-measure typed result."""
+    """Read-only collection returned for multiple requested typed results."""
 
-    def __init__(self, results: Mapping[str, SimulationResult]):
+    def __init__(self, results: Mapping[str, SimulationResult]) -> None:
         self._results = dict(results)
 
     def __getitem__(self, key: str) -> SimulationResult:

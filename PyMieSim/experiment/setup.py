@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import List, Dict, Iterable
+from typing import List, Dict, Iterable, Literal, overload, cast
+from pint import Quantity, Unit
 import numpy as np
 
 from PyMieSim.units import ureg
 from PyMieSim.experiment._setup import Setup as SETUP
 from PyMieSim.labeled_array import LabeledArray
-from PyMieSim.measures import MeasureLike, normalize_measure, normalize_measures
+from PyMieSim.distributions import ParticleSizeDistribution
+from PyMieSim.results import SimulationResult, SimulationResults
+from PyMieSim.measures import MeasureLike, Measure, validate_measures
 
 
 
@@ -55,35 +58,110 @@ class Setup(SETUP):
         numpy.ndarray
             Computed values.
         """
-        return getattr(self, f"get_{normalize_measure(measure)}_sequential")()
+        name = validate_measures((measure,), self.available_measures)[0]
+        return getattr(self, f"get_{name}_sequential")()
 
     # ------------------------------------------------------------------
     # Main public interface
     # ------------------------------------------------------------------
 
-    def get(
-        self,
-        *measures: MeasureLike,
-        drop_unique_level: bool = True,
-    ):
+    @overload
+    def run(self, measure: MeasureLike, /, *, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResult: ...
+
+    @overload
+    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResults: ...
+
+    @overload
+    def run(self, *measures: MeasureLike, drop_unique_level: bool = True, as_result: Literal[False] = False) -> LabeledArray: ...
+
+    @overload
+    def run(self, *measures: MeasureLike, drop_unique_level: bool = True, as_result: bool = False) -> LabeledArray | SimulationResult | SimulationResults: ...
+
+    def run(
+        self, *measures: MeasureLike, drop_unique_level: bool = True, as_result: bool = False,
+    ) -> LabeledArray | SimulationResult | SimulationResults:
+        """Compute measures while preserving the parameter grid and physical units.
+
+        By default return a native ``LabeledArray``. With ``as_result=True``,
+        return the same named result containers as ``Simulation.run``.
+        ``drop_unique_level=False`` keeps axes containing a single value.
         """
-        Run the simulation and compute the requested measures.
+        names = validate_measures(measures, self.available_measures)
+        if as_result:
+            results = {
+                name: SimulationResult.from_labeled_array(self._build_labeled_array([name], drop_unique_level))
+                for name in names
+            }
+            return next(iter(results.values())) if len(results) == 1 else SimulationResults(results)
+        return self._build_labeled_array(names, drop_unique_level)
+
+    get = run
+
+    @overload
+    def average_size_distribution(self, distribution: ParticleSizeDistribution, measure: MeasureLike, /, *, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResult: ...
+
+    @overload
+    def average_size_distribution(self, distribution: ParticleSizeDistribution, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResults: ...
+
+    @overload
+    def average_size_distribution(self, distribution: ParticleSizeDistribution, *measures: MeasureLike, drop_unique_level: bool = True, as_result: Literal[False] = False) -> LabeledArray: ...
+
+    @overload
+    def average_size_distribution(self, distribution: ParticleSizeDistribution, *measures: MeasureLike, drop_unique_level: bool = True, as_result: bool = False) -> LabeledArray | SimulationResult | SimulationResults: ...
+
+    def average_size_distribution(
+        self, distribution: ParticleSizeDistribution, *measures: MeasureLike,
+        drop_unique_level: bool = True, as_result: bool = False,
+    ) -> LabeledArray | SimulationResult | SimulationResults:
+        """Average sphere sizes in the non-interacting approximation only.
 
         Parameters
         ----------
+        distribution
+            Number-based distribution with nodes matching the SphereSet diameter
+            axis, in the same order. Other parameter axes remain independent.
         measures
-            Names of the measures to compute.
+            Cross sections (Csca, Cext, Cabs, Cback, Cforward, Cpr), corresponding
+            efficiencies, g, or coupling. Amplitudes and ratios are unsupported.
         drop_unique_level
-            Remove parameters that only contain a single value.
-        Returns
-        -------
-        LabeledArray
-            Native labeled simulation data with parameter coordinates and units.
+            Remove remaining parameter axes containing only one value.
+        as_result
+            Return named typed results instead of a LabeledArray. Both retain
+            the approximation and weighting rules in their metadata.
+
+        Notes
+        -----
+        This uses the non-interacting (independent-scattering) approximation:
+        particles respond in isolation to the prescribed illumination. It
+        excludes interparticle electromagnetic coupling, multiple scattering,
+        positional correlations, and interference between different particles.
+        For a better approximation when particle correlations matter, refer to
+        PackLab's correlation-based dependent-scattering calculations:
+        https://martinpdes.github.io/PackLab/docs/latest/scattering.html.
+        PackLab is not a general solver for full electromagnetic multiple scattering.
+
+        Cross sections and detector powers are number averages per particle,
+        assuming the same illumination for each particle. Efficiencies are
+        mean cross section divided by mean projected area; g is weighted by
+        scattering cross section. These are not predictions of a dense or
+        multiply scattering sample, nor sums of coherent particle fields.
         """
+        from .distributions import average_size_distribution
 
-        measures = self._normalize_measures(measures)
-
-        return self._build_labeled_array(measures, drop_unique_level)
+        labeled = average_size_distribution(self, distribution, measures, drop_unique_level)
+        if not as_result:
+            return labeled
+        names = labeled.attrs["measures"]
+        if len(names) == 1:
+            return SimulationResult.from_labeled_array(labeled)
+        results = {}
+        for index, name in enumerate(names):
+            selected = labeled.isel({"measure": index})
+            attrs = {**selected.attrs, "measures": (name,), "units": {name: selected.attrs["units"][name]},
+                     "weighting": {name: selected.attrs["weighting"][name]}}
+            single = LabeledArray(selected.as_numpy(), list(selected.dims), dict(selected.coords), attrs, name)
+            results[name] = SimulationResult.from_labeled_array(single)
+        return SimulationResults(results)
 
     def _build_labeled_array(self, measures: List[str], drop_unique_level: bool) -> LabeledArray:
         """Build a native labeled array while preserving the experiment grid."""
@@ -133,36 +211,14 @@ class Setup(SETUP):
                 dims.pop(axis + (1 if len(measures) > 1 else 0))
                 coords.pop(parameter_names[axis])
 
-        name = measures[0] if len(measures) == 1 else None
-        return LabeledArray(data, dims, coords, attrs, name)
+        result_name = measures[0] if len(measures) == 1 else None
+        return LabeledArray(data, dims, coords, attrs, result_name)
 
     # ------------------------------------------------------------------
     # Measure computation
     # ------------------------------------------------------------------
 
-    def _normalize_measures(self, measures) -> List[str]:
-        """Validate and normalize requested measures while preserving order."""
-        normalized = normalize_measures(measures)
-
-        if not normalized:
-            raise ValueError("At least one measure must be requested.")
-
-        available = set(self.available_measures)
-
-        invalid = [
-            measure
-            for measure in normalized
-            if not isinstance(measure, str) or measure not in available
-        ]
-        if invalid:
-            available_names = ", ".join(sorted(available))
-            raise ValueError(
-                f"Unknown measure(s): {invalid}. Available measures: {available_names}."
-            )
-
-        return normalized
-
-    def _collect_parameter_mappings(self) -> Dict[str, Iterable]:
+    def _collect_parameter_mappings(self) -> Dict[str, object]:
         """
         Collect parameter mappings from source, scatterer and detector.
 
@@ -182,7 +238,7 @@ class Setup(SETUP):
 
         return mappings
 
-    def _separate_units_and_values(self, mappings: Dict[str, Iterable]):
+    def _separate_units_and_values(self, mappings: Dict[str, object]) -> tuple[dict[str, Iterable], dict[str, Unit]]:
         """
         Extract numeric values and units from parameter mappings.
 
@@ -191,19 +247,19 @@ class Setup(SETUP):
 
         Returns
         -------
-        Tuple[Dict[str, Iterable], Dict[str, pint.Unit]]
+        Tuple[Dict[str, object], Dict[str, pint.Unit]]
         """
 
-        units = {}
-        values = {}
+        units: dict[str, Unit] = {}
+        values: dict[str, Iterable] = {}
 
         for key, param_values in mappings.items():
 
             # ----------------------------------------------------------
             # Pint quantities
             # ----------------------------------------------------------
-            if hasattr(param_values, "units"):
-                units[key] = param_values.units
+            if isinstance(param_values, Quantity):
+                units[key] = cast(Unit, param_values.units)
                 values[key] = np.atleast_1d(param_values.magnitude)
                 continue
 
@@ -221,24 +277,11 @@ class Setup(SETUP):
 
         return values, units
 
-    def _determine_unit(self, measure: str):
-        """
-        Infer the physical unit associated with a measure.
-
-        Parameters
-        ----------
-        measure
-            Name of the measure.
-
-        Returns
-        -------
-        pint.Unit
-
-        """
-        if measure.startswith("C"):
-            return ureg.meter ** 2
-
-        if measure.startswith("c"):
-            return ureg.watt
-
-        return ureg.dimensionless
+    def _determine_unit(self, measure: str) -> Unit:
+        """Resolve physical units from the shared measure metadata."""
+        try:
+            kind = Measure(measure).unit_kind
+        except ValueError:
+            # Native multipole coefficients (a1, b1, ...) are dimensionless.
+            kind = "dimensionless"
+        return {"area": ureg.meter ** 2, "power": ureg.watt, "dimensionless": ureg.dimensionless}[kind]

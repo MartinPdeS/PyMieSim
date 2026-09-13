@@ -100,3 +100,17 @@ __all__ = [
     "Qsca", "coupling", "cross_section", "g", "g_with_farfields", "MeasureLike", "MeasureName",
     "normalize_measure", "normalize_measures", "size_parameter",
 ]
+
+
+def validate_measures(measures: Iterable[MeasureLike], available: Iterable[str]) -> list[str]:
+    """Validate requested names consistently before invoking either backend."""
+    names = normalize_measures(measures)
+    if not names:
+        raise ValueError("At least one measure must be requested.")
+    supported = set(available)
+    invalid = [name for name in names if not isinstance(name, str) or name not in supported]
+    if invalid:
+        raise ValueError(f"Unknown measure(s): {invalid}. Available measures: {', '.join(sorted(supported))}.")
+    if len(set(names)) != len(names):
+        raise ValueError("Each measure must be requested only once.")
+    return names

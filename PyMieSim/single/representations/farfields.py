@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from ._plotting import AngularPlotMixin, resolve_colormap, signed_normalization, intensity_normalization
+
 from typing import Sequence
 
 import matplotlib.pyplot as pyplot
@@ -13,7 +15,7 @@ from MPSPlots.colormaps import blue_black_red
 from PyMieSim.units import ureg, Length
 
 
-class FarFields:
+class FarFields(AngularPlotMixin):
     r"""
     Far-field scattering representation.
 
@@ -798,136 +800,21 @@ class FarFields:
 
         return field_map[field]
 
-    def _get_normalization(
-        self,
-        field: numpy.ndarray,
-        field_type: str,
-        scale: str,
-        percentile_clip: float | None,
-    ):
-        """
-        Build the appropriate Matplotlib normalization for a field.
-        """
-        finite_values = field[numpy.isfinite(field)]
-
-        if finite_values.size == 0:
+    def _get_normalization(self, field: numpy.ndarray, field_type: str, scale: str, percentile_clip: float | None):
+        if not numpy.isfinite(field).any():
             return colors.Normalize(vmin=0.0, vmax=1.0)
-
         if field_type == "phase":
             return colors.Normalize(vmin=-numpy.pi, vmax=numpy.pi)
-
         if field_type == "signed":
-            maximum_absolute_value = numpy.nanmax(numpy.abs(finite_values))
-
-            if percentile_clip is not None:
-                maximum_absolute_value = numpy.nanpercentile(
-                    numpy.abs(finite_values),
-                    percentile_clip,
-                )
-
-            if not numpy.isfinite(maximum_absolute_value) or maximum_absolute_value <= 0.0:
-                maximum_absolute_value = 1.0
-
-            return colors.Normalize(
-                vmin=-maximum_absolute_value,
-                vmax=maximum_absolute_value,
-            )
-
+            return signed_normalization(field, percentile_clip)
         if field_type == "intensity":
-            positive_values = finite_values[finite_values > 0.0]
+            return intensity_normalization(field, scale, percentile_clip)
+        finite = field[numpy.isfinite(field)]
+        return colors.Normalize(vmin=numpy.min(finite), vmax=numpy.max(finite))
 
-            if positive_values.size == 0:
-                return colors.Normalize(vmin=0.0, vmax=1.0)
+    def _resolve_colormap(self, colormap, field_type: str):
+        return resolve_colormap(blue_black_red if colormap is None else colormap)
 
-            upper_limit = numpy.nanmax(positive_values)
-
-            if percentile_clip is not None:
-                upper_limit = numpy.nanpercentile(
-                    positive_values,
-                    percentile_clip,
-                )
-
-            if not numpy.isfinite(upper_limit) or upper_limit <= 0.0:
-                upper_limit = 1.0
-
-            if scale == "log":
-                lower_limit = numpy.nanmax(positive_values) * 1e-6
-                lower_limit = max(lower_limit, numpy.nanmin(positive_values))
-
-                if lower_limit >= upper_limit:
-                    lower_limit = upper_limit * 1e-6
-
-                return colors.LogNorm(
-                    vmin=lower_limit,
-                    vmax=upper_limit,
-                )
-
-            if scale == "linear":
-                return colors.Normalize(
-                    vmin=0.0,
-                    vmax=upper_limit,
-                )
-
-            raise ValueError(
-                "Invalid intensity scale. Expected 'linear' or 'log'."
-            )
-
-        return colors.Normalize(
-            vmin=numpy.nanmin(finite_values),
-            vmax=numpy.nanmax(finite_values),
-        )
-
-    def _resolve_colormap(
-        self,
-        colormap,
-        field_type: str,
-    ):
-        """
-        Return a Matplotlib colormap object.
-        """
-        if colormap is None:
-            colormap = blue_black_red
-
-        if isinstance(colormap, str):
-            return cm.get_cmap(colormap)
-
-        return colormap
-
-    def _format_3d_axis(
-        self,
-        ax,
-        background_color: str,
-        show_axis_label: bool,
-        elevation: float,
-        azimuth: float,
-    ) -> None:
-        """
-        Apply common formatting to one 3D axis.
-        """
-        ax.set_facecolor(background_color)
-        ax.view_init(elev=elevation, azim=azimuth)
-
-        self._set_equal_axis_limits(ax)
-
-        if show_axis_label:
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
-            ax.set_zlabel("z")
-        else:
-            ax.set_axis_off()
-
-    def _set_equal_axis_limits(self, ax) -> None:
-        """
-        Set symmetric equal limits on a Matplotlib 3D axis.
-        """
-        axis_limit = 1.15
-
-        ax.set_xlim(-axis_limit, axis_limit)
-        ax.set_ylim(-axis_limit, axis_limit)
-        ax.set_zlim(-axis_limit, axis_limit)
-
-        if hasattr(ax, "set_box_aspect"):
-            ax.set_box_aspect((1.0, 1.0, 1.0))
 
     def _make_pyvista_style_angle_mesh(
         self,
@@ -988,53 +875,6 @@ class FarFields:
             self._quantity_to_magnitude_array(value)
         ).T
 
-    def _quantity_to_magnitude_array(
-        self,
-        value,
-        unit: str | None = None,
-    ) -> numpy.ndarray:
-        """
-        Convert a Pint quantity or array-like object to a NumPy array.
-        """
-        if hasattr(value, "to") and unit is not None:
-            return numpy.asarray(value.to(unit).magnitude)
-
-        if hasattr(value, "magnitude"):
-            return numpy.asarray(value.magnitude)
-
-        return numpy.asarray(value)
-
-    def _as_square_array(
-        self,
-        value: numpy.ndarray,
-    ) -> numpy.ndarray:
-        """
-        Return a two-dimensional square array compatible with angular plotting.
-
-        The backend may return structured quantities either as ``(N, N)`` arrays
-        or as flattened arrays with ``N * N`` values. Flattened values are
-        reshaped using Fortran ordering to match the previous PyVista flattening
-        convention.
-        """
-        array = numpy.asarray(value)
-
-        if array.ndim == 2:
-            return array
-
-        flat_array = array.ravel()
-        expected_size = self.sampling * self.sampling
-
-        if flat_array.size != expected_size:
-            raise ValueError(
-                "Cannot reshape array to the structured far-field mesh. "
-                f"Expected {expected_size} values from sampling={self.sampling}, "
-                f"but received {flat_array.size}."
-            )
-
-        return flat_array.reshape(
-            (self.sampling, self.sampling),
-            order="F",
-        )
 
     def _wrap_phase(
         self,

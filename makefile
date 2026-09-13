@@ -7,7 +7,7 @@ PYBIND11_DIR = $(shell $(PYTHON) -m pybind11 --cmakedir)
 TAG_VERSION ?= $(or $(VERSION),$(filter v%,$(MAKECMDGOALS)))
 RELEASE_KIND := $(filter major minor patch,$(MAKECMDGOALS))
 
-.PHONY: help configure build install quick rebuild editable clean quality test check release-check tag release major minor patch
+.PHONY: help configure build install quick rebuild editable clean quality typecheck stubcheck test check release-check tag release major minor patch
 
 help:
 	@echo "PyMieSim development commands"
@@ -15,6 +15,8 @@ help:
 	@echo "  make editable              Build and install an editable package"
 	@echo "  make test                  Run the test suite"
 	@echo "  make quality               Run static checks"
+	@echo "  make typecheck             Check Python API types"
+	@echo "  make stubcheck             Check stubs against installed native bindings"
 	@echo "  make check                 Run quality and tests"
 	@echo "  make release-check         Check version metadata consistency"
 	@echo "  make tag VERSION=vX.Y.Z    Create a release commit and annotated tag"
@@ -22,9 +24,14 @@ help:
 	@echo "  make release minor         Create and push the next minor release"
 	@echo "  make release major         Create and push the next major release"
 
-quality:
+quality: typecheck stubcheck
 	$(PYTHON) -m ruff check PyMieSim tests
-	$(PYTHON) -m mypy PyMieSim/gui/parsing.py PyMieSim/gui/schemas.py
+
+typecheck:
+	$(PYTHON) -m mypy
+
+stubcheck:
+	$(PYTHON) -m mypy.stubtest PyMieSim.single.setup PyMieSim.labeled_array --mypy-config-file pyproject.toml --allowlist tools/stubtest_allowlist.txt
 
 test:
 	$(PYTHON) -m pytest --config-file=pytest.ini

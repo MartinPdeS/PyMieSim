@@ -100,6 +100,7 @@ documentation = [
     "pydata-sphinx-theme==0.19.0"
 ]
 dev = [
+    "mypy>=1.11,<2",
     "flake8==7.3.0",
     "ruff==0.16.5",
 ]
@@ -138,3 +139,18 @@ test-command = 'python -m pytest {project}/tests --config-file={project}/pytest.
 archs = ["AMD64"]
 build = ["cp311-*", "cp312-*", "cp313-*"]
 test-command = 'python -m pytest {project}/tests --config-file={project}/pytest.ini'
+
+[tool.mypy]
+files = [
+    "PyMieSim/single/api.py",
+    "PyMieSim/experiment/setup.py",
+    "PyMieSim/results.py",
+    "PyMieSim/measures.py",
+    "PyMieSim/distributions.py",
+    "PyMieSim/experiment/distributions.py",
+    "tests/typing/public_api.py",
+]
+follow_imports = "silent"
+ignore_missing_imports = true
+check_untyped_defs = true
+disallow_untyped_defs = true

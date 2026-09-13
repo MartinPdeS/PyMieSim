@@ -14,6 +14,7 @@ from .measures import (
     Measure, MeasureLike, MeasureName, Qabs, Qback, Qext, Qforward, Qpr, Qratio, Qsca,
     coupling, cross_section, g, g_with_farfields, size_parameter,
 )
+from .distributions import ParticleSizeDistribution
 from .results import SimulationResult, SimulationResults
 from .coordinates import Cartesian, Spherical, VectorField
 from .experiment.detector_set import CoherentModeSet, PhotodiodeSet
@@ -52,6 +53,7 @@ from .single.source import Gaussian, PlaneWave
 from .units import ureg
 
 __all__ = [
+    "ParticleSizeDistribution",
     "Cartesian",
     "CoherentMode",
     "ConstantMaterial",

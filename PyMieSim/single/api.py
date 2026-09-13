@@ -1,10 +1,23 @@
 """Python-facing API for single-scatterer simulations."""
 
-from typing import Any
+from __future__ import annotations
 
-from ..measures import MeasureLike, normalize_measures
+from typing import TYPE_CHECKING, Callable, Literal, cast, overload
+
+from pint import Quantity
+from matplotlib.figure import Figure
+
+from .scatterer import BaseScatterer
+from .source import BaseSource
+from .detector import BaseDetector
+
+from ..mesh import FullMesh
+from ..measures import MeasureLike, validate_measures
 from ..results import SimulationResult, SimulationResults
 from .setup import Setup
+
+if TYPE_CHECKING:
+    from .representations import FarFields, Stokes, SPF, S1S2, NearFields, Footprint
 
 
 class Simulation:
@@ -13,7 +26,7 @@ class Simulation:
     The underlying setup is kept private so the public API remains small.
     """
 
-    def __init__(self, scatterer: Any, source: Any, detector: Any = None, debug_mode: bool = False):
+    def __init__(self, scatterer: BaseScatterer, source: BaseSource, detector: BaseDetector | None = None, debug_mode: bool = False) -> None:
         self._setup = Setup(
             scatterer=scatterer,
             source=source,
@@ -30,46 +43,68 @@ class Simulation:
             names += ("coupling",)
         return names
 
-    def run(self, *measures: MeasureLike, as_result: bool = False, **options: Any):
-        """Compute measures using the stable single-simulation interface.
+    @overload
+    def run(self, measure: MeasureLike, /, *, as_result: Literal[True]) -> SimulationResult: ...
 
-        ``Measure`` members and historical strings are both accepted.
-        ``as_result=True`` returns explicit typed result containers.
+    @overload
+    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, as_result: Literal[True]) -> SimulationResults: ...
+
+    @overload
+    def run(self, measure: MeasureLike, /, *, as_result: Literal[False] = False) -> Quantity: ...
+
+    @overload
+    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, as_result: Literal[False] = False) -> dict[str, Quantity]: ...
+
+    @overload
+    def run(self, *measures: MeasureLike, as_result: bool = False) -> Quantity | dict[str, Quantity] | SimulationResult | SimulationResults: ...
+
+    def run(self, *measures: MeasureLike, as_result: bool = False) -> Quantity | dict[str, Quantity] | SimulationResult | SimulationResults:
+        """Compute named measures, accepting strings or ``Measure`` members.
+
+        One measure returns a quantity; multiple measures return an ordered
+        dictionary. With ``as_result=True``, both simulations and experiments
+        return ``SimulationResult`` or ``SimulationResults``, respectively.
         """
-
-        names = normalize_measures(measures)
-        if not names:
-            raise ValueError("At least one measure must be requested.")
+        names = validate_measures(measures, self.available_measures)
+        values = {name: self._setup.get(name) for name in names}
         if as_result:
-            values = {name: SimulationResult(name, self._setup.get(name, **options)) for name in names}
-            return next(iter(values.values())) if len(values) == 1 else SimulationResults(values)
+            results = {name: SimulationResult(name, value) for name, value in values.items()}
+            return next(iter(results.values())) if len(results) == 1 else SimulationResults(results)
+        return next(iter(values.values())) if len(values) == 1 else values
 
-        return self._setup.get(*names, **options)
+    get = run
 
-    def get(self, *measures: MeasureLike, **options: Any):
-        """Alias for :meth:`run`."""
-
-        return self.run(*measures, **options)
-
-    def get_representation(self, representation_type: str, **options: Any):
+    def get_representation(self, representation_type: str, **options: object) -> FarFields | Stokes | SPF | S1S2 | NearFields | Footprint:
         """Build a named single-scatterer field representation."""
 
         return self._setup.get_representation(representation_type, **options)
 
-    def get_farfields(self, *args: Any, **options: Any):
+    @overload
+    def get_farfields(self, sampling: int, distance: Quantity) -> tuple[Quantity, Quantity, FullMesh]: ...
+
+    @overload
+    def get_farfields(self, phi: Quantity, theta: Quantity, distance: Quantity) -> tuple[Quantity, Quantity]: ...
+
+    def get_farfields(self, *args: object, **options: object) -> tuple[Quantity, Quantity] | tuple[Quantity, Quantity, FullMesh]:
         """Compute structured or angle-sampled far fields."""
 
-        return self._setup.get_farfields(*args, **options)
+        return cast(Callable[..., tuple[Quantity, Quantity] | tuple[Quantity, Quantity, FullMesh]], self._setup.get_farfields)(*args, **options)
 
-    def get_s1s2(self, angles: Any):
+    def get_s1s2(self, angles: Quantity) -> tuple[Quantity, Quantity]:
         """Compute the complex angular scattering amplitudes ``S1`` and ``S2``."""
 
         return self._setup.get_s1s2(angles=angles)
 
-    def get_stokes(self, *args: Any, **options: Any):
+    @overload
+    def get_stokes(self, sampling: int, distance: Quantity) -> tuple[Quantity, Quantity, Quantity, Quantity, FullMesh]: ...
+
+    @overload
+    def get_stokes(self, phi: Quantity, theta: Quantity, distance: Quantity) -> tuple[Quantity, Quantity, Quantity, Quantity]: ...
+
+    def get_stokes(self, *args: object, **options: object) -> tuple[Quantity, Quantity, Quantity, Quantity] | tuple[Quantity, Quantity, Quantity, Quantity, FullMesh]:
         """Compute the Stokes parameters at selected angles and distance."""
 
-        return self._setup.get_stokes(*args, **options)
+        return cast(Callable[..., tuple[Quantity, Quantity, Quantity, Quantity] | tuple[Quantity, Quantity, Quantity, Quantity, FullMesh]], self._setup.get_stokes)(*args, **options)
 
     def plot_system(
         self,
@@ -78,7 +113,7 @@ class Simulation:
         show_detector_cone: bool = False,
         show_unit_sphere: bool = True,
         figure_size: float = 7.0,
-    ):
+    ) -> Figure:
         """Plot the configured source, scatterer, and detector system."""
 
         return self._setup.plot_system(

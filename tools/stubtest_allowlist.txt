@@ -1,0 +1,6 @@
+# pybind11 classes use a native metaclass that has no Python typing equivalent.
+# These exact class entries suppress metaclass differences; members are still checked.
+PyMieSim.single.setup.Setup
+PyMieSim.labeled_array.LabeledArray
+# Platform-specific pybind11 implementation capsule, not part of the public API.
+PyMieSim.single.setup.Setup\.__pybind11_module_local_.*

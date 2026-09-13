@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from ._plotting import AngularPlotMixin, resolve_colormap, intensity_normalization
+
 from typing import Sequence
 
 import numpy
@@ -8,10 +10,10 @@ import matplotlib
 
 from PyMieSim.units import ureg
 from PyMieSim.utils import spherical_to_cartesian
-from PyMieSim.mesh import FullMesh  # Necessary for loading the class, even if not directly used in this file
+from PyMieSim.mesh import FullMesh  # noqa: F401 - Necessary for loading the class, even if not directly used in this file
 
 
-class SPF:
+class SPF(AngularPlotMixin):
     r"""
     Scattering phase function representation.
 
@@ -228,113 +230,12 @@ class SPF:
             shade=False,
         )
 
-    def _get_normalization(
-        self,
-        intensity: numpy.ndarray,
-        scale: str,
-        percentile_clip: float | None,
-    ):
-        """
-        Build the Matplotlib normalization for the SPF intensity values.
-        """
-        finite_values = intensity[numpy.isfinite(intensity)]
+    def _get_normalization(self, intensity: numpy.ndarray, scale: str, percentile_clip: float | None):
+        return intensity_normalization(intensity, scale, percentile_clip, include_zeros=True)
 
-        if finite_values.size == 0:
-            return matplotlib.colors.Normalize(vmin=0.0, vmax=1.0)
+    def _resolve_colormap(self, colormap):
+        return resolve_colormap(colormap)
 
-        non_negative_values = finite_values[finite_values >= 0.0]
-
-        if non_negative_values.size == 0:
-            return matplotlib.colors.Normalize(vmin=0.0, vmax=1.0)
-
-        upper_limit = numpy.nanmax(non_negative_values)
-
-        if percentile_clip is not None:
-            upper_limit = numpy.nanpercentile(
-                non_negative_values,
-                percentile_clip,
-            )
-
-        if not numpy.isfinite(upper_limit) or upper_limit <= 0.0:
-            upper_limit = 1.0
-
-        if scale == "linear":
-            return matplotlib.colors.Normalize(
-                vmin=0.0,
-                vmax=upper_limit,
-            )
-
-        if scale == "log":
-            strictly_positive_values = non_negative_values[non_negative_values > 0.0]
-
-            if strictly_positive_values.size == 0:
-                return matplotlib.colors.Normalize(vmin=0.0, vmax=upper_limit)
-
-            lower_limit = numpy.nanmax(strictly_positive_values) * 1e-6
-            lower_limit = max(lower_limit, numpy.nanmin(strictly_positive_values))
-
-            if lower_limit >= upper_limit:
-                lower_limit = upper_limit * 1e-6
-
-            return matplotlib.colors.LogNorm(
-                vmin=lower_limit,
-                vmax=upper_limit,
-            )
-
-        raise ValueError(
-            "Invalid SPF scale. Expected 'linear' or 'log'."
-        )
-
-    def _resolve_colormap(
-        self,
-        colormap,
-    ):
-        """
-        Return a Matplotlib colormap object.
-        """
-        if isinstance(colormap, str):
-            return matplotlib.colormaps.get_cmap(colormap)
-
-        return colormap
-
-    def _format_3d_axis(
-        self,
-        ax,
-        background_color: str,
-        show_axis_label: bool,
-        elevation: float,
-        azimuth: float,
-    ) -> None:
-        """
-        Apply common formatting to the 3D axis.
-        """
-        ax.set_facecolor(background_color)
-        ax.view_init(elev=elevation, azim=azimuth)
-
-        self._set_equal_axis_limits(ax)
-
-        if show_axis_label:
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
-            ax.set_zlabel("z")
-        else:
-            ax.set_axis_off()
-
-    def _set_equal_axis_limits(
-        self,
-        ax,
-    ) -> None:
-        """
-        Set symmetric equal limits on a Matplotlib 3D axis.
-        """
-        axis_limit = 1.15
-
-        ax.set_xlim(-axis_limit, axis_limit)
-        ax.set_ylim(-axis_limit, axis_limit)
-        ax.set_zlim(-axis_limit, axis_limit)
-
-        if hasattr(ax, "set_box_aspect"):
-            ax.set_box_aspect((1.0, 1.0, 1.0))
 
     def _spf_array(
         self,
@@ -344,43 +245,4 @@ class SPF:
         """
         return self._as_square_array(
             self._quantity_to_magnitude_array(self.SPF)
-        )
-
-    def _quantity_to_magnitude_array(
-        self,
-        value,
-    ) -> numpy.ndarray:
-        """
-        Convert a Pint quantity or array like object to a NumPy array.
-        """
-        if hasattr(value, "magnitude"):
-            return numpy.asarray(value.magnitude)
-
-        return numpy.asarray(value)
-
-    def _as_square_array(
-        self,
-        value,
-    ) -> numpy.ndarray:
-        """
-        Return a two dimensional square array compatible with surface plotting.
-        """
-        array = numpy.asarray(value)
-
-        if array.ndim == 2:
-            return array
-
-        flat_array = array.ravel()
-        expected_size = self.sampling * self.sampling
-
-        if flat_array.size != expected_size:
-            raise ValueError(
-                "Cannot reshape array to the structured SPF mesh. "
-                f"Expected {expected_size} values from sampling={self.sampling}, "
-                f"but received {flat_array.size}."
-            )
-
-        return flat_array.reshape(
-            (self.sampling, self.sampling),
-            order="F",
         )
