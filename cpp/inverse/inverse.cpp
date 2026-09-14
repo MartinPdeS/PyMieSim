@@ -68,7 +68,8 @@ std::string FitResult::summary() const {
 }
 
 py::object fit_parameters(py::function model, const Observation &observation, py::iterable supplied,
-                          int max_iterations = 200, double initial_step = .1, double step_tolerance = 1e-6) {
+                          int max_iterations = 200, double initial_step = .1, double step_tolerance = 1e-6,
+                          bool show_progress = false) {
     if (max_iterations < 1 || initial_step <= 0 || initial_step > 1 || step_tolerance <= 0)
         throw py::value_error("invalid optimizer settings");
     std::vector<Parameter> parameters;
@@ -145,6 +146,16 @@ py::object fit_parameters(py::function model, const Observation &observation, py
         if (!improved)
             for (auto &value : step)
                 value *= .5;
+
+        if (show_progress) {
+            double normalized_step = 0;
+            for (size_t i = 0; i < step.size(); ++i)
+                normalized_step = std::max(normalized_step, step[i] / (upper[i] - lower[i]));
+
+            py::object line = py::str("iteration {:4d} | objective {:.8g} | step {:.3g}")
+                                  .attr("format")(iterations, best, normalized_step);
+            py::print(line, py::arg("end") = "\r", py::arg("flush") = true);
+        }
     }
     score(current);
     py::dict values;
@@ -166,6 +177,11 @@ py::object fit_parameters(py::function model, const Observation &observation, py
     result.evaluations = evaluations;
     result.success = iterations < max_iterations;
     result.message = result.success ? "converged" : "maximum iterations reached";
+    if (show_progress) {
+        py::object line =
+            py::str("{} after {} iterations | objective {:.8g}").attr("format")(result.message, iterations, best);
+        py::print(line);
+    }
     py::tuple names_tuple(parameters.size());
     for (size_t i = 0; i < parameters.size(); ++i)
         names_tuple[i] = parameters[i].name;

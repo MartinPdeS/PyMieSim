@@ -40,4 +40,4 @@ class FitResult {
 };
 
 py::object fit_parameters(py::function model, const Observation &observation, py::iterable parameters,
-                          int max_iterations, double initial_step, double step_tolerance);
+                          int max_iterations, double initial_step, double step_tolerance, bool show_progress);

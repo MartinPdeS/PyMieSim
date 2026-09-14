@@ -40,6 +40,7 @@ result = fit_parameters(
         )
     ],
     max_iterations=250,
+    show_progress=True,
 )
 
 print(result.summary())

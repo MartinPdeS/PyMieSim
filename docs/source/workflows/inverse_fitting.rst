@@ -18,6 +18,10 @@ of parameters. It is derivative-free and has no global-optimum guarantee; use
 physical bounds and repeat fits from several initial guesses for multimodal
 resonant problems.
 
+Set ``show_progress=True`` to display the iteration, current objective, and
+normalized search step while a fit is running. Progress output is disabled by
+default, which keeps scripts and notebooks quiet.
+
 ``FitResult`` contains fitted parameters, predictions, residuals, objective
 value, iteration and evaluation counts, and convergence status. Unit-bearing
 parameters are passed to the model with their original units, and uncertainties

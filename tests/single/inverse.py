@@ -55,3 +55,23 @@ def test_fit_validates_parameters_and_bounds():
         fit_parameters(lambda _: [1.0], Observation([1.0]), [], max_iterations=1)
     with pytest.raises(ValueError):
         fit_parameters(lambda _: [1.0], Observation([1.0]), [Parameter("x", 0, (-1, 1))], initial_step=0)
+
+
+def test_fit_progress_is_optional(capsys):
+    model = lambda parameters: [parameters["x"]]
+    observation = Observation(values=[1.0])
+    parameters = [Parameter(name="x", initial=0.0, bounds=(-2.0, 2.0))]
+
+    fit_parameters(model=model, observation=observation, parameters=parameters)
+    assert capsys.readouterr().out == ""
+
+    fit_parameters(
+        model=model,
+        observation=observation,
+        parameters=parameters,
+        show_progress=True,
+    )
+    output = capsys.readouterr().out
+    assert "iteration" in output
+    assert "objective" in output
+    assert "converged" in output

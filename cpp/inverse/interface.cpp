@@ -33,5 +33,12 @@ PYBIND11_MODULE(inverse, module) {
 
     module.def("fit_parameters", &fit_parameters, py::arg("model"), py::arg("observation"), py::arg("parameters"),
                py::kw_only(), py::arg("max_iterations") = 200, py::arg("initial_step") = .1,
-               py::arg("step_tolerance") = 1e-6);
+               py::arg("step_tolerance") = 1e-6, py::arg("show_progress") = false,
+               R"pbdoc(
+                   Fit bounded parameters with deterministic coordinate search.
+
+                   Set ``show_progress=True`` to display the current iteration,
+                   objective value, and normalized step size. Progress output is
+                   disabled by default.
+               )pbdoc");
 }
