@@ -9,7 +9,9 @@
 
 namespace py = pybind11;
 
-py::object magnitude(py::object value) { return py::hasattr(value, "magnitude") ? value.attr("magnitude") : value; }
+py::object magnitude(py::object value) {
+    return py::hasattr(value, "magnitude") ? value.attr("magnitude") : value;
+}
 
 double scalar(py::object value, const char *message) {
     py::module_ np = py::module_::import("numpy");
@@ -67,13 +69,19 @@ std::string FitResult::summary() const {
            " model evaluations)\nobjective = " + std::to_string(objective);
 }
 
-py::object fit_parameters(py::function model, const Observation &observation, py::iterable supplied,
-                          int max_iterations = 200, double initial_step = .1, double step_tolerance = 1e-6,
-                          bool show_progress = false) {
-    if (max_iterations < 1 || initial_step <= 0 || initial_step > 1 || step_tolerance <= 0)
-        throw py::value_error("invalid optimizer settings");
+void validate_optimizer_settings(int max_iterations, double initial_step, double step_tolerance) {
+    if (max_iterations < 1)
+        throw py::value_error("max_iterations must be a positive integer");
+    if (initial_step <= 0 || initial_step > 1)
+        throw py::value_error("initial_step must be in (0, 1]");
+    if (step_tolerance <= 0)
+        throw py::value_error("step_tolerance must be positive");
+}
+
+std::vector<Parameter> collect_parameters(py::iterable supplied) {
     std::vector<Parameter> parameters;
     py::set names;
+
     for (py::handle item : supplied) {
         auto parameter = item.cast<Parameter>();
         if (names.contains(parameter.name.c_str()))
@@ -81,8 +89,42 @@ py::object fit_parameters(py::function model, const Observation &observation, py
         names.add(parameter.name.c_str());
         parameters.push_back(std::move(parameter));
     }
+
     if (parameters.empty())
         throw py::value_error("parameters must be nonempty and have unique names");
+    return parameters;
+}
+
+py::dict parameter_mapping(const std::vector<Parameter> &parameters, const std::vector<double> &magnitudes) {
+    py::dict values;
+    for (size_t index = 0; index < parameters.size(); ++index) {
+        const py::object &original = parameters[index].initial;
+        const double original_magnitude = scalar(original, "fit parameters and bounds must be scalar values");
+        values[parameters[index].name.c_str()] =
+            py::hasattr(original, "units") ? (py::float_(magnitudes[index]) * original) / py::float_(original_magnitude)
+                                           : py::float_(magnitudes[index]);
+    }
+    return values;
+}
+
+double normalized_step_size(const std::vector<double> &step, const std::vector<double> &widths) {
+    double largest = 0;
+    for (size_t index = 0; index < step.size(); ++index)
+        largest = std::max(largest, step[index] / widths[index]);
+    return largest;
+}
+
+void report_progress(int iteration, double objective, double normalized_step) {
+    py::object line = py::str("iteration {:4d} | objective {:.8g} | step {:.3g}")
+                          .attr("format")(iteration, objective, normalized_step);
+    py::print(line, py::arg("end") = "\r", py::arg("flush") = true);
+}
+
+py::object fit_parameters(py::function model, const Observation &observation, py::iterable supplied,
+                          int max_iterations = 200, double initial_step = .1, double step_tolerance = 1e-6,
+                          bool show_progress = false) {
+    validate_optimizer_settings(max_iterations, initial_step, step_tolerance);
+    std::vector<Parameter> parameters = collect_parameters(supplied);
     py::module_ np = py::module_::import("numpy");
     py::object observed = np.attr("asarray")(magnitude(observation.values), py::arg("dtype") = "float64");
     py::object sigma = observation.uncertainty.is_none()
@@ -101,18 +143,15 @@ py::object fit_parameters(py::function model, const Observation &observation, py
         step.push_back((hi - lo) * initial_step);
         initial[p.name.c_str()] = p.initial;
     }
+    std::vector<double> widths(step.size());
+    for (size_t index = 0; index < widths.size(); ++index)
+        widths[index] = upper[index] - lower[index];
+
     int evaluations = 0;
     py::object prediction, residuals;
     double best = 0;
     auto score = [&](const std::vector<double> &values) {
-        py::dict passed;
-        for (size_t i = 0; i < parameters.size(); ++i) {
-            auto &original = parameters[i].initial;
-            double base = scalar(original, "fit parameters and bounds must be scalar values");
-            passed[parameters[i].name.c_str()] = py::hasattr(original, "units")
-                                                     ? (py::float_(values[i]) * original) / py::float_(base)
-                                                     : py::float_(values[i]);
-        }
+        py::dict passed = parameter_mapping(parameters, values);
         prediction = np.attr("asarray")(magnitude(model(passed)), py::arg("dtype") = "float64");
         if (!py::bool_(prediction.attr("shape").equal(observed.attr("shape"))))
             throw py::value_error("model returned shape different from observation");
@@ -123,9 +162,7 @@ py::object fit_parameters(py::function model, const Observation &observation, py
     best = score(current);
     int iterations = 0;
     while (iterations < max_iterations) {
-        double largest = 0;
-        for (size_t i = 0; i < step.size(); ++i)
-            largest = std::max(largest, step[i] / (upper[i] - lower[i]));
+        const double largest = normalized_step_size(step, widths);
         if (largest < step_tolerance)
             break;
         ++iterations;
@@ -148,24 +185,11 @@ py::object fit_parameters(py::function model, const Observation &observation, py
                 value *= .5;
 
         if (show_progress) {
-            double normalized_step = 0;
-            for (size_t i = 0; i < step.size(); ++i)
-                normalized_step = std::max(normalized_step, step[i] / (upper[i] - lower[i]));
-
-            py::object line = py::str("iteration {:4d} | objective {:.8g} | step {:.3g}")
-                                  .attr("format")(iterations, best, normalized_step);
-            py::print(line, py::arg("end") = "\r", py::arg("flush") = true);
+            report_progress(iterations, best, normalized_step_size(step, widths));
         }
     }
     score(current);
-    py::dict values;
-    for (size_t i = 0; i < parameters.size(); ++i) {
-        auto &original = parameters[i].initial;
-        double base = scalar(original, "fit parameters and bounds must be scalar values");
-        values[parameters[i].name.c_str()] = py::hasattr(original, "units")
-                                                 ? (py::float_(current[i]) * original) / py::float_(base)
-                                                 : py::float_(current[i]);
-    }
+    py::dict values = parameter_mapping(parameters, current);
     auto result = FitResult{};
     result.parameters = values;
     result.initial_parameters = initial;

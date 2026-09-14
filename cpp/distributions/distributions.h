@@ -10,7 +10,7 @@
 namespace py = pybind11;
 
 class ParticleSizeDistribution {
-  public:
+public:
     ParticleSizeDistribution(py::object diameters, py::object number_weights);
     ParticleSizeDistribution(std::vector<double> diameters, std::vector<double> weights, bool normalize);
 
@@ -28,7 +28,7 @@ class ParticleSizeDistribution {
 
     std::string repr() const;
 
-  private:
+private:
     std::vector<double> diameters_;
     std::vector<double> weights_;
 

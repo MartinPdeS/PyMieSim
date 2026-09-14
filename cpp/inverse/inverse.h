@@ -6,7 +6,7 @@
 namespace py = pybind11;
 
 class Parameter {
-  public:
+public:
     Parameter(std::string name, py::object initial, py::tuple bounds);
     std::string name;
     py::object initial;
@@ -14,7 +14,7 @@ class Parameter {
 };
 
 class Observation {
-  public:
+public:
     Observation(py::object values, py::object uncertainty, std::string name);
     py::object values;
     py::object uncertainty;
@@ -22,7 +22,7 @@ class Observation {
 };
 
 class FitResult {
-  public:
+public:
     FitResult();
     std::string repr() const;
     std::string summary() const;

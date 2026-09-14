@@ -18,8 +18,10 @@
 !tools
 !tools/*.py
 !.flake8
+!.clang-format
 !.gitignore
 !.pre-commit-config.yaml
+!AGENTS.md
 !LICENSE
 !meta.yaml
 !pyproject.toml
