@@ -71,7 +71,7 @@ Sphere: Coherent Goniometer
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fadc0c08790>, <matplotlib.lines.Line2D object at 0x7fadc0c0a050>, <matplotlib.lines.Line2D object at 0x7fadc1002c90>, <matplotlib.lines.Line2D object at 0x7fadc1002890>]
+    [<matplotlib.lines.Line2D object at 0x7ff447d5d210>, <matplotlib.lines.Line2D object at 0x7ff447d5fc90>, <matplotlib.lines.Line2D object at 0x7ff447d5c110>, <matplotlib.lines.Line2D object at 0x7ff447d5f490>]
 
 
 
@@ -131,7 +131,7 @@ Sphere: Coherent Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.434 seconds)
+   **Total running time of the script:** (0 minutes 0.368 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_phioffset.py:

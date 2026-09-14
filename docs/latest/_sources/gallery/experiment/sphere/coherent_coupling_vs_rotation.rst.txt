@@ -71,7 +71,7 @@ Sphere: Coherent mode field rotation
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fadc164e1d0>, <matplotlib.lines.Line2D object at 0x7fadc164f550>]
+    [<matplotlib.lines.Line2D object at 0x7ff447b9c110>, <matplotlib.lines.Line2D object at 0x7ff447b9ca10>]
 
 
 
@@ -132,7 +132,7 @@ Sphere: Coherent mode field rotation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.243 seconds)
+   **Total running time of the script:** (0 minutes 0.211 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_rotation.py:

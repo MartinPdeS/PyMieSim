@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.467** total execution time for 8 files **from gallery/experiment/cylinder**:
+**00:02.880** total execution time for 8 files **from gallery/experiment/cylinder**:
 
 .. container::
 
@@ -33,26 +33,26 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_experiment_cylinder_coupling_vs_wavelength.py` (``coupling_vs_wavelength.py``)
-     - 00:00.663
+     - 00:00.576
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_index.py` (``Qsca_vs_index.py``)
-     - 00:00.663
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_cylinder_Qabs_vs_diameter.py` (``Qabs_vs_diameter.py``)
-     - 00:00.426
+     - 00:00.536
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_wavelength_std.py` (``Qsca_vs_wavelength_std.py``)
-     - 00:00.418
+     - 00:00.346
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_diameter.py` (``Qsca_vs_diameter.py``)
-     - 00:00.392
+     - 00:00.331
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_cylinder_Qabs_vs_diameter.py` (``Qabs_vs_diameter.py``)
+     - 00:00.326
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_coupling_vs_phioffset.py` (``coupling_vs_phioffset.py``)
-     - 00:00.357
+     - 00:00.303
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_coupling_vs_diameter.py` (``coupling_vs_diameter.py``)
-     - 00:00.333
+     - 00:00.276
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_wavelength.py` (``Qsca_vs_wavelength.py``)
-     - 00:00.215
+     - 00:00.185
      - 0.0
