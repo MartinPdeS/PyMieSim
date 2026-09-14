@@ -61,7 +61,7 @@ FitResult::FitResult() : parameter_names(0) {}
 
 std::string FitResult::repr() const {
     return "FitResult(" + std::string(success ? "converged" : "stopped") + ", objective=" + std::to_string(objective) +
-           ", parameters=" + py::str(parameters).cast<std::string>() + ")";
+           ", parameters=" + py::str(static_cast<const py::object &>(parameters)).cast<std::string>() + ")";
 }
 
 std::string FitResult::summary() const {

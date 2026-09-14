@@ -38,4 +38,5 @@ def test_compiled_inverse_api_and_progress(capsys):
 
     assert result.success
     assert result.parameters["offset"] == pytest.approx(3.0, abs=1e-5)
+    assert "parameters={'offset':" in repr(result)
     assert "objective" in capsys.readouterr().out
