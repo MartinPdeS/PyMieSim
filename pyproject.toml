@@ -31,7 +31,7 @@ local_scheme = "no-local-version"
 
 [project]
 name = "PyMieSim"
-version = "5.5.0"
+version = "5.6.0"
 description = "A package for light scattering (Mie) computation."
 license = { file = "LICENSE" }
 readme = "README.rst"
