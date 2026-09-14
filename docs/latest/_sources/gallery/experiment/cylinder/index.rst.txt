@@ -24,10 +24,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qabs_vs_diameter_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_Qabs_vs_diameter_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_Qabs_vs_diameter`
+  :doc:`/gallery/experiment/cylinder/Qabs_vs_diameter`
 
 .. raw:: html
 
@@ -41,10 +41,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_diameter_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_Qsca_vs_diameter_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_diameter`
+  :doc:`/gallery/experiment/cylinder/Qsca_vs_diameter`
 
 .. raw:: html
 
@@ -58,10 +58,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_index_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_Qsca_vs_index_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_index`
+  :doc:`/gallery/experiment/cylinder/Qsca_vs_index`
 
 .. raw:: html
 
@@ -75,10 +75,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_Qsca_vs_wavelength_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength`
+  :doc:`/gallery/experiment/cylinder/Qsca_vs_wavelength`
 
 .. raw:: html
 
@@ -92,10 +92,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_std_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_Qsca_vs_wavelength_std_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std`
+  :doc:`/gallery/experiment/cylinder/Qsca_vs_wavelength_std`
 
 .. raw:: html
 
@@ -109,10 +109,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_diameter_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_coupling_vs_diameter_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_diameter`
+  :doc:`/gallery/experiment/cylinder/coupling_vs_diameter`
 
 .. raw:: html
 
@@ -126,10 +126,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_phioffset_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_coupling_vs_phioffset_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_phioffset`
+  :doc:`/gallery/experiment/cylinder/coupling_vs_phioffset`
 
 .. raw:: html
 
@@ -143,10 +143,10 @@ Examples demonstrating infinite cylindrical scatterers.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_coupling_vs_wavelength_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_coupling_vs_wavelength_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/cylinder/cylinder_coupling_vs_wavelength`
+  :doc:`/gallery/experiment/cylinder/coupling_vs_wavelength`
 
 .. raw:: html
 
@@ -164,12 +164,12 @@ Examples demonstrating infinite cylindrical scatterers.
 .. toctree::
    :hidden:
 
-   /gallery/experiment/cylinder/cylinder_Qabs_vs_diameter
-   /gallery/experiment/cylinder/cylinder_Qsca_vs_diameter
-   /gallery/experiment/cylinder/cylinder_Qsca_vs_index
-   /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength
-   /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std
-   /gallery/experiment/cylinder/cylinder_coupling_vs_diameter
-   /gallery/experiment/cylinder/cylinder_coupling_vs_phioffset
-   /gallery/experiment/cylinder/cylinder_coupling_vs_wavelength
+   /gallery/experiment/cylinder/Qabs_vs_diameter
+   /gallery/experiment/cylinder/Qsca_vs_diameter
+   /gallery/experiment/cylinder/Qsca_vs_index
+   /gallery/experiment/cylinder/Qsca_vs_wavelength
+   /gallery/experiment/cylinder/Qsca_vs_wavelength_std
+   /gallery/experiment/cylinder/coupling_vs_diameter
+   /gallery/experiment/cylinder/coupling_vs_phioffset
+   /gallery/experiment/cylinder/coupling_vs_wavelength
 

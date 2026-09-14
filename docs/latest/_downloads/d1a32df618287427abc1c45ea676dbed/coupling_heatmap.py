@@ -37,7 +37,7 @@ material_values = numpy.linspace(1.3, 2.1, 100)
 scatterer = SphereSet(
     diameter=numpy.linspace(1, 2000, 100) * ureg.nanometer,
     material=material_values,
-    medium=[SellmeierMedium("water")],
+    medium=[SellmeierMedium(material_name="water")],
 )
 
 detector = PhotodiodeSet(

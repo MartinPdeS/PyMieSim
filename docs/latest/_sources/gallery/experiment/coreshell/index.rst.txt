@@ -24,10 +24,10 @@ Examples of particles composed of a core and shell.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_Qback_vs_corediameter_thumb.png
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_Qback_vs_corediameter_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/coreshell/coreshell_Qback_vs_corediameter`
+  :doc:`/gallery/experiment/coreshell/Qback_vs_corediameter`
 
 .. raw:: html
 
@@ -41,10 +41,10 @@ Examples of particles composed of a core and shell.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_coupling_vs_corediameter_thumb.png
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coupling_vs_corediameter_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/coreshell/coreshell_coupling_vs_corediameter`
+  :doc:`/gallery/experiment/coreshell/coupling_vs_corediameter`
 
 .. raw:: html
 
@@ -58,10 +58,10 @@ Examples of particles composed of a core and shell.
 
 .. only:: html
 
-  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_coupling_vs_na_cache_thumb.png
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coupling_vs_na_cache_thumb.png
     :alt:
 
-  :doc:`/gallery/experiment/coreshell/coreshell_coupling_vs_na_cache`
+  :doc:`/gallery/experiment/coreshell/coupling_vs_na_cache`
 
 .. raw:: html
 
@@ -79,7 +79,7 @@ Examples of particles composed of a core and shell.
 .. toctree::
    :hidden:
 
-   /gallery/experiment/coreshell/coreshell_Qback_vs_corediameter
-   /gallery/experiment/coreshell/coreshell_coupling_vs_corediameter
-   /gallery/experiment/coreshell/coreshell_coupling_vs_na_cache
+   /gallery/experiment/coreshell/Qback_vs_corediameter
+   /gallery/experiment/coreshell/coupling_vs_corediameter
+   /gallery/experiment/coreshell/coupling_vs_na_cache
 

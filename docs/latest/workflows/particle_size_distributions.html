@@ -63,7 +63,7 @@
     <link rel="icon" href="../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Detector coupling" href="detector_coupling.html" />
+    <link rel="next" title="Inverse parameter fitting" href="inverse_fitting.html" />
     <link rel="prev" title="Parameter sweeps" href="parameter_sweeps.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -548,6 +548,7 @@
 <li class="toctree-l1"><a class="reference internal" href="first_simulation.html">Your first simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parameter_sweeps.html">Parameter sweeps</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Particle-size distributions: independent scattering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inverse_fitting.html">Inverse parameter fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="detector_coupling.html">Detector coupling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizing_fields.html">Visualizing fields</a></li>
 </ul>
@@ -826,177 +827,54 @@ conventions, see <a class="reference external" href="https://gmd.copernicus.org/
 <h2>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParticleSizeDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Discrete diameters and normalized particle number fractions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>diameters</strong> (<em>Quantity</em>) – One-dimensional, finite, positive diameters with length units.</p></li>
-<li><p><strong>number_weights</strong> (<em>ArrayLike</em>) – Nonnegative particle counts or probability masses at each diameter.
-These are number weights, not volume fractions, intensity weights,
-or samples of a probability density. They are normalized internally.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This object describes sizes only. <code class="docutils literal notranslate"><span class="pre">Experiment.average_size_distribution</span></code>
-uses it exclusively in the non-interacting, independent-scattering
-approximation. It does not model interactions between particles, multiple
-scattering, or interparticle interference. For a better approximation when
-particle correlations matter, refer to PackLab’s correlation-based
-dependent-scattering calculations:
-<a class="reference external" href="https://martinpdes.github.io/PackLab/docs/latest/scattering.html">https://martinpdes.github.io/PackLab/docs/latest/scattering.html</a>.</p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParticleSizeDistribution</span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
+<p>Discrete particle diameters and normalized number fractions.</p>
+<p>Optical averaging uses the non-interacting, independent-scattering
+approximation. Refer to PackLab when particle correlations matter.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.diameters">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.diameters" title="Link to this definition">#</a></dt>
-<dd><p>Diameter nodes in meters, returned as a copy.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diameters</span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.diameters" title="Link to this definition">#</a></dt>
+<dd><p>Diameter nodes as a Pint quantity in meters.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.lognormal">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lognormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">median_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_std</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.lognormal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.lognormal" title="Link to this definition">#</a></dt>
-<dd><p>Discretize a number-based lognormal distribution by Gauss-Hermite quadrature.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>median_diameter</strong> (<em>Quantity</em>) – Finite positive scalar diameter with length units. This is the
-number median, not the arithmetic mean or a volume median.</p></li>
-<li><p><strong>geometric_std</strong> (<em>float</em>) – Geometric standard deviation, at least one. The standard deviation
-of log(diameter) is <code class="docutils literal notranslate"><span class="pre">log(geometric_std)</span></code>. One gives a single size.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Number of quadrature nodes (default 32). Increase this and compare
-optical results to verify convergence, especially near resonances.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The nodes integrate the full lognormal distribution without explicit
-tail truncation. The returned weights are quadrature probability masses,
-not a histogram or pointwise probability density.</p>
-</dd></dl>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lognormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">median_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><span class="pre">PyMieSim.distributions.ParticleSizeDistribution</span></a></span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.lognormal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.mixture">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distributions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.mixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.mixture" title="Link to this definition">#</a></dt>
-<dd><p>Combine distributions with component particle counts or number fractions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>distributions</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a><em>]</em>) – Nonempty sequence of size distributions. Components can use
-different families and numbers of quadrature nodes.</p></li>
-<li><p><strong>number_weights</strong> (<em>_Buffer</em><em> | </em><em>_SupportsArray</em><em>[</em><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.6.dev0)"><em>dtype</em></a><em>[</em><em>Any</em><em>]</em><em>] </em><em>| </em><em>_NestedSequence</em><em>[</em><em>_SupportsArray</em><em>[</em><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.6.dev0)"><em>dtype</em></a><em>[</em><em>Any</em><em>]</em><em>]</em><em>] </em><em>| </em><em>bool</em><em> | </em><em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em><em> | </em><em>str</em><em> | </em><em>bytes</em><em> | </em><em>_NestedSequence</em><em>[</em><em>bool</em><em> | </em><em>int</em><em> | </em><em>float</em><em> | </em><em>complex</em><em> | </em><em>str</em><em> | </em><em>bytes</em><em>]</em>) – Nonnegative number weights, one per component, normalized internally.
-A component’s weight is its fraction of particles, independent of
-the number of nodes used to discretize it.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Nodes are concatenated in component order; duplicate diameters are
-retained. This combines sizes only, not size-dependent compositions.
-Optical averaging remains in the non-interacting approximation; see
-PackLab for correlation-based dependent-scattering approximations.</p>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distributions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><span class="pre">PyMieSim.distributions.ParticleSizeDistribution</span></a></span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.mixture" title="Link to this definition">#</a></dt>
+<dd><p>Combine distributions using component number fractions.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.monodisperse">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">monodisperse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.monodisperse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.monodisperse" title="Link to this definition">#</a></dt>
-<dd><p>Put all particles at one positive diameter with length units.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>diameter</strong> (<em>Quantity</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
-</dd>
-</dl>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">monodisperse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><span class="pre">PyMieSim.distributions.ParticleSizeDistribution</span></a></span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.monodisperse" title="Link to this definition">#</a></dt>
+<dd><p>Create a distribution containing one diameter.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.number_fractions">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_fractions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.6.dev0)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.number_fractions" title="Link to this definition">#</a></dt>
-<dd><p>Normalized particle number fractions, returned as a copy.</p>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_fractions</span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.number_fractions" title="Link to this definition">#</a></dt>
+<dd><p>Normalized particle-number fractions as a NumPy array.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.triangular">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">triangular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.triangular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.triangular" title="Link to this definition">#</a></dt>
-<dd><p>Discretize a triangular number density with a specified peak diameter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>minimum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar bounds with length units.</p></li>
-<li><p><strong>maximum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar bounds with length units.</p></li>
-<li><p><strong>mode_diameter</strong> (<em>Quantity</em>) – Positive scalar peak position, within the closed diameter interval.
-An endpoint mode gives a monotonically increasing or decreasing density.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Gauss-Legendre points per nonempty side of the peak (default 16).
-The result has up to twice this number of nodes. Increase it to
-check convergence of optical averages.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Integrating each side separately resolves the change of slope at the
-peak. Weights represent particle number, not particle volume.</p>
-</dd></dl>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">triangular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><span class="pre">PyMieSim.distributions.ParticleSizeDistribution</span></a></span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.triangular" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.truncated_normal">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">truncated_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.truncated_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.truncated_normal" title="Link to this definition">#</a></dt>
-<dd><p>Discretize a normal number distribution conditioned on positive bounds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mean_diameter</strong> (<em>Quantity</em>) – Positive scalar mean of the underlying untruncated normal, with
-length units. Truncation generally changes the actual mean.</p></li>
-<li><p><strong>standard_deviation</strong> (<em>Quantity</em>) – Positive scalar standard deviation of that underlying normal,
-with length units. Use <code class="docutils literal notranslate"><span class="pre">monodisperse</span></code> for zero width.</p></li>
-<li><p><strong>minimum_diameter</strong> (<em>Quantity</em>) – Required positive scalar bounds. Probability outside this interval
-is discarded and the retained distribution is renormalized.</p></li>
-<li><p><strong>maximum_diameter</strong> (<em>Quantity</em>) – Required positive scalar bounds. Probability outside this interval
-is discarded and the retained distribution is renormalized.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Number of Gauss-Legendre points, default 64. Increase it to check
-convergence, especially for intervals much wider than the width.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Weights integrate exp(-0.5*((d-mean)/standard_deviation)**2) on the
-specified interval. They are number fractions, not density samples.</p>
-</dd></dl>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">truncated_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><span class="pre">PyMieSim.distributions.ParticleSizeDistribution</span></a></span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.truncated_normal" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.ParticleSizeDistribution.uniform">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/distributions.html#ParticleSizeDistribution.uniform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.uniform" title="Link to this definition">#</a></dt>
-<dd><p>Discretize a number density uniform in diameter between positive bounds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>minimum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar lengths, with minimum strictly below maximum.</p></li>
-<li><p><strong>maximum_diameter</strong> (<em>Quantity</em>) – Finite positive scalar lengths, with minimum strictly below maximum.</p></li>
-<li><p><strong>sampling</strong> (<em>int</em>) – Number of Gauss-Legendre quadrature points. Increase it to check
-convergence of optical averages.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><em>ParticleSizeDistribution</em></a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The density is constant in diameter, not in log diameter or volume.
-The returned number fractions include the quadrature weights.</p>
-</dd></dl>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_diameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PyMieSim.ParticleSizeDistribution" title="PyMieSim.distributions.ParticleSizeDistribution"><span class="pre">PyMieSim.distributions.ParticleSizeDistribution</span></a></span></span><a class="headerlink" href="#PyMieSim.ParticleSizeDistribution.uniform" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
