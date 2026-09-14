@@ -71,7 +71,7 @@ Sphere: Qsca vs diameter
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fa236f0a910>, <matplotlib.lines.Line2D object at 0x7fa236f0be50>, <matplotlib.lines.Line2D object at 0x7fa236f094d0>]
+    [<matplotlib.lines.Line2D object at 0x7f882c3d2cd0>, <matplotlib.lines.Line2D object at 0x7f88297e4190>, <matplotlib.lines.Line2D object at 0x7f8829f0a390>]
 
 
 
@@ -125,7 +125,7 @@ Sphere: Qsca vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.154 seconds)
+   **Total running time of the script:** (0 minutes 0.222 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_diameter.py:

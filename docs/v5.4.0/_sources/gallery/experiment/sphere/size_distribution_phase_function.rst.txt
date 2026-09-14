@@ -169,7 +169,7 @@ mean diameter and particle volume therefore also change with width.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.503 seconds)
+   **Total running time of the script:** (0 minutes 1.856 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_size_distribution_phase_function.py:

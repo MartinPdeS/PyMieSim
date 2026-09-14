@@ -73,7 +73,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7fa23774bd50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fa2377313d0>, <matplotlib.lines.Line2D object at 0x7fa237750850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fa237733d10>]
+    [<matplotlib.lines.Line2D object at 0x7f8829e6ff90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f8829e40650>, <matplotlib.lines.Line2D object at 0x7f8829e42b10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f882969c710>]
 
 
 
@@ -133,7 +133,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.526 seconds)
+   **Total running time of the script:** (0 minutes 0.701 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_wavelength.py:
