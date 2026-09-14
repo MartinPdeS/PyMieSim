@@ -121,14 +121,14 @@ Importing the package dependencies: numpy, PyMieSim
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f882e8ff690>, <matplotlib.lines.Line2D object at 0x7f8829e27b90>, <matplotlib.lines.Line2D object at 0x7f8829e256d0>]
+    [<matplotlib.lines.Line2D object at 0x7fbcd17670d0>, <matplotlib.lines.Line2D object at 0x7fbcd1765850>, <matplotlib.lines.Line2D object at 0x7fbcd1764f10>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.347 seconds)
+   **Total running time of the script:** (0 minutes 0.345 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_Qback_vs_corediameter.py:

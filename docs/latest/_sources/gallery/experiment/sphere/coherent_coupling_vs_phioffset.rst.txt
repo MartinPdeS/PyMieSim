@@ -71,7 +71,7 @@ Sphere: Coherent Goniometer
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f8829dbb050>, <matplotlib.lines.Line2D object at 0x7f8829e92b10>, <matplotlib.lines.Line2D object at 0x7f8829e869d0>, <matplotlib.lines.Line2D object at 0x7f8829e87650>]
+    [<matplotlib.lines.Line2D object at 0x7fbcd1b312d0>, <matplotlib.lines.Line2D object at 0x7fbcd1b32dd0>, <matplotlib.lines.Line2D object at 0x7fbcd1b30990>, <matplotlib.lines.Line2D object at 0x7fbcd1b31390>]
 
 
 

@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coupling_vs_na_cache.py` (``coupling_vs_na_cache.py``)
-     - 00:00.581
+     - 00:00.582
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_Qback_vs_corediameter.py` (``Qback_vs_corediameter.py``)
-     - 00:00.347
+     - 00:00.345
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coupling_vs_corediameter.py` (``coupling_vs_corediameter.py``)
-     - 00:00.290
+     - 00:00.292
      - 0.0
