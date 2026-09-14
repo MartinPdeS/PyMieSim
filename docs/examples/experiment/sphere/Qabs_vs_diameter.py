@@ -1,6 +1,6 @@
 """
-Sphere: Qsca vs wavelength
-==========================
+Sphere: Qabs vs diameter
+========================
 
 """
 import numpy as np
@@ -11,33 +11,33 @@ from PyMieSim import (
     PolarizationSet,
     Experiment,
     print_available,
-    SellmeierMaterial,
+    TabulatedMaterial,
 )
 
 
 print_available()
 
 polarization_set = PolarizationSet(
-    angles=[0.0] * ureg.degree,
+    angles=[0] * ureg.degree
 )
 
 source = GaussianSet(
-    wavelength=np.linspace(400, 1000, 50) * ureg.nanometer,
+    wavelength=[400, 700] * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
 )
 
-bk7 = SellmeierMaterial("BK7")
+silver = TabulatedMaterial(material_name="silver")
 
 scatterer = SphereSet(
-    diameter=[200] * ureg.nanometer,
-    material=[bk7],
+    diameter=np.linspace(1, 800, 300) * ureg.nanometer,
+    material=[silver],
     medium=[1],
 )
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get("Qsca", "Qpr")
+result = experiment.get("Qsca")
 
-result.isel({"measure": 0}).plot(x="source:wavelength", y="Qsca")
+result.plot(x="scatterer:diameter")

@@ -31,7 +31,7 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=np.linspace(1400, 1500, 10) * ureg.nanometer,
-    material=[SellmeierMaterial("BK7")],
+    material=[SellmeierMaterial(material_name="BK7")],
     medium=[1],
 )
 
@@ -43,7 +43,7 @@ detector = CoherentModeSet(
     polarization_filter=[0, 90] * ureg.degree,
     rotation=[0] * ureg.degree,
     sampling=[300],
-    medium=[SellmeierMedium("water")]
+    medium=[SellmeierMedium(material_name="water")]
 )
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)

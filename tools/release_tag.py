@@ -7,8 +7,6 @@ before committing and tagging the release.  It intentionally does not push
 commits or tags to a remote.
 """
 
-from __future__ import annotations
-
 import argparse
 from datetime import date
 import json

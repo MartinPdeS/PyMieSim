@@ -62,6 +62,7 @@ def reset_mpl(gallery_conf, fname):
 examples_files = [
     "single",
     "experiment",
+    "inverse",
     "benchmarks",
     "validation",
     "extras"

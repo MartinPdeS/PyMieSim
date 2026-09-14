@@ -1,0 +1,7 @@
+set(NAME "distributions")
+add_library("${NAME}_lib" STATIC distributions.cpp)
+target_link_libraries("${NAME}_lib" PUBLIC pybind11::module pint)
+pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
+set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+target_link_libraries("interface_${NAME}" PRIVATE pybind11::module "${NAME}_lib")
+install(TARGETS "${NAME}_lib" "interface_${NAME}" LIBRARY DESTINATION "PyMieSim" RUNTIME DESTINATION "PyMieSim" ARCHIVE DESTINATION "PyMieSim")

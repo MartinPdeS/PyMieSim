@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Print the next semantic-version tag from the highest existing release tag."""
 
-from __future__ import annotations
-
 import argparse
 from pathlib import Path
 import re

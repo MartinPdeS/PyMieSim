@@ -7,7 +7,7 @@ from PyMieSim.experiment.setup import Setup as Experiment
 from PyMieSim.results import SimulationResult, SimulationResults
 from PyMieSim.labeled_array import LabeledArray
 from PyMieSim.measures import Measure
-from PyMieSim.distributions import ParticleSizeDistribution
+from PyMieSim import ParticleSizeDistribution
 
 
 def check_result_types(simulation: Simulation, experiment: Experiment) -> None:

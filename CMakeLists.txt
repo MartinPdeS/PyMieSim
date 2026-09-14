@@ -116,6 +116,8 @@ add_subdirectory(cpp/material)
 add_subdirectory(cpp/polarization)
 add_subdirectory(cpp/mesh)
 add_subdirectory(cpp/labeled_array)
+add_subdirectory(cpp/distributions)
+add_subdirectory(cpp/inverse)
 
 add_subdirectory(cpp/single/mode_field)
 add_subdirectory(cpp/single/setup)

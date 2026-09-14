@@ -64,3 +64,10 @@ approximation when particle correlations matter, refer to
 `PackLab <https://martinpdes.github.io/PackLab/docs/latest/scattering.html>`_.
 See :ref:`particle_size_distributions` for physical weighting rules,
 limitations, and an example.
+
+Inverse fitting
+---------------
+
+The NumPy-only ``fit_parameters`` API fits bounded physical parameters against
+unit-aware observations without adding SciPy as a dependency. See
+:ref:`inverse_fitting` for the forward-model adapter pattern and limitations.

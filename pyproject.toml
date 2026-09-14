@@ -146,7 +146,6 @@ files = [
     "PyMieSim/experiment/setup.py",
     "PyMieSim/results.py",
     "PyMieSim/measures.py",
-    "PyMieSim/distributions.py",
     "PyMieSim/experiment/distributions.py",
     "tests/typing/public_api.py",
 ]

@@ -13,6 +13,7 @@ without importing generated C++ extension modules.
    workflows/first_simulation
    workflows/parameter_sweeps
    workflows/particle_size_distributions
+   workflows/inverse_fitting
    workflows/detector_coupling
    workflows/visualizing_fields
 

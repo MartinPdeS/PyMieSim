@@ -28,7 +28,7 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=[500e-9] * ureg.meter,
-    material=[SellmeierMaterial("BK7")],
+    material=[SellmeierMaterial(material_name="BK7")],
     medium=[1],
 )
 

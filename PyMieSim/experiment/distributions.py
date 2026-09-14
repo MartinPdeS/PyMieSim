@@ -1,7 +1,5 @@
 """Independent-scattering reduction of spherical-particle parameter grids."""
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -28,7 +26,7 @@ SUPPORTED_MEASURES = (*CROSS_SECTIONS, *EFFICIENCIES, "g", "coupling")
 
 
 def average_size_distribution(
-    experiment: Setup,
+    experiment: "Setup",
     distribution: ParticleSizeDistribution,
     measures: tuple[MeasureLike, ...],
     drop_unique_level: bool,

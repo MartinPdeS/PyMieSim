@@ -1,6 +1,6 @@
 """
-Sphere: Coherent mode field rotation
-====================================
+Sphere: Coherent Goniometer
+===========================
 
 """
 import numpy
@@ -28,25 +28,24 @@ source = GaussianSet(
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
 )
-
 scatterer = SphereSet(
-    diameter=[2000, 2300] * ureg.nanometer,
-    material=[SellmeierMaterial("BK7")],
+    diameter=[2000] * ureg.nanometer,
+    material=[SellmeierMaterial(material_name="BK7")],
     medium=[1],
 )
 
 detector = CoherentModeSet(
-    mode_number="HG11",
-    numerical_aperture=[0.05],
-    phi_offset=[0] * ureg.degree,
-    gamma_offset=[20] * ureg.degree,
+    mode_number="LP11",
+    numerical_aperture=[0.5, 0.3, 0.1, 0.05],
+    phi_offset=numpy.linspace(-180, 180, 300) * ureg.degree,
+    gamma_offset=[0] * ureg.degree,
     sampling=[400],
-    rotation=numpy.linspace(0, 180, 200) * ureg.degree,
-    polarization_filter=None,
+    polarization_filter=[10] * ureg.degree,
+    rotation=[0] * ureg.degree,
 )
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 result = experiment.get("coupling")
 
-result.plot(x="detector:rotation")
+result.plot(x="detector:phi_offset")

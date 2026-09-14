@@ -1,25 +1,21 @@
 """
-Sphere: Coupling vs sampling
-============================
+Sphere: coherent coupling vs sampling
+=====================================
 
 """
 import numpy
 from PyMieSim import (
     ureg,
-    PhotodiodeSet,
+    CoherentModeSet,
     SphereSet,
     GaussianSet,
     PolarizationSet,
     Experiment,
     print_available,
     SellmeierMaterial,
-    SellmeierMedium,
 )
 
-
-
 print_available()
-
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -31,19 +27,20 @@ source = GaussianSet(
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
 )
-
 scatterer = SphereSet(
-    diameter=[5000] * ureg.nanometer,
-    material=[SellmeierMaterial("BK7")],
-    medium=[SellmeierMedium("water")],
+    diameter=[1000] * ureg.nanometer,
+    material=[SellmeierMaterial(material_name="BK7")],
+    medium=[1],
 )
 
-detector = PhotodiodeSet(
-    numerical_aperture=[0.2],
-    phi_offset=numpy.linspace(-20, 20, 400) * ureg.degree,
+detector = CoherentModeSet(
+    mode_number=["LP01"],
+    rotation=[0] * ureg.degree,
+    numerical_aperture=[0.1],
+    phi_offset=numpy.linspace(-80, 80, 200) * ureg.degree,
     gamma_offset=[0] * ureg.degree,
-    sampling=[20, 40, 80, 160],
-    medium=[1.0],
+    sampling=[10, 20, 40, 80, 160],
+    polarization_filter=[0] * ureg.degree,
 )
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)

@@ -1,7 +1,5 @@
 """Python-facing API for single-scatterer simulations."""
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Callable, Literal, cast, overload
 
 from pint import Quantity
@@ -74,7 +72,7 @@ class Simulation:
 
     get = run
 
-    def get_representation(self, representation_type: str, **options: object) -> FarFields | Stokes | SPF | S1S2 | NearFields | Footprint:
+    def get_representation(self, representation_type: str, **options: object) -> "FarFields | Stokes | SPF | S1S2 | NearFields | Footprint":
         """Build a named single-scatterer field representation."""
 
         return self._setup.get_representation(representation_type, **options)

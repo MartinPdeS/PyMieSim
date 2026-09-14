@@ -14,7 +14,7 @@ from PyMieSim import (
     Simulation,
 )
 
-bk7 = SellmeierMaterial("BK7")
+bk7 = SellmeierMaterial(material_name="BK7")
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 

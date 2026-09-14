@@ -30,7 +30,7 @@ source = GaussianSet(
 )
 scatterer = SphereSet(
     diameter=[1000] * ureg.nanometer,
-    material=[SellmeierMaterial("BK7")],
+    material=[SellmeierMaterial(material_name="BK7")],
     medium=[1],
 )
 

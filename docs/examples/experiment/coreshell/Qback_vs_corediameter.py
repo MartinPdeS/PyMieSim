@@ -38,9 +38,9 @@ source = GaussianSet(
 scatterer = CoreShellSet(
     core_diameter=numpy.geomspace(100, 900, 400) * ureg.nanometer,
     shell_thickness=[800] * ureg.nanometer,
-    core_material=[TabulatedMaterial("silver")],
-    shell_material=[SellmeierMaterial("BK7")],
-    medium=[SellmeierMedium("water")],
+    core_material=[TabulatedMaterial(material_name="silver")],
+    shell_material=[SellmeierMaterial(material_name="BK7")],
+    medium=[SellmeierMedium(material_name="water")],
 )
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)

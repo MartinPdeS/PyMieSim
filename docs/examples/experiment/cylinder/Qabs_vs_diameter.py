@@ -32,7 +32,7 @@ source = GaussianSet(
 
 scatterer = InfiniteCylinderSet(
     diameter=np.linspace(1, 800, 300) * ureg.nanometer,
-    material=[TabulatedMaterial("silver"), TabulatedMaterial("gold"), TabulatedMaterial("aluminium")],
+    material=[TabulatedMaterial(material_name="silver"), TabulatedMaterial(material_name="gold"), TabulatedMaterial(material_name="aluminium")],
     medium=[1],
 )
 
