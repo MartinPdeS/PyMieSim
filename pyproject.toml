@@ -100,7 +100,7 @@ documentation = [
     "pydata-sphinx-theme==0.19.0"
 ]
 dev = [
-    "mypy>=1.11,<2",
+    "mypy>=1.11,<3",
     "flake8==7.3.0",
     "ruff==0.16.7",
 ]
