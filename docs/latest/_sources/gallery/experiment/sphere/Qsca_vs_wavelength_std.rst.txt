@@ -71,7 +71,7 @@ Sphere: Qsca vs wavelength STD
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f90b8917990>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f90c115a010>, <matplotlib.lines.Line2D object at 0x7f90b8917c50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f90b891f1d0>, <matplotlib.lines.Line2D object at 0x7f90b8a8be90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f90b8a8be50>]
+    [<matplotlib.lines.Line2D object at 0x7f2a21d4de50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f2a1e902bd0>, <matplotlib.lines.Line2D object at 0x7f2a1e902c90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f2a1e2169d0>, <matplotlib.lines.Line2D object at 0x7f2a1e2150d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f2a1e839310>]
 
 
 
@@ -125,7 +125,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.377 seconds)
+   **Total running time of the script:** (0 minutes 0.373 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength_std.py:

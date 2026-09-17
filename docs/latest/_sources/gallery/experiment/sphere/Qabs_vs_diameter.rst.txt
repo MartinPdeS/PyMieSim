@@ -71,7 +71,7 @@ Sphere: Qabs vs diameter
     | ZBLAN                 |                       |
     +-----------------------+-----------------------+
 
-    [<matplotlib.lines.Line2D object at 0x7f90b842fc50>, <matplotlib.lines.Line2D object at 0x7f90b891c490>]
+    [<matplotlib.lines.Line2D object at 0x7f2a1eacbc90>, <matplotlib.lines.Line2D object at 0x7f2a1e21ecd0>]
 
 
 
@@ -123,7 +123,7 @@ Sphere: Qabs vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.241 seconds)
+   **Total running time of the script:** (0 minutes 0.246 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qabs_vs_diameter.py:
