@@ -9,3 +9,9 @@ updates:
       interval: "monthly"
       day: "sunday"
       time: "09:00"
+    ignore:
+      # PyMieSim still uses the legacy PyOptik.Material registry. PyOptik 3
+      # replaced it with the catalog API and requires a deliberate migration.
+      - dependency-name: "PyOptik"
+        update-types:
+          - "version-update:semver-major"
