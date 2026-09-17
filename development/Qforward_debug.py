@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
-from PyOptik import Material
+from PyMieSim.material import TabulatedMaterial
 
 from PyMieSim.experiment import Setup
 from PyMieSim import units
@@ -36,7 +36,7 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=14e7 * units.nanometer,
     medium_property=[1] * RIU,
-    property=Material.silver,
+    property=TabulatedMaterial("silver"),
     source=source,
 )
 

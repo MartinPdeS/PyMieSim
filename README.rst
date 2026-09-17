@@ -61,6 +61,15 @@ your simulations:
 
    python -c "import PyMieSim; print(PyMieSim.__version__)"
 
+Named optical materials use PyOptik's provenance-preserving
+RefractiveIndex.INFO catalog. Initialize its local snapshot once before using
+constructors such as ``SellmeierMaterial("BK7")`` or
+``TabulatedMaterial("silver")``:
+
+.. code-block:: bash
+
+   python -m PyOptik setup
+
 The released wheels are the easiest option.  Building from source requires a
 C++20 compiler, Fortran, CMake, pybind11, and OpenMP; see
 `troubleshooting <https://martinpdes.github.io/PyMieSim/troubleshooting.html>`_

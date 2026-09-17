@@ -14,9 +14,9 @@ from PyMieSim.single.source import Gaussian
 
 from PyMieSim import units
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-from PyOptik import Material
+from PyMieSim.material import SellmeierMaterial, print_available
 
-Material.print_available()
+print_available()
 
 # %%
 # Defining the source to be employed.
@@ -31,7 +31,7 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=100 * nanometer,
     medium_property=[1.33] * RIU,
-    property=Material.polystyren,
+    property=SellmeierMaterial("organic/polystyrene/Sultanova"),
     source=source,
 )
 

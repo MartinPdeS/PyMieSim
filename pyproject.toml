@@ -64,7 +64,7 @@ classifiers = [
 dependencies = [
     "TypedUnit ==0.0.11",
     "MPSPlots ==1.8.9",
-    "PyOptik ==2.0.7",
+    "PyOptik ==3.2.0",
     "setuptools_scm[toml] >=8,<11",
     "numpy ==2.2.6",
     "matplotlib ==3.10.9",
@@ -118,6 +118,7 @@ select = ["E9", "F63", "F7", "F82"]
 [tool.cibuildwheel]
 build-frontend = "build"
 test-extras = ["testing"]
+before-test = "python -m PyOptik setup --no-progress"
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]

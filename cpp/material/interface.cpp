@@ -55,13 +55,8 @@ PYBIND11_MODULE(material, module) {
     module.def(
         "print_available",
         []() {
-            py::module_ pyoptik = py::module_::import("PyOptik");
-            py::object Material = pyoptik.attr("Material");
-
-            Material.attr("use_tabulated") = py::bool_(true);
-            Material.attr("use_sellmeier") = py::bool_(true);
-
-            Material.attr("print_available")();
+            py::module_ materials = py::module_::import("PyMieSim.materials");
+            materials.attr("print_available")();
         },
         R"pbdoc(
             Prints the available materials in the PyOptik library.
@@ -200,13 +195,11 @@ PYBIND11_MODULE(material, module) {
         .def(
             py::init(
                 [](const py::str& material_name) {
-                    py::module_ pyoptik = py::module_::import("PyOptik");
-                    py::object Material = pyoptik.attr("Material");
-
-                    Material.attr("use_tabulated") = py::bool_(true);
-                    Material.attr("use_sellmeier") = py::bool_(false);
-
-                    py::object material = Material.attr(material_name);
+                    py::module_ materials = py::module_::import("PyMieSim.materials");
+                    py::object material = materials.attr("_load_pyoptik_material")(
+                        material_name,
+                        "tabulated"
+                    );
 
                     std::vector<double> n_values = material.attr("n_values").cast<std::vector<double>>();
                     std::vector<double> k_values = material.attr("k_values").cast<std::vector<double>>();
@@ -370,13 +363,11 @@ PYBIND11_MODULE(material, module) {
         )
         .def(
             py::init([](const py::str& material_name) {
-                py::module_ pyoptik = py::module_::import("PyOptik");
-                py::object Material = pyoptik.attr("Material");
-
-                Material.attr("use_tabulated") = py::bool_(false);
-                Material.attr("use_sellmeier") = py::bool_(true);
-
-                py::object material = Material.attr(material_name);
+                py::module_ materials = py::module_::import("PyMieSim.materials");
+                py::object material = materials.attr("_load_pyoptik_material")(
+                    material_name,
+                    "sellmeier"
+                );
 
                 return std::make_shared<SellmeierMaterial>(
                     material_name.cast<std::string>(),
@@ -801,13 +792,11 @@ PYBIND11_MODULE(material, module) {
         .def(
             py::init(
                 [](const py::str& material_name) {
-                    py::module_ pyoptik = py::module_::import("PyOptik");
-                    py::object Material = pyoptik.attr("Material");
-
-                    Material.attr("use_tabulated") = py::bool_(false);
-                    Material.attr("use_sellmeier") = py::bool_(true);
-
-                    py::object material = Material.attr(material_name);
+                    py::module_ materials = py::module_::import("PyMieSim.materials");
+                    py::object material = materials.attr("_load_pyoptik_material")(
+                        material_name,
+                        "sellmeier"
+                    );
 
                     return std::make_shared<SellmeierMedium>(
                         material_name.cast<std::string>(),

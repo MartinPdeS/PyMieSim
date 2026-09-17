@@ -10,8 +10,8 @@ updates:
       day: "sunday"
       time: "09:00"
     ignore:
-      # PyMieSim still uses the legacy PyOptik.Material registry. PyOptik 3
-      # replaced it with the catalog API and requires a deliberate migration.
+      # PyMieSim targets PyOptik 3's catalog API. Future major versions require
+      # an explicit compatibility review before Dependabot can update them.
       - dependency-name: "PyOptik"
         update-types:
           - "version-update:semver-major"

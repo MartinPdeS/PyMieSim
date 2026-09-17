@@ -1,13 +1,15 @@
 """Practical material registry, loading, and validation helpers.
 
-This module complements the compiled ``PyMieSim.material`` classes.  It uses
-the bundled PyOptik material bank for built-in data and provides a small,
-dependency-light file format for user-supplied tabulated indices.
+This module complements the compiled ``PyMieSim.material`` classes. It uses
+PyOptik's local RefractiveIndex.INFO catalog for built-in data and provides a
+small, dependency-light file format for user-supplied tabulated indices.
 """
 
 import csv
 import json
+import os
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable, Literal, Mapping, Sequence
 
@@ -24,6 +26,16 @@ from .units import ureg
 MaterialKind = Literal["material", "medium", "auto"]
 ExtrapolationPolicy = Literal["error", "linear"]
 InterpolationPolicy = Literal["linear"]
+
+
+# Stable aliases retained from PyOptik 2's bundled Material registry. The
+# values are canonical RefractiveIndex.INFO identifiers used by PyOptik 3.
+_MATERIAL_IDS: dict[str, tuple[str, Literal["sellmeier", "tabulated"]]] = {
+    "BK7": ("specs/SCHOTT-optical/P-BK7", "sellmeier"),
+    "fused_silica": ("main/SiO2/Malitson", "sellmeier"),
+    "water": ("main/H2O/Daimon-19.0C", "sellmeier"),
+    "silver": ("main/Ag/Johnson", "tabulated"),
+}
 
 
 @dataclass(frozen=True)
@@ -48,14 +60,56 @@ class MaterialInfo:
         return self.wavelength_range[1]
 
 
-def _pyoptik_bank() -> Any:
-    from PyOptik import Material
+@lru_cache(maxsize=1)
+def _pyoptik_catalog() -> Any:
+    """Open the local PyOptik 3 material snapshot without network access."""
+    from PyOptik import MaterialCatalog
+    from PyOptik.directories import user_data_path
 
-    # PyMieSim's legacy constructors toggle these filters globally. Reset
-    # them so registry queries remain deterministic regardless of prior use.
-    Material.use_tabulated = True
-    Material.use_sellmeier = True
-    return Material
+    configured_root = os.environ.get("PYMIESIM_PYOPTIK_DATA_ROOT")
+    data_root = Path(configured_root).expanduser() if configured_root else user_data_path / "rii"
+    catalog_file = data_root / "catalog-nk.yml"
+    if not catalog_file.is_file():
+        raise FileNotFoundError(
+            "PyMieSim named materials require the PyOptik material snapshot. "
+            "Run 'python -m PyOptik setup' once, or set "
+            "PYMIESIM_PYOPTIK_DATA_ROOT to an initialized snapshot directory."
+        )
+    return MaterialCatalog(catalog_file=catalog_file, data_root=data_root)
+
+
+def _resolve_material(name: str) -> tuple[str, str | None]:
+    """Return a canonical catalog identifier and any expected model kind."""
+    if name in _MATERIAL_IDS:
+        return _MATERIAL_IDS[name]
+    if name.count("/") >= 2:
+        return name, None
+    aliases = ", ".join(sorted(_MATERIAL_IDS))
+    raise ValueError(
+        f"Unknown material {name!r}. Use a canonical PyOptik catalog ID or "
+        f"one of the compatibility aliases: {aliases}."
+    )
+
+
+def _load_pyoptik_material(name: str, expected_kind: str | None = None) -> Any:
+    """Load a PyOptik 3 model for Python helpers and native constructors."""
+    from PyOptik import SellmeierMaterial as PyOptikSellmeierMaterial
+    from PyOptik import TabulatedMaterial as PyOptikTabulatedMaterial
+
+    identifier, alias_kind = _resolve_material(name)
+    kind = expected_kind or alias_kind
+    material = _pyoptik_catalog().get(identifier).load()
+    if kind == "sellmeier" and not isinstance(material, PyOptikSellmeierMaterial):
+        raise TypeError(f"{name!r} does not resolve to a formula material.")
+    if kind == "tabulated" and not isinstance(material, PyOptikTabulatedMaterial):
+        raise TypeError(f"{name!r} does not resolve to a tabulated material.")
+    return material
+
+
+def print_available() -> None:
+    """Print the stable aliases and their canonical PyOptik catalog IDs."""
+    for alias, (identifier, kind) in sorted(_MATERIAL_IDS.items()):
+        print(f"{alias:<14} {kind:<10} {identifier}")
 
 
 def available_materials(kind: MaterialKind = "auto") -> tuple[str, ...]:
@@ -71,13 +125,12 @@ def available_materials(kind: MaterialKind = "auto") -> tuple[str, ...]:
         a particle material or an optical medium.
     """
 
-    bank = _pyoptik_bank()
     if kind == "tabulated":
-        names = bank.tabulated
+        names = [name for name, (_, model_kind) in _MATERIAL_IDS.items() if model_kind == "tabulated"]
     elif kind == "sellmeier":
-        names = bank.sellmeier
+        names = [name for name, (_, model_kind) in _MATERIAL_IDS.items() if model_kind == "sellmeier"]
     elif kind in {"auto", "material", "medium"}:
-        names = bank.all
+        names = list(_MATERIAL_IDS)
     else:
         raise ValueError("kind must be 'auto', 'material', 'medium', 'sellmeier', or 'tabulated'.")
     return tuple(names)
@@ -153,12 +206,13 @@ def validate_tabulated_data(
 def material_info(name: str) -> MaterialInfo:
     """Return metadata for a built-in PyOptik material."""
 
-    if name not in available_materials():
-        raise ValueError(f"Unknown material {name!r}. Available materials: {', '.join(available_materials())}")
-    model = _pyoptik_bank().get(name)
-    if name in _pyoptik_bank().tabulated:
+    model = _load_pyoptik_material(name)
+    _, alias_kind = _resolve_material(name)
+    if alias_kind == "tabulated" or hasattr(model, "n_values"):
         wavelength_range = model.wavelength_bound.to("meter")
-        values = np.asarray(model.n_values) + 1j * np.asarray(model.k_values)
+        n_values = np.asarray(model.n_values if model.n_values is not None else 1.0)
+        k_values = np.asarray(model.k_values if model.k_values is not None else 0.0)
+        values = n_values + 1j * k_values
         lossy = bool(np.any(np.abs(np.imag(values)) > 1e-15))
         kind = "tabulated"
     else:
@@ -242,15 +296,13 @@ def load_material(
     """
 
     _validate_policy(interpolation, extrapolation)
-    bank = _pyoptik_bank()
-    if name not in available_materials():
-        raise ValueError(f"Unknown material {name!r}. Available materials: {', '.join(available_materials())}")
-
-    source = bank.get(name)
+    source = _load_pyoptik_material(name)
     allow_extrapolation = extrapolation == "linear"
-    if name in bank.tabulated:
+    if hasattr(source, "n_values"):
         wavelengths = source.wavelength.to("meter")
-        indices = np.asarray(source.n_values, dtype=float) + 1j * np.asarray(source.k_values, dtype=float)
+        n_values = np.asarray(source.n_values if source.n_values is not None else np.ones(len(wavelengths)), dtype=float)
+        k_values = np.asarray(source.k_values if source.k_values is not None else np.zeros(len(wavelengths)), dtype=float)
+        indices = n_values + 1j * k_values
         if medium:
             indices = indices.real
             if validate:
@@ -399,6 +451,7 @@ __all__ = [
     "load_material",
     "load_tabulated",
     "material_info",
+    "print_available",
     "validate_refractive_indices",
     "validate_material",
     "validate_tabulated_data",
