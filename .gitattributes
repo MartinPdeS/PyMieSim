@@ -1,0 +1,5 @@
+# Documentation and showcase notebooks should not determine repository language
+# statistics. The bundled AMOS compatibility source is third-party code.
+docs/** linguist-documentation
+notebook.ipynb linguist-documentation
+cpp/bessel_subroutine/amos_iso_c_fortran_wrapper.f90 linguist-vendored
