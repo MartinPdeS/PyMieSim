@@ -93,7 +93,7 @@ approximations when particle correlations matter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.322 seconds)
+   **Total running time of the script:** (0 minutes 0.231 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_size_distribution_families.py:

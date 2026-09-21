@@ -42,7 +42,7 @@ Sphere: Coupling vs wavelength
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7fad43f5a110>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fad43f58e50>, <matplotlib.lines.Line2D object at 0x7fad44088f90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fad439f0c50>, <matplotlib.lines.Line2D object at 0x7fad463120d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fad43f02dd0>, <matplotlib.lines.Line2D object at 0x7fad46334f90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fad46334a50>]
+    [<matplotlib.lines.Line2D object at 0x7f7965bf7a50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f796329dbd0>, <matplotlib.lines.Line2D object at 0x7f796329d810>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f796329de90>, <matplotlib.lines.Line2D object at 0x7f796347a550>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f796347b050>, <matplotlib.lines.Line2D object at 0x7f7963839150>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f7963839290>]
 
 
 
@@ -105,7 +105,7 @@ Sphere: Coupling vs wavelength
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.359 seconds)
+   **Total running time of the script:** (0 minutes 1.077 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_wavelength.py:

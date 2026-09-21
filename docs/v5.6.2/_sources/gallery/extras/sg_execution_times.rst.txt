@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:08.231** total execution time for 17 files **from gallery/extras**:
+**00:05.926** total execution time for 17 files **from gallery/extras**:
 
 .. container::
 
@@ -33,49 +33,49 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_extras_coupling_heatmap.py` (``coupling_heatmap.py``)
-     - 00:02.134
+     - 00:01.703
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_Qsca_vs_permittivity_vs_size_parameter.py` (``Qsca_vs_permittivity_vs_size_parameter.py``)
-     - 00:01.662
+     - 00:01.244
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_array_scattering.py` (``array_scattering.py``)
-     - 00:01.160
+     - 00:00.791
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_experiment_photodiode_angular_weights.py` (``experiment_photodiode_angular_weights.py``)
-     - 00:00.505
+     - 00:00.346
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_photodiode_angular_weights.py` (``photodiode_angular_weights.py``)
-     - 00:00.460
+     - 00:00.309
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py` (``coupling_vs_NA.py``)
-     - 00:00.353
+     - 00:00.260
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_LP02.py` (``LP02.py``)
-     - 00:00.263
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_LP11.py` (``LP11.py``)
-     - 00:00.237
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_LP01.py` (``LP01.py``)
-     - 00:00.234
+     - 00:00.173
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_LG11.py` (``LG11.py``)
-     - 00:00.231
+     - 00:00.153
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_LP11.py` (``LP11.py``)
+     - 00:00.153
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_LP01.py` (``LP01.py``)
+     - 00:00.151
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_HG11.py` (``HG11.py``)
-     - 00:00.231
+     - 00:00.150
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_HG01.py` (``HG01.py``)
-     - 00:00.217
+     - 00:00.141
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``plot_system.py``)
-     - 00:00.216
+     - 00:00.140
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_photodiode.py` (``photodiode.py``)
-     - 00:00.164
+     - 00:00.106
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_integrating_sphere.py` (``integrating_sphere.py``)
-     - 00:00.163
+     - 00:00.106
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_properties_cylinder.py` (``properties_cylinder.py``)
      - 00:00.001
