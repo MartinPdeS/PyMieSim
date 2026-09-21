@@ -3,11 +3,19 @@
 
 import sys
 import os
+import subprocess
 from sphinx_gallery.sorting import FileNameSortKey
 from MPSPlots.styles import use_mpsplots_style
 from pathlib import Path
 import PyMieSim
 from PyMieSim.directories import doc_css_path
+from PyOptik.directories import user_data_path
+
+
+# Gallery examples use named PyOptik materials. Initialize their local catalog
+# on fresh documentation runners before Sphinx executes those examples.
+if not (user_data_path / "rii" / "catalog-nk.yml").is_file():
+    subprocess.run([sys.executable, "-m", "PyOptik", "setup", "--no-progress"], check=True)
 
 
 package_name = "PyMieSim"
