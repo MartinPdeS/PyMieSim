@@ -42,7 +42,7 @@ Sphere: Goniometer
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f9b3ef9de10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f9b3ef9d6d0>, <matplotlib.lines.Line2D object at 0x7f9b3f7e4950>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f9b3f583bd0>]
+    [<matplotlib.lines.Line2D object at 0x7f57a490abd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f57a4908510>, <matplotlib.lines.Line2D object at 0x7f57a4909bd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f57a495b5d0>]
 
 
 
@@ -100,7 +100,7 @@ Sphere: Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.361 seconds)
+   **Total running time of the script:** (0 minutes 0.352 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_phioffset.py:

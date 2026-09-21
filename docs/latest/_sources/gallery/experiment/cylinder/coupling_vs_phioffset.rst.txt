@@ -44,7 +44,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f9b3f7d4690>, <matplotlib.lines.Line2D object at 0x7f9b3f7d6790>, <matplotlib.lines.Line2D object at 0x7f9b3f7d72d0>, <matplotlib.lines.Line2D object at 0x7f9b3ed217d0>]
+    [<matplotlib.lines.Line2D object at 0x7f57a4f54590>, <matplotlib.lines.Line2D object at 0x7f57a4f56b50>, <matplotlib.lines.Line2D object at 0x7f57a4b7eb50>, <matplotlib.lines.Line2D object at 0x7f57a4b7e0d0>]
 
 
 
@@ -103,7 +103,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.385 seconds)
+   **Total running time of the script:** (0 minutes 0.375 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_phioffset.py:

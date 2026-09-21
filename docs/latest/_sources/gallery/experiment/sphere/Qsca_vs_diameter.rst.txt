@@ -42,7 +42,7 @@ Sphere: Qsca vs diameter
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f9b3efa84d0>, <matplotlib.lines.Line2D object at 0x7f9b3efa9210>, <matplotlib.lines.Line2D object at 0x7f9b3efabe90>]
+    [<matplotlib.lines.Line2D object at 0x7f57a4ced7d0>, <matplotlib.lines.Line2D object at 0x7f57a4cecd50>, <matplotlib.lines.Line2D object at 0x7f57a4b38610>]
 
 
 
@@ -96,7 +96,7 @@ Sphere: Qsca vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.225 seconds)
+   **Total running time of the script:** (0 minutes 0.215 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_diameter.py:

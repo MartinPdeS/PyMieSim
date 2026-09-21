@@ -44,7 +44,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f9b3f58d9d0>, <matplotlib.lines.Line2D object at 0x7f9b3f58c210>, <matplotlib.lines.Line2D object at 0x7f9b3f590110>]
+    [<matplotlib.lines.Line2D object at 0x7f57a4f3d290>, <matplotlib.lines.Line2D object at 0x7f57a4908e10>, <matplotlib.lines.Line2D object at 0x7f57a490ac90>]
 
 
 
@@ -95,7 +95,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.450 seconds)
+   **Total running time of the script:** (0 minutes 0.433 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qabs_vs_diameter.py:

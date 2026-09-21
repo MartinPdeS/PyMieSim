@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f9b3f438fd0>, <matplotlib.lines.Line2D object at 0x7f9b3f43afd0>]
+    [<matplotlib.lines.Line2D object at 0x7f57a5091e10>, <matplotlib.lines.Line2D object at 0x7f57a51d7e50>]
 
 
 
@@ -94,7 +94,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.371 seconds)
+   **Total running time of the script:** (0 minutes 0.358 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_diameter.py:

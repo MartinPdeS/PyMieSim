@@ -42,7 +42,7 @@ Sphere: Qsca vs wavelength
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f9b3efa2110>]
+    [<matplotlib.lines.Line2D object at 0x7f57a74bf3d0>]
 
 
 
@@ -94,7 +94,7 @@ Sphere: Qsca vs wavelength
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.197 seconds)
+   **Total running time of the script:** (0 minutes 0.198 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength.py:
