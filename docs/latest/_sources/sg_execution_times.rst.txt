@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:40.890** total execution time for 69 files **from all galleries**:
+**00:41.311** total execution time for 69 files **from all galleries**:
 
 .. container::
 
@@ -33,196 +33,196 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_single_farfields.py` (``../examples/single/farfields.py``)
-     - 00:04.928
+     - 00:04.949
      - 0.0
    * - :ref:`sphx_glr_gallery_single_nearfields.py` (``../examples/single/nearfields.py``)
-     - 00:04.715
+     - 00:04.670
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_coupling_heatmap.py` (``../examples/extras/coupling_heatmap.py``)
-     - 00:02.035
+     - 00:02.051
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_size_distribution_phase_function.py` (``../examples/experiment/sphere/size_distribution_phase_function.py``)
-     - 00:01.848
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_stokes.py` (``../examples/single/stokes.py``)
-     - 00:01.662
+     - 00:01.878
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_Qsca_vs_permittivity_vs_size_parameter.py` (``../examples/extras/Qsca_vs_permittivity_vs_size_parameter.py``)
-     - 00:01.649
+     - 00:01.646
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_stokes.py` (``../examples/single/stokes.py``)
+     - 00:01.630
      - 0.0
    * - :ref:`sphx_glr_gallery_single_spf.py` (``../examples/single/spf.py``)
-     - 00:01.430
+     - 00:01.473
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coupling_vs_wavelength.py` (``../examples/experiment/sphere/coupling_vs_wavelength.py``)
-     - 00:01.341
+     - 00:01.362
      - 0.0
    * - :ref:`sphx_glr_gallery_single_s1s2.py` (``../examples/single/s1s2.py``)
-     - 00:01.270
+     - 00:01.257
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_array_scattering.py` (``../examples/extras/array_scattering.py``)
-     - 00:01.185
+     - 00:01.199
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coupling_vs_diameter.py` (``../examples/experiment/sphere/coupling_vs_diameter.py``)
-     - 00:00.971
+     - 00:00.965
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coupling_vs_filter.py` (``../examples/experiment/sphere/coupling_vs_filter.py``)
-     - 00:00.936
+     - 00:00.932
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_coupling_vs_wavelength.py` (``../examples/experiment/cylinder/coupling_vs_wavelength.py``)
-     - 00:00.699
+     - 00:00.704
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_index.py` (``../examples/experiment/cylinder/Qsca_vs_index.py``)
-     - 00:00.649
+     - 00:00.703
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_memory_scaling.py` (``../examples/benchmarks/memory_scaling.py``)
-     - 00:00.621
+     - 00:00.645
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coupling_vs_na_cache.py` (``../examples/experiment/coreshell/coupling_vs_na_cache.py``)
-     - 00:00.591
+     - 00:00.586
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_internal_core_shell_empty_shell.py` (``../examples/validation/internal/core_shell_empty_shell.py``)
-     - 00:00.526
+     - 00:00.555
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_experiment_photodiode_angular_weights.py` (``../examples/extras/experiment_photodiode_angular_weights.py``)
-     - 00:00.507
+     - 00:00.517
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coupling_vs_sampling.py` (``../examples/experiment/sphere/coupling_vs_sampling.py``)
-     - 00:00.493
+     - 00:00.499
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_1.py` (``../examples/validation/pymiescatt/sphere_1.py``)
-     - 00:00.474
+     - 00:00.479
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_1.py` (``../examples/validation/pymiescatt/coreshell_1.py``)
+     - 00:00.477
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coherent_coupling_vs_phioffset.py` (``../examples/experiment/sphere/coherent_coupling_vs_phioffset.py``)
      - 00:00.472
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_photodiode_angular_weights.py` (``../examples/extras/photodiode_angular_weights.py``)
-     - 00:00.466
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_1.py` (``../examples/validation/pymiescatt/coreshell_1.py``)
-     - 00:00.466
+     - 00:00.470
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_wavelength_std.py` (``../examples/experiment/cylinder/Qsca_vs_wavelength_std.py``)
-     - 00:00.444
+     - 00:00.470
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qabs_vs_diameter.py` (``../examples/experiment/cylinder/Qabs_vs_diameter.py``)
      - 00:00.439
      - 0.0
    * - :ref:`sphx_glr_gallery_single_footprint.py` (``../examples/single/footprint.py``)
-     - 00:00.436
+     - 00:00.435
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_diameter.py` (``../examples/experiment/cylinder/Qsca_vs_diameter.py``)
-     - 00:00.417
+     - 00:00.428
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_88.py` (``../examples/validation/bohren_huffman/figure_88.py``)
-     - 00:00.399
+     - 00:00.413
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_Qsca_vs_wavelength_std.py` (``../examples/experiment/sphere/Qsca_vs_wavelength_std.py``)
      - 00:00.398
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_coupling_vs_phioffset.py` (``../examples/experiment/cylinder/coupling_vs_phioffset.py``)
-     - 00:00.382
+     - 00:00.381
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_coupling_vs_diameter.py` (``../examples/experiment/cylinder/coupling_vs_diameter.py``)
-     - 00:00.366
+     - 00:00.368
      - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_coreshell_Qback_vs_corediameter.py` (``../examples/experiment/coreshell/Qback_vs_corediameter.py``)
+   * - :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py` (``../examples/extras/coupling_vs_NA.py``)
      - 00:00.358
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coupling_vs_phioffset.py` (``../examples/experiment/sphere/coupling_vs_phioffset.py``)
-     - 00:00.354
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_coupling_vs_NA.py` (``../examples/extras/coupling_vs_NA.py``)
-     - 00:00.352
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_87.py` (``../examples/validation/bohren_huffman/figure_87.py``)
-     - 00:00.342
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_0.py` (``../examples/validation/pymiescatt/coreshell_0.py``)
-     - 00:00.324
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_sphere_size_distribution_families.py` (``../examples/experiment/sphere/size_distribution_families.py``)
-     - 00:00.319
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_810.py` (``../examples/validation/bohren_huffman/figure_810.py``)
-     - 00:00.310
+     - 00:00.355
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coherent_coupling_vs_sampling.py` (``../examples/experiment/sphere/coherent_coupling_vs_sampling.py``)
-     - 00:00.307
+     - 00:00.354
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_87.py` (``../examples/validation/bohren_huffman/figure_87.py``)
+     - 00:00.352
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_coreshell_Qback_vs_corediameter.py` (``../examples/experiment/coreshell/Qback_vs_corediameter.py``)
+     - 00:00.343
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_sphere_size_distribution_families.py` (``../examples/experiment/sphere/size_distribution_families.py``)
+     - 00:00.339
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_0.py` (``../examples/validation/pymiescatt/coreshell_0.py``)
+     - 00:00.337
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_810.py` (``../examples/validation/bohren_huffman/figure_810.py``)
+     - 00:00.324
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_coreshell_coupling_vs_corediameter.py` (``../examples/experiment/coreshell/coupling_vs_corediameter.py``)
      - 00:00.298
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_independent_size_distribution.py` (``../examples/experiment/sphere/independent_size_distribution.py``)
-     - 00:00.284
+     - 00:00.291
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_0.py` (``../examples/validation/pymiescatt/sphere_0.py``)
-     - 00:00.282
+     - 00:00.289
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_coherent_coupling_vs_rotation.py` (``../examples/experiment/sphere/coherent_coupling_vs_rotation.py``)
-     - 00:00.280
+     - 00:00.282
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_LP02.py` (``../examples/extras/LP02.py``)
-     - 00:00.262
+     - 00:00.268
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_Qabs_vs_diameter.py` (``../examples/experiment/sphere/Qabs_vs_diameter.py``)
-     - 00:00.250
+     - 00:00.247
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_Qsca_vs_wavelength.py` (``../examples/experiment/cylinder/Qsca_vs_wavelength.py``)
-     - 00:00.243
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_LP01.py` (``../examples/extras/LP01.py``)
-     - 00:00.233
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_LP11.py` (``../examples/extras/LP11.py``)
-     - 00:00.231
+     - 00:00.242
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_LG11.py` (``../examples/extras/LG11.py``)
-     - 00:00.229
+     - 00:00.237
      - 0.0
-   * - :ref:`sphx_glr_gallery_extras_HG11.py` (``../examples/extras/HG11.py``)
-     - 00:00.229
+   * - :ref:`sphx_glr_gallery_extras_LP11.py` (``../examples/extras/LP11.py``)
+     - 00:00.237
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_LP01.py` (``../examples/extras/LP01.py``)
+     - 00:00.236
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_parameter_grid.py` (``../examples/benchmarks/parameter_grid.py``)
+     - 00:00.234
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_HG11.py` (``../examples/extras/HG11.py``)
+     - 00:00.231
+     - 0.0
+   * - :ref:`sphx_glr_gallery_benchmarks_sweep_runtime.py` (``../examples/benchmarks/sweep_runtime.py``)
+     - 00:00.225
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_internal_phase_function_detector.py` (``../examples/validation/internal/phase_function_detector.py``)
      - 00:00.225
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_Qsca_vs_diameter.py` (``../examples/experiment/sphere/Qsca_vs_diameter.py``)
-     - 00:00.222
+     - 00:00.223
      - 0.0
-   * - :ref:`sphx_glr_gallery_validation_internal_phase_function_detector.py` (``../examples/validation/internal/phase_function_detector.py``)
+   * - :ref:`sphx_glr_gallery_extras_HG01.py` (``../examples/extras/HG01.py``)
      - 00:00.216
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``../examples/extras/plot_system.py``)
-     - 00:00.214
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_HG01.py` (``../examples/extras/HG01.py``)
-     - 00:00.214
-     - 0.0
-   * - :ref:`sphx_glr_gallery_benchmarks_sweep_runtime.py` (``../examples/benchmarks/sweep_runtime.py``)
-     - 00:00.214
+     - 00:00.216
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_Qsca_vs_index.py` (``../examples/experiment/sphere/Qsca_vs_index.py``)
-     - 00:00.205
+     - 00:00.201
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_sphere_Qsca_vs_wavelength.py` (``../examples/experiment/sphere/Qsca_vs_wavelength.py``)
-     - 00:00.194
-     - 0.0
-   * - :ref:`sphx_glr_gallery_extras_photodiode.py` (``../examples/extras/photodiode.py``)
-     - 00:00.169
+     - 00:00.193
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_integrating_sphere.py` (``../examples/extras/integrating_sphere.py``)
-     - 00:00.162
+     - 00:00.167
+     - 0.0
+   * - :ref:`sphx_glr_gallery_extras_photodiode.py` (``../examples/extras/photodiode.py``)
+     - 00:00.165
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_energy_conservation.py` (``../examples/validation/energy_conservation.py``)
-     - 00:00.101
+     - 00:00.104
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_reproducible_parameter_sweep.py` (``../examples/benchmarks/reproducible_parameter_sweep.py``)
-     - 00:00.021
+     - 00:00.036
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_fit_sphere_scattering.py` (``../examples/inverse/fit_sphere_scattering.py``)
-     - 00:00.015
+     - 00:00.016
      - 0.0
    * - :ref:`sphx_glr_gallery_single_coupling.py` (``../examples/single/coupling.py``)
-     - 00:00.005
+     - 00:00.006
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_fit_unit_aware_diameter.py` (``../examples/inverse/fit_unit_aware_diameter.py``)
      - 00:00.004
@@ -231,7 +231,7 @@ Computation times
      - 00:00.003
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_fit_linear_scale.py` (``../examples/inverse/fit_linear_scale.py``)
-     - 00:00.001
+     - 00:00.002
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_properties_cylinder.py` (``../examples/extras/properties_cylinder.py``)
      - 00:00.001

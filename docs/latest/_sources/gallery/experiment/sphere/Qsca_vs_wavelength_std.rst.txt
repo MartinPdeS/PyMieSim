@@ -42,7 +42,7 @@ Sphere: Qsca vs wavelength STD
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7fbca9416250>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fbca9060ed0>, <matplotlib.lines.Line2D object at 0x7fbca94abdd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fbca8ef8790>, <matplotlib.lines.Line2D object at 0x7fbca8d2d150>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fbca8b966d0>]
+    [<matplotlib.lines.Line2D object at 0x7efc938e78d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7efc93c075d0>, <matplotlib.lines.Line2D object at 0x7efc93f9a550>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7efc93f99950>, <matplotlib.lines.Line2D object at 0x7efc96122fd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7efc937b4f50>]
 
 
 

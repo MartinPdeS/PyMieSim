@@ -92,14 +92,14 @@ Importing the package dependencies: numpy, PyMieSim
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7fbcab7735d0>, <matplotlib.lines.Line2D object at 0x7fbcab772050>, <matplotlib.lines.Line2D object at 0x7fbcab7717d0>]
+    [<matplotlib.lines.Line2D object at 0x7efc93c07790>, <matplotlib.lines.Line2D object at 0x7efc93c046d0>, <matplotlib.lines.Line2D object at 0x7efc93c06350>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.591 seconds)
+   **Total running time of the script:** (0 minutes 0.586 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coupling_vs_na_cache.py:

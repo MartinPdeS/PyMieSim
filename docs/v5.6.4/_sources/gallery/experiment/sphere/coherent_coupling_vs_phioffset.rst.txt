@@ -42,7 +42,7 @@ Sphere: Coherent Goniometer
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7fbca9427850>, <matplotlib.lines.Line2D object at 0x7fbcab760110>, <matplotlib.lines.Line2D object at 0x7fbcab760550>, <matplotlib.lines.Line2D object at 0x7fbcab762a10>]
+    [<matplotlib.lines.Line2D object at 0x7efc93c6ec10>, <matplotlib.lines.Line2D object at 0x7efc9349d890>, <matplotlib.lines.Line2D object at 0x7efc960e97d0>, <matplotlib.lines.Line2D object at 0x7efc960e9690>]
 
 
 

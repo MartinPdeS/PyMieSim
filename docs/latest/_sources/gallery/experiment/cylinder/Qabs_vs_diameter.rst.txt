@@ -44,7 +44,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7fbca8ef0150>, <matplotlib.lines.Line2D object at 0x7fbca8f4cc10>, <matplotlib.lines.Line2D object at 0x7fbca8f4ded0>]
+    [<matplotlib.lines.Line2D object at 0x7efc938ebe90>, <matplotlib.lines.Line2D object at 0x7efc938ea490>, <matplotlib.lines.Line2D object at 0x7efc938e9850>]
 
 
 
