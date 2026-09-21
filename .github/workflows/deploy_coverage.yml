@@ -1,25 +1,58 @@
-# Simple workflow for deploying static content to GitHub Pages
 name: Deploy coverage
 
 on:
   push:
-    branches: [ "**" ]
+    branches: ["**"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
-
-# Sets permissions of the  GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
   pages: write
   id-token: write
 
 jobs:
-  ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@v5
-    with:
-      python-version: "3.11"
-      apt-package: xvfb
-      coverage-package: PyMieSim
-    secrets:
-      _GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  coverage:
+    name: Run tests and generate coverage data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+
+      - name: Install headless dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install --upgrade pip wheel build
+          python -m pip install -e ".[testing]"
+
+      - name: Initialize PyOptik material catalog
+        run: python -m PyOptik setup --no-progress
+
+      - name: Run pytest with coverage
+        run: |
+          python -m pytest \
+            --cov=PyMieSim \
+            --import-mode=importlib \
+            --cov-config=.coveragerc \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            tests \
+            --config-file=pytest.ini
+
+      - name: Post coverage comment
+        uses: py-cov-action/python-coverage-comment-action@a05be3d2e8a6272d3ef5fb2840ab20368bb2eb71
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MINIMUM_GREEN: 90
+          MINIMUM_ORANGE: 50
+          COVERAGE_PATH: .
