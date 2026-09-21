@@ -31,7 +31,7 @@ local_scheme = "no-local-version"
 
 [project]
 name = "PyMieSim"
-version = "5.6.2"
+version = "5.6.3"
 description = "A package for light scattering (Mie) computation."
 license = { file = "LICENSE" }
 readme = "README.rst"
@@ -118,7 +118,7 @@ select = ["E9", "F63", "F7", "F82"]
 [tool.cibuildwheel]
 build-frontend = "build"
 test-extras = ["testing"]
-before-test = "python -m pip install PyOptik==3.2.0 && python -m PyOptik setup --no-progress"
+before-test = "python -m pip install PyOptik==3.2.0 && python -X utf8 -m PyOptik setup --no-progress"
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
