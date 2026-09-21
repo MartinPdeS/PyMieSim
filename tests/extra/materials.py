@@ -22,6 +22,8 @@ from PyMieSim import (
 def test_builtin_registry_exposes_curated_models():
     assert "BK7" in available_materials("sellmeier")
     assert "silver" in available_materials("tabulated")
+    assert "gold" in available_materials("tabulated")
+    assert "aluminium" in available_materials("tabulated")
 
     info = material_info("BK7")
     assert isinstance(info, MaterialInfo)

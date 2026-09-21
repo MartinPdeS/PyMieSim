@@ -35,6 +35,8 @@ _MATERIAL_IDS: dict[str, tuple[str, Literal["sellmeier", "tabulated"]]] = {
     "fused_silica": ("main/SiO2/Malitson", "sellmeier"),
     "water": ("main/H2O/Daimon-19.0C", "sellmeier"),
     "silver": ("main/Ag/Johnson", "tabulated"),
+    "gold": ("main/Au/Olmon-ev", "tabulated"),
+    "aluminium": ("main/Al/Rakic", "tabulated"),
 }
 
 
