@@ -92,14 +92,14 @@ Importing the package dependencies: numpy, PyMieSim
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7efc93744450>, <matplotlib.lines.Line2D object at 0x7efc93745fd0>, <matplotlib.lines.Line2D object at 0x7efc93744090>]
+    [<matplotlib.lines.Line2D object at 0x7fb112244510>, <matplotlib.lines.Line2D object at 0x7fb111fff2d0>, <matplotlib.lines.Line2D object at 0x7fb116ee0e90>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.343 seconds)
+   **Total running time of the script:** (0 minutes 0.284 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_Qback_vs_corediameter.py:
