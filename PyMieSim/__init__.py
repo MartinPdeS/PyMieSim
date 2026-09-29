@@ -4,6 +4,10 @@ try:
 except ImportError:
     __version__ = "0.0.0"
 
+from ._native import check_native_extensions
+
+check_native_extensions()
+
 import PyMieSim.units as _
 import PyMieSim.material as _
 import PyMieSim.polarization as _

@@ -54,6 +54,11 @@ PyMieSim is available on PyPI and Anaconda.  Install it with:
    pip install PyMieSim
    conda install PyMieSim  --channels MartinPdeS
 
+This installs a pre-built wheel when one is available for your operating
+system, architecture, and Python version. Wheels are the recommended option
+for using PyMieSim because they include the compiled C++ and Fortran
+extensions.
+
 Verify the installation with the same Python interpreter that you will use for
 your simulations:
 
@@ -70,8 +75,9 @@ constructors such as ``SellmeierMaterial("BK7")`` or
 
    python -m PyOptik setup
 
-The released wheels are the easiest option.  Building from source requires a
-C++20 compiler, Fortran, CMake, pybind11, and OpenMP; see
+Building from source is intended for development or platforms without a
+matching wheel. It requires a C++20 compiler, Fortran, CMake, pybind11, and
+OpenMP; see
 `troubleshooting <https://martinpdes.github.io/PyMieSim/troubleshooting.html>`_
 if the compiled extension cannot be imported.
 
@@ -264,27 +270,52 @@ Here is the architecture for a standard workflow using PyMieSim:
    :align: center
    :alt: Code structure of a standard workflow using PyMieSim.
 
-Building from source
---------------------
-For development or manual compilation, clone the repository and run:
+Developer setup
+---------------
+Clone the repository, select the Python interpreter you want to use, install
+the development and testing dependencies, and build an editable installation:
 
 .. code-block:: bash
 
-   git submodule update --init
-   mkdir build && cd build
-   cmake ../ -G"Unix Makefiles"
-   sudo make install
-   cd ..
-   python -m pip install .
+   git clone https://github.com/MartinPdeS/PyMieSim.git
+   cd PyMieSim
+   python -m pip install ".[testing,documentation,dev]"
+   python -m PyOptik setup --no-progress
+   make PYTHON=python editable
+
+``make editable`` builds the native extensions in the local ``build``
+directory and installs them into the same environment. Always run tests with
+that same interpreter:
+
+.. code-block:: bash
+
+   python -c "import PyMieSim; print(PyMieSim.__version__)"
+   python -m pytest --config-file=pytest.ini
+
+If the import reports missing native extensions, the build was not completed
+for this interpreter. Re-run ``make editable`` after checking that CMake,
+Fortran, pybind11, and OpenMP are installed. Do not mix build artifacts from
+different Python versions or architectures.
+
+Building from source manually
+-----------------------------
+The equivalent lower-level workflow is:
+
+.. code-block:: bash
+
+   python -m pip install --no-build-isolation -Cbuild-dir=build -e .
+
+The editable workflow is preferred because it keeps the Python sources and
+compiled extensions aligned. A released wheel does not require a compiler or
+the native build toolchain.
 
 Testing
 -------
-Run the unit tests with:
+After the developer setup, run the unit tests with:
 
 .. code-block:: bash
 
-   pip install PyMieSim[testing]
-   pytest
+   python -m pytest --config-file=pytest.ini
 
 Citing PyMieSim
 ---------------

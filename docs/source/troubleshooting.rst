@@ -22,9 +22,54 @@ a local build.
 OpenMP and macOS
 ----------------
 
-The macOS build uses ``libomp``. Install it with Homebrew if the linker cannot
-find OpenMP, then rebuild in a clean build directory. Avoid mixing extension
-files from different Python versions or architectures.
+PyMieSim's native solver uses OpenMP. If CMake reports that OpenMP cannot be
+found, install the platform toolchain below and rebuild with the same Python
+interpreter used by your environment.
+
+Linux
+~~~~~
+
+For Debian or Ubuntu, install the compiler, Fortran, CMake, and OpenMP
+development packages before running ``make PYTHON=python editable``::
+
+   sudo apt-get update
+   sudo apt-get install build-essential gfortran cmake libomp-dev
+
+GCC normally supplies the runtime as ``libgomp``. Clang-based builds may use
+``libomp`` instead. If CMake finds the compiler but not the runtime, inspect
+the configure output and ensure the selected compiler and OpenMP runtime come
+from the same toolchain.
+
+macOS
+~~~~~
+
+Install Homebrew's OpenMP runtime and a Fortran compiler::
+
+   brew install libomp gcc cmake
+
+On Apple Silicon, the project configuration searches Homebrew's standard
+``/opt/homebrew/opt/libomp`` location. On Intel macOS, the corresponding
+location is usually ``/usr/local/opt/libomp``. If you use a non-standard
+installation, set ``LIBOMP_PREFIX`` to its prefix before rebuilding. Do not
+reuse extensions built for another Python version or CPU architecture.
+
+Windows
+~~~~~~~
+
+Use either Visual Studio with its OpenMP support or a MinGW-w64 toolchain with
+GCC's ``libgomp``. Install CMake, a Fortran compiler such as MinGW-w64
+gfortran, and the matching Python development environment. Run the build from
+the corresponding developer shell so CMake sees the intended compiler. If
+OpenMP is detected during configuration but import fails afterward, verify
+that the OpenMP runtime DLL is on ``PATH``.
+
+After correcting the toolchain, remove the build directory and rebuild::
+
+   make clean
+   make PYTHON=python editable
+
+Avoid manually copying shared libraries into ``PyMieSim``; this can mix
+artifacts from different builds and hide the original configuration error.
 
 Units and input validation
 --------------------------
