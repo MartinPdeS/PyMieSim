@@ -7,26 +7,26 @@ import zipfile
 
 
 NATIVE_MODULES = (
-    "_pint",
-    "coordinates",
-    "material",
-    "polarization",
-    "mesh",
-    "labeled_array",
-    "distributions",
-    "inverse",
-    "mode_field",
-    "setup_single",
-    "source",
-    "scatterer",
-    "optical_interface",
-    "detector",
-    "polarization_set",
-    "source_set",
-    "material_set",
-    "scatterer_set",
-    "detector_set",
-    "_setup",
+    "PyMieSim/_pint",
+    "PyMieSim/coordinates",
+    "PyMieSim/material",
+    "PyMieSim/polarization",
+    "PyMieSim/mesh",
+    "PyMieSim/labeled_array",
+    "PyMieSim/distributions",
+    "PyMieSim/inverse",
+    "PyMieSim/single/mode_field",
+    "PyMieSim/single/setup",
+    "PyMieSim/single/source",
+    "PyMieSim/single/scatterer",
+    "PyMieSim/single/optical_interface",
+    "PyMieSim/single/detector",
+    "PyMieSim/experiment/polarization_set",
+    "PyMieSim/experiment/source_set",
+    "PyMieSim/experiment/material_set",
+    "PyMieSim/experiment/scatterer_set",
+    "PyMieSim/experiment/detector_set",
+    "PyMieSim/experiment/_setup",
 )
 
 
@@ -38,7 +38,7 @@ def missing_modules(wheel: Path) -> list[str]:
         module
         for module in NATIVE_MODULES
         if not any(
-            name.startswith(f"PyMieSim/{module}.")
+            name.startswith(f"{module}.")
             and name.endswith((".so", ".pyd", ".dylib"))
             for name in names
         )

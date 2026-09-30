@@ -1,39 +1,45 @@
 """Preflight checks for PyMieSim's compiled extension modules."""
 
+from importlib.machinery import EXTENSION_SUFFIXES
 from importlib.util import find_spec
 
 
 REQUIRED_NATIVE_MODULES = (
-    "_pint",
-    "coordinates",
-    "material",
-    "polarization",
-    "mesh",
-    "labeled_array",
-    "distributions",
-    "inverse",
-    "mode_field",
-    "setup_single",
-    "source",
-    "scatterer",
-    "optical_interface",
-    "detector",
-    "polarization_set",
-    "source_set",
-    "material_set",
-    "scatterer_set",
-    "detector_set",
-    "_setup",
+    "PyMieSim._pint",
+    "PyMieSim.coordinates",
+    "PyMieSim.material",
+    "PyMieSim.polarization",
+    "PyMieSim.mesh",
+    "PyMieSim.labeled_array",
+    "PyMieSim.distributions",
+    "PyMieSim.inverse",
+    "PyMieSim.single.mode_field",
+    "PyMieSim.single.setup",
+    "PyMieSim.single.source",
+    "PyMieSim.single.scatterer",
+    "PyMieSim.single.optical_interface",
+    "PyMieSim.single.detector",
+    "PyMieSim.experiment.polarization_set",
+    "PyMieSim.experiment.source_set",
+    "PyMieSim.experiment.material_set",
+    "PyMieSim.experiment.scatterer_set",
+    "PyMieSim.experiment.detector_set",
+    "PyMieSim.experiment._setup",
 )
+
+
+def _has_extension(module_name: str) -> bool:
+    """Return whether an importable compiled module is available."""
+    try:
+        spec = find_spec(module_name)
+    except (ImportError, ModuleNotFoundError, FileNotFoundError):
+        return False
+    return spec is not None and any(spec.origin.endswith(suffix) for suffix in EXTENSION_SUFFIXES if spec.origin)
 
 
 def missing_native_extensions() -> tuple[str, ...]:
     """Return compiled modules that are not discoverable in this install."""
-    return tuple(
-        f"PyMieSim.{module}"
-        for module in REQUIRED_NATIVE_MODULES
-        if find_spec(f"PyMieSim.{module}") is None
-    )
+    return tuple(module for module in REQUIRED_NATIVE_MODULES if not _has_extension(module))
 
 
 def check_native_extensions() -> None:
