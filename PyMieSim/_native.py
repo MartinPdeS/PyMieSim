@@ -27,6 +27,8 @@ REQUIRED_NATIVE_MODULES = (
     "PyMieSim.experiment._setup",
 )
 
+STARTUP_NATIVE_MODULES = REQUIRED_NATIVE_MODULES[:8]
+
 
 def _has_extension(module_name: str) -> bool:
     """Return whether an importable compiled module is available."""
@@ -37,14 +39,19 @@ def _has_extension(module_name: str) -> bool:
     return spec is not None and any(spec.origin.endswith(suffix) for suffix in EXTENSION_SUFFIXES if spec.origin)
 
 
-def missing_native_extensions() -> tuple[str, ...]:
+def missing_native_extensions(
+    modules: tuple[str, ...] = REQUIRED_NATIVE_MODULES,
+) -> tuple[str, ...]:
     """Return compiled modules that are not discoverable in this install."""
-    return tuple(module for module in REQUIRED_NATIVE_MODULES if not _has_extension(module))
+    return tuple(module for module in modules if not _has_extension(module))
 
 
 def check_native_extensions() -> None:
     """Raise an actionable error when the native package is incomplete."""
-    missing = missing_native_extensions()
+    # Nested extension modules are imported by ``single`` and ``experiment``
+    # during package initialization. Checking them here would inspect them
+    # before their parent packages have finished loading.
+    missing = missing_native_extensions(STARTUP_NATIVE_MODULES)
     if not missing:
         return
 
@@ -63,6 +70,7 @@ def check_native_extensions() -> None:
 
 __all__ = [
     "REQUIRED_NATIVE_MODULES",
+    "STARTUP_NATIVE_MODULES",
     "check_native_extensions",
     "missing_native_extensions",
 ]
