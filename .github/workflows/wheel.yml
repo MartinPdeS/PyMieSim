@@ -19,4 +19,4 @@ jobs:
           python-version: "3.11"
       - run: python -m pip install --upgrade pip build
       - run: python -m build --wheel
-      - run: python tools/check_wheel.py dist/PyMieSim-*.whl
+      - run: python tools/check_wheel.py dist/*.whl
