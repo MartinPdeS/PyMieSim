@@ -42,7 +42,7 @@ Sphere: Coupling vs wavelength
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f038d213210>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f038cb6f250>, <matplotlib.lines.Line2D object at 0x7f038cb66350>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f038cb67790>, <matplotlib.lines.Line2D object at 0x7f038f60bb50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f038f60b750>, <matplotlib.lines.Line2D object at 0x7f038cf14c10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f038cf17f50>]
+    [<matplotlib.lines.Line2D object at 0x7f1698b0fc90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f169895e750>, <matplotlib.lines.Line2D object at 0x7f169aef0ed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f169aef0390>, <matplotlib.lines.Line2D object at 0x7f169858ee90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f169858d410>, <matplotlib.lines.Line2D object at 0x7f16986c0310>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f169aef0050>]
 
 
 
