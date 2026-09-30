@@ -8,15 +8,8 @@
     :maxdepth: 2
     :hidden:
 
-    theory.rst
-    getting_started.rst
-    workflows.rst
-    measures.rst
-    performance.rst
-    troubleshooting.rst
-    reproducibility.rst
-    compatibility.rst
-    examples.rst
-    gallery/validation/index.rst
-    code/index.rst
-    references.rst
+    Start <getting_started.rst>
+    Guide <guide.rst>
+    Examples <examples.rst>
+    API <code/index.rst>
+    Resources <resources.rst>

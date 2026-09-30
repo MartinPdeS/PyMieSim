@@ -60,7 +60,7 @@ napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
 html_logo = "_static/thumbnail.png"
-html_favicon = "_static/thumbnail.png"
+html_favicon = "_static/favicon.png"
 
 
 def reset_mpl(gallery_conf, fname):
@@ -126,7 +126,7 @@ binder_branch = f"v{major}.{minor}.x"
 
 html_context = {
     "github_url": "https://github.com",  # or your GitHub Enterprise site
-    "github_user": package_name,
+    "github_user": "MartinPdeS",
     "github_repo": package_name,
     "github_version": "master",
     "doc_path": "docs/source",
@@ -141,6 +141,11 @@ html_theme_options["show_nav_level"] = 0
 html_theme_options.update(
     {
         "icon_links": [
+            {
+                "name": "GitHub",
+                "url": f"https://github.com/MartinPdeS/{package_name}",
+                "icon": "fa-brands fa-github",
+            },
             {
                 "name": "PyPI",
                 "url": f"https://pypi.org/project/{package_name}/",
