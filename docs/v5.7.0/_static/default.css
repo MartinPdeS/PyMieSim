@@ -1,0 +1,37 @@
+/* Additional styling for the PyData Sphinx theme. */
+
+/* Use hyperlink color for grid-item-cards.
+TODO find a way to only apply this to grid-item-cards that link somewhere */
+.sd-card-title {
+    color: var(--pst-color-link);
+}
+
+/* Use text base color for hyperlinks in code cells. Pygments "default" theme
+doesn't seem to set this color, so the default light blue link color is applied
+which has a very low contrast with the background. */
+div.highlight a {
+    color: var(--pst-color-text-base);
+}
+
+/* Stack components in footer vertically. */
+.bd-footer .footer-items__end, .bd-footer .footer-items__start {
+  flex-direction: row;
+}
+
+/* Keep display equations readable in the theory pages. */
+div.math {
+  margin: 2.25rem 0;
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  text-align: center;
+}
+
+div.math mjx-container[display="true"] {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+div.math mjx-mtr + mjx-mtr mjx-mtd {
+  padding-top: 1.1em;
+}
