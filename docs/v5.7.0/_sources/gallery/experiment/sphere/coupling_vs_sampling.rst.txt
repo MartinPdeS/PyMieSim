@@ -42,7 +42,7 @@ Sphere: Coupling vs sampling
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f25e5540950>, <matplotlib.lines.Line2D object at 0x7f25e5543e10>, <matplotlib.lines.Line2D object at 0x7f25e5540c50>, <matplotlib.lines.Line2D object at 0x7f25e5541810>]
+    [<matplotlib.lines.Line2D object at 0x7faf2f4bf910>, <matplotlib.lines.Line2D object at 0x7faf2f4bc290>, <matplotlib.lines.Line2D object at 0x7faf2f4bdb10>, <matplotlib.lines.Line2D object at 0x7faf2f8b34d0>]
 
 
 
@@ -104,7 +104,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.296 seconds)
+   **Total running time of the script:** (0 minutes 0.398 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_sampling.py:

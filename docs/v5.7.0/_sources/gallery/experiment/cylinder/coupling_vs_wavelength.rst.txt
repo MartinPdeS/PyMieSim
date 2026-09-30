@@ -44,7 +44,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f25e55f62d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f25e55f4ad0>, <matplotlib.lines.Line2D object at 0x7f25e5366d90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f25e55c0ed0>]
+    [<matplotlib.lines.Line2D object at 0x7faf2f5768d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7faf2f575390>, <matplotlib.lines.Line2D object at 0x7faf2f588d50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7faf2f58ae50>]
 
 
 
@@ -104,7 +104,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.402 seconds)
+   **Total running time of the script:** (0 minutes 0.540 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_wavelength.py:

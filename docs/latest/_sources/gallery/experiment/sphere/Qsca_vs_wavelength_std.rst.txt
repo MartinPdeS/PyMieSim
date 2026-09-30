@@ -42,7 +42,7 @@ Sphere: Qsca vs wavelength STD
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f25e5154810>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f25e5157b90>, <matplotlib.lines.Line2D object at 0x7f25e4e80090>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f25e54c0390>, <matplotlib.lines.Line2D object at 0x7f25e539b390>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f25e5399590>]
+    [<matplotlib.lines.Line2D object at 0x7faf2f793dd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7faf2f41c610>, <matplotlib.lines.Line2D object at 0x7faf2f41cb10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7faf2f41fe90>, <matplotlib.lines.Line2D object at 0x7faf2f4a2890>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7faf2f4a2c10>]
 
 
 
@@ -96,7 +96,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.211 seconds)
+   **Total running time of the script:** (0 minutes 0.278 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength_std.py:
