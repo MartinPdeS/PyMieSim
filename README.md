@@ -4,6 +4,7 @@
 
 | Name                                          |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
 |---------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
+| PyMieSim/\_native.py                          |       19 |        4 |        2 |        1 |     76.19% |37-38, 58-59 |
 | PyMieSim/experiment/distributions.py          |       67 |        1 |       26 |        1 |     97.85% |        36 |
 | PyMieSim/experiment/setup.py                  |       93 |        3 |       30 |        3 |     95.12% |174, 181, 276 |
 | PyMieSim/experiment/utils.py                  |       32 |       32 |       14 |        0 |      0.00% |     1-134 |
@@ -17,7 +18,7 @@
 | PyMieSim/single/representations/s1s2.py       |       39 |        4 |       16 |        6 |     78.18% |109-110, 112-\>115, 116, 118-\>121, 160, 162-\>166 |
 | PyMieSim/single/representations/spf.py        |       47 |        2 |        4 |        2 |     92.16% |  187, 191 |
 | PyMieSim/single/representations/stokes.py     |       53 |        1 |        4 |        2 |     94.74% |260-\>exit, 292 |
-| **TOTAL**                                     | **1253** |  **270** |  **362** |   **74** | **73.37%** |           |
+| **TOTAL**                                     | **1272** |  **274** |  **364** |   **75** | **73.41%** |           |
 
 3 files skipped due to complete coverage.
 
