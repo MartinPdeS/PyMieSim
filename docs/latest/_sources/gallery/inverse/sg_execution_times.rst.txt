@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.020** total execution time for 3 files **from gallery/inverse**:
+**00:00.021** total execution time for 3 files **from gallery/inverse**:
 
 .. container::
 
@@ -39,5 +39,5 @@ Computation times
      - 00:00.004
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_fit_linear_scale.py` (``fit_linear_scale.py``)
-     - 00:00.001
+     - 00:00.002
      - 0.0

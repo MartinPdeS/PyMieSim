@@ -42,7 +42,7 @@ Sphere: coherent coupling vs sampling
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f8f6a32cbd0>, <matplotlib.lines.Line2D object at 0x7f8f6a32fdd0>, <matplotlib.lines.Line2D object at 0x7f8f6a32dcd0>, <matplotlib.lines.Line2D object at 0x7f8f6a32f9d0>, <matplotlib.lines.Line2D object at 0x7f8f69e72bd0>]
+    [<matplotlib.lines.Line2D object at 0x7f29790cc290>, <matplotlib.lines.Line2D object at 0x7f29765bed90>, <matplotlib.lines.Line2D object at 0x7f2976447b90>, <matplotlib.lines.Line2D object at 0x7f2976447350>, <matplotlib.lines.Line2D object at 0x7f2976445790>]
 
 
 
@@ -101,7 +101,7 @@ Sphere: coherent coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.309 seconds)
+   **Total running time of the script:** (0 minutes 0.308 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_sampling.py:
