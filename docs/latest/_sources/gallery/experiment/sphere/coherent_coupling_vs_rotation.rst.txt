@@ -42,7 +42,7 @@ Sphere: Coherent mode field rotation
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f3ed800c4d0>, <matplotlib.lines.Line2D object at 0x7f3eda8ee4d0>]
+    [<matplotlib.lines.Line2D object at 0x7f7e55d3d490>, <matplotlib.lines.Line2D object at 0x7f7e55d3d110>]
 
 
 
@@ -103,7 +103,7 @@ Sphere: Coherent mode field rotation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.245 seconds)
+   **Total running time of the script:** (0 minutes 0.275 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_rotation.py:
