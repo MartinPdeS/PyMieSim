@@ -13,9 +13,10 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+      - name: Set up Python and CI dependencies
+        uses: MartinPdeS/MPSActions/actions/setup-python@0f5927acf88b25b5d253421e508387897096a2cc
         with:
           python-version: "3.11"
-      - run: python -m pip install --upgrade pip && python -m pip install "ruff>=0.6"
+          install-command: >-
+            python -m pip install --upgrade pip && python -m pip install "ruff>=0.6"
       - run: python -m ruff check PyMieSim tests
