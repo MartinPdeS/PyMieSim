@@ -13,6 +13,15 @@ py::object magnitude(py::object value) {
     return py::hasattr(value, "magnitude") ? value.attr("magnitude") : value;
 }
 
+py::object magnitude_in(py::object value, const py::object &reference) {
+    if (py::hasattr(value, "units")) {
+        py::object units = py::hasattr(reference, "units") ? reference.attr("units") : py::object(py::str(""));
+        value = value.attr("to")(units);
+    }
+    // Bare numbers are interpreted in the reference units (or as dimensionless).
+    return magnitude(std::move(value));
+}
+
 double scalar(py::object value, const char *message) {
     py::module_ np = py::module_::import("numpy");
     py::object array = np.attr("asarray")(magnitude(std::move(value)), py::arg("dtype") = "float64");
@@ -28,8 +37,10 @@ Parameter::Parameter(std::string name, py::object initial, py::tuple bounds)
     if (this->bounds.size() != 2)
         throw py::value_error("bounds must contain lower and upper values");
     const double x = scalar(this->initial, "fit parameters and bounds must be scalar values");
-    const double lower = scalar(this->bounds[0], "fit parameters and bounds must be scalar values");
-    const double upper = scalar(this->bounds[1], "fit parameters and bounds must be scalar values");
+    const double lower =
+        scalar(magnitude_in(this->bounds[0], this->initial), "fit parameters and bounds must be scalar values");
+    const double upper =
+        scalar(magnitude_in(this->bounds[1], this->initial), "fit parameters and bounds must be scalar values");
     if (!std::isfinite(x) || !std::isfinite(lower) || !std::isfinite(upper))
         throw py::value_error("parameter must have finite initial and bounds");
     if (lower >= upper)
@@ -45,7 +56,8 @@ Observation::Observation(py::object values, py::object uncertainty, std::string 
     if (array.attr("size").cast<size_t>() == 0 || !np.attr("all")(np.attr("isfinite")(array)).cast<bool>())
         throw py::value_error("observation values must be nonempty and finite");
     if (!this->uncertainty.is_none()) {
-        py::object sigma = np.attr("asarray")(magnitude(this->uncertainty), py::arg("dtype") = "float64");
+        py::object sigma =
+            np.attr("asarray")(magnitude_in(this->uncertainty, this->values), py::arg("dtype") = "float64");
         try {
             np.attr("broadcast_to")(sigma, array.attr("shape"));
         } catch (py::error_already_set &) {
@@ -99,10 +111,10 @@ py::dict parameter_mapping(const std::vector<Parameter> &parameters, const std::
     py::dict values;
     for (size_t index = 0; index < parameters.size(); ++index) {
         const py::object &original = parameters[index].initial;
-        const double original_magnitude = scalar(original, "fit parameters and bounds must be scalar values");
         values[parameters[index].name.c_str()] =
-            py::hasattr(original, "units") ? (py::float_(magnitudes[index]) * original) / py::float_(original_magnitude)
-                                           : py::float_(magnitudes[index]);
+            py::hasattr(original, "units")
+                ? original.attr("_REGISTRY").attr("Quantity")(magnitudes[index], original.attr("units"))
+                : py::float_(magnitudes[index]);
     }
     return values;
 }
@@ -127,16 +139,17 @@ py::object fit_parameters(py::function model, const Observation &observation, py
     std::vector<Parameter> parameters = collect_parameters(supplied);
     py::module_ np = py::module_::import("numpy");
     py::object observed = np.attr("asarray")(magnitude(observation.values), py::arg("dtype") = "float64");
-    py::object sigma = observation.uncertainty.is_none()
-                           ? np.attr("ones_like")(observed)
-                           : np.attr("broadcast_to")(
-                                 np.attr("asarray")(magnitude(observation.uncertainty), py::arg("dtype") = "float64"),
-                                 observed.attr("shape"));
+    py::object sigma =
+        observation.uncertainty.is_none()
+            ? np.attr("ones_like")(observed)
+            : np.attr("broadcast_to")(np.attr("asarray")(magnitude_in(observation.uncertainty, observation.values),
+                                                         py::arg("dtype") = "float64"),
+                                      observed.attr("shape"));
     std::vector<double> lower, upper, current, step;
     py::dict initial;
     for (const auto &p : parameters) {
-        double lo = scalar(p.bounds[0], "fit parameters and bounds must be scalar values"),
-               hi = scalar(p.bounds[1], "fit parameters and bounds must be scalar values");
+        double lo = scalar(magnitude_in(p.bounds[0], p.initial), "fit parameters and bounds must be scalar values"),
+               hi = scalar(magnitude_in(p.bounds[1], p.initial), "fit parameters and bounds must be scalar values");
         lower.push_back(lo);
         upper.push_back(hi);
         current.push_back(scalar(p.initial, "fit parameters and bounds must be scalar values"));
@@ -152,7 +165,7 @@ py::object fit_parameters(py::function model, const Observation &observation, py
     double best = 0;
     auto score = [&](const std::vector<double> &values) {
         py::dict passed = parameter_mapping(parameters, values);
-        prediction = np.attr("asarray")(magnitude(model(passed)), py::arg("dtype") = "float64");
+        prediction = np.attr("asarray")(magnitude_in(model(passed), observation.values), py::arg("dtype") = "float64");
         if (!py::bool_(prediction.attr("shape").equal(observed.attr("shape"))))
             throw py::value_error("model returned shape different from observation");
         residuals = (prediction - observed) / sigma;

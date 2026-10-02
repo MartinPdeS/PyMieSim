@@ -5,6 +5,8 @@
 
 namespace py = pybind11;
 
+py::object magnitude_in(py::object value, const py::object &reference);
+
 class Parameter {
 public:
     Parameter(std::string name, py::object initial, py::tuple bounds);
