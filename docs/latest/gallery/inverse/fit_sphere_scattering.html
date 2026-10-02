@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -555,46 +555,45 @@ objective = 0.000000
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Observation</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">PolarizationState</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">Sphere</span><span class="p">,</span>
-    <span class="n">fit_parameters</span><span class="p">,</span> <span class="n">ureg</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">532</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
-    <span class="n">amplitude</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">volt</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">target_diameter</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
-<span class="n">target</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">scatterer</span><span class="o">=</span><span class="n">Sphere</span><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="n">target_diameter</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mf">1.59</span><span class="p">,</span> <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
-    <span class="n">sphere</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"diameter"</span><span class="p">],</span> <span class="n">material</span><span class="o">=</span><span class="mf">1.59</span><span class="p">,</span> <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">sphere</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
-
-
-<span class="n">result</span> <span class="o">=</span> <span class="n">fit_parameters</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-    <span class="n">observation</span><span class="o">=</span><span class="n">Observation</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">target</span><span class="p">),</span>
-    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">Parameter</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">"diameter"</span><span class="p">,</span>
-            <span class="n">initial</span><span class="o">=</span><span class="mi">130</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-            <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">260</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">),</span>
-        <span class="p">)</span>
-    <span class="p">],</span>
-    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
-    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.015 seconds)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">Observation</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Parameter" title="PyMieSim.Parameter"><span class="n">Parameter</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">PlaneWave</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-function reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.fit_parameters" title="PyMieSim.fit_parameters"><span class="n">fit_parameters</span></a><span class="p">,</span> <span class="n">ureg</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">PlaneWave</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">wavelength</span><span class="o">=</span><span class="mi">532</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <span class="n">polarization</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="n">amplitude</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">volt</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">target_diameter</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
+</span><span class="n">target</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="w">
+</span>    <span class="n">scatterer</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="n">target_diameter</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mf">1.59</span><span class="p">,</span> <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">source</span></a><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">sphere</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">diameter</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mf">1.59</span><span class="p">,</span> <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">sphere</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">source</span></a><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.FitResult" title="PyMieSim.FitResult"><span class="n">result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-function reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.fit_parameters" title="PyMieSim.fit_parameters"><span class="n">fit_parameters</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="w">
+</span>    <span class="n">observation</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">Observation</span></a><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">target</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Parameter" title="PyMieSim.Parameter"><span class="n">Parameter</span></a><span class="p">(</span><span class="w">
+</span>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">diameter</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>            <span class="n">initial</span><span class="o">=</span><span class="mi">130</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>            <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">260</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="p">)</span><span class="w">
+</span>    <span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span><span class="w">
+</span>    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-method reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.FitResult.summary" title="PyMieSim.FitResult.summary"><span class="n">result</span><span class="o">.</span><span class="n">summary</span></a><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.013 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-inverse-fit-sphere-scattering-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/231158d5bb03bced564bb5d7afd34251/fit_sphere_scattering.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">fit_sphere_scattering.ipynb</span></code></a></p>

@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -634,50 +634,49 @@ to download the full example code.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ureg</span><span class="p">,</span>
-    <span class="n">Sphere</span><span class="p">,</span>
-    <span class="n">Gaussian</span><span class="p">,</span>
-    <span class="n">PolarizationState</span><span class="p">,</span>
-    <span class="n">CoherentMode</span><span class="p">,</span>
-    <span class="n">Simulation</span><span class="p">,</span>
-<span class="p">)</span>
-
-
-
-<span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span>
-    <span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">1550</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_state</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">1800</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">detector</span> <span class="o">=</span> <span class="n">CoherentMode</span><span class="p">(</span>
-    <span class="n">mode_number</span><span class="o">=</span><span class="s2">"LG11"</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">polarization_filter</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">setup</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">)</span>
-
-<span class="n">setup</span><span class="o">.</span><span class="n">plot_system</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.238 seconds)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">Gaussian</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="n">CoherentMode</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">Simulation</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">polarization_state</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">Gaussian</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">wavelength</span><span class="o">=</span><span class="mi">1550</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <span class="n">polarization</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">polarization_state</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span><span class="w">
+</span>    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">scatterer</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">diameter</span><span class="o">=</span><span class="mi">1800</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+</span>    <span class="n">material</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="n">detector</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="n">CoherentMode</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">mode_number</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">LG11</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="w">
+</span>    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
+</span>    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">30</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
+</span>    <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
+</span>    <span class="n">polarization_filter</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
+</span>    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">setup</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">scatterer</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">scatterer</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="n">detector</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.CoherentMode" title="PyMieSim.single.detector.CoherentMode"><span class="n">detector</span></a><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">setup</span><span class="o">.</span><span class="n">plot_system</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.200 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-lg11-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/bc9dbb6b0b33aa064de0982951e8589b/LG11.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">LG11.ipynb</span></code></a></p>

@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -641,56 +641,55 @@ extension; use an operating-system profiler for complete process memory.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">tracemalloc</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Experiment</span><span class="p">,</span> <span class="n">GaussianSet</span><span class="p">,</span> <span class="n">PolarizationSet</span><span class="p">,</span> <span class="n">SphereSet</span><span class="p">,</span> <span class="n">ureg</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">peak_memory</span><span class="p">(</span><span class="n">number_of_diameters</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-    <span class="n">tracemalloc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-    <span class="n">source</span> <span class="o">=</span> <span class="n">GaussianSet</span><span class="p">(</span>
-        <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">600</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-        <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
-        <span class="n">optical_power</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-3</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-        <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">scatterer</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
-        <span class="n">diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">number_of_diameters</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-        <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">],</span>
-        <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
-
-    <span class="n">_</span><span class="p">,</span> <span class="n">peak_bytes</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="o">.</span><span class="n">get_traced_memory</span><span class="p">()</span>
-    <span class="n">tracemalloc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">peak_bytes</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span>
-
-
-<span class="n">sweep_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
-<span class="n">peak_memory_mib</span> <span class="o">=</span> <span class="p">[</span><span class="n">peak_memory</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sweep_sizes</span><span class="p">]</span>
-
-<span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">memory</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <span class="n">peak_memory_mib</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> diameters | </span><span class="si">{</span><span class="n">memory</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> MiB peak Python memory"</span><span class="p">)</span>
-
-<span class="n">figure</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <span class="n">peak_memory_mib</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:orange"</span><span class="p">)</span>
-<span class="n">axis</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"Number of diameters"</span><span class="p">,</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Peak Python memory [MiB]"</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"PyMieSim memory scaling"</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.619 seconds)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">gc</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">tracemalloc</span><span class="w">
+</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="nn">.</span><span class="nn">pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Experiment</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">SphereSet</span></a><span class="p">,</span> <span class="n">ureg</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">peak_memory</span><span class="p">(</span><span class="n">number_of_diameters</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-</span><span class="o">&gt;</span> <span class="nb">float</span><span class="p">:</span><span class="w">
+</span>    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="n">tracemalloc</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">source</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">(</span><span class="w">
+</span>        <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">600</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>        <span class="n">polarization</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="n">optical_power</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-3</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span><span class="w">
+</span>        <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span>    <span class="n">scatterer</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">SphereSet</span></a><span class="p">(</span><span class="w">
+</span>        <span class="n">diameter</span><span class="o">=</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">number_of_diameters</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>        <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span>    <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">_</span><span class="p">,</span> <span class="n">peak_bytes</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="o">.</span><span class="n">get_traced_memory</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="n">tracemalloc</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">peak_bytes</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="n">sweep_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span><span class="w">
+</span><span class="n">peak_memory_mib</span> <span class="o">=</span> <span class="p">[</span><span class="n">peak_memory</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sweep_sizes</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">memory</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <span class="n">peak_memory_mib</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> diameters | </span><span class="si">{</span><span class="n">memory</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> MiB peak Python memory</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">figure</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sweep_sizes</span><span class="p">,</span> <span class="n">peak_memory_mib</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">o</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">tab:orange</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">axis</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="w">
+</span>    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Number of diameters</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Peak Python memory [MiB]</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">PyMieSim memory scaling</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span><span class="w">
+</span><span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.549 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-memory-scaling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9d2e323a0376a3a17693de0317371a2f/memory_scaling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">memory_scaling.ipynb</span></code></a></p>

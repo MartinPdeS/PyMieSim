@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -630,94 +630,93 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="core-shell-particles-1">
 <span id="sphx-glr-gallery-validation-pymiescatt-coreshell-1-py"></span><h1>Core-Shell Particles: 1<a class="headerlink" href="#core-shell-particles-1" title="Link to this heading">#</a></h1>
-<img src="../../../_images/sphx_glr_coreshell_1_001.png" srcset="../../../_images/sphx_glr_coreshell_1_001.png" alt="Comparison of Scattering Efficiency for Core-Shell Particles" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard library imports</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ureg</span><span class="p">,</span>
-    <span class="n">CoreShellSet</span><span class="p">,</span>
-    <span class="n">GaussianSet</span><span class="p">,</span>
-    <span class="n">PolarizationSet</span><span class="p">,</span>
-    <span class="n">Experiment</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># PyMieSim imports</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span>
-
-<span class="c1"># Define parameters</span>
-<span class="n">wavelength</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
-<span class="n">polarization</span> <span class="o">=</span> <span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
-<span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
-<span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="n">core_index</span> <span class="o">=</span> <span class="mf">1.5</span>
-<span class="n">shell_index</span> <span class="o">=</span> <span class="mf">1.4</span>
-<span class="n">shell_thickness</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
-<span class="n">core_diameters</span> <span class="o">=</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
-
-<span class="c1"># Configure the Gaussian source</span>
-<span class="n">source</span> <span class="o">=</span> <span class="n">GaussianSet</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">600</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">]</span>
-<span class="p">)</span>
-
-<span class="c1"># Setup core-shell scatterer</span>
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShellSet</span><span class="p">(</span>
-    <span class="n">core_diameter</span><span class="o">=</span><span class="n">core_diameters</span><span class="p">,</span>
-    <span class="n">shell_thickness</span><span class="o">=</span><span class="n">shell_thickness</span><span class="p">,</span>
-    <span class="n">core_material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">],</span>
-    <span class="n">shell_material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.4</span><span class="p">],</span>
-    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
-<span class="p">)</span>
-
-<span class="c1"># Create experimental setup</span>
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-
-<span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="s2">"Qext"</span><span class="p">,</span> <span class="s2">"Qabs"</span><span class="p">,</span> <span class="s2">"g"</span><span class="p">,</span> <span class="s2">"Qpr"</span><span class="p">,</span> <span class="s2">"Qback"</span><span class="p">]</span>
-
-<span class="c1"># Simulate using PyMieSim</span>
-<a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pymiesim</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
-
-<span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-    <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">"pymiescatt/example_coreshell_1.csv"</span>
-<span class="p">)</span>
-
-<span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-
-<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">comparison_measures</span><span class="p">:</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="s2">"core_diameter"</span><span class="p">],</span>
-        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="n">string</span><span class="p">],</span>
-        <span class="n">label</span><span class="o">=</span><span class="s2">"PyMieScatt: "</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="p">)</span>
-
-
-<span class="k">for</span> <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">,</span> <span class="n">string</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pymiesim</span></a><span class="p">,</span> <span class="n">comparison_measures</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">core_diameters</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-        <a href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span></a><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s2">"PyMieSim: "</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
-        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-    <span class="p">)</span>
-
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="s2">"Core Diameter (μm)"</span><span class="p">,</span>
-    <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Scattering Efficiency"</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"Comparison of Scattering Efficiency for Core-Shell Particles"</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.475 seconds)</p>
+<img src="../../../_images/sphx_glr_coreshell_1_001.png" srcset="../../../_images/sphx_glr_coreshell_1_001.png" alt="Comparison of Scattering Efficiency for Core-Shell Particles" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span class="c1"># Standard library imports</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="nn">.</span><span class="nn">pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.scatterer_set.CoreShellSet" title="PyMieSim.experiment.scatterer_set.CoreShellSet"><span class="n">CoreShellSet</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">Experiment</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># PyMieSim imports</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="nn">.</span><span class="nn">directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Define parameters</span><span class="w">
+</span><span class="n">wavelength</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">polarization</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span><span class="w">
+</span><span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="w">
+</span><span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span><span class="w">
+</span><span class="n">medium_index</span> <span class="o">=</span> <span class="mf">1.0</span><span class="w">
+</span><span class="n">core_index</span> <span class="o">=</span> <span class="mf">1.5</span><span class="w">
+</span><span class="n">shell_index</span> <span class="o">=</span> <span class="mf">1.4</span><span class="w">
+</span><span class="n">shell_thickness</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
+</span><span class="n">core_diameters</span> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Configure the Gaussian source</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">wavelength</span><span class="o">=</span><span class="p">[</span><span class="mi">600</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">polarization</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">polarization</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">optical_power</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span><span class="w">
+</span>    <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">]</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Setup core-shell scatterer</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.scatterer_set.CoreShellSet" title="PyMieSim.experiment.scatterer_set.CoreShellSet"><span class="n">scatterer</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.scatterer_set.CoreShellSet" title="PyMieSim.experiment.scatterer_set.CoreShellSet"><span class="n">CoreShellSet</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">core_diameter</span><span class="o">=</span><span class="n">core_diameters</span><span class="p">,</span><span class="w">
+</span>    <span class="n">shell_thickness</span><span class="o">=</span><span class="n">shell_thickness</span><span class="p">,</span><span class="w">
+</span>    <span class="n">core_material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">shell_material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.4</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Create experimental setup</span><span class="w">
+</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.scatterer_set.CoreShellSet" title="PyMieSim.experiment.scatterer_set.CoreShellSet"><span class="n">scatterer</span></a><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">source</span></a><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qext</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qabs</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">g</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qpr</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qback</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Simulate using PyMieSim</span><span class="w">
+</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">pymiesim</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="w">
+</span>    <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">pymiescatt/example_coreshell_1.csv</span><span class="s2">&quot;</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">comparison_measures</span><span class="p">:</span><span class="w">
+</span>    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span>        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">core_diameter</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">pymiescatt_dataframe</span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">PyMieScatt: </span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span><span class="w">
+</span>        <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">for</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">data</span></a><span class="p">,</span> <span class="n">string</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">pymiesim</span></a><span class="p">,</span> <span class="n">comparison_measures</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span>        <span class="n">core_diameters</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">data</span></a><span class="p">,</span><span class="w">
+</span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">PyMieSim: </span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span><span class="w">
+</span>        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">--</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">black</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>        <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="w">
+</span>    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Core Diameter (μm)</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Scattering Efficiency</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Comparison of Scattering Efficiency for Core-Shell Particles</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.426 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-coreshell-1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/40bca701fd2166628e6a95ebfaf8aa6a/coreshell_1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_1.ipynb</span></code></a></p>

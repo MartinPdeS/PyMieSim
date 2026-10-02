@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -527,34 +527,33 @@ internal scalar coordinates.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Observation</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">fit_parameters</span><span class="p">,</span> <span class="n">ureg</span>
-
-<span class="n">observation</span> <span class="o">=</span> <span class="n">Observation</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="mi">240</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
-    <span class="n">diameter</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">"diameter"</span><span class="p">]</span>
-    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">diameter</span>
-
-
-<span class="n">result</span> <span class="o">=</span> <span class="n">fit_parameters</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-    <span class="n">observation</span><span class="o">=</span><span class="n">observation</span><span class="p">,</span>
-    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">Parameter</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">"diameter"</span><span class="p">,</span>
-            <span class="n">initial</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-            <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">),</span>
-        <span class="p">)</span>
-    <span class="p">],</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"diameter"</span><span class="p">])</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.004 seconds)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">Observation</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Parameter" title="PyMieSim.Parameter"><span class="n">Parameter</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-function reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.fit_parameters" title="PyMieSim.fit_parameters"><span class="n">fit_parameters</span></a><span class="p">,</span> <span class="n">ureg</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">observation</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">Observation</span></a><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="mi">240</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">diameter</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">diameter</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
+</span>    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">diameter</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.FitResult" title="PyMieSim.FitResult"><span class="n">result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-function reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.fit_parameters" title="PyMieSim.fit_parameters"><span class="n">fit_parameters</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">observation</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Observation" title="PyMieSim.Observation"><span class="n">observation</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.Parameter" title="PyMieSim.Parameter"><span class="n">Parameter</span></a><span class="p">(</span><span class="w">
+</span>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">diameter</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>            <span class="n">initial</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>            <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="p">)</span><span class="w">
+</span>    <span class="p">]</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-property reference internal" href="../../workflows/inverse_fitting.html#PyMieSim.FitResult.parameters" title="PyMieSim.FitResult.parameters"><span class="n">result</span><span class="o">.</span><span class="n">parameters</span></a><span class="p">[</span><span class="s2">&quot;</span><span class="s2">diameter</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.003 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-inverse-fit-unit-aware-diameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f08eff3d418d86b7e66ef8979b6dcee2/fit_unit_aware_diameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">fit_unit_aware_diameter.ipynb</span></code></a></p>

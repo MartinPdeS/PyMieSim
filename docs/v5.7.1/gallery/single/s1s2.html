@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -628,43 +628,42 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="s1-s2-function-computation">
 <span id="sphx-glr-gallery-single-s1s2-py"></span><h1>S1 S2 Function Computation<a class="headerlink" href="#s1-s2-function-computation" title="Link to this heading">#</a></h1>
 <p>This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.</p>
-<img src="../../_images/sphx_glr_s1s2_001.png" srcset="../../_images/sphx_glr_s1s2_001.png" alt="S$_1$ parameter, S$_2$ parameter" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ureg</span><span class="p">,</span>
-    <span class="n">InfiniteCylinder</span><span class="p">,</span>
-    <span class="n">Gaussian</span><span class="p">,</span>
-    <span class="n">PolarizationState</span><span class="p">,</span>
-    <span class="n">SellmeierMaterial</span><span class="p">,</span>
-    <span class="n">Simulation</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">bk7</span> <span class="o">=</span> <span class="n">SellmeierMaterial</span><span class="p">(</span><span class="n">material_name</span><span class="o">=</span><span class="s2">"BK7"</span><span class="p">)</span>
-
-<span class="n">polarization_state</span> <span class="o">=</span> <span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">polarization_state</span><span class="p">,</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">InfiniteCylinder</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="n">bk7</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">setup</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">s1s2</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">"s1s2"</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-
-<span class="n">figure</span> <span class="o">=</span> <span class="n">s1s2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.284 seconds)</p>
+<img src="../../_images/sphx_glr_s1s2_001.png" srcset="../../_images/sphx_glr_s1s2_001.png" alt="S$_1$ parameter, S$_2$ parameter" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="n">InfiniteCylinder</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">Gaussian</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/material.html#PyMieSim.material.SellmeierMaterial" title="PyMieSim.SellmeierMaterial"><span class="n">SellmeierMaterial</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">Simulation</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/material.html#PyMieSim.material.SellmeierMaterial" title="PyMieSim.SellmeierMaterial"><span class="n">bk7</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/material.html#PyMieSim.material.SellmeierMaterial" title="PyMieSim.SellmeierMaterial"><span class="n">SellmeierMaterial</span></a><span class="p">(</span><span class="n">material_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">BK7</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">polarization_state</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">Gaussian</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <span class="n">polarization</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">polarization_state</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span><span class="w">
+</span>    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="n">scatterer</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="n">InfiniteCylinder</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+</span>    <span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/material.html#PyMieSim.material.SellmeierMaterial" title="PyMieSim.SellmeierMaterial"><span class="n">bk7</span></a><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">setup</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="n">scatterer</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="n">scatterer</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">s1s2</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-method reference internal" href="../../code/single.html#PyMieSim.single.representations.S1S2.plot" title="PyMieSim.single.representations.S1S2.plot"><span class="n">s1s2</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.144 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-s1s2-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/cbdfd993471d6ac4752e91295bc76c84/s1s2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">s1s2.ipynb</span></code></a></p>
