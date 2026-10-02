@@ -6,8 +6,7 @@ updates:
     directory: "/"
     target-branch: "master"
     schedule:
-      interval: "monthly"
-      day: "sunday"
+      interval: "quarterly"
       time: "09:00"
     ignore:
       # PyMieSim targets PyOptik 3's catalog API. Future major versions require
