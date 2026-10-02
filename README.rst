@@ -36,7 +36,17 @@ PyMieSim
 It supports spherical, cylindrical and core--shell particles and provides helper classes for custom sources and detectors.
 The project targets both quick single-scatterer studies and large parametric experiments.
 
-Try the live web GUI: `PyMieSim Parameter Sweep Lab <https://pymiesim.onrender.com/>`_.
+Try the live webapp
+------------------
+
+**Run Mie scattering simulations in your browser—no installation required.**
+
+`Launch the PyMieSimX webapp <https://pymiesim.onrender.com/>`_ to configure
+optical setups, run parameter sweeps, explore individual particles, and download
+your results as CSV files. The hosted service brings PyMieSim to a graphical
+interface, making it easy to try simulations before installing the Python
+package. The interface is developed in `PyMieSimX
+<https://github.com/MartinPdeS/PyMieSimX>`_.
 
 Features
 --------
