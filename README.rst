@@ -41,6 +41,10 @@ Try the live webapp
 
 **Run Mie scattering simulations in your browser—no installation required.**
 
+.. image:: https://img.shields.io/badge/Launch_Webapp-Open_in_browser-2672d6?style=for-the-badge
+   :target: https://pymiesim.onrender.com/
+   :alt: Launch the PyMieSimX webapp in your browser
+
 `Launch the PyMieSimX webapp <https://pymiesim.onrender.com/>`_ to configure
 optical setups, run parameter sweeps, explore individual particles, and download
 your results as CSV files. The hosted service brings PyMieSim to a graphical
