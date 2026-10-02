@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f1527a9f610>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f1527a9fa10>, <matplotlib.lines.Line2D object at 0x7f152818e850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f152818fe50>]
+    [<matplotlib.lines.Line2D object at 0x7f8f69d0c090>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f8f6a0bfa90>, <matplotlib.lines.Line2D object at 0x7f8f6c7dbc50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f8f69bf9d90>]
 
 
 
@@ -85,7 +85,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.239 seconds)
+   **Total running time of the script:** (0 minutes 0.252 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_wavelength.py:
