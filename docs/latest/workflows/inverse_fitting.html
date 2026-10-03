@@ -553,6 +553,15 @@ default, which keeps scripts and notebooks quiet.</p>
 value, iteration and evaluation counts, and convergence status. Unit-bearing
 parameters are passed to the model with their original units, and uncertainties
 are used to weight residuals.</p>
+<p>Quantity bounds are converted to the initial parameter’s units. Quantity
+predictions and uncertainties are converted to the observation’s units before
+computing residuals; incompatible dimensions raise a Pint
+<code class="docutils literal notranslate"><span class="pre">DimensionalityError</span></code>. Bare numbers are interpreted as magnitudes in the
+corresponding reference units. When the reference is a bare number, quantities
+must be dimensionless. Zero-valued initial quantities are supported.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FitResult.prediction</span></code> and <code class="docutils literal notranslate"><span class="pre">FitResult.observed</span></code> are numerical arrays in the
+observation’s units. <code class="docutils literal notranslate"><span class="pre">FitResult.residuals</span></code> contains their numerical difference,
+divided by the uncertainty when one is supplied.</p>
 <p>The fitted values are conditional on the forward model. A fit to a dense
 suspension using isolated-particle Mie calculations can compensate for missing
 multiple scattering or particle correlations. For correlation-aware scattering
