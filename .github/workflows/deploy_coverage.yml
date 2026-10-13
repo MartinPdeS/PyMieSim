@@ -16,24 +16,18 @@ jobs:
     name: Run tests and generate coverage data
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
-        with:
-          python-version: "3.11"
-
       - name: Install headless dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
 
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - name: Set up Python and CI dependencies
+        uses: MartinPdeS/MPSActions/actions/setup-python@0f5927acf88b25b5d253421e508387897096a2cc
         with:
+          python-version: "3.11"
+          install-command: >-
+            python -m pip install --upgrade pip wheel build && python -m pip install -e ".[testing]"
           fetch-depth: 0
-          submodules: true
-
-      - name: Install package and test dependencies
-        run: |
-          python -m pip install --upgrade pip wheel build
-          python -m pip install -e ".[testing]"
 
       - name: Initialize PyOptik material catalog
         run: python -m PyOptik setup --no-progress
