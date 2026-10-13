@@ -42,7 +42,7 @@ Sphere: Qabs vs diameter
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f5160c25c10>, <matplotlib.lines.Line2D object at 0x7f5160b9d650>]
+    [<matplotlib.lines.Line2D object at 0x7f7af4348c50>, <matplotlib.lines.Line2D object at 0x7f7af434a710>]
 
 
 
@@ -94,7 +94,7 @@ Sphere: Qabs vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.146 seconds)
+   **Total running time of the script:** (0 minutes 0.119 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qabs_vs_diameter.py:
