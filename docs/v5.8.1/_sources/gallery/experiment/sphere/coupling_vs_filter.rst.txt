@@ -42,7 +42,7 @@ Sphere: Coupling vs polarization filter
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7fa5c5b898d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fa5c5b89fd0>, <matplotlib.lines.Line2D object at 0x7fa5c5275190>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fa5c56a7650>]
+    [<matplotlib.lines.Line2D object at 0x7fadb8dd4d50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8dd5390>, <matplotlib.lines.Line2D object at 0x7fadb8d008d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb91767d0>]
 
 
 
@@ -101,7 +101,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.972 seconds)
+   **Total running time of the script:** (0 minutes 0.940 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_filter.py:
