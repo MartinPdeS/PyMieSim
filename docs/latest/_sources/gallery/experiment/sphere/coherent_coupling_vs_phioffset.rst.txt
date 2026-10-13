@@ -42,7 +42,7 @@ Sphere: Coherent Goniometer
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
 
-    [<matplotlib.lines.Line2D object at 0x7f2c6a9b4110>, <matplotlib.lines.Line2D object at 0x7f2c6a9b7910>, <matplotlib.lines.Line2D object at 0x7f2c6a43c4d0>, <matplotlib.lines.Line2D object at 0x7f2c6a43fa90>]
+    [<matplotlib.lines.Line2D object at 0x7f5160d77290>, <matplotlib.lines.Line2D object at 0x7f5160d74bd0>, <matplotlib.lines.Line2D object at 0x7f5160d779d0>, <matplotlib.lines.Line2D object at 0x7f5160d752d0>]
 
 
 
@@ -102,7 +102,7 @@ Sphere: Coherent Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.482 seconds)
+   **Total running time of the script:** (0 minutes 0.278 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_phioffset.py:
