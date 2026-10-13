@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
  .. code-block:: none
 
 
-    [<matplotlib.lines.Line2D object at 0x7f8530433910>, <matplotlib.lines.Line2D object at 0x7f85304318d0>]
+    [<matplotlib.lines.Line2D object at 0x7f2c6a399bd0>, <matplotlib.lines.Line2D object at 0x7f2c6a399ad0>]
 
 
 
