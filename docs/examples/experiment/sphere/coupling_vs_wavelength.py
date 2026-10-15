@@ -2,6 +2,9 @@
 Sphere: Coupling vs wavelength
 ==============================
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -11,13 +14,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    SellmeierMaterial,
-    SellmeierMedium,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
@@ -32,7 +31,7 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=np.linspace(1400, 1500, 10) * ureg.nanometer,
-    material=[SellmeierMaterial(material_name="BK7")],
+    material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
     medium=[1],
 )
 
@@ -44,7 +43,7 @@ detector = CoherentModeSet(
     polarization_filter=[0, 90] * ureg.degree,
     rotation=[0] * ureg.degree,
     sampling=[300],
-    medium=[SellmeierMedium(material_name="water")]
+    medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)]
 )
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)

@@ -32,23 +32,12 @@ from .experiment.setup import Setup as Experiment
 from .material import (
     ConstantMaterial,
     ConstantMedium,
-    print_available,
     SellmeierMaterial,
     SellmeierMedium,
     TabulatedMaterial,
     TabulatedMedium,
 )
-from .materials import (
-    MaterialInfo,
-    available_materials,
-    load_material,
-    load_tabulated,
-    material_info,
-    validate_refractive_indices,
-    validate_material,
-    validate_tabulated_data,
-    validate_wavelength,
-)
+from .materials import from_pyoptik
 from .mesh import FibonacciMesh, FullMesh
 from .labeled_array import LabeledArray
 from .polarization import LeftCircular, PolarizationState, RightCircular
@@ -59,6 +48,7 @@ from .single.source import Gaussian, PlaneWave
 from .units import ureg
 
 __all__ = [
+    "from_pyoptik",
     "ParticleSizeDistribution",
     "ParameterFitResult",
     "MeasuredData",
@@ -90,7 +80,6 @@ __all__ = [
     "LeftCircular",
     "LabeledArray",
     "MaterialSet",
-    "MaterialInfo",
     "Measure",
     "MeasureLike",
     "MeasureName",
@@ -128,15 +117,6 @@ __all__ = [
     "GaussianSet",
     "InfiniteCylinderSet",
     "PlaneWaveSet",
-    "print_available",
-    "available_materials",
-    "load_material",
-    "load_tabulated",
-    "material_info",
-    "validate_refractive_indices",
-    "validate_material",
-    "validate_tabulated_data",
-    "validate_wavelength",
     "__version__",
     "ureg",
 ]

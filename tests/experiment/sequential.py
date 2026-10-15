@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 import pytest
 import numpy as np
 from unittest.mock import patch
 
 from PyMieSim.units import ureg
 
-from PyMieSim.material import SellmeierMaterial, SellmeierMedium
 from PyMieSim.experiment.detector_set import CoherentModeSet
 from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
@@ -73,7 +75,7 @@ def test_invalid_medium_refractive_index():
         SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
             material=1.4,
-            medium=SellmeierMedium("water"),  # This should trigger an error
+            medium=from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True),  # This should trigger an error
             target_size=TOTAL_SIZE,
         )
 
@@ -87,7 +89,7 @@ def test_invalid_refractive_index():
     with pytest.raises((AttributeError, RuntimeError, ValueError)):
         SphereSet.build_sequential(
             diameter=np.linspace(400, 1400, TOTAL_SIZE) * ureg.nanometer,
-            material=SellmeierMaterial("water"),  # This should trigger an error
+            material=from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C")),  # This should trigger an error
             medium=1.0,
             target_size=TOTAL_SIZE,
         )

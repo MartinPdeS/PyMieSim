@@ -87,16 +87,20 @@ convert it before passing it to PyMieSim.
 Material wavelength ranges
 --------------------------
 
-Built-in and tabulated materials declare a wavelength range. The practical
-material helpers default to strict range checking::
+Catalog and measured materials declare a wavelength range. Conversion defaults
+to strict native range checking::
 
-   from PyMieSim import load_material
+   import PyOptik
+   from PyMieSim import from_pyoptik
 
-   material = load_material("BK7")
+   material = from_pyoptik(
+       PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7")
+   )
 
-Use ``extrapolation="linear"`` only when endpoint-slope extrapolation is
-physically justified. ``validate_material`` and ``validate_wavelength`` can
-be used to diagnose range and passivity problems.
+Use ``extrapolation="linear"`` only when extending the tabulated endpoint slope
+or evaluating a formula beyond its source range is physically justified.
+PyOptik owns validation and catalog selection. See :doc:`code/material` for
+canonical catalog IDs and native solver constraints.
 
 Coupling errors
 ---------------

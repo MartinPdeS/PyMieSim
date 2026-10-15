@@ -19,9 +19,7 @@ jobs:
           python-version: "3.11"
           install-command: >-
             python -m pip install --upgrade pip && python -m pip install -e ".[testing,dev]"
-      - run: python -m PyOptik setup --data-root "$RUNNER_TEMP/pyoptik" --no-progress
+      - run: python -m PyOptik setup --no-progress
       - run: python -m mypy
       - run: python -m mypy.stubtest PyMieSim.single.setup PyMieSim.labeled_array --mypy-config-file pyproject.toml --allowlist tools/stubtest_allowlist.txt
       - run: python -m pytest -q
-        env:
-          PYMIESIM_PYOPTIK_DATA_ROOT: ${{ runner.temp }}/pyoptik

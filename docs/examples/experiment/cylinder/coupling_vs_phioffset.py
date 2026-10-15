@@ -4,6 +4,9 @@ InfiniteCylinder: Goniometer
 
 This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -13,12 +16,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    SellmeierMaterial,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[30.0] * ureg.degree,
@@ -33,7 +33,7 @@ source = GaussianSet(
 
 scatterer = InfiniteCylinderSet(
     diameter=[2000] * ureg.nanometer,
-    material=[SellmeierMaterial(material_name="BK7")],
+    material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
     medium=[1],
 )
 

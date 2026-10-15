@@ -3,6 +3,9 @@ Sphere: Coupling vs numerical aperture
 ======================================
 """
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -13,7 +16,6 @@ from PyMieSim import (
     PolarizationSet,
     PolarizationState,
     RightCircular,
-    SellmeierMaterial,
     Simulation,
     Sphere,
     SphereSet,
@@ -29,7 +31,7 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=[500e-9] * ureg.meter,
-    material=[SellmeierMaterial(material_name="BK7")],
+    material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
     medium=[1],
 )
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 import pytest
 import numpy
 from PyMieSim.units import ureg
@@ -10,11 +13,10 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import Setup
-from PyMieSim.material import SellmeierMaterial, SellmeierMedium
 
-bk7 = SellmeierMaterial("BK7")
+bk7 = from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))
 
-water = SellmeierMedium("water")
+water = from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)
 
 materials = [1.2, bk7]
 mediums = [1.1, water]

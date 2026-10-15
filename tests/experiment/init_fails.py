@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 import pytest
 
 from PyMieSim.units import ureg
-from PyMieSim.material import SellmeierMaterial
 
 from PyMieSim.experiment.detector_set import CoherentModeSet
 from PyMieSim.experiment.scatterer_set import SphereSet
@@ -55,7 +57,7 @@ def test_sphere_rejects_invalid_diameter_type():
         SphereSet(
             diameter=100,  # must carry length units
             material=1.5,
-            medium=SellmeierMaterial("water"),
+            medium=from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C")),
         )
 
 
@@ -64,7 +66,7 @@ def test_sphere_rejects_invalid_refractive_index_type():
         SphereSet(
             diameter=100 * ureg.nanometer,
             material=1.5,  # must carry RIU
-            medium=SellmeierMaterial("water"),
+            medium=from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C")),
         )
 
 

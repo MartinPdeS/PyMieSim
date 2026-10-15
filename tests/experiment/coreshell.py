@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 import pytest
 import numpy as np
 
@@ -10,20 +13,19 @@ from PyMieSim.experiment.scatterer_set import CoreShellSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment import Setup
-from PyMieSim.material import SellmeierMaterial, TabulatedMaterial, SellmeierMedium
 
 core_properties = [
-    [TabulatedMaterial("silver")],
-    [SellmeierMaterial("fused_silica")],
+    [from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))],
+    [from_pyoptik(PyOptik.load_material(name="main/SiO2/Malitson"))],
     [1.4]
 ]
 shell_properties = [
-    [TabulatedMaterial("silver")],
-    [SellmeierMaterial("fused_silica")],
+    [from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))],
+    [from_pyoptik(PyOptik.load_material(name="main/SiO2/Malitson"))],
     [1.4]
 ]
 medium_properties = [
-    [SellmeierMedium("water")],
+    [from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
     [1.1]
 ]
 
