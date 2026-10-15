@@ -31,8 +31,30 @@ their units in the table. This example produces text rather than a plot.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
 
 
+    property         | 0.0000e+00 | unit  
+    -----------------|--------------------|------
+    size_parameter   | 1.2566e+00 |       
+    radius           | 1.5000e-07 | m     
+    cross_section    | 7.0686e-14 | m^2   
+    Qsca             | 2.3087e-02 |       
+    Qext             | 2.8767e-01 |       
+    Qabs             | 2.6459e-01 |       
+    Csca             | 6.9261e-09 | m^2   
+    Cext             | 8.6302e-08 | m^2   
+    Cabs             | 7.9376e-08 | m^2   
+
+
+
+
+
+
+
+|
 
 .. code-block:: Python
 

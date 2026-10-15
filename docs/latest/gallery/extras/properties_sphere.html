@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.0.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.0.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -65,7 +65,7 @@
     <link rel="prev" title="Print cylinder properties" href="properties_cylinder.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="6.0.0" />
+  <meta name="docsearch:version" content="6.0.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -642,6 +642,34 @@ to download the full example code.</p>
 The printed table uses four decimal places in scientific notation by default.
 Efficiencies are dimensionless; geometric lengths and cross sections include
 their units in the table. This example produces text rather than a plot.</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Scatterer Type: Sphere
+property         | 0.0000e+00 | unit
+-----------------|--------------------|------
+size_parameter   | 2.5133e+00 |
+radius           | 4.0000e-07 | m
+RI real          | 1.4000e+00 |
+RI imag          | 0.0000e+00 |
+medium RI        | 1.0000e+00 |
+volume           | 2.6808e-19 | m^3
+cross_section    | 5.0265e-13 | m^2
+g                | 6.9601e-01 |
+Qsca             | 1.7376e+00 |
+Qext             | 1.7376e+00 |
+Qabs             | 0.0000e+00 |
+Qback            | 3.5502e-01 |
+Qratio           | 2.0431e-01 |
+Qpr              | 5.2823e-01 |
+Csca             | 8.7344e-13 | m^2
+Cext             | 8.7344e-13 | m^2
+Cabs             | 0.0000e+00 | m^2
+Cback            | 1.7845e-13 | m^2
+Cratio           | 1.0270e-13 | m^2
+Cpr              | 2.6552e-13 | m^2
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
 </span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">,</span><span class="w">
@@ -669,7 +697,7 @@ their units in the table. This example produces text rather than a plot.</p>
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-method reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere.print_properties" title="PyMieSim.single.scatterer.Sphere.print_properties"><span class="n">scatterer</span><span class="o">.</span><span class="n">print_properties</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.001 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.002 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-properties-sphere-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/86c435cd2c44ed8a76f4f92eb684c712/properties_sphere.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">properties_sphere.ipynb</span></code></a></p>

@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.0.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.0.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -65,7 +65,7 @@
     <link rel="prev" title="Plot system" href="plot_system.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="6.0.0" />
+  <meta name="docsearch:version" content="6.0.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -642,6 +642,22 @@ to download the full example code.</p>
 The printed table uses four decimal places in scientific notation by default.
 Efficiencies are dimensionless; geometric lengths and cross sections include
 their units in the table. This example produces text rather than a plot.</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>property         | 0.0000e+00 | unit
+-----------------|--------------------|------
+size_parameter   | 1.2566e+00 |
+radius           | 1.5000e-07 | m
+cross_section    | 7.0686e-14 | m^2
+Qsca             | 2.3087e-02 |
+Qext             | 2.8767e-01 |
+Qabs             | 2.6459e-01 |
+Csca             | 6.9261e-09 | m^2
+Cext             | 8.6302e-08 | m^2
+Cabs             | 7.9376e-08 | m^2
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
 </span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="n">InfiniteCylinder</span></a><span class="p">,</span><span class="w">
