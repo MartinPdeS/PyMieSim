@@ -13,7 +13,7 @@ import time
 
 import numpy as np
 
-from PyMieSim import Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
+from PyMieSim import Measure, Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
 
 
 def build_experiment(size: int = 100) -> Experiment:
@@ -33,12 +33,12 @@ def build_experiment(size: int = 100) -> Experiment:
 
 experiment = build_experiment()
 for _ in range(2):
-    experiment.get("Qsca").as_numpy()
+    experiment.get(Measure.QSCA).as_numpy()
 
 timings = []
 for _ in range(5):
     start = time.perf_counter()
-    values = experiment.get("Qsca").as_numpy()
+    values = experiment.get(Measure.QSCA).as_numpy()
     timings.append(time.perf_counter() - start)
 
 print(f"Python: {platform.python_version()}")

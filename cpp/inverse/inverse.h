@@ -7,25 +7,25 @@ namespace py = pybind11;
 
 py::object magnitude_in(py::object value, const py::object &reference);
 
-class Parameter {
+class FitParameter {
 public:
-    Parameter(std::string name, py::object initial, py::tuple bounds);
+    FitParameter(std::string name, py::object initial, py::tuple bounds);
     std::string name;
     py::object initial;
     py::tuple bounds;
 };
 
-class Observation {
+class MeasuredData {
 public:
-    Observation(py::object values, py::object uncertainty, std::string name);
+    MeasuredData(py::object values, py::object uncertainty, std::string name);
     py::object values;
     py::object uncertainty;
     std::string name;
 };
 
-class FitResult {
+class ParameterFitResult {
 public:
-    FitResult();
+    ParameterFitResult();
     std::string repr() const;
     std::string summary() const;
     py::dict parameters;
@@ -41,5 +41,5 @@ public:
     py::tuple parameter_names;
 };
 
-py::object fit_parameters(py::function model, const Observation &observation, py::iterable parameters,
+py::object fit_parameters(py::function model, const MeasuredData &observation, py::iterable parameters,
                           int max_iterations, double initial_step, double step_tolerance, bool show_progress);

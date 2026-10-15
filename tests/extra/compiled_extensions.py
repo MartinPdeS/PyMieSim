@@ -26,8 +26,8 @@ def test_compiled_hermite_matches_numpy(order):
 
 
 def test_compiled_inverse_api_and_progress(capsys):
-    observation = inverse.Observation(values=[3.0])
-    parameter = inverse.Parameter(name="offset", initial=0.0, bounds=(-5.0, 5.0))
+    observation = inverse.MeasuredData(values=[3.0])
+    parameter = inverse.FitParameter(name="offset", initial=0.0, bounds=(-5.0, 5.0))
 
     result = inverse.fit_parameters(
         model=lambda values: [values["offset"]],

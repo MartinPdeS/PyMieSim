@@ -6,6 +6,7 @@ This example demonstrates the process of computing the coupling efficiency of a 
 """
 
 from PyMieSim import (
+    Measure,
     ureg,
     Gaussian,
     PolarizationState,
@@ -49,7 +50,7 @@ setup = Simulation(
     detector=side_detector
 )
 
-side_coupling = setup.get("coupling")
+side_coupling = setup.get(Measure.COUPLING)
 
 
 # Second detector
@@ -63,6 +64,6 @@ setup = Simulation(
     detector=forward_detector
 )
 
-forward_coupling = setup.get("coupling")
+forward_coupling = setup.get(Measure.COUPLING)
 
 print(f"Side coupling: {side_coupling} \n Forward coupling: {forward_coupling}  \n Ratio: {side_coupling / forward_coupling * 100} %")

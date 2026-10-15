@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
-#include <sstream>
 #include <memory>
+#include <sstream>
 #include <utility>
 #include <vector>
 
@@ -19,29 +19,20 @@
 
 #include "./coreshell.h"
 
-
 namespace py = pybind11;
 
-
-void register_coreshell(py::module_& module) {
+void register_coreshell(py::module_ &module) {
     py::object ureg = get_shared_ureg();
 
-    auto ensure_matplotlib_3d_axis = [](
-        const py::object& ax
-    ) -> void {
+    auto ensure_matplotlib_3d_axis = [](const py::object &ax) -> void {
         if (!py::hasattr(ax, "get_zlim")) {
-            throw std::runtime_error(
-                "CoreShell plotting requires a Matplotlib 3D axis. "
-                "Create it with: figure.add_subplot(111, projection=\"3d\")."
-            );
+            throw std::runtime_error("CoreShell plotting requires a Matplotlib 3D axis. "
+                                     "Create it with: figure.add_subplot(111, projection=\"3d\").");
         }
     };
 
-    auto make_sphere_surface = [](
-        const double radius,
-        const std::size_t theta_sampling,
-        const std::size_t phi_sampling
-    ) -> py::tuple {
+    auto make_sphere_surface = [](const double radius, const std::size_t theta_sampling,
+                                  const std::size_t phi_sampling) -> py::tuple {
         if (theta_sampling < 2) {
             throw std::invalid_argument("theta_sampling must be at least 2.");
         }
@@ -52,66 +43,40 @@ void register_coreshell(py::module_& module) {
 
         constexpr double pi = 3.14159265358979323846;
 
-        py::array_t<double> x_surface(
-            py::array::ShapeContainer{
-                static_cast<py::ssize_t>(phi_sampling),
-                static_cast<py::ssize_t>(theta_sampling)
-            }
-        );
+        py::array_t<double> x_surface(py::array::ShapeContainer{static_cast<py::ssize_t>(phi_sampling),
+                                                                static_cast<py::ssize_t>(theta_sampling)});
 
-        py::array_t<double> y_surface(
-            py::array::ShapeContainer{
-                static_cast<py::ssize_t>(phi_sampling),
-                static_cast<py::ssize_t>(theta_sampling)
-            }
-        );
+        py::array_t<double> y_surface(py::array::ShapeContainer{static_cast<py::ssize_t>(phi_sampling),
+                                                                static_cast<py::ssize_t>(theta_sampling)});
 
-        py::array_t<double> z_surface(
-            py::array::ShapeContainer{
-                static_cast<py::ssize_t>(phi_sampling),
-                static_cast<py::ssize_t>(theta_sampling)
-            }
-        );
+        py::array_t<double> z_surface(py::array::ShapeContainer{static_cast<py::ssize_t>(phi_sampling),
+                                                                static_cast<py::ssize_t>(theta_sampling)});
 
         auto x = x_surface.mutable_unchecked<2>();
         auto y = y_surface.mutable_unchecked<2>();
         auto z = z_surface.mutable_unchecked<2>();
 
         for (std::size_t phi_index = 0; phi_index < phi_sampling; ++phi_index) {
-            const double phi = pi *
-                static_cast<double>(phi_index) /
-                static_cast<double>(phi_sampling - 1);
+            const double phi = pi * static_cast<double>(phi_index) / static_cast<double>(phi_sampling - 1);
 
             for (std::size_t theta_index = 0; theta_index < theta_sampling; ++theta_index) {
-                const double theta = 2.0 * pi *
-                    static_cast<double>(theta_index) /
-                    static_cast<double>(theta_sampling - 1);
+                const double theta =
+                    2.0 * pi * static_cast<double>(theta_index) / static_cast<double>(theta_sampling - 1);
 
-                x(
-                    static_cast<py::ssize_t>(phi_index),
-                    static_cast<py::ssize_t>(theta_index)
-                ) = radius * std::sin(phi) * std::cos(theta);
+                x(static_cast<py::ssize_t>(phi_index), static_cast<py::ssize_t>(theta_index)) =
+                    radius * std::sin(phi) * std::cos(theta);
 
-                y(
-                    static_cast<py::ssize_t>(phi_index),
-                    static_cast<py::ssize_t>(theta_index)
-                ) = radius * std::sin(phi) * std::sin(theta);
+                y(static_cast<py::ssize_t>(phi_index), static_cast<py::ssize_t>(theta_index)) =
+                    radius * std::sin(phi) * std::sin(theta);
 
-                z(
-                    static_cast<py::ssize_t>(phi_index),
-                    static_cast<py::ssize_t>(theta_index)
-                ) = radius * std::cos(phi);
+                z(static_cast<py::ssize_t>(phi_index), static_cast<py::ssize_t>(theta_index)) = radius * std::cos(phi);
             }
         }
 
         return py::make_tuple(x_surface, y_surface, z_surface);
     };
 
-    auto set_coreshell_axis_limits = [](
-        const py::object& ax,
-        const double axis_limit,
-        const bool show_axes
-    ) -> void {
+    auto set_coreshell_axis_limits = [](const py::object &ax, const double axis_limit, const bool show_axes) -> void {
         ax.attr("set_xlim")(-axis_limit, axis_limit);
         ax.attr("set_ylim")(-axis_limit, axis_limit);
         ax.attr("set_zlim")(-axis_limit, axis_limit);
@@ -129,93 +94,48 @@ void register_coreshell(py::module_& module) {
         }
     };
 
-    auto add_sphere_surface_to_ax = [
-        make_sphere_surface
-    ](
-        const py::object& ax,
-        const double radius,
-        const py::object& color,
-        const double alpha,
-        const std::size_t theta_sampling,
-        const std::size_t phi_sampling,
-        const double linewidth,
-        const bool shade
-    ) -> void {
-        py::tuple sphere_surface = make_sphere_surface(
-            radius,
-            theta_sampling,
-            phi_sampling
-        );
+    auto add_sphere_surface_to_ax =
+        [make_sphere_surface](const py::object &ax, const double radius, const py::object &color, const double alpha,
+                              const std::size_t theta_sampling, const std::size_t phi_sampling, const double linewidth,
+                              const bool shade) -> void {
+        py::tuple sphere_surface = make_sphere_surface(radius, theta_sampling, phi_sampling);
 
-        ax.attr("plot_surface")(
-            sphere_surface[0],
-            sphere_surface[1],
-            sphere_surface[2],
-            py::arg("color") = color,
-            py::arg("alpha") = alpha,
-            py::arg("linewidth") = linewidth,
-            py::arg("shade") = shade
-        );
+        ax.attr("plot_surface")(sphere_surface[0], sphere_surface[1], sphere_surface[2], py::arg("color") = color,
+                                py::arg("alpha") = alpha, py::arg("linewidth") = linewidth, py::arg("shade") = shade);
     };
 
-    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(
-        module,
-        "CoreShell",
-        R"pbdoc(
+    py::class_<CoreShell, BaseScatterer, std::shared_ptr<CoreShell>>(module, "CoreShell",
+                                                                     R"pbdoc(
             Core shell spherical scatterer for Lorenz Mie simulations.
 
             The particle is defined by a spherical core, a concentric shell,
             their respective optical materials, and the surrounding medium. It
             exposes the Mie coefficients and geometric properties required by the
             PyMieSim scattering engine.
-        )pbdoc"
-    )
-        .def(
-            py::init(
-                [ureg](
-                    const py::object& core_diameter,
-                    const py::object& shell_thickness,
-                    const py::object& core_material,
-                    const py::object& shell_material,
-                    const py::object& medium,
-                    const int max_order
-                ) {
-                    const double core_diameter_meter = core_diameter
-                        .attr("to")(ureg.attr("meter"))
-                        .attr("magnitude")
-                        .cast<double>();
+        )pbdoc")
+        .def(py::init([ureg](const py::object &core_diameter, const py::object &shell_thickness,
+                             const py::object &core_material, const py::object &shell_material,
+                             const py::object &medium, const int max_order) {
+                 const double core_diameter_meter =
+                     core_diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                    const double shell_thickness_meter = shell_thickness
-                        .attr("to")(ureg.attr("meter"))
-                        .attr("magnitude")
-                        .cast<double>();
+                 const double shell_thickness_meter =
+                     shell_thickness.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
-                    const std::shared_ptr<BaseMaterial> parsed_core_material =
-                        parse_material_object(core_material, ureg);
+                 const std::shared_ptr<BaseMaterial> parsed_core_material = parse_material_object(core_material, ureg);
 
-                    const std::shared_ptr<BaseMaterial> parsed_shell_material =
-                        parse_material_object(shell_material, ureg);
+                 const std::shared_ptr<BaseMaterial> parsed_shell_material =
+                     parse_material_object(shell_material, ureg);
 
-                    const std::shared_ptr<BaseMedium> parsed_medium =
-                        parse_medium_object(medium, ureg);
+                 const std::shared_ptr<BaseMedium> parsed_medium = parse_medium_object(medium, ureg);
 
-                    return std::make_shared<CoreShell>(
-                        core_diameter_meter,
-                        shell_thickness_meter,
-                        std::move(parsed_core_material),
-                        std::move(parsed_shell_material),
-                        std::move(parsed_medium),
-                        max_order
-                    );
-                }
-            ),
-            py::arg("core_diameter"),
-            py::arg("shell_thickness"),
-            py::arg("core_material"),
-            py::arg("shell_material"),
-            py::arg("medium"),
-            py::arg("max_order") = 0,
-            R"pbdoc(
+                 return std::make_shared<CoreShell>(core_diameter_meter, shell_thickness_meter,
+                                                    std::move(parsed_core_material), std::move(parsed_shell_material),
+                                                    std::move(parsed_medium), max_order);
+             }),
+             py::arg("core_diameter"), py::arg("shell_thickness"), py::arg("core_material"), py::arg("shell_material"),
+             py::arg("medium"), py::arg("max_order") = 0,
+             R"pbdoc(
                 Construct a core shell spherical scatterer.
 
                 Parameters
@@ -242,11 +162,10 @@ void register_coreshell(py::module_& module) {
                 ``core_diameter / 2 + shell_thickness``. The plotting helper uses
                 normalized display radii and does not draw the particle at its
                 physical nanometer scale.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "__repr__",
-            [](const CoreShell& self) {
+            [](const CoreShell &self) {
                 std::ostringstream stream;
                 stream << "<CoreShell"
                        << " core_diameter=" << self.core_diameter << " m"
@@ -254,26 +173,24 @@ void register_coreshell(py::module_& module) {
                        << ", max_order=" << self.max_order
                        << ", core_material=" << py::repr(py::cast(self.core_material)).cast<std::string>()
                        << ", shell_material=" << py::repr(py::cast(self.shell_material)).cast<std::string>()
-                       << ", medium=" << py::repr(py::cast(self.medium)).cast<std::string>()
-                       << ">";
+                       << ", medium=" << py::repr(py::cast(self.medium)).cast<std::string>() << ">";
                 return stream.str();
             },
             R"pbdoc(
                 Return a concise representation of the core-shell parameters.
-            )pbdoc"
-        )
-        .def(
-            "print_properties",
-            &CoreShell::print_properties,
-            R"pbdoc(
+            )pbdoc")
+        .def("print_properties", &CoreShell::print_properties, py::arg("precision") = 4,
+             R"pbdoc(
                 Print the core shell scatterer properties to standard output.
-            )pbdoc"
-        )
+
+                Parameters
+                ----------
+                precision : int, optional
+                    Decimal places used in scientific notation (default: 4).
+            )pbdoc")
         .def_property_readonly(
             "core_diameter",
-            [ureg](
-                const CoreShell& self
-            ) {
+            [ureg](const CoreShell &self) {
                 return (py::float_(self.core_diameter) * ureg.attr("meter")).attr("to_compact")();
             },
             R"pbdoc(
@@ -283,13 +200,10 @@ void register_coreshell(py::module_& module) {
                 -------
                 pint.Quantity
                     Core diameter expressed as a compact length unit.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "shell_thickness",
-            [ureg](
-                const CoreShell& self
-            ) {
+            [ureg](const CoreShell &self) {
                 return (py::float_(self.shell_thickness) * ureg.attr("meter")).attr("to_compact")();
             },
             R"pbdoc(
@@ -299,43 +213,30 @@ void register_coreshell(py::module_& module) {
                 -------
                 pint.Quantity
                     Shell thickness expressed as a compact length unit.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "total_diameter",
-            [ureg](const CoreShell& self) {
+            [ureg](const CoreShell &self) {
                 return (py::float_(self.total_diameter) * ureg.attr("meter")).attr("to_compact")();
             },
             R"pbdoc(
                 Outer diameter of the complete core-shell particle.
-            )pbdoc"
-        )
-        .def_readonly(
-            "core_material",
-            &CoreShell::core_material,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly("core_material", &CoreShell::core_material,
+                      R"pbdoc(
                 Material model of the core.
-            )pbdoc"
-        )
-        .def_readonly(
-            "shell_material",
-            &CoreShell::shell_material,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly("shell_material", &CoreShell::shell_material,
+                      R"pbdoc(
                 Material model of the shell.
-            )pbdoc"
-        )
-        .def_readonly_static(
-            "property_names",
-            &CoreShell::property_names,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly_static("property_names", &CoreShell::property_names,
+                             R"pbdoc(
                 Names of the physical properties exposed by the core shell scatterer.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "radius",
-            [ureg](
-                const CoreShell& self
-            ) {
+            [ureg](const CoreShell &self) {
                 const double radius = self.core_diameter / 2.0 + self.shell_thickness;
 
                 return (py::float_(radius) * ureg.attr("meter")).attr("to_compact")();
@@ -347,20 +248,16 @@ void register_coreshell(py::module_& module) {
                 -------
                 pint.Quantity
                     Outer radius expressed as a compact length unit.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "volume",
-            [ureg](
-                const CoreShell& self
-            ) {
+            [ureg](const CoreShell &self) {
                 const double core_radius = self.core_diameter / 2.0;
                 const double shell_outer_radius = core_radius + self.shell_thickness;
 
-                const double volume = (4.0 / 3.0) * Constants::PI * (
-                    shell_outer_radius * shell_outer_radius * shell_outer_radius -
-                    core_radius * core_radius * core_radius
-                );
+                const double volume = (4.0 / 3.0) * Constants::PI *
+                                      (shell_outer_radius * shell_outer_radius * shell_outer_radius -
+                                       core_radius * core_radius * core_radius);
 
                 return (py::float_(volume) * ureg.attr("meter**3")).attr("to_compact")();
             },
@@ -371,15 +268,9 @@ void register_coreshell(py::module_& module) {
                 -------
                 pint.Quantity
                     Shell volume expressed as a compact cubic length unit.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "an",
-            [](
-                CoreShell& self
-            ) {
-                return vector_as_numpy_view(self, self.an);
-            },
+            "an", [](CoreShell &self) { return vector_as_numpy_view(self, self.an); },
             R"pbdoc(
                 Electric type external Mie coefficients \(a_n\).
 
@@ -388,15 +279,9 @@ void register_coreshell(py::module_& module) {
                 numpy.ndarray
                     Zero copy complex array containing the external scattering
                     coefficients \(a_n\).
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "bn",
-            [](
-                CoreShell& self
-            ) {
-                return vector_as_numpy_view(self, self.bn);
-            },
+            "bn", [](CoreShell &self) { return vector_as_numpy_view(self, self.bn); },
             R"pbdoc(
                 Magnetic type external Mie coefficients \(b_n\).
 
@@ -405,15 +290,9 @@ void register_coreshell(py::module_& module) {
                 numpy.ndarray
                     Zero copy complex array containing the external scattering
                     coefficients \(b_n\).
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "cn",
-            [](
-                CoreShell& self
-            ) {
-                return vector_as_numpy_view(self, self.cn);
-            },
+            "cn", [](CoreShell &self) { return vector_as_numpy_view(self, self.cn); },
             R"pbdoc(
                 Electric type internal Mie coefficients \(c_n\).
 
@@ -422,15 +301,9 @@ void register_coreshell(py::module_& module) {
                 numpy.ndarray
                     Zero copy complex array containing the internal coefficients
                     \(c_n\).
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "dn",
-            [](
-                CoreShell& self
-            ) {
-                return vector_as_numpy_view(self, self.dn);
-            },
+            "dn", [](CoreShell &self) { return vector_as_numpy_view(self, self.dn); },
             R"pbdoc(
                 Magnetic type internal Mie coefficients \(d_n\).
 
@@ -439,33 +312,16 @@ void register_coreshell(py::module_& module) {
                 numpy.ndarray
                     Zero copy complex array containing the internal coefficients
                     \(d_n\).
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "_add_to_ax",
-            [
-                ensure_matplotlib_3d_axis,
-                add_sphere_surface_to_ax,
-                set_coreshell_axis_limits
-            ](
-                const CoreShell& self,
-                const py::object& ax,
-                const py::object& core_color,
-                const py::object& shell_color,
-                const double core_alpha,
-                const double shell_alpha,
-                const double display_radius,
-                const bool show_core,
-                const bool show_shell,
-                const bool show_unit_sphere,
-                const py::object& unit_sphere_color,
-                const double unit_sphere_alpha,
-                const std::size_t theta_sampling,
-                const std::size_t phi_sampling,
-                const double linewidth,
-                const bool shade,
-                const bool show_axes
-            ) -> void {
+            [ensure_matplotlib_3d_axis, add_sphere_surface_to_ax, set_coreshell_axis_limits](
+                const CoreShell &self, const py::object &ax, const py::object &core_color,
+                const py::object &shell_color, const double core_alpha, const double shell_alpha,
+                const double display_radius, const bool show_core, const bool show_shell, const bool show_unit_sphere,
+                const py::object &unit_sphere_color, const double unit_sphere_alpha, const std::size_t theta_sampling,
+                const std::size_t phi_sampling, const double linewidth, const bool shade,
+                const bool show_axes) -> void {
                 ensure_matplotlib_3d_axis(ax);
 
                 const double physical_core_radius = self.core_diameter / 2.0;
@@ -478,68 +334,30 @@ void register_coreshell(py::module_& module) {
                 }
 
                 if (show_shell) {
-                    add_sphere_surface_to_ax(
-                        ax,
-                        display_radius,
-                        shell_color,
-                        shell_alpha,
-                        theta_sampling,
-                        phi_sampling,
-                        linewidth,
-                        shade
-                    );
+                    add_sphere_surface_to_ax(ax, display_radius, shell_color, shell_alpha, theta_sampling, phi_sampling,
+                                             linewidth, shade);
                 }
 
                 if (show_core) {
-                    add_sphere_surface_to_ax(
-                        ax,
-                        display_core_radius,
-                        core_color,
-                        core_alpha,
-                        theta_sampling,
-                        phi_sampling,
-                        linewidth,
-                        shade
-                    );
+                    add_sphere_surface_to_ax(ax, display_core_radius, core_color, core_alpha, theta_sampling,
+                                             phi_sampling, linewidth, shade);
                 }
 
                 if (show_unit_sphere) {
-                    add_sphere_surface_to_ax(
-                        ax,
-                        1.0,
-                        unit_sphere_color,
-                        unit_sphere_alpha,
-                        theta_sampling,
-                        phi_sampling,
-                        linewidth,
-                        shade
-                    );
+                    add_sphere_surface_to_ax(ax, 1.0, unit_sphere_color, unit_sphere_alpha, theta_sampling,
+                                             phi_sampling, linewidth, shade);
                 }
 
                 const double axis_limit = std::max(1.0, display_radius);
 
-                set_coreshell_axis_limits(
-                    ax,
-                    axis_limit,
-                    show_axes
-                );
+                set_coreshell_axis_limits(ax, axis_limit, show_axes);
             },
-            py::arg("ax"),
-            py::arg("core_color") = py::str("black"),
-            py::arg("shell_color") = py::str("grey"),
-            py::arg("core_alpha") = 1.0,
-            py::arg("shell_alpha") = 0.35,
-            py::arg("display_radius") = 0.1,
-            py::arg("show_core") = true,
-            py::arg("show_shell") = true,
-            py::arg("show_unit_sphere") = true,
-            py::arg("unit_sphere_color") = py::str("grey"),
-            py::arg("unit_sphere_alpha") = 0.15,
-            py::arg("theta_sampling") = 24,
-            py::arg("phi_sampling") = 24,
-            py::arg("linewidth") = 0.0,
-            py::arg("shade") = false,
-            py::arg("show_axes") = false,
+            py::arg("ax"), py::arg("core_color") = py::str("black"), py::arg("shell_color") = py::str("grey"),
+            py::arg("core_alpha") = 1.0, py::arg("shell_alpha") = 0.35, py::arg("display_radius") = 0.1,
+            py::arg("show_core") = true, py::arg("show_shell") = true, py::arg("show_unit_sphere") = true,
+            py::arg("unit_sphere_color") = py::str("grey"), py::arg("unit_sphere_alpha") = 0.15,
+            py::arg("theta_sampling") = 24, py::arg("phi_sampling") = 24, py::arg("linewidth") = 0.0,
+            py::arg("shade") = false, py::arg("show_axes") = false,
             R"pbdoc(
                 Add the core shell geometry to a Matplotlib 3D axis.
 
@@ -593,7 +411,5 @@ void register_coreshell(py::module_& module) {
                 the physical ratio between the core radius and the outer particle
                 radius. The absolute plotted size is therefore normalized for
                 visualization, while the core shell proportions are preserved.
-            )pbdoc"
-        )
-        ;
+            )pbdoc");
 }

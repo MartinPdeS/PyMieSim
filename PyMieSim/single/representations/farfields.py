@@ -23,7 +23,7 @@ class FarFields(AngularPlotMixin):
     components returned by a single-scatterer setup.
 
     The far-field components are evaluated on a spherical angular mesh and are
-    returned as the transverse components \(E_\phi\) and \(E_\theta\).
+    returned as the transverse components :math:`E_\phi` and :math:`E_\theta`.
 
     The default visualization is a single three-dimensional spherical plot. A
     single field is shown at a time to keep rendering responsive and to make the
@@ -103,22 +103,22 @@ class FarFields(AngularPlotMixin):
                 Theta component intensity, computed as ``|E_theta|^2``.
 
             ``"phi_real"``
-                Real part of \(E_\phi\).
+                Real part of :math:`E_\phi`.
 
             ``"phi_imag"``
-                Imaginary part of \(E_\phi\).
+                Imaginary part of :math:`E_\phi`.
 
             ``"theta_real"``
-                Real part of \(E_\theta\).
+                Real part of :math:`E_\theta`.
 
             ``"theta_imag"``
-                Imaginary part of \(E_\theta\).
+                Imaginary part of :math:`E_\theta`.
 
             ``"phi_phase"``
-                Phase of \(E_\phi\).
+                Phase of :math:`E_\phi`.
 
             ``"theta_phase"``
-                Phase of \(E_\theta\).
+                Phase of :math:`E_\theta`.
 
             ``"phase_difference"``
                 Wrapped phase difference ``arg(E_theta) - arg(E_phi)``.
@@ -332,7 +332,7 @@ class FarFields(AngularPlotMixin):
         color: str = "black",
     ) -> None:
         r"""
-        Add sparse unit vectors in the local \( \theta \) direction.
+        Add sparse unit vectors in the local :math:` \theta ` direction.
 
         This reproduces the previous PyVista call
 
@@ -378,7 +378,7 @@ class FarFields(AngularPlotMixin):
         color: str = "black",
     ) -> None:
         r"""
-        Add sparse unit vectors in the local \( \phi \) direction.
+        Add sparse unit vectors in the local :math:` \phi ` direction.
 
         This reproduces the previous PyVista call
 

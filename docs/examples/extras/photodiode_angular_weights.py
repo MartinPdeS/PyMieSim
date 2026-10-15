@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from PyMieSim import (
+    Measure,
     ureg,
     PolarizationState,
     Gaussian,
@@ -45,7 +46,7 @@ setup = Simulation(
     detector=detector,
 )
 
-baseline_coupling = setup.get("coupling")
+baseline_coupling = setup.get(Measure.COUPLING)
 
 # Rebuild the current mesh explicitly so the example can derive weights from it.
 detector.initialize_mesh(scatterer)
@@ -63,7 +64,7 @@ detector.angular_weights = angular_weights
 
 weighted_active_points = np.abs(detector.angular_weights) > 0.0
 
-masked_coupling = setup.get("coupling")
+masked_coupling = setup.get(Measure.COUPLING)
 
 figure = plt.figure(figsize=(15, 5))
 

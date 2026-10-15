@@ -19,7 +19,8 @@ from .measures import (
     coupling, cross_section, g, g_with_farfields, size_parameter,
 )
 from .distributions import ParticleSizeDistribution
-from .inverse import FitResult, Observation, Parameter, fit_parameters
+from .inverse import FitParameter, MeasuredData, ParameterFitResult, fit_parameters
+from .inverse import FitResult, Observation, Parameter
 from .results import SimulationResult, SimulationResults
 from .coordinates import Cartesian, Spherical, VectorField
 from .experiment.detector_set import CoherentModeSet, PhotodiodeSet
@@ -59,6 +60,9 @@ from .units import ureg
 
 __all__ = [
     "ParticleSizeDistribution",
+    "ParameterFitResult",
+    "MeasuredData",
+    "FitParameter",
     "FitResult",
     "Observation",
     "Parameter",

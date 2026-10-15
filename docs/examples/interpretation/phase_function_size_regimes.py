@@ -14,7 +14,7 @@ redistribution rather than total scattered power. The legend also reports
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import PlaneWave, PolarizationState, Simulation, Sphere, ureg
+from PyMieSim import Measure, PlaneWave, PolarizationState, Simulation, Sphere, ureg
 
 wavelength = 532 * ureg.nanometer
 angles = np.linspace(0, np.pi, 1201)
@@ -34,12 +34,12 @@ for diameter in (80, 300, 1000):
         ),
         source=source,
     )
-    s1, s2 = simulation.get_s1s2(angles * ureg.radian)
+    s1, s2 = simulation.get_s1s2(angles=angles * ureg.radian)
     intensity = (np.abs(s1.magnitude) ** 2 + np.abs(s2.magnitude) ** 2) / 2
     normalization = 2 * np.pi * np.trapezoid(intensity * np.sin(angles), angles)
     phase_function = intensity / normalization
-    qsca = simulation.get("Qsca").magnitude
-    asymmetry = simulation.get("g").magnitude
+    qsca = simulation.get(Measure.QSCA).magnitude
+    asymmetry = simulation.get(Measure.G).magnitude
     axis.semilogy(
         np.rad2deg(angles),
         phase_function,

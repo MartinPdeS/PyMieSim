@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from PyMieSim import (
+    Measure,
     Experiment, ParticleSizeDistribution, PlaneWaveSet, PolarizationSet, SphereSet, ureg,
 )
 
@@ -31,7 +32,7 @@ for sampling in (16, 32, 64):
         scatterer_set=SphereSet(diameter=distribution.diameters, material=[1.5], medium=[1.0]),
     )
     result = experiment.average_size_distribution(
-        distribution, "Csca", as_result=True,
+        distribution, Measure.CSCA, as_result=True,
     ).to("nanometer ** 2")
     axis.plot(result.coords["source:wavelength"] * 1e9, result.magnitude, label=f"{sampling} quadrature nodes"
             )

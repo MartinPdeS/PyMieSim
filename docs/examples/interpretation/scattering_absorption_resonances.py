@@ -15,7 +15,7 @@ dispersion included in the model.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import PlaneWave, PolarizationState, Simulation, Sphere, ureg
+from PyMieSim import Measure, PlaneWave, PolarizationState, Simulation, Sphere, ureg
 
 wavelengths = np.linspace(350, 1000, 260)
 qsca = np.empty_like(wavelengths)
@@ -36,7 +36,7 @@ for index, wavelength in enumerate(wavelengths):
         ),
         source=source,
     )
-    measures = simulation.get("Qsca", "Qabs", "Qext")
+    measures = simulation.get(Measure.QSCA, Measure.QABS, Measure.QEXT)
     qsca[index] = measures["Qsca"].magnitude
     qabs[index] = measures["Qabs"].magnitude
     qext[index] = measures["Qext"].magnitude

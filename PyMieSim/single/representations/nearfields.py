@@ -293,7 +293,7 @@ class NearFields:
         Parameters
         ----------
         field_components
-            List of field components to compute, for example Ex, Ey, Ez, |E|.
+            List of field components to compute, for example ``Ex``, ``Ey``, ``Ez``, ``|E|``.
         type
             Type of field to compute: total, incident, or scattered.
 
@@ -382,7 +382,7 @@ class NearFields:
         Parameters
         ----------
         field_components
-            Sequence of field components, for example Ex:real, |E|:abs.
+            Sequence of field components, for example ``Ex:real``, ``|E|:abs``.
 
         Returns
         -------
@@ -578,7 +578,7 @@ class NearFields:
         Parameters
         ----------
         field_components
-            List of field components to plot, for example Ex:real, |E|:abs.
+            List of field components to plot, for example ``Ex:real``, ``|E|:abs``.
         type
             Type of field to compute: total, incident, or scattered.
         sampling

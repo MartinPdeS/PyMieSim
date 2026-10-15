@@ -9,6 +9,7 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.7
 import numpy
 import matplotlib.pyplot as plt
 from PyMieSim import (
+    Measure,
     ureg,
     InfiniteCylinderSet,
     GaussianSet,
@@ -44,7 +45,7 @@ experiment = Experiment(
     source_set=source,
 )
 
-values = experiment.get("Csca").as_numpy()
+values = experiment.get(Measure.CSCA).as_numpy()
 
 data = values / volume * 1e-4 / 100
 

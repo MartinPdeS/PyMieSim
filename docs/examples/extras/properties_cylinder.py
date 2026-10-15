@@ -1,9 +1,14 @@
 """
-Print properties
-================
+Print cylinder properties
+=========================
 
-This example demonstrates the computation of scattering properties using PyMieSim.
+Initialize the scatterer with a source, then call ``print_properties()``.
+The printed table uses four decimal places in scientific notation by default.
+Efficiencies are dimensionless; geometric lengths and cross sections include
+their units in the table. This example produces text rather than a plot.
 """
+
+# sphinx_gallery_thumbnail_path = "_static/gallery-default.png"
 
 from PyMieSim import (
     ureg,
@@ -27,6 +32,6 @@ scatterer = InfiniteCylinder(
     medium=1.33,
 )
 
-scatterer.init(source)
+scatterer.init(source=source)
 
-scatterer.print_properties(4)
+scatterer.print_properties()

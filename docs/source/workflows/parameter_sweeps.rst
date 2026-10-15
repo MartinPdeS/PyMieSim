@@ -11,6 +11,7 @@ evaluated as a parameter grid.
    import numpy as np
 
    from PyMieSim import (
+       Measure,
        Experiment,
        GaussianSet,
        PolarizationSet,
@@ -32,8 +33,13 @@ evaluated as a parameter grid.
    )
 
    experiment = Experiment(scatterer_set=scatterer, source_set=source)
-   result = experiment.get("Qsca", "Qext")
-   result.isel({"measure": 0}).plot(x="source:wavelength", y="Qsca")
+   result = experiment.get(Measure.QSCA, Measure.QEXT)
+   result.isel(indexers={"measure": 0}).plot(x="source:wavelength", y="Qsca")
+
+This grid contains five wavelengths and ten diameters. Requesting two measures
+adds a ``measure`` axis of length two; the parameter axes have lengths five
+and ten. ``Qsca`` and ``Qext`` are dimensionless. Curves at different diameters
+can move spectral resonances even when the refractive index is fixed.
 
 The result is a unit-aware PyMieSim LabeledArray.  Use ``.as_numpy()`` when a
 raw NumPy array is preferable, ``.as_dataframe()`` for tabular interoperability,
@@ -47,7 +53,7 @@ using libraries that expect a raw array or a pandas table:
 
 .. code-block:: python
 
-   result = experiment.get("Qsca")
+   result = experiment.get(Measure.QSCA)
 
    values = result.as_numpy()
    print(values.shape)
@@ -60,9 +66,9 @@ For multiple measures, the labeled array contains a ``measure`` dimension and
 
 .. code-block:: python
 
-   result = experiment.get("Qext", "Qsca")
+   result = experiment.get(Measure.QEXT, Measure.QSCA)
    dataframe = result.as_dataframe()
    # Columns: source:wavelength, scatterer:diameter, Qext, Qsca
 
-See the :ref:`experiment gallery <sphx_glr_gallery_experiment>` for larger
+See the :ref:`experiment gallery <experiment_index>` for larger
 examples.

@@ -35,6 +35,7 @@ Discrete sizes
 Supply particle counts or number fractions at each diameter::
 
     from PyMieSim import (
+        Measure,
         Experiment, ParticleSizeDistribution, PlaneWaveSet,
         PolarizationSet, SphereSet, ureg,
     )
@@ -55,11 +56,16 @@ Supply particle counts or number fractions at each diameter::
     )
     experiment = Experiment(scatterer_set=spheres, source_set=source)
     result = experiment.average_size_distribution(
-        distribution, "Csca", "Cext", "g",
+        distribution, Measure.CSCA, Measure.CEXT, Measure.G,
         as_result=True,
     )
     scattering = result["Csca"].to("nanometer ** 2")
     table = scattering.as_labeled_array().as_dataframe()
+
+For these three wavelengths, each typed result has shape ``(3,)`` after
+removing the diameter axis. Cross sections carry area units and ``g`` is
+dimensionless. The exported table contains one averaged response per wavelength,
+not a separate response for every diameter.
 
 Weights are normalized to sum to one. They must be **number weights**, not
 volume fractions, mass fractions, or intensity-weighted size estimates.
@@ -103,7 +109,7 @@ More distribution families
 
 All constructors return the same ``ParticleSizeDistribution`` type, so use
 ``distribution.diameters`` in the ``SphereSet`` and call
-``experiment.average_size_distribution(distribution, "Csca")`` as above.
+``experiment.average_size_distribution(distribution, Measure.CSCA)`` as above.
 All weights represent particle number. The non-interacting approximation and
 PackLab guidance at the top of this page apply to every family.
 
@@ -137,9 +143,10 @@ PackLab guidance at the top of this page apply to every family.
 
 For example::
 
-    single_size = ParticleSizeDistribution.monodisperse(200 * ureg.nanometer)
+    single_size = ParticleSizeDistribution.monodisperse(diameter=200 * ureg.nanometer)
     uniform = ParticleSizeDistribution.uniform(
-        100 * ureg.nanometer, 300 * ureg.nanometer,
+        minimum_diameter=100 * ureg.nanometer,
+        maximum_diameter=300 * ureg.nanometer,
     )
     normal = ParticleSizeDistribution.truncated_normal(
         mean_diameter=200 * ureg.nanometer,

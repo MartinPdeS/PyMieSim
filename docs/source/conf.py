@@ -4,11 +4,9 @@
 import sys
 import os
 import subprocess
-from sphinx_gallery.sorting import FileNameSortKey
 from MPSPlots.styles import use_mpsplots_style
 from pathlib import Path
 import PyMieSim
-from PyMieSim.directories import doc_css_path
 from PyOptik.directories import user_data_path
 
 
@@ -21,13 +19,8 @@ if not (user_data_path / "rii" / "catalog-nk.yml").is_file():
 package_name = "PyMieSim"
 version = PyMieSim.__version__
 
-current_dir = Path(".")
-
-sys.path.append(str(current_dir.resolve()))
-
-
-def setup(app):
-    app.add_css_file(str(doc_css_path))
+# Make gallery reset hooks importable by name so the configuration is cacheable.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 
 autodoc_mock_imports = [
@@ -58,9 +51,11 @@ autosummary_generate = True
 # Napoleon settings for docstrings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
+# List class attributes inline; autodoc indexes their member descriptions.
+napoleon_use_ivar = True
 
-html_logo = "_static/thumbnail.png"
-html_favicon = "_static/favicon.png"
+html_logo = "_static/logo.png"
+html_favicon = "_static/favicon.ico"
 
 
 def reset_mpl(gallery_conf, fname):
@@ -71,6 +66,7 @@ examples_files = [
     "single",
     "experiment",
     "inverse",
+    "interpretation",
     "benchmarks",
     "validation",
     "extras"
@@ -84,13 +80,14 @@ sphinx_gallery_conf = {
     "filename_pattern": r"\.py",
     "plot_gallery": True,
     "thumbnail_size": [600, 600],
+    "default_thumb_file": str(Path(__file__).resolve().parent / "_static" / "gallery-default.png"),
     "download_all_examples": False,
-    "reset_modules": reset_mpl,
+    "reset_modules": "conf.reset_mpl",
     "line_numbers": False,
     "remove_config_comments": True,
     "capture_repr": ("_repr_html_", "__repr__"),
     "nested_sections": True,
-    "within_subsection_order": FileNameSortKey,
+    "within_subsection_order": "FileNameSortKey",
 }
 
 
@@ -135,8 +132,8 @@ html_context = {
 
 html_theme_options = dict()
 
-html_theme_options["logo"] = dict(text=package_name, image="_static/thumbnail.png")
-html_theme_options["show_nav_level"] = 0
+html_theme_options["logo"] = dict(text=package_name, image="_static/logo.png", alt_text="PyMieSim light-scattering logo")
+html_theme_options["show_nav_level"] = 1
 
 html_theme_options.update(
     {
@@ -159,7 +156,7 @@ html_theme_options.update(
         ],
         "navbar_align": "left",
         "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
-        "show_prev_next": False,
+        "show_prev_next": True,
         "show_version_warning_banner": True,
         # Footer
         "footer_start": ["copyright"],

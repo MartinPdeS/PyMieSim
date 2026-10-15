@@ -11,7 +11,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
+from PyMieSim import Measure, Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
 
 
 def run_grid(size: int) -> tuple[float, int]:
@@ -29,7 +29,7 @@ def run_grid(size: int) -> tuple[float, int]:
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     start = time.perf_counter()
-    result = experiment.get("Qsca").as_numpy()
+    result = experiment.get(Measure.QSCA).as_numpy()
     return time.perf_counter() - start, int(np.asarray(result).size)
 
 

@@ -39,6 +39,7 @@
 # But ignore docs/build inside docs and code
 docs/build/
 docs/source/gallery/
+docs/source/sg_execution_times.rst
 
 # Compiled files in the project
 *__pycache__*

@@ -7,6 +7,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 import numpy
 from PyMieSim import (
+    Measure,
     ureg,
     PhotodiodeSet,
     CoreShellSet,
@@ -48,6 +49,9 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-result = experiment.get("coupling")
+result = experiment.get(Measure.COUPLING)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="scatterer:core_diameter")

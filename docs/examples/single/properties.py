@@ -1,13 +1,17 @@
 """
-Far-Fields Computation and Visualization
-========================================
+Inspect scalar scattering properties
+====================================
 
-This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
+Print scalar efficiencies, cross sections, and the asymmetry factor for one
+isolated sphere. Efficiencies and asymmetry are dimensionless; cross sections
+carry area units. The real refractive index gives negligible absorption, so
+``Qext`` and ``Qsca`` agree.
 """
 
 # %%
 # Importing the package: PyMieSim
 from PyMieSim import (
+    Measure,
     ureg,
     Gaussian,
     PolarizationState,
@@ -35,8 +39,11 @@ setup = Simulation(
     source=source,
 )
 
-for property in ["Qext", "Qsca", "Qabs", "Qback", "g", "Cext", "Csca", "Cabs", "Cback"]:
-    value = setup.get(property)
-    print(f"{property}: {value}")
+for measure in (
+    Measure.QEXT, Measure.QSCA, Measure.QABS, Measure.QBACK, Measure.G,
+    Measure.CEXT, Measure.CSCA, Measure.CABS, Measure.CBACK,
+):
+    value = setup.run(measure)
+    print(f"{measure.value}: {value}")
 
 

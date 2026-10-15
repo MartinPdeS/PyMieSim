@@ -6,16 +6,17 @@ A single scattering measurement can leave diameter and refractive index
 ambiguous. A spectrum supplies more structure, while residuals show whether
 the fitted isolated-sphere model explains every channel consistently.
 
-The synthetic observation below contains one deliberately biased wavelength.
+The synthetic observation below uses reproducible Gaussian noise and contains
+one deliberately biased wavelength.
 That channel is assigned a larger uncertainty, so it contributes less to the
-weighted objective. ``FitResult.residuals`` uses
+weighted objective. ``ParameterFitResult.residuals`` uses
 ``(prediction - observation) / uncertainty``; a point above the model therefore
 has a negative standardized residual.
 """
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import Observation, Parameter, PlaneWave, PolarizationState, Simulation, Sphere, fit_parameters, ureg
+from PyMieSim import Measure, FitParameter, MeasuredData, PlaneWave, PolarizationState, Simulation, Sphere, fit_parameters, ureg
 
 wavelengths = np.linspace(450, 750, 9) * ureg.nanometer
 
@@ -37,7 +38,7 @@ def scattering_spectrum(diameter, refractive_index):
             ),
             source=source,
         )
-        spectrum[index] = simulation.get("Qsca").magnitude
+        spectrum[index] = simulation.get(Measure.QSCA).magnitude
     return spectrum
 
 
@@ -46,8 +47,10 @@ observed = scattering_spectrum(
     refractive_index=1.58,
 )
 uncertainty = np.full_like(observed, 0.015)
-observed[5] += 0.08
 uncertainty[5] = 0.08
+rng = np.random.default_rng(seed=42)
+observed = observed + rng.normal(loc=0.0, scale=uncertainty)
+observed[5] += 0.08
 
 
 def model(parameters):
@@ -59,16 +62,20 @@ def model(parameters):
 
 result = fit_parameters(
     model=model,
-    observation=Observation(values=observed, uncertainty=uncertainty),
+    observation=MeasuredData(values=observed, uncertainty=uncertainty),
     parameters=[
-        Parameter(
+        FitParameter(
             name="diameter",
             initial=240 * ureg.nanometer,
             bounds=(150 * ureg.nanometer, 450 * ureg.nanometer),
         ),
-        Parameter(name="refractive_index", initial=1.45, bounds=(1.2, 2.0)),
+        FitParameter(name="refractive_index", initial=1.45, bounds=(1.2, 2.0)),
     ],
 )
+
+print(result.summary())
+print(result.parameters)
+print("Standardized residual shape:", result.residuals.shape)  # (9,)
 
 wavelength_values = wavelengths.to("nanometer").magnitude
 figure, axes = plt.subplots(2, 1, figsize=(8, 6.5), sharex=True, height_ratios=(2, 1))

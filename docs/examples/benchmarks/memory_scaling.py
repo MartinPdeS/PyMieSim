@@ -13,7 +13,7 @@ import tracemalloc
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
+from PyMieSim import Measure, Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
 
 
 def peak_memory(number_of_diameters: int) -> float:
@@ -31,7 +31,7 @@ def peak_memory(number_of_diameters: int) -> float:
         material=[1.5],
         medium=[1.0],
     )
-    Experiment(scatterer_set=scatterer, source_set=source).get("Qsca").as_numpy()
+    Experiment(scatterer_set=scatterer, source_set=source).get(Measure.QSCA).as_numpy()
 
     _, peak_bytes = tracemalloc.get_traced_memory()
     tracemalloc.stop()

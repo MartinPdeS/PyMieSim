@@ -10,6 +10,7 @@ properties.
 .. code-block:: python
 
    from PyMieSim import (
+       Measure,
        Gaussian,
        PolarizationState,
        Simulation,
@@ -33,7 +34,11 @@ properties.
        source=source,
    )
 
-   result = simulation.run("Qsca", "Qext")
+   result = simulation.run(Measure.QSCA, Measure.QEXT)
    print(result)
+
+The result is a dictionary with ``"Qsca"`` and ``"Qext"`` keys, each holding
+a scalar dimensionless quantity. For the real refractive index used here,
+absorption vanishes, so scattering and extinction efficiencies agree.
 
 Next: :ref:`workflow_parameter_sweeps`.

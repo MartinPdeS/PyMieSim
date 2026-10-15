@@ -30,7 +30,7 @@ double scalar(py::object value, const char *message) {
     return array.attr("item")().cast<double>();
 }
 
-Parameter::Parameter(std::string name, py::object initial, py::tuple bounds)
+FitParameter::FitParameter(std::string name, py::object initial, py::tuple bounds)
     : name(std::move(name)), initial(std::move(initial)), bounds(std::move(bounds)) {
     if (this->name.empty())
         throw py::value_error("parameter name must not be empty");
@@ -49,7 +49,7 @@ Parameter::Parameter(std::string name, py::object initial, py::tuple bounds)
         throw py::value_error("parameter initial value must lie within bounds");
 }
 
-Observation::Observation(py::object values, py::object uncertainty, std::string name)
+MeasuredData::MeasuredData(py::object values, py::object uncertainty, std::string name)
     : values(std::move(values)), uncertainty(std::move(uncertainty)), name(std::move(name)) {
     py::module_ np = py::module_::import("numpy");
     py::object array = np.attr("asarray")(magnitude(this->values), py::arg("dtype") = "float64");
@@ -69,14 +69,15 @@ Observation::Observation(py::object values, py::object uncertainty, std::string 
     }
 }
 
-FitResult::FitResult() : parameter_names(0) {}
+ParameterFitResult::ParameterFitResult() : parameter_names(0) {}
 
-std::string FitResult::repr() const {
-    return "FitResult(" + std::string(success ? "converged" : "stopped") + ", objective=" + std::to_string(objective) +
+std::string ParameterFitResult::repr() const {
+    return "ParameterFitResult(" + std::string(success ? "converged" : "stopped") +
+           ", objective=" + std::to_string(objective) +
            ", parameters=" + py::str(static_cast<const py::object &>(parameters)).cast<std::string>() + ")";
 }
 
-std::string FitResult::summary() const {
+std::string ParameterFitResult::summary() const {
     return message + " (" + std::to_string(evaluations) +
            " model evaluations)\nobjective = " + std::to_string(objective);
 }
@@ -90,12 +91,12 @@ void validate_optimizer_settings(int max_iterations, double initial_step, double
         throw py::value_error("step_tolerance must be positive");
 }
 
-std::vector<Parameter> collect_parameters(py::iterable supplied) {
-    std::vector<Parameter> parameters;
+std::vector<FitParameter> collect_parameters(py::iterable supplied) {
+    std::vector<FitParameter> parameters;
     py::set names;
 
     for (py::handle item : supplied) {
-        auto parameter = item.cast<Parameter>();
+        auto parameter = item.cast<FitParameter>();
         if (names.contains(parameter.name.c_str()))
             throw py::value_error("parameters must be nonempty and have unique names");
         names.add(parameter.name.c_str());
@@ -107,7 +108,7 @@ std::vector<Parameter> collect_parameters(py::iterable supplied) {
     return parameters;
 }
 
-py::dict parameter_mapping(const std::vector<Parameter> &parameters, const std::vector<double> &magnitudes) {
+py::dict parameter_mapping(const std::vector<FitParameter> &parameters, const std::vector<double> &magnitudes) {
     py::dict values;
     for (size_t index = 0; index < parameters.size(); ++index) {
         const py::object &original = parameters[index].initial;
@@ -132,11 +133,11 @@ void report_progress(int iteration, double objective, double normalized_step) {
     py::print(line, py::arg("end") = "\r", py::arg("flush") = true);
 }
 
-py::object fit_parameters(py::function model, const Observation &observation, py::iterable supplied,
+py::object fit_parameters(py::function model, const MeasuredData &observation, py::iterable supplied,
                           int max_iterations = 200, double initial_step = .1, double step_tolerance = 1e-6,
                           bool show_progress = false) {
     validate_optimizer_settings(max_iterations, initial_step, step_tolerance);
-    std::vector<Parameter> parameters = collect_parameters(supplied);
+    std::vector<FitParameter> parameters = collect_parameters(supplied);
     py::module_ np = py::module_::import("numpy");
     py::object observed = np.attr("asarray")(magnitude(observation.values), py::arg("dtype") = "float64");
     py::object sigma =
@@ -203,7 +204,7 @@ py::object fit_parameters(py::function model, const Observation &observation, py
     }
     score(current);
     py::dict values = parameter_mapping(parameters, current);
-    auto result = FitResult{};
+    auto result = ParameterFitResult{};
     result.parameters = values;
     result.initial_parameters = initial;
     result.prediction = prediction;

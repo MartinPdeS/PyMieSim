@@ -8,6 +8,7 @@ Effect of Shell dimensions in equivalent medium
 import numpy as np
 import matplotlib.pyplot as plt
 from PyMieSim import (
+    Measure,
     ureg,
     CoreShellSet,
     GaussianSet,
@@ -45,7 +46,7 @@ scatterer = CoreShellSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get("Csca")
+result = experiment.get(Measure.CSCA)
 
 figure = result.plot(x="scatterer:shell_thickness")
 
@@ -53,7 +54,7 @@ figure = result.plot(x="scatterer:shell_thickness")
 # %%
 # As it is supposed the scattering Cross-section should not be affected by
 # the shell thickness as it's refractive index is same as the surrounding medium.
-result = experiment.get("Qsca")
+result = experiment.get(Measure.QSCA)
 
 figure = result.plot(x="scatterer:shell_thickness")
 
