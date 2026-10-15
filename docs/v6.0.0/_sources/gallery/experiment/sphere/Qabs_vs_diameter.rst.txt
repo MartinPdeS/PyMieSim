@@ -38,7 +38,7 @@ Sphere: Qabs vs diameter
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (2, 300)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f34c5ca6050>, <matplotlib.lines.Line2D object at 0x7f34c65bb750>]
+    [<matplotlib.lines.Line2D object at 0x7f3596794b10>, <matplotlib.lines.Line2D object at 0x7f3593304c90>]
 
 
 
@@ -94,7 +94,7 @@ Sphere: Qabs vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.170 seconds)
+   **Total running time of the script:** (0 minutes 1.116 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qabs_vs_diameter.py:

@@ -38,7 +38,7 @@ Sphere: Coupling vs polarization filter
     Result dimensions and shape: ('scatterer:diameter', 'scatterer:material', 'detector:polarization_filter') (20, 2, 100)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f34c5c8e850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f34c5c8f050>, <matplotlib.lines.Line2D object at 0x7f34c5c8d710>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f34c5c8e010>]
+    [<matplotlib.lines.Line2D object at 0x7f359271be50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f359278b450>, <matplotlib.lines.Line2D object at 0x7f35927898d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f359278a150>]
 
 
 
@@ -101,7 +101,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.834 seconds)
+   **Total running time of the script:** (0 minutes 2.775 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_filter.py:
