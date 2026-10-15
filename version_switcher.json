@@ -1,43 +1,32 @@
 [
-{
-  "name": "latest",
-  "version": "latest",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/latest"
-}
-,
-{
-  "name": "v6.0.0",
-  "version": "v6.0.0",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/v6.0.0"
-}
-,
-{
-  "name": "v5.8.2",
-  "version": "v5.8.2",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/v5.8.2"
-}
-,
-{
-  "name": "v5.8.1",
-  "version": "v5.8.1",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/v5.8.1"
-}
-,
-{
-  "name": "v5.8.0",
-  "version": "v5.8.0",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/v5.8.0"
-}
-,
-{
-  "name": "v5.7.1",
-  "version": "v5.7.1",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/v5.7.1"
-}
-,
-{
-  "name": "v5.7.0",
-  "version": "v5.7.0",
-  "url": "https://martinpdes.github.io/PyMieSim/docs/v5.7.0"
-}
+  {
+    "name": "latest",
+    "version": "latest",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/latest"
+  },
+  {
+    "name": "v6.0.0",
+    "version": "v6.0.0",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/v6.0.0"
+  },
+  {
+    "name": "v5.8.2",
+    "version": "v5.8.2",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/v5.8.2"
+  },
+  {
+    "name": "v5.8.1",
+    "version": "v5.8.1",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/v5.8.1"
+  },
+  {
+    "name": "v5.8.0",
+    "version": "v5.8.0",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/v5.8.0"
+  },
+  {
+    "name": "v5.7.1",
+    "version": "v5.7.1",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/v5.7.1"
+  }
 ]
