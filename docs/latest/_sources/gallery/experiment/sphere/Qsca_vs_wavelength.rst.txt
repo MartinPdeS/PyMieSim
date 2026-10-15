@@ -44,7 +44,7 @@ Sphere: Qsca vs wavelength
     Result dimensions and shape: ('measure', 'source:wavelength') (2, 50)
     Measure units: {'Qsca': <Unit('dimensionless')>, 'Qpr': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fe8a94d21d0>]
+    [<matplotlib.lines.Line2D object at 0x7f575c022b50>]
 
 
 
@@ -100,7 +100,7 @@ Sphere: Qsca vs wavelength
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.102 seconds)
+   **Total running time of the script:** (0 minutes 0.203 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength.py:

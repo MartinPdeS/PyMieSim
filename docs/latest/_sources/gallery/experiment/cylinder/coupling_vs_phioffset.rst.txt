@@ -46,7 +46,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
     Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fe8aa209210>, <matplotlib.lines.Line2D object at 0x7fe8aa20b4d0>, <matplotlib.lines.Line2D object at 0x7fe8aa75d690>, <matplotlib.lines.Line2D object at 0x7fe8aa75c350>]
+    [<matplotlib.lines.Line2D object at 0x7f575bda0a50>, <matplotlib.lines.Line2D object at 0x7f575bda1c90>, <matplotlib.lines.Line2D object at 0x7f575bda0990>, <matplotlib.lines.Line2D object at 0x7f575bda0e50>]
 
 
 
@@ -109,7 +109,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.209 seconds)
+   **Total running time of the script:** (0 minutes 0.406 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_phioffset.py:

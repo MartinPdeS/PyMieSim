@@ -44,7 +44,7 @@ Sphere: Coherent Goniometer
     Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 300)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fe8a9fbb590>, <matplotlib.lines.Line2D object at 0x7fe8a9fbb610>, <matplotlib.lines.Line2D object at 0x7fe8a9fb8950>, <matplotlib.lines.Line2D object at 0x7fe8aa26e490>]
+    [<matplotlib.lines.Line2D object at 0x7f575e8ea2d0>, <matplotlib.lines.Line2D object at 0x7f575e966490>, <matplotlib.lines.Line2D object at 0x7f575c0ec6d0>, <matplotlib.lines.Line2D object at 0x7f575c0ef490>]
 
 
 
@@ -108,7 +108,7 @@ Sphere: Coherent Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.271 seconds)
+   **Total running time of the script:** (0 minutes 0.480 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_phioffset.py:

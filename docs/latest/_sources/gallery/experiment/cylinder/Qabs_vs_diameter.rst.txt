@@ -46,7 +46,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     Result dimensions and shape: ('measure', 'scatterer:diameter', 'scatterer:material') (3, 300, 3)
     Measure units: {'Qabs': <Unit('dimensionless')>, 'Qsca': <Unit('dimensionless')>, 'Qext': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fe8aa7c0290>, <matplotlib.lines.Line2D object at 0x7fe8aa7c2b50>, <matplotlib.lines.Line2D object at 0x7fe8aa7c2a90>]
+    [<matplotlib.lines.Line2D object at 0x7f575bd89e10>, <matplotlib.lines.Line2D object at 0x7f575bfa8c10>, <matplotlib.lines.Line2D object at 0x7f575bfa81d0>]
 
 
 
@@ -101,7 +101,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.240 seconds)
+   **Total running time of the script:** (0 minutes 0.458 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qabs_vs_diameter.py:
