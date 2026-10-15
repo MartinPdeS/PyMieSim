@@ -164,8 +164,11 @@ void register_sphere(py::module_ &module) {
                              R"pbdoc(
                 Names of the physical properties exposed by the sphere.
             )pbdoc")
-        .def("print_properties", &Sphere::print_properties, py::arg("precision") = 4,
-             R"pbdoc(
+        .def(
+            "print_properties",
+            [](const Sphere &self, int precision) { py::print(self.properties_table(precision), py::arg("end") = ""); },
+            py::arg("precision") = 4,
+            R"pbdoc(
                 Print the sphere properties to standard output.
 
                 Parameters

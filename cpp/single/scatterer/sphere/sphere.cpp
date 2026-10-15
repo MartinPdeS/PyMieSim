@@ -2,7 +2,7 @@
 #include <functional>
 
 // ---------------------- Methods ---------------------------------------
-void Sphere::init(const std::shared_ptr<BaseSource>& source, size_t _max_order) {
+void Sphere::init(const std::shared_ptr<BaseSource> &source, size_t _max_order) {
     this->material->initialize(source->wavelength);
     this->medium->initialize(source->wavelength);
 
@@ -10,10 +10,9 @@ void Sphere::init(const std::shared_ptr<BaseSource>& source, size_t _max_order) 
     this->compute_size_parameter(source);
     this->max_order = (_max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : _max_order;
     this->compute_an_bn(this->max_order);
-
 }
 
-void Sphere::compute_size_parameter(const std::shared_ptr<BaseSource>& source) {
+void Sphere::compute_size_parameter(const std::shared_ptr<BaseSource> &source) {
     this->size_parameter = source->wavenumber_vacuum * this->diameter / 2 * this->medium->get_refractive_index();
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
@@ -29,19 +28,17 @@ void Sphere::compute_an_bn(size_t _max_order) {
     bn.resize(_max_order);
 
     complex128 psi_n, chi_n, psi_1, chi_1, xi_n, xi_nm1,
-        m = this->material->get_refractive_index() / this->medium->get_refractive_index(),
-        mx = m * size_parameter,
+        m = this->material->get_refractive_index() / this->medium->get_refractive_index(), mx = m * size_parameter,
         derivative_a, derivative_b;
 
-    size_t nmx = std::max( _max_order, (size_t) std::abs(mx) ) + 16;
+    size_t nmx = std::max(_max_order, (size_t)std::abs(mx)) + 16;
 
     std::vector<complex128> Dn = this->compute_dn(nmx, mx);
 
-    psi_1  = sin(size_parameter);
+    psi_1 = sin(size_parameter);
     chi_1 = cos(size_parameter);
 
-    for (size_t order = 0; order < _max_order; ++order)
-    {
+    for (size_t order = 0; order < _max_order; ++order) {
         // Calculate psi and chi (Riccati-Bessel functions)
         double nu = order + 1;
 
@@ -71,23 +68,19 @@ void Sphere::compute_cn_dn(size_t _max_order) {
     cn.resize(_max_order);
     dn.resize(_max_order);
 
-    complex128
-        x = size_parameter,
-        m = this->material->get_refractive_index() / this->medium->get_refractive_index(),
-        z = m * x;
+    complex128 x = size_parameter, m = this->material->get_refractive_index() / this->medium->get_refractive_index(),
+               z = m * x;
 
-    size_t nmx = std::max( _max_order, (size_t) std::abs(z) ) + 16;
+    size_t nmx = std::max(_max_order, (size_t)std::abs(z)) + 16;
 
-    std::vector<complex128>
-        Cnx = std::vector<complex128>(nmx),
-        Cnn, jnx, jnmx, yx, hx, b1x, y1x, hn1x, ax, ahx, numerator,
-        c_denominator, d_denominator;
+    std::vector<complex128> Cnx = std::vector<complex128>(nmx), Cnn, jnx, jnmx, yx, hx, b1x, y1x, hn1x, ax, ahx,
+                            numerator, c_denominator, d_denominator;
 
-    b1x.push_back( +sin(x) / x );
-    y1x.push_back( -cos(x) / x );
+    b1x.push_back(+sin(x) / x);
+    y1x.push_back(-cos(x) / x);
 
     for (size_t index = nmx; index > 1; index--)
-        Cnx[index-2] = static_cast<double>(index) - z * z / (Cnx[index - 1] + static_cast<double>(index));
+        Cnx[index - 2] = static_cast<double>(index) - z * z / (Cnx[index - 1] + static_cast<double>(index));
 
     for (size_t order = 0; order < _max_order; order++) {
         Cnn.push_back(Cnx[order]);
@@ -109,31 +102,29 @@ void Sphere::compute_cn_dn(size_t _max_order) {
         ax.push_back(x * b1x[order] - (complex128)(order + 1.0) * jnx[order]);
         ahx.push_back(x * hn1x[order] - (complex128)(order + 1.0) * hx[order]);
 
-        numerator.push_back( jnx[order] * ahx[order] - hx[order] * ax[order] );
-        c_denominator.push_back( ahx[order] - hx[order] * Cnn[order] );
-        d_denominator.push_back( m * m * ahx[order] - hx[order] * Cnn[order] );
-        cn[order] = jnmx[order] * numerator[order] / c_denominator[order] ;
-        dn[order] = jnmx[order] * m * numerator[order] / d_denominator[order] ;
+        numerator.push_back(jnx[order] * ahx[order] - hx[order] * ax[order]);
+        c_denominator.push_back(ahx[order] - hx[order] * Cnn[order]);
+        d_denominator.push_back(m * m * ahx[order] - hx[order] * Cnn[order]);
+        cn[order] = jnmx[order] * numerator[order] / c_denominator[order];
+        dn[order] = jnmx[order] * m * numerator[order] / d_denominator[order];
     }
 }
 
 double Sphere::get_Qsca() const {
     double value = 0;
 
-    for(size_t it = 0; it < max_order; ++it){
-        double n = (double) it + 1;
-        value += (2. * n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
+    for (size_t it = 0; it < max_order; ++it) {
+        double n = (double)it + 1;
+        value += (2. * n + 1.) * (pow(std::abs(this->an[it]), 2) + pow(std::abs(this->bn[it]), 2));
     }
     return value * 2. / size_parameter_squared;
 }
 
 double Sphere::get_Qext() const {
     double value = 0;
-    for(size_t it = 0; it < max_order; ++it)
-    {
-        double n = (double) it + 1;
-        value += (2.* n + 1.) * std::real( this->an[it] + this->bn[it] );
-
+    for (size_t it = 0; it < max_order; ++it) {
+        double n = (double)it + 1;
+        value += (2. * n + 1.) * std::real(this->an[it] + this->bn[it]);
     }
     return value * 2. / size_parameter_squared;
 }
@@ -141,46 +132,43 @@ double Sphere::get_Qext() const {
 double Sphere::get_Qback() const {
     complex128 value = 0;
 
-    for(size_t it = 0; it < max_order-1; ++it)
-    {
-        double n = (double) it + 1;
+    for (size_t it = 0; it < max_order - 1; ++it) {
+        double n = (double)it + 1;
 
-        value += (2. * n + 1) * pow(-1., n) * ( this->an[it] - this->bn[it] ) ;
+        value += (2. * n + 1) * pow(-1., n) * (this->an[it] - this->bn[it]);
     }
 
-    value = pow( std::abs(value), 2. ) / size_parameter_squared;
+    value = pow(std::abs(value), 2.) / size_parameter_squared;
     return std::abs(value);
 }
 
 double Sphere::get_Qforward() const {
     complex128 value = 0;
 
-    for(size_t it = 0; it < max_order-1; ++it)
-    {
-        double n = (double) it + 1;
+    for (size_t it = 0; it < max_order - 1; ++it) {
+        double n = (double)it + 1;
 
-        value += (2. * n + 1) * ( this->an[it] + this->bn[it] ) ;
+        value += (2. * n + 1) * (this->an[it] + this->bn[it]);
     }
 
-    value = pow( std::abs(value), 2. ) / size_parameter_squared;
+    value = pow(std::abs(value), 2.) / size_parameter_squared;
     return std::abs(value);
 }
 
 double Sphere::get_g() const {
     double value = 0;
 
-      for(size_t it = 0; it < max_order-1; ++it) {
-         double n = (double) it + 1;
+    for (size_t it = 0; it < max_order - 1; ++it) {
+        double n = (double)it + 1;
 
-          value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
-          value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
-      }
-      return value * 4. / ( get_Qsca() * size_parameter_squared );
+        value += (n * (n + 2.) / (n + 1.)) *
+                 std::real(this->an[it] * std::conj(this->an[it + 1]) + this->bn[it] * std::conj(this->bn[it + 1]));
+        value += ((2. * n + 1.) / (n * (n + 1.))) * std::real(this->an[it] * std::conj(this->bn[it]));
+    }
+    return value * 4. / (get_Qsca() * size_parameter_squared);
 }
 
-
-std::pair<std::vector<complex128>, std::vector<complex128>>
-Sphere::compute_s1s2(const std::vector<double> &phi) const {
+std::pair<std::vector<complex128>, std::vector<complex128>> Sphere::compute_s1s2(const std::vector<double> &phi) const {
     std::vector<complex128> S1, S2;
 
     S1.reserve(phi.size());
@@ -191,15 +179,15 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
     mu.reserve(phi.size());
 
     for (const double phi : phi)
-        mu.push_back( cos( phi - Constants::PI / 2.0 ) );
+        mu.push_back(cos(phi - Constants::PI / 2.0));
 
     for (size_t i = 0; i < phi.size(); i++) {
         auto [pin, taun] = this->get_pi_tau(mu[i], max_order);
         complex128 S1_temp = 0., S2_temp = 0.;
 
-        for (size_t m = 0; m < max_order ; m++) {
-            S1_temp += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
-            S2_temp += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
+        for (size_t m = 0; m < max_order; m++) {
+            S1_temp += prefactor[m] * (this->an[m] * pin[m] + this->bn[m] * taun[m]);
+            S2_temp += prefactor[m] * (this->an[m] * taun[m] + this->bn[m] * pin[m]);
         }
         S1.push_back(S1_temp);
         S2.push_back(S2_temp);
@@ -208,15 +196,9 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
     return std::make_pair(std::move(S1), std::move(S2));
 }
 
-std::vector<complex128>
-Sphere::get_total_nearfields(
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    const std::vector<double>& z,
-    const std::string& field_type,
-    const std::shared_ptr<BaseSource>& source
-)
-{
+std::vector<complex128> Sphere::get_total_nearfields(const std::vector<double> &x, const std::vector<double> &y,
+                                                     const std::vector<double> &z, const std::string &field_type,
+                                                     const std::shared_ptr<BaseSource> &source) {
     this->compute_cn_dn(this->max_order);
 
     if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" && field_type != "|E|") {
@@ -245,24 +227,28 @@ Sphere::get_total_nearfields(
     const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
 
     auto clamp_m1_p1_local = [](double value) -> double {
-        if (value < -1.0) return -1.0;
-        if (value >  1.0) return  1.0;
+        if (value < -1.0)
+            return -1.0;
+        if (value > 1.0)
+            return 1.0;
         return value;
     };
 
     auto i_to_n = [&](std::size_t n) -> complex128 {
         switch (n & 3u) {
-            case 0u: return complex128( 1.0,  0.0);
-            case 1u: return complex128( 0.0,  1.0);
-            case 2u: return complex128(-1.0,  0.0);
-            default: return complex128( 0.0, -1.0);
+        case 0u:
+            return complex128(1.0, 0.0);
+        case 1u:
+            return complex128(0.0, 1.0);
+        case 2u:
+            return complex128(-1.0, 0.0);
+        default:
+            return complex128(0.0, -1.0);
         }
     };
 
-    auto compute_zn_and_dpsi_over_kr =
-        [&](std::size_t n, const complex128& kr, bool use_hankel)
-        -> std::tuple<complex128, complex128, complex128>
-    {
+    auto compute_zn_and_dpsi_over_kr = [&](std::size_t n, const complex128 &kr,
+                                           bool use_hankel) -> std::tuple<complex128, complex128, complex128> {
         // z_n(kr) where z is j or h1
         // dpsi = d/d(kr)[ kr z_n(kr) ] = kr z_{n-1}(kr) - n z_n(kr)
         // return ( z_n(kr), z_n(kr)/(kr), dpsi/(kr) )
@@ -274,10 +260,10 @@ Sphere::get_total_nearfields(
         complex128 znm1;
 
         if (!use_hankel) {
-            zn   = Spherical_::jn(nd,  kr);
+            zn = Spherical_::jn(nd, kr);
             znm1 = (n == 1) ? Spherical_::jn(0.0, kr) : Spherical_::jn(nm1d, kr);
         } else {
-            zn   = Spherical_::H1n(nd,  kr);
+            zn = Spherical_::H1n(nd, kr);
             znm1 = (n == 1) ? Spherical_::H1n(0.0, kr) : Spherical_::H1n(nm1d, kr);
         }
 
@@ -302,16 +288,18 @@ Sphere::get_total_nearfields(
         const double y_position = y[point_index];
         const double z_position = z[point_index];
 
-        const double r_cartesian = std::sqrt(
-            x_position * x_position + y_position * y_position + z_position * z_position
-        );
+        const double r_cartesian =
+            std::sqrt(x_position * x_position + y_position * y_position + z_position * z_position);
 
         if (r_cartesian < 1e-15) {
             // The VSWF representation is singular at the origin in spherical coordinates.
             // For debugging, return the plane wave at z = 0 with the requested Jones amplitudes.
-            if (field_type == "Ex") field_values[point_index] = E0x;
-            else if (field_type == "Ey") field_values[point_index] = E0y;
-            else if (field_type == "Ez") field_values[point_index] = complex128(0.0, 0.0);
+            if (field_type == "Ex")
+                field_values[point_index] = E0x;
+            else if (field_type == "Ey")
+                field_values[point_index] = E0y;
+            else if (field_type == "Ez")
+                field_values[point_index] = complex128(0.0, 0.0);
             else {
                 const double mag = std::sqrt(std::norm(E0x) + std::norm(E0y));
                 field_values[point_index] = complex128(mag, 0.0);
@@ -326,16 +314,16 @@ Sphere::get_total_nearfields(
 
         const double sin_theta = std::sin(theta);
         const double cos_theta = std::cos(theta);
-        const double sin_phi   = std::sin(phi);
-        const double cos_phi   = std::cos(phi);
+        const double sin_phi = std::sin(phi);
+        const double cos_phi = std::cos(phi);
 
         const bool is_inside = (r_cartesian < radius_particle);
 
         const complex128 kr_outside = complex128(k_medium * r_cartesian, 0.0);
-        const complex128 kr_inside  = k_particle * complex128(r_cartesian, 0.0);
+        const complex128 kr_inside = k_particle * complex128(r_cartesian, 0.0);
 
         const complex128 kr_used_for_regular = is_inside ? kr_inside : kr_outside;
-        const complex128 kr_used_for_hankel  = kr_outside;
+        const complex128 kr_used_for_hankel = kr_outside;
 
         auto [pi_vector, tau_vector] = this->get_pi_tau(mu, this->max_order);
 
@@ -348,7 +336,7 @@ Sphere::get_total_nearfields(
 
             const complex128 En = i_to_n(n) * (2.0 * nd + 1.0) / (nd * (nd + 1.0));
 
-            const complex128 pi_n  = pi_vector[n - 1];
+            const complex128 pi_n = pi_vector[n - 1];
             const complex128 tau_n = tau_vector[n - 1];
 
             const complex128 Pn1 = pi_n * complex128(sin_theta, 0.0);
@@ -375,61 +363,61 @@ Sphere::get_total_nearfields(
 
             // Regular (incident outside, internal inside)
             const complex128 Mo_r_j(0.0, 0.0);
-            const complex128 Mo_t_j = complex128(cos_phi, 0.0) * pi_n  * zn_regular;
+            const complex128 Mo_t_j = complex128(cos_phi, 0.0) * pi_n * zn_regular;
             const complex128 Mo_p_j = complex128(-sin_phi, 0.0) * tau_n * zn_regular;
 
             const complex128 Me_r_j(0.0, 0.0);
-            const complex128 Me_t_j = complex128(sin_phi, 0.0) * pi_n  * zn_regular;
+            const complex128 Me_t_j = complex128(sin_phi, 0.0) * pi_n * zn_regular;
             const complex128 Me_p_j = complex128(cos_phi, 0.0) * tau_n * zn_regular;
 
             const complex128 Ne_r_j = complex128(cos_phi, 0.0) * nn1 * Pn1 * z_regular_over_kr;
             const complex128 Ne_t_j = complex128(cos_phi, 0.0) * tau_n * dpsi_regular_over_kr;
-            const complex128 Ne_p_j = complex128(-sin_phi, 0.0) * pi_n  * dpsi_regular_over_kr;
+            const complex128 Ne_p_j = complex128(-sin_phi, 0.0) * pi_n * dpsi_regular_over_kr;
 
             const complex128 No_r_j = complex128(sin_phi, 0.0) * nn1 * Pn1 * z_regular_over_kr;
             const complex128 No_t_j = complex128(sin_phi, 0.0) * tau_n * dpsi_regular_over_kr;
-            const complex128 No_p_j = complex128(cos_phi, 0.0) * pi_n  * dpsi_regular_over_kr;
+            const complex128 No_p_j = complex128(cos_phi, 0.0) * pi_n * dpsi_regular_over_kr;
 
             if (!is_inside) {
 
                 // Outgoing (scattered) uses outside argument
                 const complex128 Mo_r_h(0.0, 0.0);
-                const complex128 Mo_t_h = complex128(cos_phi, 0.0) * pi_n  * zn_hankel;
+                const complex128 Mo_t_h = complex128(cos_phi, 0.0) * pi_n * zn_hankel;
                 const complex128 Mo_p_h = complex128(-sin_phi, 0.0) * tau_n * zn_hankel;
 
                 const complex128 Me_r_h(0.0, 0.0);
-                const complex128 Me_t_h = complex128(sin_phi, 0.0) * pi_n  * zn_hankel;
+                const complex128 Me_t_h = complex128(sin_phi, 0.0) * pi_n * zn_hankel;
                 const complex128 Me_p_h = complex128(cos_phi, 0.0) * tau_n * zn_hankel;
 
                 const complex128 Ne_r_h = complex128(cos_phi, 0.0) * nn1 * Pn1 * z_hankel_over_kr;
                 const complex128 Ne_t_h = complex128(cos_phi, 0.0) * tau_n * dpsi_hankel_over_kr;
-                const complex128 Ne_p_h = complex128(-sin_phi, 0.0) * pi_n  * dpsi_hankel_over_kr;
+                const complex128 Ne_p_h = complex128(-sin_phi, 0.0) * pi_n * dpsi_hankel_over_kr;
 
                 const complex128 No_r_h = complex128(sin_phi, 0.0) * nn1 * Pn1 * z_hankel_over_kr;
                 const complex128 No_t_h = complex128(sin_phi, 0.0) * tau_n * dpsi_hankel_over_kr;
-                const complex128 No_p_h = complex128(cos_phi, 0.0) * pi_n  * dpsi_hankel_over_kr;
+                const complex128 No_p_h = complex128(cos_phi, 0.0) * pi_n * dpsi_hankel_over_kr;
 
                 // Total outside = incident + scattered
 
                 // Incident x
-                Er_x     += En * ( Mo_r_j - i_unit * Ne_r_j );
-                Etheta_x += En * ( Mo_t_j - i_unit * Ne_t_j );
-                Ephi_x   += En * ( Mo_p_j - i_unit * Ne_p_j );
+                Er_x += En * (Mo_r_j - i_unit * Ne_r_j);
+                Etheta_x += En * (Mo_t_j - i_unit * Ne_t_j);
+                Ephi_x += En * (Mo_p_j - i_unit * Ne_p_j);
 
                 // Scattered x
-                Er_x     += En * ( i_unit * a_n * Ne_r_h - b_n * Mo_r_h );
-                Etheta_x += En * ( i_unit * a_n * Ne_t_h - b_n * Mo_t_h );
-                Ephi_x   += En * ( i_unit * a_n * Ne_p_h - b_n * Mo_p_h );
+                Er_x += En * (i_unit * a_n * Ne_r_h - b_n * Mo_r_h);
+                Etheta_x += En * (i_unit * a_n * Ne_t_h - b_n * Mo_t_h);
+                Ephi_x += En * (i_unit * a_n * Ne_p_h - b_n * Mo_p_h);
 
                 // Incident y
-                Er_y     += En * ( Me_r_j - i_unit * No_r_j );
-                Etheta_y += En * ( Me_t_j - i_unit * No_t_j );
-                Ephi_y   += En * ( Me_p_j - i_unit * No_p_j );
+                Er_y += En * (Me_r_j - i_unit * No_r_j);
+                Etheta_y += En * (Me_t_j - i_unit * No_t_j);
+                Ephi_y += En * (Me_p_j - i_unit * No_p_j);
 
                 // Scattered y
-                Er_y     += En * ( i_unit * a_n * No_r_h - b_n * Me_r_h );
-                Etheta_y += En * ( i_unit * a_n * No_t_h - b_n * Me_t_h );
-                Ephi_y   += En * ( i_unit * a_n * No_p_h - b_n * Me_p_h );
+                Er_y += En * (i_unit * a_n * No_r_h - b_n * Me_r_h);
+                Etheta_y += En * (i_unit * a_n * No_t_h - b_n * Me_t_h);
+                Ephi_y += En * (i_unit * a_n * No_p_h - b_n * Me_p_h);
 
             } else {
 
@@ -437,34 +425,26 @@ Sphere::get_total_nearfields(
                 // Internal field must be evaluated with k_particle r (handled by kr_used_for_regular)
 
                 // Internal x
-                Er_x     += En * ( c_n * Mo_r_j - i_unit * d_n * Ne_r_j );
-                Etheta_x += En * ( c_n * Mo_t_j - i_unit * d_n * Ne_t_j );
-                Ephi_x   += En * ( c_n * Mo_p_j - i_unit * d_n * Ne_p_j );
+                Er_x += En * (c_n * Mo_r_j - i_unit * d_n * Ne_r_j);
+                Etheta_x += En * (c_n * Mo_t_j - i_unit * d_n * Ne_t_j);
+                Ephi_x += En * (c_n * Mo_p_j - i_unit * d_n * Ne_p_j);
 
                 // Internal y
-                Er_y     += En * ( c_n * Me_r_j - i_unit * d_n * No_r_j );
-                Etheta_y += En * ( c_n * Me_t_j - i_unit * d_n * No_t_j );
-                Ephi_y   += En * ( c_n * Me_p_j - i_unit * d_n * No_p_j );
+                Er_y += En * (c_n * Me_r_j - i_unit * d_n * No_r_j);
+                Etheta_y += En * (c_n * Me_t_j - i_unit * d_n * No_t_j);
+                Ephi_y += En * (c_n * Me_p_j - i_unit * d_n * No_p_j);
             }
         }
 
-        const complex128 Er     = E0x * Er_x     + E0y * Er_y;
+        const complex128 Er = E0x * Er_x + E0y * Er_y;
         const complex128 Etheta = E0x * Etheta_x + E0y * Etheta_y;
-        const complex128 Ephi   = E0x * Ephi_x   + E0y * Ephi_y;
+        const complex128 Ephi = E0x * Ephi_x + E0y * Ephi_y;
 
-        const complex128 Ex =
-            Er * (sin_theta * cos_phi)
-            + Etheta * (cos_theta * cos_phi)
-            + Ephi * (-sin_phi);
+        const complex128 Ex = Er * (sin_theta * cos_phi) + Etheta * (cos_theta * cos_phi) + Ephi * (-sin_phi);
 
-        const complex128 Ey =
-            Er * (sin_theta * sin_phi)
-            + Etheta * (cos_theta * sin_phi)
-            + Ephi * (cos_phi);
+        const complex128 Ey = Er * (sin_theta * sin_phi) + Etheta * (cos_theta * sin_phi) + Ephi * (cos_phi);
 
-        const complex128 Ez =
-            Er * (cos_theta)
-            + Etheta * (-sin_theta);
+        const complex128 Ez = Er * (cos_theta) + Etheta * (-sin_theta);
 
         if (field_type == "Ex") {
             field_values[point_index] = Ex;
@@ -481,15 +461,9 @@ Sphere::get_total_nearfields(
     return field_values;
 }
 
-std::vector<complex128>
-Sphere::get_scattered_nearfields(
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    const std::vector<double>& z,
-    const std::string& field_type,
-    const std::shared_ptr<BaseSource>& source
-)
-{
+std::vector<complex128> Sphere::get_scattered_nearfields(const std::vector<double> &x, const std::vector<double> &y,
+                                                         const std::vector<double> &z, const std::string &field_type,
+                                                         const std::shared_ptr<BaseSource> &source) {
     this->compute_an_bn(this->max_order); // or whatever computes an,bn
 
     if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" && field_type != "|E|") {
@@ -513,32 +487,34 @@ Sphere::get_scattered_nearfields(
     const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
     const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
 
-    std::function<double(double)>
-    clamp_m1_p1_local = [](double value) -> double {
-        if (value < -1.0) return -1.0;
-        if (value >  1.0) return  1.0;
+    std::function<double(double)> clamp_m1_p1_local = [](double value) -> double {
+        if (value < -1.0)
+            return -1.0;
+        if (value > 1.0)
+            return 1.0;
         return value;
     };
 
-    std::function<complex128(std::size_t)>
-    i_to_n = [&](std::size_t n) -> complex128 {
+    std::function<complex128(std::size_t)> i_to_n = [&](std::size_t n) -> complex128 {
         switch (n & 3u) {
-            case 0u: return complex128( 1.0,  0.0);
-            case 1u: return complex128( 0.0,  1.0);
-            case 2u: return complex128(-1.0,  0.0);
-            default: return complex128( 0.0, -1.0);
+        case 0u:
+            return complex128(1.0, 0.0);
+        case 1u:
+            return complex128(0.0, 1.0);
+        case 2u:
+            return complex128(-1.0, 0.0);
+        default:
+            return complex128(0.0, -1.0);
         }
     };
 
-    std::function<std::tuple<complex128, complex128, complex128>(std::size_t, const complex128&)>
-    compute_hn_and_dpsi_over_kr =
-        [&](std::size_t n, const complex128& kr)
-        -> std::tuple<complex128, complex128, complex128>
-    {
+    std::function<std::tuple<complex128, complex128, complex128>(std::size_t, const complex128 &)>
+        compute_hn_and_dpsi_over_kr =
+            [&](std::size_t n, const complex128 &kr) -> std::tuple<complex128, complex128, complex128> {
         const double nd = static_cast<double>(n);
         const double nm1d = static_cast<double>(n - 1);
 
-        const complex128 hn   = Spherical_::H1n(nd,  kr);
+        const complex128 hn = Spherical_::H1n(nd, kr);
         const complex128 hnm1 = (n == 1) ? Spherical_::H1n(0.0, kr) : Spherical_::H1n(nm1d, kr);
 
         const complex128 dpsi = kr * hnm1 - nd * hn;
@@ -558,9 +534,8 @@ Sphere::get_scattered_nearfields(
         const double y_position = y[point_index];
         const double z_position = z[point_index];
 
-        const double r_cartesian = std::sqrt(
-            x_position * x_position + y_position * y_position + z_position * z_position
-        );
+        const double r_cartesian =
+            std::sqrt(x_position * x_position + y_position * y_position + z_position * z_position);
 
         if (r_cartesian < 1e-15) {
             field_values[point_index] = complex128(0.0, 0.0);
@@ -581,8 +556,8 @@ Sphere::get_scattered_nearfields(
 
         const double sin_theta = std::sin(theta);
         const double cos_theta = std::cos(theta);
-        const double sin_phi   = std::sin(phi);
-        const double cos_phi   = std::cos(phi);
+        const double sin_phi = std::sin(phi);
+        const double cos_phi = std::cos(phi);
 
         const complex128 kr = complex128(k_medium * r_cartesian, 0.0);
 
@@ -597,7 +572,7 @@ Sphere::get_scattered_nearfields(
 
             const complex128 En = i_to_n(n) * (2.0 * nd + 1.0) / (nd * (nd + 1.0));
 
-            const complex128 pi_n  = pi_vector[n - 1];
+            const complex128 pi_n = pi_vector[n - 1];
             const complex128 tau_n = tau_vector[n - 1];
             const complex128 Pn1 = pi_n * complex128(sin_theta, 0.0);
 
@@ -610,56 +585,51 @@ Sphere::get_scattered_nearfields(
 
             // Outgoing (scattered)
             const complex128 Mo_r_h(0.0, 0.0);
-            const complex128 Mo_t_h = complex128(cos_phi, 0.0) * pi_n  * hn;
+            const complex128 Mo_t_h = complex128(cos_phi, 0.0) * pi_n * hn;
             const complex128 Mo_p_h = complex128(-sin_phi, 0.0) * tau_n * hn;
 
             const complex128 Me_r_h(0.0, 0.0);
-            const complex128 Me_t_h = complex128(sin_phi, 0.0) * pi_n  * hn;
+            const complex128 Me_t_h = complex128(sin_phi, 0.0) * pi_n * hn;
             const complex128 Me_p_h = complex128(cos_phi, 0.0) * tau_n * hn;
 
             const complex128 Ne_r_h = complex128(cos_phi, 0.0) * nn1 * Pn1 * h_over_kr;
             const complex128 Ne_t_h = complex128(cos_phi, 0.0) * tau_n * dpsi_over_kr;
-            const complex128 Ne_p_h = complex128(-sin_phi, 0.0) * pi_n  * dpsi_over_kr;
+            const complex128 Ne_p_h = complex128(-sin_phi, 0.0) * pi_n * dpsi_over_kr;
 
             const complex128 No_r_h = complex128(sin_phi, 0.0) * nn1 * Pn1 * h_over_kr;
             const complex128 No_t_h = complex128(sin_phi, 0.0) * tau_n * dpsi_over_kr;
-            const complex128 No_p_h = complex128(cos_phi, 0.0) * pi_n  * dpsi_over_kr;
+            const complex128 No_p_h = complex128(cos_phi, 0.0) * pi_n * dpsi_over_kr;
 
             // Scattered x
-            Er_x     += En * ( i_unit * a_n * Ne_r_h - b_n * Mo_r_h );
-            Etheta_x += En * ( i_unit * a_n * Ne_t_h - b_n * Mo_t_h );
-            Ephi_x   += En * ( i_unit * a_n * Ne_p_h - b_n * Mo_p_h );
+            Er_x += En * (i_unit * a_n * Ne_r_h - b_n * Mo_r_h);
+            Etheta_x += En * (i_unit * a_n * Ne_t_h - b_n * Mo_t_h);
+            Ephi_x += En * (i_unit * a_n * Ne_p_h - b_n * Mo_p_h);
 
             // Scattered y
-            Er_y     += En * ( i_unit * a_n * No_r_h - b_n * Me_r_h );
-            Etheta_y += En * ( i_unit * a_n * No_t_h - b_n * Me_t_h );
-            Ephi_y   += En * ( i_unit * a_n * No_p_h - b_n * Me_p_h );
+            Er_y += En * (i_unit * a_n * No_r_h - b_n * Me_r_h);
+            Etheta_y += En * (i_unit * a_n * No_t_h - b_n * Me_t_h);
+            Ephi_y += En * (i_unit * a_n * No_p_h - b_n * Me_p_h);
         }
 
         // Combine arbitrary incident polarization
-        const complex128 Er     = E0x * Er_x     + E0y * Er_y;
+        const complex128 Er = E0x * Er_x + E0y * Er_y;
         const complex128 Etheta = E0x * Etheta_x + E0y * Etheta_y;
-        const complex128 Ephi   = E0x * Ephi_x   + E0y * Ephi_y;
+        const complex128 Ephi = E0x * Ephi_x + E0y * Ephi_y;
 
         // Convert spherical to Cartesian
-        const complex128 Ex =
-            Er * (sin_theta * cos_phi)
-            + Etheta * (cos_theta * cos_phi)
-            + Ephi * (-sin_phi);
+        const complex128 Ex = Er * (sin_theta * cos_phi) + Etheta * (cos_theta * cos_phi) + Ephi * (-sin_phi);
 
-        const complex128 Ey =
-            Er * (sin_theta * sin_phi)
-            + Etheta * (cos_theta * sin_phi)
-            + Ephi * (cos_phi);
+        const complex128 Ey = Er * (sin_theta * sin_phi) + Etheta * (cos_theta * sin_phi) + Ephi * (cos_phi);
 
-        const complex128 Ez =
-            Er * (cos_theta)
-            + Etheta * (-sin_theta);
+        const complex128 Ez = Er * (cos_theta) + Etheta * (-sin_theta);
 
         if (!need_vector_magnitude) {
-            if (field_type == "Ex") field_values[point_index] = Ex;
-            else if (field_type == "Ey") field_values[point_index] = Ey;
-            else field_values[point_index] = Ez;
+            if (field_type == "Ex")
+                field_values[point_index] = Ex;
+            else if (field_type == "Ey")
+                field_values[point_index] = Ey;
+            else
+                field_values[point_index] = Ez;
         } else {
             const double mag = std::sqrt(std::norm(Ex) + std::norm(Ey) + std::norm(Ez));
             field_values[point_index] = complex128(mag, 0.0);
@@ -667,4 +637,52 @@ Sphere::get_scattered_nearfields(
     }
 
     return field_values;
+}
+
+std::string Sphere::properties_table(int precision) const {
+    std::string output;
+
+    const double radius_m = 0.5 * this->diameter;
+    const double volume_m3 = (4.0 / 3.0) * Constants::PI * std::pow(radius_m, 3);
+    const double cross_section_m2 = Constants::PI * std::pow(radius_m, 2);
+
+    // Header
+    append_property_format(output, "\n");
+    append_property_format(output, "Scatterer Type: Sphere\n");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "property", precision, 0.0, "unit");
+    append_property_format(output, "-----------------|--------------------|------\n");
+
+    // Geometry
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "size_parameter", precision, this->size_parameter, "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "radius", precision, radius_m, "m");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "RI real", precision,
+                           this->material->get_refractive_index().real(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "RI imag", precision,
+                           this->material->get_refractive_index().imag(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "medium RI", precision,
+                           this->medium->get_refractive_index(), "");
+
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "volume", precision, volume_m3, "m^3");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "cross_section", precision, cross_section_m2, "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "g", precision, this->get_g(), "");
+
+    // Efficiencies (dimensionless)
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qsca", precision, this->get_Qsca(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qext", precision, this->get_Qext(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qabs", precision, this->get_Qabs(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qback", precision, this->get_Qback(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qratio", precision, this->get_Qratio(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qpr", precision, this->get_Qpr(), "");
+
+    // Cross sections (m^2)
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Csca", precision, this->get_Csca(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cext", precision, this->get_Cext(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cabs", precision, this->get_Cabs(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cback", precision, this->get_Cback(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cratio", precision, this->get_Cratio(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cpr", precision, this->get_Cpr(), "m^2");
+
+    append_property_format(output, "\n");
+
+    return output;
 }

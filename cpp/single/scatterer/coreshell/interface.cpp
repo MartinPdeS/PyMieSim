@@ -179,8 +179,13 @@ void register_coreshell(py::module_ &module) {
             R"pbdoc(
                 Return a concise representation of the core-shell parameters.
             )pbdoc")
-        .def("print_properties", &CoreShell::print_properties, py::arg("precision") = 4,
-             R"pbdoc(
+        .def(
+            "print_properties",
+            [](const CoreShell &self, int precision) {
+                py::print(self.properties_table(precision), py::arg("end") = "");
+            },
+            py::arg("precision") = 4,
+            R"pbdoc(
                 Print the core shell scatterer properties to standard output.
 
                 Parameters

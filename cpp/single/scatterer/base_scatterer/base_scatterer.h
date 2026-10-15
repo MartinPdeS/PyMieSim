@@ -1,17 +1,17 @@
 #pragma once
 
-#include <memory>
+#include <bessel_subroutine/bessel_subroutine.h>
 #include <complex>
-#include <vector>
-#include <single/source/source.h>
+#include <material/material.h>
+#include <memory>
 #include <mesh/fibonacci.h>
 #include <mesh/full_mesh.h>
-#include <bessel_subroutine/bessel_subroutine.h>
+#include <single/source/source.h>
+#include <string>
 #include <utils/defines.h>
-#include <material/material.h>
+#include <vector>
 
 typedef std::complex<double> complex128;
-
 
 class BaseScatterer {
 public:
@@ -24,7 +24,7 @@ public:
 
     BaseScatterer() = default;
     BaseScatterer(const size_t _max_order, std::shared_ptr<BaseMedium> _medium)
-    : max_order(_max_order), medium(std::move(_medium)){}
+        : max_order(_max_order), medium(std::move(_medium)) {}
 
     // VIRTUAL INTERFACE ----------------------------------------------
     virtual ~BaseScatterer() = default;
@@ -32,16 +32,26 @@ public:
     virtual void compute_cn_dn(const size_t max_order = 0) = 0;
     virtual void compute_an_bn(const size_t max_order = 0) = 0;
 
-    virtual std::pair<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const = 0;
-    virtual double get_Qsca() const {throw std::logic_error{"Function not implementend!"};};
-    virtual double get_Qext() const {throw std::logic_error{"Function not implementend!"};};
-    virtual double get_Qback() const {throw std::logic_error{"Function not implementend!"};};
-    virtual double get_Qforward() const {throw std::logic_error{"Function not implementend!"};};
-    virtual double get_g() const {throw std::logic_error{"Function not implementend!"};};
+    virtual std::pair<std::vector<complex128>, std::vector<complex128>>
+    compute_s1s2(const std::vector<double> &phi) const = 0;
+    virtual double get_Qsca() const {
+        throw std::logic_error{"Function not implementend!"};
+    };
+    virtual double get_Qext() const {
+        throw std::logic_error{"Function not implementend!"};
+    };
+    virtual double get_Qback() const {
+        throw std::logic_error{"Function not implementend!"};
+    };
+    virtual double get_Qforward() const {
+        throw std::logic_error{"Function not implementend!"};
+    };
+    virtual double get_g() const {
+        throw std::logic_error{"Function not implementend!"};
+    };
 
-    virtual void compute_size_parameter(const std::shared_ptr<BaseSource>& source) = 0;
+    virtual void compute_size_parameter(const std::shared_ptr<BaseSource> &source) = 0;
     virtual void compute_cross_section() = 0;
-
 
     // SPHERICAL SCATTERER GETTERS --------------------------------------------------------
     DEFINE_COEFFICIENTS_GETTERS_4(a, b, c, d)
@@ -49,15 +59,20 @@ public:
     // CYLINDRICAL SCATTERER GETTERS --------------------------------------------------------
     DEFINE_COEFFICIENTS_GETTERS_8(a1, b1, c1, d1, a2, b2, c2, d2)
 
-
-    virtual void init(const std::shared_ptr<BaseSource>& source, size_t _max_order = 0) = 0;
+    virtual void init(const std::shared_ptr<BaseSource> &source, size_t _max_order = 0) = 0;
 
     // COEFFICIENT ----------------------------------------------------
-    double get_cross_section() const {return this->cross_section;};
+    double get_cross_section() const {
+        return this->cross_section;
+    };
 
-    double get_size_parameter() const {return this->size_parameter;};
+    double get_size_parameter() const {
+        return this->size_parameter;
+    };
 
-    virtual void print_properties(int precision) const = 0;
+    virtual void print_properties(int precision) const;
+    virtual std::string properties_table(int precision) const = 0;
+    static void append_property_format(std::string &output, const char *format, ...);
 
     /**
      * @brief Computes the asymmetry factor g using the fields at a given sampling.
@@ -68,76 +83,95 @@ public:
      */
     double get_g_with_farfields(std::shared_ptr<BaseSource> source, size_t sampling = 1000) const;
 
-
     /**
      * @brief Computes the scattering efficiency Qsca.
      * @return The scattering efficiency Qsca.
      * @note This method computes the scattering efficiency based on the coefficients an and bn.
      */
-    double get_Qabs() const {return get_Qext() - get_Qsca();};
+    double get_Qabs() const {
+        return get_Qext() - get_Qsca();
+    };
 
     /**
      * @brief Computes the scattering efficiency Qpr.
      * @return The scattering efficiency Qpr.
      * @note This method computes the scattering efficiency based on the coefficients an and bn.
      */
-    double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
+    double get_Qpr() const {
+        return get_Qext() - get_g() * get_Qsca();
+    };
 
     /**
      * @brief Computes the backscattering efficiency Qback.
      * @return The backscattering efficiency Qback.
      * @note This method computes the backscattering efficiency based on the coefficients an and bn.
      */
-    double get_Qratio() const {return get_Qback() / get_Qsca();};
+    double get_Qratio() const {
+        return get_Qback() / get_Qsca();
+    };
 
     /**
      * @brief Computes the backscattering coefficient Cback.
      * @return The backscattering coefficient Cback.
      * @note This method computes the backscattering coefficient based on the Qback and the cross section.
      */
-    double get_Cback() const {return get_Qback() * this->cross_section;};
+    double get_Cback() const {
+        return get_Qback() * this->cross_section;
+    };
 
     /**
      * @brief Computes the forward scattering coefficient Cforward.
      * @return The forward scattering coefficient Cforward.
      * @note This method computes the forward scattering coefficient based on the Qforward and the cross section.
      */
-    double get_Cforward() const {return get_Qforward() * this->cross_section;};
+    double get_Cforward() const {
+        return get_Qforward() * this->cross_section;
+    };
 
     /**
      * @brief Computes the scattering coefficient Cratio.
      * @return The scattering coefficient Cratio.
      * @note This method computes the scattering coefficient based on the Qratio and the cross section.
      */
-    double get_Cratio() const {return get_Qratio() * this->cross_section;};
+    double get_Cratio() const {
+        return get_Qratio() * this->cross_section;
+    };
 
     /**
      * @brief Computes the scattering coefficient Csca.
      * @return The scattering coefficient Csca.
      * @note This method computes the scattering coefficient based on the Qsca and the cross section.
      */
-    double get_Csca() const {return get_Qsca() * this->cross_section;};
+    double get_Csca() const {
+        return get_Qsca() * this->cross_section;
+    };
 
     /**
      * @brief Computes the extinction coefficient Cext.
      * @return The extinction coefficient Cext.
      * @note This method computes the extinction coefficient based on the Qext and the cross section.
      */
-    double get_Cext() const {return get_Qext() * this->cross_section;};
+    double get_Cext() const {
+        return get_Qext() * this->cross_section;
+    };
 
     /**
      * @brief Computes the absorption coefficient Cabs.
      * @return The absorption coefficient Cabs.
      * @note This method computes the absorption coefficient based on the Qabs and the cross section.
      */
-    double get_Cabs() const {return get_Qabs() * this->cross_section;};
+    double get_Cabs() const {
+        return get_Qabs() * this->cross_section;
+    };
 
     /**
      * @brief Computes the forward scattering coefficient Cpr.
      * @return The forward scattering coefficient Cpr.
      * @note This method computes the forward scattering coefficient based on the Qpr and the cross section.
      */
-    double get_Cpr() const {return get_Qpr() * this->cross_section;};
+    double get_Cpr() const {
+        return get_Qpr() * this->cross_section;
+    };
 
     // GENERAL METHODS ----------------------------------------------------
     /**
@@ -204,12 +238,8 @@ public:
      * @return A tuple containing the phi and theta fields.
      */
     std::pair<std::vector<complex128>, std::vector<complex128>>
-    get_unstructured_farfields(
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double radius,
-        const std::shared_ptr<BaseSource>& source
-    ) const;
+    get_unstructured_farfields(const std::vector<double> &phi, const std::vector<double> &theta, const double radius,
+                               const std::shared_ptr<BaseSource> &source) const;
 
     /**
      * @brief Computes the unstructured fields for a Fibonacci mesh.
@@ -218,11 +248,8 @@ public:
      * @return A tuple containing the phi and theta fields.
      */
     std::pair<std::vector<complex128>, std::vector<complex128>>
-    get_unstructured_farfields(
-        const FibonacciMesh& fibonacci_mesh,
-        const double radius,
-        const std::shared_ptr<BaseSource>& source
-    ) const;
+    get_unstructured_farfields(const FibonacciMesh &fibonacci_mesh, const double radius,
+                               const std::shared_ptr<BaseSource> &source) const;
 
     /**
      * @brief Computes the full structured fields for a given sampling and radius.
@@ -231,11 +258,8 @@ public:
      * @return A tuple containing the phi field, theta field, and the full steradian mesh.
      */
     std::tuple<std::vector<complex128>, std::vector<complex128>, FullSteradian>
-    get_structured_farfields(
-        const size_t& sampling,
-        const double& radius,
-        const std::shared_ptr<BaseSource>& source
-    ) const;
+    get_structured_farfields(const size_t &sampling, const double &radius,
+                             const std::shared_ptr<BaseSource> &source) const;
 
     /**
      * @brief Computes the pi and tau coefficients for a given mu and maximum order.
@@ -243,11 +267,8 @@ public:
      * @param max_order The maximum order of the coefficients to compute.
      * @return A tuple containing the pi and tau coefficients as vectors.
      */
-    std::pair<std::vector<complex128>, std::vector<complex128>>
-    get_pi_tau(
-        const double& mu,
-        const size_t& max_order
-    ) const;
+    std::pair<std::vector<complex128>, std::vector<complex128>> get_pi_tau(const double &mu,
+                                                                           const size_t &max_order) const;
 
     /**
      * @brief Computes the pi and tau coefficients for a given mu and maximum order.
@@ -256,12 +277,7 @@ public:
      * @param pin Output vector for pi coefficients.
      * @param taun Output vector for tau coefficients.
      */
-    void get_pi_tau(
-        double mu,
-        size_t max_order,
-        complex128 *pin,
-        complex128 *taun
-    ) const;
+    void get_pi_tau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const;
 
     /**
      * @brief Computes the propagator for a given radius.
@@ -299,14 +315,9 @@ public:
      *       Currently supports spherical scatterers only. Cylinder support requires
      *       implementation of cn/dn coefficients for infinite cylinders.
      */
-    virtual std::vector<complex128>
-    get_total_nearfields(
-        const std::vector<double>& x,
-        const std::vector<double>& y,
-        const std::vector<double>& z,
-        const std::string& field_type,
-        const std::shared_ptr<BaseSource>& source
-    ) = 0;
+    virtual std::vector<complex128> get_total_nearfields(const std::vector<double> &x, const std::vector<double> &y,
+                                                         const std::vector<double> &z, const std::string &field_type,
+                                                         const std::shared_ptr<BaseSource> &source) = 0;
 
     /**
      * @brief Computes scattered near-field electromagnetic fields using an and bn coefficients.
@@ -327,13 +338,10 @@ public:
      *       Currently supports spherical scatterers only. Cylinder support requires
      *       implementation of an/bn coefficients for infinite cylinders.
      */
-    virtual std::vector<complex128> get_scattered_nearfields(
-        const std::vector<double>& x,
-        const std::vector<double>& y,
-        const std::vector<double>& z,
-        const std::string& field_type,
-        const std::shared_ptr<BaseSource>& source
-    ) = 0;
+    virtual std::vector<complex128> get_scattered_nearfields(const std::vector<double> &x, const std::vector<double> &y,
+                                                             const std::vector<double> &z,
+                                                             const std::string &field_type,
+                                                             const std::shared_ptr<BaseSource> &source) = 0;
 
     /**
      * @brief Computes near-field electromagnetic fields over a structured 3D grid.
@@ -360,22 +368,11 @@ public:
      * @throws std::runtime_error If cn/dn coefficients are not available.
      * @throws std::invalid_argument If field_type is not recognized.
      */
-    std::tuple<
-        std::vector<complex128>,
-        std::vector<complex128>,
-        std::vector<complex128>,
-        std::vector<complex128>,
-        std::vector<double>,
-        std::vector<double>,
-        std::vector<double>
-    >
-    get_structured_total_nearfields(
-        const std::vector<double>& x_range,
-        const std::vector<double>& y_range,
-        const std::vector<double>& z_range,
-        const std::string& field_type,
-        std::shared_ptr<BaseSource> source
-    );
+    std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<complex128>,
+               std::vector<double>, std::vector<double>, std::vector<double>>
+    get_structured_total_nearfields(const std::vector<double> &x_range, const std::vector<double> &y_range,
+                                    const std::vector<double> &z_range, const std::string &field_type,
+                                    std::shared_ptr<BaseSource> source);
 
     /**
      * @brief Computes incident near-field electromagnetic fields using an and bn coefficients.
@@ -396,15 +393,9 @@ public:
      *       Currently supports spherical scatterers only. Cylinder support requires
      *       implementation of an/bn coefficients for infinite cylinders.
      */
-    std::vector<complex128>
-    compute_incident_nearfields(
-        const std::vector<double>& x,
-        const std::vector<double>& y,
-        const std::vector<double>& z,
-        const std::string& field_type,
-        const std::shared_ptr<BaseSource>& source
-    ) const;
-
+    std::vector<complex128> compute_incident_nearfields(const std::vector<double> &x, const std::vector<double> &y,
+                                                        const std::vector<double> &z, const std::string &field_type,
+                                                        const std::shared_ptr<BaseSource> &source) const;
 
     /**
      * @brief Python interface for coefficient retrieval.
@@ -414,10 +405,7 @@ public:
      *
      * @return The coefficient as a complex128 value.
      */
-    complex128 get_coefficient(
-        const std::string &type,
-        const size_t order
-    );
+    complex128 get_coefficient(const std::string &type, const size_t order);
 
     /**
      * @brief Computes the full structured farfields for a given sampling and radius.
@@ -428,19 +416,10 @@ public:
      * @return A tuple containing the phi field, theta field, phi angles, and theta angles.
      */
     std::pair<std::vector<double>, FullSteradian>
-    get_structured_spf(
-        std::shared_ptr<BaseSource> source,
-        const size_t sampling,
-        const double radius = 1.0
-    ) const;
+    get_structured_spf(std::shared_ptr<BaseSource> source, const size_t sampling, const double radius = 1.0) const;
 
-    std::vector<double>
-    get_unstructured_spf(
-        std::shared_ptr<BaseSource> source,
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double radius = 1.0
-    ) const;
+    std::vector<double> get_unstructured_spf(std::shared_ptr<BaseSource> source, const std::vector<double> &phi,
+                                             const std::vector<double> &theta, const double radius = 1.0) const;
 
     /**
      * @brief Computes the Stokes parameters over given phi and theta angles at a specified radius.
@@ -451,32 +430,10 @@ public:
      *
      * @return A tuple containing vectors for Stokes parameters I, Q, U, and V.
      */
-    std::tuple<
-        std::vector<double>,
-        std::vector<double>,
-        std::vector<double>,
-        std::vector<double>
-    >
-    get_unstructured_stokes(
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double distance,
-        std::shared_ptr<BaseSource> source
-    ) const;
+    std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>>
+    get_unstructured_stokes(const std::vector<double> &phi, const std::vector<double> &theta, const double distance,
+                            std::shared_ptr<BaseSource> source) const;
 
-
-    std::tuple<
-        std::vector<double>,
-        std::vector<double>,
-        std::vector<double>,
-        std::vector<double>,
-        FullSteradian
-    >
-    get_structured_stokes(
-        const size_t sampling,
-        const double distance,
-        std::shared_ptr<BaseSource> source
-    ) const;
-
-
+    std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, FullSteradian>
+    get_structured_stokes(const size_t sampling, const double distance, std::shared_ptr<BaseSource> source) const;
 };

@@ -1,412 +1,246 @@
 #pragma once
 
-
-#include <single/scatterer/base_scatterer/base_scatterer.h>
 #include <material/material.h>
+#include <single/scatterer/base_scatterer/base_scatterer.h>
 
 using complex128 = std::complex<double>;
 
+class CoreShell : public BaseScatterer {
+public:
+    double core_diameter;
+    double shell_thickness;
+    double total_diameter;
+    std::shared_ptr<BaseMaterial> core_material;
+    std::shared_ptr<BaseMaterial> shell_material;
+    double x_core;
+    double x_shell;
 
-class CoreShell: public BaseScatterer
-{
-    public:
-        double core_diameter;
-        double shell_thickness;
-        double total_diameter;
-        std::shared_ptr<BaseMaterial> core_material;
-        std::shared_ptr<BaseMaterial> shell_material;
-        double x_core;
-        double x_shell;
+    // Internal coated-sphere expansion coefficients.  The shell has a
+    // regular and an irregular coefficient for each TE/TM family.
+    std::vector<complex128> shell_m_regular, shell_m_irregular;
+    std::vector<complex128> shell_n_regular, shell_n_irregular;
 
-        // Internal coated-sphere expansion coefficients.  The shell has a
-        // regular and an irregular coefficient for each TE/TM family.
-        std::vector<complex128> shell_m_regular, shell_m_irregular;
-        std::vector<complex128> shell_n_regular, shell_n_irregular;
+    inline static const std::vector<std::string> property_names = {
+        "size_parameter", "cross_section", "g",      "g_with_farfields", "Qsca",     "Qext",
+        "Qabs",           "Qback",         "Qratio", "Qforward",         "Qpr",      "Csca",
+        "Cext",           "Cabs",          "Cback",  "Cratio",           "Cforward", "Cpr"};
 
-        inline static const std::vector<std::string> property_names = {
-            "size_parameter",
-            "cross_section",
-            "g",
-            "g_with_farfields",
-            "Qsca",
-            "Qext",
-            "Qabs",
-            "Qback",
-            "Qratio",
-            "Qforward",
-            "Qpr",
-            "Csca",
-            "Cext",
-            "Cabs",
-            "Cback",
-            "Cratio",
-            "Cforward",
-            "Cpr"
-        };
+    /**
+     * @brief Constructs a CoreShell object.
+     * @param core_diameter The diameter of the core.
+     * @param shell_thickness The thickness of the shell.
+     * @param core_material The material of the core.
+     * @param shell_material The material of the shell.
+     * @param medium_material The material of the medium.
+     * @param max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     * @param compute_c_d Whether to compute the cn and dn coefficients (default is false).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, std::shared_ptr<BaseMaterial> _core_material,
+              std::shared_ptr<BaseMaterial> _shell_material, std::shared_ptr<BaseMedium> _medium, size_t _max_order = 0)
+        : BaseScatterer(_max_order, std::move(_medium)), core_diameter(_core_diameter),
+          shell_thickness(_shell_thickness), total_diameter(_core_diameter + _shell_thickness),
+          core_material(std::move(_core_material)), shell_material(std::move(_shell_material)) {}
 
+    /**
+     * @brief Constructs a CoreShell object with constant core and shell materials.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, std::shared_ptr<BaseMaterial> _core_material,
+              std::shared_ptr<BaseMaterial> _shell_material, double _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, std::move(_core_material), std::move(_shell_material),
+                    std::make_shared<ConstantMedium>(_medium), _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object.
-         * @param core_diameter The diameter of the core.
-         * @param shell_thickness The thickness of the shell.
-         * @param core_material The material of the core.
-         * @param shell_material The material of the shell.
-         * @param medium_material The material of the medium.
-         * @param max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         * @param compute_c_d Whether to compute the cn and dn coefficients (default is false).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            std::shared_ptr<BaseMaterial> _core_material,
-            std::shared_ptr<BaseMaterial> _shell_material,
-            std::shared_ptr<BaseMedium> _medium,
-            size_t _max_order = 0)
-        :   BaseScatterer(_max_order, std::move(_medium)),
-            core_diameter(_core_diameter),
-            shell_thickness(_shell_thickness),
-            total_diameter(_core_diameter + _shell_thickness),
-            core_material(std::move(_core_material)),
-            shell_material(std::move(_shell_material))
-        {}
+    /**
+     * @brief Constructs a CoreShell object with constant core material and shell material.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, std::shared_ptr<BaseMaterial> _core_material,
+              const complex128 _shell_material, double _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, std::move(_core_material),
+                    std::make_shared<ConstantMaterial>(_shell_material), std::make_shared<ConstantMedium>(_medium),
+                    _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object with constant core and shell materials.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            std::shared_ptr<BaseMaterial> _core_material,
-            std::shared_ptr<BaseMaterial> _shell_material,
-            double _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            std::move(_core_material),
-            std::move(_shell_material),
-            std::make_shared<ConstantMedium>(_medium),
-            _max_order
-        )
-        {}
+    /**
+     * @brief Constructs a CoreShell object with constant core material and shell material.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, const complex128 _core_material,
+              const complex128 _shell_material, double _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, std::make_shared<ConstantMaterial>(_core_material),
+                    std::make_shared<ConstantMaterial>(_shell_material), std::make_shared<ConstantMedium>(_medium),
+                    _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object with constant core material and shell material.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            std::shared_ptr<BaseMaterial> _core_material,
-            const complex128 _shell_material,
-            double _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            std::move(_core_material),
-            std::make_shared<ConstantMaterial>(_shell_material),
-            std::make_shared<ConstantMedium>(_medium),
-            _max_order
-        )
-        {}
+    /**
+     * @brief Constructs a CoreShell object with constant core material and shell material.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, const complex128 _core_material,
+              const complex128 _shell_material, std::shared_ptr<BaseMedium> _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, std::make_shared<ConstantMaterial>(_core_material),
+                    std::make_shared<ConstantMaterial>(_shell_material), _medium, _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object with constant core material and shell material.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            const complex128 _core_material,
-            const complex128 _shell_material,
-            double _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            std::make_shared<ConstantMaterial>(_core_material),
-            std::make_shared<ConstantMaterial>(_shell_material),
-            std::make_shared<ConstantMedium>(_medium),
-            _max_order
-        )
-        {}
+    /**
+     * @brief Constructs a CoreShell object with constant core material and shell material.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, const complex128 _core_material,
+              std::shared_ptr<BaseMaterial> _shell_material, std::shared_ptr<BaseMedium> _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, std::make_shared<ConstantMaterial>(_core_material),
+                    _shell_material, _medium, _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object with constant core material and shell material.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            const complex128 _core_material,
-            const complex128 _shell_material,
-            std::shared_ptr<BaseMedium> _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            std::make_shared<ConstantMaterial>(_core_material),
-            std::make_shared<ConstantMaterial>(_shell_material),
-            _medium,
-            _max_order
-        )
-        {}
+    /**
+     * @brief Constructs a CoreShell object with constant core material and shell material.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, std::shared_ptr<BaseMaterial> _core_material,
+              const complex128 _shell_material, std::shared_ptr<BaseMedium> _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, _core_material,
+                    std::make_shared<ConstantMaterial>(_shell_material), _medium, _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object with constant core material and shell material.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            const complex128 _core_material,
-            std::shared_ptr<BaseMaterial> _shell_material,
-            std::shared_ptr<BaseMedium> _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            std::make_shared<ConstantMaterial>(_core_material),
-            _shell_material,
-            _medium,
-            _max_order
-        )
-        {}
+    /**
+     * @brief Constructs a CoreShell object with constant core material and shell material.
+     * @param _core_diameter The diameter of the core.
+     * @param _shell_thickness The thickness of the shell.
+     * @param _core_material The material of the core.
+     * @param _shell_material The material of the shell.
+     * @param _medium The material of the medium.
+     * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be
+     * computed).
+     */
+    CoreShell(double _core_diameter, double _shell_thickness, const complex128 _core_material,
+              std::shared_ptr<BaseMaterial> _shell_material, const double _medium, size_t _max_order = 0)
+        : CoreShell(_core_diameter, _shell_thickness, std::make_shared<ConstantMaterial>(_core_material),
+                    _shell_material, std::make_shared<ConstantMedium>(_medium), _max_order) {}
 
-        /**
-         * @brief Constructs a CoreShell object with constant core material and shell material.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            std::shared_ptr<BaseMaterial> _core_material,
-            const complex128 _shell_material,
-            std::shared_ptr<BaseMedium> _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            _core_material,
-            std::make_shared<ConstantMaterial>(_shell_material),
-            _medium,
-            _max_order
-        )
-        {}
+    void init(const std::shared_ptr<BaseSource> &source, size_t _max_order = 0) override;
 
-        /**
-         * @brief Constructs a CoreShell object with constant core material and shell material.
-         * @param _core_diameter The diameter of the core.
-         * @param _shell_thickness The thickness of the shell.
-         * @param _core_material The material of the core.
-         * @param _shell_material The material of the shell.
-         * @param _medium The material of the medium.
-         * @param _max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
-         */
-        CoreShell(
-            double _core_diameter,
-            double _shell_thickness,
-            const complex128 _core_material,
-            std::shared_ptr<BaseMaterial> _shell_material,
-            const double _medium,
-            size_t _max_order = 0)
-        :   CoreShell(
-            _core_diameter,
-            _shell_thickness,
-            std::make_shared<ConstantMaterial>(_core_material),
-            _shell_material,
-            std::make_shared<ConstantMedium>(_medium),
-            _max_order
-        )
-        {}
+    /**
+     * @brief Computes the size parameter for the sphere.
+     * The size parameter is defined as (wavenumber * diameter / 2) * medium_refractive_index.
+     */
+    void compute_size_parameter(const std::shared_ptr<BaseSource> &source) override;
 
+    /**
+     * @brief Computes the cross-sectional area of the sphere.
+     * This is calculated as π * (diameter / 2)².
+     */
+    void compute_cross_section() override;
 
-        void init(const std::shared_ptr<BaseSource>& source, size_t _max_order = 0) override;
+    /**
+     * @brief Computes the coefficients an and bn for a sphere.
+     * @param _max_order The maximum order of the coefficients to compute.
+     */
+    void compute_an_bn(const size_t max_order = 0) override;
 
-        /**
-         * @brief Computes the size parameter for the sphere.
-         * The size parameter is defined as (wavenumber * diameter / 2) * medium_refractive_index.
-         */
-        void compute_size_parameter(const std::shared_ptr<BaseSource>& source) override;
+    /**
+     * @brief Computes the coefficients cn and dn for a sphere.
+     * @param _max_order The maximum order of the coefficients to compute.
+     */
+    void compute_cn_dn(const size_t max_order = 0) override;
 
-        /**
-         * @brief Computes the cross-sectional area of the sphere.
-         * This is calculated as π * (diameter / 2)².
-         */
-        void compute_cross_section() override;
+    /**
+     * @brief Computes the scattering efficiency Qsca for a sphere.
+     * @return The scattering efficiency Qsca.
+     */
+    double get_Qsca() const override;
 
-        /**
-         * @brief Computes the coefficients an and bn for a sphere.
-         * @param _max_order The maximum order of the coefficients to compute.
-         */
-        void compute_an_bn(const size_t max_order = 0) override;
+    /**
+     * @brief Computes the extinction efficiency Qext for a sphere.
+     * @return The extinction efficiency Qext.
+     */
+    double get_Qext() const override;
 
-        /**
-         * @brief Computes the coefficients cn and dn for a sphere.
-         * @param _max_order The maximum order of the coefficients to compute.
-         */
-        void compute_cn_dn(const size_t max_order = 0) override;
+    /**
+     * @brief Computes the backscattering efficiency Qback for a sphere.
+     * @return The backscattering efficiency Qback.
+     */
+    double get_Qback() const override;
 
-        /**
-         * @brief Computes the scattering efficiency Qsca for a sphere.
-         * @return The scattering efficiency Qsca.
-         */
-        double get_Qsca() const override;
+    /**
+     * @brief Computes the forward scattering efficiency Qforward for a sphere.
+     * @return The forward scattering efficiency Qforward.
+     */
+    double get_Qforward() const override;
 
-        /**
-         * @brief Computes the extinction efficiency Qext for a sphere.
-         * @return The extinction efficiency Qext.
-         */
-        double get_Qext() const override;
+    /**
+     * @brief Computes the asymmetry factor g for a sphere.
+     * @return The asymmetry factor g.
+     */
+    double get_g() const override;
 
-        /**
-         * @brief Computes the backscattering efficiency Qback for a sphere.
-         * @return The backscattering efficiency Qback.
-         */
-        double get_Qback() const override;
+    /**
+     * @brief Computes the scattering amplitudes S1 and S2 for a sphere.
+     * @param phi A vector of angles in radians at which to compute the scattering amplitudes.
+     * @return A tuple containing two vectors: S1 and S2, which are the scattering amplitudes.
+     */
+    std::pair<std::vector<complex128>, std::vector<complex128>>
+    compute_s1s2(const std::vector<double> &phi) const override;
 
-        /**
-         * @brief Computes the forward scattering efficiency Qforward for a sphere.
-         * @return The forward scattering efficiency Qforward.
-         */
-        double get_Qforward() const override;
+    /**
+     * @brief Computes the near-field electromagnetic fields for a sphere.
+     * @param x A vector of x-coordinates where the fields are computed.
+     * @param y A vector of y-coordinates where the fields are computed.
+     * @param z A vector of z-coordinates where the fields are computed.
+     * @param field_type The type of field to compute (e.g., "E", "H").
+     * @return A vector of complex128 values representing the near-field electromagnetic fields.
+     * @note This method uses the multipole expansion with vector spherical harmonics to compute the
+     * near-field electromagnetic fields inside and near the sphere.
+     * The internal fields (r < radius) are computed using cn and dn coefficients, while
+     * external fields (r > radius) use an and bn coefficients.
+     */
+    std::vector<complex128> get_total_nearfields(const std::vector<double> &, const std::vector<double> &,
+                                                 const std::vector<double> &, const std::string &,
+                                                 const std::shared_ptr<BaseSource> &) override;
 
-        /**
-         * @brief Computes the asymmetry factor g for a sphere.
-         * @return The asymmetry factor g.
-         */
-        double get_g() const override;
+    std::vector<complex128> get_scattered_nearfields(const std::vector<double> &, const std::vector<double> &,
+                                                     const std::vector<double> &, const std::string &,
+                                                     const std::shared_ptr<BaseSource> &) override;
 
-        /**
-         * @brief Computes the scattering amplitudes S1 and S2 for a sphere.
-         * @param phi A vector of angles in radians at which to compute the scattering amplitudes.
-         * @return A tuple containing two vectors: S1 and S2, which are the scattering amplitudes.
-         */
-        std::pair<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
+private:
+    /**
+     * @brief Applies the medium refractive index to the core and shell refractive indices and diameters.
+     */
+    void apply_medium();
 
-        /**
-         * @brief Computes the near-field electromagnetic fields for a sphere.
-         * @param x A vector of x-coordinates where the fields are computed.
-         * @param y A vector of y-coordinates where the fields are computed.
-         * @param z A vector of z-coordinates where the fields are computed.
-         * @param field_type The type of field to compute (e.g., "E", "H").
-         * @return A vector of complex128 values representing the near-field electromagnetic fields.
-         * @note This method uses the multipole expansion with vector spherical harmonics to compute the
-         * near-field electromagnetic fields inside and near the sphere.
-         * The internal fields (r < radius) are computed using cn and dn coefficients, while
-         * external fields (r > radius) use an and bn coefficients.
-         */
-        std::vector<complex128> get_total_nearfields(
-            const std::vector<double>&,
-            const std::vector<double>&,
-            const std::vector<double>&,
-            const std::string&,
-            const std::shared_ptr<BaseSource>&
-        ) override;
-
-        std::vector<complex128> get_scattered_nearfields(
-            const std::vector<double>&,
-            const std::vector<double>&,
-            const std::vector<double>&,
-            const std::string&,
-            const std::shared_ptr<BaseSource>&
-        ) override;
-
-    private:
-        /**
-         * @brief Applies the medium refractive index to the core and shell refractive indices and diameters.
-         */
-        void apply_medium();
-
-    public:
-        void print_properties(int precision) const override
-        {
-            // Table header
-            std::printf("\n");
-            std::printf("+-------------------+------------------------------+-----------+\n");
-            std::printf("| name              | value                        | unit      |\n");
-            std::printf("+-------------------+------------------------------+-----------+\n");
-
-            // Geometry and indices (these are CoreShell members)
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "core_diameter",    precision, this->core_diameter,    "m");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "shell_thickness",  precision, this->shell_thickness,  "m");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "total_diameter",   precision, this->total_diameter,   "m");
-
-            std::printf("| %-17s | %14.*e + %14.*ei | %-9s |\n",
-                "core_n",
-                precision, std::real(this->core_material->get_refractive_index()),
-                 precision, std::imag(this->core_material->get_refractive_index()),
-                "RIU"
-            );
-
-            std::printf("| %-17s | %14.*e + %14.*ei | %-9s |\n",
-                "shell_n",
-                precision, std::real(this->shell_material->get_refractive_index()),
-                precision, std::imag(this->shell_material->get_refractive_index()),
-                "RIU"
-            );
-
-            double radius = 0.5 * this->total_diameter;
-            double volume = (4.0 / 3.0) * Constants::PI * std::pow(radius, 3);
-
-            // BaseScatterer computed properties (assumed to exist as members)
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "size_parameter",   precision, this->size_parameter,          "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "radius",           precision, radius,                        "m");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "volume",           precision, volume,                        "m^3");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "cross_section",    precision, this->cross_section,           "m^2");
-
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "g",                precision, this->get_g(),                 "1");
-
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qsca",             precision, this->get_Qsca(),              "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qext",             precision, this->get_Qext(),              "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qabs",             precision, this->get_Qabs(),              "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qback",            precision, this->get_Qback(),             "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qratio",           precision, this->get_Qratio(),            "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Qpr",              precision, this->get_Qpr(),               "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Csca",             precision, this->get_Csca(),              "m^2");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cext",             precision, this->get_Cext(),              "m^2");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cabs",             precision, this->get_Cabs(),              "m^2");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cback",            precision, this->get_Cback(),             "m^2");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cratio",           precision, this->get_Cratio(),            "1");
-            std::printf("| %-17s | %14.*e                   | %-9s |\n", "Cpr",              precision, this->get_Cpr(),               "m^2");
-
-            std::printf("+-------------------+------------------------------+-----------+\n");
-            std::printf("\n");
-        }
-
+public:
+    std::string properties_table(int precision) const override;
 };
-
 
 // -

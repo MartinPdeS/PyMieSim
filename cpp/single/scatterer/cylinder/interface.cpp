@@ -238,8 +238,13 @@ void register_cylinder(py::module_ &module) {
                 pint.Quantity
                     Diameter expressed as a compact length unit.
             )pbdoc")
-        .def("print_properties", &InfiniteCylinder::print_properties, py::arg("precision") = 4,
-             R"pbdoc(
+        .def(
+            "print_properties",
+            [](const InfiniteCylinder &self, int precision) {
+                py::print(self.properties_table(precision), py::arg("end") = "");
+            },
+            py::arg("precision") = 4,
+            R"pbdoc(
                 Print the cylinder properties to standard output.
 
                 Parameters

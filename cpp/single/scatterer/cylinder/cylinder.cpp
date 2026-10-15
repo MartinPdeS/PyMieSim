@@ -3,10 +3,9 @@
 #include <cmath>
 #include <stdexcept>
 
-
 // ---------------------- Methods ---------------------------------------
 
-void InfiniteCylinder::init(const std::shared_ptr<BaseSource>& source, const size_t _max_order) {
+void InfiniteCylinder::init(const std::shared_ptr<BaseSource> &source, const size_t _max_order) {
     this->material->initialize(source->wavelength);
     this->medium->initialize(source->wavelength);
     this->jones_vector = source->get_jones_vector_first_row();
@@ -17,8 +16,7 @@ void InfiniteCylinder::init(const std::shared_ptr<BaseSource>& source, const siz
     this->compute_an_bn(this->max_order);
 }
 
-
-void InfiniteCylinder::compute_size_parameter(const std::shared_ptr<BaseSource>& source) {
+void InfiniteCylinder::compute_size_parameter(const std::shared_ptr<BaseSource> &source) {
     this->size_parameter = source->wavenumber_vacuum * this->diameter / 2;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
@@ -72,20 +70,15 @@ void InfiniteCylinder::compute_an_bn(const size_t max_order) {
     this->b2n.resize(max_order);
 
     // Compute the arguments used in the Bessel and Hankel function calculations
-    complex128
-        m = this->material->get_refractive_index() / this->medium->get_refractive_index(), // Relative refractive index
-        mx = m * size_parameter; // Scaled size parameter for internal calculations
+    complex128 m = this->material->get_refractive_index() /
+                   this->medium->get_refractive_index(), // Relative refractive index
+        mx = m * size_parameter;                         // Scaled size parameter for internal calculations
 
     // Precompute Bessel and Hankel functions up to max_order
-    std::vector<complex128>
-        J_z(max_order + 1),
-        J_z_p(max_order + 1),
-        J_x(max_order + 1),
-        J_x_p(max_order + 1),
-        H_x(max_order + 1),
-        H_x_p(max_order + 1);
+    std::vector<complex128> J_z(max_order + 1), J_z_p(max_order + 1), J_x(max_order + 1), J_x_p(max_order + 1),
+        H_x(max_order + 1), H_x_p(max_order + 1);
 
-    for (size_t order = 0; order < max_order + 1; ++order){
+    for (size_t order = 0; order < max_order + 1; ++order) {
         J_z[order] = Cylindrical_::Jn(order, mx);
         J_z_p[order] = Cylindrical_::Jnp(order, mx);
         J_x[order] = Cylindrical_::Jn(order, size_parameter);
@@ -95,16 +88,16 @@ void InfiniteCylinder::compute_an_bn(const size_t max_order) {
     }
 
     // Compute Mie coefficients a1n, a2n, b1n, b2n for each order
-    for (size_t order = 0; order < max_order; order++){
+    for (size_t order = 0; order < max_order; order++) {
         complex128 numerator_a = m * J_z[order] * J_x_p[order] - J_z_p[order] * J_x[order];
         complex128 denominator_a = m * J_z[order] * H_x_p[order] - J_z_p[order] * H_x[order];
-        this->a1n[order] = 0.0 ;
+        this->a1n[order] = 0.0;
         this->a2n[order] = numerator_a / denominator_a;
 
         complex128 numerator_b = J_z[order] * J_x_p[order] - m * J_z_p[order] * J_x[order];
         complex128 denominator_b = J_z[order] * H_x_p[order] - m * J_z_p[order] * H_x[order];
         this->b1n[order] = numerator_b / denominator_b;
-        this->b2n[order] = 0.0 ;
+        this->b2n[order] = 0.0;
     }
 }
 
@@ -123,21 +116,16 @@ void InfiniteCylinder::compute_cn_dn(const size_t max_order) {
     // complex128 m_tilde = this->medium_impedance / this->particle_impedance;
 
     // Precompute Bessel and Hankel functions
-    std::vector<complex128>
-        J_z(max_order + 1),
-        J_z_p(max_order + 1),
-        J_x(max_order + 1),
-        J_x_p(max_order + 1),
-        H_x(max_order + 1),
-        H_x_p(max_order + 1);
+    std::vector<complex128> J_z(max_order + 1), J_z_p(max_order + 1), J_x(max_order + 1), J_x_p(max_order + 1),
+        H_x(max_order + 1), H_x_p(max_order + 1);
 
-    for (size_t order = 0; order < max_order + 1; ++order){
-        J_z[order]  = Cylindrical_::Jn(order, mx);
-        J_z_p[order]= Cylindrical_::Jnp(order, mx);
-        J_x[order]  = Cylindrical_::Jn(order, size_parameter);
-        J_x_p[order]= Cylindrical_::Jnp(order, size_parameter);
-        H_x[order]  = Cylindrical_::H1n(order, size_parameter);
-        H_x_p[order]= Cylindrical_::H1np(order, size_parameter);
+    for (size_t order = 0; order < max_order + 1; ++order) {
+        J_z[order] = Cylindrical_::Jn(order, mx);
+        J_z_p[order] = Cylindrical_::Jnp(order, mx);
+        J_x[order] = Cylindrical_::Jn(order, size_parameter);
+        J_x_p[order] = Cylindrical_::Jnp(order, size_parameter);
+        H_x[order] = Cylindrical_::H1n(order, size_parameter);
+        H_x_p[order] = Cylindrical_::H1np(order, size_parameter);
     }
 
     // Compute internal coefficients c1n, c2n, d1n, d2n
@@ -146,40 +134,37 @@ void InfiniteCylinder::compute_cn_dn(const size_t max_order) {
         complex128 num_d1 = J_z[order] * H_x_p[order] - m * J_z_p[order] * H_x[order];
         complex128 den_d1 = J_z[order] * J_x_p[order] - m * J_z_p[order] * J_x[order];
         this->d1n[order] = num_d1 / den_d1;
-        this->c1n[order] = 0.0;  // Not used in TM polarization
+        this->c1n[order] = 0.0; // Not used in TM polarization
 
         // --- TE polarization (Mode II) ---
         complex128 num_c2 = m * J_z[order] * H_x_p[order] - J_z_p[order] * H_x[order];
         complex128 den_c2 = m * J_z[order] * J_x_p[order] - J_z_p[order] * J_x[order];
         this->c2n[order] = num_c2 / den_c2;
-        this->d2n[order] = 0.0;  // Not used in TE polarization
+        this->d2n[order] = 0.0; // Not used in TE polarization
     }
 }
 
-
 std::pair<std::vector<complex128>, std::vector<complex128>>
-InfiniteCylinder::compute_s1s2(const std::vector<double> &phi) const{
+InfiniteCylinder::compute_s1s2(const std::vector<double> &phi) const {
     std::vector<complex128> T1(phi.size()), T2(phi.size());
 
-    for (size_t i = 0; i < phi.size(); i++){
+    for (size_t i = 0; i < phi.size(); i++) {
         T1[i] = this->b1n[0];
         T2[i] = this->a2n[0];
-        for (size_t order = 1; order < max_order ; order++){
-            T1[i] += 2.0 * this->b1n[order] * cos(order * (Constants::PI - (phi[i] + Constants::PI/2.0) ) );
-            T2[i] += 2.0 * this->a2n[order] * cos(order * (Constants::PI - (phi[i] + Constants::PI/2.0) ) );
+        for (size_t order = 1; order < max_order; order++) {
+            T1[i] += 2.0 * this->b1n[order] * cos(order * (Constants::PI - (phi[i] + Constants::PI / 2.0)));
+            T2[i] += 2.0 * this->a2n[order] * cos(order * (Constants::PI - (phi[i] + Constants::PI / 2.0)));
         }
     }
 
     return std::make_pair(std::move(T1), std::move(T2));
 }
 
-
-std::vector<complex128>
-InfiniteCylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
+std::vector<complex128> InfiniteCylinder::compute_dn(double nmx, complex128 z) const { // Page 205 of BH
     std::vector<complex128> Dn(nmx, 0.0);
 
     for (double n = nmx - 1; n > 0; n--)
-        Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
+        Dn[n - 1] = n / z - (1. / (Dn[n] + n / z));
 
     return Dn;
 }
@@ -189,51 +174,43 @@ using C = complex128;
 
 C i_to_n(const std::size_t n) {
     switch (n & 3u) {
-        case 0u: return C{1.0, 0.0};
-        case 1u: return C{0.0, 1.0};
-        case 2u: return C{-1.0, 0.0};
-        default: return C{0.0, -1.0};
+    case 0u:
+        return C{1.0, 0.0};
+    case 1u:
+        return C{0.0, 1.0};
+    case 2u:
+        return C{-1.0, 0.0};
+    default:
+        return C{0.0, -1.0};
     }
 }
 
-C radial_value(const std::size_t n, const C& argument, const bool hankel) {
-    return hankel
-        ? Cylindrical_::H1n(static_cast<double>(n), argument)
-        : Cylindrical_::Jn(static_cast<double>(n), argument);
+C radial_value(const std::size_t n, const C &argument, const bool hankel) {
+    return hankel ? Cylindrical_::H1n(static_cast<double>(n), argument)
+                  : Cylindrical_::Jn(static_cast<double>(n), argument);
 }
 
-C radial_derivative(const std::size_t n, const C& argument, const bool hankel) {
-    return hankel
-        ? Cylindrical_::H1np(static_cast<double>(n), argument)
-        : Cylindrical_::Jnp(static_cast<double>(n), argument);
+C radial_derivative(const std::size_t n, const C &argument, const bool hankel) {
+    return hankel ? Cylindrical_::H1np(static_cast<double>(n), argument)
+                  : Cylindrical_::Jnp(static_cast<double>(n), argument);
 }
 
-std::vector<C> internal_coefficients(
-    const std::vector<C>& scattering_coefficients,
-    const C& external_argument,
-    const C& internal_argument
-) {
+std::vector<C> internal_coefficients(const std::vector<C> &scattering_coefficients, const C &external_argument,
+                                     const C &internal_argument) {
     std::vector<C> coefficients(scattering_coefficients.size());
     for (std::size_t n = 0; n < scattering_coefficients.size(); ++n) {
-        const C external_field =
-            radial_value(n, external_argument, false) +
-            -scattering_coefficients[n] * radial_value(n, external_argument, true);
+        const C external_field = radial_value(n, external_argument, false) +
+                                 -scattering_coefficients[n] * radial_value(n, external_argument, true);
         coefficients[n] = external_field / radial_value(n, internal_argument, false);
     }
     return coefficients;
 }
 
-std::vector<C> evaluate_cylinder_fields(
-    const InfiniteCylinder& scatterer,
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    const std::vector<double>& z,
-    const std::string& field_type,
-    const std::shared_ptr<BaseSource>& source,
-    const bool scattered_only
-) {
-    if (field_type != "Ex" && field_type != "Ey" &&
-        field_type != "Ez" && field_type != "|E|") {
+std::vector<C> evaluate_cylinder_fields(const InfiniteCylinder &scatterer, const std::vector<double> &x,
+                                        const std::vector<double> &y, const std::vector<double> &z,
+                                        const std::string &field_type, const std::shared_ptr<BaseSource> &source,
+                                        const bool scattered_only) {
+    if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" && field_type != "|E|") {
         throw std::invalid_argument("Invalid field_type. Must be one of: Ex, Ey, Ez, |E|");
     }
     if (x.size() != y.size() || x.size() != z.size()) {
@@ -253,10 +230,10 @@ std::vector<C> evaluate_cylinder_fields(
 
     // The cylinder implementation uses a2n for transverse electric
     // polarization (Ex/Ez) and b1n for the axial electric mode (Ey).
-    const auto internal_transverse = internal_coefficients(
-        scatterer.a2n, external_radius_argument, internal_radius_argument);
-    const auto internal_parallel = internal_coefficients(
-        scatterer.b1n, external_radius_argument, internal_radius_argument);
+    const auto internal_transverse =
+        internal_coefficients(scatterer.a2n, external_radius_argument, internal_radius_argument);
+    const auto internal_parallel =
+        internal_coefficients(scatterer.b1n, external_radius_argument, internal_radius_argument);
 
     std::vector<C> values(x.size(), C{0.0, 0.0});
 
@@ -293,8 +270,7 @@ std::vector<C> evaluate_cylinder_fields(
             } else if (field_type == "Ez") {
                 values[point] = ez;
             } else {
-                values[point] = std::sqrt(
-                    std::norm(ex) + std::norm(ey) + std::norm(ez));
+                values[point] = std::sqrt(std::norm(ex) + std::norm(ey) + std::norm(ez));
             }
             continue;
         }
@@ -309,13 +285,11 @@ std::vector<C> evaluate_cylinder_fields(
             // axis (Ey).
             C tm_value{};
             if (inside) {
-                tm_value = internal_parallel[n] * radial_value(
-                    n, relative_index * argument, false);
+                tm_value = internal_parallel[n] * radial_value(n, relative_index * argument, false);
             } else if (scattered_only) {
                 tm_value = -scatterer.b1n[n] * radial_value(n, argument, true);
             } else {
-                tm_value = radial_value(n, argument, false) +
-                    -scatterer.b1n[n] * radial_value(n, argument, true);
+                tm_value = radial_value(n, argument, false) + -scatterer.b1n[n] * radial_value(n, argument, true);
             }
             ey += angular_phase * angular_cos * tm_value;
 
@@ -331,26 +305,22 @@ std::vector<C> evaluate_cylinder_fields(
             C te_derivative{};
             C te_factor = e0x;
             if (inside) {
-                te_value = internal_transverse[n] * radial_value(
-                    n, relative_index * argument, false);
-                te_derivative = internal_transverse[n] * radial_derivative(
-                    n, relative_index * argument, false);
+                te_value = internal_transverse[n] * radial_value(n, relative_index * argument, false);
+                te_derivative = internal_transverse[n] * radial_derivative(n, relative_index * argument, false);
                 te_factor /= relative_index;
             } else if (scattered_only) {
                 te_value = -scatterer.a2n[n] * radial_value(n, argument, true);
                 te_derivative = -scatterer.a2n[n] * radial_derivative(n, argument, true);
             } else {
-                te_value = radial_value(n, argument, false) +
-                    -scatterer.a2n[n] * radial_value(n, argument, true);
-                te_derivative = radial_derivative(n, argument, false) +
-                    -scatterer.a2n[n] * radial_derivative(n, argument, true);
+                te_value = radial_value(n, argument, false) + -scatterer.a2n[n] * radial_value(n, argument, true);
+                te_derivative =
+                    radial_derivative(n, argument, false) + -scatterer.a2n[n] * radial_derivative(n, argument, true);
             }
 
             const C radial_argument = inside ? relative_index * argument : argument;
-            const C e_rho = te_factor * angular_phase *
-                i_unit * (-static_cast<double>(n) * angular_sin) * te_value / radial_argument;
-            const C e_phi = te_factor * angular_phase *
-                (-i_unit) * angular_cos * te_derivative;
+            const C e_rho = te_factor * angular_phase * i_unit * (-static_cast<double>(n) * angular_sin) * te_value /
+                            radial_argument;
+            const C e_phi = te_factor * angular_phase * (-i_unit) * angular_cos * te_derivative;
 
             ex += e_rho * std::sin(phi) + e_phi * std::cos(phi);
             ez += e_rho * std::cos(phi) - e_phi * std::sin(phi);
@@ -365,33 +335,58 @@ std::vector<C> evaluate_cylinder_fields(
         } else if (field_type == "Ez") {
             values[point] = ez;
         } else {
-            values[point] = std::sqrt(
-                std::norm(ex) + std::norm(ey) + std::norm(ez));
+            values[point] = std::sqrt(std::norm(ex) + std::norm(ey) + std::norm(ez));
         }
     }
 
     return values;
 }
-}
+} // namespace
 
-std::vector<complex128> InfiniteCylinder::get_total_nearfields(
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    const std::vector<double>& z,
-    const std::string& field_type,
-    const std::shared_ptr<BaseSource>& source
-) {
+std::vector<complex128> InfiniteCylinder::get_total_nearfields(const std::vector<double> &x,
+                                                               const std::vector<double> &y,
+                                                               const std::vector<double> &z,
+                                                               const std::string &field_type,
+                                                               const std::shared_ptr<BaseSource> &source) {
     this->compute_an_bn(this->max_order);
     return evaluate_cylinder_fields(*this, x, y, z, field_type, source, false);
 }
 
-std::vector<complex128> InfiniteCylinder::get_scattered_nearfields(
-    const std::vector<double>& x,
-    const std::vector<double>& y,
-    const std::vector<double>& z,
-    const std::string& field_type,
-    const std::shared_ptr<BaseSource>& source
-) {
+std::vector<complex128> InfiniteCylinder::get_scattered_nearfields(const std::vector<double> &x,
+                                                                   const std::vector<double> &y,
+                                                                   const std::vector<double> &z,
+                                                                   const std::string &field_type,
+                                                                   const std::shared_ptr<BaseSource> &source) {
     this->compute_an_bn(this->max_order);
     return evaluate_cylinder_fields(*this, x, y, z, field_type, source, true);
+}
+
+std::string InfiniteCylinder::properties_table(int precision) const {
+    std::string output;
+
+    const double radius_m = 0.5 * this->diameter;
+
+    // If you already store cross_section, use it; otherwise compute consistent with your code.
+    // Your docstring says compute_cross_section() is pi*(d/2)^2, so:
+    const double cross_section_m2 = Constants::PI * radius_m * radius_m;
+
+    append_property_format(output, "\n");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "property", precision, 0.0, "unit");
+    append_property_format(output, "-----------------|--------------------|------\n");
+
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "size_parameter", precision, this->size_parameter, "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "radius", precision, radius_m, "m");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "cross_section", precision, cross_section_m2, "m^2");
+
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qsca", precision, this->get_Qsca(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qext", precision, this->get_Qext(), "");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Qabs", precision, this->get_Qabs(), "");
+
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Csca", precision, this->get_Csca(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cext", precision, this->get_Cext(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cabs", precision, this->get_Cabs(), "m^2");
+
+    append_property_format(output, "\n");
+
+    return output;
 }
