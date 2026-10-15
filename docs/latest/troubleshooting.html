@@ -602,16 +602,20 @@ convert it before passing it to PyMieSim.</p>
 </section>
 <section id="material-wavelength-ranges">
 <h2>Material wavelength ranges<a class="headerlink" href="#material-wavelength-ranges" title="Link to this heading">#</a></h2>
-<p>Built-in and tabulated materials declare a wavelength range. The practical
-material helpers default to strict range checking:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_material</span>
+<p>Catalog and measured materials declare a wavelength range. Conversion defaults
+to strict native range checking:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">PyOptik</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_pyoptik</span>
 
-<span class="n">material</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="s2">"BK7"</span><span class="p">)</span>
+<span class="n">material</span> <span class="o">=</span> <span class="n">from_pyoptik</span><span class="p">(</span>
+    <span class="n">PyOptik</span><span class="o">.</span><span class="n">load_material</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"specs/SCHOTT-optical/P-BK7"</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
-<p>Use <code class="docutils literal notranslate"><span class="pre">extrapolation=&quot;linear&quot;</span></code> only when endpoint-slope extrapolation is
-physically justified. <code class="docutils literal notranslate"><span class="pre">validate_material</span></code> and <code class="docutils literal notranslate"><span class="pre">validate_wavelength</span></code> can
-be used to diagnose range and passivity problems.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">extrapolation=&quot;linear&quot;</span></code> only when extending the tabulated endpoint slope
+or evaluating a formula beyond its source range is physically justified.
+PyOptik owns validation and catalog selection. See <a class="reference internal" href="code/material.html"><span class="doc">Materials</span></a> for
+canonical catalog IDs and native solver constraints.</p>
 </section>
 <section id="coupling-errors">
 <h2>Coupling errors<a class="headerlink" href="#coupling-errors" title="Link to this heading">#</a></h2>

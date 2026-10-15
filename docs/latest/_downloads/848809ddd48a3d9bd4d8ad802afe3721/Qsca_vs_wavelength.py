@@ -3,6 +3,9 @@ Sphere: Qsca vs wavelength
 ==========================
 
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -11,12 +14,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    SellmeierMaterial,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
@@ -29,7 +29,7 @@ source = GaussianSet(
     numerical_aperture=[0.2],
 )
 
-bk7 = SellmeierMaterial(material_name="BK7")
+bk7 = from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))
 
 scatterer = SphereSet(
     diameter=[200] * ureg.nanometer,

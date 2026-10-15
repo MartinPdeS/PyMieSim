@@ -35,16 +35,10 @@ Sphere: Qsca vs wavelength STD
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'scatterer:material') (200, 10, 3)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575c6af650>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575c087510>, <matplotlib.lines.Line2D object at 0x7f575e95c2d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575e95d710>, <matplotlib.lines.Line2D object at 0x7f575be67d90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575be66cd0>]
+    [<matplotlib.lines.Line2D object at 0x7f3d57f1a950>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57f1b650>, <matplotlib.lines.Line2D object at 0x7f3d57f65750>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57f662d0>, <matplotlib.lines.Line2D object at 0x7f3d57f72d90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57f72fd0>]
 
 
 
@@ -54,6 +48,9 @@ Sphere: Qsca vs wavelength STD
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy as np
     from PyMieSim import (
         Measure,
@@ -62,26 +59,23 @@ Sphere: Qsca vs wavelength STD
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        TabulatedMaterial,
     )
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[0.0] * ureg.degree,
     )
 
     source = GaussianSet(
-        wavelength=np.linspace(200, 1800, 200) * ureg.nanometer,
+        wavelength=np.linspace(400, 1800, 200) * ureg.nanometer,
         polarization=polarization_set,
         optical_power=[1e-3] * ureg.watt,
         numerical_aperture=[0.2],
     )
 
-    silver = TabulatedMaterial(material_name="silver")
-    gold = TabulatedMaterial(material_name="gold")
+    silver = from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))
+    gold = from_pyoptik(PyOptik.load_material(name="main/Au/Olmon-ev"))
 
     scatterer = SphereSet(
         diameter=np.linspace(400, 1400, 10) * ureg.nanometer,
@@ -102,7 +96,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.405 seconds)
+   **Total running time of the script:** (0 minutes 2.407 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength_std.py:

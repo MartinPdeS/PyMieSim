@@ -3,6 +3,9 @@ Sphere: Qsca vs wavelength STD
 ==============================
 
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -11,26 +14,23 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    TabulatedMaterial,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[0.0] * ureg.degree,
 )
 
 source = GaussianSet(
-    wavelength=np.linspace(200, 1800, 200) * ureg.nanometer,
+    wavelength=np.linspace(400, 1800, 200) * ureg.nanometer,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
 )
 
-silver = TabulatedMaterial(material_name="silver")
-gold = TabulatedMaterial(material_name="gold")
+silver = from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))
+gold = from_pyoptik(PyOptik.load_material(name="main/Au/Olmon-ev"))
 
 scatterer = SphereSet(
     diameter=np.linspace(400, 1400, 10) * ureg.nanometer,

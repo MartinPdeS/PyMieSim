@@ -35,16 +35,10 @@ Sphere: Coupling vs polarization filter
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('scatterer:diameter', 'scatterer:material', 'detector:polarization_filter') (20, 2, 100)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575c07b790>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575bb46dd0>, <matplotlib.lines.Line2D object at 0x7f575b70ced0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575bb47810>]
+    [<matplotlib.lines.Line2D object at 0x7f3d56d40850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57c687d0>, <matplotlib.lines.Line2D object at 0x7f3d57cfc6d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57cfcf90>]
 
 
 
@@ -54,6 +48,9 @@ Sphere: Coupling vs polarization filter
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy as np
     from PyMieSim import (
         Measure,
@@ -63,12 +60,9 @@ Sphere: Coupling vs polarization filter
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
     )
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[0] * ureg.radian
@@ -83,7 +77,7 @@ Sphere: Coupling vs polarization filter
 
     scatterer = SphereSet(
         diameter=np.linspace(1000, 1200, 20) * ureg.nanometer,
-        material=[SellmeierMaterial(material_name="BK7"), SellmeierMaterial(material_name="water")],
+        material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7")), from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"))],
         medium=[1],
     )
 
@@ -107,7 +101,7 @@ Sphere: Coupling vs polarization filter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.948 seconds)
+   **Total running time of the script:** (0 minutes 3.135 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_filter.py:

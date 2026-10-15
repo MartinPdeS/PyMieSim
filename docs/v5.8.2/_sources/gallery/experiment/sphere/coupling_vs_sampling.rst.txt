@@ -21,7 +21,7 @@
 Sphere: Coupling vs sampling
 ============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-58
+.. GENERATED FROM PYTHON SOURCE LINES 6-57
 
 
 
@@ -35,16 +35,10 @@ Sphere: Coupling vs sampling
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('detector:sampling', 'detector:phi_offset') (4, 400)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575b7087d0>, <matplotlib.lines.Line2D object at 0x7f575b708b10>, <matplotlib.lines.Line2D object at 0x7f575c01df10>, <matplotlib.lines.Line2D object at 0x7f575c01e010>]
+    [<matplotlib.lines.Line2D object at 0x7f3d56e4af90>, <matplotlib.lines.Line2D object at 0x7f3d56dc1b50>, <matplotlib.lines.Line2D object at 0x7f3d56dc03d0>, <matplotlib.lines.Line2D object at 0x7f3d56dc1cd0>]
 
 
 
@@ -54,6 +48,9 @@ Sphere: Coupling vs sampling
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy
     from PyMieSim import (
         Measure,
@@ -63,14 +60,10 @@ Sphere: Coupling vs sampling
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
-        SellmeierMedium,
     )
 
 
 
-    print_available()
 
 
     polarization_set = PolarizationSet(
@@ -86,8 +79,8 @@ Sphere: Coupling vs sampling
 
     scatterer = SphereSet(
         diameter=[5000] * ureg.nanometer,
-        material=[SellmeierMaterial(material_name="BK7")],
-        medium=[SellmeierMedium(material_name="water")],
+        material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
+        medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
     )
 
     detector = PhotodiodeSet(
@@ -110,7 +103,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.506 seconds)
+   **Total running time of the script:** (0 minutes 2.604 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_sampling.py:

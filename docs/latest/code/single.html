@@ -681,9 +681,9 @@ PyMieSim scattering engine.</p>
 internally to meters.</p></li>
 <li><p><strong>shell_thickness</strong> (<em>pint.Quantity</em>) – Thickness of the shell surrounding the core. The value is
 converted internally to meters.</p></li>
-<li><p><strong>core_material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Core material model, or a constant complex refractive index.</p></li>
-<li><p><strong>shell_material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Shell material model, or a constant complex refractive index.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive index.</p></li>
+<li><p><strong>core_material</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em> or </em><em>complex</em>) – Core material model, or a constant complex refractive index.</p></li>
+<li><p><strong>shell_material</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em> or </em><em>complex</em>) – Shell material model, or a constant complex refractive index.</p></li>
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive index.</p></li>
 <li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum multipole order used in the Mie expansion. If zero,
 the implementation chooses an appropriate truncation order.</p></li>
 </ul>
@@ -866,9 +866,9 @@ used by the PyMieSim scattering engine.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diameter</strong> (<em>pint.Quantity</em>) – Cylinder diameter. The value is converted internally to
 meters.</p></li>
-<li><p><strong>material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Cylinder material model, or a constant complex refractive
+<li><p><strong>material</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em> or </em><em>complex</em>) – Cylinder material model, or a constant complex refractive
 index.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive
 index.</p></li>
 <li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum expansion order used in the cylindrical Mie
 calculation. If zero, the implementation chooses an
@@ -1017,8 +1017,8 @@ scattering engine.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>diameter</strong> (<em>pint.Quantity</em>) – Sphere diameter. The value is converted internally to meters.</p></li>
-<li><p><strong>material</strong> (<em>BaseMaterial</em><em> or </em><em>complex</em>) – Sphere material model, or a constant complex refractive index.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive index.</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em> or </em><em>complex</em>) – Sphere material model, or a constant complex refractive index.</p></li>
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em> or </em><em>float</em>) – Surrounding medium model, or a constant real refractive index.</p></li>
 <li><p><strong>max_order</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum multipole order used in the Mie expansion. If zero,
 the implementation chooses an appropriate truncation order.</p></li>
 </ul>
@@ -1192,7 +1192,7 @@ aperture, obscuration cache, and polarization filtering.</p>
 <li><p><strong>phi_offset</strong> (<em>pint.Quantity</em>) – Azimuthal orientation offset.</p></li>
 <li><p><strong>gamma_offset</strong> (<em>pint.Quantity</em>) – Polar orientation offset.</p></li>
 <li><p><strong>rotation</strong> (<em>pint.Quantity</em>) – Rotation of the detector mode field.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Surrounding medium. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant refractive index
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em> or </em><em>float</em><em>, </em><em>optional</em>) – Surrounding medium. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant refractive index
 of 1.0 is used.</p></li>
 <li><p><strong>cache_numerical_aperture</strong> (<em>float</em><em>, </em><em>optional</em>) – Numerical aperture of the central obscuration cache.</p></li>
 <li><p><strong>polarization_filter</strong> (<a class="reference internal" href="polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.polarization.PolarizationState"><em>PolarizationState</em></a><em>, </em><em>optional</em>) – Polarization filter applied before coherent projection.</p></li>
@@ -1283,7 +1283,7 @@ optional obscuration cache, and polarization filter.</p>
 <li><p><strong>numerical_aperture</strong> (<em>float</em>) – Numerical aperture defining the detector collection angle.</p></li>
 <li><p><strong>phi_offset</strong> (<em>pint.Quantity</em>) – Azimuthal orientation offset.</p></li>
 <li><p><strong>gamma_offset</strong> (<em>pint.Quantity</em>) – Polar orientation offset.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Surrounding medium. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant refractive index
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em> or </em><em>float</em><em>, </em><em>optional</em>) – Surrounding medium. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant refractive index
 of 1.0 is used.</p></li>
 <li><p><strong>polarization_filter</strong> (<a class="reference internal" href="polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.polarization.PolarizationState"><em>PolarizationState</em></a><em>, </em><em>optional</em>) – Polarization filter applied before detection.</p></li>
 <li><p><strong>cache_numerical_aperture</strong> (<em>float</em><em>, </em><em>optional</em>) – Numerical aperture of the central obscuration cache.</p></li>

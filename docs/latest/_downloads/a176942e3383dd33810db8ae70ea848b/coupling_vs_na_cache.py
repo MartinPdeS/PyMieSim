@@ -5,6 +5,9 @@ CoreShell: Coupling vs Diameter
 This example demonstrates how to compute and visualize the coupling efficiency as a function of core diameter for CoreShell scatterers using PyMieSim.
 """
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
@@ -16,9 +19,6 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    SellmeierMaterial,
-    TabulatedMaterial,
-    SellmeierMedium,
 )
 
 
@@ -36,9 +36,9 @@ source = GaussianSet(
 scatterer = CoreShellSet(
     core_diameter=[1000, 1250, 1500] * ureg.nanometer,
     shell_thickness=[800] * ureg.nanometer,
-    core_material=[TabulatedMaterial(material_name="silver")],
-    shell_material=[SellmeierMaterial(material_name="BK7")],
-    medium=[SellmeierMedium(material_name="water")],
+    core_material=[from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))],
+    shell_material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
+    medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
 )
 
 detector = PhotodiodeSet(

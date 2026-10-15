@@ -35,16 +35,10 @@ Sphere: Goniometer
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('source:wavelength', 'detector:NA', 'detector:phi_offset') (2, 3, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575bf00850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575bf01010>, <matplotlib.lines.Line2D object at 0x7f575b78f650>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575b78e690>]
+    [<matplotlib.lines.Line2D object at 0x7f3d569e1e10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d56844a10>, <matplotlib.lines.Line2D object at 0x7f3d56845b50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d56844f50>]
 
 
 
@@ -54,6 +48,9 @@ Sphere: Goniometer
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     from PyMieSim import (
         Measure,
         ureg,
@@ -62,13 +59,10 @@ Sphere: Goniometer
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
     )
     import numpy
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[90.0] * ureg.degree,
@@ -82,7 +76,7 @@ Sphere: Goniometer
     )
     scatterer = SphereSet(
         diameter=[1000] * ureg.nanometer,
-        material=[SellmeierMaterial(material_name="BK7")],
+        material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
         medium=[1],
     )
 
@@ -106,7 +100,7 @@ Sphere: Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.384 seconds)
+   **Total running time of the script:** (0 minutes 1.445 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_phioffset.py:

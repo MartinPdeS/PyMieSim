@@ -4,6 +4,9 @@ InfiniteCylinder: Qabs vs Diameter
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -12,12 +15,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    TabulatedMaterial,
 )
 
 
-print_available()
 
 
 polarization_set = PolarizationSet(
@@ -33,7 +33,7 @@ source = GaussianSet(
 
 scatterer = InfiniteCylinderSet(
     diameter=np.linspace(1, 800, 300) * ureg.nanometer,
-    material=[TabulatedMaterial(material_name="silver"), TabulatedMaterial(material_name="gold"), TabulatedMaterial(material_name="aluminium")],
+    material=[from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson")), from_pyoptik(PyOptik.load_material(name="main/Au/Olmon-ev")), from_pyoptik(PyOptik.load_material(name="main/Al/Rakic"))],
     medium=[1],
 )
 

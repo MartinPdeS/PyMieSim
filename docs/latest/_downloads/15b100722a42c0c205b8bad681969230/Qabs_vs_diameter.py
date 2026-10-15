@@ -3,6 +3,9 @@ Sphere: Qabs vs diameter
 ========================
 
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -11,12 +14,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    TabulatedMaterial,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[0] * ureg.degree
@@ -29,7 +29,7 @@ source = GaussianSet(
     numerical_aperture=[0.2],
 )
 
-silver = TabulatedMaterial(material_name="silver")
+silver = from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))
 
 scatterer = SphereSet(
     diameter=np.linspace(1, 800, 300) * ureg.nanometer,

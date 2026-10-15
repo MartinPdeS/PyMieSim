@@ -35,16 +35,10 @@ Sphere: Coherent Goniometer
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 300)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575e8ea2d0>, <matplotlib.lines.Line2D object at 0x7f575e966490>, <matplotlib.lines.Line2D object at 0x7f575c0ec6d0>, <matplotlib.lines.Line2D object at 0x7f575c0ef490>]
+    [<matplotlib.lines.Line2D object at 0x7f3d57003210>, <matplotlib.lines.Line2D object at 0x7f3d57003810>, <matplotlib.lines.Line2D object at 0x7f3d57003fd0>, <matplotlib.lines.Line2D object at 0x7f3d5706b710>]
 
 
 
@@ -54,6 +48,9 @@ Sphere: Coherent Goniometer
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy
     from PyMieSim import (
         Measure,
@@ -63,12 +60,9 @@ Sphere: Coherent Goniometer
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
     )
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[90.0] * ureg.degree,
@@ -82,7 +76,7 @@ Sphere: Coherent Goniometer
     )
     scatterer = SphereSet(
         diameter=[2000] * ureg.nanometer,
-        material=[SellmeierMaterial(material_name="BK7")],
+        material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
         medium=[1],
     )
 
@@ -108,7 +102,7 @@ Sphere: Coherent Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.480 seconds)
+   **Total running time of the script:** (0 minutes 1.528 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_phioffset.py:

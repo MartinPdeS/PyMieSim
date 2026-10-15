@@ -641,22 +641,18 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="sphere-coherent-goniometer">
 <span id="sphx-glr-gallery-experiment-sphere-coherent-coupling-vs-phioffset-py"></span><h1>Sphere: Coherent Goniometer<a class="headerlink" href="#sphere-coherent-goniometer" title="Link to this heading">#</a></h1>
-<img src="../../../_images/sphx_glr_coherent_coupling_vs_phioffset_001.png" srcset="../../../_images/sphx_glr_coherent_coupling_vs_phioffset_001.png" alt="coherent coupling vs phioffset" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-aluminium      tabulated  main/Al/Rakic
-fused_silica   sellmeier  main/SiO2/Malitson
-gold           tabulated  main/Au/Olmon-ev
-silver         tabulated  main/Ag/Johnson
-water          sellmeier  main/H2O/Daimon-19.0C
-Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 300)
+<img src="../../../_images/sphx_glr_coherent_coupling_vs_phioffset_001.png" srcset="../../../_images/sphx_glr_coherent_coupling_vs_phioffset_001.png" alt="coherent coupling vs phioffset" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 300)
 Measure units: {'coupling': &lt;Unit('watt')&gt;}
 
-[&lt;matplotlib.lines.Line2D object at 0x7f575e8ea2d0&gt;, &lt;matplotlib.lines.Line2D object at 0x7f575e966490&gt;, &lt;matplotlib.lines.Line2D object at 0x7f575c0ec6d0&gt;, &lt;matplotlib.lines.Line2D object at 0x7f575c0ef490&gt;]
+[&lt;matplotlib.lines.Line2D object at 0x7f3d57003210&gt;, &lt;matplotlib.lines.Line2D object at 0x7f3d57003810&gt;, &lt;matplotlib.lines.Line2D object at 0x7f3d57003fd0&gt;, &lt;matplotlib.lines.Line2D object at 0x7f3d5706b710&gt;]
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-function reference internal" href="../../../code/material.html#PyMieSim.from_pyoptik" title="PyMieSim.from_pyoptik"><span class="n">from_pyoptik</span></a><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w">
 </span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
 </span>    <span class="n">Measure</span><span class="p">,</span><span class="w">
 </span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
@@ -665,12 +661,9 @@ Measure units: {'coupling': &lt;Unit('watt')&gt;}
 </span>    <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">Experiment</span><span class="p">,</span><span class="w">
-</span>    <span class="n">print_available</span><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../../code/material.html#PyMieSim.material.SellmeierMaterial" title="PyMieSim.SellmeierMaterial"><span class="n">SellmeierMaterial</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="w">
-</span><span class="n">print_available</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">polarization_set</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">angles</span><span class="o">=</span><span class="p">[</span><span class="mf">90.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
@@ -684,7 +677,7 @@ Measure units: {'coupling': &lt;Unit('watt')&gt;}
 </span><span class="p">)</span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">scatterer</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">SphereSet</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">diameter</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
-</span>    <span class="n">material</span><span class="o">=</span><span class="p">[</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../../code/material.html#PyMieSim.material.SellmeierMaterial" title="PyMieSim.SellmeierMaterial"><span class="n">SellmeierMaterial</span></a><span class="p">(</span><span class="n">material_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">BK7</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">material</span><span class="o">=</span><span class="p">[</span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-function reference internal" href="../../../code/material.html#PyMieSim.from_pyoptik" title="PyMieSim.from_pyoptik"><span class="n">from_pyoptik</span></a><span class="p">(</span><span class="n">PyOptik</span><span class="o">.</span><span class="n">load_material</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">specs/SCHOTT-optical/P-BK7</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">)</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
@@ -707,7 +700,7 @@ Measure units: {'coupling': &lt;Unit('watt')&gt;}
 </span><span class="w">
 </span><span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">detector:phi_offset</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.480 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.528 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-coherent-coupling-vs-phioffset-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/0d89038f8e82beb48035cecad84beb20/coherent_coupling_vs_phioffset.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coherent_coupling_vs_phioffset.ipynb</span></code></a></p>

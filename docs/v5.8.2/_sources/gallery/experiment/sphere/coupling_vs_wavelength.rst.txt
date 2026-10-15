@@ -21,7 +21,7 @@
 Sphere: Coupling vs wavelength
 ==============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-58
+.. GENERATED FROM PYTHON SOURCE LINES 5-57
 
 
 
@@ -35,16 +35,10 @@ Sphere: Coupling vs wavelength
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'detector:NA', 'detector:polarization_filter') (200, 10, 2, 2)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575c011cd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575c511c90>, <matplotlib.lines.Line2D object at 0x7f575e909410>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575e90afd0>, <matplotlib.lines.Line2D object at 0x7f575c0ac190>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575c0ad550>, <matplotlib.lines.Line2D object at 0x7f575c0ad710>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f575c04d2d0>]
+    [<matplotlib.lines.Line2D object at 0x7f3d56aefed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d56a33450>, <matplotlib.lines.Line2D object at 0x7f3d56a31850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57cb2110>, <matplotlib.lines.Line2D object at 0x7f3d573a01d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d573a32d0>, <matplotlib.lines.Line2D object at 0x7f3d573a0750>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f3d57ee4210>]
 
 
 
@@ -54,6 +48,9 @@ Sphere: Coupling vs wavelength
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy as np
     from PyMieSim import (
         Measure,
@@ -63,13 +60,9 @@ Sphere: Coupling vs wavelength
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
-        SellmeierMedium,
     )
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[0.0] * ureg.degree,
@@ -84,7 +77,7 @@ Sphere: Coupling vs wavelength
 
     scatterer = SphereSet(
         diameter=np.linspace(1400, 1500, 10) * ureg.nanometer,
-        material=[SellmeierMaterial(material_name="BK7")],
+        material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
         medium=[1],
     )
 
@@ -96,7 +89,7 @@ Sphere: Coupling vs wavelength
         polarization_filter=[0, 90] * ureg.degree,
         rotation=[0] * ureg.degree,
         sampling=[300],
-        medium=[SellmeierMedium(material_name="water")]
+        medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)]
     )
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
@@ -111,7 +104,7 @@ Sphere: Coupling vs wavelength
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.375 seconds)
+   **Total running time of the script:** (0 minutes 3.599 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_wavelength.py:

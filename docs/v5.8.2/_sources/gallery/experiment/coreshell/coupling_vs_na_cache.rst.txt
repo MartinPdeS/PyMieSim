@@ -23,11 +23,26 @@ CoreShell: Coupling vs Diameter
 
 This example demonstrates how to compute and visualize the coupling efficiency as a function of core diameter for CoreShell scatterers using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
+.. GENERATED FROM PYTHON SOURCE LINES 7-11
+
+.. code-block:: Python
+
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 12-13
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-61
+.. GENERATED FROM PYTHON SOURCE LINES 13-61
 
 .. code-block:: Python
 
@@ -40,9 +55,6 @@ Importing the package dependencies: numpy, PyMieSim
         GaussianSet,
         PolarizationSet,
         Experiment,
-        SellmeierMaterial,
-        TabulatedMaterial,
-        SellmeierMedium,
     )
 
 
@@ -60,9 +72,9 @@ Importing the package dependencies: numpy, PyMieSim
     scatterer = CoreShellSet(
         core_diameter=[1000, 1250, 1500] * ureg.nanometer,
         shell_thickness=[800] * ureg.nanometer,
-        core_material=[TabulatedMaterial(material_name="silver")],
-        shell_material=[SellmeierMaterial(material_name="BK7")],
-        medium=[SellmeierMedium(material_name="water")],
+        core_material=[from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))],
+        shell_material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
+        medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
     )
 
     detector = PhotodiodeSet(
@@ -98,14 +110,14 @@ Importing the package dependencies: numpy, PyMieSim
     Result dimensions and shape: ('scatterer:core_diameter', 'detector:cache_NA') (3, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575c55ce50>, <matplotlib.lines.Line2D object at 0x7f575c55c650>, <matplotlib.lines.Line2D object at 0x7f575e950050>]
+    [<matplotlib.lines.Line2D object at 0x7f3d57fccf50>, <matplotlib.lines.Line2D object at 0x7f3d57fcf590>, <matplotlib.lines.Line2D object at 0x7f3d57fce510>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.601 seconds)
+   **Total running time of the script:** (0 minutes 3.788 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coupling_vs_na_cache.py:

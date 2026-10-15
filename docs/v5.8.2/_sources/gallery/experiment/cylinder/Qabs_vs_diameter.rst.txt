@@ -37,16 +37,10 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('measure', 'scatterer:diameter', 'scatterer:material') (3, 300, 3)
     Measure units: {'Qabs': <Unit('dimensionless')>, 'Qsca': <Unit('dimensionless')>, 'Qext': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575bd89e10>, <matplotlib.lines.Line2D object at 0x7f575bfa8c10>, <matplotlib.lines.Line2D object at 0x7f575bfa81d0>]
+    [<matplotlib.lines.Line2D object at 0x7f3d578cf1d0>, <matplotlib.lines.Line2D object at 0x7f3d56993950>, <matplotlib.lines.Line2D object at 0x7f3d56990990>]
 
 
 
@@ -56,6 +50,9 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy as np
     from PyMieSim import (
         Measure,
@@ -64,12 +61,9 @@ This example demonstrates how to compute and visualize the scattering efficiency
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        TabulatedMaterial,
     )
 
 
-    print_available()
 
 
     polarization_set = PolarizationSet(
@@ -85,7 +79,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     scatterer = InfiniteCylinderSet(
         diameter=np.linspace(1, 800, 300) * ureg.nanometer,
-        material=[TabulatedMaterial(material_name="silver"), TabulatedMaterial(material_name="gold"), TabulatedMaterial(material_name="aluminium")],
+        material=[from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson")), from_pyoptik(PyOptik.load_material(name="main/Au/Olmon-ev")), from_pyoptik(PyOptik.load_material(name="main/Al/Rakic"))],
         medium=[1],
     )
 
@@ -101,7 +95,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.458 seconds)
+   **Total running time of the script:** (0 minutes 3.613 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qabs_vs_diameter.py:

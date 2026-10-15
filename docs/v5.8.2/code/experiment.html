@@ -668,8 +668,8 @@ The mapping includes keys such as ‘source:wavelength’, ‘source:polarizatio
 <li><p><strong>target_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the size of the core_diameter vector after conversion.</p></li>
 <li><p><strong>core_diameter</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Diameter(s) of the core. Scalars or length 1 arrays broadcast to target_size.</p></li>
 <li><p><strong>shell_thickness</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Thickness(es) of the shell. Scalars or length 1 arrays broadcast to target_size.</p></li>
-<li><p><strong>core_material</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the core.</p></li>
-<li><p><strong>shell_material</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the shell.</p></li>
+<li><p><strong>core_material</strong> (<em>List</em><em>[</em><a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the core.</p></li>
+<li><p><strong>shell_material</strong> (<em>List</em><em>[</em><a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the shell.</p></li>
 <li><p><strong>medium</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
 </ul>
 </dd>
@@ -739,7 +739,7 @@ The mapping includes keys such as ‘scatterer:core_diameter’, ‘scatterer:sh
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>target_size</strong> (<em>int</em><em> or </em><em>None</em>) – Target size for broadcasting. If None, uses the size of the diameter vector after conversion.</p></li>
 <li><p><strong>diameter</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Diameter(s) of the cylinders. Scalars or length 1 arrays broadcast to target_size.</p></li>
-<li><p><strong>material</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the cylindrical scatterers themselves.</p></li>
+<li><p><strong>material</strong> (<em>List</em><em>[</em><a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the cylindrical scatterers themselves.</p></li>
 <li><p><strong>medium</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
 </ul>
 </dd>
@@ -799,7 +799,7 @@ The mapping includes keys such as ‘scatterer:diameter’, ‘scatterer:refract
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>target_size</strong> (<em>int</em>) – Target size for broadcasting. If None, uses the size of the diameter vector after conversion.</p></li>
 <li><p><strong>diameter</strong> (<em>Quantity</em><em> or </em><em>array-like Quantity</em>) – Diameter(s) of the spheres. Scalars or length 1 arrays broadcast to target_size.</p></li>
-<li><p><strong>material</strong> (<em>List</em><em>[</em><em>BaseMaterial</em><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
+<li><p><strong>material</strong> (<em>List</em><em>[</em><a class="reference internal" href="material.html#PyMieSim.material.BaseMaterial" title="PyMieSim.material.BaseMaterial"><em>BaseMaterial</em></a><em>] </em><em>| </em><em>List</em><em>[</em><em>RefractiveIndex</em><em>]</em>) – Refractive index or indices of the spherical scatterers themselves.</p></li>
 <li><p><strong>medium</strong> (<em>List</em><em>, </em><em>optional</em>) – BaseMaterial(s) defining the medium, used if <cite>medium_index</cite> is not provided.</p></li>
 </ul>
 </dd>
@@ -875,7 +875,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">0.0</spa
 detector. Default is <code class="docutils literal notranslate"><span class="pre">200</span></code>.</p></li>
 <li><p><strong>polarization_filter</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em><em>, </em><em>optional</em>) – Polarization analyzer angle. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the filter is
 disabled for all detectors.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em>, </em><em>MediumSet</em><em>, </em><em>float</em><em>, or </em><em>array-like</em><em>, </em><em>optional</em>) – Surrounding medium. This can be provided either as medium
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em>, </em><em>MediumSet</em><em>, </em><em>float</em><em>, or </em><em>array-like</em><em>, </em><em>optional</em>) – Surrounding medium. This can be provided either as medium
 objects or as refractive index values. Default is
 <code class="docutils literal notranslate"><span class="pre">ConstantMedium(1.0)</span></code>.</p></li>
 <li><p><strong>mean_coupling</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use mean coupling rather than mode resolved
@@ -1003,7 +1003,7 @@ detector. Default is <code class="docutils literal notranslate"><span class="pre
 Default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
 <li><p><strong>polarization_filter</strong> (<em>Angle</em><em> or </em><em>array-like</em><em> of </em><em>Angle</em><em>, </em><em>optional</em>) – Polarization analyzer angle. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the filter is
 disabled for all detectors.</p></li>
-<li><p><strong>medium</strong> (<em>BaseMedium</em><em>, </em><em>MediumSet</em><em>, </em><em>float</em><em>, or </em><em>array-like</em><em>, </em><em>optional</em>) – Surrounding medium. This can be provided either as medium
+<li><p><strong>medium</strong> (<a class="reference internal" href="material.html#PyMieSim.material.BaseMedium" title="PyMieSim.material.BaseMedium"><em>BaseMedium</em></a><em>, </em><em>MediumSet</em><em>, </em><em>float</em><em>, or </em><em>array-like</em><em>, </em><em>optional</em>) – Surrounding medium. This can be provided either as medium
 objects or as refractive index values. Default is
 <code class="docutils literal notranslate"><span class="pre">ConstantMedium(1.0)</span></code>.</p></li>
 <li><p><strong>angular_weights</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Explicit complex angular weight vectors for each sequential

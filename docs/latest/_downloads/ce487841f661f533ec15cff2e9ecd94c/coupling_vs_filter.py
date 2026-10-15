@@ -2,6 +2,9 @@
 Sphere: Coupling vs polarization filter
 =======================================
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy as np
 from PyMieSim import (
     Measure,
@@ -11,12 +14,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    SellmeierMaterial,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[0] * ureg.radian
@@ -31,7 +31,7 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=np.linspace(1000, 1200, 20) * ureg.nanometer,
-    material=[SellmeierMaterial(material_name="BK7"), SellmeierMaterial(material_name="water")],
+    material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7")), from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"))],
     medium=[1],
 )
 

@@ -5,16 +5,18 @@ S1 S2 Function Computation
 This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.
 """
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 from PyMieSim import (
     ureg,
     InfiniteCylinder,
     Gaussian,
     PolarizationState,
-    SellmeierMaterial,
     Simulation,
 )
 
-bk7 = SellmeierMaterial(material_name="BK7")
+bk7 = from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))
 
 polarization_state = PolarizationState(angle=0 * ureg.degree)
 

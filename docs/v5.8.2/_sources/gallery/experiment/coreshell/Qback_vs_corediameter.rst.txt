@@ -24,11 +24,26 @@ CoreShell: Qback vs Core Diameter
 This example demonstrates how to compute and visualize the backscattering efficiency (Qback)
 as functions of core diameter for CoreShell scatterers using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-11
+.. GENERATED FROM PYTHON SOURCE LINES 8-12
+
+.. code-block:: Python
+
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 13-14
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-55
+.. GENERATED FROM PYTHON SOURCE LINES 14-53
 
 .. code-block:: Python
 
@@ -40,14 +55,9 @@ Importing the package dependencies: numpy, PyMieSim
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
-        TabulatedMaterial,
-        SellmeierMedium,
     )
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[0.0] * ureg.degree,
@@ -63,9 +73,9 @@ Importing the package dependencies: numpy, PyMieSim
     scatterer = CoreShellSet(
         core_diameter=numpy.geomspace(100, 900, 400) * ureg.nanometer,
         shell_thickness=[800] * ureg.nanometer,
-        core_material=[TabulatedMaterial(material_name="silver")],
-        shell_material=[SellmeierMaterial(material_name="BK7")],
-        medium=[SellmeierMedium(material_name="water")],
+        core_material=[from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))],
+        shell_material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
+        medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
     )
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
@@ -89,23 +99,17 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('source:wavelength', 'scatterer:core_diameter') (3, 400)
     Measure units: {'Qback': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575c291510>, <matplotlib.lines.Line2D object at 0x7f575c290bd0>, <matplotlib.lines.Line2D object at 0x7f575c293b90>]
+    [<matplotlib.lines.Line2D object at 0x7f3d57485f50>, <matplotlib.lines.Line2D object at 0x7f3d57486950>, <matplotlib.lines.Line2D object at 0x7f3d57487450>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.352 seconds)
+   **Total running time of the script:** (0 minutes 3.446 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_Qback_vs_corediameter.py:

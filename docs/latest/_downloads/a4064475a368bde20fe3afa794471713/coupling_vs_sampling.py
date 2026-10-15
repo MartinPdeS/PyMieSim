@@ -3,6 +3,9 @@ Sphere: Coupling vs sampling
 ============================
 
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy
 from PyMieSim import (
     Measure,
@@ -12,14 +15,10 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    SellmeierMaterial,
-    SellmeierMedium,
 )
 
 
 
-print_available()
 
 
 polarization_set = PolarizationSet(
@@ -35,8 +34,8 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=[5000] * ureg.nanometer,
-    material=[SellmeierMaterial(material_name="BK7")],
-    medium=[SellmeierMedium(material_name="water")],
+    material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
+    medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
 )
 
 detector = PhotodiodeSet(

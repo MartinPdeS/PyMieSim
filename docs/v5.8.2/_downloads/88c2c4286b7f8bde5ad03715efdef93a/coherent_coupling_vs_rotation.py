@@ -3,6 +3,9 @@ Sphere: Coherent mode field rotation
 ====================================
 
 """
+
+import PyOptik
+from PyMieSim import from_pyoptik
 import numpy
 from PyMieSim import (
     Measure,
@@ -12,12 +15,9 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    print_available,
-    SellmeierMaterial,
 )
 
 
-print_available()
 
 polarization_set = PolarizationSet(
     angles=[90.0] * ureg.degree,
@@ -32,7 +32,7 @@ source = GaussianSet(
 
 scatterer = SphereSet(
     diameter=[2000, 2300] * ureg.nanometer,
-    material=[SellmeierMaterial(material_name="BK7")],
+    material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
     medium=[1],
 )
 

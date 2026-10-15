@@ -8,6 +8,9 @@ scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.
 """
 
+import PyOptik
+from PyMieSim import from_pyoptik
+
 import numpy
 from PyMieSim import (
     Measure,
@@ -17,7 +20,6 @@ from PyMieSim import (
     GaussianSet,
     PolarizationSet,
     Experiment,
-    SellmeierMedium,
 )
 import matplotlib.pyplot as plt
 
@@ -38,7 +40,7 @@ material_values = numpy.linspace(1.3, 2.1, 100)
 scatterer = SphereSet(
     diameter=numpy.linspace(1, 2000, 100) * ureg.nanometer,
     material=material_values,
-    medium=[SellmeierMedium(material_name="water")],
+    medium=[from_pyoptik(PyOptik.load_material(name="main/H2O/Daimon-19.0C"), medium=True)],
 )
 
 detector = PhotodiodeSet(

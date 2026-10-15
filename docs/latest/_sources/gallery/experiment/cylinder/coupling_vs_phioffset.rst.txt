@@ -37,16 +37,10 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
  .. code-block:: none
 
-    BK7            sellmeier  specs/SCHOTT-optical/P-BK7
-    aluminium      tabulated  main/Al/Rakic
-    fused_silica   sellmeier  main/SiO2/Malitson
-    gold           tabulated  main/Au/Olmon-ev
-    silver         tabulated  main/Ag/Johnson
-    water          sellmeier  main/H2O/Daimon-19.0C
     Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f575bda0a50>, <matplotlib.lines.Line2D object at 0x7f575bda1c90>, <matplotlib.lines.Line2D object at 0x7f575bda0990>, <matplotlib.lines.Line2D object at 0x7f575bda0e50>]
+    [<matplotlib.lines.Line2D object at 0x7f3d56eea6d0>, <matplotlib.lines.Line2D object at 0x7f3d56eeacd0>, <matplotlib.lines.Line2D object at 0x7f3d56eeb490>, <matplotlib.lines.Line2D object at 0x7f3d5649a6d0>]
 
 
 
@@ -56,6 +50,9 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. code-block:: Python
 
+
+    import PyOptik
+    from PyMieSim import from_pyoptik
     import numpy as np
     from PyMieSim import (
         Measure,
@@ -65,12 +62,9 @@ This example demonstrates how to use a goniometer setup to measure and visualize
         GaussianSet,
         PolarizationSet,
         Experiment,
-        print_available,
-        SellmeierMaterial,
     )
 
 
-    print_available()
 
     polarization_set = PolarizationSet(
         angles=[30.0] * ureg.degree,
@@ -85,7 +79,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
     scatterer = InfiniteCylinderSet(
         diameter=[2000] * ureg.nanometer,
-        material=[SellmeierMaterial(material_name="BK7")],
+        material=[from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))],
         medium=[1],
     )
 
@@ -109,7 +103,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.406 seconds)
+   **Total running time of the script:** (0 minutes 1.451 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_phioffset.py:
