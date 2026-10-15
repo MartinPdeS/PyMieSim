@@ -21,7 +21,7 @@
 Sphere: Coupling vs wavelength
 ==============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-54
+.. GENERATED FROM PYTHON SOURCE LINES 5-58
 
 
 
@@ -41,8 +41,10 @@ Sphere: Coupling vs wavelength
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'detector:NA', 'detector:polarization_filter') (200, 10, 2, 2)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8cfb550>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8cf80d0>, <matplotlib.lines.Line2D object at 0x7fadbb9857d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8d0f1d0>, <matplotlib.lines.Line2D object at 0x7fadbb502ed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadbb501750>, <matplotlib.lines.Line2D object at 0x7fadbda98c90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadbb4ed090>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa231550>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa233dd0>, <matplotlib.lines.Line2D object at 0x7fe8aa3a4c10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa3a7550>, <matplotlib.lines.Line2D object at 0x7fe8aa376010>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa3a7790>, <matplotlib.lines.Line2D object at 0x7fe8aa8b5490>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa85a250>]
 
 
 
@@ -54,6 +56,7 @@ Sphere: Coupling vs wavelength
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         CoherentModeSet,
         SphereSet,
@@ -98,14 +101,17 @@ Sphere: Coupling vs wavelength
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="source:wavelength", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.347 seconds)
+   **Total running time of the script:** (0 minutes 0.808 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_wavelength.py:

@@ -31,13 +31,12 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -50,6 +49,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'workflows/inverse_fitting';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
@@ -59,7 +59,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Detector coupling" href="detector_coupling.html" />
@@ -136,8 +136,8 @@
     
     
     
-    <img src="../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -538,10 +538,13 @@
 required optimization dependency. The forward model remains a normal PyMieSim
 <code class="docutils literal notranslate"><span class="pre">Simulation</span></code> or <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>; the fitting layer only supplies parameters,
 collects predictions, and compares them with observations.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Parameter</span></code> defines a named initial value and mandatory bounds. <code class="docutils literal notranslate"><span class="pre">Observation</span></code>
-holds measured values and optional positive standard uncertainties. The user
-supplies a callable receiving a mapping of parameter names to values and
-returning a prediction with the same shape as the observation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FitParameter</span></code> defines a named initial value and mandatory bounds.
+<code class="docutils literal notranslate"><span class="pre">MeasuredData</span></code> holds measured values and optional positive standard
+uncertainties. The user supplies a callable receiving a mapping of parameter
+names to values and returning a prediction with the same shape as the observation.</p>
+<p>The earlier names <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>, <code class="docutils literal notranslate"><span class="pre">Observation</span></code>, and <code class="docutils literal notranslate"><span class="pre">FitResult</span></code> remain
+available as aliases for <code class="docutils literal notranslate"><span class="pre">FitParameter</span></code>, <code class="docutils literal notranslate"><span class="pre">MeasuredData</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">ParameterFitResult</span></code>, respectively.</p>
 <p>The default coordinate search is deterministic and intended for a small number
 of parameters. It is derivative-free and has no global-optimum guarantee; use
 physical bounds and repeat fits from several initial guesses for multimodal
@@ -549,154 +552,276 @@ resonant problems.</p>
 <p>Set <code class="docutils literal notranslate"><span class="pre">show_progress=True</span></code> to display the iteration, current objective, and
 normalized search step while a fit is running. Progress output is disabled by
 default, which keeps scripts and notebooks quiet.</p>
-<p><code class="docutils literal notranslate"><span class="pre">FitResult</span></code> contains fitted parameters, predictions, residuals, objective
-value, iteration and evaluation counts, and convergence status. Unit-bearing
-parameters are passed to the model with their original units, and uncertainties
-are used to weight residuals.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ParameterFitResult</span></code> contains fitted parameters, predictions, residuals,
+objective value, iteration and evaluation counts, and convergence status.
+Unit-bearing parameters are passed to the model with their original units,
+and uncertainties are used to weight residuals.</p>
 <p>Quantity bounds are converted to the initial parameter’s units. Quantity
 predictions and uncertainties are converted to the observation’s units before
 computing residuals; incompatible dimensions raise a Pint
 <code class="docutils literal notranslate"><span class="pre">DimensionalityError</span></code>. Bare numbers are interpreted as magnitudes in the
 corresponding reference units. When the reference is a bare number, quantities
 must be dimensionless. Zero-valued initial quantities are supported.</p>
-<p><code class="docutils literal notranslate"><span class="pre">FitResult.prediction</span></code> and <code class="docutils literal notranslate"><span class="pre">FitResult.observed</span></code> are numerical arrays in the
-observation’s units. <code class="docutils literal notranslate"><span class="pre">FitResult.residuals</span></code> contains their numerical difference,
-divided by the uncertainty when one is supplied.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.prediction</span></code> and <code class="docutils literal notranslate"><span class="pre">ParameterFitResult.observed</span></code> are numerical
+arrays in the observation’s units. <code class="docutils literal notranslate"><span class="pre">ParameterFitResult.residuals</span></code> contains
+their numerical difference, divided by the uncertainty when one is supplied.</p>
 <p>The fitted values are conditional on the forward model. A fit to a dense
 suspension using isolated-particle Mie calculations can compensate for missing
 multiple scattering or particle correlations. For correlation-aware scattering
 models, refer to <a class="reference external" href="https://martinpdes.github.io/PackLab/docs/latest/scattering.html">PackLab’s scattering workflow</a>.</p>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
-<p>The examples below introduce the fitting interface from a small analytic model
-to a unit-aware PyMieSim calculation. All use the same deterministic coordinate
-search. It is best suited to a few bounded parameters; inspect the objective,
-residuals, and fitted values before drawing physical conclusions.</p>
+<section id="fit-a-noisy-scattering-spectrum">
+<h2>Fit a noisy scattering spectrum<a class="headerlink" href="#fit-a-noisy-scattering-spectrum" title="Link to this heading">#</a></h2>
+<p>The complete script below estimates diameter and refractive index from nine
+synthetic wavelength channels. It starts with a known sphere, adds Gaussian
+noise with a fixed seed, then fits a second sphere model. Wavelengths and
+diameter carry length units; <code class="docutils literal notranslate"><span class="pre">Qsca</span></code> and its uncertainties are dimensionless.
+No material catalog or external measurements are needed.</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="../gallery/inverse/fit_linear_scale.html#sphx-glr-gallery-inverse-fit-linear-scale-py"><span class="std std-ref">Fit a scalar scale factor</span></a> fits a scalar scale
-factor and shows the minimal API.</p></li>
-<li><p><a class="reference internal" href="../gallery/inverse/fit_unit_aware_diameter.html#sphx-glr-gallery-inverse-fit-unit-aware-diameter-py"><span class="std std-ref">Fit a unit-aware diameter</span></a> fits a parameter
-expressed in nanometres while the optimizer works on its magnitude.</p></li>
-<li><p><a class="reference internal" href="../gallery/inverse/fit_sphere_scattering.html#sphx-glr-gallery-inverse-fit-sphere-scattering-py"><span class="std std-ref">Fit an isolated-sphere scattering measurement</span></a> recovers an
-isolated-sphere diameter from a scattering-efficiency observation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scattering_spectrum</span></code> adapts single-particle simulations to an array of
+predictions with shape <code class="docutils literal notranslate"><span class="pre">(9,)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MeasuredData</span></code> pairs those observations with standard uncertainties of
+the same shape. One deliberately biased channel is assigned a larger
+uncertainty to demonstrate weighting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FitParameter</span></code> supplies physical bounds and initial guesses. The model
+receives diameter as a quantity and refractive index as a plain number.</p></li>
+<li><p>The overlay compares predictions with measurements; the lower panel exposes
+systematic differences that a single objective value can hide.</p></li>
 </ol>
-<p>The third example uses an isolated-particle forward model. Measurements from a
-concentrated or correlated suspension require a forward model that represents
-those interactions; refer to PackLab for those approximations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">FitParameter</span><span class="p">,</span> <span class="n">MeasuredData</span><span class="p">,</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">PolarizationState</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">Sphere</span><span class="p">,</span> <span class="n">fit_parameters</span><span class="p">,</span> <span class="n">ureg</span>
+
+<span class="n">wavelengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">750</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">scattering_spectrum</span><span class="p">(</span><span class="n">diameter</span><span class="p">,</span> <span class="n">refractive_index</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return isolated-sphere scattering efficiencies at all wavelengths."""</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
+            <span class="n">amplitude</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">volt</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
+            <span class="n">scatterer</span><span class="o">=</span><span class="n">Sphere</span><span class="p">(</span>
+                <span class="n">diameter</span><span class="o">=</span><span class="n">diameter</span><span class="p">,</span>
+                <span class="n">material</span><span class="o">=</span><span class="n">refractive_index</span><span class="p">,</span>
+                <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">spectrum</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+    <span class="k">return</span> <span class="n">spectrum</span>
+
+
+<span class="n">observed</span> <span class="o">=</span> <span class="n">scattering_spectrum</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="mi">310</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.58</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">uncertainty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">)</span>
+<span class="n">uncertainty</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.08</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">observed</span> <span class="o">=</span> <span class="n">observed</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">uncertainty</span><span class="p">)</span>
+<span class="n">observed</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.08</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">scattering_spectrum</span><span class="p">(</span>
+        <span class="n">diameter</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"diameter"</span><span class="p">],</span>
+        <span class="n">refractive_index</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"refractive_index"</span><span class="p">],</span>
+    <span class="p">)</span>
+
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">fit_parameters</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">observation</span><span class="o">=</span><span class="n">MeasuredData</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">observed</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">=</span><span class="n">uncertainty</span><span class="p">),</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">FitParameter</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"diameter"</span><span class="p">,</span>
+            <span class="n">initial</span><span class="o">=</span><span class="mi">240</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+            <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">450</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">FitParameter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"refractive_index"</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mf">1.45</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Standardized residual shape:"</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (9,)</span>
+
+<span class="n">wavelength_values</span> <span class="o">=</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+<span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">wavelength_values</span><span class="p">,</span> <span class="n">observed</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">uncertainty</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Synthetic observation"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_values</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">prediction</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Fitted isolated-sphere model"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Multi-wavelength fitting constrains a spectral response"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wavelength_values</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">residuals</span><span class="p">,</span> <span class="s2">"o-"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"Vacuum wavelength [nm]"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"Standardized residual"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The minimized objective is the sum of squared standardized residuals:</p>
+<div class="math notranslate nohighlight">
+\[r_i=\frac{f_i(\mathbf{p})-y_i}{\sigma_i},\qquad
+J(\mathbf{p})=\sum_i r_i^2.\]</div>
+<p>Without uncertainties, residuals are numerical prediction-minus-observation
+values in the observation’s units. <code class="docutils literal notranslate"><span class="pre">objective</span></code> is the raw sum, not a mean,
+reduced chi-square, or parameter uncertainty estimate. Each <code class="docutils literal notranslate"><span class="pre">sigma</span></code> must be
+positive; correlations between measurement channels are not modeled.</p>
+</section>
+<section id="interpreting-convergence-and-ambiguity">
+<h2>Interpreting convergence and ambiguity<a class="headerlink" href="#interpreting-convergence-and-ambiguity" title="Link to this heading">#</a></h2>
+<p>For this script, expect a fitted spectrum near the noisy observations and
+parameters near the generating values (310 nm and 1.58), rather than exact
+recovery. There are nine predictions and nine residuals. A positive residual
+means the model lies above the observation; the deliberately biased channel
+can retain a negative residual even after convergence.</p>
+<p><code class="docutils literal notranslate"><span class="pre">success=True</span></code> means the coordinate search reached its step tolerance.
+It does not establish a global optimum, a unique physical solution, or a good
+model. Check <code class="docutils literal notranslate"><span class="pre">message</span></code>, <code class="docutils literal notranslate"><span class="pre">objective</span></code>, and <code class="docutils literal notranslate"><span class="pre">evaluations</span></code> as well as the plot.
+If the fit stops at its iteration limit, inspect the trajectory and bounds
+before increasing <code class="docutils literal notranslate"><span class="pre">max_iterations</span></code>.</p>
+<p>Repeat the fit from several diameter and refractive-index starting points
+within the same bounds. Compare objectives and predictions: different parameter
+pairs with similar objectives indicate ambiguity. A parameter close to a bound
+can indicate an active physical constraint or an overly restrictive search
+range. Plot an objective grid across the two parameters to inspect valleys and
+competing minima; add informative wavelength channels when the data permit it.
+The returned result does not provide confidence intervals or a covariance matrix.</p>
+<p>A visually good fit remains conditional on the isolated-particle forward model.
+Use residual structure to investigate calibration, material dispersion, or
+missing physics before interpreting fitted values as material properties.
+See the <a class="reference internal" href="../gallery/interpretation/inverse_spectrum_diagnostics.html#sphx-glr-gallery-interpretation-inverse-spectrum-diagnostics-py"><span class="std std-ref">rendered diagnostic example</span></a> for its plots.</p>
+</section>
+<section id="smaller-examples">
+<h2>Smaller examples<a class="headerlink" href="#smaller-examples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../gallery/inverse/fit_linear_scale.html#sphx-glr-gallery-inverse-fit-linear-scale-py"><span class="std std-ref">Fit a scalar scale factor</span></a> introduces the minimal API.</p></li>
+<li><p><a class="reference internal" href="../gallery/inverse/fit_unit_aware_diameter.html#sphx-glr-gallery-inverse-fit-unit-aware-diameter-py"><span class="std std-ref">Fit a unit-aware diameter</span></a> demonstrates quantity parameters.</p></li>
+<li><p><a class="reference internal" href="../gallery/inverse/fit_sphere_scattering.html#sphx-glr-gallery-inverse-fit-sphere-scattering-py"><span class="std std-ref">Fit an isolated-sphere scattering measurement</span></a> fits one sphere diameter.</p></li>
+</ul>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="PyMieSim.Parameter">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Parameter</span></span><a class="headerlink" href="#PyMieSim.Parameter" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.FitParameter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FitParameter</span></span><a class="headerlink" href="#PyMieSim.FitParameter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>A named bounded scalar parameter; values may carry Pint units.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.Parameter.bounds">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#PyMieSim.Parameter.bounds" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.FitParameter.bounds">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#PyMieSim.FitParameter.bounds" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.Parameter.initial">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial</span></span><a class="headerlink" href="#PyMieSim.Parameter.initial" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.FitParameter.initial">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial</span></span><a class="headerlink" href="#PyMieSim.FitParameter.initial" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.Parameter.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PyMieSim.Parameter.name" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.FitParameter.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PyMieSim.FitParameter.name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="PyMieSim.Observation">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Observation</span></span><a class="headerlink" href="#PyMieSim.Observation" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.MeasuredData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MeasuredData</span></span><a class="headerlink" href="#PyMieSim.MeasuredData" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <p>Measured values and optional positive standard uncertainties.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.Observation.name">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PyMieSim.Observation.name" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.MeasuredData.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PyMieSim.MeasuredData.name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.Observation.uncertainty">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uncertainty</span></span><a class="headerlink" href="#PyMieSim.Observation.uncertainty" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.MeasuredData.uncertainty">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uncertainty</span></span><a class="headerlink" href="#PyMieSim.MeasuredData.uncertainty" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.Observation.values">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><a class="headerlink" href="#PyMieSim.Observation.values" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.MeasuredData.values">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">values</span></span><a class="headerlink" href="#PyMieSim.MeasuredData.values" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="PyMieSim.FitResult">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FitResult</span></span><a class="headerlink" href="#PyMieSim.FitResult" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParameterFitResult</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
-<p>Result returned by <code class="docutils literal notranslate"><span class="pre">fit_parameters</span></code>.</p>
+<p>Fitted parameters, model predictions, residuals, and convergence diagnostics.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.evaluations">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluations</span></span><a class="headerlink" href="#PyMieSim.FitResult.evaluations" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.evaluations">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluations</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.evaluations" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.initial_parameters">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial_parameters</span></span><a class="headerlink" href="#PyMieSim.FitResult.initial_parameters" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.initial_parameters">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial_parameters</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.initial_parameters" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.iterations">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iterations</span></span><a class="headerlink" href="#PyMieSim.FitResult.iterations" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.iterations">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">iterations</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.iterations" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.message">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#PyMieSim.FitResult.message" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.message">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">message</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.message" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.objective">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">objective</span></span><a class="headerlink" href="#PyMieSim.FitResult.objective" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.objective">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">objective</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.objective" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.observed">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observed</span></span><a class="headerlink" href="#PyMieSim.FitResult.observed" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.observed">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">observed</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.observed" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.parameter_names">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameter_names</span></span><a class="headerlink" href="#PyMieSim.FitResult.parameter_names" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.parameter_names">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameter_names</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.parameter_names" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.parameters">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#PyMieSim.FitResult.parameters" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.parameters">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.parameters" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.prediction">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><a class="headerlink" href="#PyMieSim.FitResult.prediction" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.prediction">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.prediction" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.residuals">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">residuals</span></span><a class="headerlink" href="#PyMieSim.FitResult.residuals" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.residuals">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">residuals</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.residuals" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.success">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><a class="headerlink" href="#PyMieSim.FitResult.success" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.success">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.success" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.FitResult.summary">
-<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.FitResult" title="PyMieSim.inverse.FitResult"><span class="pre">PyMieSim.inverse.FitResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#PyMieSim.FitResult.summary" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.ParameterFitResult.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.ParameterFitResult" title="PyMieSim.inverse.ParameterFitResult"><span class="pre">PyMieSim.inverse.ParameterFitResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#PyMieSim.ParameterFitResult.summary" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyMieSim.fit_parameters">
-<span class="sig-name descname"><span class="pre">fit_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.Observation" title="PyMieSim.inverse.Observation"><span class="pre">PyMieSim.inverse.Observation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Iterable</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.fit_parameters" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">fit_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.MeasuredData" title="PyMieSim.inverse.MeasuredData"><span class="pre">PyMieSim.inverse.MeasuredData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">collections.abc.Iterable</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_tolerance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsFloat</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PyMieSim.fit_parameters" title="Link to this definition">#</a></dt>
 <dd><p>Fit bounded parameters with deterministic coordinate search.</p>
 <p>Set <code class="docutils literal notranslate"><span class="pre">show_progress=True</span></code> to display the current iteration,
 objective value, and normalized step size. Progress output is
@@ -712,6 +837,30 @@ disabled by default.</p>
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="particle_size_distributions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Particle-size distributions: independent scattering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="detector_coupling.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Detector coupling</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             
@@ -729,32 +878,35 @@ disabled by default.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Parameter.bounds"><code class="docutils literal notranslate"><span class="pre">Parameter.bounds</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Parameter.initial"><code class="docutils literal notranslate"><span class="pre">Parameter.initial</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Parameter.name"><code class="docutils literal notranslate"><span class="pre">Parameter.name</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-a-noisy-scattering-spectrum">Fit a noisy scattering spectrum</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-convergence-and-ambiguity">Interpreting convergence and ambiguity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smaller-examples">Smaller examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitParameter"><code class="docutils literal notranslate"><span class="pre">FitParameter</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitParameter.bounds"><code class="docutils literal notranslate"><span class="pre">FitParameter.bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitParameter.initial"><code class="docutils literal notranslate"><span class="pre">FitParameter.initial</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitParameter.name"><code class="docutils literal notranslate"><span class="pre">FitParameter.name</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Observation"><code class="docutils literal notranslate"><span class="pre">Observation</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Observation.name"><code class="docutils literal notranslate"><span class="pre">Observation.name</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Observation.uncertainty"><code class="docutils literal notranslate"><span class="pre">Observation.uncertainty</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.Observation.values"><code class="docutils literal notranslate"><span class="pre">Observation.values</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.MeasuredData"><code class="docutils literal notranslate"><span class="pre">MeasuredData</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.MeasuredData.name"><code class="docutils literal notranslate"><span class="pre">MeasuredData.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.MeasuredData.uncertainty"><code class="docutils literal notranslate"><span class="pre">MeasuredData.uncertainty</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.MeasuredData.values"><code class="docutils literal notranslate"><span class="pre">MeasuredData.values</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult"><code class="docutils literal notranslate"><span class="pre">FitResult</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.evaluations"><code class="docutils literal notranslate"><span class="pre">FitResult.evaluations</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.initial_parameters"><code class="docutils literal notranslate"><span class="pre">FitResult.initial_parameters</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.iterations"><code class="docutils literal notranslate"><span class="pre">FitResult.iterations</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.message"><code class="docutils literal notranslate"><span class="pre">FitResult.message</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.objective"><code class="docutils literal notranslate"><span class="pre">FitResult.objective</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.observed"><code class="docutils literal notranslate"><span class="pre">FitResult.observed</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.parameter_names"><code class="docutils literal notranslate"><span class="pre">FitResult.parameter_names</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.parameters"><code class="docutils literal notranslate"><span class="pre">FitResult.parameters</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.prediction"><code class="docutils literal notranslate"><span class="pre">FitResult.prediction</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.residuals"><code class="docutils literal notranslate"><span class="pre">FitResult.residuals</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.success"><code class="docutils literal notranslate"><span class="pre">FitResult.success</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.FitResult.summary"><code class="docutils literal notranslate"><span class="pre">FitResult.summary()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.evaluations"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.evaluations</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.initial_parameters"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.initial_parameters</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.iterations"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.iterations</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.message"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.message</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.objective"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.objective</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.observed"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.observed</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.parameter_names"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.parameter_names</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.parameters"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.parameters</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.prediction"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.prediction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.residuals"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.residuals</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.success"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.success</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.ParameterFitResult.summary"><code class="docutils literal notranslate"><span class="pre">ParameterFitResult.summary()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.fit_parameters"><code class="docutils literal notranslate"><span class="pre">fit_parameters()</span></code></a></li>

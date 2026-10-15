@@ -25,7 +25,11 @@ Parameters can carry Pint units. The model receives values with the original
 units, so the physics code does not need to know how the optimizer stores its
 internal scalar coordinates.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-34
+The fitted diameter is approximately 120 nanometers: doubling it reproduces
+the 240 nm observation. This scalar example demonstrates unit handling, not
+a scattering forward model.
+
+.. GENERATED FROM PYTHON SOURCE LINES 13-36
 
 
 
@@ -45,11 +49,9 @@ internal scalar coordinates.
 
 .. code-block:: Python
 
-    import numpy as np
+    from PyMieSim import FitParameter, MeasuredData, fit_parameters, ureg
 
-    from PyMieSim import Observation, Parameter, fit_parameters, ureg
-
-    observation = Observation(values=240 * ureg.nanometer)
+    observation = MeasuredData(values=240 * ureg.nanometer)
 
 
     def model(parameters):
@@ -61,7 +63,7 @@ internal scalar coordinates.
         model=model,
         observation=observation,
         parameters=[
-            Parameter(
+            FitParameter(
                 name="diameter",
                 initial=150 * ureg.nanometer,
                 bounds=(50 * ureg.nanometer, 300 * ureg.nanometer),
@@ -74,7 +76,7 @@ internal scalar coordinates.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.004 seconds)
+   **Total running time of the script:** (0 minutes 0.002 seconds)
 
 
 .. _sphx_glr_download_gallery_inverse_fit_unit_aware_diameter.py:

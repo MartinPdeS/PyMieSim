@@ -1,7 +1,14 @@
 """
-Samples Properties
-==================
+Print sphere properties
+=======================
+
+Initialize the scatterer with a source, then call ``print_properties()``.
+The printed table uses four decimal places in scientific notation by default.
+Efficiencies are dimensionless; geometric lengths and cross sections include
+their units in the table. This example produces text rather than a plot.
 """
+
+# sphinx_gallery_thumbnail_path = "_static/gallery-default.png"
 
 from PyMieSim import (
     ureg,
@@ -26,6 +33,6 @@ scatterer = Sphere(
     medium=1.0,
 )
 
-scatterer.init(source)
+scatterer.init(source=source)
 
-scatterer.print_properties(4)
+scatterer.print_properties()

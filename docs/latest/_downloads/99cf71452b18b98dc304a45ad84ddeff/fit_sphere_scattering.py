@@ -6,9 +6,15 @@ Recover a sphere diameter from one dimensionless scattering-efficiency
 measurement. This uses the isolated-particle Mie model. It does not represent
 multiple scattering, near-field coupling, or positional correlations in dense
 particle systems.
+
+The fitted diameter is approximately 180 nanometers within the stated bounds.
+The prediction is a scalar dimensionless efficiency. One noiseless channel
+with a fixed refractive index demonstrates parameter recovery; it does not
+establish uniqueness over a wider diameter range.
 """
 from PyMieSim import (
-    Observation, Parameter, PlaneWave, PolarizationState, Simulation, Sphere,
+    Measure,
+    FitParameter, MeasuredData, PlaneWave, PolarizationState, Simulation, Sphere,
     fit_parameters, ureg,
 )
 
@@ -21,19 +27,19 @@ target_diameter = 180 * ureg.nanometer
 target = Simulation(
     scatterer=Sphere(diameter=target_diameter, material=1.59, medium=1.0),
     source=source,
-).get("Qsca")
+).get(Measure.QSCA)
 
 
 def model(parameters):
     sphere = Sphere(diameter=parameters["diameter"], material=1.59, medium=1.0)
-    return Simulation(scatterer=sphere, source=source).get("Qsca")
+    return Simulation(scatterer=sphere, source=source).get(Measure.QSCA)
 
 
 result = fit_parameters(
     model=model,
-    observation=Observation(values=target),
+    observation=MeasuredData(values=target),
     parameters=[
-        Parameter(
+        FitParameter(
             name="diameter",
             initial=130 * ureg.nanometer,
             bounds=(80 * ureg.nanometer, 260 * ureg.nanometer),

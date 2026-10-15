@@ -1,6 +1,6 @@
 """
 Compare size distribution families
-=================================
+==================================
 
 Number-based size populations averaged in the non-interacting approximation.
 No interparticle coupling, multiple scattering, or interparticle interference
@@ -10,7 +10,7 @@ approximations when particle correlations matter.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import Experiment, ParticleSizeDistribution, PlaneWaveSet, PolarizationSet, SphereSet, ureg
+from PyMieSim import Measure, Experiment, ParticleSizeDistribution, PlaneWaveSet, PolarizationSet, SphereSet, ureg
 
 sizes = ParticleSizeDistribution
 populations = {
@@ -37,7 +37,7 @@ for label, distribution in populations.items():
         source_set=source,
         scatterer_set=SphereSet(diameter=distribution.diameters, material=[1.5], medium=[1.0]),
     )
-    result = experiment.average_size_distribution(distribution, "Csca", as_result=True).to("nanometer ** 2")
+    result = experiment.average_size_distribution(distribution, Measure.CSCA, as_result=True).to("nanometer ** 2")
     axis.plot(result.coords["source:wavelength"] * 1e9, result.magnitude, label=label)
 axis.set(xlabel="Wavelength [nm]", ylabel="Mean scattering cross section per particle [nm²]",
          title="Size distributions — non-interacting particles")

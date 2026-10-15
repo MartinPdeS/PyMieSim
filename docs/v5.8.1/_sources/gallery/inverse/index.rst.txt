@@ -26,7 +26,7 @@ correlations or dependent scattering need to be represented.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Fit one bounded parameter to a small analytic forward model. This is the smallest complete inverse-problem setup: a callable, an observation, and one or more Parameter objects.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Fit one bounded parameter to a small analytic forward model. This is the smallest complete inverse-problem setup: a callable, an observation, and one or more FitParameter objects.">
 
 .. only:: html
 

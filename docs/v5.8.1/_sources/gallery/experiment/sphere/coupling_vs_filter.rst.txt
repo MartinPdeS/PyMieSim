@@ -21,7 +21,7 @@
 Sphere: Coupling vs polarization filter
 =======================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-50
+.. GENERATED FROM PYTHON SOURCE LINES 5-54
 
 
 
@@ -41,8 +41,10 @@ Sphere: Coupling vs polarization filter
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('scatterer:diameter', 'scatterer:material', 'detector:polarization_filter') (20, 2, 100)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8dd4d50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8dd5390>, <matplotlib.lines.Line2D object at 0x7fadb8d008d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb91767d0>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa34f2d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa34dc90>, <matplotlib.lines.Line2D object at 0x7fe8aa878550>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa8e4cd0>]
 
 
 
@@ -54,6 +56,7 @@ Sphere: Coupling vs polarization filter
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         PhotodiodeSet,
         SphereSet,
@@ -94,14 +97,17 @@ Sphere: Coupling vs polarization filter
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="detector:polarization_filter", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.940 seconds)
+   **Total running time of the script:** (0 minutes 0.572 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_filter.py:

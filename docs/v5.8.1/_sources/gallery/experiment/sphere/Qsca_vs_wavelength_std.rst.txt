@@ -21,7 +21,7 @@
 Sphere: Qsca vs wavelength STD
 ==============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-46
+.. GENERATED FROM PYTHON SOURCE LINES 6-50
 
 
 
@@ -41,8 +41,10 @@ Sphere: Qsca vs wavelength STD
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'scatterer:material') (200, 10, 3)
+    Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8b27790>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8b27950>, <matplotlib.lines.Line2D object at 0x7fadbb4d6b10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadbb4d5150>, <matplotlib.lines.Line2D object at 0x7fadbb547410>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadbb544190>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa2d0910>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa2d1590>, <matplotlib.lines.Line2D object at 0x7fe8a9fe4a90>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8a9fe7a10>, <matplotlib.lines.Line2D object at 0x7fe8acafaf10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa7e0ed0>]
 
 
 
@@ -54,6 +56,7 @@ Sphere: Qsca vs wavelength STD
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         SphereSet,
         GaussianSet,
@@ -88,7 +91,10 @@ Sphere: Qsca vs wavelength STD
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Qsca")
+    result = experiment.get(Measure.QSCA)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="source:wavelength", std="scatterer:diameter")
 
@@ -96,7 +102,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.399 seconds)
+   **Total running time of the script:** (0 minutes 0.231 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength_std.py:

@@ -21,7 +21,7 @@
 InfiniteCylinder: Qsca vs wavelength std
 ========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-37
+.. GENERATED FROM PYTHON SOURCE LINES 6-41
 
 
 
@@ -35,8 +35,10 @@ InfiniteCylinder: Qsca vs wavelength std
 
  .. code-block:: none
 
+    Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (300, 10)
+    Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadbb4f6850>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadbb4f5710>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa2123d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa212850>]
 
 
 
@@ -48,6 +50,7 @@ InfiniteCylinder: Qsca vs wavelength std
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         InfiniteCylinderSet,
         GaussianSet,
@@ -74,14 +77,17 @@ InfiniteCylinder: Qsca vs wavelength std
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Qsca")
+    result = experiment.get(Measure.QSCA)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="source:wavelength", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.459 seconds)
+   **Total running time of the script:** (0 minutes 0.238 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_wavelength_std.py:

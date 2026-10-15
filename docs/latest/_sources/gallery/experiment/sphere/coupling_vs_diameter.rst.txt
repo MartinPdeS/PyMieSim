@@ -21,7 +21,7 @@
 Sphere: Coupling vs diameter
 ============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-50
+.. GENERATED FROM PYTHON SOURCE LINES 6-54
 
 
 
@@ -35,8 +35,10 @@ Sphere: Coupling vs diameter
 
  .. code-block:: none
 
+    Result dimensions and shape: ('scatterer:diameter', 'detector:mode_number') (600, 3)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8da0810>, <matplotlib.lines.Line2D object at 0x7fadb8d02f10>, <matplotlib.lines.Line2D object at 0x7fadb8d00850>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa238d50>, <matplotlib.lines.Line2D object at 0x7fe8aa23bc50>, <matplotlib.lines.Line2D object at 0x7fe8aa238e90>]
 
 
 
@@ -48,6 +50,7 @@ Sphere: Coupling vs diameter
 
     import numpy
     from PyMieSim import (
+        Measure,
         ureg,
         CoherentModeSet,
         SphereSet,
@@ -87,14 +90,17 @@ Sphere: Coupling vs diameter
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling", drop_unique_level=True)
+    result = experiment.get(Measure.COUPLING, drop_unique_level=True)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.008 seconds)
+   **Total running time of the script:** (0 minutes 0.614 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_diameter.py:

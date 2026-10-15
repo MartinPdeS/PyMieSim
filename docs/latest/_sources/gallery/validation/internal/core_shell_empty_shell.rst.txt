@@ -21,7 +21,7 @@
 Effect of Shell dimensions in equivalent medium
 ===============================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-53
+.. GENERATED FROM PYTHON SOURCE LINES 6-54
 
 .. code-block:: Python
 
@@ -30,6 +30,7 @@ Effect of Shell dimensions in equivalent medium
     import numpy as np
     import matplotlib.pyplot as plt
     from PyMieSim import (
+        Measure,
         ureg,
         CoreShellSet,
         GaussianSet,
@@ -67,7 +68,7 @@ Effect of Shell dimensions in equivalent medium
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Csca")
+    result = experiment.get(Measure.CSCA)
 
     figure = result.plot(x="scatterer:shell_thickness")
 
@@ -84,16 +85,16 @@ Effect of Shell dimensions in equivalent medium
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-56
+.. GENERATED FROM PYTHON SOURCE LINES 55-57
 
 As it is supposed the scattering Cross-section should not be affected by
 the shell thickness as it's refractive index is same as the surrounding medium.
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-61
+.. GENERATED FROM PYTHON SOURCE LINES 57-62
 
 .. code-block:: Python
 
-    result = experiment.get("Qsca")
+    result = experiment.get(Measure.QSCA)
 
     figure = result.plot(x="scatterer:shell_thickness")
 
@@ -113,7 +114,7 @@ the shell thickness as it's refractive index is same as the surrounding medium.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.545 seconds)
+   **Total running time of the script:** (0 minutes 0.276 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_internal_core_shell_empty_shell.py:

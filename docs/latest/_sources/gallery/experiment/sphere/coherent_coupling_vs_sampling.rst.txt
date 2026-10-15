@@ -21,7 +21,7 @@
 Sphere: coherent coupling vs sampling
 =====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-51
+.. GENERATED FROM PYTHON SOURCE LINES 6-55
 
 
 
@@ -41,8 +41,10 @@ Sphere: coherent coupling vs sampling
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('detector:sampling', 'detector:phi_offset') (5, 200)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8d988d0>, <matplotlib.lines.Line2D object at 0x7fadb8ed9ad0>, <matplotlib.lines.Line2D object at 0x7fadb8edae50>, <matplotlib.lines.Line2D object at 0x7fadb8edb510>, <matplotlib.lines.Line2D object at 0x7fadb8ed9f10>]
+    [<matplotlib.lines.Line2D object at 0x7fe8acafb450>, <matplotlib.lines.Line2D object at 0x7fe8acaf8f10>, <matplotlib.lines.Line2D object at 0x7fe8acaf8fd0>, <matplotlib.lines.Line2D object at 0x7fe8acaf8c50>, <matplotlib.lines.Line2D object at 0x7fe8acf25b50>]
 
 
 
@@ -54,6 +56,7 @@ Sphere: coherent coupling vs sampling
 
     import numpy
     from PyMieSim import (
+        Measure,
         ureg,
         CoherentModeSet,
         SphereSet,
@@ -94,14 +97,17 @@ Sphere: coherent coupling vs sampling
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="detector:phi_offset")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.314 seconds)
+   **Total running time of the script:** (0 minutes 0.174 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_sampling.py:

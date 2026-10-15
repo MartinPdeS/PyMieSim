@@ -6,6 +6,7 @@ Goniometric Coupling vs S1 S2 Comparison
 import numpy as np
 import matplotlib.pyplot as plt
 from PyMieSim import (
+    Measure,
     Experiment,
     Gaussian,
     GaussianSet,
@@ -47,7 +48,7 @@ detector = PhotodiodeSet(
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 # Gather data
-data_experiment = experiment.get("coupling").as_numpy()
+data_experiment = experiment.get(Measure.COUPLING).as_numpy()
 
 data_experiment /= data_experiment.max()  # Normalize data
 

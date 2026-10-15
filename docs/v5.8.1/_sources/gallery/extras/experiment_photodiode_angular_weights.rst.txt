@@ -29,7 +29,7 @@ kept by building explicit ``angular_weights`` arrays for a sequential
 At the moment, experiment-side angular weights are supported only through
 ``PhotodiodeSet.build_sequential(...)``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-175
+.. GENERATED FROM PYTHON SOURCE LINES 13-176
 
 
 
@@ -49,6 +49,7 @@ At the moment, experiment-side angular weights are supported only through
     import matplotlib.pyplot as plt
 
     from PyMieSim import (
+        Measure,
         Experiment,
         Gaussian as SingleGaussian,
         GaussianSet,
@@ -158,7 +159,7 @@ At the moment, experiment-side angular weights are supported only through
         detector_set=detector_set,
     )
 
-    coupling = experiment.get_sequential("coupling")
+    coupling = experiment.get_sequential(Measure.COUPLING)
 
     figure = plt.figure(figsize=(14, 4.5))
 
@@ -210,7 +211,7 @@ At the moment, experiment-side angular weights are supported only through
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.519 seconds)
+   **Total running time of the script:** (0 minutes 0.270 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_experiment_photodiode_angular_weights.py:

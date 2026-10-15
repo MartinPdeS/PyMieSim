@@ -31,13 +31,12 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -60,7 +59,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Experiment module" href="experiment.html" />
@@ -137,8 +136,8 @@
     
     
     
-    <img src="../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -458,13 +457,15 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="list-caption"><li class="toctree-l0 has-children"><details open><summary><p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p>
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="public_api.html">Stable Python API</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Single module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="experiment.html">Experiment module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="material.html">Materials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="polarization.html">Polarization</a></li>
-</ul></details></li></ul></div>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -777,8 +778,13 @@ coefficients (b_n).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.CoreShell" title="PyMieSim.single.scatterer.CoreShell"><span class="pre">PyMieSim.single.scatterer.CoreShell</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.print_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.CoreShell" title="PyMieSim.single.scatterer.CoreShell"><span class="pre">PyMieSim.single.scatterer.CoreShell</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.print_properties" title="Link to this definition">#</a></dt>
 <dd><p>Print the core shell scatterer properties to standard output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Decimal places used in scientific notation (default: 4).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -964,8 +970,13 @@ coefficients.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.InfiniteCylinder.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="pre">PyMieSim.single.scatterer.InfiniteCylinder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.print_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.InfiniteCylinder" title="PyMieSim.single.scatterer.InfiniteCylinder"><span class="pre">PyMieSim.single.scatterer.InfiniteCylinder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.InfiniteCylinder.print_properties" title="Link to this definition">#</a></dt>
 <dd><p>Print the cylinder properties to standard output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Decimal places used in scientific notation (default: 4).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1107,8 +1118,13 @@ coefficients (b_n).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.print_properties">
-<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="pre">PyMieSim.single.scatterer.Sphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.print_properties" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">print_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="pre">PyMieSim.single.scatterer.Sphere</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.print_properties" title="Link to this definition">#</a></dt>
 <dd><p>Print the sphere properties to standard output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Decimal places used in scientific notation (default: 4).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1291,16 +1307,178 @@ of 1.0 is used.</p></li>
 </dd></dl>
 
 </section>
-<section id="module-PyMieSim.single.representations.FarFields">
-<span id="representations"></span><h2>Representations<a class="headerlink" href="#module-PyMieSim.single.representations.FarFields" title="Link to this heading">#</a></h2>
+<section id="representations">
+<h2>Representations<a class="headerlink" href="#representations" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FarFields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/farfields.html#FarFields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AngularPlotMixin</span></code></p>
 <p>Far-field scattering representation.</p>
 <p>This class computes and visualizes the complex far-field electric-field
 components returned by a single-scatterer setup.</p>
 <p>The far-field components are evaluated on a spherical angular mesh and are
-returned as the transverse components (<a href="#id4"><span class="problematic" id="id5">E_</span></a>phi) and (<a href="#id6"><span class="problematic" id="id7">E_</span></a>theta).</p>
+returned as the transverse components <span class="math notranslate nohighlight">\(E_\phi\)</span> and <span class="math notranslate nohighlight">\(E_\theta\)</span>.</p>
 <p>The default visualization is a single three-dimensional spherical plot. A
 single field is shown at a time to keep rendering responsive and to make the
 figure easier to interpret.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setup</strong> (<em>object</em>)</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>)</p></li>
+<li><p><strong>distance</strong> (<em>Length</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot">
+<span class="sig-name descname"><span class="pre">add_phi_vector_to_3d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/farfields.html#FarFields.add_phi_vector_to_3d_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot" title="Link to this definition">#</a></dt>
+<dd><p>Add sparse unit vectors in the local :math:` phi ` direction.</p>
+<p>This reproduces the previous PyVista call</p>
+<p><code class="docutils literal notranslate"><span class="pre">transform_vectors_sph_to_cart(theta=theta,</span> <span class="pre">phi=phi,</span> <span class="pre">r=radius,</span> <span class="pre">u=0,</span> <span class="pre">v=1,</span> <span class="pre">w=0)</span></code></p>
+<p>where <code class="docutils literal notranslate"><span class="pre">theta</span></code> is the azimuthal angle in degrees and <code class="docutils literal notranslate"><span class="pre">phi</span></code> is the
+polar angle in degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_points</strong> (<em>int</em>)</p></li>
+<li><p><strong>opacity</strong> (<em>float</em>)</p></li>
+<li><p><strong>radius</strong> (<em>float</em>)</p></li>
+<li><p><strong>length</strong> (<em>float</em>)</p></li>
+<li><p><strong>color</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot">
+<span class="sig-name descname"><span class="pre">add_theta_vector_to_3d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/farfields.html#FarFields.add_theta_vector_to_3d_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot" title="Link to this definition">#</a></dt>
+<dd><p>Add sparse unit vectors in the local :math:` theta ` direction.</p>
+<p>This reproduces the previous PyVista call</p>
+<p><code class="docutils literal notranslate"><span class="pre">transform_vectors_sph_to_cart(theta=theta,</span> <span class="pre">phi=phi,</span> <span class="pre">r=radius,</span> <span class="pre">u=1,</span> <span class="pre">v=0,</span> <span class="pre">w=0)</span></code></p>
+<p>where <code class="docutils literal notranslate"><span class="pre">theta</span></code> is the azimuthal angle in degrees and <code class="docutils literal notranslate"><span class="pre">phi</span></code> is the
+polar angle in degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_points</strong> (<em>int</em>)</p></li>
+<li><p><strong>opacity</strong> (<em>float</em>)</p></li>
+<li><p><strong>radius</strong> (<em>float</em>)</p></li>
+<li><p><strong>length</strong> (<em>float</em>)</p></li>
+<li><p><strong>color</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'total_intensity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(5.0,</span> <span class="pre">5.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_vector_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vector_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile_clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_antialiased</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/farfields.html#FarFields.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot one far-field quantity on a three-dimensional spherical surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>Quantity to plot. Supported values are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;total_intensity&quot;</span></code></dt><dd><p>Total intensity, computed as <code class="docutils literal notranslate"><span class="pre">|E_phi|^2</span> <span class="pre">+</span> <span class="pre">|E_theta|^2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;phi_intensity&quot;</span></code></dt><dd><p>Phi component intensity, computed as <code class="docutils literal notranslate"><span class="pre">|E_phi|^2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;theta_intensity&quot;</span></code></dt><dd><p>Theta component intensity, computed as <code class="docutils literal notranslate"><span class="pre">|E_theta|^2</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;phi_real&quot;</span></code></dt><dd><p>Real part of <span class="math notranslate nohighlight">\(E_\phi\)</span>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;phi_imag&quot;</span></code></dt><dd><p>Imaginary part of <span class="math notranslate nohighlight">\(E_\phi\)</span>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;theta_real&quot;</span></code></dt><dd><p>Real part of <span class="math notranslate nohighlight">\(E_\theta\)</span>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;theta_imag&quot;</span></code></dt><dd><p>Imaginary part of <span class="math notranslate nohighlight">\(E_\theta\)</span>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;phi_phase&quot;</span></code></dt><dd><p>Phase of <span class="math notranslate nohighlight">\(E_\phi\)</span>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;theta_phase&quot;</span></code></dt><dd><p>Phase of <span class="math notranslate nohighlight">\(E_\theta\)</span>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;phase_difference&quot;</span></code></dt><dd><p>Wrapped phase difference <code class="docutils literal notranslate"><span class="pre">arg(E_theta)</span> <span class="pre">-</span> <span class="pre">arg(E_phi)</span></code>.</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>unit_size</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Figure size in inches, given as <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>.</p></li>
+<li><p><strong>background_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Figure and axis background color.</p></li>
+<li><p><strong>colormap</strong> (<em>str</em><em> or </em><em>matplotlib.colors.Colormap</em><em>, </em><em>optional</em>) – Colormap used for the selected field. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MPSPlots.colormaps.blue_black_red</span></code> is used.</p></li>
+<li><p><strong>opacity</strong> (<em>float</em><em>, </em><em>optional</em>) – Surface opacity.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, draw surface mesh edges.</p></li>
+<li><p><strong>show_axis_label</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, display Cartesian axis labels, ticks, and panes.</p></li>
+<li><p><strong>show_colorbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, add a colorbar.</p></li>
+<li><p><strong>show_vector_field</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, overlay sparse local basis vectors. Phi fields receive
+phi vectors, theta fields receive theta vectors, and total fields do
+not receive a vector overlay.</p></li>
+<li><p><strong>vector_count</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples per direction used for vector overlays.</p></li>
+<li><p><strong>vector_radius</strong> (<em>float</em><em>, </em><em>optional</em>) – Radius at which direction vectors are drawn.</p></li>
+<li><p><strong>vector_length</strong> (<em>float</em><em>, </em><em>optional</em>) – Display length of direction vectors.</p></li>
+<li><p><strong>vector_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Color of the direction vectors.</p></li>
+<li><p><strong>scale</strong> (<em>str</em><em>, </em><em>optional</em>) – Scaling for intensity fields. Supported values are <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code>. Ignored for signed and phase fields.</p></li>
+<li><p><strong>percentile_clip</strong> (<em>float</em><em>, </em><em>optional</em>) – If provided, upper color limits are clipped to this percentile.</p></li>
+<li><p><strong>surface_linewidth</strong> (<em>float</em><em>, </em><em>optional</em>) – Line width used for surface edges.</p></li>
+<li><p><strong>surface_antialiased</strong> (<em>bool</em><em>, </em><em>optional</em>) – Matplotlib antialiasing flag for surfaces.</p></li>
+<li><p><strong>elevation</strong> (<em>float</em><em>, </em><em>optional</em>) – Matplotlib 3D view elevation angle in degrees.</p></li>
+<li><p><strong>azimuth</strong> (<em>float</em><em>, </em><em>optional</em>) – Matplotlib 3D view azimuth angle in degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Matplotlib figure containing the spherical far-field plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.plot_heatmap">
+<span class="sig-name descname"><span class="pre">plot_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(4.2,</span> <span class="pre">3.6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile_clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/farfields.html#FarFields.plot_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.FarFields.plot_heatmap" title="Link to this definition">#</a></dt>
+<dd><p>Plot far-field quantities as two-dimensional angular heatmaps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) – Plot type. Supported values are <code class="docutils literal notranslate"><span class="pre">&quot;intensity&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;complex&quot;</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">&quot;phase&quot;</span></code>.</p></li>
+<li><p><strong>unit_size</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Size of each panel in inches, given as <code class="docutils literal notranslate"><span class="pre">(width,</span> <span class="pre">height)</span></code>.</p></li>
+<li><p><strong>colormap</strong> (<em>str</em><em> or </em><em>matplotlib.colors.Colormap</em><em>, </em><em>optional</em>) – Colormap used for the plotted values. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MPSPlots.colormaps.blue_black_red</span></code> is used.</p></li>
+<li><p><strong>background_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Figure background color.</p></li>
+<li><p><strong>show_colorbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, add one colorbar to each panel.</p></li>
+<li><p><strong>scale</strong> (<em>str</em><em>, </em><em>optional</em>) – Scaling for intensity plots. Supported values are <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code>. Ignored for <code class="docutils literal notranslate"><span class="pre">&quot;complex&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;phase&quot;</span></code>.</p></li>
+<li><p><strong>percentile_clip</strong> (<em>float</em><em>, </em><em>optional</em>) – If provided, upper color limits are clipped to this percentile of
+the finite plotted values.</p></li>
+<li><p><strong>interpolation</strong> (<em>str</em><em>, </em><em>optional</em>) – Interpolation mode passed to <code class="docutils literal notranslate"><span class="pre">imshow</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Matplotlib figure containing the far-field heatmaps.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.representations.FarFields.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PyMieSim.single.representations.FarFields.sampling" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stokes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/stokes.html#Stokes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes" title="Link to this definition">#</a></dt>
@@ -1320,95 +1498,19 @@ V &amp;= 2 \operatorname{Im}\{E_x E_y^*\}\end{split}\]</div>
 <li><p><strong>distance</strong> (<em>pint.Quantity</em><em>, </em><em>optional</em>) – Observation distance at which the Stokes parameters are evaluated.</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.setup" title="Link to this definition">#</a></dt>
-<dd><p>Simulation setup used to compute the Stokes parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>setup</strong> (<em>object</em>) – Simulation setup used to compute the Stokes parameters.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>) – Angular sampling used for the structured Stokes mesh.</p></li>
+<li><p><strong>distance</strong> (<em>pint.Quantity</em>) – Observation distance.</p></li>
+<li><p><strong>I</strong> (<em>pint.Quantity</em>) – Total scattered intensity.</p></li>
+<li><p><strong>Q</strong> (<em>pint.Quantity</em>) – Linear polarization contrast between the x and y axes.</p></li>
+<li><p><strong>U</strong> (<em>pint.Quantity</em>) – Linear polarization contrast between the +45 and -45 degree axes.</p></li>
+<li><p><strong>V</strong> (<em>pint.Quantity</em>) – Circular polarization contrast.</p></li>
+<li><p><strong>mesh</strong> (<em>object</em>) – Full spherical mesh returned by the backend.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.sampling" title="Link to this definition">#</a></dt>
-<dd><p>Angular sampling used for the structured Stokes mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.distance">
-<span class="sig-name descname"><span class="pre">distance</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.distance" title="Link to this definition">#</a></dt>
-<dd><p>Observation distance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.I">
-<span class="sig-name descname"><span class="pre">I</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.I" title="Link to this definition">#</a></dt>
-<dd><p>Total scattered intensity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.Q">
-<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.Q" title="Link to this definition">#</a></dt>
-<dd><p>Linear polarization contrast between the x and y axes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.U">
-<span class="sig-name descname"><span class="pre">U</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.U" title="Link to this definition">#</a></dt>
-<dd><p>Linear polarization contrast between the +45 and -45 degree axes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.V">
-<span class="sig-name descname"><span class="pre">V</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.V" title="Link to this definition">#</a></dt>
-<dd><p>Circular polarization contrast.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#PyMieSim.single.representations.Stokes.mesh" title="Link to this definition">#</a></dt>
-<dd><p>Full spherical mesh returned by the backend.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field='I'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_size=(5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">5.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_color='black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile_clip=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_linewidth=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_antialiased=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation=25.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth=35.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/stokes.html#Stokes.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.Stokes.plot" title="Link to this definition">#</a></dt>
@@ -1454,8 +1556,8 @@ mesh edges even if <code class="docutils literal notranslate"><span class="pre">
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.representations.Stokes.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PyMieSim.single.representations.Stokes.sampling" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1476,51 +1578,15 @@ as a normalized radial surface or as an intensity map on a unit sphere.</p>
 <li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples used in each spherical mesh direction.</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.setup" title="Link to this definition">#</a></dt>
-<dd><p>Simulation setup used to compute the scattering phase function.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>setup</strong> (<em>object</em>) – Simulation setup used to compute the scattering phase function.</p></li>
+<li><p><strong>sampling</strong> (<em>int</em>) – Angular sampling used for the structured SPF mesh.</p></li>
+<li><p><strong>SPF</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><em>numpy.ndarray</em></a>) – Scattering phase function sampled on the spherical mesh.</p></li>
+<li><p><strong>mesh</strong> (<em>object</em>) – Full spherical mesh returned by the backend.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.sampling">
-<span class="sig-name descname"><span class="pre">sampling</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.sampling" title="Link to this definition">#</a></dt>
-<dd><p>Angular sampling used for the structured SPF mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.SPF">
-<span class="sig-name descname"><span class="pre">SPF</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.SPF" title="Link to this definition">#</a></dt>
-<dd><p>Scattering phase function sampled on the spherical mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.mesh">
-<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#PyMieSim.single.representations.SPF.mesh" title="Link to this definition">#</a></dt>
-<dd><p>Full spherical mesh returned by the backend.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>object</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.plot">
 <span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(5.0,</span> <span class="pre">5.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_surface</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile_clip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_antialiased</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elevation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">azimuth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">35.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/PyMieSim/single/representations/spf.html#SPF.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.representations.SPF.plot" title="Link to this definition">#</a></dt>
@@ -1559,8 +1625,8 @@ mesh edges even if <code class="docutils literal notranslate"><span class="pre">
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.representations.SPF.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PyMieSim.single.representations.SPF.sampling" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1591,29 +1657,13 @@ incident and scattered fields.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of angular samples between <span class="math notranslate nohighlight">\(-\pi\)</span> and <span class="math notranslate nohighlight">\(\pi\)</span>.</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.S1S2.phi">
-<span class="sig-name descname"><span class="pre">phi</span></span><a class="headerlink" href="#PyMieSim.single.representations.S1S2.phi" title="Link to this definition">#</a></dt>
-<dd><p>Sampled angular coordinates in radians.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>phi</strong> (<em>pint.Quantity</em>) – Sampled angular coordinates in radians.</p></li>
+<li><p><strong>S2</strong> (<em>S1</em><em>,</em>) – Complex scattering amplitudes for the two polarization components.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">S1,</span> <span class="pre">S2</span></span></dt>
-<dd><p>Complex scattering amplitudes for the two polarization components.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a> or pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>The S1 and S2 parameters are central to Mie scattering theory and are used to derive many important scattering properties, such as intensity distributions and polarization effects.</p></li>
@@ -1681,29 +1731,13 @@ This is important for understanding how the scattered light interacts with the d
 <li><p><strong>padding_factor</strong> (<em>int</em><em>, </em><em>optional</em>) – Factor used to zero-pad the Fourier input before transforming.</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.representations.Footprint.mapping">
-<span class="sig-name descname"><span class="pre">mapping</span></span><a class="headerlink" href="#PyMieSim.single.representations.Footprint.mapping" title="Link to this definition">#</a></dt>
-<dd><p>Computed footprint intensity on the detector plane.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mapping</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.6.dev0)"><em>numpy.ndarray</em></a>) – Computed footprint intensity on the detector plane.</p></li>
+<li><p><strong>direct_y</strong> (<em>direct_x</em><em>,</em>) – Detector-plane coordinates corresponding to <code class="docutils literal notranslate"><span class="pre">mapping</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">direct_x,</span> <span class="pre">direct_y</span></span></dt>
-<dd><p>Detector-plane coordinates corresponding to <code class="docutils literal notranslate"><span class="pre">mapping</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pint.Quantity</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>The footprint provides valuable information about the coupling efficiency between the scattered light and the detector. This is useful in designing experiments where precise control of light detection is important, such as in microscopy, remote sensing, or optical measurements.</p></li>
@@ -1835,7 +1869,7 @@ arranged on the configured <code class="docutils literal notranslate"><span clas
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>field_components</strong> (<em>str</em>) – List of field components to plot, for example Ex:real, <a href="#id2"><span class="problematic" id="id3">|E|</span></a>:abs.</p></li>
+<li><p><strong>field_components</strong> (<em>str</em>) – List of field components to plot, for example <code class="docutils literal notranslate"><span class="pre">Ex:real</span></code>, <code class="docutils literal notranslate"><span class="pre">|E|:abs</span></code>.</p></li>
 <li><p><strong>type</strong> (<em>str</em>) – Type of field to compute: total, incident, or scattered.</p></li>
 <li><p><strong>sampling</strong> (<em>int</em>) – Number of points along each in plane direction (u and v).</p></li>
 <li><p><strong>plane_origin</strong> (<em>Sequence</em><em>[</em><em>Length</em><em>] </em><em>| </em><em>None</em>) – Origin of the sampling plane in 3D space. If None, defaults to (0, 0, z).</p></li>
@@ -1881,6 +1915,30 @@ arranged on the configured <code class="docutils literal notranslate"><span clas
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="public_api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Stable Python API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="experiment.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Experiment module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             
@@ -1982,36 +2040,30 @@ arranged on the configured <code class="docutils literal notranslate"><span clas
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PyMieSim.single.representations.FarFields">Representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representations">Representations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields"><code class="docutils literal notranslate"><span class="pre">FarFields</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot"><code class="docutils literal notranslate"><span class="pre">FarFields.add_phi_vector_to_3d_plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot"><code class="docutils literal notranslate"><span class="pre">FarFields.add_theta_vector_to_3d_plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.plot"><code class="docutils literal notranslate"><span class="pre">FarFields.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.plot_heatmap"><code class="docutils literal notranslate"><span class="pre">FarFields.plot_heatmap()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.FarFields.sampling"><code class="docutils literal notranslate"><span class="pre">FarFields.sampling</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes"><code class="docutils literal notranslate"><span class="pre">Stokes</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.setup"><code class="docutils literal notranslate"><span class="pre">Stokes.setup</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.sampling"><code class="docutils literal notranslate"><span class="pre">Stokes.sampling</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.distance"><code class="docutils literal notranslate"><span class="pre">Stokes.distance</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.I"><code class="docutils literal notranslate"><span class="pre">Stokes.I</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.Q"><code class="docutils literal notranslate"><span class="pre">Stokes.Q</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.U"><code class="docutils literal notranslate"><span class="pre">Stokes.U</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.V"><code class="docutils literal notranslate"><span class="pre">Stokes.V</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.mesh"><code class="docutils literal notranslate"><span class="pre">Stokes.mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.plot"><code class="docutils literal notranslate"><span class="pre">Stokes.plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">Stokes.sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Stokes.sampling"><code class="docutils literal notranslate"><span class="pre">Stokes.sampling</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF"><code class="docutils literal notranslate"><span class="pre">SPF</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.setup"><code class="docutils literal notranslate"><span class="pre">SPF.setup</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.sampling"><code class="docutils literal notranslate"><span class="pre">SPF.sampling</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.SPF"><code class="docutils literal notranslate"><span class="pre">SPF.SPF</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.mesh"><code class="docutils literal notranslate"><span class="pre">SPF.mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.plot"><code class="docutils literal notranslate"><span class="pre">SPF.plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">SPF.sampling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.SPF.sampling"><code class="docutils literal notranslate"><span class="pre">SPF.sampling</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2"><code class="docutils literal notranslate"><span class="pre">S1S2</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.phi"><code class="docutils literal notranslate"><span class="pre">S1S2.phi</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.S1S2.plot"><code class="docutils literal notranslate"><span class="pre">S1S2.plot()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint"><code class="docutils literal notranslate"><span class="pre">Footprint</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.mapping"><code class="docutils literal notranslate"><span class="pre">Footprint.mapping</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.compute_footprint"><code class="docutils literal notranslate"><span class="pre">Footprint.compute_footprint()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.get_fourier_component"><code class="docutils literal notranslate"><span class="pre">Footprint.get_fourier_component()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.representations.Footprint.plot"><code class="docutils literal notranslate"><span class="pre">Footprint.plot()</span></code></a></li>

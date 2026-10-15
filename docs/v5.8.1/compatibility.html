@@ -31,13 +31,12 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,7 +58,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="References" href="references.html" />
@@ -136,8 +135,8 @@
     
     
     
-    <img src="_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -525,96 +524,52 @@
                   
   <section id="compatibility-matrix">
 <h1>Compatibility matrix<a class="headerlink" href="#compatibility-matrix" title="Link to this heading">#</a></h1>
-<p>This page describes the platforms targeted by the current packaging
-configuration. A platform marked <strong>wheel</strong> has a compiled binary distribution;
-<strong>source</strong> means that PyMieSim must be built locally with its native toolchain.</p>
+<p>This page describes packaging targets for the documentation’s source version.
+The table summarizes the targets configured in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. A configured
+target is not a guarantee that an uploaded wheel exists for every release.</p>
 <section id="python-and-wheel-support">
 <h2>Python and wheel support<a class="headerlink" href="#python-and-wheel-support" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table" id="id1">
-<caption><span class="caption-text">Current release targets</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<caption><span class="caption-text">Configured CPython wheel targets</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
 <colgroup>
-<col style="width: 18.0%" />
-<col style="width: 16.0%" />
-<col style="width: 16.0%" />
-<col style="width: 18.0%" />
-<col style="width: 32.0%" />
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Operating system</p></th>
 <th class="head"><p>Architecture</p></th>
-<th class="head"><p>Python</p></th>
-<th class="head"><p>Distribution</p></th>
-<th class="head"><p>Notes</p></th>
+<th class="head"><p>Python versions</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Linux</p></td>
 <td><p>x86_64</p></td>
-<td><p>3.11</p></td>
-<td><p>manylinux wheel</p></td>
-<td><p>Built against <code class="docutils literal notranslate"><span class="pre">manylinux_2_28</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Linux</p></td>
-<td><p>x86_64</p></td>
-<td><p>3.12</p></td>
-<td><p>manylinux wheel</p></td>
-<td><p>Built against <code class="docutils literal notranslate"><span class="pre">manylinux_2_28</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p>Linux</p></td>
-<td><p>x86_64</p></td>
-<td><p>3.13</p></td>
-<td><p>manylinux wheel</p></td>
-<td><p>Built against <code class="docutils literal notranslate"><span class="pre">manylinux_2_28</span></code>.</p></td>
+<td><p>3.11, 3.12, 3.13, 3.14</p></td>
 </tr>
 <tr class="row-odd"><td><p>macOS</p></td>
 <td><p>arm64</p></td>
-<td><p>3.11</p></td>
-<td><p>macOS wheel</p></td>
-<td><p>Requires the packaged OpenMP runtime; deployment target is macOS 15.</p></td>
-</tr>
-<tr class="row-even"><td><p>macOS</p></td>
-<td><p>arm64</p></td>
-<td><p>3.12</p></td>
-<td><p>macOS wheel</p></td>
-<td><p>Requires the packaged OpenMP runtime; deployment target is macOS 15.</p></td>
-</tr>
-<tr class="row-odd"><td><p>macOS</p></td>
-<td><p>arm64</p></td>
-<td><p>3.13</p></td>
-<td><p>macOS wheel</p></td>
-<td><p>Requires the packaged OpenMP runtime; deployment target is macOS 15.</p></td>
+<td><p>3.11, 3.12, 3.13, 3.14</p></td>
 </tr>
 <tr class="row-even"><td><p>Windows</p></td>
 <td><p>AMD64</p></td>
-<td><p>3.11</p></td>
-<td><p>Windows wheel</p></td>
-<td><p>Built with the configured MinGW toolchain and OpenMP support.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Windows</p></td>
-<td><p>AMD64</p></td>
-<td><p>3.12</p></td>
-<td><p>Windows wheel</p></td>
-<td><p>Built with the configured MinGW toolchain and OpenMP support.</p></td>
-</tr>
-<tr class="row-even"><td><p>Windows</p></td>
-<td><p>AMD64</p></td>
-<td><p>3.13</p></td>
-<td><p>Windows wheel</p></td>
-<td><p>Built with the configured MinGW toolchain and OpenMP support.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Any supported OS</p></td>
-<td><p>Native architecture</p></td>
-<td><p>3.10</p></td>
-<td><p>Source build</p></td>
-<td><p>Declared by the package metadata, but not currently included in cibuildwheel targets.</p></td>
+<td><p>3.11, 3.12, 3.13, 3.14</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The package metadata currently declares <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">&gt;=</span> <span class="pre">3.10</span></code>. Python 3.10 users
-should therefore expect to compile from source unless a separately published
-wheel is available. The project should either add Python 3.10 wheel builds or
-raise <code class="docutils literal notranslate"><span class="pre">requires-python</span></code> to <code class="docutils literal notranslate"><span class="pre">&gt;=3.11</span></code> before removing this row.</p>
+<p>Package metadata requires Python <code class="docutils literal notranslate"><span class="pre">&gt;=3.10</span></code>. Python 3.10 requires a source build
+unless a matching wheel is available separately.</p>
+<p>Linux wheels target <code class="docutils literal notranslate"><span class="pre">manylinux_2_28</span></code>. macOS builds target Apple Silicon
+with a minimum deployment version of macOS 15 and bundle their OpenMP runtime.
+Windows builds target AMD64. Python versions and architectures above reflect
+the configured build targets, including newly added interpreter versions.</p>
+<p>To require a matching wheel instead of silently attempting a local compilation:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">only</span><span class="o">-</span><span class="n">binary</span><span class="o">=</span><span class="p">:</span><span class="nb">all</span><span class="p">:</span> <span class="n">PyMieSim</span>
+</pre></div>
+</div>
+<p>If no matching distribution is found, check the interpreter version and CPU
+architecture against the table before choosing a source build.</p>
 </section>
 <section id="source-build-requirements">
 <h2>Source-build requirements<a class="headerlink" href="#source-build-requirements" title="Link to this heading">#</a></h2>
@@ -665,6 +620,30 @@ errors such as missing symbols or incompatible binary formats.</p>
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="reproducibility.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Reproducible studies</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="references.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

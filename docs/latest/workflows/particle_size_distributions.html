@@ -31,13 +31,12 @@
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -60,7 +59,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Inverse parameter fitting" href="inverse_fitting.html" />
@@ -137,8 +136,8 @@
     
     
     
-    <img src="../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -560,6 +559,7 @@ typed results or dataframes.</p>
 <h2>Discrete sizes<a class="headerlink" href="#discrete-sizes" title="Link to this heading">#</a></h2>
 <p>Supply particle counts or number fractions at each diameter:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Measure</span><span class="p">,</span>
     <span class="n">Experiment</span><span class="p">,</span> <span class="n">ParticleSizeDistribution</span><span class="p">,</span> <span class="n">PlaneWaveSet</span><span class="p">,</span>
     <span class="n">PolarizationSet</span><span class="p">,</span> <span class="n">SphereSet</span><span class="p">,</span> <span class="n">ureg</span><span class="p">,</span>
 <span class="p">)</span>
@@ -580,13 +580,17 @@ typed results or dataframes.</p>
 <span class="p">)</span>
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">spheres</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">average_size_distribution</span><span class="p">(</span>
-    <span class="n">distribution</span><span class="p">,</span> <span class="s2">"Csca"</span><span class="p">,</span> <span class="s2">"Cext"</span><span class="p">,</span> <span class="s2">"g"</span><span class="p">,</span>
+    <span class="n">distribution</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CEXT</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">G</span><span class="p">,</span>
     <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">scattering</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"Csca"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">scattering</span><span class="o">.</span><span class="n">as_labeled_array</span><span class="p">()</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>For these three wavelengths, each typed result has shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> after
+removing the diameter axis. Cross sections carry area units and <code class="docutils literal notranslate"><span class="pre">g</span></code> is
+dimensionless. The exported table contains one averaged response per wavelength,
+not a separate response for every diameter.</p>
 <p>Weights are normalized to sum to one. They must be <strong>number weights</strong>, not
 volume fractions, mass fractions, or intensity-weighted size estimates.
 For histogram measurements, use the number of particles in each bin. Samples
@@ -625,7 +629,7 @@ populations.</p>
 <h2>More distribution families<a class="headerlink" href="#more-distribution-families" title="Link to this heading">#</a></h2>
 <p>All constructors return the same <code class="docutils literal notranslate"><span class="pre">ParticleSizeDistribution</span></code> type, so use
 <code class="docutils literal notranslate"><span class="pre">distribution.diameters</span></code> in the <code class="docutils literal notranslate"><span class="pre">SphereSet</span></code> and call
-<code class="docutils literal notranslate"><span class="pre">experiment.average_size_distribution(distribution,</span> <span class="pre">&quot;Csca&quot;)</span></code> as above.
+<code class="docutils literal notranslate"><span class="pre">experiment.average_size_distribution(distribution,</span> <span class="pre">Measure.CSCA)</span></code> as above.
 All weights represent particle number. The non-interacting approximation and
 PackLab guidance at the top of this page apply to every family.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id1">
@@ -672,9 +676,10 @@ PackLab guidance at the top of this page apply to every family.</p>
 </table>
 </div>
 <p>For example:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_size</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">monodisperse</span><span class="p">(</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_size</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">monodisperse</span><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span>
 <span class="n">uniform</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span>
-    <span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">minimum_diameter</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">maximum_diameter</span><span class="o">=</span><span class="mi">300</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">normal</span> <span class="o">=</span> <span class="n">ParticleSizeDistribution</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span>
     <span class="n">mean_diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
@@ -845,6 +850,30 @@ multiply scattering sample, nor sums of coherent particle fields.</p>
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="parameter_sweeps.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Parameter sweeps</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="inverse_fitting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Inverse parameter fitting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

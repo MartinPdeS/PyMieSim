@@ -26,7 +26,7 @@ This is the non-interacting approximation: no interparticle electromagnetic
 coupling, multiple scattering, positional correlations, or interference between
 particles is modeled. The result is a mean per particle, not a sample total.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-47
+.. GENERATED FROM PYTHON SOURCE LINES 10-48
 
 
 
@@ -40,7 +40,7 @@ particles is modeled. The result is a mean per particle, not a sample total.
 
  .. code-block:: none
 
-    /home/runner/work/PyMieSim/PyMieSim/docs/examples/experiment/sphere/independent_size_distribution.py:45: UserWarning: Glyph 8212 (\N{EM DASH}) missing from font(s) cmr10.
+    /home/runner/work/PyMieSim/PyMieSim/docs/examples/experiment/sphere/independent_size_distribution.py:46: UserWarning: Glyph 8212 (\N{EM DASH}) missing from font(s) cmr10.
       figure.tight_layout()
 
 
@@ -56,6 +56,7 @@ particles is modeled. The result is a mean per particle, not a sample total.
     import matplotlib.pyplot as plt
 
     from PyMieSim import (
+        Measure,
         Experiment, ParticleSizeDistribution, PlaneWaveSet, PolarizationSet, SphereSet, ureg,
     )
 
@@ -76,7 +77,7 @@ particles is modeled. The result is a mean per particle, not a sample total.
             scatterer_set=SphereSet(diameter=distribution.diameters, material=[1.5], medium=[1.0]),
         )
         result = experiment.average_size_distribution(
-            distribution, "Csca", as_result=True,
+            distribution, Measure.CSCA, as_result=True,
         ).to("nanometer ** 2")
         axis.plot(result.coords["source:wavelength"] * 1e9, result.magnitude, label=f"{sampling} quadrature nodes"
                 )
@@ -93,7 +94,7 @@ particles is modeled. The result is a mean per particle, not a sample total.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.293 seconds)
+   **Total running time of the script:** (0 minutes 0.153 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_independent_size_distribution.py:

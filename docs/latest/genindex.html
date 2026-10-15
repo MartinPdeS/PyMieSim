@@ -30,13 +30,12 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -58,7 +57,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -133,8 +132,8 @@
     
     
     
-    <img src="_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -486,7 +485,6 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
- | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -532,6 +530,10 @@
 </li>
       <li><a href="code/single.html#PyMieSim.single.scatterer.InfiniteCylinder.a2n">a2n (InfiniteCylinder property)</a>
 </li>
+      <li><a href="code/single.html#PyMieSim.single.representations.FarFields.add_phi_vector_to_3d_plot">add_phi_vector_to_3d_plot() (FarFields method)</a>
+</li>
+      <li><a href="code/single.html#PyMieSim.single.representations.FarFields.add_theta_vector_to_3d_plot">add_theta_vector_to_3d_plot() (FarFields method)</a>
+</li>
       <li><a href="code/material.html#PyMieSim.material.SellmeierMaterial.allow_extrapolation">allow_extrapolation (SellmeierMaterial property)</a>
 
       <ul>
@@ -550,10 +552,10 @@
         <li><a href="code/single.html#PyMieSim.single.scatterer.Sphere.an">(Sphere property)</a>
 </li>
       </ul></li>
-      <li><a href="code/single.html#PyMieSim.single.source.Gaussian.area">area (Gaussian property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/single.html#PyMieSim.single.source.Gaussian.area">area (Gaussian property)</a>
+</li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.attributes">attributes (CoherentModeSet attribute)</a>
 
       <ul>
@@ -596,7 +598,7 @@
         <li><a href="code/single.html#PyMieSim.single.scatterer.Sphere.bn">(Sphere property)</a>
 </li>
       </ul></li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Parameter.bounds">bounds (Parameter property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitParameter.bounds">bounds (FitParameter property)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.build_sequential">build_sequential() (CoherentModeSet static method)</a>
 
@@ -690,8 +692,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="workflows/particle_size_distributions.html#PyMieSim.ParticleSizeDistribution.diameters">diameters (ParticleSizeDistribution property)</a>
 </li>
-      <li><a href="code/single.html#PyMieSim.single.representations.Stokes.distance">distance (Stokes attribute)</a>
-</li>
       <li><a href="code/single.html#PyMieSim.single.scatterer.CoreShell.dn">dn (CoreShell property)</a>
 
       <ul>
@@ -704,7 +704,7 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.evaluations">evaluations (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.evaluations">evaluations (ParameterFitResult property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -712,9 +712,11 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/single.html#PyMieSim.single.representations.FarFields">FarFields (class in PyMieSim.single.representations)</a>
+</li>
       <li><a href="workflows/inverse_fitting.html#PyMieSim.fit_parameters">fit_parameters() (in module PyMieSim)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult">FitResult (class in PyMieSim)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitParameter">FitParameter (class in PyMieSim)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -782,21 +784,19 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code/single.html#PyMieSim.single.representations.Stokes.I">I (Stokes attribute)</a>
-</li>
       <li><a href="code/single.html#PyMieSim.single.scatterer.InfiniteCylinder">InfiniteCylinder (class in PyMieSim.single.scatterer)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.scatterer_set.InfiniteCylinderSet">InfiniteCylinderSet (class in PyMieSim.experiment.scatterer_set)</a>
 </li>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitParameter.initial">initial (FitParameter property)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Parameter.initial">initial (Parameter property)</a>
-</li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.initial_parameters">initial_parameters (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.initial_parameters">initial_parameters (ParameterFitResult property)</a>
 </li>
       <li><a href="code/single.html#PyMieSim.single.detector.IntegratingSphere">IntegratingSphere (class in PyMieSim.single.detector)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.iterations">iterations (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.iterations">iterations (ParameterFitResult property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -816,8 +816,6 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code/single.html#PyMieSim.single.representations.Footprint.mapping">mapping (Footprint attribute)</a>
-</li>
       <li><a href="code/single.html#PyMieSim.single.scatterer.InfiniteCylinder.material">material (InfiniteCylinder property)</a>
 
       <ul>
@@ -829,6 +827,8 @@
 </li>
       </ul></li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.mean_coupling">mean_coupling (CoherentModeSet property)</a>
+</li>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.MeasuredData">MeasuredData (class in PyMieSim)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.medium">medium (CoherentModeSet property)</a>
 
@@ -844,16 +844,10 @@
         <li><a href="code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet.medium">(SphereSet property)</a>
 </li>
       </ul></li>
-      <li><a href="code/single.html#PyMieSim.single.representations.SPF.mesh">mesh (SPF attribute)</a>
-
-      <ul>
-        <li><a href="code/single.html#PyMieSim.single.representations.Stokes.mesh">(Stokes attribute)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.message">message (ParameterFitResult property)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.message">message (FitResult property)</a>
-</li>
       <li><a href="workflows/particle_size_distributions.html#PyMieSim.ParticleSizeDistribution.mixture">mixture() (ParticleSizeDistribution static method)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.mode_numbers">mode_numbers (CoherentModeSet property)</a>
@@ -876,8 +870,6 @@
 </li>
         <li><a href="code/single.html#module-PyMieSim.single.detector">PyMieSim.single.detector</a>
 </li>
-        <li><a href="code/single.html#module-PyMieSim.single.representations.FarFields">PyMieSim.single.representations.FarFields</a>
-</li>
         <li><a href="code/single.html#module-PyMieSim.single.scatterer">PyMieSim.single.scatterer</a>
 </li>
         <li><a href="code/single.html#module-PyMieSim.single.source">PyMieSim.single.source</a>
@@ -891,10 +883,10 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Observation.name">name (Observation property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitParameter.name">name (FitParameter property)</a>
 
       <ul>
-        <li><a href="workflows/inverse_fitting.html#PyMieSim.Parameter.name">(Parameter property)</a>
+        <li><a href="workflows/inverse_fitting.html#PyMieSim.MeasuredData.name">(MeasuredData property)</a>
 </li>
         <li><a href="code/material.html#PyMieSim.material.SellmeierMaterial.name">(SellmeierMaterial property)</a>
 </li>
@@ -927,14 +919,12 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.objective">objective (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.objective">objective (ParameterFitResult property)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Observation">Observation (class in PyMieSim)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.observed">observed (ParameterFitResult property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.observed">observed (FitResult property)</a>
-</li>
       <li><a href="code/single.html#PyMieSim.single.source.Gaussian.optical_power">optical_power (Gaussian property)</a>
 
       <ul>
@@ -947,17 +937,15 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Parameter">Parameter (class in PyMieSim)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.parameter_names">parameter_names (ParameterFitResult property)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.parameter_names">parameter_names (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult">ParameterFitResult (class in PyMieSim)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.parameters">parameters (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.parameters">parameters (ParameterFitResult property)</a>
 </li>
       <li><a href="workflows/particle_size_distributions.html#PyMieSim.ParticleSizeDistribution">ParticleSizeDistribution (class in PyMieSim)</a>
 </li>
       <li><a href="code/single.html#PyMieSim.single.source.Gaussian.peak_intensity">peak_intensity (Gaussian property)</a>
-</li>
-      <li><a href="code/single.html#PyMieSim.single.representations.S1S2.phi">phi (S1S2 attribute)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.phi_offset">phi_offset (CoherentModeSet property)</a>
 
@@ -973,9 +961,11 @@
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.source_set.PlaneWaveSet">PlaneWaveSet (class in PyMieSim.experiment.source_set)</a>
 </li>
-      <li><a href="code/single.html#PyMieSim.single.representations.Footprint.plot">plot() (Footprint method)</a>
+      <li><a href="code/single.html#PyMieSim.single.representations.FarFields.plot">plot() (FarFields method)</a>
 
       <ul>
+        <li><a href="code/single.html#PyMieSim.single.representations.Footprint.plot">(Footprint method)</a>
+</li>
         <li><a href="code/single.html#PyMieSim.single.representations.NearFields.plot">(NearFields method)</a>
 </li>
         <li><a href="code/single.html#PyMieSim.single.representations.S1S2.plot">(S1S2 method)</a>
@@ -985,13 +975,15 @@
         <li><a href="code/single.html#PyMieSim.single.representations.Stokes.plot">(Stokes method)</a>
 </li>
       </ul></li>
+      <li><a href="code/single.html#PyMieSim.single.representations.FarFields.plot_heatmap">plot_heatmap() (FarFields method)</a>
+</li>
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.polarization_filter">polarization_filter (CoherentModeSet property)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet">PolarizationSet (class in PyMieSim.experiment.polarization_set)</a>
 </li>
       <li><a href="code/polarization.html#PyMieSim.polarization.PolarizationState">PolarizationState (class in PyMieSim.polarization)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.prediction">prediction (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.prediction">prediction (ParameterFitResult property)</a>
 </li>
       <li><a href="code/material.html#PyMieSim.material.print_available">print_available() (in module PyMieSim.material)</a>
 </li>
@@ -1069,13 +1061,6 @@
 </li>
       </ul></li>
       <li>
-    PyMieSim.single.representations.FarFields
-
-      <ul>
-        <li><a href="code/single.html#module-PyMieSim.single.representations.FarFields">module</a>
-</li>
-      </ul></li>
-      <li>
     PyMieSim.single.scatterer
 
       <ul>
@@ -1089,14 +1074,6 @@
         <li><a href="code/single.html#module-PyMieSim.single.source">module</a>
 </li>
       </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="Q">Q</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code/single.html#PyMieSim.single.representations.Stokes.Q">Q (Stokes attribute)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -1125,7 +1102,7 @@
         <li><a href="code/material.html#PyMieSim.material.TabulatedMedium.refractive_indices">(TabulatedMedium property)</a>
 </li>
       </ul></li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.residuals">residuals (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.residuals">residuals (ParameterFitResult property)</a>
 </li>
       <li><a href="code/polarization.html#PyMieSim.polarization.RightCircular">RightCircular (class in PyMieSim.polarization)</a>
 </li>
@@ -1146,23 +1123,19 @@
       <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.CoherentModeSet.sampling">sampling (CoherentModeSet property)</a>
 
       <ul>
+        <li><a href="code/single.html#PyMieSim.single.representations.FarFields.sampling">(FarFields attribute)</a>
+</li>
         <li><a href="code/experiment.html#PyMieSim.experiment.detector_set.PhotodiodeSet.sampling">(PhotodiodeSet property)</a>
 </li>
-        <li><a href="code/single.html#PyMieSim.single.representations.SPF.sampling">(SPF attribute)</a>, <a href="code/single.html#id1">[1]</a>
+        <li><a href="code/single.html#PyMieSim.single.representations.SPF.sampling">(SPF attribute)</a>
 </li>
-        <li><a href="code/single.html#PyMieSim.single.representations.Stokes.sampling">(Stokes attribute)</a>, <a href="code/single.html#id0">[1]</a>
+        <li><a href="code/single.html#PyMieSim.single.representations.Stokes.sampling">(Stokes attribute)</a>
 </li>
       </ul></li>
       <li><a href="code/material.html#PyMieSim.material.SellmeierMaterial">SellmeierMaterial (class in PyMieSim.material)</a>
 </li>
       <li><a href="code/material.html#PyMieSim.material.SellmeierMedium">SellmeierMedium (class in PyMieSim.material)</a>
 </li>
-      <li><a href="code/single.html#PyMieSim.single.representations.SPF.setup">setup (SPF attribute)</a>
-
-      <ul>
-        <li><a href="code/single.html#PyMieSim.single.representations.Stokes.setup">(Stokes attribute)</a>
-</li>
-      </ul></li>
       <li><a href="code/single.html#PyMieSim.single.scatterer.CoreShell.shell_material">shell_material (CoreShell property)</a>
 
       <ul>
@@ -1178,20 +1151,16 @@
 </li>
       </ul></li>
       <li><a href="code/single.html#PyMieSim.single.representations.SPF">SPF (class in PyMieSim.single.representations)</a>
-
-      <ul>
-        <li><a href="code/single.html#PyMieSim.single.representations.SPF.SPF">(SPF attribute)</a>
 </li>
-      </ul></li>
       <li><a href="code/single.html#PyMieSim.single.scatterer.Sphere">Sphere (class in PyMieSim.single.scatterer)</a>
 </li>
       <li><a href="code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet">SphereSet (class in PyMieSim.experiment.scatterer_set)</a>
 </li>
       <li><a href="code/single.html#PyMieSim.single.representations.Stokes">Stokes (class in PyMieSim.single.representations)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.success">success (FitResult property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.success">success (ParameterFitResult property)</a>
 </li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.FitResult.summary">summary() (FitResult method)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.ParameterFitResult.summary">summary() (ParameterFitResult method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1217,12 +1186,10 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code/single.html#PyMieSim.single.representations.Stokes.U">U (Stokes attribute)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.MeasuredData.uncertainty">uncertainty (MeasuredData property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Observation.uncertainty">uncertainty (Observation property)</a>
-</li>
       <li><a href="workflows/particle_size_distributions.html#PyMieSim.ParticleSizeDistribution.uniform">uniform() (ParticleSizeDistribution static method)</a>
 </li>
   </ul></td>
@@ -1231,9 +1198,7 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code/single.html#PyMieSim.single.representations.Stokes.V">V (Stokes attribute)</a>
-</li>
-      <li><a href="workflows/inverse_fitting.html#PyMieSim.Observation.values">values (Observation property)</a>
+      <li><a href="workflows/inverse_fitting.html#PyMieSim.MeasuredData.values">values (MeasuredData property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1281,6 +1246,12 @@
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
               
             </div>
             

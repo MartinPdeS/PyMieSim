@@ -1,6 +1,6 @@
 """
 How distribution width changes the scattering phase function
-===========================================================
+============================================================
 
 Compare lognormal number distributions at the same median diameter. The right
 panel shows the unpolarized phase function per unit solid angle, normalized so
@@ -22,7 +22,7 @@ mean diameter and particle volume therefore also change with width.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import ParticleSizeDistribution, PlaneWave, PolarizationState, Simulation, Sphere, ureg
+from PyMieSim import Measure, ParticleSizeDistribution, PlaneWave, PolarizationState, Simulation, Sphere, ureg
 
 
 MEDIAN_DIAMETER = 1.0 * ureg.micrometer
@@ -59,8 +59,8 @@ def ensemble_phase_function(distribution, angles):
         s1, s2 = simulation.get_s1s2(evaluation_angles)
         intensity = (np.abs(s1.magnitude) ** 2 + np.abs(s2.magnitude) ** 2) / 2
         mean_intensity += fraction * intensity
-        scattering_weights.append(fraction * simulation.run('Csca').magnitude)
-        asymmetries.append(simulation.run('g').magnitude)
+        scattering_weights.append(fraction * simulation.run(Measure.CSCA).magnitude)
+        asymmetries.append(simulation.run(Measure.G).magnitude)
 
     integrated = mean_intensity[len(angles):]
     normalization = 2 * np.pi * np.dot(angular_weights, integrated)

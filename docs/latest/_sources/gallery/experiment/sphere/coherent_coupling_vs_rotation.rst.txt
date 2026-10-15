@@ -21,7 +21,7 @@
 Sphere: Coherent mode field rotation
 ====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-53
+.. GENERATED FROM PYTHON SOURCE LINES 6-57
 
 
 
@@ -41,8 +41,10 @@ Sphere: Coherent mode field rotation
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('scatterer:diameter', 'detector:rotation') (2, 200)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadbb545e50>, <matplotlib.lines.Line2D object at 0x7fadbb547750>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa4b8310>, <matplotlib.lines.Line2D object at 0x7fe8aa4bb450>]
 
 
 
@@ -54,6 +56,7 @@ Sphere: Coherent mode field rotation
 
     import numpy
     from PyMieSim import (
+        Measure,
         ureg,
         CoherentModeSet,
         SphereSet,
@@ -96,14 +99,17 @@ Sphere: Coherent mode field rotation
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="detector:rotation")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.282 seconds)
+   **Total running time of the script:** (0 minutes 0.152 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_rotation.py:

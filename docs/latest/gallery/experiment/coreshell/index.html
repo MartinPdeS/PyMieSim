@@ -31,13 +31,12 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,7 +58,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="CoreShell: Qback vs Core Diameter" href="Qback_vs_corediameter.html" />
@@ -136,8 +135,8 @@
     
     
     
-    <img src="../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -463,7 +462,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/nearfields.html">Near-Field Computation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../single/properties.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../single/properties.html">Inspect scalar scattering properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/stokes.html">Stokes Parameters Computation</a></li>
@@ -508,6 +507,40 @@
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/index.html">Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/fit_linear_scale.html">Fit a scalar scale factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/fit_sphere_scattering.html">Fit an isolated-sphere scattering measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/fit_unit_aware_diameter.html">Fit a unit-aware diameter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../interpretation/index.html">Interpreting scattering results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../interpretation/inverse_spectrum_diagnostics.html">Diagnose a sphere fit across several wavelengths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interpretation/phase_function_size_regimes.html">See how particle size reshapes angular scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interpretation/scattering_absorption_resonances.html">Separate scattering and absorption resonances</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../validation/energy_conservation.html">Energy-conservation validation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../benchmarks/index.html">Benchmarks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../benchmarks/memory_scaling.html">Memory scaling with sweep size</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../benchmarks/parameter_grid.html">Parameter-grid scaling</a></li>
@@ -531,30 +564,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/photodiode_angular_weights.html">Photodiode Angular Weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/plot_system.html">Plot system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_cylinder.html">Print properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_sphere.html">Samples Properties</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../validation/energy_conservation.html">Energy-conservation validation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_cylinder.html">Print cylinder properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_sphere.html">Print sphere properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -642,6 +653,30 @@
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Experiment Module</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Qback_vs_corediameter.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">CoreShell: Qback vs Core Diameter</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

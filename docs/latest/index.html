@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>PyMieSim &#8212; PyMieSim  documentation</title>
+    <title>PyMieSim documentation &#8212; PyMieSim  documentation</title>
   
   
   
@@ -31,13 +31,12 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,7 +58,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting started in 10 minutes" href="getting_started.html" />
@@ -135,8 +134,8 @@
     
     
     
-    <img src="_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -474,336 +473,64 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><strong>Date</strong>: Oct 13, 2026, <strong>Version</strong>: 5.8.1</p>
-<p><img alt="PyMieSim logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 35.0%" />
-<col style="width: 65.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Badge</p></th>
-<th class="head"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Python versions</p></td>
-<td><p><a class="reference external" href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/pypi/pyversions/pymiesim.svg" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>Documentation</p></td>
-<td><p><a class="reference external" href="https://martinpdes.github.io/PyMieSim/"><img alt="Documentation Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg" /></a></p></td>
-</tr>
-<tr class="row-even"><td><p>Scientific article</p></td>
-<td><p><a class="reference external" href="https://opg.optica.org/optcon/viewmedia.cfm?uri=optcon-2-3-520&amp;html=true"><img alt="Scientific article" src="https://img.shields.io/badge/Optics%20Continuum-PyMieSim-green.svg" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>Continuous integration</p></td>
-<td><p><img alt="Unittest Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg" /></p></td>
-</tr>
-<tr class="row-even"><td><p>Test coverage</p></td>
-<td><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html"><img alt="Unittest coverage" src="https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>Google Colab</p></td>
-<td><p><a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb"><img alt="Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></td>
-</tr>
-<tr class="row-even"><td><p>PyPI package</p></td>
-<td><p><a class="reference external" href="https://badge.fury.io/py/PyMieSim"><img alt="PyPI version" src="https://badge.fury.io/py/PyMieSim.svg" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>PyPI downloads</p></td>
-<td><p><a class="reference external" href="https://pepy.tech/projects/pymiesim"><img alt="PyPI downloads" src="https://api.pepy.tech/badge/PyMieSim/month" /></a></p></td>
-</tr>
-<tr class="row-even"><td><p>Anaconda package</p></td>
-<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Anaconda version" src="https://anaconda.org/martinpdes/pymiesim/badges/version.svg" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>Anaconda downloads</p></td>
-<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Anaconda downloads" src="https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg" /></a></p></td>
-</tr>
-<tr class="row-even"><td><p>Latest Anaconda release</p></td>
-<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Latest release date" src="https://anaconda.org/martinpdes/pymiesim/badges/latest_release_relative_date.svg" /></a></p></td>
-</tr>
-</tbody>
-</table>
+  <section id="pymiesim-documentation">
+<h1>PyMieSim documentation<a class="headerlink" href="#pymiesim-documentation" title="Link to this heading">#</a></h1>
+<p>Calculate light scattering by spheres, core-shell spheres, and infinite
+cylinders. Build a single-particle model, sweep experimental parameters, or
+fit physical parameters to measured data with explicit units.</p>
+<p><strong>Version:</strong> 5.8.1</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Get started</div>
+<p class="sd-card-text">Install PyMieSim and calculate scattering efficiency and collected power.</p>
 </div>
-<section id="pymiesim">
-<h1>PyMieSim<a class="headerlink" href="#pymiesim" title="Link to this heading">#</a></h1>
-<p><strong>PyMieSim</strong> is an open-source Python package for fast and flexible Mie scattering simulations.
-It supports spherical, cylindrical and core–shell particles and provides helper classes for custom sources and detectors.
-The project targets both quick single-scatterer studies and large parametric experiments.</p>
-<section id="try-the-live-webapp">
-<h2>Try the live webapp<a class="headerlink" href="#try-the-live-webapp" title="Link to this heading">#</a></h2>
-<p><strong>Run Mie scattering simulations in your browser—no installation required.</strong></p>
-<a class="reference external image-reference" href="https://pymiesim.onrender.com/"><img alt="Launch the PyMieSimX webapp in your browser" src="https://img.shields.io/badge/Launch_Webapp-Open_in_browser-2672d6?style=for-the-badge" />
-</a>
-<p><a class="reference external" href="https://pymiesim.onrender.com/">Launch the PyMieSimX webapp</a> to configure
-optical setups, run parameter sweeps, explore individual particles, and download
-your results as CSV files. The hosted service brings PyMieSim to a graphical
-interface, making it easy to try simulations before installing the Python
-package. The interface is developed in <a class="reference external" href="https://github.com/MartinPdeS/PyMieSimX">PyMieSimX</a>.</p>
-</section>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started.html"><span class="doc">Getting started in 10 minutes</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Follow a workflow</div>
+<p class="sd-card-text">Run parameter sweeps, fit measurements, average particle sizes, or plot fields.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="workflows.html"><span class="doc">Workflows</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Explore examples</div>
+<p class="sd-card-text">Run complete scripts and learn to interpret their plots and numerical outputs.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="examples.html"><span class="doc">Coding examples</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Look up the API</div>
+<p class="sd-card-text">Find constructors, supported measures, and result types.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="code/index.html"><span class="doc">API Reference</span></a></div>
+</div>
+</div>
+</div>
+<section id="choose-your-starting-point">
+<h2>Choose your starting point<a class="headerlink" href="#choose-your-starting-point" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Solvers for spheres, cylinders and core–shell geometries.</p></li>
-<li><p>Built-in models for plane wave and Gaussian sources.</p></li>
-<li><p>Multiple detector types including photodiodes and coherent modes.</p></li>
-<li><p>Simple data analysis with pandas DataFrame outputs.</p></li>
+<li><p>New to the package? Start with <a class="reference internal" href="getting_started.html"><span class="doc">Getting started in 10 minutes</span></a>.</p></li>
+<li><p>Have a calculation in mind? Use <a class="reference internal" href="code/public_api.html#choosing-an-interface"><span class="std std-ref">Choose an interface</span></a>.</p></li>
+<li><p>Need to understand the physics? Read <a class="reference internal" href="theory.html"><span class="doc">Theory</span></a> and <a class="reference internal" href="measures.html"><span class="doc">Measure reference</span></a>.</p></li>
+<li><p>Installation failing? Check <a class="reference internal" href="compatibility.html"><span class="doc">Compatibility matrix</span></a> and <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>.</p></li>
+<li><p>Preparing a reproducible study? See <a class="reference internal" href="reproducibility.html"><span class="doc">Reproducible studies</span></a> and <a class="reference internal" href="performance.html"><span class="doc">Performance and scaling</span></a>.</p></li>
 </ul>
-</section>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
-<p>PyMieSim is available on PyPI and Anaconda.  Install it with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim
-conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w">  </span>--channels<span class="w"> </span>MartinPdeS
-</pre></div>
-</div>
-<p>This installs a pre-built wheel when one is available for your operating
-system, architecture, and Python version. Wheels are the recommended option
-for using PyMieSim because they include the compiled C++ and Fortran
-extensions.</p>
-<p>Verify the installation with the same Python interpreter that you will use for
-your simulations:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import PyMieSim; print(PyMieSim.__version__)"</span>
-</pre></div>
-</div>
-<p>Named optical materials use PyOptik’s provenance-preserving
-RefractiveIndex.INFO catalog. Initialize its local snapshot once before using
-constructors such as <code class="docutils literal notranslate"><span class="pre">SellmeierMaterial(&quot;BK7&quot;)</span></code> or
-<code class="docutils literal notranslate"><span class="pre">TabulatedMaterial(&quot;silver&quot;)</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>PyOptik<span class="w"> </span>setup
-</pre></div>
-</div>
-<p>Building from source is intended for development or platforms without a
-matching wheel. It requires a C++20 compiler, Fortran, CMake, pybind11, and
-OpenMP; see
-<a class="reference external" href="https://martinpdes.github.io/PyMieSim/troubleshooting.html">troubleshooting</a>
-if the compiled extension cannot be imported.</p>
-</section>
-<section id="first-simulation">
-<h2>First simulation<a class="headerlink" href="#first-simulation" title="Link to this heading">#</a></h2>
-<p>Create a source, a scatterer, and a <code class="docutils literal notranslate"><span class="pre">Simulation</span></code>.  Physical quantities use
-the built-in <code class="docutils literal notranslate"><span class="pre">ureg</span></code> unit registry, while refractive indices are
-dimensionless real or complex values.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Gaussian</span><span class="p">,</span>
-    <span class="n">PolarizationState</span><span class="p">,</span>
-    <span class="n">Simulation</span><span class="p">,</span>
-    <span class="n">Sphere</span><span class="p">,</span>
-    <span class="n">ureg</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">633</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.01</span><span class="n">j</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-<span class="n">qsca</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">qsca</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This prints a dimensionless scattering efficiency, approximately:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0.2080989068292113 dimensionless
-</pre></div>
-</div>
-<p>Inspect the measures supported by the configured simulation with:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">available_measures</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>For explicit measure and unit metadata, request a typed result:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">,</span> <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">measure</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="units-and-material-conventions">
-<h2>Units and material conventions<a class="headerlink" href="#units-and-material-conventions" title="Link to this heading">#</a></h2>
-<p>Always attach units to wavelengths, lengths, powers, and angles:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mi">633</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
-<span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span>
-<span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
-<span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span>
-</pre></div>
-</div>
-<p>Refractive indices are dimensionless.  A complex index such as
-<code class="docutils literal notranslate"><span class="pre">1.5</span> <span class="pre">+</span> <span class="pre">0.01j</span></code> represents an absorbing material under PyMieSim’s optical
-convention.  Built-in and tabulated materials have supported wavelength
-ranges; use <code class="docutils literal notranslate"><span class="pre">load_material</span></code> and <code class="docutils literal notranslate"><span class="pre">validate_wavelength</span></code> when working with
-real material data.</p>
-</section>
-<section id="parameter-sweeps">
-<h2>Parameter sweeps<a class="headerlink" href="#parameter-sweeps" title="Link to this heading">#</a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> when you want to evaluate several wavelengths, particle
-sizes, or material parameters.  Results retain named dimensions and
-coordinates, and can be converted to NumPy or pandas explicitly.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Experiment</span><span class="p">,</span>
-    <span class="n">GaussianSet</span><span class="p">,</span>
-    <span class="n">PolarizationSet</span><span class="p">,</span>
-    <span class="n">SphereSet</span><span class="p">,</span>
-    <span class="n">ureg</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">source</span> <span class="o">=</span> <span class="n">GaussianSet</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationSet</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">scatterer</span> <span class="o">=</span> <span class="n">SphereSet</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">scatterer_set</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source_set</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Qsca"</span><span class="p">)</span>
-<span class="n">values</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
-<span class="n">dataframe</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>The experiment grid has five wavelength values and nine diameter values, so
-<code class="docutils literal notranslate"><span class="pre">values.shape</span></code> is <code class="docutils literal notranslate"><span class="pre">(5,</span> <span class="pre">9)</span></code>.  See the
-<a class="reference external" href="https://martinpdes.github.io/PyMieSim/workflows/parameter_sweeps.html">parameter sweep guide</a>
-for multiple measures and plotting.</p>
-</section>
-<section id="detector-coupling">
-<h2>Detector coupling<a class="headerlink" href="#detector-coupling" title="Link to this heading">#</a></h2>
-<p>Add a detector when you need collected or coupled power rather than only a
-scatterer property:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Gaussian</span><span class="p">,</span>
-    <span class="n">Photodiode</span><span class="p">,</span>
-    <span class="n">PolarizationState</span><span class="p">,</span>
-    <span class="n">Simulation</span><span class="p">,</span>
-    <span class="n">Sphere</span><span class="p">,</span>
-    <span class="n">ureg</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">single_source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="mi">633</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">polarization</span><span class="o">=</span><span class="n">PolarizationState</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">),</span>
-    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">single_scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">material</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.01</span><span class="n">j</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
-    <span class="n">sampling</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">numerical_aperture</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
-    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
-    <span class="n">scatterer</span><span class="o">=</span><span class="n">single_scatterer</span><span class="p">,</span>
-    <span class="n">source</span><span class="o">=</span><span class="n">single_source</span><span class="p">,</span>
-    <span class="n">detector</span><span class="o">=</span><span class="n">detector</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">coupling</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"coupling"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">coupling</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">coupling</span></code> requires a detector.  Other available detector types include
-<code class="docutils literal notranslate"><span class="pre">CoherentMode</span></code> and <code class="docutils literal notranslate"><span class="pre">IntegratingSphere</span></code>; see the
-<a class="reference external" href="https://martinpdes.github.io/PyMieSim/workflows/detector_coupling.html">detector coupling guide</a>.</p>
-</section>
-<section id="common-issues">
-<h2>Common issues<a class="headerlink" href="#common-issues" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">PyMieSim</span></code> fails, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">show</span> <span class="pre">PyMieSim</span></code> and check
-that it uses the same Python executable as your script.</p></li>
-<li><p>If a constructor reports a unit error, check that every dimensional input
-has units and convert it with <code class="docutils literal notranslate"><span class="pre">.to(...)</span></code> when necessary.</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">coupling</span></code> is unavailable, add a detector and inspect
-<code class="docutils literal notranslate"><span class="pre">simulation.available_measures</span></code>.</p></li>
-<li><p>For slow or memory-heavy sweeps, print <code class="docutils literal notranslate"><span class="pre">experiment.array_shape</span></code> and
-<code class="docutils literal notranslate"><span class="pre">experiment.total_iterations</span></code> before requesting a result.</p></li>
-<li><p>On servers or in CI, select a non-interactive Matplotlib backend such as
-<code class="docutils literal notranslate"><span class="pre">Agg</span></code> before importing plotting code.</p></li>
-</ul>
-<p>See the <a class="reference external" href="https://martinpdes.github.io/PyMieSim/">online documentation</a> for
-theory, performance guidance, runnable examples, and advanced near-field and
-far-field workflows.</p>
-<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png"><img alt="Scattering efficiency of a 200 nm sphere with refractive index 4.0." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png" style="width: 1000px;" />
-</a>
-</section>
-<section id="code-structure">
-<h2>Code structure<a class="headerlink" href="#code-structure" title="Link to this heading">#</a></h2>
-<p>Here is the architecture for a standard workflow using PyMieSim:</p>
-<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png"><img alt="Code structure of a standard workflow using PyMieSim." class="align-center" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png" style="width: 1000px;" />
-</a>
-</section>
-<section id="developer-setup">
-<h2>Developer setup<a class="headerlink" href="#developer-setup" title="Link to this heading">#</a></h2>
-<p>Clone the repository, select the Python interpreter you want to use, install
-the development and testing dependencies, and build an editable installation:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/MartinPdeS/PyMieSim.git
-<span class="nb">cd</span><span class="w"> </span>PyMieSim
-python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">".[testing,documentation,dev]"</span>
-python<span class="w"> </span>-m<span class="w"> </span>PyOptik<span class="w"> </span>setup<span class="w"> </span>--no-progress
-make<span class="w"> </span><span class="nv">PYTHON</span><span class="o">=</span>python<span class="w"> </span>editable
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">editable</span></code> builds the native extensions in the local <code class="docutils literal notranslate"><span class="pre">build</span></code>
-directory and installs them into the same environment. Always run tests with
-that same interpreter:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import PyMieSim; print(PyMieSim.__version__)"</span>
-python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>--config-file<span class="o">=</span>pytest.ini
-</pre></div>
-</div>
-<p>If the import reports missing native extensions, the build was not completed
-for this interpreter. Re-run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">editable</span></code> after checking that CMake,
-Fortran, pybind11, and OpenMP are installed. Do not mix build artifacts from
-different Python versions or architectures.</p>
-</section>
-<section id="building-from-source-manually">
-<h2>Building from source manually<a class="headerlink" href="#building-from-source-manually" title="Link to this heading">#</a></h2>
-<p>The equivalent lower-level workflow is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-build-isolation<span class="w"> </span>-Cbuild-dir<span class="o">=</span>build<span class="w"> </span>-e<span class="w"> </span>.
-</pre></div>
-</div>
-<p>The editable workflow is preferred because it keeps the Python sources and
-compiled extensions aligned. A released wheel does not require a compiler or
-the native build toolchain.</p>
-</section>
-<section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
-<p>After the developer setup, run the unit tests with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>--config-file<span class="o">=</span>pytest.ini
-</pre></div>
-</div>
-</section>
-<section id="citing-pymiesim">
-<h2>Citing PyMieSim<a class="headerlink" href="#citing-pymiesim" title="Link to this heading">#</a></h2>
-<p>If you use PyMieSim in academic work, please cite:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@article{PoinsinetdeSivry-Houle:23,
-    author = {Martin Poinsinet de Sivry-Houle and Nicolas Godbout and Caroline Boudoux},
-    journal = {Opt. Continuum},
-    title = {PyMieSim: an open-source library for fast and flexible far-field Mie scattering simulations},
-    volume = {2},
-    number = {3},
-    pages = {520--534},
-    year = {2023},
-    doi = {10.1364/OPTCON.473102},
-}
-</pre></div>
-</div>
-</section>
-<section id="contact">
-<h2>Contact<a class="headerlink" href="#contact" title="Link to this heading">#</a></h2>
-<p>For questions or contributions, contact <a class="reference external" href="mailto:martin&#46;poinsinet&#46;de&#46;sivry&#37;&#52;&#48;gmail&#46;com">martin<span>&#46;</span>poinsinet<span>&#46;</span>de<span>&#46;</span>sivry<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
+<p>PyMieSim models isolated-particle scattering. Particle-size averaging assumes
+independent scattering; it does not add interactions between particles.
+See <a class="reference internal" href="workflows/particle_size_distributions.html"><span class="doc">Particle-size distributions: independent scattering</span></a> for the averaging assumptions.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -815,6 +542,21 @@ the native build toolchain.</p>
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="getting_started.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Getting started in 10 minutes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             
@@ -832,20 +574,7 @@ the native build toolchain.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-the-live-webapp">Try the live webapp</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-simulation">First simulation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#units-and-material-conventions">Units and material conventions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-sweeps">Parameter sweeps</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detector-coupling">Detector coupling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-issues">Common issues</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-structure">Code structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#developer-setup">Developer setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-from-source-manually">Building from source manually</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-pymiesim">Citing PyMieSim</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contact">Contact</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-your-starting-point">Choose your starting point</a></li>
 </ul>
   </nav></div>
 

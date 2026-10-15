@@ -31,13 +31,12 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,7 +58,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Runtime scaling with sweep size" href="sweep_runtime.html" />
@@ -136,8 +135,8 @@
     
     
     
-    <img src="../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -463,7 +462,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/nearfields.html">Near-Field Computation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../single/properties.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../single/properties.html">Inspect scalar scattering properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../single/stokes.html">Stokes Parameters Computation</a></li>
@@ -508,6 +507,40 @@
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inverse/index.html">Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../inverse/fit_linear_scale.html">Fit a scalar scale factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inverse/fit_sphere_scattering.html">Fit an isolated-sphere scattering measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inverse/fit_unit_aware_diameter.html">Fit a unit-aware diameter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../interpretation/index.html">Interpreting scattering results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../interpretation/inverse_spectrum_diagnostics.html">Diagnose a sphere fit across several wavelengths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interpretation/phase_function_size_regimes.html">See how particle size reshapes angular scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interpretation/scattering_absorption_resonances.html">Separate scattering and absorption resonances</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../validation/energy_conservation.html">Energy-conservation validation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Benchmarks</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="memory_scaling.html">Memory scaling with sweep size</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parameter_grid.html">Parameter-grid scaling</a></li>
@@ -531,30 +564,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/photodiode_angular_weights.html">Photodiode Angular Weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_system.html">Plot system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extras/properties_cylinder.html">Print properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extras/properties_sphere.html">Samples Properties</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../validation/energy_conservation.html">Energy-conservation validation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/properties_cylinder.html">Print cylinder properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/properties_sphere.html">Print sphere properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -634,8 +645,8 @@ be compared only under the same environment.</p>
 Platform: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39
 PyMieSim grid: [1, 1, 1, 1, 100, 1, 1]
 Results: 100
-Median runtime: 0.001470 s
-All timings: [0.001472, 0.00148, 0.001456, 0.00147, 0.001453]
+Median runtime: 0.000820 s
+All timings: [0.000829, 0.00082, 0.000818, 0.000802, 0.000827]
 </pre></div>
 </div>
 <div class="line-block">
@@ -647,7 +658,7 @@ All timings: [0.001472, 0.00148, 0.001456, 0.00147, 0.001453]
 </span><span class="w">
 </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
 </span><span class="w">
-</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Experiment</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">SphereSet</span></a><span class="p">,</span> <span class="n">ureg</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">Experiment</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-polarization_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.polarization_set.PolarizationSet" title="PyMieSim.experiment.polarization_set.PolarizationSet"><span class="n">PolarizationSet</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">SphereSet</span></a><span class="p">,</span> <span class="n">ureg</span><span class="w">
 </span><span class="w">
 </span><span class="w">
 </span><span class="k">def</span><span class="w"> </span><span class="nf">build_experiment</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-</span><span class="o">&gt;</span> <span class="n">Experiment</span><span class="p">:</span><span class="w">
@@ -667,12 +678,12 @@ All timings: [0.001472, 0.00148, 0.001456, 0.00147, 0.001453]
 </span><span class="w">
 </span><span class="n">experiment</span> <span class="o">=</span> <span class="n">build_experiment</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="p">:</span><span class="w">
-</span>    <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">timings</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="w">
 </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="p">:</span><span class="w">
 </span>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">values</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">values</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span>    <span class="n">timings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Python: </span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
@@ -682,7 +693,7 @@ All timings: [0.001472, 0.00148, 0.001456, 0.00147, 0.001453]
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Median runtime: </span><span class="si">{</span><span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">timings</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">All timings: </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">timings</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.039 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.130 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-reproducible-parameter-sweep-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/228407ce86fb98dd683c89984f66bdb0/reproducible_parameter_sweep.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">reproducible_parameter_sweep.ipynb</span></code></a></p>
@@ -703,6 +714,30 @@ All timings: [0.001472, 0.00148, 0.001456, 0.00147, 0.001453]
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="parameter_grid.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Parameter-grid scaling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="sweep_runtime.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Runtime scaling with sweep size</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

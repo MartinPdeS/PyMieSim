@@ -27,12 +27,13 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-57
+.. GENERATED FROM PYTHON SOURCE LINES 10-61
 
 .. code-block:: Python
 
     import numpy
     from PyMieSim import (
+        Measure,
         ureg,
         PhotodiodeSet,
         CoreShellSet,
@@ -75,7 +76,10 @@ Importing the package dependencies: numpy, PyMieSim
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="detector:cache_NA")
 
@@ -91,15 +95,17 @@ Importing the package dependencies: numpy, PyMieSim
 
  .. code-block:: none
 
+    Result dimensions and shape: ('scatterer:core_diameter', 'detector:cache_NA') (3, 200)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8edbf50>, <matplotlib.lines.Line2D object at 0x7fadb8edb7d0>, <matplotlib.lines.Line2D object at 0x7fadb8ed9210>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa74b4d0>, <matplotlib.lines.Line2D object at 0x7fe8aa87b2d0>, <matplotlib.lines.Line2D object at 0x7fe8aa87b050>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.604 seconds)
+   **Total running time of the script:** (0 minutes 0.333 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coupling_vs_na_cache.py:

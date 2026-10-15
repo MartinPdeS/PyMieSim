@@ -23,7 +23,7 @@ InfiniteCylinder: Goniometer
 
 This example demonstrates how to use a goniometer setup to measure and visualize the coupling efficiency as a function of angular displacement for cylindrical scatterers using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-52
+.. GENERATED FROM PYTHON SOURCE LINES 7-56
 
 
 
@@ -43,8 +43,10 @@ This example demonstrates how to use a goniometer setup to measure and visualize
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 200)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8e6c850>, <matplotlib.lines.Line2D object at 0x7fadb8e6c790>, <matplotlib.lines.Line2D object at 0x7fadb8e6f990>, <matplotlib.lines.Line2D object at 0x7fadb8e6fd50>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa209210>, <matplotlib.lines.Line2D object at 0x7fe8aa20b4d0>, <matplotlib.lines.Line2D object at 0x7fe8aa75d690>, <matplotlib.lines.Line2D object at 0x7fe8aa75c350>]
 
 
 
@@ -56,6 +58,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         PhotodiodeSet,
         InfiniteCylinderSet,
@@ -96,14 +99,17 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="detector:phi_offset")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.394 seconds)
+   **Total running time of the script:** (0 minutes 0.209 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_phioffset.py:

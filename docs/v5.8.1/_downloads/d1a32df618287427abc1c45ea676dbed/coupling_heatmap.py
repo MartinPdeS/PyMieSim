@@ -10,6 +10,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 import numpy
 from PyMieSim import (
+    Measure,
     ureg,
     PhotodiodeSet,
     SphereSet,
@@ -50,7 +51,7 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-values = experiment.get("coupling").as_numpy()
+values = experiment.get(Measure.COUPLING).as_numpy()
 
 
 figure, ax = plt.subplots(1, 1)

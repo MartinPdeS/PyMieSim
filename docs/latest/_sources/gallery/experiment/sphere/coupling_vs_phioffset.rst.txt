@@ -21,7 +21,7 @@
 Sphere: Goniometer
 ==================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-50
+.. GENERATED FROM PYTHON SOURCE LINES 6-54
 
 
 
@@ -41,8 +41,10 @@ Sphere: Goniometer
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('source:wavelength', 'detector:NA', 'detector:phi_offset') (2, 3, 200)
+    Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8bf3650>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8d4a7d0>, <matplotlib.lines.Line2D object at 0x7fadb8d49650>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fadb8d48190>]
+    [<matplotlib.lines.Line2D object at 0x7fe8acad5b10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa2b4a90>, <matplotlib.lines.Line2D object at 0x7fe8aa0db410>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7fe8aa0db210>]
 
 
 
@@ -53,6 +55,7 @@ Sphere: Goniometer
 .. code-block:: Python
 
     from PyMieSim import (
+        Measure,
         ureg,
         PhotodiodeSet,
         SphereSet,
@@ -93,14 +96,17 @@ Sphere: Goniometer
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get("coupling")
+    result = experiment.get(Measure.COUPLING)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="detector:phi_offset", y='coupling', std='detector:NA')
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.360 seconds)
+   **Total running time of the script:** (0 minutes 0.202 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_phioffset.py:

@@ -6,6 +6,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 """
 import numpy as np
 from PyMieSim import (
+    Measure,
     ureg,
     InfiniteCylinderSet,
     GaussianSet,
@@ -38,6 +39,9 @@ scatterer = InfiniteCylinderSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get("Qabs", "Qsca", "Qext")
+result = experiment.get(Measure.QABS, Measure.QSCA, Measure.QEXT)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="scatterer:diameter", y="Qabs")

@@ -21,7 +21,7 @@
 Sphere: Qsca vs index
 =====================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-38
+.. GENERATED FROM PYTHON SOURCE LINES 6-42
 
 
 
@@ -35,12 +35,14 @@ Sphere: Qsca vs index
 
  .. code-block:: none
 
+    Result dimensions and shape: ('source:wavelength', 'scatterer:material') (3, 100)
+    Measure units: {'Qsca': <Unit('dimensionless')>}
     /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
       return math.isfinite(val)
     /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8d9ae50>, <matplotlib.lines.Line2D object at 0x7fadb8f8bb50>, <matplotlib.lines.Line2D object at 0x7fadb8f8a4d0>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa79c310>, <matplotlib.lines.Line2D object at 0x7fe8acaf9e10>, <matplotlib.lines.Line2D object at 0x7fe8acafb690>]
 
 
 
@@ -52,6 +54,7 @@ Sphere: Qsca vs index
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         SphereSet,
         GaussianSet,
@@ -79,14 +82,17 @@ Sphere: Qsca vs index
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Qsca")
+    result = experiment.get(Measure.QSCA)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="scatterer:material")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.204 seconds)
+   **Total running time of the script:** (0 minutes 0.109 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_index.py:

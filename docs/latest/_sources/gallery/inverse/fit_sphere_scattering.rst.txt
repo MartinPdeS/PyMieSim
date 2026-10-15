@@ -26,7 +26,12 @@ measurement. This uses the isolated-particle Mie model. It does not represent
 multiple scattering, near-field coupling, or positional correlations in dense
 particle systems.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-47
+The fitted diameter is approximately 180 nanometers within the stated bounds.
+The prediction is a scalar dimensionless efficiency. One noiseless channel
+with a fixed refractive index demonstrates parameter recovery; it does not
+establish uniqueness over a wider diameter range.
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-53
 
 
 
@@ -49,7 +54,8 @@ particle systems.
 .. code-block:: Python
 
     from PyMieSim import (
-        Observation, Parameter, PlaneWave, PolarizationState, Simulation, Sphere,
+        Measure,
+        FitParameter, MeasuredData, PlaneWave, PolarizationState, Simulation, Sphere,
         fit_parameters, ureg,
     )
 
@@ -62,19 +68,19 @@ particle systems.
     target = Simulation(
         scatterer=Sphere(diameter=target_diameter, material=1.59, medium=1.0),
         source=source,
-    ).get("Qsca")
+    ).get(Measure.QSCA)
 
 
     def model(parameters):
         sphere = Sphere(diameter=parameters["diameter"], material=1.59, medium=1.0)
-        return Simulation(scatterer=sphere, source=source).get("Qsca")
+        return Simulation(scatterer=sphere, source=source).get(Measure.QSCA)
 
 
     result = fit_parameters(
         model=model,
-        observation=Observation(values=target),
+        observation=MeasuredData(values=target),
         parameters=[
-            Parameter(
+            FitParameter(
                 name="diameter",
                 initial=130 * ureg.nanometer,
                 bounds=(80 * ureg.nanometer, 260 * ureg.nanometer),
@@ -89,7 +95,7 @@ particle systems.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.014 seconds)
+   **Total running time of the script:** (0 minutes 0.008 seconds)
 
 
 .. _sphx_glr_download_gallery_inverse_fit_sphere_scattering.py:

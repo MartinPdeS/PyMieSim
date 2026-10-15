@@ -9,6 +9,7 @@ is collected or coupled power rather than only a scatterer property.
 .. code-block:: python
 
    from PyMieSim import (
+       Measure,
        Gaussian,
        Photodiode,
        PolarizationState,
@@ -42,9 +43,13 @@ is collected or coupled power rather than only a scatterer property.
        detector=detector,
    )
 
-   coupling = simulation.run("coupling")
+   coupling = simulation.run(Measure.COUPLING)
    print(coupling)
+
+The output is a scalar quantity in watts. It is power collected within the
+detector cone for the specified source power. Repeat with larger ``sampling``
+to check angular integration convergence before comparing small differences.
 
 For angularly varying detector parameters, use ``PhotodiodeSet`` and
 ``Experiment``.  See the :ref:`coupling examples
-<sphx_glr_gallery_single_coupling>` and experiment gallery.
+<sphx_glr_gallery_single_coupling.py>` and experiment gallery.

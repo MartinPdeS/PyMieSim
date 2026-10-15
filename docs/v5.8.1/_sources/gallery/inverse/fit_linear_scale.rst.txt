@@ -23,9 +23,13 @@ Fit a scalar scale factor
 
 Fit one bounded parameter to a small analytic forward model. This is the
 smallest complete inverse-problem setup: a callable, an observation, and one
-or more ``Parameter`` objects.
+or more ``FitParameter`` objects.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-28
+The fitted ``scale`` is approximately 2.0 (dimensionless). Predictions and
+residuals have shape ``(3,)``. With these exact synthetic observations, the
+residuals approach zero.
+
+.. GENERATED FROM PYTHON SOURCE LINES 13-33
 
 
 
@@ -36,6 +40,7 @@ or more ``Parameter`` objects.
 
     converged (42 model evaluations)
     objective = 0.000000
+    {'scale': 2.0}
 
 
 
@@ -48,10 +53,10 @@ or more ``Parameter`` objects.
 
     import numpy as np
 
-    from PyMieSim import Observation, Parameter, fit_parameters
+    from PyMieSim import FitParameter, MeasuredData, fit_parameters
 
     x = np.array([1.0, 2.0, 3.0])
-    observation = Observation(values=np.array([2.0, 4.0, 6.0]))
+    observation = MeasuredData(values=np.array([2.0, 4.0, 6.0]))
 
 
     def model(parameters):
@@ -61,10 +66,11 @@ or more ``Parameter`` objects.
     result = fit_parameters(
         model=model,
         observation=observation,
-        parameters=[Parameter(name="scale", initial=0.8, bounds=(0.0, 4.0))],
+        parameters=[FitParameter(name="scale", initial=0.8, bounds=(0.0, 4.0))],
     )
 
     print(result.summary())
+    print(result.parameters)
 
 
 .. rst-class:: sphx-glr-timing

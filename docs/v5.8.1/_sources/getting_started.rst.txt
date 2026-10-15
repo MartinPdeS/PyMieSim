@@ -12,9 +12,14 @@ Install the released package with pip::
 
    python -m pip install PyMieSim
 
-For development, install the testing and documentation extras as needed::
+To run tests or build documentation, install the optional dependencies::
 
    python -m pip install "PyMieSim[testing,documentation]"
+
+Verify the installation with ``python -c "import PyMieSim; print(PyMieSim.__version__)"``.
+See :doc:`compatibility` for wheel targets and :doc:`troubleshooting` for source
+builds. The examples below use constant refractive indices and need no material
+catalog download. Named materials require ``python -m PyOptik setup`` first.
 
 Single-particle calculation
 ---------------------------
@@ -50,6 +55,10 @@ supported.
    qsca = simulation.run(Measure.QSCA)
    print(qsca)
 
+``qsca`` is a scalar, dimensionless quantity (about 0.208 for this setup).
+It is the scattering cross section divided by the sphere's projected area;
+it is not a fraction of the source power.
+
 Inspect the available measures before running a larger study::
 
    print(simulation.available_measures)
@@ -60,7 +69,7 @@ For explicit result metadata, opt in to the typed result container::
    print(result.measure, result.quantity, result.units)
 
 Parameter sweep
---------------
+---------------
 
 Use ``Experiment`` when several parameter dimensions must be evaluated. Scalar
 parameters are broadcast over the grid, and the default result is a native
@@ -95,12 +104,41 @@ parameters are broadcast over the grid, and the default result is a native
    result = experiment.get(Measure.QSCA)
    result.plot(x="scatterer:diameter", y="Qsca")
 
+With five wavelengths and nine diameters, the result has shape ``(5, 9)``
+and dimensions ``("source:wavelength", "scatterer:diameter")``. Each plotted
+curve holds one wavelength fixed. Values are dimensionless; coordinates retain
+their own units. See :ref:`reading_results` for selection and export.
+
 Detector coupling
 -----------------
 
 Coupling requires a detector. A photodiode is the simplest detector to add;
 coherent modes and integrating spheres are covered in the
-:doc:`workflows/detector_coupling` guide.
+:doc:`workflows/detector_coupling` guide. Reuse the source and sphere above:
+
+.. code-block:: python
+
+   from PyMieSim import Photodiode
+
+   detector = Photodiode(
+       numerical_aperture=0.2,
+       sampling=500,
+       phi_offset=0 * ureg.degree,
+       gamma_offset=0 * ureg.degree,
+       medium=1.0,
+   )
+   detected_simulation = Simulation(
+       source=source,
+       scatterer=sphere,
+       detector=detector,
+   )
+   collected_power = detected_simulation.run(Measure.COUPLING)
+   print(collected_power.to("nanowatt"))
+
+The output is a positive scalar power, expressed here in nanowatts. It describes
+light collected over this detector's acceptance cone. Changing the numerical
+aperture changes that cone; increasing ``sampling`` checks angular integration
+convergence. This power and ``Qsca`` answer different measurement questions.
 
 Next steps
 ----------

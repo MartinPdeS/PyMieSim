@@ -5,6 +5,7 @@ Sphere: Qsca vs wavelength STD
 """
 import numpy as np
 from PyMieSim import (
+    Measure,
     ureg,
     SphereSet,
     GaussianSet,
@@ -39,7 +40,10 @@ scatterer = SphereSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get("Qsca")
+result = experiment.get(Measure.QSCA)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="source:wavelength", std="scatterer:diameter")
 

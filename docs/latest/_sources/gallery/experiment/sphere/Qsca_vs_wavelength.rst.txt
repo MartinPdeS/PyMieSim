@@ -21,7 +21,7 @@
 Sphere: Qsca vs wavelength
 ==========================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-44
+.. GENERATED FROM PYTHON SOURCE LINES 6-48
 
 
 
@@ -41,8 +41,10 @@ Sphere: Qsca vs wavelength
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('measure', 'source:wavelength') (2, 50)
+    Measure units: {'Qsca': <Unit('dimensionless')>, 'Qpr': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadbd989850>]
+    [<matplotlib.lines.Line2D object at 0x7fe8a94d21d0>]
 
 
 
@@ -54,6 +56,7 @@ Sphere: Qsca vs wavelength
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         SphereSet,
         GaussianSet,
@@ -87,14 +90,17 @@ Sphere: Qsca vs wavelength
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Qsca", "Qpr")
+    result = experiment.get(Measure.QSCA, Measure.QPR)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.isel({"measure": 0}).plot(x="source:wavelength", y="Qsca")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.195 seconds)
+   **Total running time of the script:** (0 minutes 0.102 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength.py:

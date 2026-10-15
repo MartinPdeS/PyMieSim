@@ -5,6 +5,7 @@ Sphere: Coupling vs diameter
 """
 import numpy
 from PyMieSim import (
+    Measure,
     ureg,
     CoherentModeSet,
     SphereSet,
@@ -44,6 +45,9 @@ detector = CoherentModeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-result = experiment.get("coupling", drop_unique_level=True)
+result = experiment.get(Measure.COUPLING, drop_unique_level=True)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="scatterer:diameter")

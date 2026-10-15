@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Far-Fields Computation and Visualization &#8212; PyMieSim  documentation</title>
+    <title>Inspect scalar scattering properties &#8212; PyMieSim  documentation</title>
   
   
   
@@ -31,13 +31,12 @@
 <link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,7 +58,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="S1 S2 Function Computation" href="s1s2.html" />
@@ -136,8 +135,8 @@
     
     
     
-    <img src="../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -463,7 +462,7 @@
 <li class="toctree-l2"><a class="reference internal" href="farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nearfields.html">Near-Field Computation and Visualization</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Inspect scalar scattering properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stokes.html">Stokes Parameters Computation</a></li>
@@ -508,6 +507,40 @@
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inverse/index.html">Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../inverse/fit_linear_scale.html">Fit a scalar scale factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inverse/fit_sphere_scattering.html">Fit an isolated-sphere scattering measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inverse/fit_unit_aware_diameter.html">Fit a unit-aware diameter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../interpretation/index.html">Interpreting scattering results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../interpretation/inverse_spectrum_diagnostics.html">Diagnose a sphere fit across several wavelengths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interpretation/phase_function_size_regimes.html">See how particle size reshapes angular scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interpretation/scattering_absorption_resonances.html">Separate scattering and absorption resonances</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../validation/energy_conservation.html">Energy-conservation validation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarks/memory_scaling.html">Memory scaling with sweep size</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarks/parameter_grid.html">Parameter-grid scaling</a></li>
@@ -531,30 +564,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/photodiode_angular_weights.html">Photodiode Angular Weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_system.html">Plot system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extras/properties_cylinder.html">Print properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../extras/properties_sphere.html">Samples Properties</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../validation/energy_conservation.html">Energy-conservation validation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/properties_cylinder.html">Print cylinder properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extras/properties_sphere.html">Print sphere properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -603,7 +614,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Single Module</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Far-Fields Computation and Visualization</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Inspect scalar scattering properties</span></li>
   </ul>
 </nav>
 </div>
@@ -625,11 +636,15 @@
 <p><a class="reference internal" href="#sphx-glr-download-gallery-single-properties-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="far-fields-computation-and-visualization">
-<span id="sphx-glr-gallery-single-properties-py"></span><h1>Far-Fields Computation and Visualization<a class="headerlink" href="#far-fields-computation-and-visualization" title="Link to this heading">#</a></h1>
-<p>This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.</p>
+<section class="sphx-glr-example-title" id="inspect-scalar-scattering-properties">
+<span id="sphx-glr-gallery-single-properties-py"></span><h1>Inspect scalar scattering properties<a class="headerlink" href="#inspect-scalar-scattering-properties" title="Link to this heading">#</a></h1>
+<p>Print scalar efficiencies, cross sections, and the asymmetry factor for one
+isolated sphere. Efficiencies and asymmetry are dimensionless; cross sections
+carry area units. The real refractive index gives negligible absorption, so
+<code class="docutils literal notranslate"><span class="pre">Qext</span></code> and <code class="docutils literal notranslate"><span class="pre">Qsca</span></code> agree.</p>
 <p>Importing the package: PyMieSim</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">Measure</span><span class="p">,</span><span class="w">
 </span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">Gaussian</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">,</span><span class="w">
@@ -657,9 +672,12 @@ to download the full example code.</p>
 </span>    <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="k">for</span> <span class="nb">property</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;</span><span class="s2">Qext</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qabs</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qback</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">g</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Cext</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Csca</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Cabs</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Cback</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">:</span><span class="w">
-</span>    <span class="n">value</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span><span class="w">
-</span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">property</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="k">for</span> <span class="n">measure</span> <span class="ow">in</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">Measure</span><span class="o">.</span><span class="n">QEXT</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">QABS</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">QBACK</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">G</span><span class="p">,</span><span class="w">
+</span>    <span class="n">Measure</span><span class="o">.</span><span class="n">CEXT</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CABS</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CBACK</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">value</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">measure</span><span class="p">)</span><span class="w">
+</span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">measure</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Qext: 4.045950200439663 dimensionless
 Qsca: 4.045950200439663 dimensionless
@@ -672,7 +690,7 @@ Cabs: 0.0 meter ** 2
 Cback: 1.247925033026569e-12 meter ** 2
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.003 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.002 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-properties-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8d13f02e980094edefa0e6c2c14d7db7/properties.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">properties.ipynb</span></code></a></p>
@@ -693,6 +711,30 @@ Cback: 1.247925033026569e-12 meter ** 2
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="nearfields.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Near-Field Computation and Visualization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="s1s2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">S1 S2 Function Computation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

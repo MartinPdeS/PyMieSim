@@ -31,13 +31,12 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,7 +58,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Single Module" href="gallery/single/index.html" />
@@ -136,8 +135,8 @@
     
     
     
-    <img src="_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -463,7 +462,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gallery/single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/single/nearfields.html">Near-Field Computation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gallery/single/properties.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/single/properties.html">Inspect scalar scattering properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/single/stokes.html">Stokes Parameters Computation</a></li>
@@ -508,6 +507,40 @@
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gallery/inverse/index.html">Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="gallery/inverse/fit_linear_scale.html">Fit a scalar scale factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/inverse/fit_sphere_scattering.html">Fit an isolated-sphere scattering measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/inverse/fit_unit_aware_diameter.html">Fit a unit-aware diameter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gallery/interpretation/index.html">Interpreting scattering results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="gallery/interpretation/inverse_spectrum_diagnostics.html">Diagnose a sphere fit across several wavelengths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/interpretation/phase_function_size_regimes.html">See how particle size reshapes angular scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/interpretation/scattering_absorption_resonances.html">Separate scattering and absorption resonances</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="gallery/validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="gallery/validation/energy_conservation.html">Energy-conservation validation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gallery/validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gallery/validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gallery/validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="gallery/benchmarks/index.html">Benchmarks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="gallery/benchmarks/memory_scaling.html">Memory scaling with sweep size</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/benchmarks/parameter_grid.html">Parameter-grid scaling</a></li>
@@ -531,30 +564,8 @@
 <li class="toctree-l2"><a class="reference internal" href="gallery/extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/extras/photodiode_angular_weights.html">Photodiode Angular Weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gallery/extras/plot_system.html">Plot system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gallery/extras/properties_cylinder.html">Print properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gallery/extras/properties_sphere.html">Samples Properties</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="gallery/validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="gallery/validation/energy_conservation.html">Energy-conservation validation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="gallery/validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="gallery/validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="gallery/validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gallery/validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/extras/properties_cylinder.html">Print cylinder properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gallery/extras/properties_sphere.html">Print sphere properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -616,74 +627,78 @@
                   
   <section id="coding-examples">
 <span id="examples-gallery"></span><h1>Coding examples<a class="headerlink" href="#coding-examples" title="Link to this heading">#</a></h1>
-<p>Explore our gallery of examples demonstrating the usage of PyMieSim. These examples range
-from general API usage to specific applications, presented in a tutorial format to guide
-users through practical implementations.</p>
-<div class="toctree-wrapper compound">
-</div>
+<p>Each gallery contains runnable Python scripts and their outputs. Start with a
+small example, then follow the interpretation gallery to connect numerical
+results to physical conclusions. Measure requests use <code class="docutils literal notranslate"><span class="pre">Measure</span></code> members;
+result names and table column names remain strings such as <code class="docutils literal notranslate"><span class="pre">&quot;Qsca&quot;</span></code>.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
-<div class="sd-row sd-row-cols-5 sd-row-cols-xs-5 sd-row-cols-sm-5 sd-row-cols-md-5 sd-row-cols-lg-5 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
 <div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Single</div>
-<p class="sd-card-text">Core API usage and simple, focused examples.</p>
-</div>
-<div class="sd-card-footer docutils">
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="/gallery/single/index"><span>Open</span></a></span></p>
+Single particle</div>
+<p class="sd-card-text">Scattering properties, fields, polarization, and detector coupling.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/single/index.html"><span class="doc">Single Module</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Experiment</div>
-<p class="sd-card-text">End to end tutorials with realistic workflows.</p>
-</div>
-<div class="sd-card-footer docutils">
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="/gallery/experiment/index"><span>Open</span></a></span></p>
+Parameter sweeps</div>
+<p class="sd-card-text">Explore wavelength, diameter, material, and detector grids.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/experiment/index.html"><span class="doc">Experiment Module</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Extras</div>
-<p class="sd-card-text">Advanced tips, utilities, and special topics.</p>
+Inverse fitting</div>
+<p class="sd-card-text">Fit bounded parameters to scalar or unit-bearing measurements.</p>
 </div>
-<div class="sd-card-footer docutils">
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="/gallery/extras/index"><span>Open</span></a></span></p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/extras/index.html"><span class="doc">Extra Examples</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/inverse/index.html"><span class="doc">Inverse Problems</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Interpret results</div>
+<p class="sd-card-text">Understand resonances, angular scattering, and fit residuals.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/interpretation/index.html"><span class="doc">Interpreting scattering results</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Validation</div>
-<p class="sd-card-text">Reference comparisons and internal consistency checks.</p>
-</div>
-<div class="sd-card-footer docutils">
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="/gallery/validation/index"><span>Open</span></a></span></p>
+<p class="sd-card-text">Compare with reference results and physical consistency checks.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/validation/index.html"><span class="doc">Validation Examples</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover sd-text-center docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 Benchmarks</div>
-<p class="sd-card-text">Reproducible runtime and scaling measurements.</p>
-</div>
-<div class="sd-card-footer docutils">
-<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference external" href="/gallery/benchmarks/index"><span>Open</span></a></span></p>
+<p class="sd-card-text">Measure runtime and memory use for reproducible studies.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/benchmarks/index.html"><span class="doc">Benchmarks</span></a></div>
 </div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Extras</div>
+<p class="sd-card-text">Explore detector weights, mode profiles, and additional plots.</p>
 </div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="gallery/extras/index.html"><span class="doc">Extra Examples</span></a></div>
+</div>
+</div>
+</div>
+<div class="toctree-wrapper compound">
 </div>
 </section>
 
@@ -693,6 +708,30 @@ Benchmarks</div>
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="measures.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Measure reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gallery/single/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Single Module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

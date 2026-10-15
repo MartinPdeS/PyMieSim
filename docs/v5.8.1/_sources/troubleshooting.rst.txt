@@ -99,7 +99,7 @@ physically justified. ``validate_material`` and ``validate_wavelength`` can
 be used to diagnose range and passivity problems.
 
 Coupling errors
---------------
+---------------
 
 ``coupling`` requires a detector. Add ``Photodiode``, ``CoherentMode``, or
 ``IntegratingSphere`` to a single simulation, or the corresponding detector

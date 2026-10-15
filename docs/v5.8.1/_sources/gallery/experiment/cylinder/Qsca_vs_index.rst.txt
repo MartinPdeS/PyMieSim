@@ -23,7 +23,7 @@ InfiniteCylinder: Qsca vs Index
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-39
+.. GENERATED FROM PYTHON SOURCE LINES 7-43
 
 
 
@@ -37,12 +37,14 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
  .. code-block:: none
 
+    Result dimensions and shape: ('measure', 'source:wavelength', 'scatterer:material') (2, 3, 1500)
+    Measure units: {'Qsca': <Unit('dimensionless')>, 'Qext': <Unit('dimensionless')>}
     /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
       return math.isfinite(val)
     /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
-    [<matplotlib.lines.Line2D object at 0x7fadb8b81bd0>, <matplotlib.lines.Line2D object at 0x7fadb8d309d0>, <matplotlib.lines.Line2D object at 0x7fadb8d33d50>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa4862d0>, <matplotlib.lines.Line2D object at 0x7fe8a9fe48d0>, <matplotlib.lines.Line2D object at 0x7fe8aa1d14d0>]
 
 
 
@@ -54,6 +56,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         InfiniteCylinderSet,
         GaussianSet,
@@ -81,14 +84,17 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Qsca", "Qext")
+    result = experiment.get(Measure.QSCA, Measure.QEXT)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="scatterer:material", y="Qsca")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.697 seconds)
+   **Total running time of the script:** (0 minutes 0.391 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_index.py:

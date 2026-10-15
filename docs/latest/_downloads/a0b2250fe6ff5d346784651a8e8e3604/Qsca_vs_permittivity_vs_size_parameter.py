@@ -10,6 +10,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 import numpy
 from PyMieSim import (
+    Measure,
     ureg,
     SphereSet,
     GaussianSet,
@@ -44,7 +45,7 @@ scatterer = SphereSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-data = experiment.get("Qsca").as_numpy()
+data = experiment.get(Measure.QSCA).as_numpy()
 
 figure, ax = plt.subplots(1, 1)
 ax.set(

@@ -5,6 +5,7 @@ Sphere: Coupling vs numerical aperture
 
 import numpy as np
 from PyMieSim import (
+    Measure,
     Experiment,
     Gaussian,
     GaussianSet,
@@ -45,7 +46,10 @@ setup = Experiment(
     detector_set=detector
 )
 
-result = setup.get("coupling", drop_unique_level=True)
+result = setup.get(Measure.COUPLING, drop_unique_level=True)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="detector:NA")
 
@@ -67,4 +71,4 @@ setup = Simulation(
     scatterer=single_scatterer
 )
 
-print(setup.get("Qsca"))
+print(setup.get(Measure.QSCA))

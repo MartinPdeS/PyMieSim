@@ -287,7 +287,7 @@ Contents
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation of scattering properties using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Initialize the scatterer with a source, then call print_properties(). The printed table uses four decimal places in scientific notation by default. Efficiencies are dimensionless; geometric lengths and cross sections include their units in the table. This example produces text rather than a plot.">
 
 .. only:: html
 
@@ -298,13 +298,13 @@ Contents
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Print properties</div>
+      <div class="sphx-glr-thumbnail-title">Print cylinder properties</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Samples Properties">
+    <div class="sphx-glr-thumbcontainer" tooltip="Initialize the scatterer with a source, then call print_properties(). The printed table uses four decimal places in scientific notation by default. Efficiencies are dimensionless; geometric lengths and cross sections include their units in the table. This example produces text rather than a plot.">
 
 .. only:: html
 
@@ -315,7 +315,7 @@ Contents
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Samples Properties</div>
+      <div class="sphx-glr-thumbnail-title">Print sphere properties</div>
     </div>
 
 

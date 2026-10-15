@@ -1,77 +1,44 @@
 Compatibility matrix
 ====================
 
-This page describes the platforms targeted by the current packaging
-configuration. A platform marked **wheel** has a compiled binary distribution;
-**source** means that PyMieSim must be built locally with its native toolchain.
+This page describes packaging targets for the documentation's source version.
+The table summarizes the targets configured in ``pyproject.toml``. A configured
+target is not a guarantee that an uploaded wheel exists for every release.
 
 Python and wheel support
 ------------------------
 
-.. list-table:: Current release targets
+.. list-table:: Configured CPython wheel targets
    :header-rows: 1
-   :widths: 18 16 16 18 32
+   :widths: 25 25 50
 
    * - Operating system
      - Architecture
-     - Python
-     - Distribution
-     - Notes
+     - Python versions
    * - Linux
      - x86_64
-     - 3.11
-     - manylinux wheel
-     - Built against ``manylinux_2_28``.
-   * - Linux
-     - x86_64
-     - 3.12
-     - manylinux wheel
-     - Built against ``manylinux_2_28``.
-   * - Linux
-     - x86_64
-     - 3.13
-     - manylinux wheel
-     - Built against ``manylinux_2_28``.
+     - 3.11, 3.12, 3.13, 3.14
    * - macOS
      - arm64
-     - 3.11
-     - macOS wheel
-     - Requires the packaged OpenMP runtime; deployment target is macOS 15.
-   * - macOS
-     - arm64
-     - 3.12
-     - macOS wheel
-     - Requires the packaged OpenMP runtime; deployment target is macOS 15.
-   * - macOS
-     - arm64
-     - 3.13
-     - macOS wheel
-     - Requires the packaged OpenMP runtime; deployment target is macOS 15.
+     - 3.11, 3.12, 3.13, 3.14
    * - Windows
      - AMD64
-     - 3.11
-     - Windows wheel
-     - Built with the configured MinGW toolchain and OpenMP support.
-   * - Windows
-     - AMD64
-     - 3.12
-     - Windows wheel
-     - Built with the configured MinGW toolchain and OpenMP support.
-   * - Windows
-     - AMD64
-     - 3.13
-     - Windows wheel
-     - Built with the configured MinGW toolchain and OpenMP support.
-   * - Any supported OS
-     - Native architecture
-     - 3.10
-     - Source build
-     - Declared by the package metadata, but not currently included in cibuildwheel targets.
+     - 3.11, 3.12, 3.13, 3.14
 
-The package metadata currently declares ``Python >= 3.10``. Python 3.10 users
-should therefore expect to compile from source unless a separately published
-wheel is available. The project should either add Python 3.10 wheel builds or
-raise ``requires-python`` to ``>=3.11`` before removing this row.
+Package metadata requires Python ``>=3.10``. Python 3.10 requires a source build
+unless a matching wheel is available separately.
+
+Linux wheels target ``manylinux_2_28``. macOS builds target Apple Silicon
+with a minimum deployment version of macOS 15 and bundle their OpenMP runtime.
+Windows builds target AMD64. Python versions and architectures above reflect
+the configured build targets, including newly added interpreter versions.
+
+To require a matching wheel instead of silently attempting a local compilation::
+
+   python -m pip install --only-binary=:all: PyMieSim
+
+If no matching distribution is found, check the interpreter version and CPU
+architecture against the table before choosing a source build.
 
 Source-build requirements
 -------------------------

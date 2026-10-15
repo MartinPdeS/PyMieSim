@@ -18,20 +18,24 @@
 .. _sphx_glr_gallery_single_properties.py:
 
 
-Far-Fields Computation and Visualization
-========================================
+Inspect scalar scattering properties
+====================================
 
-This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
+Print scalar efficiencies, cross sections, and the asymmetry factor for one
+isolated sphere. Efficiencies and asymmetry are dimensionless; cross sections
+carry area units. The real refractive index gives negligible absorption, so
+``Qext`` and ``Qsca`` agree.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-10
+.. GENERATED FROM PYTHON SOURCE LINES 12-13
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-43
+.. GENERATED FROM PYTHON SOURCE LINES 13-50
 
 .. code-block:: Python
 
     from PyMieSim import (
+        Measure,
         ureg,
         Gaussian,
         PolarizationState,
@@ -59,9 +63,12 @@ Importing the package: PyMieSim
         source=source,
     )
 
-    for property in ["Qext", "Qsca", "Qabs", "Qback", "g", "Cext", "Csca", "Cabs", "Cback"]:
-        value = setup.get(property)
-        print(f"{property}: {value}")
+    for measure in (
+        Measure.QEXT, Measure.QSCA, Measure.QABS, Measure.QBACK, Measure.G,
+        Measure.CEXT, Measure.CSCA, Measure.CABS, Measure.CBACK,
+    ):
+        value = setup.run(measure)
+        print(f"{measure.value}: {value}")
 
 
 
@@ -88,7 +95,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.003 seconds)
+   **Total running time of the script:** (0 minutes 0.002 seconds)
 
 
 .. _sphx_glr_download_gallery_single_properties.py:

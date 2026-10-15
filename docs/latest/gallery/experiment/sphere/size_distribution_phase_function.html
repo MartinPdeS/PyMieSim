@@ -31,13 +31,12 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=e13101ea" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=02978338" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
@@ -59,10 +58,10 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="icon" href="../../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Benchmarks" href="../../benchmarks/index.html" />
+    <link rel="next" title="Inverse Problems" href="../../inverse/index.html" />
     <link rel="prev" title="Compare size distribution families" href="size_distribution_families.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -136,8 +135,8 @@
     
     
     
-    <img src="../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
-    <img src="../../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark" alt="PyMieSim light-scattering logo"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light pst-js-only" alt="PyMieSim light-scattering logo"/>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -463,7 +462,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../single/farfields.html">Far-Fields Computation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/nearfields.html">Near-Field Computation and Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../single/properties.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../single/properties.html">Inspect scalar scattering properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/s1s2.html">S1 S2 Function Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/spf.html">SPF Computation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../single/stokes.html">Stokes Parameters Computation</a></li>
@@ -508,6 +507,40 @@
 </details></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../inverse/index.html">Inverse Problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/fit_linear_scale.html">Fit a scalar scale factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/fit_sphere_scattering.html">Fit an isolated-sphere scattering measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../inverse/fit_unit_aware_diameter.html">Fit a unit-aware diameter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../interpretation/index.html">Interpreting scattering results</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../interpretation/inverse_spectrum_diagnostics.html">Diagnose a sphere fit across several wavelengths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interpretation/phase_function_size_regimes.html">See how particle size reshapes angular scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interpretation/scattering_absorption_resonances.html">Separate scattering and absorption resonances</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../validation/energy_conservation.html">Energy-conservation validation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../benchmarks/index.html">Benchmarks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../benchmarks/memory_scaling.html">Memory scaling with sweep size</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../benchmarks/parameter_grid.html">Parameter-grid scaling</a></li>
@@ -531,30 +564,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../extras/photodiode.html">Photodiode Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/photodiode_angular_weights.html">Photodiode Angular Weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extras/plot_system.html">Plot system</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_cylinder.html">Print properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_sphere.html">Samples Properties</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../validation/index.html">Validation Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../validation/energy_conservation.html">Energy-conservation validation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/bohren_huffman/index.html">Bohren &amp; Huffmann</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_810.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.10</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_87.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.7</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/bohren_huffman/figure_88.html">InfiniteCylinder Scatterer Bohren-Huffman figure 8.8</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/internal/index.html">Internal</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/core_shell_empty_shell.html">Effect of Shell dimensions in equivalent medium</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/internal/phase_function_detector.html">Goniometric Coupling vs S1 S2 Comparison</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../validation/pymiescatt/index.html">PyMieScatt</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_0.html">Core-Shell Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/coreshell_1.html">Core-Shell Particles: 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_0.html">Sphere Particles: 0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../validation/pymiescatt/sphere_1.html">Sphere Particles: 1</a></li>
-</ul>
-</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_cylinder.html">Print cylinder properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extras/properties_sphere.html">Print sphere properties</a></li>
 </ul>
 </details></li>
 </ul>
@@ -647,7 +658,7 @@ mean diameter and particle volume therefore also change with width.</p>
 <img src="../../../_images/sphx_glr_size_distribution_phase_function_001.png" srcset="../../../_images/sphx_glr_size_distribution_phase_function_001.png" alt="How particle-size width changes angular scattering, A   Number-based size distributions, B   Scattering phase function" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="nn">.</span><span class="nn">pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="w">
 </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
 </span><span class="w">
-</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParticleSizeDistribution</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">PlaneWave</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">,</span> <span class="n">ureg</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">ParticleSizeDistribution</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class reference internal" href="../../../code/single.html#PyMieSim.single.source.PlaneWave" title="PyMieSim.single.source.PlaneWave"><span class="n">PlaneWave</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class reference internal" href="../../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">Sphere</span></a><span class="p">,</span> <span class="n">ureg</span><span class="w">
 </span><span class="w">
 </span><span class="w">
 </span><span class="n">MEDIAN_DIAMETER</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="w">
@@ -684,8 +695,8 @@ mean diameter and particle volume therefore also change with width.</p>
 </span>        <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">get_s1s2</span><span class="p">(</span><span class="n">evaluation_angles</span><span class="p">)</span><span class="w">
 </span>        <span class="n">intensity</span> <span class="o">=</span> <span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><span class="n">s1</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><span class="n">s2</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="w">
 </span>        <span class="n">mean_intensity</span> <span class="o">+</span><span class="o">=</span> <span class="n">fraction</span> <span class="o">*</span> <span class="n">intensity</span><span class="w">
-</span>        <span class="n">scattering_weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fraction</span> <span class="o">*</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">'</span><span class="s1">Csca</span><span class="s1">'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
-</span>        <span class="n">asymmetries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">'</span><span class="s1">g</span><span class="s1">'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
+</span>        <span class="n">scattering_weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fraction</span> <span class="o">*</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
+</span>        <span class="n">asymmetries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">G</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span>    <span class="n">integrated</span> <span class="o">=</span> <span class="n">mean_intensity</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span><span class="p">:</span><span class="p">]</span><span class="w">
 </span>    <span class="n">normalization</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/devdocs/reference/constants.html#numpy.pi" title="numpy.pi"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.dot.html#numpy.dot" title="numpy.dot"><span class="n">np</span><span class="o">.</span><span class="n">dot</span></a><span class="p">(</span><span class="n">angular_weights</span><span class="p">,</span> <span class="n">integrated</span><span class="p">)</span><span class="w">
@@ -757,7 +768,7 @@ mean diameter and particle volume therefore also change with width.</p>
 </span><span class="n">figure</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">phase_functions</span></a> <span class="o">=</span> <span class="n">make_figure</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.850 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.121 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-size-distribution-phase-function-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/1aa55e7064d650f272bef7cf593fa068/size_distribution_phase_function.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">size_distribution_phase_function.ipynb</span></code></a></p>
@@ -778,6 +789,30 @@ mean diameter and particle volume therefore also change with width.</p>
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="size_distribution_families.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Compare size distribution families</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../inverse/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Inverse Problems</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             

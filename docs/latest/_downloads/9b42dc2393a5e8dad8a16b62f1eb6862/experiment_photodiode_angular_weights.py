@@ -15,6 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from PyMieSim import (
+    Measure,
     Experiment,
     Gaussian as SingleGaussian,
     GaussianSet,
@@ -124,7 +125,7 @@ experiment = Experiment(
     detector_set=detector_set,
 )
 
-coupling = experiment.get_sequential("coupling")
+coupling = experiment.get_sequential(Measure.COUPLING)
 
 figure = plt.figure(figsize=(14, 4.5))
 

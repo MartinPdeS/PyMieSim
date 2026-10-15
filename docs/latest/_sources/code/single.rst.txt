@@ -29,7 +29,7 @@ Detectors
 Representations
 ---------------
 
-.. automodule:: PyMieSim.single.representations.FarFields
+.. autoclass:: PyMieSim.single.representations.FarFields
     :inherited-members:
 
 .. autoclass:: PyMieSim.single.representations.Stokes

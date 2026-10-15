@@ -21,7 +21,7 @@
 Goniometric Coupling vs S1 S2 Comparison
 ========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-107
+.. GENERATED FROM PYTHON SOURCE LINES 6-108
 
 
 
@@ -39,6 +39,7 @@ Goniometric Coupling vs S1 S2 Comparison
     import numpy as np
     import matplotlib.pyplot as plt
     from PyMieSim import (
+        Measure,
         Experiment,
         Gaussian,
         GaussianSet,
@@ -80,7 +81,7 @@ Goniometric Coupling vs S1 S2 Comparison
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
     # Gather data
-    data_experiment = experiment.get("coupling").as_numpy()
+    data_experiment = experiment.get(Measure.COUPLING).as_numpy()
 
     data_experiment /= data_experiment.max()  # Normalize data
 
@@ -141,7 +142,7 @@ Goniometric Coupling vs S1 S2 Comparison
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.220 seconds)
+   **Total running time of the script:** (0 minutes 0.116 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_internal_phase_function_detector.py:

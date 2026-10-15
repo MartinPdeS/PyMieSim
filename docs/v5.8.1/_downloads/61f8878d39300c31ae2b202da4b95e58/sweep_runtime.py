@@ -11,7 +11,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PyMieSim import Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
+from PyMieSim import Measure, Experiment, GaussianSet, PolarizationSet, SphereSet, ureg
 
 
 def run_sweep(number_of_diameters: int) -> tuple[float, int]:
@@ -29,7 +29,7 @@ def run_sweep(number_of_diameters: int) -> tuple[float, int]:
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     start = time.perf_counter()
-    values = experiment.get("Qsca").as_numpy()
+    values = experiment.get(Measure.QSCA).as_numpy()
     elapsed = time.perf_counter() - start
     return elapsed, int(np.asarray(values).size)
 

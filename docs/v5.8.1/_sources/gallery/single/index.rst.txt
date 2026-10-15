@@ -91,7 +91,7 @@ interaction can be studied in detail.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Print scalar efficiencies, cross sections, and the asymmetry factor for one isolated sphere. Efficiencies and asymmetry are dimensionless; cross sections carry area units. The real refractive index gives negligible absorption, so Qext and Qsca agree.">
 
 .. only:: html
 
@@ -102,7 +102,7 @@ interaction can be studied in detail.
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
+      <div class="sphx-glr-thumbnail-title">Inspect scalar scattering properties</div>
     </div>
 
 

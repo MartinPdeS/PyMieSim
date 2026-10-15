@@ -23,7 +23,7 @@ InfiniteCylinder: Qabs vs Diameter
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-44
+.. GENERATED FROM PYTHON SOURCE LINES 7-48
 
 
 
@@ -43,8 +43,10 @@ This example demonstrates how to compute and visualize the scattering efficiency
     gold           tabulated  main/Au/Olmon-ev
     silver         tabulated  main/Ag/Johnson
     water          sellmeier  main/H2O/Daimon-19.0C
+    Result dimensions and shape: ('measure', 'scatterer:diameter', 'scatterer:material') (3, 300, 3)
+    Measure units: {'Qabs': <Unit('dimensionless')>, 'Qsca': <Unit('dimensionless')>, 'Qext': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fadb92625d0>, <matplotlib.lines.Line2D object at 0x7fadb9262d90>, <matplotlib.lines.Line2D object at 0x7fadb9260490>]
+    [<matplotlib.lines.Line2D object at 0x7fe8aa7c0290>, <matplotlib.lines.Line2D object at 0x7fe8aa7c2b50>, <matplotlib.lines.Line2D object at 0x7fe8aa7c2a90>]
 
 
 
@@ -56,6 +58,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     import numpy as np
     from PyMieSim import (
+        Measure,
         ureg,
         InfiniteCylinderSet,
         GaussianSet,
@@ -88,14 +91,17 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get("Qabs", "Qsca", "Qext")
+    result = experiment.get(Measure.QABS, Measure.QSCA, Measure.QEXT)
+
+    print("Result dimensions and shape:", result.dims, result.shape)
+    print("Measure units:", result.attrs["units"])
 
     result.plot(x="scatterer:diameter", y="Qabs")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.451 seconds)
+   **Total running time of the script:** (0 minutes 0.240 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qabs_vs_diameter.py:

@@ -32,8 +32,8 @@ question you want to investigate.
    )
 
    simulation.plot_system()
-   farfields = simulation.get_representation("farfields")
+   farfields = simulation.get_representation(representation_type="farfields")
    farfields.plot()
 
 For structured near-fields, far-fields, Stokes parameters, and footprints,
-see the :ref:`single-particle gallery <sphx_glr_gallery_single>`.
+see the :ref:`single-particle gallery <single_index>`.

@@ -5,6 +5,7 @@ Sphere: Coherent mode field rotation
 """
 import numpy
 from PyMieSim import (
+    Measure,
     ureg,
     CoherentModeSet,
     SphereSet,
@@ -47,6 +48,9 @@ detector = CoherentModeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-result = experiment.get("coupling")
+result = experiment.get(Measure.COUPLING)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="detector:rotation")

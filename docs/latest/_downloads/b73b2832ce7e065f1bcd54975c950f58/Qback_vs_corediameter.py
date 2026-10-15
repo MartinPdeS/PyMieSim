@@ -10,6 +10,7 @@ as functions of core diameter for CoreShell scatterers using PyMieSim.
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
 from PyMieSim import (
+    Measure,
     ureg,
     CoreShellSet,
     GaussianSet,
@@ -45,6 +46,9 @@ scatterer = CoreShellSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get("Qback")
+result = experiment.get(Measure.QBACK)
+
+print("Result dimensions and shape:", result.dims, result.shape)
+print("Measure units:", result.attrs["units"])
 
 result.plot(x="scatterer:core_diameter")
