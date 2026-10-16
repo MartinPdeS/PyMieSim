@@ -38,7 +38,7 @@ Sphere: Coupling vs diameter
     Result dimensions and shape: ('scatterer:diameter', 'detector:mode_number') (600, 3)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f2f31d4efd0>, <matplotlib.lines.Line2D object at 0x7f2f31d4c950>, <matplotlib.lines.Line2D object at 0x7f2f31d4d8d0>]
+    [<matplotlib.lines.Line2D object at 0x7f04a48a9e10>, <matplotlib.lines.Line2D object at 0x7f04a3853350>, <matplotlib.lines.Line2D object at 0x7f04a3853f90>]
 
 
 
