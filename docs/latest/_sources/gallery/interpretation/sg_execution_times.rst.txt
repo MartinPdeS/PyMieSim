@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.458** total execution time for 3 files **from gallery/interpretation**:
+**00:02.612** total execution time for 3 files **from gallery/interpretation**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_interpretation_inverse_spectrum_diagnostics.py` (``inverse_spectrum_diagnostics.py``)
-     - 00:01.001
+     - 00:01.819
      - 0.0
    * - :ref:`sphx_glr_gallery_interpretation_scattering_absorption_resonances.py` (``scattering_absorption_resonances.py``)
-     - 00:00.263
+     - 00:00.459
      - 0.0
    * - :ref:`sphx_glr_gallery_interpretation_phase_function_size_regimes.py` (``phase_function_size_regimes.py``)
-     - 00:00.194
+     - 00:00.334
      - 0.0

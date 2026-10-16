@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="0; url=docs/latest/index.html">
-    <link rel="canonical" href="docs/latest/index.html">
-    <title>PyMieSim documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to Latest Documentation</title>
+    <script>
+        // Base URL for your GitHub Pages site
+        const baseUrl = <base-url-json>;
+
+        // Redirect to the "latest" documentation immediately
+        const redirectToLatest = () => {
+            const latestUrl = `${baseUrl}/docs/latest/index.html`;
+            window.location.href = latestUrl;
+        };
+
+        // Trigger the redirection
+        redirectToLatest();
+    </script>
 </head>
 <body>
-    <p>Continue to the <a href="docs/latest/index.html">PyMieSim documentation</a>.</p>
+    <noscript>
+        <p>JavaScript is required to redirect to the latest documentation. Please visit the following link manually:</p>
+        <a href="<base-url-html>/docs/latest/index.html">Latest Documentation</a>
+    </noscript>
 </body>
 </html>
