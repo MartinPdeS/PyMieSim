@@ -36,5 +36,5 @@ Computation times
      - 00:00.161
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_internal_core_shell_empty_shell.py` (``core_shell_empty_shell.py``)
-     - 00:00.141
+     - 00:00.142
      - 0.0
