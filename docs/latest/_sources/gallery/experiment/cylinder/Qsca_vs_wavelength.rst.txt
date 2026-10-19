@@ -40,7 +40,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'scatterer:material') (150, 2, 3)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f78ed288f50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f78ed1aaa10>, <matplotlib.lines.Line2D object at 0x7f78ed582bd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f78ed580990>]
+    [<matplotlib.lines.Line2D object at 0x7f64a901ee50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f64a901eb50>, <matplotlib.lines.Line2D object at 0x7f64a901ffd0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f64a90f9d10>]
 
 
 

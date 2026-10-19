@@ -38,7 +38,7 @@ InfiniteCylinder: Qsca vs wavelength std
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (300, 10)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f78ed5411d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f78ed543610>]
+    [<matplotlib.lines.Line2D object at 0x7f64a910db10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f64a910c790>]
 
 
 
@@ -87,7 +87,7 @@ InfiniteCylinder: Qsca vs wavelength std
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.262 seconds)
+   **Total running time of the script:** (0 minutes 0.263 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_wavelength_std.py:
