@@ -97,7 +97,7 @@ dispersion included in the model.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.167 seconds)
+   **Total running time of the script:** (0 minutes 0.176 seconds)
 
 
 .. _sphx_glr_download_gallery_interpretation_scattering_absorption_resonances.py:

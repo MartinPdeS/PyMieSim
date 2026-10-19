@@ -110,14 +110,14 @@ Importing the package dependencies: numpy, PyMieSim
     Result dimensions and shape: ('scatterer:core_diameter', 'detector:cache_NA') (3, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fd0e6df9090>, <matplotlib.lines.Line2D object at 0x7fd0e6dfb890>, <matplotlib.lines.Line2D object at 0x7fd0e6dfb950>]
+    [<matplotlib.lines.Line2D object at 0x7ff8ebc9e310>, <matplotlib.lines.Line2D object at 0x7ff8ebc9fad0>, <matplotlib.lines.Line2D object at 0x7ff8ebc9fb50>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.101 seconds)
+   **Total running time of the script:** (0 minutes 3.289 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coupling_vs_na_cache.py:
