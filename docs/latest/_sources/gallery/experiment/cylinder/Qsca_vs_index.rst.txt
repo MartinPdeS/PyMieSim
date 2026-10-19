@@ -44,7 +44,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
-    [<matplotlib.lines.Line2D object at 0x7f6ad7cf9c90>, <matplotlib.lines.Line2D object at 0x7f6ad6f292d0>, <matplotlib.lines.Line2D object at 0x7f6ad6f2a4d0>]
+    [<matplotlib.lines.Line2D object at 0x7fbb0963c750>, <matplotlib.lines.Line2D object at 0x7fbb09746950>, <matplotlib.lines.Line2D object at 0x7fbb09747450>]
 
 
 
@@ -94,7 +94,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.512 seconds)
+   **Total running time of the script:** (0 minutes 0.303 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_index.py:
