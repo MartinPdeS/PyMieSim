@@ -38,7 +38,7 @@ Sphere: Qsca vs diameter
     Result dimensions and shape: ('scatterer:diameter', 'scatterer:medium') (150, 3)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fb30b82e2d0>, <matplotlib.lines.Line2D object at 0x7fb30b82f350>, <matplotlib.lines.Line2D object at 0x7fb30c4da090>]
+    [<matplotlib.lines.Line2D object at 0x7fe3304cef10>, <matplotlib.lines.Line2D object at 0x7fe3304cf650>, <matplotlib.lines.Line2D object at 0x7fe3304cfd50>]
 
 
 
@@ -96,7 +96,7 @@ Sphere: Qsca vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.783 seconds)
+   **Total running time of the script:** (0 minutes 0.757 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_diameter.py:
