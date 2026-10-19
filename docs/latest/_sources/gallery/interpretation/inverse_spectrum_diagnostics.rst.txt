@@ -140,7 +140,7 @@ has a negative standardized residual.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.725 seconds)
+   **Total running time of the script:** (0 minutes 1.278 seconds)
 
 
 .. _sphx_glr_download_gallery_interpretation_inverse_spectrum_diagnostics.py:

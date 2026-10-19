@@ -1,0 +1,173 @@
+/* Responsive layout and shared styling for the PyData Sphinx theme. */
+
+html {
+    --pst-sidebar-secondary: 15rem;
+}
+
+/* Let the article use the available screen width, including on wide displays. */
+.bd-page-width {
+    max-width: none;
+}
+
+.bd-container .bd-container__inner {
+    width: 100%;
+}
+
+.bd-main .bd-content .bd-article-container {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    padding: clamp(1rem, 2.5vw, 3rem);
+}
+
+.bd-main .bd-content .bd-article-container .bd-article {
+    padding: 0;
+    line-height: 1.65;
+    overflow-wrap: break-word;
+}
+
+/* Leave the theme's mobile drawers and collapsed sidebar behavior intact. */
+@media (min-width: 960px) {
+    .bd-sidebar-primary:not(.pst-squeeze) {
+        --pst-sidebar-primary-width: 16rem;
+        flex: 0 0 16rem;
+        width: 16rem;
+    }
+}
+
+.bd-article h1 {
+    font-size: clamp(2rem, 1.4rem + 1.4vw, 3rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin-bottom: 1.25rem;
+}
+
+.bd-article h2 {
+    margin-top: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--pst-color-border);
+}
+
+.bd-article h3 {
+    margin-top: 1.75rem;
+}
+
+/* Cards inherit the theme colors in both light and dark modes. */
+.bd-content .sd-card {
+    height: 100%;
+    border: 1px solid var(--pst-color-border);
+    border-radius: 0.75rem;
+    box-shadow: none;
+}
+
+.sd-card-title {
+    color: var(--pst-color-link);
+    font-weight: 600;
+}
+
+.bd-content .sd-card-hover:hover,
+.bd-content .sd-card:focus-within {
+    border-color: var(--pst-color-link);
+    box-shadow: 0 0.25rem 0.75rem var(--pst-color-shadow);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .bd-content .sd-card-hover {
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+}
+
+/* Keep wide code and tables scrollable inside the article on small screens. */
+.bd-article div[class*="highlight-"] {
+    min-width: 0;
+    margin: 1.25rem 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.bd-article pre {
+    max-width: 100%;
+    overflow-x: auto;
+    line-height: 1.55;
+}
+
+/* Code links should have the same contrast as the surrounding code. */
+div.highlight a {
+    color: var(--pst-color-text-base);
+}
+
+.bd-article .table-wrapper,
+.bd-article .pst-scrollable-table-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.bd-article table.docutils,
+.bd-article table.table {
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.bd-article table.docutils th,
+.bd-article table.table th {
+    background-color: var(--pst-color-on-background);
+}
+
+.bd-article table.docutils th,
+.bd-article table.docutils td,
+.bd-article table.table th,
+.bd-article table.table td {
+    padding: 0.8rem 1rem;
+    vertical-align: top;
+}
+
+.bd-article table.docutils td p:last-child,
+.bd-article table.table td p:last-child {
+    margin-bottom: 0;
+}
+
+.bd-article img,
+.bd-article svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.bd-article a:focus-visible,
+.bd-sidebar a:focus-visible {
+    outline: 2px solid var(--pst-color-link);
+    outline-offset: 3px;
+    border-radius: 0.125rem;
+}
+
+.bd-footer .footer-items__end,
+.bd-footer .footer-items__start {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/* Display equations scroll locally rather than widening the page. */
+div.math {
+    margin: 2.25rem 0;
+    padding: 0.5rem 1rem;
+    overflow-x: auto;
+    text-align: center;
+}
+
+div.math mjx-container[display="true"] {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+}
+
+div.math mjx-mtr + mjx-mtr mjx-mtd {
+    padding-top: 1.1em;
+}
+
+@media (max-width: 575.98px) {
+    .bd-article table.docutils th,
+    .bd-article table.docutils td,
+    .bd-article table.table th,
+    .bd-article table.table td {
+        padding: 0.6rem;
+    }
+}
