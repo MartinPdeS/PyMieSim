@@ -38,7 +38,7 @@ Sphere: Coupling vs diameter
     Result dimensions and shape: ('scatterer:diameter', 'detector:mode_number') (600, 3)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f117d538790>, <matplotlib.lines.Line2D object at 0x7f117d53b150>, <matplotlib.lines.Line2D object at 0x7f117d539650>]
+    [<matplotlib.lines.Line2D object at 0x7efeb93aa710>, <matplotlib.lines.Line2D object at 0x7efeb88a5b10>, <matplotlib.lines.Line2D object at 0x7efeb88a6c50>]
 
 
 
@@ -100,7 +100,7 @@ Sphere: Coupling vs diameter
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.823 seconds)
+   **Total running time of the script:** (0 minutes 0.509 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_diameter.py:

@@ -38,7 +38,7 @@ Sphere: Goniometer
     Result dimensions and shape: ('source:wavelength', 'detector:NA', 'detector:phi_offset') (2, 3, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f117c481e10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f117c8d5350>, <matplotlib.lines.Line2D object at 0x7f117cf1f990>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f117c8d6590>]
+    [<matplotlib.lines.Line2D object at 0x7efeb1d56ad0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7efeb904d410>, <matplotlib.lines.Line2D object at 0x7efeb1d55150>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7efeb1d56110>]
 
 
 
@@ -100,7 +100,7 @@ Sphere: Goniometer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.234 seconds)
+   **Total running time of the script:** (0 minutes 0.630 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_phioffset.py:
