@@ -40,7 +40,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (2, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fb3bfc35750>, <matplotlib.lines.Line2D object at 0x7fb3bfc37cd0>]
+    [<matplotlib.lines.Line2D object at 0x7fad8163cbd0>, <matplotlib.lines.Line2D object at 0x7fad8163d410>]
 
 
 
