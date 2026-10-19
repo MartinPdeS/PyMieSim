@@ -66,7 +66,7 @@
     <link rel="prev" title="Parameter-grid scaling" href="parameter_grid.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="6.0.19" />
+  <meta name="docsearch:version" content="6.0.20" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -643,11 +643,11 @@ to download the full example code.</p>
 The script is deterministic; runtime values are machine-dependent and should
 be compared only under the same environment.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Python: 3.11.17
-Platform: Linux-7.0.0-1017-azure-x86_64-with-glibc2.39
+Platform: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39
 PyMieSim grid: [1, 1, 1, 1, 100, 1, 1]
 Results: 100
-Median runtime: 0.000766 s
-All timings: [0.000772, 0.000766, 0.000767, 0.000763, 0.000749]
+Median runtime: 0.000828 s
+All timings: [0.000837, 0.000826, 0.000828, 0.000834, 0.000826]
 </pre></div>
 </div>
 <div class="line-block">
@@ -694,7 +694,7 @@ All timings: [0.000772, 0.000766, 0.000767, 0.000763, 0.000749]
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Median runtime: </span><span class="si">{</span><span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">timings</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">All timings: </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">timings</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.064 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.028 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-reproducible-parameter-sweep-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/228407ce86fb98dd683c89984f66bdb0/reproducible_parameter_sweep.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">reproducible_parameter_sweep.ipynb</span></code></a></p>
