@@ -40,7 +40,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     Result dimensions and shape: ('scatterer:core_diameter',) (400,)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7fad103423d0>]
+    [<matplotlib.lines.Line2D object at 0x7fb3beaf1e50>]
 
 
 
@@ -105,7 +105,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.911 seconds)
+   **Total running time of the script:** (0 minutes 1.972 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coupling_vs_corediameter.py:
