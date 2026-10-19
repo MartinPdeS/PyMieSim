@@ -40,7 +40,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'detector:NA') (300, 5, 2)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f5b38e45150>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5b374b3190>, <matplotlib.lines.Line2D object at 0x7f5b38795c10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f5b38795f90>]
+    [<matplotlib.lines.Line2D object at 0x7f553eaa9e10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f553c18f850>, <matplotlib.lines.Line2D object at 0x7f553b0db490>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f553b7ff8d0>]
 
 
 
@@ -104,7 +104,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.232 seconds)
+   **Total running time of the script:** (0 minutes 1.684 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_wavelength.py:
