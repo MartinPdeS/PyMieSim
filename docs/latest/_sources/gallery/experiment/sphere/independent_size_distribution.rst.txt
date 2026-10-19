@@ -36,19 +36,8 @@ particles is modeled. The result is a mean per particle, not a sample total.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /home/runner/work/PyMieSim/PyMieSim/docs/examples/experiment/sphere/independent_size_distribution.py:46: UserWarning: Glyph 8212 (\N{EM DASH}) missing from font(s) cmr10.
-      figure.tight_layout()
 
 
-
-
-
-
-|
 
 .. code-block:: Python
 
@@ -94,7 +83,7 @@ particles is modeled. The result is a mean per particle, not a sample total.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.293 seconds)
+   **Total running time of the script:** (0 minutes 0.118 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_independent_size_distribution.py:
