@@ -38,7 +38,7 @@ Sphere: Coherent mode field rotation
     Result dimensions and shape: ('scatterer:diameter', 'detector:rotation') (2, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f8535769810>, <matplotlib.lines.Line2D object at 0x7f8535769f50>]
+    [<matplotlib.lines.Line2D object at 0x7f14cf8d6350>, <matplotlib.lines.Line2D object at 0x7f14cf8d69d0>]
 
 
 
@@ -103,7 +103,7 @@ Sphere: Coherent mode field rotation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.214 seconds)
+   **Total running time of the script:** (0 minutes 0.790 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_rotation.py:
