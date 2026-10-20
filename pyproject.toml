@@ -68,7 +68,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "TypedUnit ==0.0.11",
+    "TypedUnit>=0.2.9",
     "MPSPlots ==1.8.9",
     "PyOptik ==3.5.1",
     "setuptools_scm[toml] >=8,<11",
