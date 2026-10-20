@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
 import os
 import subprocess
-from MPSPlots.styles import use_mpsplots_style
+import sys
+from importlib.metadata import (
+    PackageNotFoundError,
+    distribution as package_distribution,
+)
 from pathlib import Path
-import PyMieSim
+
 from PyOptik.directories import user_data_path
+from martinpdes_docs import configure
 
 
 # Gallery examples use named PyOptik materials. Initialize their local catalog
@@ -17,11 +21,39 @@ if not (user_data_path / "rii" / "catalog-nk.yml").is_file():
 
 
 package_name = "PyMieSim"
-version = PyMieSim.__version__
+try:
+    package_dist = package_distribution(package_name)
+    version = package_dist.version
+except PackageNotFoundError:
+    # Keep local documentation builds useful before the package is installed.
+    package_dist = None
+    version = "latest"
 
-# Make gallery reset hooks importable by name so the configuration is cacheable.
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+# Sphinx-Gallery executes examples while the repository root is on ``sys.path``.
+# Put the installed wheel first so examples use its compiled native extensions
+# instead of importing the unbuilt source checkout.
+if package_dist is not None:
+    installed_site_packages = str(package_dist.locate_file(""))
+    if installed_site_packages in sys.path:
+        sys.path.remove(installed_site_packages)
+    sys.path.insert(0, installed_site_packages)
 
+globals().update(
+    configure(
+        project=package_name,
+        package=package_name,
+        author="Martin Poinsinet de Sivry-Houle",
+        repository="MartinPdeS/PyMieSim",
+        logo="_static/logo.png",
+        favicon="_static/favicon.png",
+        version=os.getenv("tag", "latest"),
+        sphinx_gallery_conf={
+            "default_thumb_file": str(
+                Path(__file__).resolve().parent / "_static" / "gallery-default.png"
+            ),
+        },
+    )
+)
 
 autodoc_mock_imports = [
     "numpy",
@@ -58,10 +90,6 @@ html_logo = "_static/logo.png"
 html_favicon = "_static/favicon.ico"
 
 
-def reset_mpl(gallery_conf, fname):
-    use_mpsplots_style()
-
-
 examples_files = [
     "single",
     "experiment",
@@ -75,14 +103,13 @@ examples_files = [
 sphinx_gallery_conf = {
     "examples_dirs": ["../examples/" + f for f in examples_files],
     "gallery_dirs": ["gallery/" + f for f in examples_files],
-    "image_scrapers": ("matplotlib"),
+    "image_scrapers": ("matplotlib",),
     "ignore_pattern": "/__",
     "filename_pattern": r"\.py",
     "plot_gallery": True,
     "thumbnail_size": [600, 600],
     "default_thumb_file": str(Path(__file__).resolve().parent / "_static" / "gallery-default.png"),
     "download_all_examples": False,
-    "reset_modules": "conf.reset_mpl",
     "line_numbers": False,
     "remove_config_comments": True,
     "capture_repr": ("_repr_html_", "__repr__"),

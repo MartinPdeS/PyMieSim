@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v5
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@a01969bc5af90666281f9d37acffdf6a4629763a
     with:
       python-version: "3.11"
       package-name: "PyMieSim"
