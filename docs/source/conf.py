@@ -2,6 +2,7 @@
 
 import subprocess
 import sys
+from pathlib import Path
 
 from PyOptik.directories import user_data_path
 from martinpdes_docs import configure
@@ -14,6 +15,7 @@ if not (user_data_path / "rii" / "catalog-nk.yml").is_file():
 
 
 package_name = "PyMieSim"
+docs_source = Path(__file__).resolve().parent
 gallery_sections = [
     "single",
     "experiment",
@@ -34,7 +36,9 @@ globals().update(
         favicon="_static/favicon.png",
         prefer_installed_package=True,
         gallery_sections=gallery_sections,
-        gallery_default_thumb="_static/gallery-default.png",
+        # Sphinx-Gallery resolves this path from the process working directory
+        # (the repository root in CI), so pass an absolute source-tree path.
+        gallery_default_thumb=str(docs_source / "_static" / "gallery-default.png"),
         html_theme_options={
             "logo": {
                 "text": package_name,
