@@ -54,7 +54,7 @@ globals().update(
     )
 )
 
-autodoc_mock_imports = ["numpy", "matplotlib", "numpydoc"]
+autodoc_mock_imports = ["numpy", "matplotlib"]
 autodoc_typehints = "description"
 napoleon_use_ivar = True
 show_authors = True
