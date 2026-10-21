@@ -102,14 +102,14 @@ Importing the package dependencies: numpy, PyMieSim
     Result dimensions and shape: ('source:wavelength', 'scatterer:core_diameter') (3, 400)
     Measure units: {'Qback': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f63f7fe5910>, <matplotlib.lines.Line2D object at 0x7f63f7fe6d50>, <matplotlib.lines.Line2D object at 0x7f63f7fe7b90>]
+    [<matplotlib.lines.Line2D object at 0x7f703dc24a50>, <matplotlib.lines.Line2D object at 0x7f703dc27c10>, <matplotlib.lines.Line2D object at 0x7f703dc27e90>]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.293 seconds)
+   **Total running time of the script:** (0 minutes 3.254 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_Qback_vs_corediameter.py:

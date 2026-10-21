@@ -40,7 +40,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (2, 1000)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f63f815ba10>, <matplotlib.lines.Line2D object at 0x7f63f81c8d10>]
+    [<matplotlib.lines.Line2D object at 0x7f7044d2b7d0>, <matplotlib.lines.Line2D object at 0x7f7044d29150>]
 
 
 
@@ -90,7 +90,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.257 seconds)
+   **Total running time of the script:** (0 minutes 0.259 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_diameter.py:
