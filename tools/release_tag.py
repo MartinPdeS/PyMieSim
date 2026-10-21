@@ -104,9 +104,13 @@ def generate_version_file(version: str) -> None:
     environment["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
     run(
         sys.executable,
-        "-m",
-        "vcs_versioning",
-        "--force-write-version-files",
+        "-c",
+        (
+            "import setuptools_scm; "
+            f"setuptools_scm.get_version(root={str(ROOT)!r}, "
+            f"write_to={str(VERSION_FILE.relative_to(ROOT))!r}, "
+            "version_scheme='only-version', local_scheme='no-local-version')"
+        ),
         env=environment,
     )
     if not VERSION_FILE.exists():

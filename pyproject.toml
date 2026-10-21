@@ -30,7 +30,6 @@ sdist.exclude = [
 ]
 
 [tool.setuptools_scm]
-write_to = "PyMieSim/_version.py"
 version_scheme = "only-version"
 local_scheme = "no-local-version"
 
