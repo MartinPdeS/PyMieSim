@@ -32,7 +32,7 @@ class SimulationResult:
         return self.value
 
     @property
-    def magnitude(self) -> NDArray | float | complex:
+    def magnitude(self) -> "NDArray | float | complex":
         """Numerical values in the current units."""
         return self.value.magnitude
 
