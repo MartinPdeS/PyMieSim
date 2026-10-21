@@ -39,12 +39,14 @@ globals().update(
         # Sphinx-Gallery resolves this path from the process working directory
         # (the repository root in CI), so pass an absolute source-tree path.
         gallery_default_thumb=str(docs_source / "_static" / "gallery-default.png"),
+        logo_alt_text="PyMieSim light-scattering logo",
+        autodoc_default_options={
+            "members": True,
+            "exclude-members": "__annotations__",
+            "members-order": "bysource",
+        },
+        html_css_files=["layout.css"],
         html_theme_options={
-            "logo": {
-                "text": package_name,
-                "image": "_static/logo.png",
-                "alt_text": "PyMieSim light-scattering logo",
-            },
             "show_nav_level": 1,
             "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
             "show_prev_next": True,
@@ -54,17 +56,8 @@ globals().update(
 
 autodoc_mock_imports = ["numpy", "matplotlib", "numpydoc"]
 autodoc_typehints = "description"
-autodoc_default_options.update(
-    {
-        "members": True,
-        "exclude-members": "__annotations__",
-        "members-order": "bysource",
-    }
-)
 napoleon_use_ivar = True
 show_authors = True
-html_context.update({"doc_path": "docs/source", "default_mode": "dark"})
-html_css_files = ["default.css", "layout.css", "martinpdes_layout.css"]
 
 intersphinx_mapping = {
     "numpy": ("https://numpy.org/devdocs", None),
