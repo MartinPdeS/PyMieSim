@@ -11,14 +11,10 @@ permissions:
 jobs:
   documentation:
     permissions:
-      contents: write
-      pages: write
-      id-token: write
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v14
+      contents: read
+    uses: MartinPdeS/MPSActions/.github/workflows/build_documentation.yml@v14
     with:
       python-version: '3.11'
       package-name: PyMieSim
       apt-package: xvfb jq
-      deploy-pages: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
       debug: true
-      retain_versions: 5
