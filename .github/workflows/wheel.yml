@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   windows:
-    uses: MartinPdeS/MPSActions/.github/workflows/build_wheels.yml@a01969bc5af90666281f9d37acffdf6a4629763a
+    uses: MartinPdeS/MPSActions/.github/workflows/build_wheels.yml@v7
     with:
       build_windows: true
       mingw_package: |
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python and build tools
-        uses: MartinPdeS/MPSActions/actions/setup-python@a01969bc5af90666281f9d37acffdf6a4629763a
+        uses: MartinPdeS/MPSActions/actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           install-command: python -m pip install --upgrade pip build

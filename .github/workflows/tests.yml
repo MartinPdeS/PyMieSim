@@ -11,15 +11,12 @@ permissions:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python and CI dependencies
-        uses: MartinPdeS/MPSActions/actions/setup-python@a01969bc5af90666281f9d37acffdf6a4629763a
-        with:
-          python-version: "3.11"
-          install-command: >-
-            python -m pip install --upgrade pip && python -m pip install -e ".[testing,dev]"
-      - run: python -m PyOptik setup --no-progress
-      - run: python -m mypy
-      - run: python -m mypy.stubtest PyMieSim.single.setup PyMieSim.labeled_array --mypy-config-file pyproject.toml --allowlist tools/stubtest_allowlist.txt
-      - run: python -m pytest -q
+    uses: MartinPdeS/MPSActions/.github/workflows/run_tests.yml@v7
+    with:
+      install-command: >-
+        python -m pip install --upgrade pip && python -m pip install -e ".[testing,dev]"
+      test-command: |
+        python -m PyOptik setup --no-progress
+        python -m mypy
+        python -m mypy.stubtest PyMieSim.single.setup PyMieSim.labeled_array --mypy-config-file pyproject.toml --allowlist tools/stubtest_allowlist.txt
+        python -m pytest -q

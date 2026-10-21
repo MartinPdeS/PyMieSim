@@ -1,4 +1,4 @@
-name: Static quality checks
+name: Quality
 
 on:
   push:
@@ -11,12 +11,8 @@ permissions:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python and CI dependencies
-        uses: MartinPdeS/MPSActions/actions/setup-python@a01969bc5af90666281f9d37acffdf6a4629763a
-        with:
-          python-version: "3.11"
-          install-command: >-
-            python -m pip install --upgrade pip && python -m pip install "ruff>=0.6"
-      - run: python -m ruff check PyMieSim tests
+    uses: MartinPdeS/MPSActions/.github/workflows/run_quality.yml@v7
+    with:
+      install-command: >-
+        python -m pip install --upgrade pip && python -m pip install "ruff>=0.6"
+      quality-command: python -m ruff check PyMieSim tests
