@@ -12,7 +12,7 @@ jobs:
   documentation:
     permissions:
       contents: read
-    uses: MartinPdeS/MPSActions/.github/workflows/build_documentation.yml@v16
+    uses: MartinPdeS/MPSActions/.github/workflows/build_documentation.yml@v17
     with:
       python-version: '3.11'
       package-name: PyMieSim
