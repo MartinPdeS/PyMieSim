@@ -1,6 +1,6 @@
 package:
   name: pymiesim
-  version: 6.0.4
+  version: 6.0.5
 
 source:
   # The reusable workflow builds the checked-out revision, not a remote branch.
