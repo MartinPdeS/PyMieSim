@@ -13,7 +13,7 @@ jobs:
       contents: write
       pages: write
       id-token: write
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v17
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v18
     with:
       documentation: true
       documentation_package_name: PyMieSim
