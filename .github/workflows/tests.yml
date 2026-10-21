@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   tests:
-    uses: MartinPdeS/MPSActions/.github/workflows/run_tests.yml@v18
+    uses: MartinPdeS/MPSActions/.github/workflows/run_tests.yml@v2
     with:
       install-command: >-
         python -m pip install --upgrade pip && python -m pip install -e ".[testing,dev]"
