@@ -1,118 +1,24 @@
-# Simple workflow for deploying static content to GitHub Pages
 name: Documentation
-
-on:
+'on':
   push:
-    branches: [ "**" ]
-    tags: [ "v*" ]
-
+    branches:
+    - '**'
   pull_request:
     branches:
-      - master
-
-concurrency:
-  group: documentation-build-${{ github.repository }}
-  cancel-in-progress: false
-
+    - master
 permissions:
-  contents: write
-  pages: write
-  id-token: write
-
+  contents: read
 jobs:
-  ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v11
+  documentation:
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v12
     with:
-      python-version: "3.11"
-      package-name: "PyMieSim"
+      python-version: '3.11'
+      package-name: PyMieSim
       apt-package: xvfb jq
-      deploy-pages: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
-
-  prune_documentation_versions:
-    needs: ManyLinux_x86_64
-    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
-    runs-on: ubuntu-latest
-    env:
-      DOCUMENTATION_BRANCH: documentation_page
-      VERSION_RETENTION_COUNT: 5
-
-    steps:
-      - name: Checkout documentation branch
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          fetch-depth: 0
-          ref: ${{ env.DOCUMENTATION_BRANCH }}
-
-      - name: Retain only the newest documentation versions
-        run: |
-          set -Eeuo pipefail
-
-          mapfile -t versions < <(
-            find docs \
-              -mindepth 1 \
-              -maxdepth 1 \
-              -type d \
-              -printf "%f\n" \
-              | grep -v "^latest$" \
-              | sort -V -r
-          )
-
-          for version in "${versions[@]:${VERSION_RETENTION_COUNT}}"; do
-            git rm -r -- "docs/${version}"
-          done
-
-      - name: Install documentation landing page
-        run: |
-          set -Eeuo pipefail
-          git show "${GITHUB_SHA}:docs/redirect.html" > index.html
-          test -s docs/latest/index.html
-
-      - name: Rebuild version switcher
-        run: |
-          set -Eeuo pipefail
-
-          base_url="https://martinpdes.github.io/PyMieSim/docs"
-          mapfile -t versions < <(
-            find docs \
-              -mindepth 1 \
-              -maxdepth 1 \
-              -type d \
-              -printf "%f\n" \
-              | grep -v "^latest$" \
-              | sort -V -r
-          )
-
-          jq -n \
-            --arg base_url "${base_url}" \
-            --argjson versions "$(printf '%s\n' "${versions[@]}" | jq -R . | jq -s .)" \
-            '[
-              {
-                name: "latest",
-                version: "latest",
-                url: ($base_url + "/latest")
-              }
-            ] + [
-              $versions[] | {
-                name: .,
-                version: .,
-                url: ($base_url + "/" + .)
-              }
-            ]' > version_switcher.json
-
-          jq . version_switcher.json
-
-      - name: Commit pruned documentation
-        run: |
-          set -Eeuo pipefail
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html version_switcher.json
-
-          if git diff --cached --quiet; then
-            echo "Documentation landing page and retention policy are up to date."
-            exit 0
-          fi
-
-          git commit -m "Update documentation landing page and retain ${VERSION_RETENTION_COUNT} versions [skip ci]"
-          git push origin "HEAD:${DOCUMENTATION_BRANCH}"
+      deploy-pages: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+      debug: true
+      retain_versions: 5

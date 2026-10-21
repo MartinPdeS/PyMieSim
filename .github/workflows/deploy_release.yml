@@ -9,8 +9,18 @@ permissions:
 
 jobs:
   release:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v11
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v12
     with:
+      documentation: true
+      documentation_package_name: PyMieSim
+      documentation_python_version: "3.11"
+      documentation_apt_package: xvfb jq
+      documentation_retain_versions: 5
+      debug: true
       pypi_python_version: "3.11"
       pypi_build_linux: true
       pypi_build_macos: true
