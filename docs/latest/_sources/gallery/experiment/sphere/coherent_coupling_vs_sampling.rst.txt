@@ -38,7 +38,7 @@ Sphere: coherent coupling vs sampling
     Result dimensions and shape: ('detector:sampling', 'detector:phi_offset') (5, 200)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f703db578d0>, <matplotlib.lines.Line2D object at 0x7f703db54150>, <matplotlib.lines.Line2D object at 0x7f703dba7510>, <matplotlib.lines.Line2D object at 0x7f703dba7d10>, <matplotlib.lines.Line2D object at 0x7f703dba7310>]
+    [<matplotlib.lines.Line2D object at 0x7f4ce5bc3990>, <matplotlib.lines.Line2D object at 0x7f4ce4ecaf90>, <matplotlib.lines.Line2D object at 0x7f4ce4ecb7d0>, <matplotlib.lines.Line2D object at 0x7f4ce4ec81d0>, <matplotlib.lines.Line2D object at 0x7f4ce53b0050>]
 
 
 
@@ -101,7 +101,7 @@ Sphere: coherent coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.199 seconds)
+   **Total running time of the script:** (0 minutes 0.670 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coherent_coupling_vs_sampling.py:
