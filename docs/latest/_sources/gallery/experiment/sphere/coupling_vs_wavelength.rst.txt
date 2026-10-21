@@ -38,7 +38,7 @@ Sphere: Coupling vs wavelength
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'detector:NA', 'detector:polarization_filter') (200, 10, 2, 2)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f7505936b10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f7505ab9550>, <matplotlib.lines.Line2D object at 0x7f750598aad0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f750598bad0>, <matplotlib.lines.Line2D object at 0x7f750565d290>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f750565e410>, <matplotlib.lines.Line2D object at 0x7f75059c8ed0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f75059cb090>]
+    [<matplotlib.lines.Line2D object at 0x7f63fb5571d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f92d7910>, <matplotlib.lines.Line2D object at 0x7f63f81da110>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f81daa10>, <matplotlib.lines.Line2D object at 0x7f63f811ca10>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f8a25510>, <matplotlib.lines.Line2D object at 0x7f63f811f750>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f811f6d0>]
 
 
 
@@ -104,7 +104,7 @@ Sphere: Coupling vs wavelength
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.386 seconds)
+   **Total running time of the script:** (0 minutes 3.264 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_wavelength.py:

@@ -38,7 +38,7 @@ Sphere: Coupling vs sampling
     Result dimensions and shape: ('detector:sampling', 'detector:phi_offset') (4, 400)
     Measure units: {'coupling': <Unit('watt')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f7504fbcb90>, <matplotlib.lines.Line2D object at 0x7f7505a75450>, <matplotlib.lines.Line2D object at 0x7f7505a74ad0>, <matplotlib.lines.Line2D object at 0x7f750575a110>]
+    [<matplotlib.lines.Line2D object at 0x7f63f8ee14d0>, <matplotlib.lines.Line2D object at 0x7f63f8ee0050>, <matplotlib.lines.Line2D object at 0x7f63f8ec59d0>, <matplotlib.lines.Line2D object at 0x7f63f8ec4390>]
 
 
 
@@ -103,7 +103,7 @@ Sphere: Coupling vs sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.493 seconds)
+   **Total running time of the script:** (0 minutes 2.381 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_sampling.py:

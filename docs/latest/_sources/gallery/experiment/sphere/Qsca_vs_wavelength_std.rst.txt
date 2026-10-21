@@ -38,7 +38,7 @@ Sphere: Qsca vs wavelength STD
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'scatterer:material') (200, 10, 3)
     Measure units: {'Qsca': <Unit('dimensionless')>}
 
-    [<matplotlib.lines.Line2D object at 0x7f75058f7310>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f75058f7b50>, <matplotlib.lines.Line2D object at 0x7f75049dc3d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f75058f4b90>, <matplotlib.lines.Line2D object at 0x7f75049df190>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f750584d5d0>]
+    [<matplotlib.lines.Line2D object at 0x7f63f8e82450>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f8e83c50>, <matplotlib.lines.Line2D object at 0x7f63f8e787d0>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f8e78a90>, <matplotlib.lines.Line2D object at 0x7f63f8e7ac50>, <matplotlib.collections.FillBetweenPolyCollection object at 0x7f63f8ea9e50>]
 
 
 
@@ -96,7 +96,7 @@ Sphere: Qsca vs wavelength STD
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.335 seconds)
+   **Total running time of the script:** (0 minutes 2.219 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength_std.py:
