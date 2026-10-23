@@ -39,6 +39,11 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
     /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/numpy/ma/core.py:2425: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
       a = np.array(a, copy=None, subok=True)
+    findfont: Font family ['cursive'] not found. Falling back to DejaVu Sans.
+    findfont: Generic family 'cursive' not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
+    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
+    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
+    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
 
 
 
@@ -90,7 +95,7 @@ This example demonstrates how to compute and visualize the S1 and S2 scattering 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.313 seconds)
+   **Total running time of the script:** (0 minutes 1.323 seconds)
 
 
 .. _sphx_glr_download_gallery_single_s1s2.py:

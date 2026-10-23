@@ -21,7 +21,7 @@
 Near-Field Computation and Visualization
 =========================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-46
+.. GENERATED FROM PYTHON SOURCE LINES 5-47
 
 
 
@@ -31,25 +31,8 @@ Near-Field Computation and Visualization
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:684: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
-      x = np.array(x, subok=True, copy=copy)
-    findfont: Font family ['cursive'] not found. Falling back to DejaVu Sans.
-    findfont: Generic family 'cursive' not found because none of the following families were found: Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
-    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
-    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
-    findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.
-
-    <Figure size 1200x600 with 4 Axes>
 
 
-
-
-
-|
 
 .. code-block:: Python
 
@@ -85,7 +68,7 @@ Near-Field Computation and Visualization
 
     near_field = setup.get_representation("nearfields")
 
-    near_field.plot(
+    _figure = near_field.plot(
         "Ez:real",
         "Ex:real",
         type="total",
@@ -96,9 +79,10 @@ Near-Field Computation and Visualization
         tight_layout=True,
     )
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.722 seconds)
+   **Total running time of the script:** (0 minutes 4.681 seconds)
 
 
 .. _sphx_glr_download_gallery_single_nearfields.py:
