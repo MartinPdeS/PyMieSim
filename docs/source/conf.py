@@ -31,36 +31,15 @@ globals().update(
         project=package_name,
         package=package_name,
         author="Martin Poinsinet de Sivry-Houle",
-        repository="MartinPdeS/PyMieSim",
+        repository=f"MartinPdeS/{package_name}",
         logo="_static/logo.png",
         favicon="_static/favicon.png",
         prefer_installed_package=True,
         gallery_sections=gallery_sections,
-        # Sphinx-Gallery resolves this path from the process working directory
-        # (the repository root in CI), so pass an absolute source-tree path.
         gallery_default_thumb=str(docs_source / "_static" / "gallery-default.png"),
         gallery_options={"capture_repr": ()},
         logo_text="",
-        logo_alt_text="PyMieSim light-scattering logo",
-        autodoc_default_options={
-            "members": True,
-            "exclude-members": "__annotations__",
-            "members-order": "bysource",
-        },
+        logo_alt_text=f"{package_name} light-scattering logo",
         html_css_files=["layout.css"],
-        html_theme_options={
-            "show_nav_level": 1,
-            "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
-            "show_prev_next": True,
-        },
     )
 )
-
-autodoc_mock_imports = ["numpy", "matplotlib"]
-autodoc_typehints = "description"
-napoleon_use_ivar = True
-show_authors = True
-
-intersphinx_mapping = {
-    "numpy": ("https://numpy.org/devdocs", None),
-}
