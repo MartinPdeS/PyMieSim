@@ -39,6 +39,7 @@ globals().update(
         # Sphinx-Gallery resolves this path from the process working directory
         # (the repository root in CI), so pass an absolute source-tree path.
         gallery_default_thumb=str(docs_source / "_static" / "gallery-default.png"),
+        logo_text="",
         logo_alt_text="PyMieSim light-scattering logo",
         autodoc_default_options={
             "members": True,
