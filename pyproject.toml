@@ -98,7 +98,7 @@ testing = [
     "coverage==7.16.2",
 ]
 documentation = [
-    "MartinPdeS-docs>=0.2.5,<0.3",
+    "MartinPdeS-docs>=0.3.2,<0.4",
 ]
 dev = [
     "mypy>=1.11,<2",
