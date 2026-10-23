@@ -45,4 +45,4 @@ detector = CoherentMode(
 
 setup = Simulation(scatterer=scatterer, source=source, detector=detector)
 
-setup.plot_system()
+_figure = setup.plot_system()
