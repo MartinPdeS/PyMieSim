@@ -14,11 +14,11 @@
 | PyMieSim/single/api.py                        |       40 |        3 |        4 |        1 |     90.91% |41, 78, 94 |
 | PyMieSim/single/representations/\_plotting.py |       63 |        2 |       26 |        3 |     94.38% |48, 50, 91-\>exit |
 | PyMieSim/single/representations/farfields.py  |      152 |       77 |       28 |        6 |     46.11% |213-224, 288-320, 344-356, 390-402, 473-\>exit, 501-520, 545-562, 586-605, 634-673, 690-716, 796, 805, 809, 812-813, 834-840, 857-861 |
-| PyMieSim/single/representations/nearfields.py |      251 |       86 |       88 |       14 |     58.70% |36, 108-130, 206, 246-\>253, 248-\>250, 250-\>253, 269, 305-333, 363-375, 392-401, 413, 426, 428, 432, 442, 494-\>464, 498, 541, 622-680 |
+| PyMieSim/single/representations/nearfields.py |      254 |       88 |       88 |       14 |     58.48% |26-27, 48, 120-142, 218, 258-\>265, 260-\>262, 262-\>265, 281, 317-345, 375-387, 404-413, 425, 438, 440, 444, 454, 506-\>476, 510, 553, 634-704 |
 | PyMieSim/single/representations/s1s2.py       |       39 |        4 |       16 |        6 |     78.18% |109-110, 112-\>115, 116, 118-\>121, 160, 162-\>166 |
 | PyMieSim/single/representations/spf.py        |       47 |        2 |        4 |        2 |     92.16% |  187, 191 |
 | PyMieSim/single/representations/stokes.py     |       53 |        1 |        4 |        2 |     94.74% |260-\>exit, 292 |
-| **TOTAL**                                     | **1063** |  **219** |  **270** |   **41** | **75.24%** |           |
+| **TOTAL**                                     | **1066** |  **221** |  **270** |   **41** | **75.15%** |           |
 
 3 files skipped due to complete coverage.
 
