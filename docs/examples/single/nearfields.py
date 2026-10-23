@@ -34,7 +34,7 @@ setup = Simulation(
 
 near_field = setup.get_representation("nearfields")
 
-near_field.plot(
+_figure = near_field.plot(
     "Ez:real",
     "Ex:real",
     type="total",

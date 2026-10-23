@@ -15,6 +15,18 @@ from PyMieSim.units import Length
 LOGGER = logging.getLogger(__name__)
 
 
+def _plot_coordinates(values: object) -> numpy.ndarray:
+    """Return coordinate values as a plain floating-point array.
+
+    Near-field coordinates are stored as Pint quantities so they can be passed
+    to the field solver.  Matplotlib does not need (or consistently support)
+    those units for a two-dimensional mesh, and converting them explicitly
+    avoids Pint's ``UnitStrippedWarning`` during rendering.
+    """
+    magnitude = getattr(values, "magnitude", values)
+    return numpy.asarray(magnitude, dtype=float)
+
+
 def _normalize_vector(vector: numpy.ndarray, eps: float = 1e-15) -> numpy.ndarray:
     """
     Normalize a 3D vector.
@@ -637,7 +649,19 @@ class NearFields:
         unique_components = list(dict.fromkeys(requested_components))
         fields = self._compute_fields(unique_components, type=type)
 
-        with plt.style.context(style):
+        # The shared scientific style lists a number of editorial fonts that
+        # are not installed on Linux CI runners.  Use Matplotlib's bundled
+        # font explicitly so gallery generation is deterministic and quiet.
+        with plt.style.context(style), plt.rc_context(
+            {
+                "font.family": "DejaVu Sans",
+                "font.sans-serif": ["DejaVu Sans"],
+                "font.cursive": ["DejaVu Sans"],
+                "mathtext.rm": "DejaVu Sans",
+                "mathtext.it": "DejaVu Sans:italic",
+                "mathtext.bf": "DejaVu Sans:bold",
+            }
+        ):
             figure, axes = plt.subplots(
                 figsize=(figure_size[0] * len(field_components), figure_size[1]),
                 nrows=1,
@@ -658,8 +682,8 @@ class NearFields:
                     raise ValueError(f"Unknown field component part: {requested_part}")
 
                 im = ax.pcolormesh(
-                    self.u,
-                    self.v,
+                    _plot_coordinates(self.u),
+                    _plot_coordinates(self.v),
                     field_data.T,
                     cmap=colormap,
                     shading="auto",
