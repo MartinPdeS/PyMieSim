@@ -91,6 +91,7 @@ keywords = [
 ]
 
 [project.optional-dependencies]
+release = ["martinpdes-maintenance[scm]==0.2.1"]
 testing = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
@@ -155,3 +156,9 @@ follow_imports = "silent"
 ignore_missing_imports = true
 check_untyped_defs = true
 disallow_untyped_defs = true
+
+[tool.mps-maintenance]
+version-file = "PyMieSim/_version.py"
+version-method = "setuptools-scm"
+conda-recipe = "conda.recipe/meta.yaml"
+zenodo = ".zenodo.json"
