@@ -17,8 +17,8 @@ make test
 ```
 
 After changing native sources, rebuild the editable installation before
-testing. Do not hand-edit `PyMieSim/_version.py`; it is generated from Git
-metadata by the release helper.
+testing. Do not hand-edit `PyMieSim/_version.py`; the release helper updates it alongside
+`pyproject.toml`, the Conda recipe, and Zenodo metadata.
 
 ## Repository layout
 
@@ -67,7 +67,7 @@ and compiler details for native changes.
 
 Release tags use `vMAJOR.MINOR.PATCH`. The release helper keeps the explicit
 `pyproject.toml` version, Conda recipe, Zenodo version and publication date,
-and generated `PyMieSim/_version.py` aligned, following PackLab's release rules.
+and tracked `PyMieSim/_version.py` aligned, following PackLab's release rules.
 Do not edit `_version.py` by hand.
 
 `make release patch`, `make release minor`, and `make release major` increment
@@ -81,7 +81,7 @@ Run `make release-check` to check all four version declarations, or
 `make release-check VERSION=vX.Y.Z` to check an expected version.
 
 For a local release without pushing, `make tag VERSION=vX.Y.Z` (or
-`make tag vX.Y.Z`) updates the release metadata and generates the source version file, creates a release commit, and makes an annotated tag;
+`make tag vX.Y.Z`) updates the release metadata and updates the source version file, creates a release commit, and makes an annotated tag;
 it never pushes. Review it, then push the commit and tag explicitly.
 
 ## Shared release tooling
@@ -90,7 +90,7 @@ Install the pinned release tool in the interpreter used by Make, without
 rebuilding this package:
 
 ```sh
-python -m pip install "martinpdes-maintenance[scm]==0.2.1"
+python -m pip install "martinpdes-maintenance==0.2.1"
 make release-check PYTHON=python
 ```
 
@@ -111,3 +111,7 @@ commands keep their local-tag and push behavior respectively. The shared tool
 requires an unused stable tag and a clean working tree. It stages only configured
 release metadata and never pushes itself. If committing or tagging fails,
 inspect `git status` and `git log -1` before recovering or retrying.
+
+Package versions are explicit in `[project].version`. Builds do not derive
+versions from Git tags or require setuptools-scm. Release commands update the
+project version, package version file, Conda recipe, and Zenodo metadata together.

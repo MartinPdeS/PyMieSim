@@ -3,7 +3,6 @@ requires = [
     "scikit-build-core>=0.3.3",
     "pybind11; python_version < '3.14'",
     "pybind11>=3.0.1; python_version >= '3.14'",
-    "setuptools_scm[toml]>=8.0",
 ]
 build-backend = "scikit_build_core.build"
 
@@ -28,10 +27,6 @@ sdist.exclude = [
     ".git*",
     "developments",
 ]
-
-[tool.setuptools_scm]
-version_scheme = "only-version"
-local_scheme = "no-local-version"
 
 [project]
 name = "PyMieSim"
@@ -70,7 +65,6 @@ dependencies = [
     "TypedUnit>=0.2.9",
     "MPSPlots ==1.8.9",
     "PyOptik ==3.5.1",
-    "setuptools_scm[toml] >=8,<11",
     "numpy ==2.2.6; python_version < '3.14'",
     "numpy ==2.3.3; python_version >= '3.14'",
     "matplotlib ==3.10.9",
@@ -91,8 +85,9 @@ keywords = [
 ]
 
 [project.optional-dependencies]
-release = ["martinpdes-maintenance[scm]==0.2.1"]
+release = ["martinpdes-maintenance==0.2.1"]
 testing = [
+    "tomli>=2; python_version < '3.11'",
     "pytest>=8.0",
     "pytest-cov>=5.0",
     "pytest-json-report==1.5.0",
@@ -159,6 +154,6 @@ disallow_untyped_defs = true
 
 [tool.mps-maintenance]
 version-file = "PyMieSim/_version.py"
-version-method = "setuptools-scm"
+version-method = "literal"
 conda-recipe = "conda.recipe/meta.yaml"
 zenodo = ".zenodo.json"
