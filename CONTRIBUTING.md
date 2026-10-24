@@ -90,7 +90,7 @@ Install the pinned release tool in the interpreter used by Make, without
 rebuilding this package:
 
 ```sh
-python -m pip install "martinpdes-maintenance==0.2.1"
+python -m pip install "martinpdes-maintenance==0.2.2"
 make release-check PYTHON=python
 ```
 

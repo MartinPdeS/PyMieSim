@@ -85,7 +85,7 @@ keywords = [
 ]
 
 [project.optional-dependencies]
-release = ["martinpdes-maintenance==0.2.1"]
+release = ["martinpdes-maintenance==0.2.2"]
 testing = [
     "tomli>=2; python_version < '3.11'",
     "pytest>=8.0",
