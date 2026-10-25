@@ -95,15 +95,15 @@ make release-check PYTHON=python
 ```
 
 The same dependency is available through the project's `release` extra.
-`tools/check_release.py`, `tools/next_release_version.py`, and
-`tools/release_tag.py` are compatibility wrappers around `mps-maintenance`.
+The Makefile calls the installed `martinpdes_maintenance.cli` module directly;
+no repository-local release scripts are required.
 Package-specific metadata paths live in `[tool.mps-maintenance]` in
 `pyproject.toml`. Release tooling is not a runtime dependency.
 
 Preview the next release's metadata changes from a clean, full clone:
 
 ```sh
-python tools/release_tag.py vX.Y.Z --dry-run
+python -m martinpdes_maintenance.cli tag vX.Y.Z --dry-run
 ```
 
 Fetch tags before selecting a version. Existing `make tag` and `make release`
