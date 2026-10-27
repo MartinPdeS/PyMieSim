@@ -24,7 +24,8 @@ def test_explicit_release_metadata_agrees():
     assert package["__version__"] == package["version"] == project["version"]
     assert package["version_tuple"] == tuple(int(part) for part in project["version"].split("."))
     recipe = (ROOT / "conda.recipe/meta.yaml").read_text()
-    assert re.search(r"^  version: (.+)$", recipe, re.MULTILINE)[1] == project["version"]
+    recipe_version = re.search(r"^  version: (.+)$", recipe, re.MULTILINE)[1].strip('"\'')
+    assert recipe_version == project["version"]
     assert metadata["tool"]["mps-maintenance"]["version-method"] == "literal"
     dependencies = metadata["build-system"]["requires"] + project["dependencies"]
     assert not any("setuptools-scm" in item.replace("_", "-") for item in dependencies)
