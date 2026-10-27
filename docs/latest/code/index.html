@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; PyMieSim 6.1.5 documentation</title>
+    <title>API Reference &#8212; PyMieSim 6.1.6 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=37f04a19"></script>
+    <script src="../_static/documentation_options.js?v=1741d0f2"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.5';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.6';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="6.1.5" />
+  <meta name="docsearch:version" content="6.1.6" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -457,8 +457,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p>
-<ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="public_api.html">Stable Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="single.html">Single module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="experiment.html">Experiment module</a></li>
@@ -527,16 +526,6 @@
 values. <code class="docutils literal notranslate"><span class="pre">Simulation</span></code> configures one particle and illumination; <code class="docutils literal notranslate"><span class="pre">Experiment</span></code>
 evaluates parameter combinations. An experiment is a parameter study, not a
 many-particle electromagnetic solver.</p>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code Structure</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="public_api.html">Stable Python API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="single.html">Single module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="experiment.html">Experiment module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="material.html">Materials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="polarization.html">Polarization</a></li>
-</ul>
-</div>
 <section id="classes-and-components">
 <h2>Classes and Components<a class="headerlink" href="#classes-and-components" title="Link to this heading">#</a></h2>
 <ul class="simple">
@@ -545,6 +534,60 @@ many-particle electromagnetic solver.</p>
 <li><p><strong>Detector</strong>: Captures the scattered light and measures properties like intensity, polarization, and phase. The detector can be placed at different angles or configured to capture light from specific regions around the scatterer.</p></li>
 <li><p><strong>Experiment</strong>: Combines source, scatterer, and optional detector sets to evaluate a parameter grid.</p></li>
 </ul>
+</section>
+<section id="explore-the-public-interfaces">
+<h2>Explore the public interfaces<a class="headerlink" href="#explore-the-public-interfaces" title="Link to this heading">#</a></h2>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-2 sd-g-xs-2 sd-g-sm-2 sd-g-md-2 sd-g-lg-2 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Stable Python API</div>
+<p class="sd-card-text">Recommended entry point for the supported public interface.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="public_api.html"><span class="doc">Stable Python API</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Single module</div>
+<p class="sd-card-text">Configure one particle, source, and detector.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="single.html"><span class="doc">Single module</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Experiment module</div>
+<p class="sd-card-text">Sweep combinations of sources, scatterers, and detectors.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="experiment.html"><span class="doc">Experiment module</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Materials</div>
+<p class="sd-card-text">Define refractive-index models and material data.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="material.html"><span class="doc">Materials</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Polarization</div>
+<p class="sd-card-text">Describe polarization states and polarization sets.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="polarization.html"><span class="doc">Polarization</span></a></div>
+</div>
+</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 </section>
 
@@ -596,6 +639,7 @@ many-particle electromagnetic solver.</p>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes-and-components">Classes and Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explore-the-public-interfaces">Explore the public interfaces</a></li>
 </ul>
   </nav></div>
 
@@ -603,7 +647,7 @@ many-particle electromagnetic solver.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.5/docs/source/code/index.rst">
+    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.6/docs/source/code/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
