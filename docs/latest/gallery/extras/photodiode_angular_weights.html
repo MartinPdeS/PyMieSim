@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Photodiode Angular Weights &#8212; PyMieSim  documentation</title>
+    <title>Photodiode Angular Weights &#8212; PyMieSim 6.1.5 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=8a448e45"></script>
+    <script src="../../_static/documentation_options.js?v=37f04a19"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.5';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
+  <meta name="docsearch:version" content="6.1.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -686,18 +686,18 @@ single-detector Fibonacci mesh using <code class="docutils literal notranslate">
 </span><span class="c1"># Rebuild the current mesh explicitly so the example can derive weights from it.</span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">initialize_mesh</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-scatterer sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.scatterer.Sphere" title="PyMieSim.single.scatterer.Sphere"><span class="n">scatterer</span></a><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x_coordinates</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">y_coordinates</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">z_coordinates</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
+</span><span class="n">x_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
+</span><span class="n">y_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
+</span><span class="n">z_coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">cartesian</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="c1"># Keep only one side of the collectio n cone to form a simple half-aperture mask.</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">active_points</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x_coordinates</span></a> <span class="o">&gt;</span><span class="o">=</span> <span class="mf">0.50</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">angular_weights</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute reference external" href="https://numpy.org/devdocs/reference/arrays.scalars.html#numpy.complex128" title="numpy.complex128"><span class="n">np</span><span class="o">.</span><span class="n">complex128</span></a><span class="p">)</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">angular_weights</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">active_points</span></a><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="w">
+</span><span class="n">active_points</span> <span class="o">=</span> <span class="n">x_coordinates</span> <span class="o">&gt;</span><span class="o">=</span> <span class="mf">0.50</span><span class="w">
+</span><span class="n">angular_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">sampling</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span><span class="w">
+</span><span class="n">angular_weights</span><span class="p">[</span><span class="n">active_points</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">angular_weights</span> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">angular_weights</span></a><span class="w">
+</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">angular_weights</span> <span class="o">=</span> <span class="n">angular_weights</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">angular_weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="w">
+</span><span class="n">weighted_active_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-detector sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code/single.html#PyMieSim.single.detector.Photodiode" title="PyMieSim.single.detector.Photodiode"><span class="n">detector</span></a><span class="o">.</span><span class="n">angular_weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="w">
 </span><span class="w">
 </span><span class="n">masked_coupling</span> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">COUPLING</span><span class="p">)</span><span class="w">
 </span><span class="w">
@@ -705,9 +705,9 @@ single-detector Fibonacci mesh using <code class="docutils literal notranslate">
 </span><span class="w">
 </span><span class="n">full_mesh_axis</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">3d</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="n">full_mesh_axis</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x_coordinates</span></a><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">y_coordinates</span></a><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">z_coordinates</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">x_coordinates</span><span class="p">,</span><span class="w">
+</span>    <span class="n">y_coordinates</span><span class="p">,</span><span class="w">
+</span>    <span class="n">z_coordinates</span><span class="p">,</span><span class="w">
 </span>    <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="w">
 </span>    <span class="n">c</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">#1f77b4</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">full detector</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
@@ -722,17 +722,17 @@ single-detector Fibonacci mesh using <code class="docutils literal notranslate">
 </span><span class="w">
 </span><span class="n">masked_mesh_axis</span> <span class="o">=</span> <span class="n">figure</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">3d</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="n">masked_mesh_axis</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x_coordinates</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a><span class="p">]</span><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">y_coordinates</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a><span class="p">]</span><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">z_coordinates</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">x_coordinates</span><span class="p">[</span><span class="n">weighted_active_points</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">y_coordinates</span><span class="p">[</span><span class="n">weighted_active_points</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">z_coordinates</span><span class="p">[</span><span class="n">weighted_active_points</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="w">
 </span>    <span class="n">c</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">#1f77b4</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">active</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="n">masked_mesh_axis</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x_coordinates</span></a><span class="p">[</span><span class="o">~</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a><span class="p">]</span><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">y_coordinates</span></a><span class="p">[</span><span class="o">~</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a><span class="p">]</span><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">z_coordinates</span></a><span class="p">[</span><span class="o">~</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">weighted_active_points</span></a><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">x_coordinates</span><span class="p">[</span><span class="o">~</span><span class="n">weighted_active_points</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">y_coordinates</span><span class="p">[</span><span class="o">~</span><span class="n">weighted_active_points</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">z_coordinates</span><span class="p">[</span><span class="o">~</span><span class="n">weighted_active_points</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span><span class="w">
 </span>    <span class="n">c</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">#d9d9d9</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">masked</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
@@ -772,7 +772,7 @@ single-detector Fibonacci mesh using <code class="docutils literal notranslate">
 </span><span class="k">if</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="s2">agg</span><span class="s2">&quot;</span><span class="p">:</span><span class="w">
 </span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.345 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.227 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extras-photodiode-angular-weights-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f3516103fa12a180532876a4f39c93d9/photodiode_angular_weights.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">photodiode_angular_weights.ipynb</span></code></a></p>
@@ -830,7 +830,7 @@ single-detector Fibonacci mesh using <code class="docutils literal notranslate">
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.3/docs/source/gallery/extras/photodiode_angular_weights.rst">
+    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.5/docs/source/gallery/extras/photodiode_angular_weights.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -885,23 +885,6 @@ single-detector Fibonacci mesh using <code class="docutils literal notranslate">
     </div>
   
   
-  
-    <div class="footer-items__end">
-      
-        <div class="footer-item">
-
-  <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-  </p>
-</div>
-      
-        <div class="footer-item">
-<p class="theme-version">
-  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
-</p></div>
-      
-    </div>
   
 </div>
 

@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>InfiniteCylinder Scatterer Bohren-Huffman figure 8.10 &#8212; PyMieSim  documentation</title>
+    <title>InfiniteCylinder Scatterer Bohren-Huffman figure 8.10 &#8212; PyMieSim 6.1.5 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=8a448e45"></script>
+    <script src="../../../_static/documentation_options.js?v=37f04a19"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.5';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
+  <meta name="docsearch:version" content="6.1.5" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -655,12 +655,12 @@ to download the full example code.</p>
 </span><span class="w">
 </span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="nn">.</span><span class="nn">directories</span><span class="w"> </span><span class="kn">import</span> <span class="n">validation_data_path</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">theoretical</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.genfromtxt.html#numpy.genfromtxt" title="numpy.genfromtxt"><span class="n">numpy</span><span class="o">.</span><span class="n">genfromtxt</span></a><span class="p">(</span><span class="w">
+</span><span class="n">theoretical</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="w">
 </span>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">validation_data_path</span><span class="si">}</span><span class="s2">/bohren_huffman/figure_810.csv</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">,</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">theoretical</span></a><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">y</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">theoretical</span></a><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">theoretical</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="w">
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">theoretical</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="w">
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">polarization_state</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim sphx-glr-backref-type-py-class reference internal" href="../../../code/polarization.html#PyMieSim.polarization.PolarizationState" title="PyMieSim.PolarizationState"><span class="n">PolarizationState</span></a><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span><span class="w">
 </span><span class="w">
@@ -684,15 +684,15 @@ to download the full example code.</p>
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a> <span class="o">=</span> <span class="n">setup</span><span class="o">.</span><span class="n">get_representation</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">s1s2</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a><span class="o">.</span><span class="n">S1</span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a><span class="o">.</span><span class="n">S2</span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="w">
-</span>    <span class="mf">0.5</span> <span class="o">/</span> <span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data reference external" href="https://numpy.org/devdocs/reference/constants.html#numpy.pi" title="numpy.pi"><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="o">.</span><span class="n">wavenumber_vacuum</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a><span class="o">.</span><span class="n">S1</span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a><span class="o">.</span><span class="n">S2</span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="w">
+</span>    <span class="mf">0.5</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <a class="sphx-glr-backref-module-PyMieSim-single-source sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.source.Gaussian" title="PyMieSim.single.source.Gaussian"><span class="n">source</span></a><span class="o">.</span><span class="n">wavenumber_vacuum</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="w">
 </span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a class="sphx-glr-backref-module-PyMieSim-single-representations sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/single.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2"><span class="n">s1s2</span></a><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">degree</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">C1-</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">PyMieSim</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
-</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">x</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">y</span></a><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">k--</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">B&amp;H [8.10]</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">k--</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">B&amp;H [8.10]</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="w">
 </span>    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">scattering angle [degree]</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
@@ -710,7 +710,7 @@ to download the full example code.</p>
   return np.asarray(x, float)
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.167 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.111 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-bohren-huffman-figure-810-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/c2e12904dea633c27fdcbe58c75ec671/figure_810.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">figure_810.ipynb</span></code></a></p>
@@ -768,7 +768,7 @@ to download the full example code.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.3/docs/source/gallery/validation/bohren_huffman/figure_810.rst">
+    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.5/docs/source/gallery/validation/bohren_huffman/figure_810.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -823,23 +823,6 @@ to download the full example code.</p>
     </div>
   
   
-  
-    <div class="footer-items__end">
-      
-        <div class="footer-item">
-
-  <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-  </p>
-</div>
-      
-        <div class="footer-item">
-<p class="theme-version">
-  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
-</p></div>
-      
-    </div>
   
 </div>
 

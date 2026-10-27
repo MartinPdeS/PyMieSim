@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Reproducible parameter-sweep benchmark &#8212; PyMieSim  documentation</title>
+    <title>Reproducible parameter-sweep benchmark &#8212; PyMieSim 6.1.5 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=8a448e45"></script>
+    <script src="../../_static/documentation_options.js?v=37f04a19"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.5';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
+  <meta name="docsearch:version" content="6.1.5" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -646,8 +646,8 @@ be compared only under the same environment.</p>
 Platform: Linux-6.17.0-1022-azure-x86_64-with-glibc2.39
 PyMieSim grid: [1, 1, 1, 1, 100, 1, 1]
 Results: 100
-Median runtime: 0.001500 s
-All timings: [0.0015, 0.00152, 0.001491, 0.001579, 0.001472]
+Median runtime: 0.001080 s
+All timings: [0.001094, 0.001079, 0.00107, 0.001081, 0.00108]
 </pre></div>
 </div>
 <div class="line-block">
@@ -670,7 +670,7 @@ All timings: [0.0015, 0.00152, 0.001491, 0.001579, 0.001472]
 </span>        <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span>    <span class="n">scatterer</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-scatterer_set sphx-glr-backref-type-py-class reference internal" href="../../code/experiment.html#PyMieSim.experiment.scatterer_set.SphereSet" title="PyMieSim.experiment.scatterer_set.SphereSet"><span class="n">SphereSet</span></a><span class="p">(</span><span class="w">
-</span>        <span class="n">diameter</span><span class="o">=</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>        <span class="n">diameter</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
 </span>        <span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>        <span class="n">medium</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
@@ -684,17 +684,17 @@ All timings: [0.0015, 0.00152, 0.001491, 0.001579, 0.001472]
 </span><span class="n">timings</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="w">
 </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="p">:</span><span class="w">
 </span>    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">values</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="n">values</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span>    <span class="n">timings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Python: </span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Platform: </span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">platform</span><span class="p">(</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">PyMieSim grid: </span><span class="si">{</span><span class="n">experiment</span><span class="o">.</span><span class="n">array_shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
-</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Results: </span><span class="si">{</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">values</span></a><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Results: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Median runtime: </span><span class="si">{</span><span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">timings</span><span class="p">)</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">All timings: </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">timings</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.023 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.051 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-reproducible-parameter-sweep-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/228407ce86fb98dd683c89984f66bdb0/reproducible_parameter_sweep.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">reproducible_parameter_sweep.ipynb</span></code></a></p>
@@ -752,7 +752,7 @@ All timings: [0.0015, 0.00152, 0.001491, 0.001579, 0.001472]
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.3/docs/source/gallery/benchmarks/reproducible_parameter_sweep.rst">
+    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.5/docs/source/gallery/benchmarks/reproducible_parameter_sweep.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -807,23 +807,6 @@ All timings: [0.0015, 0.00152, 0.001491, 0.001579, 0.001472]
     </div>
   
   
-  
-    <div class="footer-items__end">
-      
-        <div class="footer-item">
-
-  <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-  </p>
-</div>
-      
-        <div class="footer-item">
-<p class="theme-version">
-  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
-</p></div>
-      
-    </div>
   
 </div>
 

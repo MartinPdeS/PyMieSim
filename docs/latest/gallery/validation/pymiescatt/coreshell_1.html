@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Core-Shell Particles: 1 &#8212; PyMieSim  documentation</title>
+    <title>Core-Shell Particles: 1 &#8212; PyMieSim 6.1.5 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=8a448e45"></script>
+    <script src="../../../_static/documentation_options.js?v=37f04a19"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v6.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.5';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
+  <meta name="docsearch:version" content="6.1.5" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -666,7 +666,7 @@ to download the full example code.</p>
 </span><span class="n">core_index</span> <span class="o">=</span> <span class="mf">1.5</span><span class="w">
 </span><span class="n">shell_index</span> <span class="o">=</span> <span class="mf">1.4</span><span class="w">
 </span><span class="n">shell_thickness</span> <span class="o">=</span> <span class="mi">600</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
-</span><span class="n">core_diameters</span> <span class="o">=</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function reference external" href="https://numpy.org/devdocs/reference/generated/numpy.geomspace.html#numpy.geomspace" title="numpy.geomspace"><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span></a><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
+</span><span class="n">core_diameters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="w">
 </span><span class="w">
 </span><span class="c1"># Configure the Gaussian source</span><span class="w">
 </span><a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PyMieSim-experiment-source_set sphx-glr-backref-type-py-class reference internal" href="../../../code/experiment.html#PyMieSim.experiment.source_set.GaussianSet" title="PyMieSim.experiment.source_set.GaussianSet"><span class="n">GaussianSet</span></a><span class="p">(</span><span class="w">
@@ -691,7 +691,7 @@ to download the full example code.</p>
 </span><span class="n">comparison_measures</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="s2">Qsca</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qext</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qabs</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">g</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qpr</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Qback</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
 </span><span class="w">
 </span><span class="c1"># Simulate using PyMieSim</span><span class="w">
-</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">pymiesim</span></a> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">pymiesim</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">comparison_measures</span><span class="p">)</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">pymiescatt_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="w">
 </span>    <span class="n">validation_data_path</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">pymiescatt/example_coreshell_1.csv</span><span class="s2">&quot;</span><span class="w">
@@ -709,10 +709,10 @@ to download the full example code.</p>
 </span>    <span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="w">
-</span><span class="k">for</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">data</span></a><span class="p">,</span> <span class="n">string</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">pymiesim</span></a><span class="p">,</span> <span class="n">comparison_measures</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="k">for</span> <span class="n">data</span><span class="p">,</span> <span class="n">string</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pymiesim</span><span class="p">,</span> <span class="n">comparison_measures</span><span class="p">)</span><span class="p">:</span><span class="w">
 </span>    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
 </span>        <span class="n">core_diameters</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">data</span></a><span class="p">,</span><span class="w">
+</span>        <span class="n">data</span><span class="p">,</span><span class="w">
 </span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">PyMieSim: </span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">string</span><span class="p">,</span><span class="w">
 </span>        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">--</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">black</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
@@ -728,7 +728,7 @@ to download the full example code.</p>
 </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.254 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.191 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-pymiescatt-coreshell-1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/40bca701fd2166628e6a95ebfaf8aa6a/coreshell_1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_1.ipynb</span></code></a></p>
@@ -786,7 +786,7 @@ to download the full example code.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.3/docs/source/gallery/validation/pymiescatt/coreshell_1.rst">
+    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.5/docs/source/gallery/validation/pymiescatt/coreshell_1.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -841,23 +841,6 @@ to download the full example code.</p>
     </div>
   
   
-  
-    <div class="footer-items__end">
-      
-        <div class="footer-item">
-
-  <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-  </p>
-</div>
-      
-        <div class="footer-item">
-<p class="theme-version">
-  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
-</p></div>
-      
-    </div>
   
 </div>
 
