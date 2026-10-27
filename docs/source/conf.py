@@ -30,6 +30,7 @@ globals().update(
     configure(
         project=package_name,
         package=package_name,
+        version="auto",
         author="Martin Poinsinet de Sivry-Houle",
         repository=f"MartinPdeS/{package_name}",
         logo="_static/logo.png",
