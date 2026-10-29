@@ -16,6 +16,8 @@
      - |ci/cd|
    * - Test coverage
      - |coverage|
+   * - Web app
+     - |webapp|
    * - Google Colab
      - |colab|
    * - PyPI package
@@ -41,10 +43,6 @@ Try the live webapp
 
 **Run Mie scattering simulations in your browser—no installation required.**
 
-.. image:: https://img.shields.io/badge/Launch_Webapp-Open_in_browser-2672d6?style=for-the-badge
-   :target: https://pymiesim.onrender.com/
-   :alt: Launch the PyMieSimX webapp in your browser
-
 `Launch the PyMieSimX webapp <https://pymiesim.onrender.com/>`_ to configure
 optical setups, run parameter sweeps, explore individual particles, and download
 your results as CSV files. The hosted service brings PyMieSim to a graphical
@@ -58,6 +56,45 @@ Features
 - Built-in models for plane wave and Gaussian sources.
 - Multiple detector types including photodiodes and coherent modes.
 - Simple data analysis with pandas DataFrame outputs.
+
+See PyMieSim in action
+----------------------
+Explore electromagnetic fields around an individual particle, then sweep
+parameters to see how scattering changes across a whole experiment. These
+illustrative plots come from PyMieSim workflows; follow the links to the
+runnable examples and their configurations.
+
+**Single particle: near field**
+
+Visualize the real components of the total electric field in a plane through
+a core--shell particle. The circles mark the core and shell interfaces.
+`Explore the near-field example <https://martinpdes.github.io/PyMieSim/gallery/single/nearfields.html>`_.
+
+.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/single_nearfields.png
+   :width: 900
+   :align: center
+   :alt: Real components of the total electric field around a core-shell particle.
+
+**Single particle: far field**
+
+Inspect the angular distribution of a scattered electric-field component for
+a sphere. `Explore the far-field example <https://martinpdes.github.io/PyMieSim/gallery/single/farfields.html>`_.
+
+.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/single_farfields.png
+   :width: 500
+   :align: center
+   :alt: Real part of the phi component of the scattered far electric field around a sphere.
+
+**Experiment: scattering resonances**
+
+Compare scattering efficiency across wavelengths for spheres of two sizes.
+The peaks reveal resonances and how they shift with particle diameter.
+`Explore sphere parameter sweeps <https://martinpdes.github.io/PyMieSim/gallery/experiment/sphere/index.html>`_.
+
+.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png
+   :width: 900
+   :align: center
+   :alt: Scattering efficiency versus wavelength for spheres with diameters of 200 and 300 nanometers.
 
 Installation
 ------------
@@ -269,12 +306,6 @@ theory, performance guidance, runnable examples, and advanced near-field and
 far-field workflows.
 
 
-.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png
-    :width: 1000
-    :align: center
-    :alt: Scattering efficiency of a 200 nm sphere with refractive index 4.0.
-
-
 Code structure
 ---------------
 Here is the architecture for a standard workflow using PyMieSim:
@@ -354,6 +385,9 @@ For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <ma
 
 .. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
     :alt: PyMieSim logo
+.. |webapp| image:: https://img.shields.io/badge/web_app-open_in_browser-2672d6.svg
+    :alt: Open the PyMieSim web app
+    :target: https://pymiesim.onrender.com/
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
     :alt: Python
     :target: https://www.python.org/
