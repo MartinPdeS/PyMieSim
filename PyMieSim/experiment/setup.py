@@ -14,7 +14,7 @@ from PyMieSim.measures import MeasureLike, Measure, validate_measures
 
 
 
-class Setup(SETUP):
+class Experiment(SETUP):
     """
     High level orchestration class for PyMieSim experiments.
 
@@ -66,36 +66,32 @@ class Setup(SETUP):
     # ------------------------------------------------------------------
 
     @overload
-    def run(self, measure: MeasureLike, /, *, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResult: ...
+    def run(self, measure: MeasureLike, /, *, drop_unique_level: bool = True) -> SimulationResult: ...
 
     @overload
-    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResults: ...
+    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, drop_unique_level: bool = True) -> SimulationResults: ...
 
-    @overload
-    def run(self, *measures: MeasureLike, drop_unique_level: bool = True, as_result: Literal[False] = False) -> LabeledArray: ...
+    def run(self, *measures: MeasureLike, drop_unique_level: bool = True) -> SimulationResult | SimulationResults:
+        """Compute named measures over the parameter grid.
 
-    @overload
-    def run(self, *measures: MeasureLike, drop_unique_level: bool = True, as_result: bool = False) -> LabeledArray | SimulationResult | SimulationResults: ...
-
-    def run(
-        self, *measures: MeasureLike, drop_unique_level: bool = True, as_result: bool = False,
-    ) -> LabeledArray | SimulationResult | SimulationResults:
-        """Compute measures while preserving the parameter grid and physical units.
-
-        By default return a native ``LabeledArray``. With ``as_result=True``,
-        return the same named result containers as ``Simulation.run``.
-        ``drop_unique_level=False`` keeps axes containing a single value.
+        Singleton axes are removed by default; pass ``drop_unique_level=False``
+        to retain every configured parameter axis.
         """
         names = validate_measures(measures, self.available_measures)
-        if as_result:
-            results = {
-                name: SimulationResult.from_labeled_array(self._build_labeled_array([name], drop_unique_level))
-                for name in names
+        labeled = self._build_labeled_array(names, drop_unique_level)
+        if len(names) == 1:
+            return SimulationResult.from_labeled_array(labeled)
+        results = {}
+        for index, name in enumerate(names):
+            selected = labeled.isel({"measure": index})
+            attrs = {
+                **selected.attrs,
+                "measures": (name,),
+                "units": {name: selected.attrs["units"][name]},
             }
-            return next(iter(results.values())) if len(results) == 1 else SimulationResults(results)
-        return self._build_labeled_array(names, drop_unique_level)
-
-    get = run
+            data = LabeledArray(selected.as_numpy(), list(selected.dims), dict(selected.coords), attrs, name)
+            results[name] = SimulationResult.from_labeled_array(data)
+        return SimulationResults(results)
 
     @overload
     def average_size_distribution(self, distribution: ParticleSizeDistribution, measure: MeasureLike, /, *, drop_unique_level: bool = True, as_result: Literal[True]) -> SimulationResult: ...

@@ -5,7 +5,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import IntegratingSphere
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 # Define sampling to be tested
 samplings = [100, 200]

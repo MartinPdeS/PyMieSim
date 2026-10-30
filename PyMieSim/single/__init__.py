@@ -6,7 +6,6 @@ import PyMieSim.coordinates as _coordinates  # noqa: F401, W292
 import PyMieSim.material as _material  # noqa: F401, W292
 import PyMieSim.single.setup as _setup  # noqa: F401, W292
 
-Setup = _setup.Setup
 from .api import Simulation
 
-__all__ = ["Setup", "Simulation"]
+__all__ = ["Simulation"]

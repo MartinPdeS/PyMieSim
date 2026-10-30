@@ -32,7 +32,7 @@ setup = Simulation(
     source=source,
 )
 
-near_field = setup.get_representation("nearfields")
+near_field = setup.nearfields()
 
 _figure = near_field.plot(
     "Ez:real",

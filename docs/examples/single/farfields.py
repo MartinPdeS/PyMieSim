@@ -33,7 +33,7 @@ setup = Simulation(
     source=source,
 )
 
-far_fields = setup.get_representation("farfields", sampling=100)
+far_fields = setup.farfields(sampling=100)
 
 ## Visualize the far-fields: phi_real component
 figure = far_fields.plot("phi_real")

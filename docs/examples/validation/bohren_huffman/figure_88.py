@@ -55,7 +55,7 @@ scatterer = InfiniteCylinderSet(
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 # Compute PyMieSim scattering cross section data
-csca_data = experiment.get(Measure.CSCA).as_numpy()
+csca_data = experiment.run(Measure.CSCA).as_numpy()
 
 normalized_csca = (
     csca_data / volumes.to_base_units() * 1e-4 / 100

@@ -45,7 +45,7 @@ setup = Simulation(
     source=source
 )
 
-s1s2 = setup.get_representation("s1s2", sampling=800)
+s1s2 = setup.s1s2(sampling=800)
 
 data = (numpy.abs(s1s2.S1) ** 2 + numpy.abs(s1s2.S2) ** 2) * (
     0.5 / (numpy.pi * source.wavenumber_vacuum.to_base_units())

@@ -115,7 +115,7 @@ def test_detector_single_polarization_filter():
         medium=1.0
     )
 
-    setup = single.Setup(
+    setup = single._setup.Setup(
         scatterer=scatterer_single,
         source=source_single,
         detector=detector_0
@@ -124,7 +124,7 @@ def test_detector_single_polarization_filter():
     # Calculate the coupling for both detectors
     coupling_0 = setup.get("coupling")
 
-    setup = single.Setup(
+    setup = single._setup.Setup(
         scatterer=scatterer_single,
         source=source_single,
         detector=detector_180
@@ -178,7 +178,7 @@ def test_detector_single_rotation():
         sampling=3000
     )
 
-    setup = single.Setup(
+    setup = single._setup.Setup(
         scatterer=scatterer_single,
         source=source_single,
         detector=detector_0
@@ -187,7 +187,7 @@ def test_detector_single_rotation():
     # Calculate the coupling for both detectors
     coupling_0 = setup.get("coupling")
 
-    setup = single.Setup(
+    setup = single._setup.Setup(
         scatterer=scatterer_single,
         source=source_single,
         detector=detector_180
@@ -233,7 +233,7 @@ def test_detector_single_angular_weights_persist_across_coupling_calls(source_si
         sampling=256,
     )
 
-    setup = single.Setup(
+    setup = single._setup.Setup(
         scatterer=scatterer_single,
         source=source_single,
         detector=detector,
@@ -275,12 +275,12 @@ def test_detector_experiment_polarization_filter(
     )
 
     # Setup the experiment with the scatterer, detector, and source
-    setup = experiment.Setup(
+    setup = experiment.Experiment(
         scatterer_set=scatterer_experiment, detector_set=detector, source_set=source_experiment
     )
 
     # Get the coupling values for both polarization filters
-    result = setup.get("coupling")
+    result = setup.run("coupling").as_labeled_array()
     coupling_values = result.as_numpy()
 
     # Assert that the coupling values for 0° and 180° polarization are equal

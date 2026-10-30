@@ -44,9 +44,9 @@ scatterer = CoreShellSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get(Measure.QBACK)
+result = experiment.run(Measure.QBACK)
 
 print("Result dimensions and shape:", result.dims, result.shape)
-print("Measure units:", result.attrs["units"])
+print("Measure units:", result.units)
 
 result.plot(x="scatterer:core_diameter")

@@ -5,7 +5,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import CoherentMode
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 # Define a list of mode numbers and rotation angles to be tested
 mode_numbers = ["LP01", "LP11", "LP21", "LG01", "LG11", "LG21", "HG01", "HG11", "HG21"]

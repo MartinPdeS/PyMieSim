@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 
 from PyMieSim.polarization import PolarizationState
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import PlaneWave
 from PyMieSim.units import ureg

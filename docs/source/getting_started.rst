@@ -53,9 +53,9 @@ supported.
 
    simulation = Simulation(scatterer=sphere, source=source)
    qsca = simulation.run(Measure.QSCA)
-   print(qsca)
+   print(qsca.quantity)
 
-``qsca`` is a scalar, dimensionless quantity (about 0.208 for this setup).
+``qsca.quantity`` is a scalar, dimensionless quantity (about 0.208 for this setup).
 It is the scattering cross section divided by the sphere's projected area;
 it is not a fraction of the source power.
 
@@ -63,17 +63,16 @@ Inspect the available measures before running a larger study::
 
    print(simulation.available_measures)
 
-For explicit result metadata, opt in to the typed result container::
+The result also exposes its metadata::
 
-   result = simulation.run(Measure.QSCA, as_result=True)
+   result = simulation.run(Measure.QSCA)
    print(result.measure, result.quantity, result.units)
 
 Parameter sweep
 ---------------
 
 Use ``Experiment`` when several parameter dimensions must be evaluated. Scalar
-parameters are broadcast over the grid, and the default result is a native
-``LabeledArray`` with named dimensions, coordinates, and units.
+parameters are broadcast over the grid, and the result has named dimensions, coordinates, and units.
 
 .. code-block:: python
 
@@ -101,7 +100,7 @@ parameters are broadcast over the grid, and the default result is a native
        scatterer_set=sweep_sphere,
        source_set=sweep_source,
    )
-   result = experiment.get(Measure.QSCA)
+   result = experiment.run(Measure.QSCA)
    result.plot(x="scatterer:diameter", y="Qsca")
 
 With five wavelengths and nine diameters, the result has shape ``(5, 9)``

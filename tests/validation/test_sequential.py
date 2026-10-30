@@ -9,7 +9,7 @@ from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.detector_set import PhotodiodeSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 
 SIZE = 10
 ONES = numpy.ones(SIZE)
@@ -47,12 +47,12 @@ def test_sequential_vs_standard_no_detector():
         medium=MEDIUM_PROPERTY,
     )
 
-    setup_standard = Setup(
+    setup_standard = Experiment(
         scatterer_set=scatterer_standard,
         source_set=source_standard
     )
 
-    data_standard = setup_standard.get("Qsca").as_numpy().squeeze()
+    data_standard = setup_standard.run("Qsca").as_numpy().squeeze()
 
     assert setup_standard is not None, "Error while running the standard get function."
 
@@ -71,7 +71,7 @@ def test_sequential_vs_standard_no_detector():
         medium=ONES * MEDIUM_PROPERTY,
     )
 
-    setup_sequential = Setup(
+    setup_sequential = Experiment(
         scatterer_set=scatterer_sequential,
         source_set=source_sequential
     )
@@ -122,7 +122,7 @@ def test_sequential_photodiode_angular_weights_reduce_coupling():
         angular_weights=angular_weights,
     )
 
-    setup_sequential = Setup(
+    setup_sequential = Experiment(
         scatterer_set=scatterer_sequential,
         source_set=source_sequential,
         detector_set=detector_sequential,
@@ -156,13 +156,13 @@ def test_sequential_vs_standard_detector():
         polarization_filter=0 * ureg.degree,
     )
 
-    setup_standard = Setup(
+    setup_standard = Experiment(
         scatterer_set=scatterer_standard,
         source_set=source_standard,
         detector_set=detector_standard
     )
 
-    data_standard = setup_standard.get("coupling").as_numpy().squeeze()
+    data_standard = setup_standard.run("coupling").as_numpy().squeeze()
 
     assert data_standard is not None, "Error while running the standard get function."
 
@@ -193,7 +193,7 @@ def test_sequential_vs_standard_detector():
         medium=ONES,
     )
 
-    setup_sequential = Setup(
+    setup_sequential = Experiment(
         scatterer_set=scatterer_sequential,
         source_set=source_sequential,
         detector_set=detector_sequential,

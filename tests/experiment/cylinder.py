@@ -12,7 +12,7 @@ from PyMieSim.experiment.detector_set import PhotodiodeSet
 from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 
 
 properties = [
@@ -72,13 +72,13 @@ def test_measure(measure, source, medium, material):
         sampling=[100],
     )
 
-    experiment = Setup(
+    experiment = Experiment(
         scatterer_set=scatterer,
         source_set=source,
         detector_set=detector,
     )
 
-    experiment.get(measure, drop_unique_level=False)
+    experiment.run(measure, drop_unique_level=False)
 
 
 if __name__ == "__main__":

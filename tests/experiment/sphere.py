@@ -12,7 +12,7 @@ from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.detector_set import CoherentModeSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 from PyMieSim.experiment.scatterer_set import *
 from PyMieSim.experiment.source_set import *
 
@@ -83,16 +83,16 @@ def test_get_measure(source, measure, material, medium):
         sampling=100,
     )
 
-    experiment = Setup(
+    experiment = Experiment(
         scatterer_set=scatterer,
         source_set=source,
         detector_set=detector,
     )
 
 
-    experiment.get(measure, drop_unique_level=True)
+    experiment.run(measure, drop_unique_level=True)
 
-    experiment.get(measure).as_numpy()
+    experiment.run(measure).as_numpy()
 
 
 if __name__ == "__main__":

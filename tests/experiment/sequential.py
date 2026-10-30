@@ -14,7 +14,7 @@ from PyMieSim.experiment.detector_set import CoherentModeSet
 from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 
 
 TOTAL_SIZE = 5
@@ -55,7 +55,7 @@ def test_valid_experiment(mock_show):
         target_size=TOTAL_SIZE,
     )
 
-    experiment = Setup(
+    experiment = Experiment(
         scatterer_set=scatterer,
         source_set=source,
         detector_set=detector

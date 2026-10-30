@@ -28,7 +28,7 @@ from .experiment.material_set import MaterialSet, MediumSet
 from .experiment.polarization_set import PolarizationSet
 from .experiment.scatterer_set import CoreShellSet, InfiniteCylinderSet, SphereSet
 from .experiment.source_set import GaussianSet, PlaneWaveSet
-from .experiment.setup import Setup as Experiment
+from .experiment.setup import Experiment
 from .material import (
     ConstantMaterial,
     ConstantMedium,
@@ -41,7 +41,6 @@ from .materials import from_pyoptik
 from .mesh import FibonacciMesh, FullMesh
 from .labeled_array import LabeledArray
 from .polarization import LeftCircular, PolarizationState, RightCircular
-from .single import Setup
 from .single.detector import CoherentMode, IntegratingSphere, Photodiode
 from .single.scatterer import CoreShell, InfiniteCylinder, Sphere
 from .single.source import Gaussian, PlaneWave
@@ -99,7 +98,6 @@ __all__ = [
     "RightCircular",
     "SellmeierMaterial",
     "SellmeierMedium",
-    "Setup",
     "Simulation",
     "Sphere",
     "SphereSet",

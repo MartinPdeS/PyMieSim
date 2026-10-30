@@ -38,6 +38,6 @@ setup = Simulation(
     source=source,
 )
 
-spf = setup.get_representation("spf", sampling=100)
+spf = setup.spf(sampling=100)
 
 figure = spf.plot()

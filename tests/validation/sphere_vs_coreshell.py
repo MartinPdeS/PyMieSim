@@ -5,7 +5,7 @@ from PyMieSim.units import ureg
 from PyMieSim.experiment.scatterer_set import SphereSet, CoreShellSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment.setup import Setup
+from PyMieSim import Experiment
 
 
 @pytest.mark.parametrize("metric", ["Qsca", "Cext", "Qabs", "Qpr", "g"])
@@ -33,11 +33,11 @@ def test_no_shell(metric):
         numerical_aperture=[0.3],
     )
 
-    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
-    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
+    experiment_sphere = Experiment(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Experiment(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric).as_numpy().squeeze()
-    data_coreshell = experiment_core_shell.get(metric).as_numpy().squeeze()
+    data_sphere = experiment_sphere.run(metric).as_numpy().squeeze()
+    data_coreshell = experiment_core_shell.run(metric).as_numpy().squeeze()
 
     assert numpy.allclose(
         data_sphere, data_coreshell
@@ -70,11 +70,11 @@ def test_shell_equal_core(metric):
         medium=[1.33],
     )
 
-    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
-    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
+    experiment_sphere = Experiment(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Experiment(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric).as_numpy().squeeze()
-    data_coreshell = experiment_core_shell.get(metric).as_numpy().squeeze()
+    data_sphere = experiment_sphere.run(metric).as_numpy().squeeze()
+    data_coreshell = experiment_core_shell.run(metric).as_numpy().squeeze()
 
 
     assert numpy.allclose(
@@ -109,11 +109,11 @@ def test_only_shell(metric):
         medium=[1.33],
     )
 
-    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
-    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
+    experiment_sphere = Experiment(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Experiment(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric).as_numpy().squeeze()
-    data_coreshell = experiment_core_shell.get(metric).as_numpy().squeeze()
+    data_sphere = experiment_sphere.run(metric).as_numpy().squeeze()
+    data_coreshell = experiment_core_shell.run(metric).as_numpy().squeeze()
 
 
     assert numpy.allclose(
@@ -147,12 +147,12 @@ def test_shell_is_medium(metric):
         medium=[1.4],
     )
 
-    experiment_sphere = Setup(scatterer_set=sphere, source_set=source)
-    experiment_core_shell = Setup(scatterer_set=coreshell, source_set=source)
+    experiment_sphere = Experiment(scatterer_set=sphere, source_set=source)
+    experiment_core_shell = Experiment(scatterer_set=coreshell, source_set=source)
 
-    data_sphere = experiment_sphere.get(metric).as_numpy()
+    data_sphere = experiment_sphere.run(metric).as_numpy()
     data_coreshell = (
-        experiment_core_shell.get(metric).as_numpy()
+        experiment_core_shell.run(metric).as_numpy()
     )
 
     assert numpy.allclose(

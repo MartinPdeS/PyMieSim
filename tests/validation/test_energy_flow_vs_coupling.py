@@ -6,7 +6,7 @@ from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.single.scatterer import Sphere, CoreShell
 from PyMieSim.single.source import Gaussian, PlaneWave
 from PyMieSim.polarization import PolarizationState
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 EPSILON0 = 8.854187817620389e-12 * ureg.farad / ureg.meter
 C0 = 299792458.0 * ureg.meter / ureg.second

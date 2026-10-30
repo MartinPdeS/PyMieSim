@@ -8,7 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from PyMieSim import LabeledArray, Measure
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
@@ -27,37 +27,37 @@ def _setup():
         material=[1.4],
         medium=[1.0],
     )
-    return Setup(scatterer_set=scatterer, source_set=source)
+    return Experiment(scatterer_set=scatterer, source_set=source)
 
 
 def test_get_rejects_empty_measure_list():
     with pytest.raises(ValueError, match="At least one measure"):
-        _setup().get()
+        _setup().run().as_labeled_array()
 
 
 def test_get_rejects_unknown_measure():
     with pytest.raises(ValueError, match="Unknown measure"):
-        _setup().get("not_a_measure")
+        _setup().run("not_a_measure").as_labeled_array()
 
 
 def test_labeled_array_as_numpy_preserves_measure_order_and_shape():
     experiment = _setup()
 
-    values = experiment.get("Qext", "Qsca").as_numpy()
+    values = experiment.run("Qext", "Qsca").as_labeled_array().as_numpy()
 
     assert values.shape == (2, 2, 2)
-    np.testing.assert_allclose(values[0], experiment.get("Qext").as_numpy())
-    np.testing.assert_allclose(values[1], experiment.get("Qsca").as_numpy())
+    np.testing.assert_allclose(values[0], experiment.run("Qext").as_labeled_array().as_numpy())
+    np.testing.assert_allclose(values[1], experiment.run("Qsca").as_labeled_array().as_numpy())
 
 
 def test_labeled_array_as_numpy_keeps_simulation_shape():
-    values = _setup().get("Qsca").as_numpy()
+    values = _setup().run("Qsca").as_labeled_array().as_numpy()
 
     assert values.shape == (2, 2)
 
 
 def test_labeled_array_converts_to_numpy_and_dataframe():
-    result = _setup().get("Qsca")
+    result = _setup().run("Qsca").as_labeled_array()
 
     np.testing.assert_allclose(result.as_numpy(), result.to_numpy())
     dataframe = result.as_dataframe()
@@ -72,7 +72,7 @@ def test_labeled_array_converts_to_numpy_and_dataframe():
 
 
 def test_labeled_array_converts_multiple_measures_to_tabular_columns():
-    result = _setup().get("Qext", "Qsca")
+    result = _setup().run("Qext", "Qsca").as_labeled_array()
 
     values = result.as_numpy()
     dataframe = result.as_dataframe()
@@ -91,18 +91,18 @@ def test_labeled_array_converts_multiple_measures_to_tabular_columns():
 def test_get_labeled_array_preserves_grid_coordinates():
     experiment = _setup()
 
-    result = experiment.get("Qsca")
+    result = experiment.run("Qsca").as_labeled_array()
 
     assert isinstance(result, LabeledArray)
     assert result.dims == ("source:wavelength", "scatterer:diameter")
     assert result.shape == (2, 2)
-    np.testing.assert_allclose(result.to_numpy(), experiment.get("Qsca").as_numpy())
+    np.testing.assert_allclose(result.to_numpy(), experiment.run("Qsca").as_labeled_array().as_numpy())
     np.testing.assert_allclose(result.coords["source:wavelength"], [600e-9, 700e-9])
     assert result.attrs["coordinate_units"]["source:wavelength"] == ureg.meter
 
 
 def test_labeled_array_repr_is_informative():
-    result = _setup().get("Qsca")
+    result = _setup().run("Qsca").as_labeled_array()
 
     representation = repr(result)
 
@@ -112,7 +112,7 @@ def test_labeled_array_repr_is_informative():
 
 
 def test_get_labeled_array_stacks_measures_on_a_named_dimension():
-    result = _setup().get("Qext", "Qsca")
+    result = _setup().run("Qext", "Qsca").as_labeled_array()
 
     assert result.dims[0] == "measure"
     assert result.shape == (2, 2, 2)
@@ -120,7 +120,7 @@ def test_get_labeled_array_stacks_measures_on_a_named_dimension():
 
 
 def test_labeled_array_supports_indexing_and_reduction():
-    result = _setup().get("Qsca")
+    result = _setup().run("Qsca").as_labeled_array()
 
     selected = result.isel({"source:wavelength": 0})
     reduced = result.mean("source:wavelength")
@@ -134,7 +134,7 @@ def test_labeled_array_supports_indexing_and_reduction():
 
 
 def test_labeled_array_plot_supports_parameter_x_and_measure_y():
-    result = _setup().get("Qsca")
+    result = _setup().run("Qsca").as_labeled_array()
     figure, axis = plt.subplots()
 
     artists = result.plot(
@@ -152,7 +152,7 @@ def test_labeled_array_plot_supports_parameter_x_and_measure_y():
 
 
 def test_labeled_array_plot_uses_parameter_x_and_measure_y():
-    result = _setup().get("Qsca").mean(x="source:wavelength")
+    result = _setup().run("Qsca").as_labeled_array().mean(x="source:wavelength")
     figure, axis = plt.subplots()
 
     artists = result.plot(
@@ -167,7 +167,7 @@ def test_labeled_array_plot_uses_parameter_x_and_measure_y():
 
 
 def test_labeled_array_plot_supports_standard_deviation_band():
-    result = _setup().get("Qsca")
+    result = _setup().run("Qsca").as_labeled_array()
     figure, axis = plt.subplots()
 
     artists = result.plot(
@@ -187,7 +187,7 @@ def test_labeled_array_plot_supports_standard_deviation_band():
 
 
 def test_labeled_array_plot_selects_requested_measure_from_multi_measure_result():
-    result = _setup().get("Qext", "Qsca")
+    result = _setup().run("Qext", "Qsca").as_labeled_array()
     figure, axis = plt.subplots()
 
     artists = result.plot(
@@ -239,7 +239,7 @@ def test_experiment_exposes_available_measures_and_accepts_enum():
     experiment = _setup()
 
     assert "Qsca" in experiment.available_measures
-    result = experiment.get(Measure.QSCA)
+    result = experiment.run(Measure.QSCA).as_labeled_array()
 
     assert isinstance(result, LabeledArray)
     assert result.name == "Qsca"

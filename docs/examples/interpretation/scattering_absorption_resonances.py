@@ -36,7 +36,7 @@ for index, wavelength in enumerate(wavelengths):
         ),
         source=source,
     )
-    measures = simulation.get(Measure.QSCA, Measure.QABS, Measure.QEXT)
+    measures = simulation.run(Measure.QSCA, Measure.QABS, Measure.QEXT)
     qsca[index] = measures["Qsca"].magnitude
     qabs[index] = measures["Qabs"].magnitude
     qext[index] = measures["Qext"].magnitude

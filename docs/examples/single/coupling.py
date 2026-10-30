@@ -50,7 +50,7 @@ setup = Simulation(
     detector=side_detector
 )
 
-side_coupling = setup.get(Measure.COUPLING)
+side_coupling = setup.run(Measure.COUPLING)
 
 
 # Second detector
@@ -64,6 +64,6 @@ setup = Simulation(
     detector=forward_detector
 )
 
-forward_coupling = setup.get(Measure.COUPLING)
+forward_coupling = setup.run(Measure.COUPLING)
 
-print(f"Side coupling: {side_coupling} \n Forward coupling: {forward_coupling}  \n Ratio: {side_coupling / forward_coupling * 100} %")
+print(f"Side coupling: {side_coupling} \n Forward coupling: {forward_coupling}  \n Ratio: {side_coupling.quantity / forward_coupling.quantity * 100} %")

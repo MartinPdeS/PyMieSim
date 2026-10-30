@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from PyMieSim.polarization import PolarizationState
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 from PyMieSim.single.representations import NearFields
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import PlaneWave

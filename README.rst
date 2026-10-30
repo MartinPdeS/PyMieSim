@@ -163,7 +163,7 @@ dimensionless real or complex values.
 
     simulation = Simulation(scatterer=scatterer, source=source)
     qsca = simulation.run("Qsca")
-    print(qsca)
+    print(qsca.quantity)
 
 This prints a dimensionless scattering efficiency, approximately:
 
@@ -181,7 +181,7 @@ For explicit measure and unit metadata, request a typed result:
 
 .. code-block:: python
 
-   result = simulation.run("Qsca", as_result=True)
+   result = simulation.run("Qsca")
    print(result.measure, result.quantity, result.units)
 
 Units and material conventions
@@ -231,7 +231,7 @@ coordinates, and can be converted to NumPy or pandas explicitly.
    )
 
    experiment = Experiment(scatterer_set=scatterer, source_set=source)
-   result = experiment.get("Qsca")
+   result = experiment.run("Qsca")
    values = result.as_numpy()
    dataframe = result.as_dataframe()
 
@@ -281,7 +281,7 @@ scatterer property:
        detector=detector,
    )
    coupling = simulation.run("coupling")
-   print(coupling)
+   print(coupling.quantity)
 
 ``coupling`` requires a detector.  Other available detector types include
 ``CoherentMode`` and ``IntegratingSphere``; see the

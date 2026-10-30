@@ -17,11 +17,11 @@ Choose an interface
    * - ``Simulation``
      - One particle and illumination
      - Source, scatterer, optional detector
-     - Quantity or dictionary of quantities
+     - ``SimulationResult`` or ``SimulationResults``
    * - ``Experiment``
      - Cartesian grids or aligned sequential configurations
      - Source, scatterer, optional detector sets
-     - ``LabeledArray``
+     - ``SimulationResult`` or ``SimulationResults``
    * - ``fit_parameters``
      - Estimate parameters from measurements
      - Model callable, ``MeasuredData``, bounded ``FitParameter`` objects
@@ -46,7 +46,7 @@ These minimal examples share a constant-index sphere and a plane wave:
         source=source,
         scatterer=Sphere(diameter=180 * ureg.nanometer, material=1.59, medium=1.0),
     )
-    qsca = simulation.run(Measure.QSCA)  # Scalar dimensionless quantity.
+    qsca = simulation.run(Measure.QSCA).quantity  # Scalar dimensionless quantity.
 
     experiment = Experiment(
         source_set=PlaneWaveSet(
@@ -68,7 +68,7 @@ These minimal examples share a constant-index sphere and a plane wave:
             scatterer=Sphere(
                 diameter=parameters["diameter"], material=1.59, medium=1.0,
             ),
-        ).run(Measure.QSCA)
+        ).run(Measure.QSCA).quantity
 
     fit = fit_parameters(
         model=model,
@@ -83,82 +83,51 @@ These minimal examples share a constant-index sphere and a plane wave:
 
 Use ``available_measures`` to inspect what the configured geometry and detector
 support. ``Measure.QSCA`` and the historical string ``"Qsca"`` are equivalent.
-``run`` and ``get`` are synonyms. Measure arguments are positional; constructor
+Measure arguments are positional; constructor
 and fitting arguments use keywords in these examples.
+
+API migration
+-------------
+
+Use ``Simulation`` or ``Experiment`` and call ``run``. The former public
+``Setup`` entry points, ``get`` alias, ``get_representation`` string dispatcher,
+and ``as_result`` option on ``run`` have been removed. For example, replace
+``simulation.get("Qsca")`` with ``simulation.run("Qsca").quantity`` when a
+Pint quantity is needed, and replace ``simulation.get_representation("spf")``
+with ``simulation.spf()``. For a sweep, select a result by measure name before
+plotting it, or call ``as_labeled_array()`` for the combined measure axis.
 
 .. _reading_results:
 
 Read, select, and export results
 --------------------------------
 
-.. list-table:: Return types
-   :header-rows: 1
-   :widths: 28 22 25 25
-
-   * - Request
-     - Return type
-     - Selection
-     - Units and export
-   * - One simulation measure
-     - Pint quantity
-     - Scalar magnitude
-     - ``.to("nanometer ** 2")`` for area measures
-   * - Multiple simulation measures
-     - Dictionary of quantities
-     - ``values["Csca"]``
-     - Convert each quantity separately
-   * - Experiment, one or multiple measures
-     - ``LabeledArray``
-     - ``.isel(indexers={...})``
-     - Units in ``attrs``; ``.as_numpy()`` or ``.as_dataframe()``
-   * - One measure with ``as_result=True``
-     - ``SimulationResult``
-     - ``.quantity``, ``.dims``, ``.coords``
-     - ``.to(...)`` and ``.as_labeled_array()``
-   * - Multiple measures with ``as_result=True``
-     - ``SimulationResults``
-     - ``results["Csca"]`` gives a ``SimulationResult``
-     - Convert or export each named result
-
-Continue with ``simulation`` and ``experiment`` from the example above:
+Both ``Simulation.run`` and ``Experiment.run`` return a ``SimulationResult``
+for one measure, or a ``SimulationResults`` mapping for several measures.
+A result exposes its Pint ``quantity``, ``units``, ``dims``, ``coords`` and
+``coordinate_units``. Experiment values carry a Cartesian parameter grid.
 
 .. code-block:: python
 
     scalar = simulation.run(Measure.CSCA)
-    print(scalar.to("nanometer ** 2"))
+    print(scalar.to("nanometer ** 2").quantity)
 
-    values = simulation.run(Measure.QSCA, Measure.CSCA)
-    print(values["Qsca"], values["Csca"])
-
-    grid = experiment.run(Measure.QSCA)
-    print(grid.dims, grid.shape)  # Wavelength then diameter: (3, 2).
+    results = experiment.run(Measure.QSCA, Measure.CSCA)
+    grid = results["Qsca"]
+    print(grid.dims, grid.shape, grid.units, grid.coordinate_units)
     first_wavelength = grid.isel(indexers={"source:wavelength": 0})
-    print(first_wavelength.shape)  # (2,), one value per diameter.
-    print(grid.attrs["units"], grid.attrs["coordinate_units"])
-    magnitudes = grid.as_numpy()  # Shape (3, 2); plain numbers carry no units.
-    table = grid.as_dataframe()
-    table.to_csv(path_or_buf="scattering.csv", index=False)
-
-    typed = experiment.run(Measure.CSCA, as_result=True)
-    converted = typed.to("nanometer ** 2")
-    print(converted.units, converted.dims, converted.coordinate_units)
-    table = converted.as_labeled_array().as_dataframe()
-
-    results = experiment.run(Measure.QSCA, Measure.CSCA, as_result=True)
+    first_wavelength.plot(x="scatterer:diameter")
+    values = grid.as_numpy()
+    table = results.as_dataframe()
     scattering = results["Csca"].to("nanometer ** 2")
-    print(scattering.quantity)
+    labeled = scattering.as_labeled_array()
 
-Dimension names describe the swept parameters. Singleton dimensions are removed
-by default; pass ``drop_unique_level=False`` to ``Experiment.run`` to retain
-them. Multiple default experiment measures add a ``measure`` dimension;
-``as_dataframe()`` makes one output column per measure. Typed collections keep
-measures separate, with the same parameter coordinates on each result.
-
-CSV stores numerical columns and labels, but does not preserve Pint objects
-or dataframe attributes. Record ``attrs["units"]`` and
-``attrs["coordinate_units"]`` alongside a CSV, or include units explicitly in
-its column headings. Unit conversion on a typed result preserves coordinates.
-Single-simulation typed results have no parameter dimensions.
+Singleton dimensions are removed by default; pass ``drop_unique_level=False``
+to ``Experiment.run`` to retain them. Multiple measures are selected by name;
+``as_labeled_array()`` on the collection combines them along a ``measure``
+axis. ``as_numpy()`` returns magnitudes in each measure's current units.
+CSV does not preserve Pint units or dataframe attributes, so record units and
+coordinate units separately. Single simulations have no parameter dimensions.
 
 Empty requests, unsupported names, and duplicate measures raise ``ValueError``
 before computation. For the meaning of each output, see :doc:`../measures`.

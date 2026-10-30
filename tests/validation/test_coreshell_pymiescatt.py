@@ -9,7 +9,7 @@ from PyMieSim.units import ureg
 from PyMieSim.experiment.scatterer_set import CoreShellSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 from PyMieSim.directories import validation_data_path
 
 
@@ -67,10 +67,10 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
         medium=medium_indexes,
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=gaussian_source)
+    experiment = Experiment(scatterer_set=scatterer, source_set=gaussian_source)
 
     # Retrieve the specified measurement from the experiment
-    pymiesim_data = experiment.get(measure, drop_unique_level=True)
+    pymiesim_data = experiment.run(measure, drop_unique_level=True)
 
     discrepency = np.allclose(
         pymiesim_data.as_numpy(),

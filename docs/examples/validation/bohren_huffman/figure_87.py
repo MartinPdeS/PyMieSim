@@ -45,7 +45,7 @@ experiment = Experiment(
     source_set=source,
 )
 
-values = experiment.get(Measure.CSCA).as_numpy()
+values = experiment.run(Measure.CSCA).as_numpy()
 
 data = values / volume * 1e-4 / 100
 

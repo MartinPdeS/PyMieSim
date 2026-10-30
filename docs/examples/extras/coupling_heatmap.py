@@ -53,7 +53,7 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-values = experiment.get(Measure.COUPLING).as_numpy()
+values = experiment.run(Measure.COUPLING).as_numpy()
 
 
 figure, ax = plt.subplots(1, 1)

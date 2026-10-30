@@ -80,14 +80,14 @@ def test_monodisperse_limit_matches_native_sphere():
     experiment = experiment_for(distribution)
     for name in ('Csca', 'Cext', 'Qsca', 'Qext', 'g'):
         result = average(experiment, distribution, name)
-        np.testing.assert_allclose(result.as_numpy(), experiment.get(name).as_numpy(), rtol=1e-12)
+        np.testing.assert_allclose(result.as_numpy(), experiment.run(name).as_numpy(), rtol=1e-12)
 
 
 def test_cross_sections_and_asymmetry_use_distinct_physical_weights():
     distribution = ParticleSizeDistribution([100, 300] * ureg.nanometer, [1, 3])
     experiment = experiment_for(distribution)
-    csca = experiment.get('Csca').as_numpy()
-    asymmetry = experiment.get('g').as_numpy()
+    csca = experiment.run('Csca').as_numpy()
+    asymmetry = experiment.run('g').as_numpy()
     weights = distribution.number_fractions
     results = average(experiment, distribution, 'Csca', 'g', 'Qsca', as_result=True)
     assert isinstance(results, SimulationResults)
@@ -98,7 +98,7 @@ def test_cross_sections_and_asymmetry_use_distinct_physical_weights():
     np.testing.assert_allclose(results['g'].magnitude, expected_g)
     np.testing.assert_allclose(results['Qsca'].magnitude, expected_csca / expected_area)
     assert not np.allclose(expected_g, asymmetry @ weights, rtol=1e-3)
-    assert not np.allclose(results['Qsca'].magnitude, experiment.get('Qsca').as_numpy() @ weights, rtol=1e-3)
+    assert not np.allclose(results['Qsca'].magnitude, experiment.run('Qsca').as_numpy() @ weights, rtol=1e-3)
 
 
 def test_energy_balance_and_metadata_survive_conversion_and_export():
@@ -121,7 +121,7 @@ def test_singleton_axes_and_zero_probability_bin():
     distribution = ParticleSizeDistribution([100, 300] * ureg.nanometer, [1, 0])
     experiment = experiment_for(distribution)
     result = average(experiment, distribution, 'Csca', drop_unique_level=False)
-    raw = experiment.get('Csca', drop_unique_level=False)
+    raw = experiment.run('Csca', drop_unique_level=False)
     axis = raw.dims.index('scatterer:diameter')
     np.testing.assert_allclose(result.as_numpy(), np.take(raw.as_numpy(), 0, axis=axis))
     assert 'scatterer:diameter' not in result.dims
@@ -132,7 +132,7 @@ def test_averaging_needs_no_approximation_argument():
     distribution = ParticleSizeDistribution([100] * ureg.nanometer, [1])
     experiment = experiment_for(distribution)
     result = experiment.average_size_distribution(distribution, 'Csca')
-    np.testing.assert_allclose(result.as_numpy(), experiment.get('Csca').as_numpy())
+    np.testing.assert_allclose(result.as_numpy(), experiment.run('Csca').as_numpy())
 
 
 @pytest.mark.parametrize('names', [(), ('a1',), ('Qratio',), ('Cratio',), ('coupling',), ('Csca', 'Csca')])
@@ -201,7 +201,7 @@ def test_detector_power_averaging_preserves_detector_axes():
         medium=[1.0],
     )
     experiment = Experiment(source_set=experiment.source_set, scatterer_set=experiment.scatterer_set, detector_set=detector)
-    raw = experiment.get('coupling')
+    raw = experiment.run('coupling')
     result = average(experiment, distribution, 'coupling', as_result=True)
     expected = np.tensordot(raw.as_numpy(), distribution.number_fractions,
                             axes=(raw.dims.index('scatterer:diameter'), 0))

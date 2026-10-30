@@ -34,6 +34,6 @@ setup = Simulation(
     source=source,
 )
 
-stokes = setup.get_representation("stokes", sampling=100)
+stokes = setup.stokes(sampling=100)
 
 figure = stokes.plot()

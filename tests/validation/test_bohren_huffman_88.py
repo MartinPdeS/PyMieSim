@@ -11,7 +11,7 @@ from PyMieSim.directories import validation_data_path
 from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 
 
 def test_validation():
@@ -41,9 +41,9 @@ def test_validation():
         diameter=diameters, material=index, medium=medium_index
     )
 
-    experiment = Setup(scatterer_set=scatterer, source_set=source)
+    experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    csca_data =  experiment.get("Csca").as_numpy()
+    csca_data =  experiment.run("Csca").as_numpy()
 
     normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100
 

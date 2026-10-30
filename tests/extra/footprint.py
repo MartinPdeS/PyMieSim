@@ -10,7 +10,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 @patch("matplotlib.pyplot.show")
 def test_sphere_plottings(mock_show_plt):

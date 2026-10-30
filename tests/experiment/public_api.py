@@ -13,7 +13,7 @@ from PyMieSim import (
 
 
 def test_experiment_components_are_public():
-    assert Experiment.__name__ == "Setup"
+    assert Experiment.__name__ == "Experiment"
     assert all(
         component is not None
         for component in (

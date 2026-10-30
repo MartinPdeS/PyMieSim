@@ -27,12 +27,12 @@ target_diameter = 180 * ureg.nanometer
 target = Simulation(
     scatterer=Sphere(diameter=target_diameter, material=1.59, medium=1.0),
     source=source,
-).get(Measure.QSCA)
+).run(Measure.QSCA).quantity
 
 
 def model(parameters):
     sphere = Sphere(diameter=parameters["diameter"], material=1.59, medium=1.0)
-    return Simulation(scatterer=sphere, source=source).get(Measure.QSCA)
+    return Simulation(scatterer=sphere, source=source).run(Measure.QSCA).quantity
 
 
 result = fit_parameters(

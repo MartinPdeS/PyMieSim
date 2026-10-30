@@ -1,6 +1,6 @@
 """Python-facing API for single-scatterer simulations."""
 
-from typing import TYPE_CHECKING, Callable, Literal, cast, overload
+from typing import Callable, cast, overload
 
 from pint import Quantity
 from matplotlib.figure import Figure
@@ -13,9 +13,9 @@ from ..mesh import FullMesh
 from ..measures import MeasureLike, validate_measures
 from ..results import SimulationResult, SimulationResults
 from .setup import Setup
+from .representations import FarFields, Stokes, SPF, S1S2, NearFields, Footprint
+from PyMieSim.units import ureg
 
-if TYPE_CHECKING:
-    from .representations import FarFields, Stokes, SPF, S1S2, NearFields, Footprint
 
 
 class Simulation:
@@ -42,40 +42,40 @@ class Simulation:
         return names
 
     @overload
-    def run(self, measure: MeasureLike, /, *, as_result: Literal[True]) -> SimulationResult: ...
+    def run(self, measure: MeasureLike, /) -> SimulationResult: ...
 
     @overload
-    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, as_result: Literal[True]) -> SimulationResults: ...
+    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike) -> SimulationResults: ...
 
-    @overload
-    def run(self, measure: MeasureLike, /, *, as_result: Literal[False] = False) -> Quantity: ...
-
-    @overload
-    def run(self, first: MeasureLike, second: MeasureLike, /, *measures: MeasureLike, as_result: Literal[False] = False) -> dict[str, Quantity]: ...
-
-    @overload
-    def run(self, *measures: MeasureLike, as_result: bool = False) -> Quantity | dict[str, Quantity] | SimulationResult | SimulationResults: ...
-
-    def run(self, *measures: MeasureLike, as_result: bool = False) -> Quantity | dict[str, Quantity] | SimulationResult | SimulationResults:
-        """Compute named measures, accepting strings or ``Measure`` members.
-
-        One measure returns a quantity; multiple measures return an ordered
-        dictionary. With ``as_result=True``, both simulations and experiments
-        return ``SimulationResult`` or ``SimulationResults``, respectively.
-        """
+    def run(self, *measures: MeasureLike) -> SimulationResult | SimulationResults:
+        """Compute one or more named measures as unit-aware results."""
         names = validate_measures(measures, self.available_measures)
-        values = {name: self._setup.get(name) for name in names}
-        if as_result:
-            results = {name: SimulationResult(name, value) for name, value in values.items()}
-            return next(iter(results.values())) if len(results) == 1 else SimulationResults(results)
-        return next(iter(values.values())) if len(values) == 1 else values
+        results = {name: SimulationResult(name, self._setup.get(name)) for name in names}
+        return next(iter(results.values())) if len(results) == 1 else SimulationResults(results)
 
-    get = run
+    def farfields(self, *, sampling: int = 200, distance: Quantity = 1.0 * ureg.meter) -> FarFields:
+        """Compute the angular far-field representation at the given distance."""
+        return FarFields(setup=self._setup, sampling=sampling, distance=distance)
 
-    def get_representation(self, representation_type: str, **options: object) -> "FarFields | Stokes | SPF | S1S2 | NearFields | Footprint":
-        """Build a named single-scatterer field representation."""
+    def stokes(self, *, sampling: int = 200, distance: Quantity = 1.0 * ureg.meter) -> Stokes:
+        """Compute Stokes parameters on a spherical angular mesh."""
+        return Stokes(setup=self._setup, sampling=sampling, distance=distance)
 
-        return self._setup.get_representation(representation_type, **options)
+    def spf(self, *, sampling: int = 200) -> SPF:
+        """Compute the scattering phase function on an angular mesh."""
+        return SPF(setup=self._setup, sampling=sampling)
+
+    def s1s2(self, *, sampling: int = 200) -> S1S2:
+        """Compute the angular scattering amplitude representation."""
+        return S1S2(setup=self._setup, sampling=sampling)
+
+    def nearfields(self) -> NearFields:
+        """Create a near-field representation for the configured scatterer."""
+        return NearFields(setup=self._setup)
+
+    def footprint(self, *, sampling: int = 200, padding_factor: int = 20) -> Footprint:
+        """Compute the detector-plane footprint for a configured detector."""
+        return Footprint(setup=self._setup, sampling=sampling, padding_factor=padding_factor)
 
     @overload
     def get_farfields(self, sampling: int, distance: Quantity) -> tuple[Quantity, Quantity, FullMesh]: ...

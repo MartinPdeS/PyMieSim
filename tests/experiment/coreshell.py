@@ -12,7 +12,7 @@ from PyMieSim.experiment.detector_set import PhotodiodeSet
 from PyMieSim.experiment.scatterer_set import CoreShellSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
-from PyMieSim.experiment import Setup
+from PyMieSim import Experiment
 
 core_properties = [
     [from_pyoptik(PyOptik.load_material(name="main/Ag/Johnson"))],
@@ -99,13 +99,13 @@ def test_measure(measure, source, core_material, shell_material, medium):
         sampling=[100],
     )
 
-    experiment = Setup(
+    experiment = Experiment(
         scatterer_set=scatterer,
         source_set=source,
         detector_set=detector
     )
 
-    experiment.get(measure, drop_unique_level=False)
+    experiment.run(measure, drop_unique_level=False)
 
 
 if __name__ == "__main__":

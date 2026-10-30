@@ -37,8 +37,9 @@ properties.
    result = simulation.run(Measure.QSCA, Measure.QEXT)
    print(result)
 
-The result is a dictionary with ``"Qsca"`` and ``"Qext"`` keys, each holding
-a scalar dimensionless quantity. For the real refractive index used here,
+The result is a ``SimulationResults`` mapping with ``"Qsca"`` and ``"Qext"``
+keys. Each entry is a ``SimulationResult`` containing a scalar dimensionless
+quantity, accessible as ``result["Qsca"].quantity``. For the real refractive index used here,
 absorption vanishes, so scattering and extinction efficiencies agree.
 
 Next: :ref:`workflow_parameter_sweeps`.

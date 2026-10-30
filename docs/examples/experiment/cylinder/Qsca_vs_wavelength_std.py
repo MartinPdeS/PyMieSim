@@ -32,9 +32,9 @@ scatterer = InfiniteCylinderSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get(Measure.QSCA)
+result = experiment.run(Measure.QSCA)
 
 print("Result dimensions and shape:", result.dims, result.shape)
-print("Measure units:", result.attrs["units"])
+print("Measure units:", result.units)
 
 result.plot(x="source:wavelength", std="scatterer:diameter")

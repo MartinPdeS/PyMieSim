@@ -32,7 +32,7 @@ question you want to investigate.
    )
 
    simulation.plot_system()
-   farfields = simulation.get_representation(representation_type="farfields")
+   farfields = simulation.farfields()
    farfields.plot()
 
 For structured near-fields, far-fields, Stokes parameters, and footprints,

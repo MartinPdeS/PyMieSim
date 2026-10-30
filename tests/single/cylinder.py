@@ -11,7 +11,7 @@ from PyMieSim.single.scatterer import InfiniteCylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.single import Setup
+from PyMieSim.single.setup import Setup
 
 bk7 = from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))
 

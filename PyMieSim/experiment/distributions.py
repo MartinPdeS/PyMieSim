@@ -11,7 +11,7 @@ from ..measures import MeasureLike, validate_measures
 from .scatterer_set import SphereSet
 
 if TYPE_CHECKING:
-    from .setup import Setup
+    from .setup import Experiment
 
 
 INDEPENDENT_SCATTERING_ASSUMPTIONS = (
@@ -26,7 +26,7 @@ SUPPORTED_MEASURES = (*CROSS_SECTIONS, *EFFICIENCIES, "g", "coupling")
 
 
 def average_size_distribution(
-    experiment: "Setup",
+    experiment: "Experiment",
     distribution: ParticleSizeDistribution,
     measures: tuple[MeasureLike, ...],
     drop_unique_level: bool,

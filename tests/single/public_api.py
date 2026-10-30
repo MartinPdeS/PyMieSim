@@ -33,7 +33,7 @@ def test_typed_single_result_preserves_units():
         ),
     )
 
-    result = simulation.run(Measure.QSCA, as_result=True)
+    result = simulation.run(Measure.QSCA)
 
     assert isinstance(result, SimulationResult)
     assert result.measure == "Qsca"
@@ -50,7 +50,7 @@ def test_typed_single_results_are_mapping_for_multiple_measures():
         ),
     )
 
-    results = simulation.run(Measure.QSCA, Measure.QEXT, as_result=True)
+    results = simulation.run(Measure.QSCA, Measure.QEXT)
 
     assert isinstance(results, SimulationResults)
     assert tuple(results) == ("Qsca", "Qext")
