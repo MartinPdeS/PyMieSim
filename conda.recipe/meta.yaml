@@ -42,7 +42,7 @@ requirements:
     - pint <0.26
     - martinpdes::pyoptik ==3.5.1
     - martinpdes::mpsplots ==1.8.9
-    - martinpdes::typedunit >=0.2.9
+    - martinpdes::typedunit >=0.6.0,<0.7
     - matplotlib ~=3.10.3
     - numpy ==2.2.6  # [py<314]
     - numpy ==2.3.3  # [py>=314]

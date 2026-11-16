@@ -9,22 +9,26 @@ py::object get_shared_ureg() {
     return py::module_::import("PyMieSim._pint").attr("get_ureg")();
 }
 
+py::object validated_quantity(py::handle value, const std::string &unit, const std::string &name, bool scalar) {
+    py::object quantity = py::reinterpret_borrow<py::object>(value);
+    py::module_::import("TypedUnit")
+        .attr("validate_quantity")(quantity, py::arg("unit") = unit, py::arg("name") = name,
+                                   py::arg("registry") = get_shared_ureg(), py::arg("scalar") = scalar);
+    return quantity;
+}
+
+py::object validated_no_unit(py::handle value, const std::string &name, bool scalar) {
+    py::module_ typedunit = py::module_::import("TypedUnit");
+    py::object markers = scalar ? py::object(py::make_tuple(typedunit.attr("Scalar"), typedunit.attr("Finite")))
+                                : py::object(py::make_tuple(typedunit.attr("Finite")));
+    py::object annotation = typedunit.attr("NoUnit").attr("__class_getitem__")(markers);
+    typedunit.attr("validate_annotation")(value, py::arg("annotation") = annotation, py::arg("name") = name);
+    return py::reinterpret_borrow<py::object>(value);
+}
 
 double to_meters_strict(py::handle value) {
-    if (py::isinstance<py::float_>(value) || py::isinstance<py::int_>(value)) {
-        throw py::type_error("length must be a pint.Quantity (numbers without units are not accepted)");
-    }
-
-    if (!py::hasattr(value, "to")) {
-        throw py::type_error("length must be a pint.Quantity (must provide a .to method)");
-    }
-
-    py::object q = py::reinterpret_borrow<py::object>(value);
+    py::object q = validated_quantity(value, "meter", "length", true);
     py::object q_m = q.attr("to")("meter");
-
-    if (!py::hasattr(q_m, "magnitude")) {
-        throw py::type_error("length.to('meter') did not return an object with a magnitude attribute");
-    }
 
     return py::cast<double>(q_m.attr("magnitude"));
 }
@@ -55,19 +59,8 @@ std::vector<double> to_vector_units(py::handle values, const std::string& unit) 
     }
 
     for (py::handle item : py::reinterpret_borrow<py::iterable>(values)) {
-        if (py::isinstance<py::int_>(item) || py::isinstance<py::float_>(item)) {
-            throw py::type_error("expected pint.Quantity elements (numbers without units are not accepted)");
-        }
-        if (!py::hasattr(item, "to")) {
-            throw py::type_error("expected pint.Quantity elements (missing .to method)");
-        }
-
-        py::object quantity = py::reinterpret_borrow<py::object>(item);
+        py::object quantity = validated_quantity(item, unit, "values", true);
         py::object converted = quantity.attr("to")(unit);
-
-        if (!py::hasattr(converted, "magnitude")) {
-            throw py::type_error("quantity.to(unit) did not return an object with a magnitude attribute");
-        }
 
         magnitudes.push_back(py::cast<double>(converted.attr("magnitude")));
     }
@@ -79,6 +72,7 @@ std::vector<double> to_vector_units(py::handle values, const std::string& unit) 
 double quantity_scalar_to_meters(py::object quantity) {
     py::object ureg = get_shared_ureg();
     py::object meter = ureg.attr("meter");
+    validated_quantity(quantity, "meter", "length", true);
     py::object converted = quantity.attr("to")(meter);
     return py::float_(converted.attr("magnitude"));
 }
@@ -87,6 +81,7 @@ std::vector<double> quantity_1d_to_meters_vector(py::object quantity) {
     py::object ureg = get_shared_ureg();
     py::object meter = ureg.attr("meter");
 
+    validated_quantity(quantity, "meter", "radii");
     py::object converted = quantity.attr("to")(meter);
     py::object magnitude = converted.attr("magnitude");
 
@@ -109,6 +104,7 @@ std::vector<double> quantity_1d_to_meters_vector(py::object quantity) {
 }
 
 std::vector<double> array_like_1d_to_double_vector(py::object values) {
+    validated_no_unit(values, "number_fractions");
     py::module_ numpy = py::module_::import("numpy");
     py::object float64 = numpy.attr("float64");
 

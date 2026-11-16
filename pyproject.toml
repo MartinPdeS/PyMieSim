@@ -62,7 +62,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "TypedUnit>=0.2.9",
+    "TypedUnit>=0.6.0,<0.7",
     "MPSPlots ==1.8.9",
     "PyOptik ==3.5.1",
     "numpy ==2.2.6; python_version < '3.14'",

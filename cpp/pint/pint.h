@@ -66,3 +66,10 @@ Function to convert an array-like object to a std::vector<double>.
 @returns std::vector<double> with the numeric values.
 */
 std::vector<double> array_like_1d_to_double_vector(py::object values);
+/** Delegate dimensional validation to TypedUnit before native conversion.
+ * Returns the original object; no conversion or mutation is performed.
+ */
+py::object validated_quantity(py::handle value, const std::string &unit, const std::string &name, bool scalar = false);
+
+/** Delegate bare-number shape and finiteness checks to TypedUnit. */
+py::object validated_no_unit(py::handle value, const std::string &name, bool scalar = false);

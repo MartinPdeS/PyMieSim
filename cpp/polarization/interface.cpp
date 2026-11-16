@@ -57,7 +57,10 @@ PYBIND11_MODULE(polarization, module) {
                 For example, ``PolarizationState(jones_vector=[1+0j, 0+1j])``.
             )pbdoc")
         .def(py::init([](const py::object &angle) {
-                 double angle_radian = angle.attr("to")("radian").attr("magnitude").cast<double>();
+                 double angle_radian = validated_quantity(angle, "radian", "angle", true)
+                                           .attr("to")("radian")
+                                           .attr("magnitude")
+                                           .cast<double>();
                  return std::make_shared<PolarizationState>(angle_radian);
              }),
              py::arg("angle"),

@@ -393,34 +393,26 @@ PYBIND11_MODULE(source, module)
         )
         ;
 
-    py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(
-        module,
-        "PlaneWave",
-        R"pbdoc(
+    py::class_<Planewave, BaseSource, std::shared_ptr<Planewave>>(module, "PlaneWave",
+                                                                  R"pbdoc(
             Monochromatic plane wave source.
 
             This source models a spatially uniform incident field with a
             specified wavelength, polarization, and electric field amplitude.
-        )pbdoc"
-    )
-        .def(
-            py::init(
-                [](
-                    const py::object& wavelength,
-                    const py::object& polarization,
-                    const py::object& amplitude
-                ) {
-                    return std::make_shared<Planewave>(
-                        wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
-                        Casting::Polarization::cast_py_to_polarization_state(polarization),
-                        amplitude.attr("to")("volt/meter").attr("magnitude").cast<double>()
-                    );
-                }
-            ),
-            py::arg("wavelength"),
-            py::arg("polarization"),
-            py::arg("amplitude"),
-            R"pbdoc(
+        )pbdoc")
+        .def(py::init([](const py::object &wavelength, const py::object &polarization, const py::object &amplitude) {
+                 return std::make_shared<Planewave>(validated_quantity(wavelength, "meter", "wavelength", true)
+                                                        .attr("to")("meter")
+                                                        .attr("magnitude")
+                                                        .cast<double>(),
+                                                    Casting::Polarization::cast_py_to_polarization_state(polarization),
+                                                    validated_quantity(amplitude, "volt/meter", "amplitude", true)
+                                                        .attr("to")("volt/meter")
+                                                        .attr("magnitude")
+                                                        .cast<double>());
+             }),
+             py::arg("wavelength"), py::arg("polarization"), py::arg("amplitude"),
+             R"pbdoc(
                 Construct a plane wave source.
 
                 Parameters
@@ -433,50 +425,37 @@ PYBIND11_MODULE(source, module)
                     any object accepted by the linear polarization constructor.
                 amplitude : pint.Quantity
                     Electric field amplitude. Must be convertible to V/m.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "__repr__",
-            [format_base_source_repr](const Planewave& self) {
-                return format_base_source_repr("PlaneWave", self);
-            },
+            [format_base_source_repr](const Planewave &self) { return format_base_source_repr("PlaneWave", self); },
             R"pbdoc(
                 Return a concise representation of the plane-wave parameters.
-            )pbdoc"
-        )
-        ;
+            )pbdoc");
 
-    py::class_<Gaussian, BaseSource, std::shared_ptr<Gaussian>>(
-        module,
-        "Gaussian",
-        R"pbdoc(
+    py::class_<Gaussian, BaseSource, std::shared_ptr<Gaussian>>(module, "Gaussian",
+                                                                R"pbdoc(
             Monochromatic Gaussian beam source.
 
             This source models a diffraction limited Gaussian beam characterized
             by wavelength, polarization, numerical aperture, and optical power.
-        )pbdoc"
-    )
-        .def(
-            py::init(
-                [](
-                    const py::object& wavelength,
-                    const py::object& polarization,
-                    const py::object& numerical_aperture,
-                    const py::object& optical_power
-                ) {
-                    return std::make_shared<Gaussian>(
-                        wavelength.attr("to")("meter").attr("magnitude").cast<double>(),
-                        Casting::Polarization::cast_py_to_polarization_state(polarization),
-                        numerical_aperture.cast<double>(),
-                        optical_power.attr("to")("watt").attr("magnitude").cast<double>()
-                    );
-                }
-            ),
-            py::arg("wavelength"),
-            py::arg("polarization"),
-            py::arg("numerical_aperture"),
-            py::arg("optical_power"),
-            R"pbdoc(
+        )pbdoc")
+        .def(py::init([](const py::object &wavelength, const py::object &polarization,
+                         const py::object &numerical_aperture, const py::object &optical_power) {
+                 return std::make_shared<Gaussian>(
+                     validated_quantity(wavelength, "meter", "wavelength", true)
+                         .attr("to")("meter")
+                         .attr("magnitude")
+                         .cast<double>(),
+                     Casting::Polarization::cast_py_to_polarization_state(polarization),
+                     validated_no_unit(numerical_aperture, "numerical_aperture", true).cast<double>(),
+                     validated_quantity(optical_power, "watt", "optical_power", true)
+                         .attr("to")("watt")
+                         .attr("magnitude")
+                         .cast<double>());
+             }),
+             py::arg("wavelength"), py::arg("polarization"), py::arg("numerical_aperture"), py::arg("optical_power"),
+             R"pbdoc(
                 Construct a Gaussian beam source.
 
                 Parameters
@@ -491,15 +470,10 @@ PYBIND11_MODULE(source, module)
                     Dimensionless numerical aperture.
                 optical_power : pint.Quantity
                     Optical power. Must be convertible to watts.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "waist",
-            [ureg](
-                const Gaussian& self
-            ) {
-                return (py::float_(self.waist) * ureg.attr("meter")).attr("to_compact")();
-            },
+            [ureg](const Gaussian &self) { return (py::float_(self.waist) * ureg.attr("meter")).attr("to_compact")(); },
             R"pbdoc(
                 Beam waist radius.
 
@@ -507,13 +481,10 @@ PYBIND11_MODULE(source, module)
                 -------
                 pint.Quantity
                     Waist radius with units of length.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "peak_intensity",
-            [ureg](
-                const Gaussian& self
-            ) {
+            [ureg](const Gaussian &self) {
                 return (py::float_(self.peak_intensity) * ureg.attr("watt/meter**2")).attr("to_compact")();
             },
             R"pbdoc(
@@ -523,13 +494,10 @@ PYBIND11_MODULE(source, module)
                 -------
                 pint.Quantity
                     Peak intensity with units of power per area.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "area",
-            [ureg](
-                const Gaussian& self
-            ) {
+            [ureg](const Gaussian &self) {
                 return (py::float_(self.area) * ureg.attr("meter**2")).attr("to_compact")();
             },
             R"pbdoc(
@@ -539,15 +507,9 @@ PYBIND11_MODULE(source, module)
                 -------
                 pint.Quantity
                     Area with units of square length.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "numerical_aperture",
-            [](
-                const Gaussian& self
-            ) {
-                return py::float_(self.numerical_aperture);
-            },
+            "numerical_aperture", [](const Gaussian &self) { return py::float_(self.numerical_aperture); },
             R"pbdoc(
                 Numerical aperture.
 
@@ -555,13 +517,10 @@ PYBIND11_MODULE(source, module)
                 -------
                 float
                     Dimensionless numerical aperture.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
             "optical_power",
-            [ureg](
-                const Gaussian& self
-            ) {
+            [ureg](const Gaussian &self) {
                 return (py::float_(self.optical_power) * ureg.attr("watt")).attr("to_compact")();
             },
             R"pbdoc(
@@ -571,11 +530,10 @@ PYBIND11_MODULE(source, module)
                 -------
                 pint.Quantity
                     Optical power with units of watts.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "__repr__",
-            [format_base_source_repr](const Gaussian& self) {
+            [format_base_source_repr](const Gaussian &self) {
                 std::ostringstream stream;
                 stream << format_base_source_repr("Gaussian", self);
                 std::string repr = stream.str();
@@ -588,7 +546,5 @@ PYBIND11_MODULE(source, module)
             },
             R"pbdoc(
                 Return a concise representation of the Gaussian beam parameters.
-            )pbdoc"
-        )
-        ;
+            )pbdoc");
 }

@@ -1,11 +1,13 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <stdexcept>
-#include <sstream>
 #include <complex>
 #include <memory>
+#include <pint/pint.h>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
+#include <vector>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
@@ -24,6 +26,7 @@ namespace Casting {
         const std::string& units = ""
     ) {
         if (!units.empty()) {
+            validated_quantity(object, units, "values");
             try {
                 py::object magnitude = py::reinterpret_borrow<py::object>(
                     object.attr("to")(units).attr("magnitude")
@@ -37,6 +40,10 @@ namespace Casting {
                     << "'. Ensure the object has compatible units using PyMieSim.units.ureg.";
                 throw std::invalid_argument(oss.str());
             }
+        }
+
+        if constexpr (std::is_arithmetic_v<dtype> || std::is_same_v<dtype, complex128>) {
+            validated_no_unit(object, "values");
         }
 
         if (py::isinstance<py::array>(object)) {
@@ -379,14 +386,10 @@ namespace Material {
                 py::isinstance<py::int_>(material_object) ||
                 PyComplex_Check(material_object.ptr())
             ) {
-                return MaterialSetType(
-                    std::vector<std::shared_ptr<BaseClass>>(
-                        target_size,
-                        std::make_shared<ConstantClass>(
-                            material_object.cast<RefractiveIndexType>()
-                        )
-                    )
-                );
+                return MaterialSetType(std::vector<std::shared_ptr<BaseClass>>(
+                    target_size,
+                    std::make_shared<ConstantClass>(
+                        validated_no_unit(material_object, material_name, true).cast<RefractiveIndexType>())));
             }
 
             if (
@@ -418,11 +421,8 @@ namespace Material {
                         py::isinstance<py::int_>(item) ||
                         PyComplex_Check(item.ptr())
                     ) {
-                        materials.push_back(
-                            std::make_shared<ConstantClass>(
-                                item.cast<RefractiveIndexType>()
-                            )
-                        );
+                        materials.push_back(std::make_shared<ConstantClass>(
+                            validated_no_unit(item, material_name, true).cast<RefractiveIndexType>()));
                         continue;
                     }
 
@@ -475,13 +475,8 @@ namespace Material {
                 py::isinstance<py::int_>(material_object) ||
                 PyComplex_Check(material_object.ptr())
             ) {
-                return MaterialSetType(
-                    std::vector<std::shared_ptr<BaseClass>>{
-                        std::make_shared<ConstantClass>(
-                            material_object.cast<RefractiveIndexType>()
-                        )
-                    }
-                );
+                return MaterialSetType(std::vector<std::shared_ptr<BaseClass>>{std::make_shared<ConstantClass>(
+                    validated_no_unit(material_object, material_name, true).cast<RefractiveIndexType>())});
             }
 
             if (
@@ -507,11 +502,8 @@ namespace Material {
                         py::isinstance<py::int_>(item) ||
                         PyComplex_Check(item.ptr())
                     ) {
-                        materials.push_back(
-                            std::make_shared<ConstantClass>(
-                                item.cast<RefractiveIndexType>()
-                            )
-                        );
+                        materials.push_back(std::make_shared<ConstantClass>(
+                            validated_no_unit(item, material_name, true).cast<RefractiveIndexType>()));
                         continue;
                     }
 

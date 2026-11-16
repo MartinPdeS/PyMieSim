@@ -32,8 +32,8 @@ def test_sphere_plottings(mock_show_plt):
     # Create a spherical scatterer
     scatterer = Sphere(
         diameter=100 * ureg.nanometer,
-        material=1.4 * ureg.RIU,
-        medium=1.1 * ureg.RIU,
+        material=1.4,
+        medium=1.1,
     )
 
     # Create a photodiode detector
@@ -42,7 +42,7 @@ def test_sphere_plottings(mock_show_plt):
         phi_offset=0 * ureg.degree,
         gamma_offset=0 * ureg.degree,
         polarization_filter=0 * ureg.degree,
-        medium=1.0 * ureg.RIU
+        medium=1.0
     )
 
     setup = Setup(

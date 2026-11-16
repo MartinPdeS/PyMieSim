@@ -55,7 +55,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "initialize",
             [](BaseMaterial &self, const py::object &wavelength) {
-                return self.initialize(wavelength.attr("to")("meter").attr("magnitude").cast<double>());
+                return self.initialize(validated_quantity(wavelength, "meter", "wavelength", true)
+                                           .attr("to")("meter")
+                                           .attr("magnitude")
+                                           .cast<double>());
             },
             py::arg("wavelength"),
             R"pbdoc(
@@ -71,7 +74,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const BaseMaterial &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -90,6 +96,7 @@ PYBIND11_MODULE(material, module) {
 
     py::class_<ConstantMaterial, BaseMaterial, std::shared_ptr<ConstantMaterial>>(module, "ConstantMaterial")
         .def(py::init([ureg](const py::object &refractive_index) {
+                 validated_no_unit(refractive_index, "refractive_index", true);
                  const complex128 refractive_index_value = refractive_index.cast<complex128>();
 
                  return std::make_shared<ConstantMaterial>(refractive_index_value);
@@ -119,7 +126,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const ConstantMaterial &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -161,7 +171,12 @@ PYBIND11_MODULE(material, module) {
         .def(py::init([ureg](const std::string &name, const py::object &wavelengths,
                              const py::object &refractive_indices, const bool allow_extrapolation) {
                  const std::vector<double> wavelength_values =
-                     wavelengths.attr("to")("meter").attr("magnitude").cast<std::vector<double>>();
+                     validated_quantity(wavelengths, "meter", "wavelengths", false)
+                         .attr("to")("meter")
+                         .attr("magnitude")
+                         .cast<std::vector<double>>();
+
+                 validated_no_unit(refractive_indices, "refractive_indices", false);
 
                  const std::vector<complex128> refractive_index_values =
                      refractive_indices.cast<std::vector<complex128>>();
@@ -224,7 +239,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const TabulatedMaterial &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -263,7 +281,10 @@ PYBIND11_MODULE(material, module) {
                              const std::size_t formula_type, const py::object &wavelength_bound,
                              const bool allow_extrapolation) {
                  const std::vector<double> wavelength_bound_values =
-                     wavelength_bound.attr("to")("meter").attr("magnitude").cast<std::vector<double>>();
+                     validated_quantity(wavelength_bound, "meter", "wavelength_bound", false)
+                         .attr("to")("meter")
+                         .attr("magnitude")
+                         .cast<std::vector<double>>();
 
                  return std::make_shared<SellmeierMaterial>(name, coefficients, formula_type, wavelength_bound_values,
                                                             allow_extrapolation);
@@ -327,7 +348,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const SellmeierMaterial &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -366,7 +390,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "initialize",
             [](BaseMedium &self, const py::object &wavelength) {
-                return self.initialize(wavelength.attr("to")("meter").attr("magnitude").cast<double>());
+                return self.initialize(validated_quantity(wavelength, "meter", "wavelength", true)
+                                           .attr("to")("meter")
+                                           .attr("magnitude")
+                                           .cast<double>());
             },
             py::arg("wavelength"),
             R"pbdoc(
@@ -377,7 +404,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const BaseMedium &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -397,6 +427,7 @@ PYBIND11_MODULE(material, module) {
 
             )pbdoc")
         .def(py::init([ureg](const py::object &refractive_index) {
+                 validated_no_unit(refractive_index, "refractive_index", true);
                  const double refractive_index_value = refractive_index.cast<double>();
 
                  return std::make_shared<ConstantMedium>(refractive_index_value);
@@ -426,7 +457,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const ConstantMedium &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -461,7 +495,12 @@ PYBIND11_MODULE(material, module) {
         .def(py::init([ureg](const std::string &name, const py::object &wavelengths,
                              const py::object &refractive_indices, const bool allow_extrapolation) {
                  const std::vector<double> wavelength_values =
-                     wavelengths.attr("to")("meter").attr("magnitude").cast<std::vector<double>>();
+                     validated_quantity(wavelengths, "meter", "wavelengths", false)
+                         .attr("to")("meter")
+                         .attr("magnitude")
+                         .cast<std::vector<double>>();
+
+                 validated_no_unit(refractive_indices, "refractive_indices", false);
 
                  const std::vector<double> refractive_index_values = refractive_indices.cast<std::vector<double>>();
 
@@ -523,7 +562,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const TabulatedMedium &self, const py::object &wavelength) {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;
@@ -574,7 +616,10 @@ PYBIND11_MODULE(material, module) {
                              const std::size_t formula_type, const py::object &wavelength_bound,
                              const bool allow_extrapolation) {
                  const std::vector<double> wavelength_bound_values =
-                     wavelength_bound.attr("to")("meter").attr("magnitude").cast<std::vector<double>>();
+                     validated_quantity(wavelength_bound, "meter", "wavelength_bound", false)
+                         .attr("to")("meter")
+                         .attr("magnitude")
+                         .cast<std::vector<double>>();
 
                  return std::make_shared<SellmeierMedium>(name, coefficients, formula_type, wavelength_bound_values,
                                                           allow_extrapolation);
@@ -640,7 +685,10 @@ PYBIND11_MODULE(material, module) {
         .def(
             "get_refractive_index",
             [ureg](const SellmeierMedium &self, const py::object &wavelength) -> py::object {
-                const double wavelength_meter = wavelength.attr("to")("meter").attr("magnitude").cast<double>();
+                const double wavelength_meter = validated_quantity(wavelength, "meter", "wavelength", true)
+                                                    .attr("to")("meter")
+                                                    .attr("magnitude")
+                                                    .cast<double>();
 
                 py::object magnitude = py::cast(self.get_refractive_index(wavelength_meter));
                 return magnitude;

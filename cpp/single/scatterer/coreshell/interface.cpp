@@ -116,11 +116,16 @@ void register_coreshell(py::module_ &module) {
         .def(py::init([ureg](const py::object &core_diameter, const py::object &shell_thickness,
                              const py::object &core_material, const py::object &shell_material,
                              const py::object &medium, const int max_order) {
-                 const double core_diameter_meter =
-                     core_diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                 const double core_diameter_meter = validated_quantity(core_diameter, "meter", "core_diameter", true)
+                                                        .attr("to")("meter")
+                                                        .attr("magnitude")
+                                                        .cast<double>();
 
                  const double shell_thickness_meter =
-                     shell_thickness.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                     validated_quantity(shell_thickness, "meter", "shell_thickness", true)
+                         .attr("to")("meter")
+                         .attr("magnitude")
+                         .cast<double>();
 
                  const std::shared_ptr<BaseMaterial> parsed_core_material = parse_material_object(core_material, ureg);
 

@@ -5,6 +5,23 @@ This tutorial goes from installation to a parameter sweep and a detector
 measurement. All quantities with physical dimensions use PyMieSim's unit
 registry, so changing units does not change the calculation.
 
+TypedUnit validates physical inputs before native numerical conversion.
+Use explicit quantities from the shared ``PyMieSim.ureg`` registry for lengths,
+angles, optical powers, and field amplitudes. Scalars and sweep arrays retain
+compatible display units until a numerical boundary converts their magnitudes.
+Angles require explicit angular units; a bare number or a dimensionless
+quantity is not an angle.
+
+Refractive indices and numerical apertures use TypedUnit's ``NoUnit`` contracts.
+Supply plain numbers, including complex refractive indices for absorbing
+particles. Dimensionless Pint quantities are rejected for these inputs.
+Material objects remain supported. TypedUnit checks units, shapes, and finite
+values; PyMieSim retains geometry, broadcasting, and optical-model checks.
+The shared registry and ``unit_validator``, ``validate_annotation``, and
+``validate_quantity`` are available through ``PyMieSim.units``. Validation
+failures raise ``ValueError`` before values reach the numerical kernels.
+
+
 Install
 -------
 

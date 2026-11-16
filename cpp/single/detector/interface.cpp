@@ -260,47 +260,30 @@ PYBIND11_MODULE(detector, module) {
     };
 
     py::class_<BaseDetector, std::shared_ptr<BaseDetector>>(module, "BaseDetector")
-        .def_readwrite(
-            "medium",
-            &BaseDetector::medium,
-            R"pbdoc(
+        .def_readwrite("medium", &BaseDetector::medium,
+                       R"pbdoc(
                 Medium in which the detector is immersed.
 
                 The medium determines the refractive index surrounding the
                 detector and is used when computing angular collection and
                 interface transmission effects.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "numerical_aperture",
-            [](
-                BaseDetector& self
-            ) {
-                return py::float_(self.numerical_aperture);
-            },
+            "numerical_aperture", [](BaseDetector &self) { return py::float_(self.numerical_aperture); },
             R"pbdoc(
                 Numerical aperture of the detector.
 
                 Controls the angular extent of the collected scattered field.
-            )pbdoc"
-        )
-        .def_readonly(
-            "mesh",
-            &BaseDetector::fibonacci_mesh,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly("mesh", &BaseDetector::fibonacci_mesh,
+                      R"pbdoc(
                 Fibonacci angular mesh used by the detector.
 
                 The mesh defines the angular directions on which detector fields
                 and coupling integrals are sampled.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "max_angle",
-            [ureg](
-                BaseDetector& self
-            ) {
-                return py::float_(self.max_angle) * ureg.attr("radian");
-            },
+            "max_angle", [ureg](BaseDetector &self) { return py::float_(self.max_angle) * ureg.attr("radian"); },
             R"pbdoc(
                 Maximum detector collection angle.
 
@@ -308,15 +291,9 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Maximum collection angle in radians.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "min_angle",
-            [ureg](
-                BaseDetector& self
-            ) {
-                return py::float_(self.min_angle) * ureg.attr("radian");
-            },
+            "min_angle", [ureg](BaseDetector &self) { return py::float_(self.min_angle) * ureg.attr("radian"); },
             R"pbdoc(
                 Minimum detector collection angle.
 
@@ -324,13 +301,9 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Minimum collection angle in radians.
-            )pbdoc"
-        )
-        .def(
-            "initialize_mesh",
-            &BaseDetector::initialize_mesh,
-            py::arg("scatterer"),
-            R"pbdoc(
+            )pbdoc")
+        .def("initialize_mesh", &BaseDetector::initialize_mesh, py::arg("scatterer"),
+             R"pbdoc(
                 Initialize the detector mesh for a scatterer.
 
                 Parameters
@@ -338,19 +311,10 @@ PYBIND11_MODULE(detector, module) {
                 scatterer : BaseScatterer
                     Scatterer used to configure detector dependent angular
                     quantities.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property(
-            "scalar_field",
-            [](
-                BaseDetector& self
-            ) {
-                return vector_as_numpy_view(self, self.scalar_field);
-            },
-            [](
-                BaseDetector& self,
-                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array
-            ) {
+            "scalar_field", [](BaseDetector &self) { return vector_as_numpy_view(self, self.scalar_field); },
+            [](BaseDetector &self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array) {
                 vector_assign_from_numpy(self.scalar_field, array);
             },
             R"pbdoc(
@@ -364,25 +328,16 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 numpy.ndarray
                     Complex array with shape ``(sampling,)``.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property(
-            "angular_weights",
-            [](
-                BaseDetector& self
-            ) {
-                return vector_as_numpy_view(self, self.angular_weights);
-            },
-            [](
-                BaseDetector& self,
-                py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array
-            ) {
+            "angular_weights", [](BaseDetector &self) { return vector_as_numpy_view(self, self.angular_weights); },
+            [](BaseDetector &self, py::array_t<std::complex<double>, py::array::c_style | py::array::forcecast> array) {
                 std::vector<complex128> weights;
                 vector_assign_from_numpy(weights, array);
 
                 try {
                     self.set_angular_weights(weights);
-                } catch (const std::invalid_argument& error) {
+                } catch (const std::invalid_argument &error) {
                     throw py::value_error(error.what());
                 }
             },
@@ -402,14 +357,10 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 numpy.ndarray
                     Complex array with shape ``(sampling,)``.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "get_structured_scalarfield",
-            [](
-                BaseDetector& self,
-                const size_t sampling
-            ) {
+            [](BaseDetector &self, const size_t sampling) {
                 std::vector<complex128> vector = self.get_structured_scalarfield(sampling);
                 return vector_to_numpy_copy(vector, {sampling, sampling});
             },
@@ -426,17 +377,15 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 numpy.ndarray
                     Complex scalar field array with shape ``(sampling, sampling)``.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "get_poynting_field",
-            [ureg](
-                BaseDetector& self,
-                std::shared_ptr<BaseScatterer> scatterer,
-                const py::object& distance,
-                std::shared_ptr<BaseSource> source
-            ) {
-                const double distance_value = distance.attr("to")("meter").attr("magnitude").cast<double>();
+            [ureg](BaseDetector &self, std::shared_ptr<BaseScatterer> scatterer, const py::object &distance,
+                   std::shared_ptr<BaseSource> source) {
+                const double distance_value = validated_quantity(distance, "meter", "distance", true)
+                                                  .attr("to")("meter")
+                                                  .attr("magnitude")
+                                                  .cast<double>();
 
                 std::vector<double> vector = self.get_poynting_field(
                     scatterer,
@@ -451,9 +400,7 @@ PYBIND11_MODULE(detector, module) {
 
                 return (array * ureg.attr("watt/meter**2")).attr("to_compact")();
             },
-            py::arg("scatterer"),
-            py::arg("distance") = 1.0,
-            py::arg("source"),
+            py::arg("scatterer"), py::arg("distance") = 1.0, py::arg("source"),
             R"pbdoc(
                 Compute the sampled Poynting field magnitude.
 
@@ -471,20 +418,14 @@ PYBIND11_MODULE(detector, module) {
                 pint.Quantity
                     Poynting field magnitude sampled on the detector mesh, with
                     units of watts per square meter.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "get_energy_flow",
-            [ureg](
-                BaseDetector& self,
-                std::shared_ptr<BaseScatterer> scatterer,
-                std::shared_ptr<BaseSource> source
-            ) {
+            [ureg](BaseDetector &self, std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) {
                 const double energy_flow = self.get_energy_flow(scatterer, source);
                 return (py::float_(energy_flow) * ureg.attr("watt")).attr("to_compact")();
             },
-            py::arg("scatterer"),
-            py::arg("source"),
+            py::arg("scatterer"), py::arg("source"),
             R"pbdoc(
                 Compute the total radiated energy flow sampled by the detector.
 
@@ -499,22 +440,13 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Total energy flow in watts.
-            )pbdoc"
-        )
-        .def_readonly(
-            "sampling",
-            &BaseDetector::sampling,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly("sampling", &BaseDetector::sampling,
+                      R"pbdoc(
                 Number of angular samples used by the detector mesh.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "phi_offset",
-            [ureg](
-                BaseDetector& self
-            ) {
-                return py::float_(self.phi_offset) * ureg.attr("radian");
-            },
+            "phi_offset", [ureg](BaseDetector &self) { return py::float_(self.phi_offset) * ureg.attr("radian"); },
             R"pbdoc(
                 Azimuthal orientation offset of the detector.
 
@@ -522,15 +454,9 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Azimuthal offset in radians.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "gamma_offset",
-            [ureg](
-                BaseDetector& self
-            ) {
-                return py::float_(self.gamma_offset) * ureg.attr("radian");
-            },
+            "gamma_offset", [ureg](BaseDetector &self) { return py::float_(self.gamma_offset) * ureg.attr("radian"); },
             R"pbdoc(
                 Polar orientation offset of the detector.
 
@@ -538,45 +464,27 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Polar offset in radians.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "polarization_filter",
-            [](
-                BaseDetector& self
-            ) {
-                return py::cast(self.polarization_filter);
-            },
+            "polarization_filter", [](BaseDetector &self) { return py::cast(self.polarization_filter); },
             R"pbdoc(
                 Polarization filter applied before coupling evaluation.
-            )pbdoc"
-        )
-        .def_readonly(
-            "mode_field",
-            &BaseDetector::mode_field,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly("mode_field", &BaseDetector::mode_field,
+                      R"pbdoc(
                 Mode field associated with coherent detector calculations.
-            )pbdoc"
-        )
-        .def_readonly(
-            "mode_id",
-            &BaseDetector::mode_id,
-            R"pbdoc(
+            )pbdoc")
+        .def_readonly("mode_id", &BaseDetector::mode_id,
+                      R"pbdoc(
                 Identifier of the detector mode family and order.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "get_coupling",
-            [ureg](
-                BaseDetector& self,
-                std::shared_ptr<BaseScatterer> scatterer,
-                std::shared_ptr<BaseSource> source
-            ) {
+            [ureg](BaseDetector &self, std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source) {
                 const double coupling = self.get_coupling(scatterer, source);
                 return (py::float_(coupling) * ureg.attr("watt")).attr("to_compact")();
             },
-            py::arg("scatterer"),
-            py::arg("source"),
+            py::arg("scatterer"), py::arg("source"),
             R"pbdoc(
                 Compute optical power coupled into the detector.
 
@@ -591,69 +499,57 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Coupled optical power in watts.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "__repr__",
-            [format_base_detector_repr](const BaseDetector& self) {
+            [format_base_detector_repr](const BaseDetector &self) {
                 return format_base_detector_repr("BaseDetector", self);
             },
             R"pbdoc(
                 Return a concise representation of the detector state.
-            )pbdoc"
-        );
+            )pbdoc");
 
-    py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(
-        module,
-        "Photodiode",
-        R"pbdoc(
+    py::class_<Photodiode, BaseDetector, std::shared_ptr<Photodiode>>(module, "Photodiode",
+                                                                      R"pbdoc(
             Photodiode detector for Lorenz Mie scattering simulations.
 
             A photodiode integrates the scattered power over an angular
             collection aperture defined by its numerical aperture, orientation,
             optional obscuration cache, and polarization filter.
-        )pbdoc"
-    )
-        .def(
-            py::init(
-                [ureg](
-                    const py::object& numerical_aperture,
-                    const py::object& phi_offset,
-                    const py::object& gamma_offset,
-                    const py::object& medium,
-                    const py::object& polarization_filter,
-                    const py::object& cache_numerical_aperture,
-                    const std::size_t sampling
-                ) {
-                    const double numerical_aperture_value = numerical_aperture.cast<double>();
+        )pbdoc")
+        .def(py::init([ureg](const py::object &numerical_aperture, const py::object &phi_offset,
+                             const py::object &gamma_offset, const py::object &medium,
+                             const py::object &polarization_filter, const py::object &cache_numerical_aperture,
+                             const std::size_t sampling) {
+                 const double numerical_aperture_value =
+                     validated_no_unit(numerical_aperture, "numerical_aperture", true).cast<double>();
 
-                    std::shared_ptr<BaseMedium> parsed_medium;
+                 std::shared_ptr<BaseMedium> parsed_medium;
 
-                    if (medium.is(py::none())) {
-                        parsed_medium = std::make_shared<ConstantMedium>(1.0);
-                    } else {
-                        parsed_medium = parse_medium_object(medium, ureg);
-                    }
+                 if (medium.is(py::none())) {
+                     parsed_medium = std::make_shared<ConstantMedium>(1.0);
+                 } else {
+                     parsed_medium = parse_medium_object(medium, ureg);
+                 }
 
-                    return std::make_shared<Photodiode>(
-                        sampling,
-                        numerical_aperture_value,
-                        cache_numerical_aperture.cast<double>(),
-                        phi_offset.attr("to")("radian").attr("magnitude").cast<double>(),
-                        gamma_offset.attr("to")("radian").attr("magnitude").cast<double>(),
-                        Casting::Polarization::cast_py_to_polarization_state(polarization_filter),
-                        std::move(parsed_medium)
-                    );
-                }
-            ),
-            py::arg("numerical_aperture"),
-            py::arg("phi_offset"),
-            py::arg("gamma_offset"),
-            py::arg("medium") = py::none(),
-            py::arg("polarization_filter") = PolarizationState(),
-            py::arg("cache_numerical_aperture") = py::float_(0.0),
-            py::arg("sampling") = 200,
-            R"pbdoc(
+                 return std::make_shared<Photodiode>(
+                     sampling, numerical_aperture_value,
+                     validated_no_unit(cache_numerical_aperture, "cache_numerical_aperture", true).cast<double>(),
+                     validated_quantity(phi_offset, "radian", "phi_offset", true)
+                         .attr("to")("radian")
+                         .attr("magnitude")
+                         .cast<double>(),
+                     validated_quantity(gamma_offset, "radian", "gamma_offset", true)
+                         .attr("to")("radian")
+                         .attr("magnitude")
+                         .cast<double>(),
+                     Casting::Polarization::cast_py_to_polarization_state(polarization_filter),
+                     std::move(parsed_medium));
+             }),
+             py::arg("numerical_aperture"), py::arg("phi_offset"), py::arg("gamma_offset"),
+             py::arg("medium") = py::none(), py::arg("polarization_filter") = PolarizationState(),
+             py::arg("cache_numerical_aperture") = py::float_(0.0), py::arg("sampling") = 200,
+             R"pbdoc(
                 Construct a photodiode detector.
 
                 Parameters
@@ -673,40 +569,23 @@ PYBIND11_MODULE(detector, module) {
                     Numerical aperture of the central obscuration cache.
                 sampling : int, optional
                     Number of angular samples on the detector mesh.
-            )pbdoc"
-        )
-        .def(
-            "print_properties",
-            &Photodiode::print_properties,
-            py::arg("precision") = 4,
-            R"pbdoc(
+            )pbdoc")
+        .def("print_properties", &Photodiode::print_properties, py::arg("precision") = 4,
+             R"pbdoc(
                 Print photodiode properties.
 
                 Parameters
                 ----------
                 precision : int, optional
                     Number of decimal places used for floating point values.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "_add_to_ax",
-            [
-                ensure_matplotlib_3d_axis,
-                add_detector_points_to_ax,
-                add_collection_cone_to_ax,
-                set_detector_axis_limits
-            ](
-                const Photodiode& self,
-                const py::object& ax,
-                const py::object& cone_color,
-                const double field_point_size,
-                const double point_radial_offset,
-                const double cone_alpha,
-                const bool show_cone,
-                const bool show_axes,
-                const std::size_t cone_angular_sampling,
-                const std::size_t cone_radial_sampling
-            ) -> void {
+            [ensure_matplotlib_3d_axis, add_detector_points_to_ax, add_collection_cone_to_ax, set_detector_axis_limits](
+                const Photodiode &self, const py::object &ax, const py::object &cone_color,
+                const double field_point_size, const double point_radial_offset, const double cone_alpha,
+                const bool show_cone, const bool show_axes, const std::size_t cone_angular_sampling,
+                const std::size_t cone_radial_sampling) -> void {
                 ensure_matplotlib_3d_axis(ax);
 
                 if (show_cone) {
@@ -730,15 +609,9 @@ PYBIND11_MODULE(detector, module) {
 
                 set_detector_axis_limits(ax, show_axes);
             },
-            py::arg("ax"),
-            py::arg("cone_color") = py::str("red"),
-            py::arg("field_point_size") = 20.0,
-            py::arg("point_radial_offset") = 1.025,
-            py::arg("cone_alpha") = 0.20,
-            py::arg("show_cone") = true,
-            py::arg("show_axes") = false,
-            py::arg("cone_angular_sampling") = 24,
-            py::arg("cone_radial_sampling") = 12,
+            py::arg("ax"), py::arg("cone_color") = py::str("red"), py::arg("field_point_size") = 20.0,
+            py::arg("point_radial_offset") = 1.025, py::arg("cone_alpha") = 0.20, py::arg("show_cone") = true,
+            py::arg("show_axes") = false, py::arg("cone_angular_sampling") = 24, py::arg("cone_radial_sampling") = 12,
             R"pbdoc(
                 Add the photodiode detector geometry to a Matplotlib 3D axis.
 
@@ -777,11 +650,10 @@ PYBIND11_MODULE(detector, module) {
                 This method replaces the previous PyVista based ``add_to_scene``
                 method. It operates on an existing Matplotlib axis so the Python
                 plotting layer remains responsible for figure creation and style.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "__repr__",
-            [](const Photodiode& self) {
+            [](const Photodiode &self) {
                 std::ostringstream stream;
                 stream << "<Photodiode"
                        << " sampling=" << self.sampling
@@ -794,35 +666,25 @@ PYBIND11_MODULE(detector, module) {
             },
             R"pbdoc(
                 Return a concise representation of the photodiode parameters.
-            )pbdoc"
-        );
+            )pbdoc");
 
-    py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(
-        module,
-        "CoherentMode",
-        R"pbdoc(
+    py::class_<CoherentMode, BaseDetector, std::shared_ptr<CoherentMode>>(module, "CoherentMode",
+                                                                          R"pbdoc(
             Coherent mode detector for Lorenz Mie scattering simulations.
 
             A coherent mode detector projects the scattered field onto a specified
             collecting mode and can account for orientation, rotation, numerical
             aperture, obscuration cache, and polarization filtering.
-        )pbdoc"
-    )
+        )pbdoc")
         .def(
             py::init(
-                [ureg](
-                    const std::string& mode_number,
-                    const py::object& numerical_aperture,
-                    const py::object& phi_offset,
-                    const py::object& gamma_offset,
-                    const py::object& rotation,
-                    const py::object& medium,
-                    const py::object& cache_numerical_aperture,
-                    const py::object& polarization_filter,
-                    const py::object& mean_coupling,
-                    const std::size_t& sampling
-                ) {
-                    const double numerical_aperture_value = numerical_aperture.cast<double>();
+                [ureg](const std::string &mode_number, const py::object &numerical_aperture,
+                       const py::object &phi_offset, const py::object &gamma_offset, const py::object &rotation,
+                       const py::object &medium, const py::object &cache_numerical_aperture,
+                       const py::object &polarization_filter, const py::object &mean_coupling,
+                       const std::size_t &sampling) {
+                    const double numerical_aperture_value =
+                        validated_no_unit(numerical_aperture, "numerical_aperture", true).cast<double>();
 
                     std::shared_ptr<BaseMedium> parsed_medium;
 
@@ -843,28 +705,26 @@ PYBIND11_MODULE(detector, module) {
                     }
 
                     return std::make_shared<CoherentMode>(
-                        mode_number,
-                        sampling,
-                        numerical_aperture_value,
-                        cache_numerical_aperture.cast<double>(),
-                        phi_offset.attr("to")("radian").attr("magnitude").cast<double>(),
-                        gamma_offset.attr("to")("radian").attr("magnitude").cast<double>(),
+                        mode_number, sampling, numerical_aperture_value,
+                        validated_no_unit(cache_numerical_aperture, "cache_numerical_aperture", true).cast<double>(),
+                        validated_quantity(phi_offset, "radian", "phi_offset", true)
+                            .attr("to")("radian")
+                            .attr("magnitude")
+                            .cast<double>(),
+                        validated_quantity(gamma_offset, "radian", "gamma_offset", true)
+                            .attr("to")("radian")
+                            .attr("magnitude")
+                            .cast<double>(),
                         Casting::Polarization::cast_py_to_polarization_state(polarization_filter),
-                        rotation.attr("to")("radian").attr("magnitude").cast<double>(),
-                        mean_coupling.cast<bool>(),
-                        std::move(parsed_medium)
-                    );
-                }
-            ),
-            py::arg("mode_number"),
-            py::arg("numerical_aperture"),
-            py::arg("phi_offset"),
-            py::arg("gamma_offset"),
-            py::arg("rotation"),
-            py::arg("medium") = py::none(),
-            py::arg("cache_numerical_aperture") = py::float_(0.0),
-            py::arg("polarization_filter") = PolarizationState(),
-            py::arg("mean_coupling") = false,
+                        validated_quantity(rotation, "radian", "rotation", true)
+                            .attr("to")("radian")
+                            .attr("magnitude")
+                            .cast<double>(),
+                        mean_coupling.cast<bool>(), std::move(parsed_medium));
+                }),
+            py::arg("mode_number"), py::arg("numerical_aperture"), py::arg("phi_offset"), py::arg("gamma_offset"),
+            py::arg("rotation"), py::arg("medium") = py::none(), py::arg("cache_numerical_aperture") = py::float_(0.0),
+            py::arg("polarization_filter") = PolarizationState(), py::arg("mean_coupling") = false,
             py::arg("sampling") = 200,
             R"pbdoc(
                 Construct a coherent mode detector.
@@ -893,15 +753,9 @@ PYBIND11_MODULE(detector, module) {
                     the detector implementation.
                 sampling : int, optional
                     Number of angular samples on the detector mesh.
-            )pbdoc"
-        )
+            )pbdoc")
         .def_property_readonly(
-            "rotation",
-            [ureg](
-                CoherentMode& self
-            ) {
-                return py::float_(self.rotation) * ureg.attr("radian");
-            },
+            "rotation", [ureg](CoherentMode &self) { return py::float_(self.rotation) * ureg.attr("radian"); },
             R"pbdoc(
                 Rotation angle of the coherent mode field.
 
@@ -909,41 +763,24 @@ PYBIND11_MODULE(detector, module) {
                 -------
                 pint.Quantity
                     Rotation angle in radians.
-            )pbdoc"
-        )
-        .def(
-            "print_properties",
-            &CoherentMode::print_properties,
-            py::arg("precision") = 4,
-            R"pbdoc(
+            )pbdoc")
+        .def("print_properties", &CoherentMode::print_properties, py::arg("precision") = 4,
+             R"pbdoc(
                 Print coherent mode detector properties.
 
                 Parameters
                 ----------
                 precision : int, optional
                     Number of decimal places used for floating point values.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "_add_to_ax",
-            [
-                ensure_matplotlib_3d_axis,
-                add_colored_detector_points_to_ax,
-                add_collection_cone_to_ax,
-                set_detector_axis_limits
-            ](
-                const CoherentMode& self,
-                const py::object& ax,
-                const py::object& cone_color,
-                const double field_point_size,
-                const double point_radial_offset,
-                const double cone_alpha,
-                const bool show_cone,
-                const bool show_colorbar,
-                const bool show_axes,
-                const std::size_t cone_angular_sampling,
-                const std::size_t cone_radial_sampling
-            ) -> void {
+            [ensure_matplotlib_3d_axis, add_colored_detector_points_to_ax, add_collection_cone_to_ax,
+             set_detector_axis_limits](const CoherentMode &self, const py::object &ax, const py::object &cone_color,
+                                       const double field_point_size, const double point_radial_offset,
+                                       const double cone_alpha, const bool show_cone, const bool show_colorbar,
+                                       const bool show_axes, const std::size_t cone_angular_sampling,
+                                       const std::size_t cone_radial_sampling) -> void {
                 ensure_matplotlib_3d_axis(ax);
 
                 py::object blue_black_red =
@@ -1002,15 +839,9 @@ PYBIND11_MODULE(detector, module) {
 
                 set_detector_axis_limits(ax, show_axes);
             },
-            py::arg("ax"),
-            py::arg("cone_color") = py::str("red"),
-            py::arg("field_point_size") = 20.0,
-            py::arg("point_radial_offset") = 1.025,
-            py::arg("cone_alpha") = 0.20,
-            py::arg("show_cone") = true,
-            py::arg("show_colorbar") = true,
-            py::arg("show_axes") = false,
-            py::arg("cone_angular_sampling") = 96,
+            py::arg("ax"), py::arg("cone_color") = py::str("red"), py::arg("field_point_size") = 20.0,
+            py::arg("point_radial_offset") = 1.025, py::arg("cone_alpha") = 0.20, py::arg("show_cone") = true,
+            py::arg("show_colorbar") = true, py::arg("show_axes") = false, py::arg("cone_angular_sampling") = 96,
             py::arg("cone_radial_sampling") = 16,
             R"pbdoc(
                 Add the coherent detector mode to a Matplotlib 3D axis.
@@ -1057,11 +888,10 @@ PYBIND11_MODULE(detector, module) {
                 method. It uses ``MPSPlots.colormaps.blue_black_red`` as the
                 diverging colormap for the real part of the coherent collecting
                 field.
-            )pbdoc"
-        )
+            )pbdoc")
         .def(
             "__repr__",
-            [](const CoherentMode& self) {
+            [](const CoherentMode &self) {
                 std::ostringstream stream;
                 stream << "<CoherentMode"
                        << " mode_number=" << self.mode_number
@@ -1074,8 +904,7 @@ PYBIND11_MODULE(detector, module) {
             },
             R"pbdoc(
                 Return a concise representation of the coherent detector parameters.
-            )pbdoc"
-        );
+            )pbdoc");
 
     py::class_<IntegratingSphere, BaseDetector, std::shared_ptr<IntegratingSphere>>(
         module,

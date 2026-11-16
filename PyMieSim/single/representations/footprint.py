@@ -34,11 +34,6 @@ class Footprint:
 
     Parameters
     ----------
-    detector : GenericDetector
-        The detector object that defines the capturing field and geometry. This object provides information about the detector's configuration, including its numerical aperture, position, and sensitivity.
-
-    Parameters
-    ----------
     setup : object
         Setup exposing a scatterer, detector, source, and ``get_farfields``.
     sampling : int, optional

@@ -115,7 +115,10 @@ void register_sphere(py::module_ &module) {
         )pbdoc")
         .def(py::init([ureg](const py::object &diameter, const py::object &material, const py::object &medium,
                              const std::size_t max_order) {
-                 const double diameter_meter = diameter.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                 const double diameter_meter = validated_quantity(diameter, "meter", "diameter", true)
+                                                   .attr("to")("meter")
+                                                   .attr("magnitude")
+                                                   .cast<double>();
 
                  const std::shared_ptr<BaseMaterial> parsed_material = parse_material_object(material, ureg);
 

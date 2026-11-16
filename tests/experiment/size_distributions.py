@@ -1,7 +1,6 @@
 """Physical weighting, distribution moments, and independent-scattering averages."""
 import numpy as np
 import pytest
-from pint import DimensionalityError
 
 from PyMieSim import (
     Experiment, ParticleSizeDistribution, PlaneWaveSet, PolarizationSet,
@@ -49,7 +48,7 @@ def test_invalid_discrete_distributions(diameters, weights):
 def test_length_units_are_required():
     with pytest.raises(TypeError, match='length units'):
         ParticleSizeDistribution([100, 200], [1, 1])
-    with pytest.raises(DimensionalityError):
+    with pytest.raises(ValueError, match="compatible"):
         ParticleSizeDistribution([100, 200] * ureg.second, [1, 1])
 
 
