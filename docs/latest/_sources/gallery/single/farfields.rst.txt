@@ -86,7 +86,7 @@ This example demonstrates the process of computing and visualizing the far-field
         source=source,
     )
 
-    far_fields = setup.get_representation("farfields", sampling=100)
+    far_fields = setup.farfields(sampling=100)
 
     ## Visualize the far-fields: phi_real component
     figure = far_fields.plot("phi_real")
@@ -100,7 +100,7 @@ This example demonstrates the process of computing and visualizing the far-field
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.828 seconds)
+   **Total running time of the script:** (0 minutes 2.813 seconds)
 
 
 .. _sphx_glr_download_gallery_single_farfields.py:

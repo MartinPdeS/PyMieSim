@@ -38,7 +38,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
  .. code-block:: none
 
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (2, 1000)
-    Measure units: {'Qsca': <Unit('dimensionless')>}
+    Measure units: dimensionless
 
 
 
@@ -79,17 +79,17 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get(Measure.QSCA)
+    result = experiment.run(Measure.QSCA)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.261 seconds)
+   **Total running time of the script:** (0 minutes 0.166 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_diameter.py:

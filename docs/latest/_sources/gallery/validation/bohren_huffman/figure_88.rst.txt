@@ -35,7 +35,7 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+    /opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
       return np.asarray(x, float)
 
 
@@ -99,7 +99,7 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
     # Compute PyMieSim scattering cross section data
-    csca_data = experiment.get(Measure.CSCA).as_numpy()
+    csca_data = experiment.run(Measure.CSCA).as_numpy()
 
     normalized_csca = (
         csca_data / volumes.to_base_units() * 1e-4 / 100
@@ -147,7 +147,7 @@ InfiniteCylinder Scatterer Bohren-Huffman figure 8.8
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.357 seconds)
+   **Total running time of the script:** (0 minutes 0.218 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_88.py:

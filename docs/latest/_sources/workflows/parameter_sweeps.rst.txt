@@ -33,15 +33,14 @@ evaluated as a parameter grid.
    )
 
    experiment = Experiment(scatterer_set=scatterer, source_set=source)
-   result = experiment.get(Measure.QSCA, Measure.QEXT)
-   result.isel(indexers={"measure": 0}).plot(x="source:wavelength", y="Qsca")
+   result = experiment.run(Measure.QSCA, Measure.QEXT)
+   result["Qsca"].plot(x="source:wavelength", y="Qsca")
 
-This grid contains five wavelengths and ten diameters. Requesting two measures
-adds a ``measure`` axis of length two; the parameter axes have lengths five
-and ten. ``Qsca`` and ``Qext`` are dimensionless. Curves at different diameters
+This grid contains five wavelengths and ten diameters. The result maps each requested measure to a result whose parameter axes
+have lengths five and ten. ``Qsca`` and ``Qext`` are dimensionless. Curves at different diameters
 can move spectral resonances even when the refractive index is fixed.
 
-The result is a unit-aware PyMieSim LabeledArray.  Use ``.as_numpy()`` when a
+Each entry is a unit-aware ``SimulationResult``.  Use ``.as_numpy()`` when a
 raw NumPy array is preferable, ``.as_dataframe()`` for tabular interoperability,
 or ``get_sequential`` for aligned sequential configurations.
 
@@ -53,7 +52,7 @@ using libraries that expect a raw array or a pandas table:
 
 .. code-block:: python
 
-   result = experiment.get(Measure.QSCA)
+   result = experiment.run(Measure.QSCA)
 
    values = result.as_numpy()
    print(values.shape)
@@ -61,14 +60,18 @@ using libraries that expect a raw array or a pandas table:
    dataframe = result.as_dataframe()
    print(dataframe[["source:wavelength", "scatterer:diameter", "Qsca"]])
 
-For multiple measures, the labeled array contains a ``measure`` dimension and
-``as_dataframe()`` creates one output column per measure:
+For multiple measures, ``as_dataframe()`` creates one output column per measure:
 
 .. code-block:: python
 
-   result = experiment.get(Measure.QEXT, Measure.QSCA)
+   result = experiment.run(Measure.QEXT, Measure.QSCA)
    dataframe = result.as_dataframe()
    # Columns: source:wavelength, scatterer:diameter, Qext, Qsca
 
 See the :ref:`experiment gallery <experiment_index>` for larger
 examples.
+
+Singleton parameter axes are dropped by default. Pass ``drop_unique_level=False``
+to ``run`` to retain them. Use ``result["Qsca"].isel({"source:wavelength": 0})``
+to select a position, and inspect ``dims``, ``coords``, ``coordinate_units`` and
+``units`` before converting or plotting.

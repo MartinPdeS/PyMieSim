@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Stable Python API &#8212; PyMieSim 6.1.6 documentation</title>
+    <title>Stable Python API &#8212; PyMieSim 6.1.7 documentation</title>
   
   
   
@@ -26,35 +26,35 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="../_static/martinpdes_layout.css?v=a8cc01cd" />
     <link rel="stylesheet" type="text/css" href="../_static/layout.css?v=a0095c48" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=1741d0f2"></script>
+    <script src="../_static/documentation_options.js?v=be01a494"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
-    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'code/public_api';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.6';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '6.1.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="6.1.6" />
+  <meta name="docsearch:version" content="6.1.7" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -115,7 +115,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -230,14 +230,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -294,7 +294,7 @@
   
 
   
-    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -308,7 +308,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -392,14 +392,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -500,7 +500,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -546,12 +546,12 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code></p></td>
 <td><p>One particle and illumination</p></td>
 <td><p>Source, scatterer, optional detector</p></td>
-<td><p>Quantity or dictionary of quantities</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code> or <code class="docutils literal notranslate"><span class="pre">SimulationResults</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Experiment</span></code></p></td>
 <td><p>Cartesian grids or aligned sequential configurations</p></td>
 <td><p>Source, scatterer, optional detector sets</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">LabeledArray</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code> or <code class="docutils literal notranslate"><span class="pre">SimulationResults</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fit_parameters</span></code></p></td>
 <td><p>Estimate parameters from measurements</p></td>
@@ -577,7 +577,7 @@
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
     <span class="n">scatterer</span><span class="o">=</span><span class="n">Sphere</span><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="mi">180</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mf">1.59</span><span class="p">,</span> <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">qsca</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span>  <span class="c1"># Scalar dimensionless quantity.</span>
+<span class="n">qsca</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">quantity</span>  <span class="c1"># Scalar dimensionless quantity.</span>
 
 <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
     <span class="n">source_set</span><span class="o">=</span><span class="n">PlaneWaveSet</span><span class="p">(</span>
@@ -599,7 +599,7 @@
         <span class="n">scatterer</span><span class="o">=</span><span class="n">Sphere</span><span class="p">(</span>
             <span class="n">diameter</span><span class="o">=</span><span class="n">parameters</span><span class="p">[</span><span class="s2">"diameter"</span><span class="p">],</span> <span class="n">material</span><span class="o">=</span><span class="mf">1.59</span><span class="p">,</span> <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span><span class="o">.</span><span class="n">quantity</span>
 
 <span class="n">fit</span> <span class="o">=</span> <span class="n">fit_parameters</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
@@ -615,91 +615,45 @@
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">available_measures</span></code> to inspect what the configured geometry and detector
 support. <code class="docutils literal notranslate"><span class="pre">Measure.QSCA</span></code> and the historical string <code class="docutils literal notranslate"><span class="pre">&quot;Qsca&quot;</span></code> are equivalent.
-<code class="docutils literal notranslate"><span class="pre">run</span></code> and <code class="docutils literal notranslate"><span class="pre">get</span></code> are synonyms. Measure arguments are positional; constructor
+Measure arguments are positional; constructor
 and fitting arguments use keywords in these examples.</p>
+</section>
+<section id="api-migration">
+<h2>API migration<a class="headerlink" href="#api-migration" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">Simulation</span></code> or <code class="docutils literal notranslate"><span class="pre">Experiment</span></code> and call <code class="docutils literal notranslate"><span class="pre">run</span></code>. The former public
+<code class="docutils literal notranslate"><span class="pre">Setup</span></code> entry points, <code class="docutils literal notranslate"><span class="pre">get</span></code> alias, <code class="docutils literal notranslate"><span class="pre">get_representation</span></code> string dispatcher,
+and <code class="docutils literal notranslate"><span class="pre">as_result</span></code> option on <code class="docutils literal notranslate"><span class="pre">run</span></code> have been removed. For example, replace
+<code class="docutils literal notranslate"><span class="pre">simulation.get(&quot;Qsca&quot;)</span></code> with <code class="docutils literal notranslate"><span class="pre">simulation.run(&quot;Qsca&quot;).quantity</span></code> when a
+Pint quantity is needed, and replace <code class="docutils literal notranslate"><span class="pre">simulation.get_representation(&quot;spf&quot;)</span></code>
+with <code class="docutils literal notranslate"><span class="pre">simulation.spf()</span></code>. For a sweep, select a result by measure name before
+plotting it, or call <code class="docutils literal notranslate"><span class="pre">as_labeled_array()</span></code> for the combined measure axis.</p>
 </section>
 <section id="read-select-and-export-results">
 <span id="reading-results"></span><h2>Read, select, and export results<a class="headerlink" href="#read-select-and-export-results" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table" id="id2">
-<caption><span class="caption-text">Return types</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
-<colgroup>
-<col style="width: 28.0%" />
-<col style="width: 22.0%" />
-<col style="width: 25.0%" />
-<col style="width: 25.0%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Request</p></th>
-<th class="head"><p>Return type</p></th>
-<th class="head"><p>Selection</p></th>
-<th class="head"><p>Units and export</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>One simulation measure</p></td>
-<td><p>Pint quantity</p></td>
-<td><p>Scalar magnitude</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">.to(&quot;nanometer</span> <span class="pre">**</span> <span class="pre">2&quot;)</span></code> for area measures</p></td>
-</tr>
-<tr class="row-odd"><td><p>Multiple simulation measures</p></td>
-<td><p>Dictionary of quantities</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">values[&quot;Csca&quot;]</span></code></p></td>
-<td><p>Convert each quantity separately</p></td>
-</tr>
-<tr class="row-even"><td><p>Experiment, one or multiple measures</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">LabeledArray</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">.isel(indexers={...})</span></code></p></td>
-<td><p>Units in <code class="docutils literal notranslate"><span class="pre">attrs</span></code>; <code class="docutils literal notranslate"><span class="pre">.as_numpy()</span></code> or <code class="docutils literal notranslate"><span class="pre">.as_dataframe()</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>One measure with <code class="docutils literal notranslate"><span class="pre">as_result=True</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">.quantity</span></code>, <code class="docutils literal notranslate"><span class="pre">.dims</span></code>, <code class="docutils literal notranslate"><span class="pre">.coords</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">.to(...)</span></code> and <code class="docutils literal notranslate"><span class="pre">.as_labeled_array()</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p>Multiple measures with <code class="docutils literal notranslate"><span class="pre">as_result=True</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">SimulationResults</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">results[&quot;Csca&quot;]</span></code> gives a <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code></p></td>
-<td><p>Convert or export each named result</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Continue with <code class="docutils literal notranslate"><span class="pre">simulation</span></code> and <code class="docutils literal notranslate"><span class="pre">experiment</span></code> from the example above:</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">Simulation.run</span></code> and <code class="docutils literal notranslate"><span class="pre">Experiment.run</span></code> return a <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code>
+for one measure, or a <code class="docutils literal notranslate"><span class="pre">SimulationResults</span></code> mapping for several measures.
+A result exposes its Pint <code class="docutils literal notranslate"><span class="pre">quantity</span></code>, <code class="docutils literal notranslate"><span class="pre">units</span></code>, <code class="docutils literal notranslate"><span class="pre">dims</span></code>, <code class="docutils literal notranslate"><span class="pre">coords</span></code> and
+<code class="docutils literal notranslate"><span class="pre">coordinate_units</span></code>. Experiment values carry a Cartesian parameter grid.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scalar</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">scalar</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scalar</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">)</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
 
-<span class="n">values</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">"Qsca"</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s2">"Csca"</span><span class="p">])</span>
-
-<span class="n">grid</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># Wavelength then diameter: (3, 2).</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"Qsca"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">coordinate_units</span><span class="p">)</span>
 <span class="n">first_wavelength</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">indexers</span><span class="o">=</span><span class="p">{</span><span class="s2">"source:wavelength"</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">first_wavelength</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>  <span class="c1"># (2,), one value per diameter.</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"units"</span><span class="p">],</span> <span class="n">grid</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"coordinate_units"</span><span class="p">])</span>
-<span class="n">magnitudes</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>  <span class="c1"># Shape (3, 2); plain numbers carry no units.</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-<span class="n">table</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">path_or_buf</span><span class="o">=</span><span class="s2">"scattering.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="n">typed</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">,</span> <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">converted</span> <span class="o">=</span> <span class="n">typed</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">converted</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">converted</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">converted</span><span class="o">.</span><span class="n">coordinate_units</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">converted</span><span class="o">.</span><span class="n">as_labeled_array</span><span class="p">()</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">Measure</span><span class="o">.</span><span class="n">QSCA</span><span class="p">,</span> <span class="n">Measure</span><span class="o">.</span><span class="n">CSCA</span><span class="p">,</span> <span class="n">as_result</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">first_wavelength</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"scatterer:diameter"</span><span class="p">)</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_numpy</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
 <span class="n">scattering</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"Csca"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nanometer ** 2"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">scattering</span><span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+<span class="n">labeled</span> <span class="o">=</span> <span class="n">scattering</span><span class="o">.</span><span class="n">as_labeled_array</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Dimension names describe the swept parameters. Singleton dimensions are removed
-by default; pass <code class="docutils literal notranslate"><span class="pre">drop_unique_level=False</span></code> to <code class="docutils literal notranslate"><span class="pre">Experiment.run</span></code> to retain
-them. Multiple default experiment measures add a <code class="docutils literal notranslate"><span class="pre">measure</span></code> dimension;
-<code class="docutils literal notranslate"><span class="pre">as_dataframe()</span></code> makes one output column per measure. Typed collections keep
-measures separate, with the same parameter coordinates on each result.</p>
-<p>CSV stores numerical columns and labels, but does not preserve Pint objects
-or dataframe attributes. Record <code class="docutils literal notranslate"><span class="pre">attrs[&quot;units&quot;]</span></code> and
-<code class="docutils literal notranslate"><span class="pre">attrs[&quot;coordinate_units&quot;]</span></code> alongside a CSV, or include units explicitly in
-its column headings. Unit conversion on a typed result preserves coordinates.
-Single-simulation typed results have no parameter dimensions.</p>
+<p>Singleton dimensions are removed by default; pass <code class="docutils literal notranslate"><span class="pre">drop_unique_level=False</span></code>
+to <code class="docutils literal notranslate"><span class="pre">Experiment.run</span></code> to retain them. Multiple measures are selected by name;
+<code class="docutils literal notranslate"><span class="pre">as_labeled_array()</span></code> on the collection combines them along a <code class="docutils literal notranslate"><span class="pre">measure</span></code>
+axis. <code class="docutils literal notranslate"><span class="pre">as_numpy()</span></code> returns magnitudes in each measure’s current units.
+CSV does not preserve Pint units or dataframe attributes, so record units and
+coordinate units separately. Single simulations have no parameter dimensions.</p>
 <p>Empty requests, unsupported names, and duplicate measures raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
 before computation. For the meaning of each output, see <a class="reference internal" href="../measures.html"><span class="doc">Measure reference</span></a>.</p>
 </section>
@@ -767,7 +721,7 @@ unit-aware observations without adding SciPy as a dependency. See
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -780,6 +734,7 @@ unit-aware observations without adding SciPy as a dependency. See
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-an-interface">Choose an interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-migration">API migration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-select-and-export-results">Read, select, and export results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing">Typing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#particle-size-distributions">Particle-size distributions</a></li>
@@ -791,7 +746,7 @@ unit-aware observations without adding SciPy as a dependency. See
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.6/docs/source/code/public_api.rst">
+    <a href="https://github.com/MartinPdeS/PyMieSim/edit/v6.1.7/docs/source/code/public_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -825,8 +780,8 @@ unit-aware observations without adding SciPy as a dependency. See
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

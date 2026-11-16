@@ -36,7 +36,7 @@ Sphere: Coupling vs wavelength
  .. code-block:: none
 
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter', 'detector:NA', 'detector:polarization_filter') (200, 10, 2, 2)
-    Measure units: {'coupling': <Unit('watt')>}
+    Measure units: watt
 
 
 
@@ -93,17 +93,17 @@ Sphere: Coupling vs wavelength
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get(Measure.COUPLING)
+    result = experiment.run(Measure.COUPLING)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="source:wavelength", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.312 seconds)
+   **Total running time of the script:** (0 minutes 1.994 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_wavelength.py:

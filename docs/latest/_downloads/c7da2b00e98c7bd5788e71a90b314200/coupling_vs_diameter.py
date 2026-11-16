@@ -45,9 +45,9 @@ detector = CoherentModeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-result = experiment.get(Measure.COUPLING, drop_unique_level=True)
+result = experiment.run(Measure.COUPLING, drop_unique_level=True)
 
 print("Result dimensions and shape:", result.dims, result.shape)
-print("Measure units:", result.attrs["units"])
+print("Measure units:", result.units)
 
 result.plot(x="scatterer:diameter")

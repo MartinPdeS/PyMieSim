@@ -85,7 +85,7 @@ has a negative standardized residual.
                 ),
                 source=source,
             )
-            spectrum[index] = simulation.get(Measure.QSCA).magnitude
+            spectrum[index] = simulation.run(Measure.QSCA).magnitude
         return spectrum
 
 
@@ -140,7 +140,7 @@ has a negative standardized residual.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.552 seconds)
+   **Total running time of the script:** (0 minutes 1.610 seconds)
 
 
 .. _sphx_glr_download_gallery_interpretation_inverse_spectrum_diagnostics.py:

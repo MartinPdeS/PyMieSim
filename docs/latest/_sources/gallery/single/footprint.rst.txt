@@ -79,14 +79,14 @@ This example demonstrates how to compute and visualize the footprint of a scatte
         detector=detector,
     )
 
-    footprint = setup.get_representation("footprint", sampling=100)
+    footprint = setup.footprint(sampling=100)
 
     figure = footprint.plot()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.502 seconds)
+   **Total running time of the script:** (0 minutes 0.351 seconds)
 
 
 .. _sphx_glr_download_gallery_single_footprint.py:

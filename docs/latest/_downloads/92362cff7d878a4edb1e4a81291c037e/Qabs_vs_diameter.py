@@ -39,9 +39,9 @@ scatterer = InfiniteCylinderSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-result = experiment.get(Measure.QABS, Measure.QSCA, Measure.QEXT)
+result = experiment.run(Measure.QABS, Measure.QSCA, Measure.QEXT)
 
-print("Result dimensions and shape:", result.dims, result.shape)
-print("Measure units:", result.attrs["units"])
+print("Result dimensions and shape:", result["Qabs"].dims, result["Qabs"].shape)
+print("Measure units:", {name: value.units for name, value in result.items()})
 
-result.plot(x="scatterer:diameter", y="Qabs")
+result["Qabs"].plot(x="scatterer:diameter", y="Qabs")

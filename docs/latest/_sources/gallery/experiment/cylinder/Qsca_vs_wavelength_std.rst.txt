@@ -36,7 +36,7 @@ InfiniteCylinder: Qsca vs wavelength std
  .. code-block:: none
 
     Result dimensions and shape: ('source:wavelength', 'scatterer:diameter') (300, 10)
-    Measure units: {'Qsca': <Unit('dimensionless')>}
+    Measure units: dimensionless
 
 
 
@@ -76,17 +76,17 @@ InfiniteCylinder: Qsca vs wavelength std
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get(Measure.QSCA)
+    result = experiment.run(Measure.QSCA)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="source:wavelength", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.264 seconds)
+   **Total running time of the script:** (0 minutes 0.162 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_wavelength_std.py:

@@ -45,9 +45,9 @@ detector = PhotodiodeSet(
 
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-result = experiment.get(Measure.COUPLING)
+result = experiment.run(Measure.COUPLING)
 
 print("Result dimensions and shape:", result.dims, result.shape)
-print("Measure units:", result.attrs["units"])
+print("Measure units:", result.units)
 
 result.plot(x="detector:phi_offset", y='coupling', std='detector:NA')

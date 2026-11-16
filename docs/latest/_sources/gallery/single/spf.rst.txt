@@ -72,14 +72,14 @@ This example demonstrates the computation and visualization of the Scattering Ph
         source=source,
     )
 
-    spf = setup.get_representation("spf", sampling=100)
+    spf = setup.spf(sampling=100)
 
     figure = spf.plot()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.407 seconds)
+   **Total running time of the script:** (0 minutes 0.808 seconds)
 
 
 .. _sphx_glr_download_gallery_single_spf.py:

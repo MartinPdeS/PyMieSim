@@ -34,12 +34,12 @@ be compared only under the same environment.
 
  .. code-block:: none
 
-    Python: 3.11.17
-    Platform: Linux-7.0.0-1017-azure-x86_64-with-glibc2.39
+    Python: 3.11.18
+    Platform: Linux-7.0.0-1016-aws-x86_64-with-glibc2.43
     PyMieSim grid: [1, 1, 1, 1, 100, 1, 1]
     Results: 100
-    Median runtime: 0.001475 s
-    All timings: [0.001922, 0.001472, 0.001488, 0.001456, 0.001475]
+    Median runtime: 0.000831 s
+    All timings: [0.000836, 0.000831, 0.000806, 0.00082, 0.000836]
 
 
 
@@ -77,12 +77,12 @@ be compared only under the same environment.
 
     experiment = build_experiment()
     for _ in range(2):
-        experiment.get(Measure.QSCA).as_numpy()
+        experiment.run(Measure.QSCA).as_numpy()
 
     timings = []
     for _ in range(5):
         start = time.perf_counter()
-        values = experiment.get(Measure.QSCA).as_numpy()
+        values = experiment.run(Measure.QSCA).as_numpy()
         timings.append(time.perf_counter() - start)
 
     print(f"Python: {platform.python_version()}")
@@ -95,7 +95,7 @@ be compared only under the same environment.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.091 seconds)
+   **Total running time of the script:** (0 minutes 0.017 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_reproducible_parameter_sweep.py:

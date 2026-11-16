@@ -32,9 +32,9 @@ This example demonstrates the process of computing the coupling efficiency of a 
 
  .. code-block:: none
 
-    Side coupling: 0.0065652088569158025 watt 
-     Forward coupling: 2.2586562867587188 watt  
-     Ratio: 0.290668788137623 dimensionless %
+    Side coupling: SimulationResult(measure='coupling', value=<Quantity(0.00656520886, 'watt')>, dims=(), coords={}, coordinate_units={}, metadata={}) 
+     Forward coupling: SimulationResult(measure='coupling', value=<Quantity(2.25865629, 'watt')>, dims=(), coords={}, coordinate_units={}, metadata={})  
+     Ratio: 0.29066878813762315 dimensionless %
 
 
 
@@ -91,7 +91,7 @@ This example demonstrates the process of computing the coupling efficiency of a 
         detector=side_detector
     )
 
-    side_coupling = setup.get(Measure.COUPLING)
+    side_coupling = setup.run(Measure.COUPLING)
 
 
     # Second detector
@@ -105,14 +105,14 @@ This example demonstrates the process of computing the coupling efficiency of a 
         detector=forward_detector
     )
 
-    forward_coupling = setup.get(Measure.COUPLING)
+    forward_coupling = setup.run(Measure.COUPLING)
 
-    print(f"Side coupling: {side_coupling} \n Forward coupling: {forward_coupling}  \n Ratio: {side_coupling / forward_coupling * 100} %")
+    print(f"Side coupling: {side_coupling} \n Forward coupling: {forward_coupling}  \n Ratio: {side_coupling.quantity / forward_coupling.quantity * 100} %")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.006 seconds)
+   **Total running time of the script:** (0 minutes 0.005 seconds)
 
 
 .. _sphx_glr_download_gallery_single_coupling.py:

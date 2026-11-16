@@ -39,12 +39,12 @@ extension; use an operating-system profiler for complete process memory.
 
  .. code-block:: none
 
-      10 diameters | 0.010 MiB peak Python memory
-      25 diameters | 0.011 MiB peak Python memory
-      50 diameters | 0.012 MiB peak Python memory
-     100 diameters | 0.015 MiB peak Python memory
-     200 diameters | 0.018 MiB peak Python memory
-     400 diameters | 0.025 MiB peak Python memory
+      10 diameters | 0.015 MiB peak Python memory
+      25 diameters | 0.015 MiB peak Python memory
+      50 diameters | 0.017 MiB peak Python memory
+     100 diameters | 0.020 MiB peak Python memory
+     200 diameters | 0.022 MiB peak Python memory
+     400 diameters | 0.029 MiB peak Python memory
 
 
 
@@ -80,7 +80,7 @@ extension; use an operating-system profiler for complete process memory.
             material=[1.5],
             medium=[1.0],
         )
-        Experiment(scatterer_set=scatterer, source_set=source).get(Measure.QSCA).as_numpy()
+        Experiment(scatterer_set=scatterer, source_set=source).run(Measure.QSCA).as_numpy()
 
         _, peak_bytes = tracemalloc.get_traced_memory()
         tracemalloc.stop()
@@ -107,7 +107,7 @@ extension; use an operating-system profiler for complete process memory.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.467 seconds)
+   **Total running time of the script:** (0 minutes 0.235 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_memory_scaling.py:

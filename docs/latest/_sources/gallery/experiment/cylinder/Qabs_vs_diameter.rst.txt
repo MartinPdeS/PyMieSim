@@ -37,7 +37,7 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
  .. code-block:: none
 
-    Result dimensions and shape: ('measure', 'scatterer:diameter', 'scatterer:material') (3, 300, 3)
+    Result dimensions and shape: ('scatterer:diameter', 'scatterer:material') (300, 3)
     Measure units: {'Qabs': <Unit('dimensionless')>, 'Qsca': <Unit('dimensionless')>, 'Qext': <Unit('dimensionless')>}
 
 
@@ -84,17 +84,17 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get(Measure.QABS, Measure.QSCA, Measure.QEXT)
+    result = experiment.run(Measure.QABS, Measure.QSCA, Measure.QEXT)
 
-    print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Result dimensions and shape:", result["Qabs"].dims, result["Qabs"].shape)
+    print("Measure units:", {name: value.units for name, value in result.items()})
 
-    result.plot(x="scatterer:diameter", y="Qabs")
+    result["Qabs"].plot(x="scatterer:diameter", y="Qabs")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.384 seconds)
+   **Total running time of the script:** (0 minutes 2.085 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qabs_vs_diameter.py:

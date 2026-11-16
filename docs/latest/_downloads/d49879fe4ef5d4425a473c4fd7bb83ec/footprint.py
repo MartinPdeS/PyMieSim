@@ -45,6 +45,6 @@ setup = Simulation(
     detector=detector,
 )
 
-footprint = setup.get_representation("footprint", sampling=100)
+footprint = setup.footprint(sampling=100)
 
 figure = footprint.plot()

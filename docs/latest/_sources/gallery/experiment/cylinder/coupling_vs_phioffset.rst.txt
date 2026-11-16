@@ -38,7 +38,7 @@ This example demonstrates how to use a goniometer setup to measure and visualize
  .. code-block:: none
 
     Result dimensions and shape: ('detector:NA', 'detector:phi_offset') (4, 200)
-    Measure units: {'coupling': <Unit('watt')>}
+    Measure units: watt
 
 
 
@@ -92,17 +92,17 @@ This example demonstrates how to use a goniometer setup to measure and visualize
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get(Measure.COUPLING)
+    result = experiment.run(Measure.COUPLING)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="detector:phi_offset")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.284 seconds)
+   **Total running time of the script:** (0 minutes 0.783 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_coupling_vs_phioffset.py:

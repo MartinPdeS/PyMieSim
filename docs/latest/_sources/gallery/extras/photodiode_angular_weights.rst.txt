@@ -80,7 +80,7 @@ single-detector Fibonacci mesh using ``angular_weights``.
         detector=detector,
     )
 
-    baseline_coupling = setup.get(Measure.COUPLING)
+    baseline_coupling = setup.run(Measure.COUPLING)
 
     # Rebuild the current mesh explicitly so the example can derive weights from it.
     detector.initialize_mesh(scatterer)
@@ -98,7 +98,7 @@ single-detector Fibonacci mesh using ``angular_weights``.
 
     weighted_active_points = np.abs(detector.angular_weights) > 0.0
 
-    masked_coupling = setup.get(Measure.COUPLING)
+    masked_coupling = setup.run(Measure.COUPLING)
 
     figure = plt.figure(figsize=(15, 5))
 
@@ -173,7 +173,7 @@ single-detector Fibonacci mesh using ``angular_weights``.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.333 seconds)
+   **Total running time of the script:** (0 minutes 0.198 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_photodiode_angular_weights.py:

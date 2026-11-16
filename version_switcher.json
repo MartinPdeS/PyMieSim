@@ -5,6 +5,11 @@
     "url": "https://martinpdes.github.io/PyMieSim/docs/latest"
   },
   {
+    "name": "v6.1.7",
+    "version": "v6.1.7",
+    "url": "https://martinpdes.github.io/PyMieSim/docs/v6.1.7"
+  },
+  {
     "name": "v6.1.6",
     "version": "v6.1.6",
     "url": "https://martinpdes.github.io/PyMieSim/docs/v6.1.6"
@@ -23,10 +28,5 @@
     "name": "v6.1.1",
     "version": "v6.1.1",
     "url": "https://martinpdes.github.io/PyMieSim/docs/v6.1.1"
-  },
-  {
-    "name": "v6.1.0",
-    "version": "v6.1.0",
-    "url": "https://martinpdes.github.io/PyMieSim/docs/v6.1.0"
   }
 ]

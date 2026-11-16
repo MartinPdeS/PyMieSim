@@ -48,7 +48,7 @@ detector = PhotodiodeSet(
 experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
 # Gather data
-data_experiment = experiment.get(Measure.COUPLING).as_numpy()
+data_experiment = experiment.run(Measure.COUPLING).as_numpy()
 
 data_experiment /= data_experiment.max()  # Normalize data
 
@@ -71,7 +71,7 @@ single_setup = Simulation(
     source=single_source
 )
 
-s1s2 = single_setup.get_representation("s1s2", sampling=800)
+s1s2 = single_setup.s1s2(sampling=800)
 phi, s1, s2 = s1s2.phi, np.abs(s1s2.S1) ** 2, np.abs(s1s2.S2) ** 2
 s1 /= s1.max()  # Normalize S1 data
 s2 /= s2.max()  # Normalize S2 data

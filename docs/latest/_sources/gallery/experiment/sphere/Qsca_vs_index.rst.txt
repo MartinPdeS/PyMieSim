@@ -36,10 +36,10 @@ Sphere: Qsca vs index
  .. code-block:: none
 
     Result dimensions and shape: ('source:wavelength', 'scatterer:material') (3, 100)
-    Measure units: {'Qsca': <Unit('dimensionless')>}
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
+    Measure units: dimensionless
+    /opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
       return math.isfinite(val)
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
+    /opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
 
@@ -81,17 +81,17 @@ Sphere: Qsca vs index
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get(Measure.QSCA)
+    result = experiment.run(Measure.QSCA)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="scatterer:material")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.065 seconds)
+   **Total running time of the script:** (0 minutes 0.040 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_index.py:

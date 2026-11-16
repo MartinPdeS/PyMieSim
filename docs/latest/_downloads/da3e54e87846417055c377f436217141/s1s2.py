@@ -38,6 +38,6 @@ setup = Simulation(
     source=source,
 )
 
-s1s2 = setup.get_representation("s1s2", sampling=200)
+s1s2 = setup.s1s2(sampling=200)
 
 figure = s1s2.plot()

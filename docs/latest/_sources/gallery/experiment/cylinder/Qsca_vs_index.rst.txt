@@ -37,11 +37,11 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
  .. code-block:: none
 
-    Result dimensions and shape: ('measure', 'source:wavelength', 'scatterer:material') (2, 3, 1500)
+    Result dimensions and shape: ('source:wavelength', 'scatterer:material') (3, 1500)
     Measure units: {'Qsca': <Unit('dimensionless')>, 'Qext': <Unit('dimensionless')>}
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
+    /opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1719: ComplexWarning: Casting complex values to real discards the imaginary part
       return math.isfinite(val)
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
+    /opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: ComplexWarning: Casting complex values to real discards the imaginary part
       return np.asarray(x, float)
 
 
@@ -83,17 +83,17 @@ This example demonstrates how to compute and visualize the scattering efficiency
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get(Measure.QSCA, Measure.QEXT)
+    result = experiment.run(Measure.QSCA, Measure.QEXT)
 
-    print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Result dimensions and shape:", result["Qsca"].dims, result["Qsca"].shape)
+    print("Measure units:", {name: value.units for name, value in result.items()})
 
-    result.plot(x="scatterer:material", y="Qsca")
+    result["Qsca"].plot(x="scatterer:material", y="Qsca")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.483 seconds)
+   **Total running time of the script:** (0 minutes 0.329 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_Qsca_vs_index.py:

@@ -38,8 +38,8 @@ for diameter in (80, 300, 1000):
     intensity = (np.abs(s1.magnitude) ** 2 + np.abs(s2.magnitude) ** 2) / 2
     normalization = 2 * np.pi * np.trapezoid(intensity * np.sin(angles), angles)
     phase_function = intensity / normalization
-    qsca = simulation.get(Measure.QSCA).magnitude
-    asymmetry = simulation.get(Measure.G).magnitude
+    qsca = simulation.run(Measure.QSCA).magnitude
+    asymmetry = simulation.run(Measure.G).magnitude
     axis.semilogy(
         np.rad2deg(angles),
         phase_function,

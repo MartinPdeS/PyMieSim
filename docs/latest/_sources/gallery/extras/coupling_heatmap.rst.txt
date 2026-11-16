@@ -40,7 +40,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:684: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+    /opt/hostedtoolcache/Python/3.11.18/x64/lib/python3.11/site-packages/matplotlib/cbook.py:684: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
       x = np.array(x, subok=True, copy=copy)
 
 
@@ -98,7 +98,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    values = experiment.get(Measure.COUPLING).as_numpy()
+    values = experiment.run(Measure.COUPLING).as_numpy()
 
 
     figure, ax = plt.subplots(1, 1)
@@ -121,7 +121,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.904 seconds)
+   **Total running time of the script:** (0 minutes 1.791 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_coupling_heatmap.py:

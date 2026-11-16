@@ -36,8 +36,8 @@ Sphere: Coupling vs numerical aperture
  .. code-block:: none
 
     Result dimensions and shape: ('detector:NA', 'detector:gamma_offset') (150, 2)
-    Measure units: {'coupling': <Unit('watt')>}
-    1.0161565882863277 dimensionless
+    Measure units: watt
+    SimulationResult(measure='Qsca', value=<Quantity(1.01615659, 'dimensionless')>, dims=(), coords={}, coordinate_units={}, metadata={})
 
 
 
@@ -94,10 +94,10 @@ Sphere: Coupling vs numerical aperture
         detector_set=detector
     )
 
-    result = setup.get(Measure.COUPLING, drop_unique_level=True)
+    result = setup.run(Measure.COUPLING, drop_unique_level=True)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="detector:NA")
 
@@ -119,12 +119,12 @@ Sphere: Coupling vs numerical aperture
         scatterer=single_scatterer
     )
 
-    print(setup.get(Measure.QSCA))
+    print(setup.run(Measure.QSCA))
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.297 seconds)
+   **Total running time of the script:** (0 minutes 0.789 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_coupling_vs_NA.py:

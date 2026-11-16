@@ -36,7 +36,7 @@ Sphere: Coupling vs polarization filter
  .. code-block:: none
 
     Result dimensions and shape: ('scatterer:diameter', 'scatterer:material', 'detector:polarization_filter') (20, 2, 100)
-    Measure units: {'coupling': <Unit('watt')>}
+    Measure units: watt
 
 
 
@@ -90,17 +90,17 @@ Sphere: Coupling vs polarization filter
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get(Measure.COUPLING)
+    result = experiment.run(Measure.COUPLING)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="detector:polarization_filter", std="scatterer:diameter")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.846 seconds)
+   **Total running time of the script:** (0 minutes 1.744 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_coupling_vs_filter.py:

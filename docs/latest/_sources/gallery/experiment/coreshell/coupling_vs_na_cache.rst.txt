@@ -88,10 +88,10 @@ Importing the package dependencies: numpy, PyMieSim
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source, detector_set=detector)
 
-    result = experiment.get(Measure.COUPLING)
+    result = experiment.run(Measure.COUPLING)
 
     print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Measure units:", result.units)
 
     result.plot(x="detector:cache_NA")
 
@@ -108,7 +108,7 @@ Importing the package dependencies: numpy, PyMieSim
  .. code-block:: none
 
     Result dimensions and shape: ('scatterer:core_diameter', 'detector:cache_NA') (3, 200)
-    Measure units: {'coupling': <Unit('watt')>}
+    Measure units: watt
 
 
 
@@ -116,7 +116,7 @@ Importing the package dependencies: numpy, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.505 seconds)
+   **Total running time of the script:** (0 minutes 2.190 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coupling_vs_na_cache.py:

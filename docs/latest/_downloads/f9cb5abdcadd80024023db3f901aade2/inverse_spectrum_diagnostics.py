@@ -38,7 +38,7 @@ def scattering_spectrum(diameter, refractive_index):
             ),
             source=source,
         )
-        spectrum[index] = simulation.get(Measure.QSCA).magnitude
+        spectrum[index] = simulation.run(Measure.QSCA).magnitude
     return spectrum
 
 

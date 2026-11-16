@@ -48,10 +48,10 @@ setup = Experiment(
     detector_set=detector
 )
 
-result = setup.get(Measure.COUPLING, drop_unique_level=True)
+result = setup.run(Measure.COUPLING, drop_unique_level=True)
 
 print("Result dimensions and shape:", result.dims, result.shape)
-print("Measure units:", result.attrs["units"])
+print("Measure units:", result.units)
 
 result.plot(x="detector:NA")
 
@@ -73,4 +73,4 @@ setup = Simulation(
     scatterer=single_scatterer
 )
 
-print(setup.get(Measure.QSCA))
+print(setup.run(Measure.QSCA))

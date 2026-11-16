@@ -33,12 +33,12 @@ def build_experiment(size: int = 100) -> Experiment:
 
 experiment = build_experiment()
 for _ in range(2):
-    experiment.get(Measure.QSCA).as_numpy()
+    experiment.run(Measure.QSCA).as_numpy()
 
 timings = []
 for _ in range(5):
     start = time.perf_counter()
-    values = experiment.get(Measure.QSCA).as_numpy()
+    values = experiment.run(Measure.QSCA).as_numpy()
     timings.append(time.perf_counter() - start)
 
 print(f"Python: {platform.python_version()}")

@@ -49,13 +49,13 @@ their units in the table. This example produces text rather than a plot.
     g                | 6.9601e-01 |       
     Qsca             | 1.7376e+00 |       
     Qext             | 1.7376e+00 |       
-    Qabs             | 0.0000e+00 |       
+    Qabs             | -2.2204e-16 |       
     Qback            | 3.5502e-01 |       
     Qratio           | 2.0431e-01 |       
     Qpr              | 5.2823e-01 |       
     Csca             | 8.7344e-13 | m^2   
     Cext             | 8.7344e-13 | m^2   
-    Cabs             | 0.0000e+00 | m^2   
+    Cabs             | -1.1161e-28 | m^2   
     Cback            | 1.7845e-13 | m^2   
     Cratio           | 1.0270e-13 | m^2   
     Cpr              | 2.6552e-13 | m^2   
@@ -102,7 +102,7 @@ their units in the table. This example produces text rather than a plot.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.003 seconds)
+   **Total running time of the script:** (0 minutes 0.002 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_properties_sphere.py:

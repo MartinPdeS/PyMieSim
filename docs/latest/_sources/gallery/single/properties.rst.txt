@@ -79,15 +79,15 @@ Importing the package: PyMieSim
 
  .. code-block:: none
 
-    Qext: 4.045950200439663 dimensionless
-    Qsca: 4.045950200439663 dimensionless
-    Qabs: 0.0 dimensionless
-    Qback: 0.706181111517494 dimensionless
-    g: 0.8083293621286377 dimensionless
-    Cext: 7.149784177401411e-12 meter ** 2
-    Csca: 7.149784177401411e-12 meter ** 2
-    Cabs: 0.0 meter ** 2
-    Cback: 1.247925033026569e-12 meter ** 2
+    Qext: SimulationResult(measure='Qext', value=<Quantity(4.0459502, 'dimensionless')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Qsca: SimulationResult(measure='Qsca', value=<Quantity(4.0459502, 'dimensionless')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Qabs: SimulationResult(measure='Qabs', value=<Quantity(0.0, 'dimensionless')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Qback: SimulationResult(measure='Qback', value=<Quantity(0.706181112, 'dimensionless')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    g: SimulationResult(measure='g', value=<Quantity(0.808329362, 'dimensionless')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Cext: SimulationResult(measure='Cext', value=<Quantity(7.14978418e-12, 'meter ** 2')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Csca: SimulationResult(measure='Csca', value=<Quantity(7.14978418e-12, 'meter ** 2')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Cabs: SimulationResult(measure='Cabs', value=<Quantity(0.0, 'meter ** 2')>, dims=(), coords={}, coordinate_units={}, metadata={})
+    Cback: SimulationResult(measure='Cback', value=<Quantity(1.24792503e-12, 'meter ** 2')>, dims=(), coords={}, coordinate_units={}, metadata={})
 
 
 
@@ -95,7 +95,7 @@ Importing the package: PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.004 seconds)
+   **Total running time of the script:** (0 minutes 0.002 seconds)
 
 
 .. _sphx_glr_download_gallery_single_properties.py:

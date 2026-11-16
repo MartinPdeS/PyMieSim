@@ -35,7 +35,7 @@ Sphere: Qsca vs wavelength
 
  .. code-block:: none
 
-    Result dimensions and shape: ('measure', 'source:wavelength') (2, 50)
+    Result dimensions and shape: ('source:wavelength',) (50,)
     Measure units: {'Qsca': <Unit('dimensionless')>, 'Qpr': <Unit('dimensionless')>}
 
 
@@ -83,17 +83,17 @@ Sphere: Qsca vs wavelength
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    result = experiment.get(Measure.QSCA, Measure.QPR)
+    result = experiment.run(Measure.QSCA, Measure.QPR)
 
-    print("Result dimensions and shape:", result.dims, result.shape)
-    print("Measure units:", result.attrs["units"])
+    print("Result dimensions and shape:", result["Qsca"].dims, result["Qsca"].shape)
+    print("Measure units:", {name: value.units for name, value in result.items()})
 
-    result.isel({"measure": 0}).plot(x="source:wavelength", y="Qsca")
+    result["Qsca"].plot(x="source:wavelength", y="Qsca")
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.074 seconds)
+   **Total running time of the script:** (0 minutes 0.673 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_Qsca_vs_wavelength.py:
