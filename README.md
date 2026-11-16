@@ -18,7 +18,7 @@
 | PyMieSim/single/representations/s1s2.py       |       39 |        4 |       16 |        6 |     78.18% |109-110, 112-\>115, 116, 118-\>121, 160, 162-\>166 |
 | PyMieSim/single/representations/spf.py        |       47 |        2 |        4 |        2 |     92.16% |  187, 191 |
 | PyMieSim/single/representations/stokes.py     |       53 |        1 |        4 |        2 |     94.74% |260-\>exit, 292 |
-| **TOTAL**                                     | **1109** |  **224** |  **280** |   **43** | **75.74%** |           |
+| **TOTAL**                                     | **1108** |  **224** |  **280** |   **43** | **75.72%** |           |
 
 3 files skipped due to complete coverage.
 
