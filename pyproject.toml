@@ -86,7 +86,7 @@ keywords = [
 
 [project.optional-dependencies]
 release = ["martinpdes-maintenance==0.2.3"]
-testing = ["martinpdes-maintenance[testing]==0.2.3", "pytest-json-report==1.5.0", "coverage==7.16.2"]
+testing = ["scipy", "martinpdes-maintenance[testing]==0.2.3", "pytest-json-report==1.5.0", "coverage==7.16.2"]
 documentation = [
     "MartinPdeS-docs>=0.4.0,<0.5",
 ]
@@ -112,8 +112,8 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*", "cp314-manylinux*"]
 manylinux-x86_64-image = "manylinux_2_28"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-test-command = "python -m pytest {project}/tests --config-file={project}/pytest.ini --ignore={project}/tests/extra/test_system_plot.py --ignore={project}/tests/single/representation.py"
-# test-command = "cd {project}; python -m pytest --config-file=pytest.ini --ignore=tests/extra/test_system_plot.py --ignore=tests/single/representation.py"
+test-command = "python -m pytest {project}/tests --config-file={project}/pytest.ini --ignore={project}/tests/components/test_system_plot.py --ignore={project}/tests/single/test_representation.py"
+# test-command = "cd {project}; python -m pytest --config-file=pytest.ini --ignore=tests/components/test_system_plot.py --ignore=tests/single/test_representation.py"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]

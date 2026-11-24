@@ -37,7 +37,7 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     Parameters:
         measure (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
+    diameters = pymiescatt_dataframe["diameter"].to_numpy() * ureg.nanometer
 
     # Get data from PyMieSim
     scatterer = SphereSet(
@@ -51,16 +51,12 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     # Retrieve the specified measurement from the experiment
     pymiesim_data = experiment.run(measure)
 
-    discrepency = np.allclose(
-        pymiesim_data.as_numpy(),
-        pymiescatt_dataframe[measure].squeeze().values,
-        atol=1e-3,
-        rtol=1e-2,
+    # The tabulated dipole approximation rounds g to zero at small diameters.
+    np.testing.assert_allclose(
+        pymiesim_data.as_numpy(), pymiescatt_dataframe[measure].to_numpy(),
+        rtol=1e-2, atol=1e-3 if measure == "g" else 0,
+        err_msg=f"{measure} differs from the PyMieScatt reference",
     )
-
-    assert (
-        discrepency
-    ), f"Mismatch in PyMieSim vs PyMieScatt for {measure} \n {pymiesim_data.as_numpy()}"
 
 
 if __name__ == "__main__":

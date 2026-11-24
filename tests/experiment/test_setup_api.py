@@ -13,6 +13,11 @@ from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim.experiment.scatterer_set import SphereSet
 from PyMieSim.experiment.source_set import GaussianSet
 from PyMieSim.units import ureg
+from PyMieSim.single.setup import Setup
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import PlaneWave
+from PyMieSim.experiment.source_set import PlaneWaveSet
+from PyMieSim.polarization import PolarizationState
 
 
 def _setup():
@@ -89,16 +94,28 @@ def test_labeled_array_converts_multiple_measures_to_tabular_columns():
 
 
 def test_get_labeled_array_preserves_grid_coordinates():
-    experiment = _setup()
-
+    wavelengths = [600, 700] * ureg.nanometer
+    diameters = [80, 175, 320] * ureg.nanometer
+    amplitude = 1 * ureg.volt / ureg.meter
+    angle = 0 * ureg.degree
+    experiment = Experiment(
+        source_set=PlaneWaveSet(wavelength=wavelengths, polarization=PolarizationSet(angles=angle), amplitude=amplitude),
+        scatterer_set=SphereSet(diameter=diameters, material=1.6, medium=1.33),
+    )
     result = experiment.run("Qsca").as_labeled_array()
-
     assert isinstance(result, LabeledArray)
     assert result.dims == ("source:wavelength", "scatterer:diameter")
-    assert result.shape == (2, 2)
-    np.testing.assert_allclose(result.to_numpy(), experiment.run("Qsca").as_labeled_array().as_numpy())
-    np.testing.assert_allclose(result.coords["source:wavelength"], [600e-9, 700e-9])
-    assert result.attrs["coordinate_units"]["source:wavelength"] == ureg.meter
+    assert result.shape == (2, 3)
+    for axis, coordinates in zip(result.dims, (wavelengths, diameters)):
+        assert result.attrs["coordinate_units"][axis] == ureg.meter
+        np.testing.assert_allclose(result.coords[axis], coordinates.to("meter").magnitude, rtol=1e-12, atol=0)
+    expected = np.empty((2, 3))
+    for row, wavelength in enumerate(wavelengths):
+        source = PlaneWave(wavelength=wavelength, polarization=PolarizationState(angle=angle), amplitude=amplitude)
+        for column, diameter in enumerate(diameters):
+            sphere = Sphere(diameter=diameter, material=1.6, medium=1.33)
+            expected[row, column] = Setup(source=source, scatterer=sphere).get("Qsca").magnitude
+    np.testing.assert_allclose(result.to_numpy(), expected, rtol=1e-12, atol=0)
 
 
 def test_labeled_array_repr_is_informative():

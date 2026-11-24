@@ -1,3 +1,4 @@
+import pytest
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -72,3 +73,23 @@ def test_coreshell_nearfield_plot_draws_core_and_outer_shell_circles():
     assert len(axis.patches) == 2
     assert {patch.get_linestyle() for patch in axis.patches} == {"--", "-"}
     plt.close(figure)
+
+
+@pytest.mark.parametrize("radius,inside,outside", [(100., 1.5, 2.), (200., 2., 1.)], ids=["core", "shell"])
+def test_dielectric_interface_conditions(radius, inside, outside):
+    """Tangential E and normal displacement converge from both sides of each interface."""
+    setup = _setup()
+    normal = np.array([1., 2., 3.]) / np.sqrt(14)
+    residuals = []
+    for offset in (1e-2, 1e-4):  # nm
+        points = (radius + np.array([-offset, offset]))[:, None] * normal * ureg.nanometer
+        fields = np.column_stack([
+            setup.get_total_nearfields(*points.T, component).to("volt/meter").magnitude
+            for component in ("Ex", "Ey", "Ez")
+        ])
+        tangent_jump = np.cross(normal, fields[0] - fields[1])
+        displacement_jump = normal @ (inside**2 * fields[0] - outside**2 * fields[1])
+        residuals.append(np.linalg.norm([*tangent_jump, displacement_jump]))
+    # With unit incident amplitude the finite-offset error is first order in offset.
+    assert residuals[1] < 0.02 * residuals[0]
+    assert residuals[1] < 1e-5

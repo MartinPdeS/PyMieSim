@@ -134,7 +134,7 @@ def test_detector_single_polarization_filter():
 
     # Assert that the coupling values for 0° and 180° polarization are nearly equal
     assert np.isclose(
-        coupling_0, coupling_180, atol=1e-5
+        coupling_0, coupling_180, atol=0, rtol=1e-10
     ), f"Mismatch in coupling values for 0° and 180° polarization: {coupling_0} vs {coupling_180}"
 
 
@@ -197,7 +197,7 @@ def test_detector_single_rotation():
 
     # Assert that the coupling values for 0° and 180° rotation are nearly equal
     assert np.isclose(
-        coupling_0, coupling_180, rtol=1e-3
+        coupling_0, coupling_180, atol=0, rtol=1e-3
     ), f"Mismatch in coupling values for 0° and 180° rotation: {coupling_0} vs {coupling_180}"
 
 
@@ -252,7 +252,7 @@ def test_detector_single_angular_weights_persist_across_coupling_calls(source_si
     masked_coupling_second = setup.get("coupling")
 
     assert masked_coupling_first < baseline_coupling
-    assert np.isclose(masked_coupling_first, masked_coupling_second, rtol=1e-12)
+    assert np.isclose(masked_coupling_first, masked_coupling_second, atol=0, rtol=1e-12)
 
 
 def test_detector_experiment_polarization_filter(
@@ -285,7 +285,7 @@ def test_detector_experiment_polarization_filter(
 
     # Assert that the coupling values for 0° and 180° polarization are equal
     assert (
-        np.isclose(coupling_values[0], coupling_values[-1])
+        np.isclose(coupling_values[0], coupling_values[-1], atol=0, rtol=1e-10)
     ), "Mismatch in coupling values for 0° and 180° polarization filters."
 
 

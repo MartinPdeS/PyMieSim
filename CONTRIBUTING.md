@@ -3,6 +3,26 @@
 Thank you for improving PyMieSim. Focused bug fixes, validation cases,
 documentation corrections, and feature contributions are welcome.
 
+## Running and organizing tests
+
+Run `python -m pytest` for the Python suite. To work on scattering mathematics,
+run `python -m pytest tests/physics tests/references`. Use `test_*.py` for
+runtime test modules so local, coverage, and wheel jobs discover them consistently.
+
+| Directory under `tests/` | What belongs there |
+| --- | --- |
+| `single/` and `experiment/` | Public simulation and sweep behavior, including shapes, units, labels, and errors |
+| `components/` | Shared components such as meshes, materials, polarization, and extension bindings |
+| `physics/` | Physical identities, limiting cases, symmetries, conservation, and boundary conditions |
+| `references/` | Comparisons with independent solvers or published numerical data |
+| `native/` | C++ regressions run by CTest |
+| `typing/` | Static public API examples checked by mypy |
+
+Keep packaging checks such as `test_release_metadata.py` at the suite root.
+For a numerical regression, identify a wrong answer the test should reject,
+exercise a public entry point, and choose tolerances for the units, magnitude,
+and accuracy of the reference.
+
 ## Development setup
 
 PyMieSim requires Python 3.10 or newer, CMake, a C++ compiler, pybind11, and

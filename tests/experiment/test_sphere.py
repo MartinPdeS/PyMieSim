@@ -13,8 +13,6 @@ from PyMieSim.experiment.detector_set import CoherentModeSet
 from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.experiment.polarization_set import PolarizationSet
 from PyMieSim import Experiment
-from PyMieSim.experiment.scatterer_set import *
-from PyMieSim.experiment.source_set import *
 
 
 properties = [
@@ -46,7 +44,6 @@ planewave_source = PlaneWaveSet(
 )
 
 sources = [gaussian_source, planewave_source]
-sources = [gaussian_source]
 
 
 @pytest.mark.parametrize(
@@ -90,9 +87,9 @@ def test_get_measure(source, measure, material, medium):
     )
 
 
-    experiment.run(measure, drop_unique_level=True)
-
-    experiment.run(measure).as_numpy()
+    values = experiment.run(measure, drop_unique_level=True).as_numpy()
+    assert values.shape == (15, 10)
+    assert np.isfinite(values).all()
 
 
 if __name__ == "__main__":

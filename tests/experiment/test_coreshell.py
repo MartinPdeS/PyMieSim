@@ -105,7 +105,9 @@ def test_measure(measure, source, core_material, shell_material, medium):
         detector_set=detector
     )
 
-    experiment.run(measure, drop_unique_level=False)
+    values = experiment.run(measure, drop_unique_level=True).as_numpy()
+    assert values.shape == (15, 10)
+    assert np.isfinite(values).all()
 
 
 if __name__ == "__main__":
