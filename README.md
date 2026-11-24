@@ -10,15 +10,15 @@
 | PyMieSim/experiment/utils.py                  |       32 |       32 |       14 |        0 |      0.00% |     1-134 |
 | PyMieSim/materials.py                         |       30 |        0 |       14 |        1 |     97.73% |   45-\>48 |
 | PyMieSim/measures.py                          |       70 |        1 |       10 |        0 |     98.75% |        37 |
-| PyMieSim/results.py                           |       72 |        6 |       12 |        3 |     89.29% |35, 72, 103, 133, 137, 164 |
-| PyMieSim/single/api.py                        |       48 |        3 |        2 |        1 |     92.00% |41, 78, 94 |
+| PyMieSim/results.py                           |       72 |        5 |       12 |        3 |     90.48% |72, 103, 133, 137, 164 |
+| PyMieSim/single/api.py                        |       48 |        1 |        2 |        0 |     98.00% |        78 |
 | PyMieSim/single/representations/\_plotting.py |       63 |        2 |       26 |        3 |     94.38% |48, 50, 91-\>exit |
 | PyMieSim/single/representations/farfields.py  |      152 |       77 |       28 |        6 |     46.11% |213-224, 288-320, 344-356, 390-402, 473-\>exit, 501-520, 545-562, 586-605, 634-673, 690-716, 796, 805, 809, 812-813, 834-840, 857-861 |
 | PyMieSim/single/representations/nearfields.py |      254 |       88 |       88 |       14 |     58.48% |26-27, 48, 120-142, 218, 258-\>265, 260-\>262, 262-\>265, 281, 317-345, 375-387, 404-413, 425, 438, 440, 444, 454, 506-\>476, 510, 553, 634-704 |
 | PyMieSim/single/representations/s1s2.py       |       39 |        4 |       16 |        6 |     78.18% |109-110, 112-\>115, 116, 118-\>121, 160, 162-\>166 |
 | PyMieSim/single/representations/spf.py        |       47 |        2 |        4 |        2 |     92.16% |  187, 191 |
 | PyMieSim/single/representations/stokes.py     |       53 |        1 |        4 |        2 |     94.74% |260-\>exit, 292 |
-| **TOTAL**                                     | **1108** |  **224** |  **280** |   **43** | **75.72%** |           |
+| **TOTAL**                                     | **1108** |  **221** |  **280** |   **42** | **76.01%** |           |
 
 3 files skipped due to complete coverage.
 
