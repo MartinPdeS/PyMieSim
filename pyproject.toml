@@ -112,8 +112,8 @@ archs = ["x86_64"]
 build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*", "cp314-manylinux*"]
 manylinux-x86_64-image = "manylinux_2_28"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-test-command = "python -m pytest {project}/tests --config-file={project}/pytest.ini --ignore={project}/tests/components/test_system_plot.py --ignore={project}/tests/single/test_representation.py"
-# test-command = "cd {project}; python -m pytest --config-file=pytest.ini --ignore=tests/components/test_system_plot.py --ignore=tests/single/test_representation.py"
+test-command = "python -m pytest {project}/tests --config-file={project}/pytest.ini --ignore={project}/tests/api/components/test_system_plot.py --ignore={project}/tests/api/single/test_representation.py"
+# test-command = "cd {project}; python -m pytest --config-file=pytest.ini --ignore=tests/api/components/test_system_plot.py --ignore=tests/api/single/test_representation.py"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
@@ -135,7 +135,7 @@ files = [
     "PyMieSim/results.py",
     "PyMieSim/measures.py",
     "PyMieSim/experiment/distributions.py",
-    "tests/typing/public_api.py",
+    "tests/api/typing/public_api.py",
 ]
 follow_imports = "silent"
 ignore_missing_imports = true
