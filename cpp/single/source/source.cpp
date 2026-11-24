@@ -17,6 +17,10 @@ BaseSource::BaseSource(
 }
 
 
+double BaseSource::amplitude_in_medium(double) const {
+    return amplitude;
+}
+
 double BaseSource::compute_angular_frequency(double wavelength_meter) const
 {
     if (wavelength_meter <= 0.0) {
@@ -83,4 +87,10 @@ double Gaussian::compute_amplitude_from_power(
     this->waist = 0.61 * wavelength_meter / numerical_aperture_value;
     this->peak_intensity = 2.0 * optical_power_watt / (Constants::PI * this->waist * this->waist);
     return std::sqrt( 2.0 * this->peak_intensity / (Constants::LIGHT_SPEED * Constants::EPSILON0) );
+}
+
+
+double Gaussian::amplitude_in_medium(double medium_index) const {
+    // At fixed irradiance the peak field scales with the square root of host impedance.
+    return amplitude / std::sqrt(medium_index);
 }

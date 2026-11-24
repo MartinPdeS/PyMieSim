@@ -36,6 +36,8 @@ public:
     // Optional backward compatible constructor for existing call sites
     BaseSource(double wavelength_meter, std::vector<complex128> jones_vector, double amplitude_value);
 
+    virtual double amplitude_in_medium(double medium_index) const;
+
     // Convenience: first row Jones vector as [Ex, Ey]
     std::vector<complex128> get_jones_vector_first_row() const
     {
@@ -81,6 +83,8 @@ public:
     double area = 0.0;
 
     Gaussian() = default;
+
+    double amplitude_in_medium(double medium_index) const override;
 
     Gaussian(
         double wavelength_meter,

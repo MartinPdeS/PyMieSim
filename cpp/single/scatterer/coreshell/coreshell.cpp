@@ -340,9 +340,11 @@ std::vector<complex128> evaluate_core_shell_field(const CoreShell &scatterer, co
         throw std::invalid_argument("x, y, z vectors must have the same length");
 
     const C i_unit{0.0, 1.0};
-    const C e0x = source->polarization.jones_vector[0] * source->amplitude;
-    const C e0y = source->polarization.jones_vector[1] * source->amplitude;
-    const double k_medium = source->wavenumber_vacuum * scatterer.medium->get_refractive_index();
+    const double medium_index = scatterer.medium->get_refractive_index();
+    const double amplitude = source->amplitude_in_medium(medium_index);
+    const C e0x = source->polarization.jones_vector[0] * amplitude;
+    const C e0y = source->polarization.jones_vector[1] * amplitude;
+    const double k_medium = source->wavenumber_vacuum * medium_index;
     const double core_radius = scatterer.core_diameter / 2.0;
     const double outer_radius = scatterer.total_diameter / 2.0;
     const C core_index = scatterer.core_material->get_refractive_index();

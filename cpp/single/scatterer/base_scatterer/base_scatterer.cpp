@@ -143,12 +143,12 @@ complex128 BaseScatterer::get_coefficient(const std::string &type, const size_t 
 }
 
 complex128 BaseScatterer::get_propagator(const double &radius, std::shared_ptr<BaseSource> source) const {
-    const double medium_wavenumber =
-        source->wavenumber_vacuum * this->medium->get_refractive_index(source->wavelength);
+    const double medium_index = this->medium->get_refractive_index(source->wavelength);
+    const double medium_wavenumber = source->wavenumber_vacuum * medium_index;
     const complex128 phase_argument(0.0, medium_wavenumber * radius);
 
     // Use the same outgoing-wave convention as the first-kind Hankel functions in the near field.
-    return source->amplitude * std::exp(phase_argument) / phase_argument;
+    return source->amplitude_in_medium(medium_index) * std::exp(phase_argument) / phase_argument;
 }
 
 void BaseScatterer::get_pi_tau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {
@@ -356,10 +356,12 @@ std::vector<complex128> BaseScatterer::compute_incident_nearfields(const std::ve
     std::vector<complex128> field_values(number_of_points);
 
     const double k0 = source->wavenumber_vacuum;
-    const double k_medium = k0 * this->medium->get_refractive_index(source->wavelength);
+    const double medium_index = this->medium->get_refractive_index(source->wavelength);
+    const double k_medium = k0 * medium_index;
 
-    const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
-    const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
+    const double amplitude = source->amplitude_in_medium(medium_index);
+    const complex128 E0x = source->polarization.jones_vector[0] * amplitude;
+    const complex128 E0y = source->polarization.jones_vector[1] * amplitude;
 
     const complex128 i_unit(0.0, 1.0);
 

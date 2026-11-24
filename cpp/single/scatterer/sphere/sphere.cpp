@@ -208,14 +208,16 @@ std::vector<complex128> Sphere::get_total_nearfields(const std::vector<double> &
     const complex128 particle_refractive_index = this->material->get_refractive_index();
 
     const double k0 = source->wavenumber_vacuum;
-    const double k_medium = k0 * this->medium->get_refractive_index();
+    const double medium_index = this->medium->get_refractive_index();
+    const double k_medium = k0 * medium_index;
 
     const complex128 k_particle = complex128(k0, 0.0) * particle_refractive_index;
 
     const complex128 i_unit(0.0, 1.0);
 
-    const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
-    const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
+    const double amplitude = source->amplitude_in_medium(medium_index);
+    const complex128 E0x = source->polarization.jones_vector[0] * amplitude;
+    const complex128 E0y = source->polarization.jones_vector[1] * amplitude;
 
     auto clamp_m1_p1_local = [](double value) -> double {
         if (value < -1.0)
@@ -459,12 +461,14 @@ std::vector<complex128> Sphere::get_scattered_nearfields(const std::vector<doubl
     const double radius_particle = 0.5 * this->diameter;
 
     const double k0 = source->wavenumber_vacuum;
-    const double k_medium = k0 * this->medium->get_refractive_index();
+    const double medium_index = this->medium->get_refractive_index();
+    const double k_medium = k0 * medium_index;
 
     const complex128 i_unit(0.0, 1.0);
 
-    const complex128 E0x = source->polarization.jones_vector[0] * source->amplitude;
-    const complex128 E0y = source->polarization.jones_vector[1] * source->amplitude;
+    const double amplitude = source->amplitude_in_medium(medium_index);
+    const complex128 E0x = source->polarization.jones_vector[0] * amplitude;
+    const complex128 E0y = source->polarization.jones_vector[1] * amplitude;
 
     std::function<double(double)> clamp_m1_p1_local = [](double value) -> double {
         if (value < -1.0)

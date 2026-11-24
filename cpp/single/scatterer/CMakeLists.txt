@@ -11,7 +11,7 @@ add_library(
     "coreshell/coreshell.cpp"
 )
 
-target_link_libraries("${LIB_NAME}" PUBLIC OpenMP::OpenMP_CXX coordinates_lib mode_field_lib mesh_lib)
+target_link_libraries("${LIB_NAME}" PUBLIC OpenMP::OpenMP_CXX coordinates_lib mode_field_lib mesh_lib source_lib)
 
 add_library(scatterer_binding_utils STATIC utils.cpp)
 target_link_libraries(scatterer_binding_utils PRIVATE pybind11::pybind11)

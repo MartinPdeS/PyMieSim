@@ -218,11 +218,12 @@ std::vector<C> evaluate_cylinder_fields(const InfiniteCylinder &scatterer, const
         throw std::invalid_argument("x, y, z vectors must have the same length");
     }
 
-    const C medium_index = scatterer.medium->get_refractive_index();
+    const double medium_index = scatterer.medium->get_refractive_index();
     const C material_index = scatterer.material->get_refractive_index();
     const C relative_index = material_index / medium_index;
-    const C e0x = source->polarization.jones_vector[0] * source->amplitude;
-    const C e0y = source->polarization.jones_vector[1] * source->amplitude;
+    const double amplitude = source->amplitude_in_medium(medium_index);
+    const C e0x = source->polarization.jones_vector[0] * amplitude;
+    const C e0y = source->polarization.jones_vector[1] * amplitude;
     const C i_unit{0.0, 1.0};
     const double radius = scatterer.diameter / 2.0;
     const C k_medium = source->wavenumber_vacuum * medium_index;

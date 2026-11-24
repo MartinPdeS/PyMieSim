@@ -267,7 +267,9 @@ PYBIND11_MODULE(source, module)
                 return (py::float_(self.amplitude) * ureg.attr("volt/meter")).attr("to_compact")();
             },
             R"pbdoc(
-                Electric field amplitude.
+                Peak electric field amplitude. For a Gaussian this source-only value
+                is referenced to vacuum. The field in a host of index n is smaller
+                by a factor of sqrt(n) for the same optical power.
 
                 Returns
                 -------

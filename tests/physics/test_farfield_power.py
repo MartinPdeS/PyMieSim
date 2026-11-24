@@ -15,7 +15,7 @@ from PyMieSim.experiment.source_set import GaussianSet, PlaneWaveSet
 from PyMieSim.polarization import PolarizationState
 from PyMieSim.single import Simulation
 from PyMieSim.single.detector import CoherentMode, IntegratingSphere, Photodiode
-from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.scatterer import CoreShell, InfiniteCylinder, Sphere
 from PyMieSim.single.setup import Setup
 from PyMieSim.single.source import Gaussian, PlaneWave
 from PyMieSim.units import ureg
@@ -141,8 +141,9 @@ def test_integrating_sphere_power_equals_irradiance_times_cross_section(medium_i
         np.testing.assert_allclose(collected_power.to("watt").magnitude, expected_power, rtol=5e-4, atol=0)
 
 
+@pytest.mark.parametrize("medium_index", [1.0, 1.33])
 @pytest.mark.parametrize("polarization_angle", [0, 90])
-def test_experiment_photodiode_power_matches_differential_cross_section(polarization_angle):
+def test_experiment_photodiode_power_matches_differential_cross_section(polarization_angle, medium_index):
     """A narrow side detector resolves polarized power in the experiment API."""
     wavelength = 600 * ureg.nanometer
     diameter = 400 * ureg.nanometer
@@ -151,7 +152,7 @@ def test_experiment_photodiode_power_matches_differential_cross_section(polariza
     source_aperture = 0.3
     detector_aperture = 0.005
     simulation = Simulation(
-        scatterer=Sphere(diameter=diameter, material=1.6, medium=1.0),
+        scatterer=Sphere(diameter=diameter, material=1.6, medium=medium_index),
         source=Gaussian(
             wavelength=wavelength,
             polarization=PolarizationState(angle=angle),
@@ -173,17 +174,17 @@ def test_experiment_photodiode_power_matches_differential_cross_section(polariza
     )
     experiment = Experiment(
         source_set=source_set,
-        scatterer_set=SphereSet(diameter=diameter, material=1.6, medium=1.0),
+        scatterer_set=SphereSet(diameter=diameter, material=1.6, medium=medium_index),
         detector_set=PhotodiodeSet(
-            numerical_aperture=detector_aperture, phi_offset=90 * ureg.degree, gamma_offset=0 * ureg.degree, sampling=2000
+            medium=medium_index, numerical_aperture=detector_aperture, phi_offset=90 * ureg.degree, gamma_offset=0 * ureg.degree, sampling=2000
         ),
     )
     collected_power = experiment.run("coupling").quantity.to("watt").magnitude.item()
-    vacuum_wavenumber = 2 * np.pi / wavelength.to("meter").magnitude
+    host_wavenumber = 2 * np.pi * medium_index / wavelength.to("meter").magnitude
     beam_waist = 0.61 * wavelength.to("meter").magnitude / source_aperture
     peak_irradiance = 2 * optical_power.magnitude / (np.pi * beam_waist**2)
-    cone_solid_angle = 2 * np.pi * (1 - np.sqrt(1 - detector_aperture**2))
-    expected_power = peak_irradiance * abs(scattering_amplitude / vacuum_wavenumber)**2 * cone_solid_angle
+    cone_solid_angle = 2 * np.pi * (1 - np.sqrt(1 - (detector_aperture / medium_index)**2))
+    expected_power = peak_irradiance * abs(scattering_amplitude / host_wavenumber)**2 * cone_solid_angle
     # Use the cone center as the differential cross-section reference.
     np.testing.assert_allclose(collected_power, expected_power, rtol=1e-3, atol=0)
 
@@ -312,3 +313,41 @@ def test_coherent_mode_power_uses_host_irradiance(mean_coupling):
         expected_power = power_per_solid_angle * abs(np.sum(mode))**2 * solid_angle_per_sample
     collected_power = simulation.run("coupling").quantity.to("watt").magnitude
     np.testing.assert_allclose(collected_power, expected_power, rtol=1e-3, atol=0)
+
+def test_reused_gaussian_scattered_power_equals_irradiance_times_cross_section():
+    """A fixed beam power gives the same incident irradiance when the host changes."""
+    source = Gaussian(wavelength=850 * ureg.nanometer, polarization=PolarizationState(angle=0 * ureg.degree),
+                      optical_power=1 * ureg.watt, numerical_aperture=0.1)
+    for host in (1.0, 1.33, 1.5, 1.0):
+        sphere = Sphere(diameter=500 * ureg.nanometer, material=1.59, medium=host)
+        detector = IntegratingSphere(sampling=20_000)
+        simulation = Simulation(source=source, scatterer=sphere, detector=detector)
+        expected = (source.peak_intensity * simulation.run("Csca").quantity).to("watt").magnitude
+        for power in (simulation.run("coupling").quantity, detector.get_energy_flow(sphere, source)):
+            np.testing.assert_allclose(power.to("watt").magnitude, expected, rtol=5e-4, atol=0)
+
+
+@pytest.mark.parametrize("geometry", ["sphere", "core-shell", "cylinder"])
+def test_gaussian_nearfields_match_host_normalized_plane_wave(geometry):
+    """Incident, internal and scattered fields use the same peak-field convention."""
+    host = 1.33
+    wavelength = 850 * ureg.nanometer
+    polarization = PolarizationState(angle=35 * ureg.degree)
+    gaussian = Gaussian(wavelength=wavelength, polarization=polarization,
+                        numerical_aperture=0.1, optical_power=1 * ureg.watt)
+    irradiance = gaussian.peak_intensity.to("W/m**2").magnitude
+    amplitude = np.sqrt(2 * irradiance / (host * VACUUM_PERMITTIVITY * SPEED_OF_LIGHT))
+    plane = PlaneWave(wavelength=wavelength, polarization=polarization, amplitude=amplitude * ureg.volt / ureg.meter)
+    if geometry == "core-shell":
+        scatterer = CoreShell(core_diameter=200 * ureg.nm, shell_thickness=80 * ureg.nm,
+                              core_material=1.7, shell_material=1.55, medium=host)
+    else:
+        scatterer_type = Sphere if geometry == "sphere" else InfiniteCylinder
+        scatterer = scatterer_type(diameter=300 * ureg.nm, material=1.6, medium=host)
+    gaussian_setup = Setup(source=gaussian, scatterer=scatterer)
+    plane_setup = Setup(source=plane, scatterer=scatterer)
+    points = dict(x=[20, 130, 400] * ureg.nm, y=[3, 3, 3] * ureg.nm, z=[10, 10, 10] * ureg.nm, field_type="Ex")
+    for method in ("get_incident_nearfields", "get_total_nearfields", "get_scattered_nearfields"):
+        actual = getattr(gaussian_setup, method)(**points).to("V/m").magnitude
+        expected = getattr(plane_setup, method)(**points).to("V/m").magnitude
+        np.testing.assert_allclose(actual, expected, rtol=1e-8, atol=0)
