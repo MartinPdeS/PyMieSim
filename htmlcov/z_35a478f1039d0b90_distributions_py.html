@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_35a478f1039d0b90_setup_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
-            created at 2026-11-24 12:55 +0000
+            created at 2026-11-24 13:16 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -124,7 +124,7 @@
     <p class="run"><span class="n"><a id="t40" href="#t40">40</a></span><span class="t">    <span class="key">if</span> <span class="nam">any</span><span class="op">(</span><span class="nam">component</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span> <span class="key">and</span> <span class="nam">component</span><span class="op">.</span><span class="nam">is_sequential</span> <span class="key">for</span> <span class="nam">component</span> <span class="key">in</span> <span class="nam">components</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t41" href="#t41">41</a></span><span class="t">        <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span><span class="str">&quot;Size-distribution averaging requires a Cartesian parameter grid, not sequential sets&quot;</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t42" href="#t42">42</a></span><span class="t">    <span class="nam">available</span> <span class="op">=</span> <span class="nam">tuple</span><span class="op">(</span><span class="nam">name</span> <span class="key">for</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">SUPPORTED_MEASURES</span> <span class="key">if</span> <span class="nam">name</span> <span class="key">in</span> <span class="nam">experiment</span><span class="op">.</span><span class="nam">available_measures</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t43" href="#t43">43</a></span><span class="t">    <span class="nam">names</span> <span class="op">=</span> <span class="nam">validate_measures</span><span class="op">(</span><span class="nam">measures</span><span class="op">,</span> <span class="nam">available</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t43" href="#t43">43</a></span><span class="t">    <span class="nam">names</span> <span class="op">=</span> <span class="nam">validate_measures</span><span class="op">(</span><span class="nam">measures</span><span class="op">,</span> <span class="nam">available</span><span class="op">,</span> <span class="nam">experiment</span><span class="op">=</span><span class="key">True</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t44" href="#t44">44</a></span><span class="t">    <span class="nam">dimension</span> <span class="op">=</span> <span class="str">&quot;scatterer:diameter&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t45" href="#t45">45</a></span><span class="t">    <span class="nam">diameters</span> <span class="op">=</span> <span class="nam">distribution</span><span class="op">.</span><span class="nam">diameters</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="str">&quot;meter&quot;</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t46" href="#t46">46</a></span><span class="t">    <span class="nam">configured</span> <span class="op">=</span> <span class="nam">experiment</span><span class="op">.</span><span class="nam">scatterer_set</span><span class="op">.</span><span class="nam">get_mapping</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="nam">dimension</span><span class="op">]</span><span class="op">.</span><span class="nam">to</span><span class="op">(</span><span class="str">&quot;meter&quot;</span><span class="op">)</span><span class="op">.</span><span class="nam">magnitude</span>&nbsp;</span><span class="r"></span></p>
@@ -194,7 +194,7 @@
             <a class="nav" href="z_35a478f1039d0b90_setup_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.3">coverage.py v7.17.3</a>,
-            created at 2026-11-24 12:55 +0000
+            created at 2026-11-24 13:16 +0000
         </p>
     </div>
 </footer>

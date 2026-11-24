@@ -6,11 +6,11 @@
 |---------------------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
 | PyMieSim/\_native.py                          |       19 |        4 |        2 |        1 |     76.19% |37-38, 58-59 |
 | PyMieSim/experiment/distributions.py          |       67 |        1 |       26 |        1 |     97.85% |        36 |
-| PyMieSim/experiment/setup.py                  |       98 |        3 |       32 |        3 |     95.38% |170, 177, 272 |
+| PyMieSim/experiment/setup.py                  |      122 |        6 |       44 |        6 |     92.77% |54, 57, 61, 198, 205, 300 |
 | PyMieSim/experiment/utils.py                  |       32 |       32 |       14 |        0 |      0.00% |     1-134 |
 | PyMieSim/materials.py                         |       30 |        0 |       14 |        1 |     97.73% |   45-\>48 |
-| PyMieSim/measures.py                          |       70 |        1 |       10 |        0 |     98.75% |        37 |
-| PyMieSim/results.py                           |       72 |        5 |       12 |        3 |     90.48% |72, 103, 133, 137, 164 |
+| PyMieSim/measures.py                          |       80 |        1 |       18 |        0 |     98.98% |        38 |
+| PyMieSim/results.py                           |       93 |        5 |       18 |        5 |     90.99% |32-\>37, 39, 139, 169, 173, 200 |
 | PyMieSim/single/api.py                        |       48 |        1 |        2 |        0 |     98.00% |        78 |
 | PyMieSim/single/representations/\_plotting.py |       63 |        2 |       26 |        3 |     94.38% |48, 50, 91-\>exit |
 | PyMieSim/single/representations/farfields.py  |      152 |       77 |       28 |        6 |     46.11% |213-224, 288-320, 344-356, 390-402, 473-\>exit, 501-520, 545-562, 586-605, 634-673, 690-716, 796, 805, 809, 812-813, 834-840, 857-861 |
@@ -18,7 +18,7 @@
 | PyMieSim/single/representations/s1s2.py       |       39 |        4 |       16 |        6 |     78.18% |109-110, 112-\>115, 116, 118-\>121, 160, 162-\>166 |
 | PyMieSim/single/representations/spf.py        |       47 |        2 |        4 |        2 |     92.16% |  187, 191 |
 | PyMieSim/single/representations/stokes.py     |       53 |        1 |        4 |        2 |     94.74% |260-\>exit, 292 |
-| **TOTAL**                                     | **1108** |  **221** |  **280** |   **42** | **76.01%** |           |
+| **TOTAL**                                     | **1163** |  **224** |  **306** |   **47** | **76.79%** |           |
 
 3 files skipped due to complete coverage.
 
