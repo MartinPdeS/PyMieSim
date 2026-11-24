@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 from PyMieSim import (
-    Experiment, Gaussian, GaussianSet, Measure, PolarizationState, PolarizationSet,
+    Experiment, Gaussian, GaussianSet, InfiniteCylinder, InfiniteCylinderSet, Measure, PolarizationState, PolarizationSet,
     Simulation, SimulationResult, SimulationResults, Sphere, SphereSet, ureg,
 )
 
@@ -26,7 +26,7 @@ def configurations():
 
 @pytest.mark.parametrize('names, message', [
     ((), 'At least one'), (('invalid',), 'Unknown measure'),
-    (('coupling',), 'Unknown measure'), (('Qsca', Measure.QSCA), 'only once'),
+    (('coupling',), 'requires a detector'), (('Qsca', Measure.QSCA), 'only once'),
     (([],), 'Unknown measure'),
 ])
 def test_shared_validation(names, message):
@@ -159,3 +159,46 @@ def test_multiple_result_export_rejects_mismatched_coordinates():
     )
     with pytest.raises(ValueError, match='same coordinates'):
         SimulationResults({'Qsca': first, 'Qext': second}).as_labeled_array()
+
+
+@pytest.mark.parametrize("cylinder", [False, True], ids=["sphere-area", "cylinder-width"])
+def test_cross_section_units_and_property_table(cylinder, capsys):
+    """Check the printed geometry, typed results, and sweep export against Qsca."""
+    diameter = 0.2 * ureg.micrometer
+    particle = InfiniteCylinder if cylinder else Sphere
+    particle_set = InfiniteCylinderSet if cylinder else SphereSet
+    scatterer = particle(diameter=diameter, material=1.5, medium=1.0)
+    simulation, experiment = configurations()
+    single = Simulation(scatterer=scatterer, source=simulation._setup.source)
+    sweep = Experiment(scatterer_set=particle_set(diameter=diameter, material=1.5, medium=1.0),
+                       source_set=experiment.source_set)
+    unit = ureg.micrometer if cylinder else ureg.micrometer**2
+    geometric = diameter if cylinder else np.pi * (diameter / 2)**2
+    results = single.run("Qsca", "Csca", "cross_section")
+    np.testing.assert_allclose(results["cross_section"].to(unit).magnitude, geometric.to(unit).magnitude)
+    expected = results["Qsca"].quantity * geometric
+    np.testing.assert_allclose(results["Csca"].to(unit).magnitude, expected.to(unit).magnitude)
+    widths = sweep.run("Csca")
+    np.testing.assert_allclose(widths.to(unit).magnitude[0], expected.to(unit).magnitude)
+    assert widths.as_dataframe().attrs["units"]["Csca"] == results["Csca"].units
+    scatterer.print_properties()
+    rows = [line.split("|") for line in capsys.readouterr().out.splitlines() if "|" in line]
+    for name in ("Csca", "cross_section"):
+        value, printed_unit = next(row[1:] for row in rows if row[0].strip() == name)
+        printed = float(value) * ureg(printed_unit.strip())
+        np.testing.assert_allclose(printed.to(unit).magnitude, results[name].to(unit).magnitude, rtol=5e-5)
+
+
+def test_result_display_and_invalid_measure_guidance():
+    """Scalar and grid summaries and validation hints are specific to the configured API."""
+    simulation, experiment = configurations()
+    assert repr(simulation.run("Qsca")).startswith("Scattering efficiency (Qsca) = ")
+    summary = repr(experiment.run("Csca").to("micrometer**2"))
+    assert "µm²" in summary and "(2, 2)" in summary
+    assert "source:wavelength: 600–700 nm (2)" in summary
+    assert "scatterer:diameter: 100–200 nm (2)" in summary
+    for model, detector in ((simulation, "IntegratingSphere"), (experiment, "PhotodiodeSet")):
+        with pytest.raises(ValueError, match=detector):
+            model.run("coupling")
+        with pytest.raises(ValueError, match="Did you mean 'Qsca'"):
+            model.run("Qsac")

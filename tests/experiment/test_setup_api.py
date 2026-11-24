@@ -102,6 +102,9 @@ def test_get_labeled_array_preserves_grid_coordinates():
         source_set=PlaneWaveSet(wavelength=wavelengths, polarization=PolarizationSet(angles=angle), amplitude=amplitude),
         scatterer_set=SphereSet(diameter=diameters, material=1.6, medium=1.33),
     )
+    preview = experiment.preview()
+    assert "Cartesian (run) — 6 configurations" in preview
+    assert "scatterer:diameter: 80–320 nm (3)" in preview
     result = experiment.run("Qsca").as_labeled_array()
     assert isinstance(result, LabeledArray)
     assert result.dims == ("source:wavelength", "scatterer:diameter")

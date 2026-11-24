@@ -34,8 +34,8 @@ numerical_aperture = 0.2  # Numerical aperture
 diameters = np.geomspace(10, 6000, 800) * ureg.nanometer  # Diameters from 10 nm to 6 μm
 index = 1.55  # Refractive index of the cylinder
 
-# Calculate the volume of the cylinders
-volumes = np.pi * (diameters / 2) ** 2
+# Cross-sectional area is cylinder volume per unit axial length.
+geometric_areas = np.pi * (diameters / 2) ** 2
 
 # Configure the Gaussian source
 source = GaussianSet(
@@ -56,37 +56,37 @@ scatterer = InfiniteCylinderSet(
 experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
 # Compute PyMieSim scattering cross section data
-csca_data = experiment.run(Measure.CSCA).as_numpy()
+csca_data = experiment.run(Measure.CSCA).quantity
 
 normalized_csca = (
-    csca_data / volumes.to_base_units() * 1e-4 / 100
+    (csca_data / geometric_areas).to("1 / micrometer").magnitude
 )  # Normalize the data as per specific needs
 
 # Plotting the results
 plt.figure(figsize=(8, 4))
 plt.plot(
-    diameters * 1e6,
+    diameters.to("micrometer").magnitude,
     normalized_csca[0],
     "C0-",
     linewidth=3,
     label="PyMieSim Polarization: 0",
 )
 plt.plot(
-    diameters * 1e6,
+    diameters.to("micrometer").magnitude,
     normalized_csca[1],
     "C1-",
     linewidth=3,
     label="PyMieSim Polarization: 90",
 )
 plt.plot(
-    diameters * 1e6,
+    diameters.to("micrometer").magnitude,
     theoretical_data[0],
     "k--",
     linewidth=1,
     label="Theoretical BH 8.8 Polarization: 0",
 )
 plt.plot(
-    diameters * 1e6,
+    diameters.to("micrometer").magnitude,
     theoretical_data[1],
     "k--",
     linewidth=1,
@@ -94,7 +94,7 @@ plt.plot(
 )
 
 plt.xlabel("Diameter (μm)")
-plt.ylabel("Normalized Scattering Cross Section")
+plt.ylabel("Scattering width / geometric area (μm⁻¹)")
 plt.title("Comparison of Scattering Cross Sections for InfiniteCylinders")
 plt.grid(True)
 plt.legend()

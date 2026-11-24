@@ -1,5 +1,6 @@
 """Discoverable measure names and metadata for the public API."""
 
+from difflib import get_close_matches
 from enum import Enum
 from typing import Final, Iterable, Literal
 
@@ -102,7 +103,7 @@ __all__ = [
 ]
 
 
-def validate_measures(measures: Iterable[MeasureLike], available: Iterable[str]) -> list[str]:
+def validate_measures(measures: Iterable[MeasureLike], available: Iterable[str], *, experiment: bool = False) -> list[str]:
     """Validate requested names consistently before invoking either backend."""
     names = normalize_measures(measures)
     if not names:
@@ -110,7 +111,17 @@ def validate_measures(measures: Iterable[MeasureLike], available: Iterable[str])
     supported = set(available)
     invalid = [name for name in names if not isinstance(name, str) or name not in supported]
     if invalid:
-        raise ValueError(f"Unknown measure(s): {invalid}. Available measures: {', '.join(sorted(supported))}.")
+        if any(isinstance(name, str) and name == "coupling" for name in invalid):
+            detectors = "PhotodiodeSet or CoherentModeSet" if experiment else "Photodiode, IntegratingSphere, or CoherentMode"
+            raise ValueError(f"Measuring collected power (coupling) requires a detector. Add a {detectors}.")
+        hints = []
+        for name in invalid:
+            if isinstance(name, str):
+                matches = get_close_matches(name, sorted(supported), n=1, cutoff=0.6)
+                if matches:
+                    hints.append(f"Did you mean {matches[0]!r} for {name!r}?")
+        raise ValueError(" ".join([f"Unknown measure(s): {invalid}.", *hints,
+                                   f"Available measures: {', '.join(sorted(supported))}."]))
     if len(set(names)) != len(names):
         raise ValueError("Each measure must be requested only once.")
     return names

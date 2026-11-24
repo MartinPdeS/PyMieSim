@@ -72,8 +72,7 @@ public:
     void compute_size_parameter(const std::shared_ptr<BaseSource> &source) override;
 
     /**
-     * @brief Computes the cross-sectional area of the sphere.
-     * This is calculated as π * (diameter / 2)².
+     * @brief Computes the geometric width (diameter) per unit cylinder length.
      */
     void compute_cross_section() override;
 

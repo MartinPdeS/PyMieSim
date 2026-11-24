@@ -2,6 +2,7 @@
 #include <pybind11/pybind11.h>
 #include <sstream>
 #include "./base_scatterer.h"
+#include "../cylinder/cylinder.h"
 #include <utils/numpy_interface.h>
 #include <pint/pint.h>
 
@@ -81,7 +82,8 @@ void register_base_scatterer(py::module_& module) {
                 stream << "<BaseScatterer"
                        << " max_order=" << self.max_order
                        << ", size_parameter=" << self.size_parameter
-                       << ", cross_section=" << self.cross_section << " m^2"
+                       << ", cross_section=" << self.cross_section
+                       << (dynamic_cast<const InfiniteCylinder *>(&self) ? " m" : " m^2")
                        << ">";
                 return stream.str();
             },

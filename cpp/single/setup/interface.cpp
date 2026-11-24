@@ -9,13 +9,6 @@
 
 namespace py = pybind11;
 
-#define RETURN_PROPERTY_UNITS(name, units) \
-    if (property == #name) return py::float_(self.scatterer->get_##name()) * ureg.attr(#units);
-
-#define RETURN_PROPERTY(name) \
-    if (property == #name) return py::float_(self.scatterer->get_##name()) * ureg.attr("dimensionless");
-
-
 PYBIND11_MODULE(setup, module)
 {
     py::object ureg = get_shared_ureg();
@@ -86,44 +79,14 @@ PYBIND11_MODULE(setup, module)
         .def(
             "get",
             [ureg](const Setup &self, const std::string &property) {
-                RETURN_PROPERTY(Qsca)
-                RETURN_PROPERTY_UNITS(Csca, meter**2)
-
-                RETURN_PROPERTY(Qext)
-                RETURN_PROPERTY_UNITS(Cext, meter**2)
-
-                RETURN_PROPERTY(Qabs)
-                RETURN_PROPERTY_UNITS(Cabs, meter**2)
-
-                RETURN_PROPERTY(Qback)
-                RETURN_PROPERTY_UNITS(Cback, meter**2)
-
-                RETURN_PROPERTY(Qforward)
-                RETURN_PROPERTY_UNITS(Cforward, meter**2)
-
-                RETURN_PROPERTY(Qratio)
-                RETURN_PROPERTY_UNITS(Cratio, meter**2)
-
-                RETURN_PROPERTY(Qpr)
-                RETURN_PROPERTY_UNITS(Cpr, meter**2)
-
-                RETURN_PROPERTY(g)
-                if (property == "g_with_farfields")
-                    return py::float_(self.scatterer->get_g_with_farfields(self.source, 1000)) *
-                           ureg.attr("dimensionless");
-
-                RETURN_PROPERTY_UNITS(cross_section, meter**2)
-                RETURN_PROPERTY(size_parameter)
-
-                if (property == "coupling") {
-                    if (!self.detector) {
-                        throw std::logic_error("Detector is not defined in the setup. Coupling cannot be computed.");
-                    }
-                    return py::float_(self.detector->get_coupling(self.scatterer, self.source)) * ureg.attr("watt");
-
+                const double value = self.get(property);
+                const char *unit = "dimensionless";
+                if (property == "cross_section" || property.front() == 'C') {
+                    unit = dynamic_cast<const InfiniteCylinder *>(self.scatterer.get()) ? "meter" : "meter**2";
+                } else if (property == "coupling") {
+                    unit = "watt";
                 }
-
-                throw std::invalid_argument("Unknown data name: " + property);
+                return py::float_(value) * ureg.attr(unit);
             },
             py::arg("data"),
             R"pbdoc(

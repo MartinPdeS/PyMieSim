@@ -18,7 +18,7 @@ def test_validation():
     """Reproduce the packaged Fig. 8.8 curves at their in-medium wavelength."""
     theoretical_data = np.genfromtxt(
         f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=","
-    ) / (ureg.meter * ureg.meter)
+    )
 
     medium_index = 1.335
     # The packaged curves use 632.8 nm for the wavelength in the Bessel arguments.
@@ -29,7 +29,7 @@ def test_validation():
     diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
     index = 1.55
 
-    volumes = np.pi * (diameters / 2) ** 2
+    geometric_areas = np.pi * (diameters / 2) ** 2
 
     source = GaussianSet(
         wavelength=vacuum_wavelength,
@@ -44,9 +44,9 @@ def test_validation():
 
     experiment = Experiment(scatterer_set=scatterer, source_set=source)
 
-    csca_data =  experiment.run("Csca").as_numpy()
+    csca_data =  experiment.run("Csca").quantity
 
-    normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100
+    normalized_csca = (csca_data / geometric_areas).to("1 / micrometer").magnitude
 
     assert np.allclose(normalized_csca[0], theoretical_data[0], atol=0, rtol=1e-3), (
         f"Mismatch in Csca for polarization 0: PyMieSim value = {normalized_csca[0]}, "

@@ -40,7 +40,7 @@ def average_size_distribution(
     if any(component is not None and component.is_sequential for component in components):
         raise ValueError("Size-distribution averaging requires a Cartesian parameter grid, not sequential sets")
     available = tuple(name for name in SUPPORTED_MEASURES if name in experiment.available_measures)
-    names = validate_measures(measures, available)
+    names = validate_measures(measures, available, experiment=True)
     dimension = "scatterer:diameter"
     diameters = distribution.diameters.to("meter").magnitude
     configured = experiment.scatterer_set.get_mapping()[dimension].to("meter").magnitude

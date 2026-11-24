@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
-import PyMieSim
 
 __all__ = ["root_path", "validation_data_path", "doc_path", "logo_path", "doc_css_path"]
 
-root_path = Path(PyMieSim.__path__[0])
+# Editable builds can put native extensions first in the package search path.
+root_path = Path(__file__).resolve().parent
 
 validation_data_path = root_path.joinpath("validation_data")
 

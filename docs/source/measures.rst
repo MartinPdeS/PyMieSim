@@ -60,7 +60,11 @@ Cross sections
 --------------
 
 ``Csca``, ``Cext``, ``Cabs``, ``Cback``, ``Cforward``, ``Cratio``, ``Cpr``,
-and ``cross_section`` are area-valued measures in square metres. Results are
+and ``cross_section`` are areas (m²) for spheres and core–shell particles.
+For an infinite cylinder, cross sections are reported per unit axial length:
+``Csca`` is a scattering width (m), and the geometric width is the diameter.
+Starting with 6.2, convert cylinder results with ``result.to("micrometer")``.
+Earlier versions attached area units to the same numerical widths. Results are
 returned as unit-aware quantities in single simulations and as numerical
 columns with unit metadata in experiment DataFrames.
 
@@ -90,3 +94,16 @@ Use the configured object rather than guessing which measures are valid::
 
 An invalid request produces an error listing the available names for the
 current geometry and detector configuration.
+
+
+Inspecting results and sweeps
+-----------------------------
+
+In a notebook, display a result directly to see its measure and units. A
+parameter sweep shows its shape and coordinate ranges. Use ``result.quantity``
+for arithmetic or ``result.as_dataframe()`` for the full table.
+
+Call ``print(experiment.preview())`` before running a sweep. A Cartesian
+experiment with two wavelengths and three diameters reports six configurations.
+Sets created with ``build_sequential(target_size=N, ...)`` describe N paired
+configurations for ``get_sequential()``. Previewing does not run the solver.

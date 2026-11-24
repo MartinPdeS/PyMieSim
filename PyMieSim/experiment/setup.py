@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from math import prod
 from typing import List, Dict, Iterable, Literal, overload, cast
 from pint import Quantity, Unit
 import numpy as np
 
 from PyMieSim.units import ureg
+from PyMieSim.experiment.scatterer_set import InfiniteCylinderSet
 from PyMieSim.experiment._setup import Setup as SETUP
 from PyMieSim.labeled_array import LabeledArray
 from PyMieSim.distributions import ParticleSizeDistribution
-from PyMieSim.results import SimulationResult, SimulationResults
+from PyMieSim.results import SimulationResult, SimulationResults, _axis_summary
 from PyMieSim.measures import MeasureLike, Measure, validate_measures
 
 
@@ -41,6 +43,32 @@ class Experiment(SETUP):
             available.remove("coupling")
         return tuple(available)
 
+    def preview(self) -> str:
+        """Describe the configured sweep axes and count without evaluating any measures.
+
+        Cartesian sets describe the grid evaluated by run(). Sequential sets
+        describe index-paired rows evaluated by get_sequential().
+        """
+        components = [self.source_set, self.scatterer_set]
+        if self.detector_set is not None:
+            components.append(self.detector_set)
+        modes = {component.is_sequential for component in components}
+        if len(modes) != 1:
+            raise ValueError("Use either sequential sets throughout or Cartesian sets throughout.")
+        paired = modes.pop()
+        counts = [component.total_combinations for component in components]
+        if paired and len(set(counts)) != 1:
+            raise ValueError(f"Paired parameter sets must have equal lengths. Got {counts}.")
+        count = counts[0] if paired else prod(counts)
+        mode = "Paired (get_sequential)" if paired else "Cartesian (run)"
+        lines = [f"{mode} — {count} configuration{'s' if count != 1 else ''}"]
+        values, units = self._separate_units_and_values(self._collect_parameter_mappings())
+        for name, coordinates in values.items():
+            axis = np.asarray(coordinates)
+            if axis.size > 1 and (not paired or not np.all(axis == axis[0])):
+                lines.append(_axis_summary(name=name, axis=axis, unit=units.get(name)))
+        return "\n".join(lines)
+
     def get_sequential(self, measure: MeasureLike) -> np.ndarray:
         """
         Compute a measure once using the current parameter sets.
@@ -58,7 +86,7 @@ class Experiment(SETUP):
         numpy.ndarray
             Computed values.
         """
-        name = validate_measures((measure,), self.available_measures)[0]
+        name = validate_measures((measure,), self.available_measures, experiment=True)[0]
         return getattr(self, f"get_{name}_sequential")()
 
     # ------------------------------------------------------------------
@@ -77,7 +105,7 @@ class Experiment(SETUP):
         Singleton axes are removed by default; pass ``drop_unique_level=False``
         to retain every configured parameter axis.
         """
-        names = validate_measures(measures, self.available_measures)
+        names = validate_measures(measures, self.available_measures, experiment=True)
         labeled = self._build_labeled_array(names, drop_unique_level)
         if len(names) == 1:
             return SimulationResult.from_labeled_array(labeled)
@@ -280,4 +308,6 @@ class Experiment(SETUP):
         except ValueError:
             # Native multipole coefficients (a1, b1, ...) are dimensionless.
             kind = "dimensionless"
+        if kind == "area" and isinstance(self.scatterer_set, InfiniteCylinderSet):
+            return ureg.meter
         return {"area": ureg.meter ** 2, "power": ureg.watt, "dimensionless": ureg.dimensionless}[kind]

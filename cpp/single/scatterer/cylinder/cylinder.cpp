@@ -367,25 +367,21 @@ std::string InfiniteCylinder::properties_table(int precision) const {
 
     const double radius_m = 0.5 * this->diameter;
 
-    // If you already store cross_section, use it; otherwise compute consistent with your code.
-    // Your docstring says compute_cross_section() is pi*(d/2)^2, so:
-    const double cross_section_m2 = Constants::PI * radius_m * radius_m;
-
     append_property_format(output, "\n");
     append_property_format(output, "%-16s | %.*e | %-6s\n", "property", precision, 0.0, "unit");
     append_property_format(output, "-----------------|--------------------|------\n");
 
     append_property_format(output, "%-16s | %.*e | %-6s\n", "size_parameter", precision, this->size_parameter, "");
     append_property_format(output, "%-16s | %.*e | %-6s\n", "radius", precision, radius_m, "m");
-    append_property_format(output, "%-16s | %.*e | %-6s\n", "cross_section", precision, cross_section_m2, "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "cross_section", precision, this->cross_section, "m");
 
     append_property_format(output, "%-16s | %.*e | %-6s\n", "Qsca", precision, this->get_Qsca(), "");
     append_property_format(output, "%-16s | %.*e | %-6s\n", "Qext", precision, this->get_Qext(), "");
     append_property_format(output, "%-16s | %.*e | %-6s\n", "Qabs", precision, this->get_Qabs(), "");
 
-    append_property_format(output, "%-16s | %.*e | %-6s\n", "Csca", precision, this->get_Csca(), "m^2");
-    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cext", precision, this->get_Cext(), "m^2");
-    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cabs", precision, this->get_Cabs(), "m^2");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Csca", precision, this->get_Csca(), "m");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cext", precision, this->get_Cext(), "m");
+    append_property_format(output, "%-16s | %.*e | %-6s\n", "Cabs", precision, this->get_Cabs(), "m");
 
     append_property_format(output, "\n");
 

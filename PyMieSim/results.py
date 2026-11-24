@@ -13,6 +13,32 @@ from pandas import DataFrame
 from .labeled_array import LabeledArray
 
 
+_MEASURE_LABELS = {
+    "Qsca": "Scattering efficiency", "Qext": "Extinction efficiency", "Qabs": "Absorption efficiency",
+    "Qback": "Backscattering efficiency", "Qforward": "Forward scattering efficiency",
+    "Qpr": "Radiation pressure efficiency", "Qratio": "Backscattering ratio",
+    "Csca": "Scattering cross section", "Cext": "Extinction cross section", "Cabs": "Absorption cross section",
+    "Cback": "Backscattering cross section", "Cforward": "Forward scattering cross section",
+    "Cpr": "Radiation pressure cross section", "g": "Asymmetry parameter", "coupling": "Collected power",
+    "cross_section": "Geometric cross section", "size_parameter": "Size parameter",
+}
+
+
+def _axis_summary(*, name: str, axis: NDArray, unit: Unit | None) -> str:
+    """Summarize a coordinate range in a common compact unit."""
+    if axis.size and axis.dtype.kind in "iuf":
+        low, high = float(axis.min()), float(axis.max())
+        suffix = ""
+        if unit is not None:
+            scale = max(abs(low), abs(high))
+            compact = (scale * unit).to_compact().units if np.isfinite(scale) and scale else unit
+            low, high = (low * unit).to(compact).magnitude, (high * unit).to(compact).magnitude
+            suffix = f" {compact:~P}".rstrip()
+        span = f"{low:.5g}" if low == high else f"{low:.5g}–{high:.5g}"
+        return f"{name}: {span}{suffix} ({axis.size})"
+    return f"{name}: {axis.size} values"
+
+
 @dataclass(frozen=True)
 class SimulationResult:
     """One named quantity, optionally carrying experiment dimensions and coordinates.
@@ -28,6 +54,16 @@ class SimulationResult:
     coordinate_units: Mapping[str, Unit] = field(default_factory=dict)
 
     metadata: Mapping[str, object] = field(default_factory=dict)
+
+    def __repr__(self) -> str:
+        label = _MEASURE_LABELS.get(self.measure)
+        title = f"{label} ({self.measure})" if label else self.measure
+        if not self.shape:
+            return f"{title} = {self.value:.5g~P}".rstrip()
+        axes = [_axis_summary(name=name, axis=np.asarray(self.coords[name]), unit=self.coordinate_units.get(name))
+                for name in self.dims if name in self.coords]
+        unit_label = f"{self.units:~P}" or "dimensionless"
+        return "\n".join([f"{title} [{unit_label}] {self.shape}", *axes])
 
     @property
     def quantity(self) -> Quantity:

@@ -76,6 +76,10 @@ def test_sequential_vs_standard_no_detector():
         source_set=source_sequential
     )
 
+    preview = setup_sequential.preview()
+    assert "Paired (get_sequential) — 10 configurations" in preview
+    assert "source:wavelength" in preview and "scatterer:diameter" not in preview
+
     data_sequential = setup_sequential.get_sequential("Qsca").squeeze()
 
     assert data_sequential is not None, "Error while running the standard get function."
