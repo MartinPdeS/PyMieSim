@@ -89,25 +89,7 @@ class Setup
                 throw std::logic_error("Detector is not defined in the setup. Poynting field cannot be computed.");
             }
 
-            auto [theta_field, phi_field] = this->scatterer->get_unstructured_farfields(
-                this->detector->fibonacci_mesh,
-                distance,
-                this->source
-            );
-
-            std::vector<double> poynting(phi_field.size());
-
-            for (size_t i = 0; i < phi_field.size(); ++i) {
-                const double fields_squared = std::norm(phi_field[i]) + std::norm(theta_field[i]);
-                poynting[i] = (
-                    this->scatterer->medium->get_refractive_index() *
-                    Constants::EPSILON0 *
-                    Constants::LIGHT_SPEED *
-                    fields_squared
-                );
-            }
-
-            return poynting;
+            return this->detector->get_poynting_field(this->scatterer, this->source, distance);
         }
 
     //------------------------ S1S2 --------------------------

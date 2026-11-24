@@ -81,5 +81,30 @@ def test_measure(measure, source, medium, material):
     experiment.run(measure, drop_unique_level=False)
 
 
+@pytest.mark.parametrize("measure", ["Qsca", "Qext"])
+def test_cylinder_efficiencies_are_invariant_at_fixed_size_parameter_and_index_ratio(measure):
+    """Match both incident polarizations in a dielectric host and in vacuum."""
+    vacuum_wavelength = 600 * ureg.nanometer
+    diameters = [180, 400] * ureg.nanometer
+    material_index = 1.6 + 0.05j
+    host_index = 1.33
+    polarization = PolarizationSet(angles=[0, 90] * ureg.degree)
+
+    embedded = Experiment(
+        scatterer_set=InfiniteCylinderSet(diameter=diameters, material=material_index, medium=host_index),
+        source_set=PlaneWaveSet(
+            wavelength=vacuum_wavelength, polarization=polarization, amplitude=1 * ureg.volt / ureg.meter
+        ),
+    )
+    equivalent = Experiment(
+        scatterer_set=InfiniteCylinderSet(diameter=diameters, material=material_index / host_index, medium=1.0),
+        source_set=PlaneWaveSet(
+            wavelength=vacuum_wavelength / host_index, polarization=polarization, amplitude=1 * ureg.volt / ureg.meter
+        ),
+    )
+
+    np.testing.assert_allclose(embedded.run(measure).as_numpy(), equivalent.run(measure).as_numpy(), rtol=1e-12, atol=0)
+
+
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

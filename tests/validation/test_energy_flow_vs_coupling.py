@@ -41,7 +41,7 @@ def test_energy_flow_vs_coupling_sphere():
 
     n = scatterer.medium.refractive_index
 
-    intensity = (n * EPSILON0 * C0 * abs(source.amplitude)**2).to("watt/meter**2")
+    intensity = (0.5 * n * EPSILON0 * C0 * abs(source.amplitude)**2).to("watt/meter**2")
 
     scattered_power = (setup.get("Qsca") * intensity * setup.get("cross_section")).to("watt").to_compact()
 

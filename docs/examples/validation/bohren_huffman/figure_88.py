@@ -25,20 +25,21 @@ theoretical_data = np.genfromtxt(
 )
 
 # Define parameters
-wavelength = 632.8 * ureg.nanometer  # Wavelength of the source in meters
+medium_index = 1.335
+# The packaged reference curves use 632.8 nm as the wavelength in the medium.
+vacuum_wavelength = medium_index * (632.8 * ureg.nanometer)
 polarization_set = PolarizationSet(angles=[0, 90] * ureg.degree)  # Create polarization set
 optical_power = 1e-3 * ureg.watt  # Optical power in watts
 numerical_aperture = 0.2  # Numerical aperture
 diameters = np.geomspace(10, 6000, 800) * ureg.nanometer  # Diameters from 10 nm to 6 μm
 index = 1.55  # Refractive index of the cylinder
-medium_index = 1.335  # Refractive index of the medium
 
 # Calculate the volume of the cylinders
 volumes = np.pi * (diameters / 2) ** 2
 
 # Configure the Gaussian source
 source = GaussianSet(
-    wavelength=[632.8] * ureg.nanometer,
+    wavelength=vacuum_wavelength,
     polarization=polarization_set,
     optical_power=[1e-3] * ureg.watt,
     numerical_aperture=[0.2],
@@ -48,7 +49,7 @@ source = GaussianSet(
 scatterer = InfiniteCylinderSet(
     diameter=diameters,
     material=[1.55],
-    medium=[1.335],
+    medium=[medium_index],
 )
 
 # Create experimental setup

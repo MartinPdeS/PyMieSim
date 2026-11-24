@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib
+import pytest
 
 matplotlib.use("Agg")
 
@@ -13,7 +14,8 @@ from PyMieSim.single.source import PlaneWave
 from PyMieSim.units import ureg
 
 
-def _setup(material=1.5, angle=0.0):
+def _setup(*, material=1.5, angle=0.0, medium=1.0):
+    """Configure an infinite cylinder and its normally incident plane wave."""
     source = PlaneWave(
         wavelength=600 * ureg.nanometer,
         polarization=PolarizationState(angle=angle * ureg.degree),
@@ -22,7 +24,7 @@ def _setup(material=1.5, angle=0.0):
     scatterer = InfiniteCylinder(
         diameter=300 * ureg.nanometer,
         material=material,
-        medium=1.0,
+        medium=medium,
     )
     return Setup(scatterer=scatterer, source=source)
 
@@ -47,10 +49,12 @@ def test_cylinder_nearfields_reduce_to_incident_field_without_contrast():
     assert np.allclose(scattered_ex, 0.0, atol=1e-12)
 
 
-def test_cylinder_tangential_fields_are_continuous_at_surface():
+@pytest.mark.parametrize("medium", [1.0, 1.33])
+def test_cylinder_tangential_fields_are_continuous_at_surface(medium):
+    """Match tangential fields at the interface for both linear polarizations."""
     radius = 150.0
 
-    setup_x = _setup(angle=0.0)
+    setup_x = _setup(angle=0.0, medium=medium)
     x_inside, y_inside, z_inside = _coordinates(radius - 1e-3)
     x_outside, y_outside, z_outside = _coordinates(radius + 1e-3)
 
@@ -58,7 +62,7 @@ def test_cylinder_tangential_fields_are_continuous_at_surface():
     ez_outside = setup_x.get_total_nearfields(x_outside, y_outside, z_outside, "Ez").magnitude
     assert np.allclose(ez_inside, ez_outside, rtol=1e-4, atol=1e-6)
 
-    setup_y = _setup(angle=90.0)
+    setup_y = _setup(angle=90.0, medium=medium)
     ey_inside = setup_y.get_total_nearfields(x_inside, y_inside, z_inside, "Ey").magnitude
     ey_outside = setup_y.get_total_nearfields(x_outside, y_outside, z_outside, "Ey").magnitude
     assert np.allclose(ey_inside, ey_outside, rtol=1e-4, atol=1e-6)

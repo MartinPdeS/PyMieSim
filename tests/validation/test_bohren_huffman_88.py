@@ -15,23 +15,24 @@ from PyMieSim import Experiment
 
 
 def test_validation():
-
+    """Reproduce the packaged Fig. 8.8 curves at their in-medium wavelength."""
     theoretical_data = np.genfromtxt(
         f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=","
     ) / (ureg.meter * ureg.meter)
 
-    wavelength = 632.8 * ureg.nanometer
+    medium_index = 1.335
+    # The packaged curves use 632.8 nm for the wavelength in the Bessel arguments.
+    vacuum_wavelength = medium_index * (632.8 * ureg.nanometer)
     polarization_values = PolarizationSet(angles=[0, 90] * ureg.degree)
     optical_power = 1e-3 * ureg.watt
     NA = 0.2
     diameters = np.geomspace(10, 6000, 800) * ureg.nanometer
     index = 1.55
-    medium_index = 1.335
 
     volumes = np.pi * (diameters / 2) ** 2
 
     source = GaussianSet(
-        wavelength=wavelength,
+        wavelength=vacuum_wavelength,
         polarization=polarization_values,
         optical_power=optical_power,
         numerical_aperture=NA,

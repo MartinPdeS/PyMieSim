@@ -132,7 +132,7 @@ double Sphere::get_Qext() const {
 double Sphere::get_Qback() const {
     complex128 value = 0;
 
-    for (size_t it = 0; it < max_order - 1; ++it) {
+    for (size_t it = 0; it < max_order; ++it) {
         double n = (double)it + 1;
 
         value += (2. * n + 1) * pow(-1., n) * (this->an[it] - this->bn[it]);
@@ -145,7 +145,7 @@ double Sphere::get_Qback() const {
 double Sphere::get_Qforward() const {
     complex128 value = 0;
 
-    for (size_t it = 0; it < max_order - 1; ++it) {
+    for (size_t it = 0; it < max_order; ++it) {
         double n = (double)it + 1;
 
         value += (2. * n + 1) * (this->an[it] + this->bn[it]);
@@ -156,16 +156,7 @@ double Sphere::get_Qforward() const {
 }
 
 double Sphere::get_g() const {
-    double value = 0;
-
-    for (size_t it = 0; it < max_order - 1; ++it) {
-        double n = (double)it + 1;
-
-        value += (n * (n + 2.) / (n + 1.)) *
-                 std::real(this->an[it] * std::conj(this->an[it + 1]) + this->bn[it] * std::conj(this->bn[it + 1]));
-        value += ((2. * n + 1.) / (n * (n + 1.))) * std::real(this->an[it] * std::conj(this->bn[it]));
-    }
-    return value * 4. / (get_Qsca() * size_parameter_squared);
+    return this->get_spherical_asymmetry_factor();
 }
 
 std::pair<std::vector<complex128>, std::vector<complex128>> Sphere::compute_s1s2(const std::vector<double> &phi) const {
@@ -267,17 +258,8 @@ std::vector<complex128> Sphere::get_total_nearfields(const std::vector<double> &
             znm1 = (n == 1) ? Spherical_::H1n(0.0, kr) : Spherical_::H1n(nm1d, kr);
         }
 
-        const complex128 dpsi = kr * znm1 - nd * zn;
-
-        const double abs_kr = std::abs(kr);
-        if (abs_kr < 1e-15) {
-            // This branch should only matter extremely close to the origin.
-            // The caller already handles r -> 0 explicitly, but keep this defensive.
-            return {zn, complex128(0.0, 0.0), complex128(0.0, 0.0)};
-        }
-
         const complex128 z_over_kr = zn / kr;
-        const complex128 dpsi_over_kr = dpsi / kr;
+        const complex128 dpsi_over_kr = znm1 - nd * z_over_kr;
 
         return {zn, z_over_kr, dpsi_over_kr};
     };
@@ -291,19 +273,19 @@ std::vector<complex128> Sphere::get_total_nearfields(const std::vector<double> &
         const double r_cartesian =
             std::sqrt(x_position * x_position + y_position * y_position + z_position * z_position);
 
-        if (r_cartesian < 1e-15) {
-            // The VSWF representation is singular at the origin in spherical coordinates.
-            // For debugging, return the plane wave at z = 0 with the requested Jones amplitudes.
+        const bool is_inside = r_cartesian < radius_particle;
+        const complex128 kr_inside = k_particle * r_cartesian;
+
+        if (is_inside && std::abs(kr_inside) < 1e-15) {
+            // Only the regular electric dipole survives as k_particle * r tends to zero.
+            const complex128 center_x = dn.front() * E0x;
+            const complex128 center_y = dn.front() * E0y;
             if (field_type == "Ex")
-                field_values[point_index] = E0x;
+                field_values[point_index] = center_x;
             else if (field_type == "Ey")
-                field_values[point_index] = E0y;
-            else if (field_type == "Ez")
-                field_values[point_index] = complex128(0.0, 0.0);
-            else {
-                const double mag = std::sqrt(std::norm(E0x) + std::norm(E0y));
-                field_values[point_index] = complex128(mag, 0.0);
-            }
+                field_values[point_index] = center_y;
+            else if (field_type == "|E|")
+                field_values[point_index] = std::hypot(std::abs(center_x), std::abs(center_y));
             continue;
         }
 
@@ -317,10 +299,7 @@ std::vector<complex128> Sphere::get_total_nearfields(const std::vector<double> &
         const double sin_phi = std::sin(phi);
         const double cos_phi = std::cos(phi);
 
-        const bool is_inside = (r_cartesian < radius_particle);
-
         const complex128 kr_outside = complex128(k_medium * r_cartesian, 0.0);
-        const complex128 kr_inside = k_particle * complex128(r_cartesian, 0.0);
 
         const complex128 kr_used_for_regular = is_inside ? kr_inside : kr_outside;
         const complex128 kr_used_for_hankel = kr_outside;

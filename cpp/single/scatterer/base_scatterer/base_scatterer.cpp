@@ -39,12 +39,13 @@ BaseScatterer::get_structured_farfields(const size_t &sampling, const double &ra
     const std::vector<complex128> &S1 = s1s2.first;
     const std::vector<complex128> &S2 = s1s2.second;
 
+    // The elevation component is parallel to the scattering plane, and the azimuth component is perpendicular.
     for (unsigned int p = 0; p < sampling; p++)
         for (unsigned int t = 0; t < sampling; t++) {
             complex128 phi_point_field =
-                propagator * S1[p] * (E0x * cos(mesh.spherical.theta[t]) + E0y * sin(mesh.spherical.theta[t]));
+                propagator * S2[p] * (E0x * cos(mesh.spherical.theta[t]) + E0y * sin(mesh.spherical.theta[t]));
             complex128 theta_point_field =
-                propagator * S2[p] * (E0x * sin(mesh.spherical.theta[t]) - E0y * cos(mesh.spherical.theta[t]));
+                propagator * S1[p] * (E0x * sin(mesh.spherical.theta[t]) - E0y * cos(mesh.spherical.theta[t]));
 
             phi_field.push_back(phi_point_field);
             theta_field.push_back(theta_point_field);
@@ -70,9 +71,10 @@ BaseScatterer::get_unstructured_farfields(const std::vector<double> &phi, const 
     complex128 E0x = source->polarization.jones_vector[0];
     complex128 E0y = source->polarization.jones_vector[1];
 
+    // Use the same elevation and azimuth basis as the structured fields.
     for (unsigned int idx = 0; idx < full_size; idx++) {
-        complex128 phi_field_point = propagator * S1[idx] * (E0x * cos(theta[idx]) + E0y * sin(theta[idx]));
-        complex128 theta_field_point = propagator * S2[idx] * (E0x * sin(theta[idx]) - E0y * cos(theta[idx]));
+        complex128 phi_field_point = propagator * S2[idx] * (E0x * cos(theta[idx]) + E0y * sin(theta[idx]));
+        complex128 theta_field_point = propagator * S1[idx] * (E0x * sin(theta[idx]) - E0y * cos(theta[idx]));
 
         phi_field.push_back(phi_field_point);
         theta_field.push_back(theta_field_point);
@@ -98,12 +100,27 @@ std::vector<complex128> BaseScatterer::compute_dn(size_t nmx, complex128 z) cons
     return Dn;
 }
 
+double BaseScatterer::get_spherical_asymmetry_factor() const {
+    double moment = 0.0;
+
+    for (size_t index = 0; index + 1 < max_order; ++index) {
+        const double order = static_cast<double>(index + 1);
+        moment += order * (order + 2.0) / (order + 1.0) *
+                  std::real(an[index] * std::conj(an[index + 1]) + bn[index] * std::conj(bn[index + 1]));
+    }
+
+    // The electric-magnetic contribution also exists for the highest retained order.
+    for (size_t index = 0; index < max_order; ++index) {
+        const double order = static_cast<double>(index + 1);
+        moment += (2.0 * order + 1.0) / (order * (order + 1.0)) * std::real(an[index] * std::conj(bn[index]));
+    }
+
+    return 4.0 * moment / (get_Qsca() * size_parameter_squared);
+}
+
 double BaseScatterer::get_g_with_farfields(std::shared_ptr<BaseSource> source, size_t sampling) const {
-    auto [SPF, mesh] = this->get_structured_spf(source, sampling);
-
-    double norm = abs(mesh.get_integral(SPF)), expected_cos = abs(mesh.get_cos_integral(SPF));
-
-    return expected_cos / norm;
+    auto [intensity, mesh] = this->get_structured_spf(source, sampling);
+    return mesh.get_cos_integral(intensity) / mesh.get_integral(intensity);
 }
 
 complex128 BaseScatterer::get_coefficient(const std::string &type, const size_t order) {
@@ -126,9 +143,12 @@ complex128 BaseScatterer::get_coefficient(const std::string &type, const size_t 
 }
 
 complex128 BaseScatterer::get_propagator(const double &radius, std::shared_ptr<BaseSource> source) const {
-    return (source->amplitude /
-            (source->wavenumber_vacuum * this->medium->get_refractive_index(source->wavelength) * radius) *
-            exp(-complex128(0, 1) * source->wavenumber_vacuum * radius));
+    const double medium_wavenumber =
+        source->wavenumber_vacuum * this->medium->get_refractive_index(source->wavelength);
+    const complex128 phase_argument(0.0, medium_wavenumber * radius);
+
+    // Use the same outgoing-wave convention as the first-kind Hankel functions in the near field.
+    return source->amplitude * std::exp(phase_argument) / phase_argument;
 }
 
 void BaseScatterer::get_pi_tau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {

@@ -192,18 +192,7 @@ double CoreShell::get_Qforward() const {
 }
 
 double CoreShell::get_g() const {
-    double value = 0.0;
-
-    for (size_t it = 0; it < this->max_order - 1; ++it) {
-        const double n = static_cast<double>(it) + 1.0;
-
-        value += (n * (n + 2.0) / (n + 1.0)) *
-                 std::real(this->an[it] * std::conj(this->an[it + 1]) + this->bn[it] * std::conj(this->bn[it + 1]));
-
-        value += ((2.0 * n + 1.0) / (n * (n + 1.0))) * std::real(this->an[it] * std::conj(this->bn[it]));
-    }
-
-    return value * 4.0 / (this->get_Qsca() * this->size_parameter_squared);
+    return this->get_spherical_asymmetry_factor();
 }
 
 std::pair<std::vector<complex128>, std::vector<complex128>>
@@ -376,25 +365,31 @@ std::vector<complex128> evaluate_core_shell_field(const CoreShell &scatterer, co
 
     for (size_t point = 0; point < x.size(); ++point) {
         const double radius = std::sqrt(x[point] * x[point] + y[point] * y[point] + z[point] * z[point]);
-        if (radius < 1e-15) {
-            if (!scattered_only && field_type == "Ex")
-                values[point] = e0x;
-            else if (!scattered_only && field_type == "Ey")
-                values[point] = e0y;
-            continue;
-        }
         if (scattered_only && radius < outer_radius)
             continue;
 
-        const double theta = std::acos(clamp(z[point] / radius));
-        const double phi = std::atan2(y[point], x[point]);
-        const double st = std::sin(theta), ct = std::cos(theta);
-        const double sp = std::sin(phi), cp = std::cos(phi);
         const bool in_core = radius < core_radius;
         const bool in_shell = radius >= core_radius && radius < outer_radius;
         const C argument = in_core ? source->wavenumber_vacuum * core_index * radius
                                    : source->wavenumber_vacuum *
                                          (in_shell ? shell_index : scatterer.medium->get_refractive_index()) * radius;
+        if (in_core && std::abs(argument) < 1e-15) {
+            // The electric dipole coefficient in the core determines the regular field at the origin.
+            const C center_x = scatterer.dn.front() * e0x;
+            const C center_y = scatterer.dn.front() * e0y;
+            if (field_type == "Ex")
+                values[point] = center_x;
+            else if (field_type == "Ey")
+                values[point] = center_y;
+            else if (field_type == "|E|")
+                values[point] = std::hypot(std::abs(center_x), std::abs(center_y));
+            continue;
+        }
+
+        const double theta = std::acos(clamp(z[point] / radius));
+        const double phi = std::atan2(y[point], x[point]);
+        const double st = std::sin(theta), ct = std::cos(theta);
+        const double sp = std::sin(phi), cp = std::cos(phi);
         auto [pi, tau] = scatterer.get_pi_tau(std::cos(theta), scatterer.max_order);
 
         C erx{}, etx{}, epx{}, ery{}, ety{}, epy{};

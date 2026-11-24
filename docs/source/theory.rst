@@ -72,6 +72,11 @@ scattering angle. In the native ``Spherical`` coordinate conversion,
    y_c=r\cos\phi\sin\theta,\qquad z_c=r\sin\phi.
 
 Thus the polar angle from positive z is :math:`\alpha=\pi/2-\phi`.
+For a sphere, :math:`S_2` multiplies the incident polarization parallel to
+the scattering plane (the elevation field), and :math:`S_1` multiplies the
+perpendicular polarization (the azimuth field). The outgoing radial factor
+is :math:`e^{ik_m r}/(ik_m r)`, where :math:`k_m=2\pi n_m/\lambda_0` and the
+time dependence is :math:`e^{-i\omega t}`.
 Use the returned mesh for structured field arrays: plotting helpers and
 structured meshes can use their own angular layout. Do not substitute a
 ``get_s1s2`` scattering-angle vector directly for a field mesh coordinate.
@@ -86,6 +91,8 @@ not fractions of incident source power and can exceed one. Cross sections
 carry area units. Infinite-cylinder cross sections use the backend's cylinder
 normalization; do not apply the sphere projected-area formula to them.
 ``coupling`` is detector-collected power in watts for the configured source.
+The detector converts peak electric-field amplitudes to cycle-averaged
+irradiance using :math:`n_m \epsilon_0 c |E|^2 / 2` in a lossless medium.
 
 A plot of field magnitude, squared field magnitude, or a normalized angular
 pattern has different units and normalization. In particular, the SPF surface
@@ -126,7 +133,8 @@ Several important properties of the scatterer can be computed using PyMieSim. Th
 - Extinction efficiency
 - Absorption efficiency
 - Back-scattering efficiency
-- Forward-to-back scattering ratio
+- Forward scattering efficiency
+- Backscattering-to-scattering efficiency ratio
 - Radiation pressure efficiency
 - Anisotropy factor :math:`g`
 
@@ -137,9 +145,14 @@ These properties are computed as follows:
    &Q_{\text{ext}} = \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n) \\[1.1em]
    &Q_{\text{abs}} = Q_{\text{ext}} - Q_{\text{sca}} \\[1.1em]
    &Q_{\text{back}} = \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2 \\[1.1em]
+   &Q_{\text{forward}} = \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(a_n + b_n) \right|^2 \\[1.1em]
    &Q_{\text{ratio}} = \frac{Q_{\text{back}}}{Q_{\text{sca}}} \\[1.1em]
    &Q_{\text{pr}} = Q_{\text{ext}} - g \cdot Q_{\text{sca}} \\[1.1em]
-   &g = \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]
+   &g = \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}-1} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]
+
+For a sphere, :math:`g` is the signed average of :math:`\cos\alpha`
+weighted by scattered intensity, with :math:`\alpha` measured from the
+forward direction. It is negative for backward-biased scattering.
 
 The cross-sectional areas can be computed as:
 
@@ -177,16 +190,20 @@ With:
 Cylinder
 ********
 
-For cylindrical scatterers, the coefficients are:
+For a normally illuminated infinite cylinder of diameter :math:`d`, let
+:math:`x=\pi d n_m/\lambda_0` and :math:`m=n_p/n_m`, where :math:`n_m`
+is the host refractive index, :math:`n_p` is the cylinder refractive index,
+and :math:`\lambda_0` is the vacuum wavelength supplied to the source.
+The exterior and interior radial arguments at the boundary are :math:`x`
+and :math:`mx`, respectively. The coefficients for electric fields
+perpendicular and parallel to the cylinder axis are
 
 .. math::
-   a_n &= \frac{M J_n(Mx) J_n'(mx) - m J_n'(Mx) J_n(mx)}{m J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)} \\[1.1em]
-   b_n &= \frac{m J_n(Mx) J_n'(mx) - M J_n'(Mx) J_n(mx)}{M J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)}
+   a_n &= \frac{m J_n(mx) J_n'(x) - J_n'(mx) J_n(x)}{m J_n(mx) H_n'(x) - J_n'(mx) H_n(x)} \\[1.1em]
+   b_n &= \frac{J_n(mx) J_n'(x) - m J_n'(mx) J_n(x)}{J_n(mx) H_n'(x) - m J_n'(mx) H_n(x)}
 
-Where:
-- :math:`M` is the refractive index of the scatterer.
-- :math:`m` is the refractive index of the medium.
-- :math:`H_n` is the Hankel function of the first kind of order :math:`n`.
+Here :math:`J_n` and :math:`H_n` are the cylindrical Bessel and first-kind
+Hankel functions, respectively, and primes denote argument derivatives.
 
 Core/Shell Sphere
 *****************
@@ -199,6 +216,11 @@ For core/shell spheres, the coefficients :math:`a_n` and :math:`b_n` are given b
 With:
 - :math:`x = \frac{2\pi R_{\text{core}}}{\lambda}` and :math:`y = \frac{2\pi R_{\text{shell}}}{\lambda}`
 - :math:`m_1 = \frac{n_{\text{core}}}{n_{\text{medium}}}` and :math:`m_2 = \frac{n_{\text{shell}}}{n_{\text{medium}}}`
+
+At the center of a sphere or a core-shell sphere, the total electric field
+is :math:`d_1(E_{0x}, E_{0y}, 0)`, where :math:`d_1` is the internal electric
+dipole coefficient for the region containing the center. For a core-shell
+sphere, this coefficient includes the effect of the shell.
 
 Generalized Lorenz-Mie Theory (GLMT)
 ------------------------------------

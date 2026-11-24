@@ -50,6 +50,10 @@ The output is a scalar quantity in watts. It is power collected within the
 detector cone for the specified source power. Repeat with larger ``sampling``
 to check angular integration convergence before comparing small differences.
 
+For a photodiode with a ``polarization_filter``, the analyzer projects the
+complex electric field at each angular sample onto its Jones state. The
+photodiode sums the resulting intensities over the collection cone.
+
 For angularly varying detector parameters, use ``PhotodiodeSet`` and
 ``Experiment``.  See the :ref:`coupling examples
 <sphx_glr_gallery_single_coupling.py>` and experiment gallery.

@@ -33,40 +33,45 @@ FullSteradian::FullSteradian(const size_t sampling, const double radius)
         }
 }
 
-template<typename dtype>
-dtype FullSteradian::get_integral(std::vector<dtype>& vector) const
-{
+template <typename dtype>
+dtype FullSteradian::get_integral(std::vector<dtype> &vector) const {
     dtype integral = 0;
 
-    for (size_t p=0; p<sampling; p++)
-        for (size_t t=0; t<sampling; t++)
-            integral += vector[p*sampling + t] * sin(this->spherical.phi[p] + Constants::PI/2.0) * dPhi * dTheta;
+    for (size_t elevation_index = 0; elevation_index < sampling; ++elevation_index) {
+        const double weight = std::cos(spherical.phi[elevation_index]) * dPhi * dTheta;
+        // The endpoints of the azimuth grid represent the same direction.
+        for (size_t azimuth_index = 0; azimuth_index + 1 < sampling; ++azimuth_index) {
+            integral += vector[elevation_index * sampling + azimuth_index] * weight;
+        }
+    }
 
     return integral;
 }
 
-
-template<typename dtype>
-dtype FullSteradian::get_cos_integral(const std::vector<dtype>& vector) const
-{
+template <typename dtype>
+dtype FullSteradian::get_cos_integral(const std::vector<dtype> &vector) const {
     dtype integral = 0;
 
-    for (size_t p=0; p<sampling; p++)
-        for (size_t t=0; t<sampling; t++)
-            integral += vector[p*sampling + t] * cos(this->spherical.phi[p] + Constants::PI / 2.0) * sin(this->spherical.phi[p] + Constants::PI / 2.0) * dPhi * dTheta;
+    for (size_t elevation_index = 0; elevation_index < sampling; ++elevation_index) {
+        const double elevation = spherical.phi[elevation_index];
+        // The cosine of the scattering angle from +z equals the sine of elevation.
+        const double weight = std::sin(elevation) * std::cos(elevation) * dPhi * dTheta;
+        for (size_t azimuth_index = 0; azimuth_index + 1 < sampling; ++azimuth_index) {
+            integral += vector[elevation_index * sampling + azimuth_index] * weight;
+        }
+    }
 
     return integral;
 }
 
-double FullSteradian::get_integral() const
-{
-    double integral = 0;
+double FullSteradian::get_integral() const {
+    double integral = 0.0;
 
-    for (auto phi : this->spherical.phi)
-        for (size_t theta_idx = 0; theta_idx < this->spherical.theta.size(); ++theta_idx)
-            integral += sin(phi + Constants::PI / 2.0) * dPhi * dTheta;
+    for (const double elevation : spherical.phi) {
+        integral += std::cos(elevation) * dPhi;
+    }
 
-    return integral;
+    return 2.0 * Constants::PI * integral;
 }
 
 // Explicit instantiations for the types you want:

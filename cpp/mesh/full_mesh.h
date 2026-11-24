@@ -37,9 +37,9 @@ class FullSteradian
         template<typename dtype> dtype get_integral(std::vector<dtype>& vector) const;
 
         /**
-         * @brief Computes the integral of a vector field over the full steradian.
+         * @brief Integrates the field weighted by the cosine of the angle from +z.
          * @param vector The vector field to integrate.
-         * @return The computed integral value.
+         * @return The signed first angular moment.
          */
         template<typename dtype> dtype get_cos_integral(const std::vector<dtype>& vector) const;
 

@@ -97,16 +97,6 @@ private:
     double get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source);
 
     /**
-     * @brief Computes the projected fields based on the theta and phi fields.
-     * @param theta_field The field in the theta direction.
-     * @param phi_field The field in the phi direction.
-     * @return A tuple containing the horizontal and vertical projections of the fields.
-     * @note This function computes the projections based on the spherical coordinates of the Fibonacci mesh.
-     */
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
-    get_projected_farfields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
-
-    /**
      * @brief Applies a scalar field to the horizontal and vertical projections of the coupling coefficients.
      * @param field0 The horizontal projection field.
      * @param field1 The vertical projection field.

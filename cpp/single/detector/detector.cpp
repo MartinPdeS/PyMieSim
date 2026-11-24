@@ -2,6 +2,29 @@
 #include <single/detector/coherent_mode.h>
 #include <single/detector/integrating_sphere.h>
 
+namespace {
+double peak_field_to_irradiance_factor(const BaseScatterer &scatterer) {
+    // Cycle-averaged Poynting flux for a peak electric-field phasor in a lossless medium.
+    return 0.5 * scatterer.medium->get_refractive_index() * Constants::EPSILON0 * Constants::LIGHT_SPEED;
+}
+
+std::tuple<std::vector<complex128>, std::vector<complex128>>
+project_farfields(const FibonacciMesh &mesh, const std::vector<complex128> &elevation_field,
+                  const std::vector<complex128> &azimuth_field) {
+    std::vector<complex128> horizontal_projection(elevation_field.size());
+    std::vector<complex128> vertical_projection(elevation_field.size());
+
+    for (size_t i = 0; i < elevation_field.size(); ++i) {
+        // The mesh's parallel basis points towards increasing polar angle, opposite to elevation.
+        horizontal_projection[i] = azimuth_field[i] * mesh.horizontal_perpendicular_projection[i] -
+                                   elevation_field[i] * mesh.horizontal_parallel_projection[i];
+        vertical_projection[i] = azimuth_field[i] * mesh.vertical_perpendicular_projection[i] -
+                                 elevation_field[i] * mesh.vertical_parallel_projection[i];
+    }
+
+    return {std::move(horizontal_projection), std::move(vertical_projection)};
+}
+} // namespace
 
 std::vector<double> BaseDetector::get_poynting_field(
     std::shared_ptr<BaseScatterer> scatterer,
@@ -9,18 +32,12 @@ std::vector<double> BaseDetector::get_poynting_field(
     double distance
 ) const
 {
-    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, distance, source);
+    auto [elevation_field, azimuth_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, distance, source);
+    const double irradiance_factor = peak_field_to_irradiance_factor(*scatterer);
 
-    std::vector<double> poynting(phi_field.size());
-
-    for (size_t i = 0; i < phi_field.size(); ++i) {
-        const double fields_squared = std::norm(phi_field[i]) + std::norm(theta_field[i]);
-        poynting[i] = (
-            scatterer->medium->get_refractive_index() *
-            Constants::EPSILON0 *
-            Constants::LIGHT_SPEED *
-            fields_squared
-        );
+    std::vector<double> poynting(elevation_field.size());
+    for (size_t i = 0; i < elevation_field.size(); ++i) {
+        poynting[i] = irradiance_factor * (std::norm(elevation_field[i]) + std::norm(azimuth_field[i]));
     }
 
     return poynting;
@@ -223,52 +240,12 @@ void Photodiode::initialize_mesh(const std::shared_ptr<BaseScatterer> scatterer)
 }
 
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
-Photodiode::get_projected_farfields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
-{
-
-    std::vector<complex128>
-        horizontal_projection(theta_field.size()),
-        vertical_projection(theta_field.size());
-
-    for (size_t i=0; i<theta_field.size(); ++i)
-    {
-        vertical_projection[i] =
-            theta_field[i] * this->fibonacci_mesh.vertical_perpendicular_projection[i] +
-            phi_field[i] * this->fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
-
-
-
-        horizontal_projection[i] =
-            theta_field[i] * this->fibonacci_mesh.horizontal_perpendicular_projection[i] +
-            phi_field[i] * this->fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version
-    }
-
-    return std::make_tuple(horizontal_projection, vertical_projection);
-
-}
-
 void Photodiode::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
 {
     for (size_t i=0; i<field0.size(); i++) {
         field0[i] *= this->scalar_field[i];
         field1[i] *= this->scalar_field[i];
     }
-}
-
-template <typename T> inline
-void Photodiode::apply_polarization_filter(T &coupling_theta, T &coupling_phi) const
-{
-    if (this->polarization_filter.is_empty)
-        return;
-
-    double
-        phi_polarization_filtering    = std::norm(this->polarization_filter.jones_vector[0]),
-        theta_polarization_filtering  = std::norm(this->polarization_filter.jones_vector[1]);
-
-
-    coupling_theta *= theta_polarization_filtering;
-    coupling_phi *= phi_polarization_filtering;
 }
 
 std::vector<complex128> Photodiode::get_structured_scalarfield(const size_t sampling) const {
@@ -313,26 +290,26 @@ double Photodiode::get_coupling(
 
     this->initialize_mesh(scatterer);
 
-    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
-
-    auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
+    auto [elevation_field, azimuth_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [horizontal_projection, vertical_projection] =
+        project_farfields(this->fibonacci_mesh, elevation_field, azimuth_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
 
-    // this->apply_interface_transmission_to_fields(theta_field, phi_field);
+    double coupling = 0.0;
+    if (this->polarization_filter.is_empty) {
+        coupling = this->get_norm2_squared(vertical_projection) + this->get_norm2_squared(horizontal_projection);
+    } else {
+        // The detector's vertical and horizontal axes correspond to Jones components x and y.
+        const complex128 analyzer_x = std::conj(this->polarization_filter.jones_vector[0]);
+        const complex128 analyzer_y = std::conj(this->polarization_filter.jones_vector[1]);
+        for (size_t i = 0; i < vertical_projection.size(); ++i) {
+            // Project each complex field before summing the intensities across rays.
+            coupling += std::norm(analyzer_x * vertical_projection[i] + analyzer_y * horizontal_projection[i]);
+        }
+    }
 
-    double coupling_theta = this->get_norm2_squared(horizontal_projection);
-    double coupling_phi   = this->get_norm2_squared(vertical_projection);
-
-    this->apply_polarization_filter(coupling_theta, coupling_phi);
-
-    return (
-        scatterer->medium->get_refractive_index() *
-        Constants::EPSILON0 *
-        Constants::LIGHT_SPEED *
-        (coupling_theta + coupling_phi) *
-        this->fibonacci_mesh.dOmega
-    );
+    return peak_field_to_irradiance_factor(*scatterer) * coupling * this->fibonacci_mesh.dOmega;
 }
 
 
@@ -435,32 +412,6 @@ void CoherentMode::initialize_mesh(const std::shared_ptr<BaseScatterer> scattere
 }
 
 
-std::tuple<std::vector<complex128>, std::vector<complex128>>
-CoherentMode::get_projected_farfields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
-{
-
-    std::vector<complex128>
-        horizontal_projection(theta_field.size()),
-        vertical_projection(theta_field.size());
-
-    for (size_t i=0; i<theta_field.size(); ++i)
-    {
-        vertical_projection[i] =
-            theta_field[i] * this->fibonacci_mesh.vertical_perpendicular_projection[i] +
-            phi_field[i] * this->fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
-
-
-
-        horizontal_projection[i] =
-            theta_field[i] * this->fibonacci_mesh.horizontal_perpendicular_projection[i] +
-            phi_field[i] * this->fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version
-    }
-
-    return std::make_tuple(horizontal_projection, vertical_projection);
-
-}
-
-
 void CoherentMode::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
 {
     for (size_t i=0; i<field0.size(); i++) {
@@ -529,9 +480,9 @@ double CoherentMode::get_coupling(std::shared_ptr<BaseScatterer> scatterer, std:
 
 double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source)
 {
-    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
-
-    auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
+    auto [elevation_field, azimuth_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [horizontal_projection, vertical_projection] =
+        project_farfields(this->fibonacci_mesh, elevation_field, azimuth_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
 
@@ -540,22 +491,16 @@ double CoherentMode::get_coupling_mean(std::shared_ptr<BaseScatterer> scatterer,
 
     this->apply_polarization_filter(coupling_theta, coupling_phi);
 
-    return (
-        0.5 *
-        Constants::EPSILON0 *
-        Constants::LIGHT_SPEED *
-        (coupling_theta + coupling_phi) *
-        this->fibonacci_mesh.dOmega /
-        this->fibonacci_mesh.Omega
-    );
+    return peak_field_to_irradiance_factor(*scatterer) * (coupling_theta + coupling_phi) *
+           this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
 }
 
 
 double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer, std::shared_ptr<BaseSource> source)
 {
-    auto [theta_field, phi_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
-
-    auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
+    auto [elevation_field, azimuth_field] = scatterer->get_unstructured_farfields(this->fibonacci_mesh, 1.0, source);
+    auto [horizontal_projection, vertical_projection] =
+        project_farfields(this->fibonacci_mesh, elevation_field, azimuth_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
 
@@ -564,13 +509,8 @@ double CoherentMode::get_coupling_point(std::shared_ptr<BaseScatterer> scatterer
 
     this->apply_polarization_filter(coupling_theta, coupling_phi);
 
-    return (
-        scatterer->medium->get_refractive_index() *
-        Constants::EPSILON0 *
-        Constants::LIGHT_SPEED *
-        (coupling_theta + coupling_phi) *
-        this->fibonacci_mesh.dOmega
-    );
+    return peak_field_to_irradiance_factor(*scatterer) * (coupling_theta + coupling_phi) *
+           this->fibonacci_mesh.dOmega;
 }
 
 
@@ -664,11 +604,5 @@ double IntegratingSphere::get_coupling(std::shared_ptr<BaseScatterer> scatterer,
     }
 
     printf("Raw coupling (before interface and constants): %e\n", coupling);
-    return (
-        scatterer->medium->get_refractive_index() *
-        Constants::EPSILON0 *
-        Constants::LIGHT_SPEED *
-        coupling *
-        this->fibonacci_mesh.dOmega
-    );
+    return peak_field_to_irradiance_factor(*scatterer) * coupling * this->fibonacci_mesh.dOmega;
 }

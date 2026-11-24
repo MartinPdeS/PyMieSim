@@ -17,7 +17,8 @@ void InfiniteCylinder::init(const std::shared_ptr<BaseSource> &source, const siz
 }
 
 void InfiniteCylinder::compute_size_parameter(const std::shared_ptr<BaseSource> &source) {
-    this->size_parameter = source->wavenumber_vacuum * this->diameter / 2;
+    const double medium_wavenumber = source->wavenumber_vacuum * this->medium->get_refractive_index();
+    this->size_parameter = medium_wavenumber * this->diameter / 2.0;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
 

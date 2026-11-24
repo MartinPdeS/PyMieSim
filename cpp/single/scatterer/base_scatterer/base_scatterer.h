@@ -436,4 +436,8 @@ public:
 
     std::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, FullSteradian>
     get_structured_stokes(const size_t sampling, const double distance, std::shared_ptr<BaseSource> source) const;
+
+protected:
+    /** @brief Computes the asymmetry factor from spherical electric and magnetic multipoles. */
+    double get_spherical_asymmetry_factor() const;
 };
