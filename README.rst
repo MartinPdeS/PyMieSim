@@ -12,8 +12,6 @@ PyMieSim
 
    * - Badge
      - Status
-   * - Web app
-     - |mps-demo|
    * - Python versions
      - |mps-python|
    * - Documentation
@@ -26,6 +24,10 @@ PyMieSim
      - |mps-conda| |mps-conda-downloads| |mps-conda-release|
 
 A package for light scattering (Mie) computation.
+
+.. image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/HEAD/docs/images/try-pymiesimx.svg
+   :alt: Try online with PyMieSimX
+   :target: https://pymiesim.onrender.com/
 
 Calculate scattering by spheres, coated spheres, and cylinders. Specify the incident
 field, particle geometry, and optical material, then sweep one input to see how
@@ -154,10 +156,6 @@ See the `PyMieSim license <https://github.com/MartinPdeS/PyMieSim/blob/HEAD/LICE
 .. |mps-downloads| image:: https://img.shields.io/pypi/dm/pymiesim.svg
    :alt: Monthly PyPI downloads
    :target: https://pypistats.org/packages/pymiesim
-
-.. |mps-demo| image:: https://img.shields.io/badge/Launch-PyMieSim-2672d6.svg
-   :alt: Launch PyMieSim
-   :target: https://pymiesim.onrender.com/
 
 .. |mps-docs| image:: https://github.com/MartinPdeS/PyMieSim/actions/workflows/deploy_documentation.yml/badge.svg
    :alt: Documentation
