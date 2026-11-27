@@ -85,3 +85,8 @@ editable:
 
 clean:
 	rm -rf $(BUILD_DIR)
+
+# Install the generator with: python -m pip install --group readme
+.PHONY: readme
+readme:
+	$(PYTHON) -m martinpdes_maintenance.cli readme

@@ -1,431 +1,184 @@
-|logo|
+PyMieSim
+========
+
+.. image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/HEAD/docs/images/logo.png
+   :alt: PyMieSim logo
+   :width: 100%
 
 .. list-table::
+   :width: 100%
    :widths: 35 65
    :header-rows: 1
 
    * - Badge
      - Status
-   * - Python versions
-     - |python|
-   * - Documentation
-     - |docs|
-   * - Scientific article
-     - |article|
-   * - Continuous integration
-     - |ci/cd|
-   * - Test coverage
-     - |coverage|
    * - Web app
-     - |webapp|
-   * - Google Colab
-     - |colab|
-   * - PyPI package
-     - |PyPI|
-   * - PyPI downloads
-     - |PyPI_download|
-   * - Anaconda package
-     - |anaconda|
-   * - Anaconda downloads
-     - |anaconda_download|
-   * - Latest Anaconda release
-     - |anaconda_date|
+     - |mps-demo|
+   * - Python versions
+     - |mps-python|
+   * - Documentation
+     - |mps-docs|
+   * - Tests
+     - |mps-ci| |mps-coverage|
+   * - PyPI
+     - |mps-pypi| |mps-downloads|
+   * - Conda
+     - |mps-conda| |mps-conda-downloads| |mps-conda-release|
 
-PyMieSim
-========
+A package for light scattering (Mie) computation.
 
-**PyMieSim** is an open-source Python package for fast and flexible Mie scattering simulations.
-It supports spherical, cylindrical and core--shell particles and provides helper classes for custom sources and detectors.
-The project targets both quick single-scatterer studies and large parametric experiments.
+Calculate scattering by spheres, coated spheres, and cylinders. Specify the incident
+field, particle geometry, and optical material, then sweep one input to see how
+scattering efficiency or detector coupling changes.
 
-Try the live webapp
-----------------------
-
-**Run Mie scattering simulations in your browser—no installation required.**
-
-`Launch the PyMieSimX webapp <https://pymiesim.onrender.com/>`_ to configure
-optical setups, run parameter sweeps, explore individual particles, and download
-your results as CSV files. The hosted service brings PyMieSim to a graphical
-interface, making it easy to try simulations before installing the Python
-package. The interface is developed in `PyMieSimX
-<https://github.com/MartinPdeS/PyMieSimX>`_.
-
-Features
---------
-- Solvers for spheres, cylinders and core--shell geometries.
-- Built-in models for plane wave and Gaussian sources.
-- Multiple detector types including photodiodes and coherent modes.
-- Simple data analysis with pandas DataFrame outputs.
-
-See PyMieSim in action
-----------------------
-Explore electromagnetic fields around an individual particle, then sweep
-parameters to see how scattering changes across a whole experiment. These
-illustrative plots come from PyMieSim workflows; follow the links to the
-runnable examples and their configurations.
-
-**Single particle: near field**
-
-Visualize the real components of the total electric field in a plane through
-a core--shell particle. The circles mark the core and shell interfaces.
-`Explore the near-field example <https://martinpdes.github.io/PyMieSim/gallery/single/nearfields.html>`_.
-
-.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/single_nearfields.png
-   :width: 900
-   :align: center
-   :alt: Real components of the total electric field around a core-shell particle.
-
-**Single particle: far field**
-
-Inspect the angular distribution of a scattered electric-field component for
-a sphere. `Explore the far-field example <https://martinpdes.github.io/PyMieSim/gallery/single/farfields.html>`_.
-
-.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/single_farfields.png
-   :width: 500
-   :align: center
-   :alt: Real part of the phi component of the scattered far electric field around a sphere.
-
-**Experiment: scattering resonances**
-
-Compare scattering efficiency across wavelengths for spheres of two sizes.
-The peaks reveal resonances and how they shift with particle diameter.
-`Explore sphere parameter sweeps <https://martinpdes.github.io/PyMieSim/gallery/experiment/sphere/index.html>`_.
-
-.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/resonances.png
-   :width: 900
-   :align: center
-   :alt: Scattering efficiency versus wavelength for spheres with diameters of 200 and 300 nanometers.
+See the `usage guide <https://github.com/MartinPdeS/PyMieSim/blob/HEAD/USAGE.rst>`__ for further examples and implementation details.
+Open the `project notebook in Colab <https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb>`__.
 
 Installation
 ------------
-PyMieSim is available on PyPI and Anaconda.  Install it with:
 
-.. code-block:: bash
+Requires Python ``>=3.10``.
 
-   pip install PyMieSim
-   conda install PyMieSim  --channels MartinPdeS
+.. code-block:: console
 
-This installs a pre-built wheel when one is available for your operating
-system, architecture, and Python version. Wheels are the recommended option
-for using PyMieSim because they include the compiled C++ and Fortran
-extensions.
+   $ python -m pip install PyMieSim
 
-Verify the installation with the same Python interpreter that you will use for
-your simulations:
+Install from the ``martinpdes`` Conda channel:
 
-.. code-block:: bash
+.. code-block:: console
 
-   python -c "import PyMieSim; print(PyMieSim.__version__)"
+   $ conda install -c martinpdes pymiesim
 
-Named optical materials use PyOptik's provenance-preserving
-RefractiveIndex.INFO catalog. Initialize its local snapshot once before using
-constructors such as ``SellmeierMaterial("BK7")`` or
-``TabulatedMaterial("silver")``:
+For an editable source installation:
 
-.. code-block:: bash
+.. code-block:: console
 
-   python -m PyOptik setup
+   $ git clone https://github.com/MartinPdeS/PyMieSim.git
+   $ cd PyMieSim
+   $ python -m pip install -e .
 
-Building from source is intended for development or platforms without a
-matching wheel. It requires a C++20 compiler, Fortran, CMake, pybind11, and
-OpenMP; see
-`troubleshooting <https://martinpdes.github.io/PyMieSim/troubleshooting.html>`_
-if the compiled extension cannot be imported.
-
-First simulation
-----------------
-Create a source, a scatterer, and a ``Simulation``.  Physical quantities use
-the built-in ``ureg`` unit registry, while refractive indices are
-dimensionless real or complex values.
+Sweep sphere diameter
+---------------------
 
 .. code-block:: python
 
-    from PyMieSim import (
-        Gaussian,
-        PolarizationState,
-        Simulation,
-        Sphere,
-        ureg,
-    )
+   """
+   Sphere: Qsca vs diameter
+   ========================
 
-    source = Gaussian(
-        wavelength=633 * ureg.nanometer,
-        polarization=PolarizationState(angle=0 * ureg.degree),
-        optical_power=1e-3 * ureg.watt,
-        numerical_aperture=0.2,
-    )
+   """
 
-    scatterer = Sphere(
-        diameter=200 * ureg.nanometer,
-        material=1.5 + 0.01j,
-        medium=1.0,
-    )
-
-    simulation = Simulation(scatterer=scatterer, source=source)
-    qsca = simulation.run("Qsca")
-    print(qsca.quantity)
-
-This prints a dimensionless scattering efficiency, approximately:
-
-.. code-block:: text
-
-   0.2080989068292113 dimensionless
-
-Inspect the measures supported by the configured simulation with:
-
-.. code-block:: python
-
-   print(simulation.available_measures)
-
-For explicit measure and unit metadata, request a typed result:
-
-.. code-block:: python
-
-   result = simulation.run("Qsca")
-   print(result.measure, result.quantity, result.units)
-
-Units and material conventions
-------------------------------
-Always attach units to wavelengths, lengths, powers, and angles:
-
-.. code-block:: python
-
-   633 * ureg.nanometer
-   200 * ureg.nanometer
-   1e-3 * ureg.watt
-   0 * ureg.degree
-
-Refractive indices are dimensionless.  A complex index such as
-``1.5 + 0.01j`` represents an absorbing material under PyMieSim's optical
-convention.  Built-in and tabulated materials have supported wavelength
-ranges; use ``load_material`` and ``validate_wavelength`` when working with
-real material data.
-
-Parameter sweeps
-----------------
-Use ``Experiment`` when you want to evaluate several wavelengths, particle
-sizes, or material parameters.  Results retain named dimensions and
-coordinates, and can be converted to NumPy or pandas explicitly.
-
-.. code-block:: python
-
+   import PyOptik
+   from PyMieSim import from_pyoptik
    import numpy as np
+
    from PyMieSim import (
-       Experiment,
+       Measure,
+       ureg,
+       SphereSet,
        GaussianSet,
        PolarizationSet,
-       SphereSet,
-       ureg,
+       MaterialSet,
+       MediumSet,
+       Experiment,
+   )
+
+
+   polarization_set = PolarizationSet(
+       angles=[0.0] * ureg.degree,
    )
 
    source = GaussianSet(
-       wavelength=np.linspace(500, 700, 5) * ureg.nanometer,
-       polarization=PolarizationSet(angles=0 * ureg.degree),
-       optical_power=1e-3 * ureg.watt,
-       numerical_aperture=0.2,
+       wavelength=[405] * ureg.nanometer,
+       polarization=polarization_set,
+       optical_power=[1e-3] * ureg.watt,
+       numerical_aperture=[0.2],
    )
+
+   bk7 = from_pyoptik(PyOptik.load_material(name="specs/SCHOTT-optical/P-BK7"))
+
    scatterer = SphereSet(
-       diameter=np.linspace(100, 500, 9) * ureg.nanometer,
-       material=1.5,
-       medium=1.0,
+       diameter=np.linspace(10, 1000, 150) * ureg.nanometer,
+       material=MaterialSet(materials=[bk7]),
+       medium=MediumSet(refractive_indices=[1.33, 1.34, 1.5]),
    )
 
    experiment = Experiment(scatterer_set=scatterer, source_set=source)
-   result = experiment.run("Qsca")
-   values = result.as_numpy()
-   dataframe = result.as_dataframe()
 
-The experiment grid has five wavelength values and nine diameter values, so
-``values.shape`` is ``(5, 9)``.  See the
-`parameter sweep guide <https://martinpdes.github.io/PyMieSim/workflows/parameter_sweeps.html>`_
-for multiple measures and plotting.
+   result = experiment.run(Measure.QSCA)
 
-Detector coupling
------------------
-Add a detector when you need collected or coupled power rather than only a
-scatterer property:
+   print("Result dimensions and shape:", result.dims, result.shape)
+   print("Measure units:", result.units)
 
-.. code-block:: python
+   result.plot(x="scatterer:diameter", show=True)
 
-   from PyMieSim import (
-       Gaussian,
-       Photodiode,
-       PolarizationState,
-       Simulation,
-       Sphere,
-       ureg,
-   )
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/HEAD/docs/images/Qsca_diameter.png
 
-   single_source = Gaussian(
-       wavelength=633 * ureg.nanometer,
-       polarization=PolarizationState(angle=0 * ureg.degree),
-       optical_power=1e-3 * ureg.watt,
-       numerical_aperture=0.2,
-   )
-   single_scatterer = Sphere(
-       diameter=200 * ureg.nanometer,
-       material=1.5 + 0.01j,
-       medium=1.0,
-   )
+   Scattering efficiency as a function of sphere diameter.
 
-   detector = Photodiode(
-       sampling=500,
-       numerical_aperture=0.2,
-       phi_offset=0 * ureg.degree,
-       gamma_offset=0 * ureg.degree,
-       medium=1.0,
-   )
-   simulation = Simulation(
-       scatterer=single_scatterer,
-       source=single_source,
-       detector=detector,
-   )
-   coupling = simulation.run("coupling")
-   print(coupling.quantity)
-
-``coupling`` requires a detector.  Other available detector types include
-``CoherentMode`` and ``IntegratingSphere``; see the
-`detector coupling guide <https://martinpdes.github.io/PyMieSim/workflows/detector_coupling.html>`_.
-
-Common issues
+Documentation
 -------------
 
-* If ``import PyMieSim`` fails, run ``python -m pip show PyMieSim`` and check
-  that it uses the same Python executable as your script.
-* If a constructor reports a unit error, check that every dimensional input
-  has units and convert it with ``.to(...)`` when necessary.
-* If ``coupling`` is unavailable, add a detector and inspect
-  ``simulation.available_measures``.
-* For slow or memory-heavy sweeps, print ``experiment.array_shape`` and
-  ``experiment.total_iterations`` before requesting a result.
-* On servers or in CI, select a non-interactive Matplotlib backend such as
-  ``Agg`` before importing plotting code.
+Use the `PyMieSim documentation <https://martinpdes.github.io/PyMieSim/>`__ to work through
+examples and look up the inputs and return values of individual functions.
 
-See the `online documentation <https://martinpdes.github.io/PyMieSim/>`_ for
-theory, performance guidance, runnable examples, and advanced near-field and
-far-field workflows.
+Citation
+--------
 
+For the scattering model and its validation, cite the `PyMieSim paper in Optics Continuum <https://doi.org/10.1364/OPTCON.473102>`__.
 
-Code structure
----------------
-Here is the architecture for a standard workflow using PyMieSim:
+Contributing
+------------
 
-.. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
-   :width: 1000
-   :align: center
-   :alt: Code structure of a standard workflow using PyMieSim.
-
-Developer setup
----------------
-Clone the repository, select the Python interpreter you want to use, install
-the development and testing dependencies, and build an editable installation:
-
-.. code-block:: bash
-
-   git clone https://github.com/MartinPdeS/PyMieSim.git
-   cd PyMieSim
-   python -m pip install ".[testing,documentation,dev]"
-   python -m PyOptik setup --no-progress
-   make PYTHON=python editable
-
-``make editable`` builds the native extensions in the local ``build``
-directory and installs them into the same environment. Always run tests with
-that same interpreter:
-
-.. code-block:: bash
-
-   python -c "import PyMieSim; print(PyMieSim.__version__)"
-   python -m pytest --config-file=pytest.ini
-
-If the import reports missing native extensions, the build was not completed
-for this interpreter. Re-run ``make editable`` after checking that CMake,
-Fortran, pybind11, and OpenMP are installed. Do not mix build artifacts from
-different Python versions or architectures.
-
-Building from source manually
------------------------------
-The equivalent lower-level workflow is:
-
-.. code-block:: bash
-
-   python -m pip install --no-build-isolation -Cbuild-dir=build -e .
-
-The editable workflow is preferred because it keeps the Python sources and
-compiled extensions aligned. A released wheel does not require a compiler or
-the native build toolchain.
-
-Testing
--------
-After the developer setup, run the unit tests with:
-
-.. code-block:: bash
-
-   python -m pytest --config-file=pytest.ini
-
-Citing PyMieSim
----------------
-If you use PyMieSim in academic work, please cite:
-
-.. code-block:: none
-
-   @article{PoinsinetdeSivry-Houle:23,
-       author = {Martin Poinsinet de Sivry-Houle and Nicolas Godbout and Caroline Boudoux},
-       journal = {Opt. Continuum},
-       title = {PyMieSim: an open-source library for fast and flexible far-field Mie scattering simulations},
-       volume = {2},
-       number = {3},
-       pages = {520--534},
-       year = {2023},
-       doi = {10.1364/OPTCON.473102},
-   }
+Bug reports, worked examples, and documentation corrections are welcome.
+To set up a development checkout and run the tests, follow the `contributing guide <https://github.com/MartinPdeS/PyMieSim/blob/HEAD/CONTRIBUTING.md>`__.
 
 Contact
 -------
-For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <mailto:martin.poinsinet.de.sivry@gmail.com>`_.
 
-.. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
-    :alt: PyMieSim logo
-.. |webapp| image:: https://img.shields.io/badge/web_app-open_in_browser-2672d6.svg
-    :alt: Open the PyMieSim web app
-    :target: https://pymiesim.onrender.com/
-.. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
-    :alt: Python
-    :target: https://www.python.org/
-.. |article| image:: https://img.shields.io/badge/Optics%20Continuum-PyMieSim-green.svg
-    :alt: Scientific article
-    :target: https://opg.optica.org/optcon/viewmedia.cfm?uri=optcon-2-3-520&html=true
-.. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :alt: Google Colab
-    :target: https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb
-.. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg
-    :target: https://martinpdes.github.io/PyMieSim/
-    :alt: Documentation Status
-.. |PyPI| image:: https://badge.fury.io/py/PyMieSim.svg
-    :alt: PyPI version
-    :target: https://badge.fury.io/py/PyMieSim
-.. |PyPI_download| image:: https://api.pepy.tech/badge/PyMieSim/month
-    :alt: PyPI downloads
-    :target: https://pepy.tech/projects/pymiesim
-.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
-    :alt: Unittest coverage
-    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
-.. |ci/cd| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg
-    :alt: Unittest Status
-.. |wikipedia_example| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png
-    :width: 800
-    :alt: Example wikipedia
-.. |example_plasmon| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png
-    :width: 800
-    :alt: Plasmonic resonances
-.. |example_qsca| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png
-    :width: 800
-    :alt: Qsca vs diameter
-.. |anaconda| image:: https://anaconda.org/martinpdes/pymiesim/badges/version.svg
-    :alt: Anaconda version
-    :target: https://anaconda.org/martinpdes/pymiesim
-.. |anaconda_download| image:: https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg
-    :alt: Anaconda downloads
-    :target: https://anaconda.org/martinpdes/pymiesim
-.. |anaconda_date| image:: https://anaconda.org/martinpdes/pymiesim/badges/latest_release_relative_date.svg
-    :alt: Latest release date
-    :target: https://anaconda.org/martinpdes/pymiesim
+For questions, contact `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=PyMieSim>`__.
+
+License
+-------
+
+See the `PyMieSim license <https://github.com/MartinPdeS/PyMieSim/blob/HEAD/LICENSE>`__ for terms of use.
+
+.. |mps-python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
+   :alt: Supported Python versions
+   :target: https://pypi.org/project/pymiesim/
+
+.. |mps-pypi| image:: https://img.shields.io/pypi/v/pymiesim.svg
+   :alt: PyPI version
+   :target: https://pypi.org/project/pymiesim/
+
+.. |mps-downloads| image:: https://img.shields.io/pypi/dm/pymiesim.svg
+   :alt: Monthly PyPI downloads
+   :target: https://pypistats.org/packages/pymiesim
+
+.. |mps-demo| image:: https://img.shields.io/badge/Launch-PyMieSim-2672d6.svg
+   :alt: Launch PyMieSim
+   :target: https://pymiesim.onrender.com/
+
+.. |mps-docs| image:: https://github.com/MartinPdeS/PyMieSim/actions/workflows/deploy_documentation.yml/badge.svg
+   :alt: Documentation
+   :target: https://martinpdes.github.io/PyMieSim/
+
+.. |mps-ci| image:: https://github.com/MartinPdeS/PyMieSim/actions/workflows/tests.yml/badge.svg
+   :alt: Tests
+   :target: https://github.com/MartinPdeS/PyMieSim/actions/workflows/tests.yml
+
+.. |mps-coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
+   :alt: Test coverage
+   :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
+
+.. |mps-conda| image:: https://anaconda.org/martinpdes/pymiesim/badges/version.svg
+   :alt: Anaconda version
+   :target: https://anaconda.org/martinpdes/pymiesim
+
+.. |mps-conda-downloads| image:: https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/pymiesim
+
+.. |mps-conda-release| image:: https://anaconda.org/martinpdes/pymiesim/badges/latest_release_relative_date.svg
+   :alt: Latest Anaconda release
+   :target: https://anaconda.org/martinpdes/pymiesim

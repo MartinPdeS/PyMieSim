@@ -137,3 +137,13 @@ inspect `git status` and `git log -1` before recovering or retrying.
 Package versions are explicit in `[project].version`. Builds do not derive
 versions from Git tags or require setuptools-scm. Release commands update the
 project version, package version file, Conda recipe, and Zenodo metadata together.
+
+## Updating the README
+
+Edit `readme.yml` and run the following commands from the repository root. Commit the generated README with its inputs.
+
+```sh
+python -m pip install --group readme
+make readme PYTHON=python
+mps-maintenance readme --check
+```

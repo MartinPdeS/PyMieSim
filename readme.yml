@@ -1,0 +1,17 @@
+introduction: |-
+  Calculate scattering by spheres, coated spheres, and cylinders. Specify the incident
+  field, particle geometry, and optical material, then sweep one input to see how
+  scattering efficiency or detector coupling changes.
+
+  See the `usage guide <https://github.com/MartinPdeS/PyMieSim/blob/HEAD/USAGE.rst>`__ for further examples and implementation details.
+  Open the `project notebook in Colab <https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb>`__.
+demo: https://pymiesim.onrender.com/
+quickstart:
+  title: Sweep sphere diameter
+  source: docs/examples/experiment/sphere/Qsca_vs_diameter.py
+  figure:
+    path: docs/images/Qsca_diameter.png
+    caption: Scattering efficiency as a function of sphere diameter.
+sections:
+- title: Citation
+  content: For the scattering model and its validation, cite the `PyMieSim paper in Optics Continuum <https://doi.org/10.1364/OPTCON.473102>`__.
